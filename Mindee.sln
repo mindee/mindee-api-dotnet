@@ -6,6 +6,8 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A5850441-EFCB-44FB-98ED-2524EA301461}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		LICENSE = LICENSE
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.Infrastructure", "src\Mindee.Infrastructure\Mindee.Infrastructure.csproj", "{E8BF882A-F6B1-4D8D-9282-2AE59FAA143D}"
