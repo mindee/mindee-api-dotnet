@@ -364,7 +364,7 @@ namespace Mindee.Infrastructure.Api.Invoice
         public List<List<double>> Polygon { get; set; }
 
         [JsonPropertyName("rate")]
-        public int Rate { get; set; }
+        public double? Rate { get; set; }
 
         [JsonPropertyName("value")]
         public double? Value { get; set; }
