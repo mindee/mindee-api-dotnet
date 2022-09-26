@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A5850441-EFCB-44FB-98ED-2524EA301461}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.gitignore = .gitignore
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
@@ -18,7 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C018C686
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4E2BEA7B-A744-4D1B-A5F0-87E9186BE0C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mindee.UnitTests", "tests\Mindee.UnitTests\Mindee.UnitTests.csproj", "{1228287D-8E16-4947-B821-25180A36F9F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.UnitTests", "tests\Mindee.UnitTests\Mindee.UnitTests.csproj", "{1228287D-8E16-4947-B821-25180A36F9F3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.IntegrationTests", "tests\Mindee.IntegrationTests\Mindee.IntegrationTests.csproj", "{8F3E7E11-74E6-4C22-B05F-0B4CE6442FCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +41,10 @@ Global
 		{1228287D-8E16-4947-B821-25180A36F9F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1228287D-8E16-4947-B821-25180A36F9F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1228287D-8E16-4947-B821-25180A36F9F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F3E7E11-74E6-4C22-B05F-0B4CE6442FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F3E7E11-74E6-4C22-B05F-0B4CE6442FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F3E7E11-74E6-4C22-B05F-0B4CE6442FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F3E7E11-74E6-4C22-B05F-0B4CE6442FCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +53,7 @@ Global
 		{E8BF882A-F6B1-4D8D-9282-2AE59FAA143D} = {4E2BEA7B-A744-4D1B-A5F0-87E9186BE0C0}
 		{07AD742F-3D0F-4C4B-95F2-C3E88A71FBF3} = {4E2BEA7B-A744-4D1B-A5F0-87E9186BE0C0}
 		{1228287D-8E16-4947-B821-25180A36F9F3} = {C018C686-8082-437A-9888-62F0B95B985A}
+		{8F3E7E11-74E6-4C22-B05F-0B4CE6442FCC} = {C018C686-8082-437A-9888-62F0B95B985A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A4CA814-44CB-4687-86AF-9230DD686585}
