@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RestSharp;
@@ -15,12 +16,13 @@ namespace Mindee.Infrastructure.Api
         public MindeeApi(
             ILogger<MindeeApi> logger
             , IOptions<MindeeApiSettings> mindeeApiSettings
+            , IConfiguration configuration
             , HttpMessageHandler httpMessageHandler = null
             )
         {
             _logger = logger;
-            _apiKey = mindeeApiSettings.Value.ApiKey;
-            if(httpMessageHandler != null)
+            _apiKey = configuration.GetSection("MindeeApiSettings:ApiKey").Value;
+            if (httpMessageHandler != null)
             {
                 _httpClient = BuildClient(httpMessageHandler);
             }
