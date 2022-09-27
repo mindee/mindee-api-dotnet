@@ -1,0 +1,58 @@
+﻿using System.CommandLine;
+using System.CommandLine.Builder;
+using System.CommandLine.Hosting;
+using System.CommandLine.Invocation;
+using System.CommandLine.Parsing;
+using Microsoft.Extensions.Hosting;
+
+namespace Mindee.Cli
+{
+    internal static class Program
+    {
+        private static async Task Main(string[] args)
+        {
+            var runner = BuildCommandLine()
+                .UseHost(_ => Host.CreateDefaultBuilder(args), (builder) =>
+                {
+                    builder.UseEnvironment("CLI")
+                    //.UseCommandHandler<CreateTodoListCommand, CreateTodoListCommand.Handler>()
+                })
+                .UseDefaults().Build();
+
+            await runner.InvokeAsync(args);
+        }
+
+        private static CommandLineBuilder BuildCommandLine()
+        {
+            var root = new RootCommand();
+            root.AddCommand(BuildTodoListCommands());
+            root.AddCommand(BuildTodoItemsCommands());
+
+            root.AddGlobalOption(new Option<bool>("--silent", "Disables diagnostics output"));
+            root.Handler = CommandHandler.Create(() =>
+            {
+                root.Invoke("-h");
+            });
+
+            return new CommandLineBuilder(root);
+
+            static Command BuildTodoListCommands()
+            {
+                var todolist = new Command("todolist", "Todo lists management")
+                {
+                    //new CreateTodoListCommand(),
+                };
+                return todolist;
+            }
+
+            static Command BuildTodoItemsCommands()
+            {
+                var todoitem = new Command("todoitem", "Todo items management")
+                {
+                    //new SeedTodoItemsCommand()
+                };
+                return todoitem;
+            }
+        }
+    }
+}

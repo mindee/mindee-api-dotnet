@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Net.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
@@ -13,16 +14,38 @@ namespace Mindee.Infrastructure.Api
 
         public MindeeApi(
             ILogger<MindeeApi> logger
-            , IOptions<MindeeApiSettings> mindeeApiSettings)
+            , IOptions<MindeeApiSettings> mindeeApiSettings
+            , HttpMessageHandler httpMessageHandler = null
+            )
         {
             _logger = logger;
             _apiKey = mindeeApiSettings.Value.ApiKey;
-            _httpClient = BuildClient();
+            if(httpMessageHandler != null)
+            {
+                _httpClient = BuildClient(httpMessageHandler);
+            }
+            else
+            {
+                _httpClient = BuildClient();
+            }
         }
 
         private RestClient BuildClient()
         {
             var options = new RestClientOptions(BaseUrl);
+            var client = new RestClient(options,
+                p => p.Add("Authorization", $"Token {_apiKey}")
+            );
+
+            return client;
+        }
+
+        private RestClient BuildClient(HttpMessageHandler httpMessageHandler)
+        {
+            var options = new RestClientOptions(BaseUrl)
+            {
+                ConfigureMessageHandler = _ => httpMessageHandler
+            };
             var client = new RestClient(options,
                 p => p.Add("Authorization", $"Token {_apiKey}")
             );

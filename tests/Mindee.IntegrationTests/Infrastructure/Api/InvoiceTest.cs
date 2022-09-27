@@ -1,12 +1,10 @@
-﻿using System;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Mindee.Infrastructure.Api;
 using Mindee.Infrastructure.Api.Invoice;
-using Xunit;
 
-namespace Mindee.IntegrationTests.Api
+namespace Mindee.IntegrationTests.Infrastructure.Api
 {
     public class InvoiceTest
     {
@@ -28,7 +26,7 @@ namespace Mindee.IntegrationTests.Api
             var api = new MindeeApi(
                 new NullLogger<MindeeApi>(),
                 Options.Create(
-                    new MindeeApiSettings() { ApiKey = "GoodKey" }));
+                    new MindeeApiSettings() { ApiKey = "954d2d94e777466a57afe6a2323ea4b9" }));
 
             var invoicePredictResponse = await api.PredictAsync(File.OpenRead("sample_2pages.pdf"), "sample_2pages.pdf");
 
@@ -41,7 +39,7 @@ namespace Mindee.IntegrationTests.Api
             var api = new MindeeApi(
                 new NullLogger<MindeeApi>(),
                 Options.Create(
-                    new MindeeApiSettings() { ApiKey = "GoodKey" }));
+                    new MindeeApiSettings() { ApiKey = "954d2d94e777466a57afe6a2323ea4b9" }));
 
             var invoicePredictResponse = await api.PredictAsync(File.OpenRead("inv2.pdf"), "inv2.pdf");
 
@@ -60,7 +58,7 @@ namespace Mindee.IntegrationTests.Api
             var api = new MindeeApi(
                 new NullLogger<MindeeApi>(),
                 Options.Create(
-                    new MindeeApiSettings() { ApiKey = "GoodKey" }));
+                    new MindeeApiSettings() { ApiKey = "954d2d94e777466a57afe6a2323ea4b9" }));
 
             var invoicePredictResponse = await api.PredictAsync(File.OpenRead("inv1.png"), "inv1.png");
 

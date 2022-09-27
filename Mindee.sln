@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.UnitTests", "tests\M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.IntegrationTests", "tests\Mindee.IntegrationTests\Mindee.IntegrationTests.csproj", "{8F3E7E11-74E6-4C22-B05F-0B4CE6442FCC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mindee.Cli", "src\Mindee.Cli\Mindee.Cli.csproj", "{FAFCE7C5-4D8A-494C-979A-525DD3B421A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{8F3E7E11-74E6-4C22-B05F-0B4CE6442FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F3E7E11-74E6-4C22-B05F-0B4CE6442FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F3E7E11-74E6-4C22-B05F-0B4CE6442FCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAFCE7C5-4D8A-494C-979A-525DD3B421A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAFCE7C5-4D8A-494C-979A-525DD3B421A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAFCE7C5-4D8A-494C-979A-525DD3B421A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAFCE7C5-4D8A-494C-979A-525DD3B421A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +60,7 @@ Global
 		{07AD742F-3D0F-4C4B-95F2-C3E88A71FBF3} = {4E2BEA7B-A744-4D1B-A5F0-87E9186BE0C0}
 		{1228287D-8E16-4947-B821-25180A36F9F3} = {C018C686-8082-437A-9888-62F0B95B985A}
 		{8F3E7E11-74E6-4C22-B05F-0B4CE6442FCC} = {C018C686-8082-437A-9888-62F0B95B985A}
+		{FAFCE7C5-4D8A-494C-979A-525DD3B421A2} = {4E2BEA7B-A744-4D1B-A5F0-87E9186BE0C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A4CA814-44CB-4687-86AF-9230DD686585}
