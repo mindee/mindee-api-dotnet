@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging.Abstractions;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Mindee.Infrastructure.Api;
 using Mindee.Infrastructure.Prediction;
@@ -82,12 +83,19 @@ namespace Mindee.UnitTests.Prediction
             mockHttp.When("*")
                     .Respond("application/json", File.ReadAllText("inv2.json"));
 
+            var config = new ConfigurationBuilder()
+                            .AddInMemoryCollection(new Dictionary<string, string>() {
+                                { "MindeeApiSettings:ApiKey", "blou" }
+                            })
+                        .Build();
+
             return new MindeeApi(
                 new NullLogger<MindeeApi>(),
                 Options.Create(new MindeeApiSettings()
                 {
                     ApiKey = "Expelliarmus"
                 }),
+                config,
                 mockHttp
                 );
         }
