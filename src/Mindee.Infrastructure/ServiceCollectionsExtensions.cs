@@ -1,16 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
 using Mindee.Infrastructure.Api;
 using Mindee.Infrastructure.Prediction;
+using Mindee.Prediction;
 
-namespace Mindee.Infrastructure
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionsExtensions
     {
         public static IServiceCollection AddMindeeApi(this IServiceCollection services)
         {
             services.TryAddSingleton<MindeeApi>();
-            services.AddOptions<MindeeApiSettings>()
+            services.AddOptions<MindeeApiSettings>(nameof(MindeeApiSettings))
                     .Validate(s => !string.IsNullOrWhiteSpace(s.ApiKey));
 
             return services;
@@ -18,7 +18,7 @@ namespace Mindee.Infrastructure
 
         public static IServiceCollection AddInvoiceParsing(this IServiceCollection services)
         {
-            services.TryAddTransient<InvoiceParsing>();
+            services.TryAddTransient<IInvoiceParsing, InvoiceParsing>();
             services.AddMindeeApi();
 
             return services;

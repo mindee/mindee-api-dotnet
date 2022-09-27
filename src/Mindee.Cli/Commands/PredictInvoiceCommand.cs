@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.CommandLine.Invocation;
+﻿using System.CommandLine.Invocation;
 using System.CommandLine;
 using Microsoft.Extensions.Logging;
+using Mindee.Prediction;
 
 namespace Mindee.Cli.Commands
 {
@@ -11,23 +10,32 @@ namespace Mindee.Cli.Commands
         public IConsole Console { get; set; } = null!;
 
         public PredictInvoiceCommand()
-            : base(name: "ots invoice", "Invokes the invoice API")
+            : base(name: "invoice", "Invokes the invoice API")
         {
-            this.AddOption(new Option<string>(
-                new string[] { "--invoice-key", "-ik" }, "Invoice api key, if not set, will use system property"));
+            AddArgument(new Argument<string>("path", "The path of the file to parse"));
+
+            AddOption(new Option<string>(
+                new string[] { "--invoice-key", "-ik" }, "Invoice api key, if not set, will use system property")
+                );
         }
 
         public new class Handler : ICommandHandler
         {
-            private readonly ILogger<Handler> logger;
+            private readonly ILogger<Handler> _logger;
+            private readonly IInvoiceParsing _invoiceParsing;
 
-            public Handler(ILogger<Handler> logger)
+            public Handler(ILogger<Handler> logger, IInvoiceParsing invoiceParsing)
             {
-                this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+                _logger = logger;
+                _invoiceParsing = invoiceParsing;
             }
-            public Task<int> InvokeAsync(InvocationContext context)
+            public async Task<int> InvokeAsync(InvocationContext context)
             {
-                this.logger.LogInformation("About to insert TodoList into storage");
+                _logger.LogInformation("About to predict an invoice..");
+
+                await _invoiceParsing.ExecuteAsync(Stream.Null, "f");
+
+                return 0;
             }
         }
     }

@@ -51,9 +51,11 @@ namespace Mindee.Infrastructure.Api
                 errorMessage += response.Data.ApiRequest.Error.ToString();
                 _logger.LogError(errorMessage);
             }
-
-            errorMessage += $" Unhandled error - {response.ErrorMessage}";
-            _logger.LogError(errorMessage);
+            else
+            {
+                errorMessage += $" Unhandled error - {response.ErrorMessage}";
+                _logger.LogError(errorMessage);
+            }
 
             throw new MindeeApiException(errorMessage);
         }

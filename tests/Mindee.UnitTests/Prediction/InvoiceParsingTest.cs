@@ -76,7 +76,7 @@ namespace Mindee.UnitTests.Prediction
             Assert.Equal(93.5, invoicePrediction.TotalIncl.Value);
         }
 
-        private MindeeApi GetMindeeApi()
+        private static MindeeApi GetMindeeApi()
         {
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When("*")
