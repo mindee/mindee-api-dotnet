@@ -14,7 +14,6 @@ namespace Mindee.Infrastructure.Api
         /// </summary>
         /// <param name="file"></param>
         /// <param name="filename"></param>
-        /// <exception cref="InvalidOperationException"></exception>
         /// <exception cref="MindeeApiException"></exception>
         public async Task<InvoicePredictResponse> PredictAsync(
             Stream file,
