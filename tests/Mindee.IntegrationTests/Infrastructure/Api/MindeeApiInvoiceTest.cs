@@ -6,7 +6,7 @@ using Mindee.Infrastructure.Api.Invoice;
 
 namespace Mindee.IntegrationTests.Infrastructure.Api
 {
-    public class InvoiceTest
+    public class MindeeApiInvoiceTest
     {
         [Fact]
         public async Task Predict_WithWrongApiKey_MustFail()
@@ -16,7 +16,7 @@ namespace Mindee.IntegrationTests.Infrastructure.Api
                 Options.Create(
                     new MindeeApiSettings() { ApiKey = "WrongKey" }));
 
-            await Assert.ThrowsAsync<HttpRequestException>(
+            await Assert.ThrowsAsync<MindeeApiException>(
                 () => api.PredictAsync(File.OpenRead("sample_2pages.pdf"), "sample_2pages.pdf"));
         }
 
@@ -26,7 +26,7 @@ namespace Mindee.IntegrationTests.Infrastructure.Api
             var api = new MindeeApi(
                 new NullLogger<MindeeApi>(),
                 Options.Create(
-                    new MindeeApiSettings() { ApiKey = "954d2d94e777466a57afe6a2323ea4b9" }));
+                    new MindeeApiSettings() { ApiKey = "ValidKey" }));
 
             var invoicePredictResponse = await api.PredictAsync(File.OpenRead("sample_2pages.pdf"), "sample_2pages.pdf");
 
@@ -39,7 +39,7 @@ namespace Mindee.IntegrationTests.Infrastructure.Api
             var api = new MindeeApi(
                 new NullLogger<MindeeApi>(),
                 Options.Create(
-                    new MindeeApiSettings() { ApiKey = "954d2d94e777466a57afe6a2323ea4b9" }));
+                    new MindeeApiSettings() { ApiKey = "ValidKey" }));
 
             var invoicePredictResponse = await api.PredictAsync(File.OpenRead("inv2.pdf"), "inv2.pdf");
 
@@ -58,7 +58,7 @@ namespace Mindee.IntegrationTests.Infrastructure.Api
             var api = new MindeeApi(
                 new NullLogger<MindeeApi>(),
                 Options.Create(
-                    new MindeeApiSettings() { ApiKey = "954d2d94e777466a57afe6a2323ea4b9" }));
+                    new MindeeApiSettings() { ApiKey = "ValidKey" }));
 
             var invoicePredictResponse = await api.PredictAsync(File.OpenRead("inv1.png"), "inv1.png");
 
