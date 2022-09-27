@@ -2,6 +2,7 @@
 using System.CommandLine;
 using Microsoft.Extensions.Logging;
 using Mindee.Prediction;
+using System.Text.Json;
 
 namespace Mindee.Cli.Commands
 {
@@ -12,7 +13,7 @@ namespace Mindee.Cli.Commands
         public PredictInvoiceCommand()
             : base(name: "invoice", "Invokes the invoice API")
         {
-            AddArgument(new Argument<string>("path", "The path of the file to parse"));
+            AddArgument(new Argument<string>("filePath", "The path of the file to parse"));
 
             AddOption(new Option<string>(
                 new string[] { "--invoice-key", "-ik" }, "Invoice api key, if not set, will use system property")
@@ -22,18 +23,23 @@ namespace Mindee.Cli.Commands
         public new class Handler : ICommandHandler
         {
             private readonly ILogger<Handler> _logger;
-            private readonly IInvoiceParsing _invoiceParsing;
+            private readonly DocumentParser _documentParser;
 
-            public Handler(ILogger<Handler> logger, IInvoiceParsing invoiceParsing)
+            public string FilePath { get; set; } = null!;
+
+            public Handler(ILogger<Handler> logger, DocumentParser documentParser)
             {
                 _logger = logger;
-                _invoiceParsing = invoiceParsing;
+                _documentParser = documentParser;
             }
             public async Task<int> InvokeAsync(InvocationContext context)
             {
                 _logger.LogInformation("About to predict an invoice..");
 
-                await _invoiceParsing.ExecuteAsync(Stream.Null, "f");
+                var invoicePrediction = await _documentParser.FromInvoice(File.OpenRead(FilePath), Path.GetFileName(FilePath));
+
+                _logger.LogInformation("See the associated JSON below :");
+                _logger.LogInformation(JsonSerializer.Serialize(invoicePrediction));
 
                 return 0;
             }

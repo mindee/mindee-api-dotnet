@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.UnitTests", "tests\M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.IntegrationTests", "tests\Mindee.IntegrationTests\Mindee.IntegrationTests.csproj", "{8F3E7E11-74E6-4C22-B05F-0B4CE6442FCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mindee.Cli", "src\Mindee.Cli\Mindee.Cli.csproj", "{FAFCE7C5-4D8A-494C-979A-525DD3B421A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.Cli", "src\Mindee.Cli\Mindee.Cli.csproj", "{FAFCE7C5-4D8A-494C-979A-525DD3B421A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

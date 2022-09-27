@@ -21,7 +21,7 @@ namespace Mindee.Infrastructure.Api
             )
         {
             _logger = logger;
-            _apiKey = configuration.GetSection("MindeeApiSettings:ApiKey").Value;
+            _apiKey = configuration.GetSection($"{nameof(MindeeApiSettings)}:{nameof(MindeeApiSettings.ApiKey)}").Value;
             if (httpMessageHandler != null)
             {
                 _httpClient = BuildClient(httpMessageHandler);

@@ -3,10 +3,9 @@ using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.Invocation;
 using System.CommandLine.Parsing;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mindee.Cli.Commands;
-
+using Mindee.Extensions.DependencyInjection;
 
 var runner = BuildCommandLine()
     .UseHost(_ => Host.CreateDefaultBuilder(args), (builder) =>
@@ -14,8 +13,8 @@ var runner = BuildCommandLine()
         builder.UseEnvironment("CLI")
         .ConfigureServices((hostContext, services) =>
         {
-            services.AddInvoiceParsing();
             var configuration = hostContext.Configuration;
+            services.AddInvoiceParsing(configuration);
         })
         .UseCommandHandler<PredictInvoiceCommand, PredictInvoiceCommand.Handler>();
     })

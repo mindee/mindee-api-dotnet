@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using Mindee.Prediction.Invoice;
 
 namespace Mindee.Prediction
 {
@@ -15,9 +16,9 @@ namespace Mindee.Prediction
             _invoiceParsing = invoiceParsing;
         }
 
-        public async Task FromInvoice(Stream file, string filename)
+        public async Task<InvoicePrediction> FromInvoice(Stream file, string filename)
         {
-            await _invoiceParsing.ExecuteAsync(file, filename);
+            return await _invoiceParsing.ExecuteAsync(file, filename);
         }
     }
 }
