@@ -19,7 +19,7 @@ namespace Mindee.Infrastructure.Api
             string filename)
         {
             return PredictAsync<ReceiptPrediction>(
-                new Credential("receipts", "3"), 
+                new Credential("expense_receipts", "3"), 
                 file, 
                 filename);
         }

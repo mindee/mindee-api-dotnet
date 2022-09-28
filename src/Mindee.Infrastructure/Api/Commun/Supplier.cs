@@ -15,7 +15,7 @@ namespace Mindee.Infrastructure.Api.Commun
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 
 

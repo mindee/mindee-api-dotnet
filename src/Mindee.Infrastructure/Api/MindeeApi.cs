@@ -65,9 +65,9 @@ namespace Mindee.Infrastructure.Api
                     string filename)
             where TModel : class, new()
         {
-            var request = new RestRequest($"products/mindee/{credential.ProductName}/v${credential.Version}/predict", Method.Post);
+            var request = new RestRequest($"products/mindee/{credential.ProductName}/v{credential.Version}/predict", Method.Post);
 
-            _logger.LogInformation($"HTTP request to {BaseUrl + request.Resource} started.");
+            _logger.LogInformation($"HTTP request to {BaseUrl}/{request.Resource} started.");
 
             using (var memoryStream = new MemoryStream())
             {

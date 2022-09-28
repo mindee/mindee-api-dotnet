@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Mindee.Infrastructure.Api.Commun;
 
@@ -37,7 +36,7 @@ namespace Mindee.Infrastructure.Api.Receipt
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 
 }

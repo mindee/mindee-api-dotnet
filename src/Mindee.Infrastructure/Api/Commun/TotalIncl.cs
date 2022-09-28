@@ -12,10 +12,10 @@ namespace Mindee.Infrastructure.Api.Commun
         public List<List<double>> Polygon { get; set; }
 
         [JsonPropertyName("value")]
-        public double Value { get; set; }
+        public double? Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 
 
