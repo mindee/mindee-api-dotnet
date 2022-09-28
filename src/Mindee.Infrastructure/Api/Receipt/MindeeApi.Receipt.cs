@@ -1,25 +1,25 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using Mindee.Infrastructure.Api.Commun;
-using Mindee.Infrastructure.Api.Invoice;
+using Mindee.Infrastructure.Api.Receipt;
 
 namespace Mindee.Infrastructure.Api
 {
     internal partial class MindeeApi
     {
         /// <summary>
-        /// Call the Mindee Invoice API.
+        /// Call the Mindee Receipt API.
         /// </summary>
         /// <param name="file"></param>
         /// <param name="filename"></param>
-        /// <returns><see cref="PredictResponse{InvoicePrediction}"/></returns>
+        /// <returns><see cref="PredictResponse{ReceiptPrediction}"/></returns>
         /// <exception cref="MindeeApiException"></exception>
-        public Task<PredictResponse<InvoicePrediction>> PredictInvoiceAsync(
+        public Task<PredictResponse<ReceiptPrediction>> PredictReceiptAsync(
             Stream file,
             string filename)
         {
-            return PredictAsync<InvoicePrediction>(
-                new Credential("invoices", "3"),
+            return PredictAsync<ReceiptPrediction>(
+                new Credential("expense_receipts", "3"),
                 file,
                 filename);
         }

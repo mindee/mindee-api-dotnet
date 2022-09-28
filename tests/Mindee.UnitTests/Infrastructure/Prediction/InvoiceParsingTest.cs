@@ -6,7 +6,7 @@ using Mindee.Infrastructure.Prediction;
 using Mindee.Prediction;
 using RichardSzalay.MockHttp;
 
-namespace Mindee.UnitTests.Prediction
+namespace Mindee.UnitTests.Infrastructure.Prediction
 {
     public class InvoiceParsingTest
     {
@@ -29,9 +29,9 @@ namespace Mindee.UnitTests.Prediction
             Assert.Equal(0, invoicePrediction.Customer.PageId);
             Assert.Equal(new List<List<double>>()
             {
-                new List<double>() { 0.072, 0.291 }, 
-                new List<double>() { 0.164, 0.291 }, 
-                new List<double>() { 0.164, 0.302 }, 
+                new List<double>() { 0.072, 0.291 },
+                new List<double>() { 0.164, 0.291 },
+                new List<double>() { 0.164, 0.302 },
                 new List<double>() { 0.072, 0.302 },
             }
             , invoicePrediction.Customer.Polygon);

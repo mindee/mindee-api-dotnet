@@ -2,7 +2,7 @@
 
 namespace Mindee.Infrastructure.Api.Commun
 {
-    public abstract class PredictResponse<TModel>
+    public class PredictResponse<TModel>
         where TModel : class, new()
     {
         [JsonPropertyName("api_request")]

@@ -6,6 +6,8 @@
 
         public string Currency { get; set; }
 
-        public string Language { get; set; }
+        public string Language { get; set; 
+        }
+        public string Country { get; set; }
     }
 }
