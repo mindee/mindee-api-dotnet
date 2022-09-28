@@ -6,12 +6,12 @@ using Mindee.Infrastructure.Prediction;
 using Mindee.Prediction;
 using RichardSzalay.MockHttp;
 
-namespace Mindee.UnitTests.Prediction
+namespace Mindee.UnitTests.Infrastructure.Prediction
 {
     public class ReceiptParsingTest
     {
         [Fact]
-        public async Task Execute_WithInvoicePdf_MustSuccess()
+        public async Task Execute_WithReceiptData_MustSuccess()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
             var prediction = await receiptParsing.ExecuteAsync(Stream.Null, "Bou");
@@ -20,7 +20,7 @@ namespace Mindee.UnitTests.Prediction
         }
 
         [Fact]
-        public async Task Execute_WithInvoicePdf_MustSuccessForCategory()
+        public async Task Execute_WithReceiptData_MustSuccessForCategory()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
             var prediction = await receiptParsing.ExecuteAsync(Stream.Null, "Bou");
@@ -30,7 +30,7 @@ namespace Mindee.UnitTests.Prediction
         }
 
         [Fact]
-        public async Task Execute_WithInvoicePdf_MustSuccessForDate()
+        public async Task Execute_WithReceiptData_MustSuccessForDate()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
             var prediction = await receiptParsing.ExecuteAsync(Stream.Null, "Bou");
@@ -41,7 +41,7 @@ namespace Mindee.UnitTests.Prediction
         }
 
         [Fact]
-        public async Task Execute_WithInvoicePdf_MustSuccessForTime()
+        public async Task Execute_WithReceiptData_MustSuccessForTime()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
             var prediction = await receiptParsing.ExecuteAsync(Stream.Null, "Bou");
@@ -60,7 +60,7 @@ namespace Mindee.UnitTests.Prediction
         }
 
         [Fact]
-        public async Task Execute_WithInvoicePdf_MustSuccessForLocale()
+        public async Task Execute_WithReceiptData_MustSuccessForLocale()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
             var prediction = await receiptParsing.ExecuteAsync(Stream.Null, "Bou");
@@ -71,7 +71,7 @@ namespace Mindee.UnitTests.Prediction
         }
 
         [Fact]
-        public async Task Execute_WithInvoicePdf_MustSuccessForTotalTaxesIncluded()
+        public async Task Execute_WithReceiptData_MustSuccessForTotalTaxesIncluded()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
             var prediction = await receiptParsing.ExecuteAsync(Stream.Null, "Bou");

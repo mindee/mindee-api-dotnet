@@ -1,7 +1,7 @@
 ﻿using Mindee.Infrastructure.Pdf;
 using Mindee.Pdf;
 
-namespace Mindee.UnitTests.Pdf
+namespace Mindee.UnitTests.Infrastructure.Pdf
 {
     public class PdfOperationTest
     {
