@@ -79,6 +79,15 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             Assert.Equal(473.88, prediction.TotalIncl.Value);
         }
 
+        [Fact]
+        public async Task Execute_WithReceiptData_MustSuccessForOrientation()
+        {
+            IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
+            var prediction = await receiptParsing.ExecuteAsync(Stream.Null, "Bou");
+
+            Assert.Equal(90, prediction.Orientation.Degrees);
+        }
+
         private static MindeeApi GetMindeeApi()
         {
             var mockHttp = new MockHttpMessageHandler();
