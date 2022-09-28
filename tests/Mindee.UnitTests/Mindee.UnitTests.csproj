@@ -12,10 +12,14 @@
     <None Remove="inv2.json" />
     <None Remove="inv2.pdf" />
     <None Remove="Logo-docTR-full-black.png" />
+    <None Remove="receipt_response_full_v3.json" />
     <None Remove="sample_2pages.pdf" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="receipt_response_full_v3.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="inv2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
