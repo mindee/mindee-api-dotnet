@@ -56,13 +56,6 @@ namespace Mindee.Prediction.Invoice
         public string Value { get; set; }
     }
 
-    public class Date : BaseField
-    {
-        public string Raw { get; set; }
-
-        public string Value { get; set; }
-    }
-
     public class DueDate : BaseField
     {
         public string Raw { get; set; }
@@ -86,29 +79,12 @@ namespace Mindee.Prediction.Invoice
         public string Swift { get; set; }
     }
 
-    public class Supplier : BaseField
-    {
-        public string Value { get; set; }
-    }
-
     public class SupplierAddress : BaseField
     {
         public string Value { get; set; }
     }
 
-    public class Taxis : BaseField
-    {
-        public double? Rate { get; set; }
-
-        public double? Value { get; set; }
-    }
-
     public class TotalExcl : BaseField
-    {
-        public double? Value { get; set; }
-    }
-
-    public class TotalIncl : BaseField
     {
         public double? Value { get; set; }
     }
