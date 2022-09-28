@@ -2,57 +2,45 @@
 using System.Text.Json.Serialization;
 using Mindee.Infrastructure.Api.Commun;
 
-namespace Mindee.Infrastructure.Api.Invoice
+namespace Mindee.Infrastructure.Api.Passport
 {
-    internal class InvoicePrediction : FinancialPredictionBase
+    internal class PassportPrediction : PredictionBase
     {
-        [JsonPropertyName("company_registration")]
-        public List<CompanyRegistration> CompanyRegistration { get; set; }
+        [JsonPropertyName("birth_date")]
+        public BirthDate BirthDate { get; set; }
 
-        [JsonPropertyName("customer")]
-        public Customer Customer { get; set; }
+        [JsonPropertyName("birth_place")]
+        public BirthPlace BirthPlace { get; set; }
 
-        [JsonPropertyName("customer_address")]
-        public CustomerAddress CustomerAddress { get; set; }
+        [JsonPropertyName("country")]
+        public Country Country { get; set; }
 
-        [JsonPropertyName("customer_company_registration")]
-        public List<CustomerCompanyRegistration> CustomerCompanyRegistration { get; set; }
+        [JsonPropertyName("expiry_date")]
+        public ExpiryDate ExpiryDate { get; set; }
 
-        [JsonPropertyName("due_date")]
-        public DueDate DueDate { get; set; }
+        [JsonPropertyName("gender")]
+        public Gender Gender { get; set; }
 
-        [JsonPropertyName("invoice_number")]
-        public InvoiceNumber InvoiceNumber { get; set; }
+        [JsonPropertyName("given_names")]
+        public List<GivenName> GivenNames { get; set; }
 
-        [JsonPropertyName("payment_details")]
-        public List<PaymentDetail> PaymentDetails { get; set; }
+        [JsonPropertyName("id_number")]
+        public IdNumber IdNumber { get; set; }
 
-        [JsonPropertyName("supplier_address")]
-        public SupplierAddress SupplierAddress { get; set; }
+        [JsonPropertyName("issuance_date")]
+        public IssuanceDate IssuanceDate { get; set; }
 
-        [JsonPropertyName("total_excl")]
-        public TotalExcl TotalExcl { get; set; }
+        [JsonPropertyName("mrz1")]
+        public Mrz1 Mrz1 { get; set; }
+
+        [JsonPropertyName("mrz2")]
+        public Mrz2 Mrz2 { get; set; }
+
+        [JsonPropertyName("surname")]
+        public Surname Surname { get; set; }
     }
 
-    public class CompanyRegistration
-    {
-        [JsonPropertyName("confidence")]
-        public double Confidence { get; set; }
-
-        [JsonPropertyName("polygon")]
-        public List<List<double>> Polygon { get; set; }
-
-        [JsonPropertyName("type")]
-        public string Type { get; set; }
-
-        [JsonPropertyName("value")]
-        public string Value { get; set; }
-
-        [JsonPropertyName("page_id")]
-        public int? PageId { get; set; }
-    }
-
-    public class Customer
+    public class BirthDate
     {
         [JsonPropertyName("confidence")]
         public double Confidence { get; set; }
@@ -64,10 +52,10 @@ namespace Mindee.Infrastructure.Api.Invoice
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int? PageId { get; set; }
+        public int PageId { get; set; }
     }
 
-    public class CustomerAddress
+    public class BirthPlace
     {
         [JsonPropertyName("confidence")]
         public double Confidence { get; set; }
@@ -79,46 +67,10 @@ namespace Mindee.Infrastructure.Api.Invoice
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int? PageId { get; set; }
+        public int PageId { get; set; }
     }
 
-    public class CustomerCompanyRegistration
-    {
-        [JsonPropertyName("confidence")]
-        public double Confidence { get; set; }
-
-        [JsonPropertyName("polygon")]
-        public List<List<double>> Polygon { get; set; }
-
-        [JsonPropertyName("type")]
-        public string Type { get; set; }
-
-        [JsonPropertyName("value")]
-        public string Value { get; set; }
-
-        [JsonPropertyName("page_id")]
-        public int? PageId { get; set; }
-    }
-
-    public class DueDate
-    {
-        [JsonPropertyName("confidence")]
-        public double Confidence { get; set; }
-
-        [JsonPropertyName("polygon")]
-        public List<List<double>> Polygon { get; set; }
-
-        [JsonPropertyName("raw")]
-        public string Raw { get; set; }
-
-        [JsonPropertyName("value")]
-        public string Value { get; set; }
-
-        [JsonPropertyName("page_id")]
-        public int? PageId { get; set; }
-    }
-
-    public class InvoiceNumber
+    public class Country
     {
         [JsonPropertyName("confidence")]
         public double Confidence { get; set; }
@@ -130,34 +82,10 @@ namespace Mindee.Infrastructure.Api.Invoice
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int? PageId { get; set; }
+        public int PageId { get; set; }
     }
 
-    public class PaymentDetail
-    {
-        [JsonPropertyName("account_number")]
-        public string AccountNumber { get; set; }
-
-        [JsonPropertyName("confidence")]
-        public double Confidence { get; set; }
-
-        [JsonPropertyName("iban")]
-        public string Iban { get; set; }
-
-        [JsonPropertyName("polygon")]
-        public List<List<double>> Polygon { get; set; }
-
-        [JsonPropertyName("routing_number")]
-        public string RoutingNumber { get; set; }
-
-        [JsonPropertyName("swift")]
-        public string Swift { get; set; }
-
-        [JsonPropertyName("page_id")]
-        public int? PageId { get; set; }
-    }
-
-    public class SupplierAddress
+    public class ExpiryDate
     {
         [JsonPropertyName("confidence")]
         public double Confidence { get; set; }
@@ -169,10 +97,10 @@ namespace Mindee.Infrastructure.Api.Invoice
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int? PageId { get; set; }
+        public int PageId { get; set; }
     }
 
-    public class TotalExcl
+    public class Gender
     {
         [JsonPropertyName("confidence")]
         public double Confidence { get; set; }
@@ -181,9 +109,99 @@ namespace Mindee.Infrastructure.Api.Invoice
         public List<List<double>> Polygon { get; set; }
 
         [JsonPropertyName("value")]
-        public double? Value { get; set; }
+        public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int? PageId { get; set; }
+        public int PageId { get; set; }
+    }
+
+    public class GivenName
+    {
+        [JsonPropertyName("confidence")]
+        public double Confidence { get; set; }
+
+        [JsonPropertyName("polygon")]
+        public List<List<double>> Polygon { get; set; }
+
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
+
+        [JsonPropertyName("page_id")]
+        public int PageId { get; set; }
+    }
+
+    public class IdNumber
+    {
+        [JsonPropertyName("confidence")]
+        public double Confidence { get; set; }
+
+        [JsonPropertyName("polygon")]
+        public List<List<double>> Polygon { get; set; }
+
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
+
+        [JsonPropertyName("page_id")]
+        public int PageId { get; set; }
+    }
+
+    public class IssuanceDate
+    {
+        [JsonPropertyName("confidence")]
+        public double Confidence { get; set; }
+
+        [JsonPropertyName("polygon")]
+        public List<List<double>> Polygon { get; set; }
+
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
+
+        [JsonPropertyName("page_id")]
+        public int PageId { get; set; }
+    }
+
+    public class Mrz1
+    {
+        [JsonPropertyName("confidence")]
+        public double Confidence { get; set; }
+
+        [JsonPropertyName("polygon")]
+        public List<List<double>> Polygon { get; set; }
+
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
+
+        [JsonPropertyName("page_id")]
+        public int PageId { get; set; }
+    }
+
+    public class Mrz2
+    {
+        [JsonPropertyName("confidence")]
+        public double Confidence { get; set; }
+
+        [JsonPropertyName("polygon")]
+        public List<List<double>> Polygon { get; set; }
+
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
+
+        [JsonPropertyName("page_id")]
+        public int PageId { get; set; }
+    }
+
+    public class Surname
+    {
+        [JsonPropertyName("confidence")]
+        public double Confidence { get; set; }
+
+        [JsonPropertyName("polygon")]
+        public List<List<double>> Polygon { get; set; }
+
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
+
+        [JsonPropertyName("page_id")]
+        public int PageId { get; set; }
     }
 }
