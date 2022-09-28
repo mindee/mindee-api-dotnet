@@ -4,7 +4,7 @@ using Mindee.Infrastructure.Api.Commun;
 
 namespace Mindee.Infrastructure.Api.Invoice
 {
-    public class InvoicePrediction : PredictionBase
+    public class InvoicePrediction : FinancialPredictionBase
     {
         [JsonPropertyName("company_registration")]
         public List<CompanyRegistration> CompanyRegistration { get; set; }
@@ -18,9 +18,6 @@ namespace Mindee.Infrastructure.Api.Invoice
         [JsonPropertyName("customer_company_registration")]
         public List<CustomerCompanyRegistration> CustomerCompanyRegistration { get; set; }
 
-        [JsonPropertyName("date")]
-        public Date Date { get; set; }
-
         [JsonPropertyName("due_date")]
         public DueDate DueDate { get; set; }
 
@@ -30,20 +27,11 @@ namespace Mindee.Infrastructure.Api.Invoice
         [JsonPropertyName("payment_details")]
         public List<PaymentDetail> PaymentDetails { get; set; }
 
-        [JsonPropertyName("supplier")]
-        public Supplier Supplier { get; set; }
-
         [JsonPropertyName("supplier_address")]
         public SupplierAddress SupplierAddress { get; set; }
 
-        [JsonPropertyName("taxes")]
-        public List<Taxis> Taxes { get; set; }
-
         [JsonPropertyName("total_excl")]
         public TotalExcl TotalExcl { get; set; }
-
-        [JsonPropertyName("total_incl")]
-        public TotalIncl TotalIncl { get; set; }
     }
 
     public class CompanyRegistration
@@ -169,21 +157,6 @@ namespace Mindee.Infrastructure.Api.Invoice
         public int? PageId { get; set; }
     }
 
-    public class Supplier
-    {
-        [JsonPropertyName("confidence")]
-        public double Confidence { get; set; }
-
-        [JsonPropertyName("polygon")]
-        public List<List<double>> Polygon { get; set; }
-
-        [JsonPropertyName("value")]
-        public string Value { get; set; }
-
-        [JsonPropertyName("page_id")]
-        public int? PageId { get; set; }
-    }
-
     public class SupplierAddress
     {
         [JsonPropertyName("confidence")]
@@ -199,40 +172,7 @@ namespace Mindee.Infrastructure.Api.Invoice
         public int? PageId { get; set; }
     }
 
-    public class Taxis
-    {
-        [JsonPropertyName("confidence")]
-        public double Confidence { get; set; }
-
-        [JsonPropertyName("polygon")]
-        public List<List<double>> Polygon { get; set; }
-
-        [JsonPropertyName("rate")]
-        public double? Rate { get; set; }
-
-        [JsonPropertyName("value")]
-        public double? Value { get; set; }
-
-        [JsonPropertyName("page_id")]
-        public int? PageId { get; set; }
-    }
-
     public class TotalExcl
-    {
-        [JsonPropertyName("confidence")]
-        public double Confidence { get; set; }
-
-        [JsonPropertyName("polygon")]
-        public List<List<double>> Polygon { get; set; }
-
-        [JsonPropertyName("value")]
-        public double? Value { get; set; }
-
-        [JsonPropertyName("page_id")]
-        public int? PageId { get; set; }
-    }
-
-    public class TotalIncl
     {
         [JsonPropertyName("confidence")]
         public double Confidence { get; set; }

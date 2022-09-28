@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Mindee.Infrastructure.Api;
+using Mindee.Infrastructure.Api.Commun;
 using Mindee.Infrastructure.Api.Invoice;
 
 namespace Mindee.IntegrationTests.Infrastructure.Api
@@ -15,7 +16,7 @@ namespace Mindee.IntegrationTests.Infrastructure.Api
             var api = GetMindeeApi("WrongKey");
 
             await Assert.ThrowsAsync<MindeeApiException>(
-                () => api.PredictAsync(File.OpenRead("sample_2pages.pdf"), "sample_2pages.pdf"));
+                () => api.PredictInvoiceAsync(File.OpenRead("sample_2pages.pdf"), "sample_2pages.pdf"));
         }
 
         [Fact]
@@ -23,7 +24,7 @@ namespace Mindee.IntegrationTests.Infrastructure.Api
         {
             var api = GetMindeeApi("validKey");
 
-            var invoicePredictResponse = await api.PredictAsync(File.OpenRead("sample_2pages.pdf"), "sample_2pages.pdf");
+            var invoicePredictResponse = await api.PredictInvoiceAsync(File.OpenRead("sample_2pages.pdf"), "sample_2pages.pdf");
 
             Assert.NotNull(invoicePredictResponse);
         }
@@ -33,9 +34,9 @@ namespace Mindee.IntegrationTests.Infrastructure.Api
         {
             var api = GetMindeeApi("validKey");
 
-            var invoicePredictResponse = await api.PredictAsync(File.OpenRead("inv2.pdf"), "inv2.pdf");
+            var invoicePredictResponse = await api.PredictInvoiceAsync(File.OpenRead("inv2.pdf"), "inv2.pdf");
 
-            var expectedInvoiceResponse = JsonSerializer.Deserialize<InvoicePredictResponse>(File.ReadAllText("inv2.json"));
+            var expectedInvoiceResponse = JsonSerializer.Deserialize<PredictResponse<InvoicePrediction>>(File.ReadAllText("inv2.json"));
 
             Assert.NotNull(invoicePredictResponse);
             Assert.NotNull(expectedInvoiceResponse);
@@ -49,9 +50,9 @@ namespace Mindee.IntegrationTests.Infrastructure.Api
         {
             var api = GetMindeeApi("validKey");
 
-            var invoicePredictResponse = await api.PredictAsync(File.OpenRead("inv1.png"), "inv1.png");
+            var invoicePredictResponse = await api.PredictInvoiceAsync(File.OpenRead("inv1.png"), "inv1.png");
 
-            var expectedInvoiceResponse = JsonSerializer.Deserialize<InvoicePredictResponse>(File.ReadAllText("inv1.json"));
+            var expectedInvoiceResponse = JsonSerializer.Deserialize<PredictResponse<InvoicePrediction>>(File.ReadAllText("inv1.json"));
 
             Assert.NotNull(invoicePredictResponse);
             Assert.NotNull(expectedInvoiceResponse);

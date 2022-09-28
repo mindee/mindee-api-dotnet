@@ -12,15 +12,15 @@ namespace Mindee.Infrastructure.Api
         /// </summary>
         /// <param name="file"></param>
         /// <param name="filename"></param>
-        /// <returns><see cref="ReceiptPredictResponse"/></returns>
+        /// <returns><see cref="PredictResponse{ReceiptPrediction}"/></returns>
         /// <exception cref="MindeeApiException"></exception>
         public Task<PredictResponse<ReceiptPrediction>> PredictReceiptAsync(
             Stream file,
             string filename)
         {
             return PredictAsync<ReceiptPrediction>(
-                new Credential("expense_receipts", "3"), 
-                file, 
+                new Credential("expense_receipts", "3"),
+                file,
                 filename);
         }
     }
