@@ -15,7 +15,7 @@ namespace Mindee.Prediction
         /// </summary>
         /// <param name="file">The file data.</param>
         /// <param name="filename">The filename.</param>
-        /// <returns><see cref="Inference{ReceiptPrediction}"/></returns>
-        Task<Inference<ReceiptPrediction>> ExecuteAsync(Stream file, string filename);
+        /// <returns><see cref="ReceiptInference"/></returns>
+        Task<ReceiptInference> ExecuteAsync(Stream file, string filename);
     }
 }

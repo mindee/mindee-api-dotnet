@@ -17,11 +17,14 @@ namespace Mindee.Infrastructure.Prediction
             _mindeeApi = mindeeApi;
         }
 
-        async Task<Inference<ReceiptPrediction>> IReceiptParsing.ExecuteAsync(Stream file, string filename)
+        async Task<ReceiptInference> IReceiptParsing.ExecuteAsync(Stream file, string filename)
         {
             var response = await _mindeeApi.PredictReceiptAsync(file, filename);
 
-            return response.Document.Inference.Adapt<Inference<ReceiptPrediction>>();
+            return new ReceiptInference()
+            {
+                Inference = response.Document.Inference.Adapt<Inference<ReceiptPrediction>>()
+            };
         }
     }
 }

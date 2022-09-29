@@ -27,8 +27,8 @@ namespace Mindee.UnitTests.Prediction
             var documentParser = new DocumentParser(null, receiptParsing, null);
             var prediction = await documentParser.FromReceipt(Stream.Null, "Bou");
 
-            Assert.Equal(0.99, prediction.Pages.First().Prediction.Category.Confidence);
-            Assert.Equal("transport", prediction.Pages.First().Prediction.Category.Value);
+            Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Category.Confidence);
+            Assert.Equal("transport", prediction.Inference.Pages.First().Prediction.Category.Value);
         }
 
         [Fact]
@@ -38,9 +38,9 @@ namespace Mindee.UnitTests.Prediction
             var documentParser = new DocumentParser(null, receiptParsing, null);
             var prediction = await documentParser.FromReceipt(Stream.Null, "Bou");
 
-            Assert.Equal(0.99, prediction.Pages.First().Prediction.Date.Confidence);
-            Assert.Equal(0, prediction.Pages.First().Id);
-            Assert.Equal("2017-04-12", prediction.Pages.First().Prediction.Date.Value);
+            Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Date.Confidence);
+            Assert.Equal(0, prediction.Inference.Pages.First().Id);
+            Assert.Equal("2017-04-12", prediction.Inference.Pages.First().Prediction.Date.Value);
         }
 
         [Fact]
@@ -50,9 +50,9 @@ namespace Mindee.UnitTests.Prediction
             var documentParser = new DocumentParser(null, receiptParsing, null);
             var prediction = await documentParser.FromReceipt(Stream.Null, "Bou");
 
-            Assert.Equal(0.99, prediction.Pages.First().Prediction.Time.Confidence);
-            Assert.Equal(0, prediction.Pages.First().Id);
-            Assert.Equal("07:21", prediction.Pages.First().Prediction.Time.Value);
+            Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Time.Confidence);
+            Assert.Equal(0, prediction.Inference.Pages.First().Id);
+            Assert.Equal("07:21", prediction.Inference.Pages.First().Prediction.Time.Value);
             Assert.Equal(new List<List<double>>()
             {
                 new List<double>() { 0.1048, 0.5534 },
@@ -60,7 +60,7 @@ namespace Mindee.UnitTests.Prediction
                 new List<double>() { 0.8356, 0.8054 },
                 new List<double>() { 0.1461, 0.8072 },
             }
-            , prediction.Pages.First().Prediction.Time.Polygon);
+            , prediction.Inference.Pages.First().Prediction.Time.Polygon);
         }
 
         [Fact]
@@ -70,9 +70,9 @@ namespace Mindee.UnitTests.Prediction
             var documentParser = new DocumentParser(null, receiptParsing, null);
             var prediction = await documentParser.FromReceipt(Stream.Null, "Bou");
 
-            Assert.Equal("fi", prediction.Pages.First().Prediction.Locale.Language);
-            Assert.Equal("FI", prediction.Pages.First().Prediction.Locale.Country);
-            Assert.Equal("EUR", prediction.Pages.First().Prediction.Locale.Currency);
+            Assert.Equal("fi", prediction.Inference.Pages.First().Prediction.Locale.Language);
+            Assert.Equal("FI", prediction.Inference.Pages.First().Prediction.Locale.Country);
+            Assert.Equal("EUR", prediction.Inference.Pages.First().Prediction.Locale.Currency);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace Mindee.UnitTests.Prediction
             var documentParser = new DocumentParser(null, receiptParsing, null);
             var prediction = await documentParser.FromReceipt(Stream.Null, "Bou");
 
-            Assert.Equal(473.88, prediction.Pages.First().Prediction.TotalIncl.Value);
+            Assert.Equal(473.88, prediction.Inference.Pages.First().Prediction.TotalIncl.Value);
         }
 
         private static MindeeApi GetMindeeApi()
