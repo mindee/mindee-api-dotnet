@@ -14,7 +14,7 @@ namespace Mindee.UnitTests.Prediction
         public async Task FromReceipt_WithReceiptData_MustSuccess()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
-            var documentParser = new DocumentParser(null, receiptParsing);
+            var documentParser = new DocumentParser(null, receiptParsing, null);
             var prediction = await documentParser.FromReceipt(Stream.Null, "Bou");
 
             Assert.NotNull(prediction);
@@ -24,7 +24,7 @@ namespace Mindee.UnitTests.Prediction
         public async Task FromReceipt_WithReceiptData_MustSuccessForCategory()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
-            var documentParser = new DocumentParser(null, receiptParsing);
+            var documentParser = new DocumentParser(null, receiptParsing, null);
             var prediction = await documentParser.FromReceipt(Stream.Null, "Bou");
 
             Assert.Equal(0.99, prediction.Category.Confidence);
@@ -35,7 +35,7 @@ namespace Mindee.UnitTests.Prediction
         public async Task FromReceipt_WithReceiptData_MustSuccessForDate()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
-            var documentParser = new DocumentParser(null, receiptParsing);
+            var documentParser = new DocumentParser(null, receiptParsing, null);
             var prediction = await documentParser.FromReceipt(Stream.Null, "Bou");
 
             Assert.Equal(0.99, prediction.Date.Confidence);
@@ -47,7 +47,7 @@ namespace Mindee.UnitTests.Prediction
         public async Task FromReceipt_WithReceiptData_MustSuccessForTime()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
-            var documentParser = new DocumentParser(null, receiptParsing);
+            var documentParser = new DocumentParser(null, receiptParsing, null);
             var prediction = await documentParser.FromReceipt(Stream.Null, "Bou");
 
             Assert.Equal(0.99, prediction.Time.Confidence);
@@ -67,7 +67,7 @@ namespace Mindee.UnitTests.Prediction
         public async Task FromReceipt_WithReceiptData_MustSuccessForLocale()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
-            var documentParser = new DocumentParser(null, receiptParsing);
+            var documentParser = new DocumentParser(null, receiptParsing, null);
             var prediction = await documentParser.FromReceipt(Stream.Null, "Bou");
 
             Assert.Equal("fi", prediction.Locale.Language);
@@ -79,7 +79,7 @@ namespace Mindee.UnitTests.Prediction
         public async Task FromReceipt_WithReceiptData_MustSuccessForTotalTaxesIncluded()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
-            var documentParser = new DocumentParser(null, receiptParsing);
+            var documentParser = new DocumentParser(null, receiptParsing, null);
             var prediction = await documentParser.FromReceipt(Stream.Null, "Bou");
 
             Assert.Equal(473.88, prediction.TotalIncl.Value);
