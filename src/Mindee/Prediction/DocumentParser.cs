@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using Mindee.Prediction.Commun;
 using Mindee.Prediction.Invoice;
 using Mindee.Prediction.Passport;
 using Mindee.Prediction.Receipt;
@@ -29,7 +30,7 @@ namespace Mindee.Prediction
             return await _invoiceParsing.ExecuteAsync(file, filename);
         }
 
-        public Task<ReceiptPrediction> FromReceipt(Stream stream, string filename)
+        public Task<Inference<ReceiptPrediction>> FromReceipt(Stream stream, string filename)
         {
             return _receiptParsing.ExecuteAsync(stream, filename);
         }
