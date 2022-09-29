@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Mapster;
 using Mindee.Infrastructure.Api;
 using Mindee.Prediction;
+using Mindee.Prediction.Commun;
 using Mindee.Prediction.Passport;
 
 namespace Mindee.Infrastructure.Prediction
@@ -16,11 +17,14 @@ namespace Mindee.Infrastructure.Prediction
             _mindeeApi = mindeeApi;
         }
 
-        async Task<PassportPrediction> IPassportParsing.ExecuteAsync(Stream file, string filename)
+        async Task<PassportInference> IPassportParsing.ExecuteAsync(Stream file, string filename)
         {
             var response = await _mindeeApi.PredictPassportAsync(file, filename);
 
-            return response.Document.Inference.Prediction.Adapt<PassportPrediction>();
+            return new PassportInference()
+            {
+                Inference = response.Document.Inference.Adapt<Inference<PassportPrediction>>()
+            };
         }
     }
 }

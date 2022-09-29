@@ -14,7 +14,7 @@ namespace Mindee.Prediction
         /// </summary>
         /// <param name="file">The file data.</param>
         /// <param name="filename">The filename.</param>
-        /// <returns><see cref="PassportPrediction"/></returns>
-        Task<PassportPrediction> ExecuteAsync(Stream file, string filename);
+        /// <returns><see cref="PassportInference"/></returns>
+        Task<PassportInference> ExecuteAsync(Stream file, string filename);
     }
 }

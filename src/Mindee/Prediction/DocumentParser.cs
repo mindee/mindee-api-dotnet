@@ -35,7 +35,7 @@ namespace Mindee.Prediction
             return _receiptParsing.ExecuteAsync(stream, filename);
         }
 
-        public Task<PassportPrediction> FromPassport(Stream stream, string filename)
+        public Task<PassportInference> FromPassport(Stream stream, string filename)
         {
             return _passportParsing.ExecuteAsync(stream, filename);
         }
