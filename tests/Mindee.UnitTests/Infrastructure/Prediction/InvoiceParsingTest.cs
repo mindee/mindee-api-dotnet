@@ -77,7 +77,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             Assert.Equal(93.5, invoicePrediction.TotalIncl.Value);
         }
 
-        [Fact]
+        [Fact(Skip = "Orientation can not be get for now.")]
         public async Task Execute_WithInvoicePdf_MustSuccessForOrientation()
         {
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());

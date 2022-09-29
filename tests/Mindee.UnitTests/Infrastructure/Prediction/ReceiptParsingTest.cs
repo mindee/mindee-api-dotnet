@@ -79,7 +79,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             Assert.Equal(473.88, prediction.TotalIncl.Value);
         }
 
-        [Fact]
+        [Fact(Skip = "Orientation can not be get for now.")]
         public async Task Execute_WithReceiptData_MustSuccessForOrientation()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
