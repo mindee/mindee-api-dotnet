@@ -25,7 +25,7 @@ namespace Mindee.Prediction
             _passportParsing = passportParsing;
         }
 
-        public async Task<InvoicePrediction> FromInvoice(Stream file, string filename)
+        public async Task<InvoiceInference> FromInvoice(Stream file, string filename)
         {
             return await _invoiceParsing.ExecuteAsync(file, filename);
         }

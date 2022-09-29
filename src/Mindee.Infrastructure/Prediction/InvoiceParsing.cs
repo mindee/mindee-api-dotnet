@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Mapster;
 using Mindee.Infrastructure.Api;
 using Mindee.Prediction;
+using Mindee.Prediction.Commun;
 using Mindee.Prediction.Invoice;
 
 namespace Mindee.Infrastructure.Prediction
@@ -16,11 +17,14 @@ namespace Mindee.Infrastructure.Prediction
             _mindeeApi = mindeeApi;
         }
 
-        async Task<InvoicePrediction> IInvoiceParsing.ExecuteAsync(Stream file, string filename)
+        async Task<InvoiceInference> IInvoiceParsing.ExecuteAsync(Stream file, string filename)
         {
             var response = await _mindeeApi.PredictInvoiceAsync(file, filename);
 
-            return response.Document.Inference.Prediction.Adapt<InvoicePrediction>();
+            return new InvoiceInference()
+            {
+                Inference = response.Document.Inference.Adapt<Inference<InvoicePrediction>>()
+            };
         }
     }
 }

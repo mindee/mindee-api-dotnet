@@ -14,10 +14,6 @@ namespace Mindee.Cli.Commands
             : base(name: "invoice", "Invokes the invoice API")
         {
             AddArgument(new Argument<string>("filePath", "The path of the file to parse"));
-
-            AddOption(new Option<string>(
-                new string[] { "--invoice-key", "-ik" }, "Invoice api key, if not set, will use system property")
-                );
         }
 
         public new class Handler : ICommandHandler

@@ -25,8 +25,8 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());
             var invoicePrediction = await invoiceParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal(0.87, invoicePrediction.Customer.Confidence);
-            Assert.Equal(0, invoicePrediction.Customer.PageId);
+            Assert.Equal(0.87, invoicePrediction.Inference.Pages.First().Prediction.Customer.Confidence);
+            Assert.Equal(0, invoicePrediction.Inference.Pages.First().Id);
             Assert.Equal(new List<List<double>>()
             {
                 new List<double>() { 0.072, 0.291 },
@@ -34,8 +34,8 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
                 new List<double>() { 0.164, 0.302 },
                 new List<double>() { 0.072, 0.302 },
             }
-            , invoicePrediction.Customer.Polygon);
-            Assert.Equal("TEST BUSINESS", invoicePrediction.Customer.Value);
+            , invoicePrediction.Inference.Pages.First().Prediction.Customer.Polygon);
+            Assert.Equal("TEST BUSINESS", invoicePrediction.Inference.Pages.First().Prediction.Customer.Value);
         }
 
         [Fact]
@@ -44,9 +44,9 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());
             var invoicePrediction = await invoiceParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal(0.99, invoicePrediction.Date.Confidence);
-            Assert.Equal(0, invoicePrediction.Date.PageId);
-            Assert.Equal("2016-01-25", invoicePrediction.Date.Value);
+            Assert.Equal(0.99, invoicePrediction.Inference.Pages.First().Prediction.Date.Confidence);
+            Assert.Equal(0, invoicePrediction.Inference.Pages.First().Id);
+            Assert.Equal("2016-01-25", invoicePrediction.Inference.Pages.First().Prediction.Date.Value);
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());
             var invoicePrediction = await invoiceParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal("INVOICE", invoicePrediction.DocumentType.Value);
+            Assert.Equal("INVOICE", invoicePrediction.Inference.Pages.First().Prediction.DocumentType.Value);
         }
 
         [Fact]
@@ -64,8 +64,8 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());
             var invoicePrediction = await invoiceParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal("en", invoicePrediction.Locale.Language);
-            Assert.Equal("USD", invoicePrediction.Locale.Currency);
+            Assert.Equal("en", invoicePrediction.Inference.Pages.First().Prediction.Locale.Language);
+            Assert.Equal("USD", invoicePrediction.Inference.Pages.First().Prediction.Locale.Currency);
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());
             var invoicePrediction = await invoiceParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal(93.5, invoicePrediction.TotalIncl.Value);
+            Assert.Equal(93.5, invoicePrediction.Inference.Pages.First().Prediction.TotalIncl.Value);
         }
 
         [Fact(Skip = "Orientation can not be get for now.")]
@@ -83,7 +83,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());
             var invoicePrediction = await invoiceParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal(90, invoicePrediction.Orientation.Degrees);
+            Assert.Equal(90, invoicePrediction.Inference.Pages.First().Prediction.Orientation.Degrees);
         }
 
         private static MindeeApi GetMindeeApi()
