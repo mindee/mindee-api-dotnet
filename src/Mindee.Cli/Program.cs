@@ -15,9 +15,11 @@ var runner = BuildCommandLine()
         {
             services.AddInvoiceParsing();
             services.AddReceiptParsing();
+            services.AddPassportParsing();
         })
         .UseCommandHandler<PredictInvoiceCommand, PredictInvoiceCommand.Handler>()
-        .UseCommandHandler<PredictReceiptCommand, PredictReceiptCommand.Handler>();
+        .UseCommandHandler<PredictReceiptCommand, PredictReceiptCommand.Handler>()
+        .UseCommandHandler<PredictPassportCommand, PredictPassportCommand.Handler>();
     })
     .UseDefaults().Build();
 
@@ -42,7 +44,8 @@ static CommandLineBuilder BuildCommandLine()
         var todolist = new Command("predict-ots", "To predict with ots API")
         {
             new PredictInvoiceCommand(),
-            new PredictReceiptCommand()
+            new PredictReceiptCommand(),
+            new PredictPassportCommand(),
         };
         return todolist;
     }

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Mindee.Infrastructure.Api;
 using Mindee.Infrastructure.Prediction;
@@ -37,6 +36,16 @@ namespace Mindee.Extensions.DependencyInjection
         {
             services.TryAddTransient<DocumentParser>();
             services.TryAddTransient<IReceiptParsing, ReceiptParsing>();
+            services.AddMindeeApi();
+
+            return services;
+        }
+
+        public static IServiceCollection AddPassportParsing(
+            this IServiceCollection services)
+        {
+            services.TryAddTransient<DocumentParser>();
+            services.TryAddTransient<IPassportParsing, PassportParsing>();
             services.AddMindeeApi();
 
             return services;

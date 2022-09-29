@@ -4,7 +4,7 @@ using Mindee.Infrastructure.Api.Commun;
 
 namespace Mindee.Infrastructure.Api.Receipt
 {
-    public class ReceiptPrediction : FinancialPredictionBase
+    internal class ReceiptPrediction : FinancialPredictionBase
     {
         [JsonPropertyName("category")]
         public Category Category { get; set; }
@@ -12,6 +12,7 @@ namespace Mindee.Infrastructure.Api.Receipt
         [JsonPropertyName("time")]
         public Time Time { get; set; }
     }
+
     public class Category
     {
         [JsonPropertyName("confidence")]
