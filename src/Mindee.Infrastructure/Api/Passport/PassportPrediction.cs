@@ -52,7 +52,7 @@ namespace Mindee.Infrastructure.Api.Passport
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 
     public class BirthPlace
@@ -67,7 +67,7 @@ namespace Mindee.Infrastructure.Api.Passport
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 
     public class Country
@@ -82,7 +82,7 @@ namespace Mindee.Infrastructure.Api.Passport
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 
     public class ExpiryDate
@@ -97,7 +97,7 @@ namespace Mindee.Infrastructure.Api.Passport
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 
     public class Gender
@@ -112,7 +112,7 @@ namespace Mindee.Infrastructure.Api.Passport
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 
     public class GivenName
@@ -127,7 +127,7 @@ namespace Mindee.Infrastructure.Api.Passport
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 
     public class IdNumber
@@ -142,7 +142,7 @@ namespace Mindee.Infrastructure.Api.Passport
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 
     public class IssuanceDate
@@ -157,7 +157,7 @@ namespace Mindee.Infrastructure.Api.Passport
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 
     public class Mrz1
@@ -172,7 +172,7 @@ namespace Mindee.Infrastructure.Api.Passport
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 
     public class Mrz2
@@ -187,7 +187,7 @@ namespace Mindee.Infrastructure.Api.Passport
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 
     public class Surname
@@ -202,6 +202,6 @@ namespace Mindee.Infrastructure.Api.Passport
         public string Value { get; set; }
 
         [JsonPropertyName("page_id")]
-        public int PageId { get; set; }
+        public int? PageId { get; set; }
     }
 }

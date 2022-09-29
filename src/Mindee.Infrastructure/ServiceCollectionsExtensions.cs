@@ -40,5 +40,15 @@ namespace Mindee.Extensions.DependencyInjection
 
             return services;
         }
+
+        public static IServiceCollection AddPassportParsing(
+            this IServiceCollection services)
+        {
+            services.TryAddTransient<DocumentParser>();
+            services.TryAddTransient<IPassportParsing, PassportParsing>();
+            services.AddMindeeApi();
+
+            return services;
+        }
     }
 }
