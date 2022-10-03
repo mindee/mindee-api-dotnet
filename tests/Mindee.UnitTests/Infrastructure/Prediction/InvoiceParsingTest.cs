@@ -5,6 +5,7 @@ using Mindee.Infrastructure.Api;
 using Mindee.Infrastructure.Prediction;
 using Mindee.Domain.Parsing;
 using RichardSzalay.MockHttp;
+using Mindee.Domain;
 
 namespace Mindee.UnitTests.Infrastructure.Prediction
 {
@@ -14,7 +15,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
         public async Task Execute_WithInvoicePdf_MustSuccess()
         {
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());
-            var invoicePrediction = await invoiceParsing.ExecuteAsync(Stream.Null, "Bou");
+            var invoicePrediction = await invoiceParsing.ExecuteAsync(GetFakeParseParameter());
 
             Assert.NotNull(invoicePrediction);
         }
@@ -23,7 +24,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
         public async Task Execute_WithInvoicePdf_MustSuccessForCustomer()
         {
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());
-            var invoicePrediction = await invoiceParsing.ExecuteAsync(Stream.Null, "Bou");
+            var invoicePrediction = await invoiceParsing.ExecuteAsync(GetFakeParseParameter());
 
             Assert.Equal(0.87, invoicePrediction.Inference.Pages.First().Prediction.Customer.Confidence);
             Assert.Equal(0, invoicePrediction.Inference.Pages.First().Id);
@@ -42,7 +43,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
         public async Task Execute_WithInvoicePdf_MustSuccessForDate()
         {
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());
-            var invoicePrediction = await invoiceParsing.ExecuteAsync(Stream.Null, "Bou");
+            var invoicePrediction = await invoiceParsing.ExecuteAsync(GetFakeParseParameter());
 
             Assert.Equal(0.99, invoicePrediction.Inference.Pages.First().Prediction.Date.Confidence);
             Assert.Equal(0, invoicePrediction.Inference.Pages.First().Id);
@@ -53,7 +54,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
         public async Task Execute_WithInvoicePdf_MustSuccessForDocumentType()
         {
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());
-            var invoicePrediction = await invoiceParsing.ExecuteAsync(Stream.Null, "Bou");
+            var invoicePrediction = await invoiceParsing.ExecuteAsync(GetFakeParseParameter());
 
             Assert.Equal("INVOICE", invoicePrediction.Inference.Pages.First().Prediction.DocumentType.Value);
         }
@@ -62,7 +63,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
         public async Task Execute_WithInvoicePdf_MustSuccessForLocale()
         {
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());
-            var invoicePrediction = await invoiceParsing.ExecuteAsync(Stream.Null, "Bou");
+            var invoicePrediction = await invoiceParsing.ExecuteAsync(GetFakeParseParameter());
 
             Assert.Equal("en", invoicePrediction.Inference.Pages.First().Prediction.Locale.Language);
             Assert.Equal("USD", invoicePrediction.Inference.Pages.First().Prediction.Locale.Currency);
@@ -72,7 +73,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
         public async Task Execute_WithInvoicePdf_MustSuccessForTotalTaxesIncluded()
         {
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());
-            var invoicePrediction = await invoiceParsing.ExecuteAsync(Stream.Null, "Bou");
+            var invoicePrediction = await invoiceParsing.ExecuteAsync(GetFakeParseParameter());
 
             Assert.Equal(93.5, invoicePrediction.Inference.Pages.First().Prediction.TotalIncl.Value);
         }
@@ -81,9 +82,18 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
         public async Task Execute_WithInvoicePdf_MustSuccessForOrientation()
         {
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi());
-            var invoicePrediction = await invoiceParsing.ExecuteAsync(Stream.Null, "Bou");
+            var invoicePrediction = await invoiceParsing.ExecuteAsync(GetFakeParseParameter());
 
             Assert.Equal(90, invoicePrediction.Inference.Pages.First().Prediction.Orientation.Degrees);
+        }
+
+        private ParseParameter GetFakeParseParameter()
+        {
+            return
+                new ParseParameter(
+                    new DocumentClient(
+                        Stream.Null,
+                        "Bou"));
         }
 
         private static MindeeApi GetMindeeApi()

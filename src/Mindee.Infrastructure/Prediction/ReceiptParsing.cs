@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Mapster;
 using Mindee.Infrastructure.Api;
 using Mindee.Domain.Parsing;
@@ -17,9 +16,12 @@ namespace Mindee.Infrastructure.Prediction
             _mindeeApi = mindeeApi;
         }
 
-        async Task<ReceiptInference> IReceiptParsing.ExecuteAsync(Stream file, string filename)
+        async Task<ReceiptInference> IReceiptParsing.ExecuteAsync(ParseParameter parseParameter)
         {
-            var response = await _mindeeApi.PredictReceiptAsync(new PredictParameter(file, filename));
+            var response = await _mindeeApi.PredictReceiptAsync(
+                new PredictParameter(
+                    parseParameter.DocumentClient.File,
+                    parseParameter.DocumentClient.Filename));
 
             return new ReceiptInference()
             {

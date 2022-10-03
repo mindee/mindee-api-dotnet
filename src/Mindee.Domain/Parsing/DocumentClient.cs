@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Mindee
+namespace Mindee.Domain
 {
     /// <summary>
     /// Represent a document to parse.

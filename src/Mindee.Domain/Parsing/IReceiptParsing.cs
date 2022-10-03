@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using Mindee.Domain.Parsing.Common;
+﻿using System.Threading.Tasks;
 using Mindee.Domain.Parsing.Receipt;
 
 namespace Mindee.Domain.Parsing
@@ -13,9 +11,8 @@ namespace Mindee.Domain.Parsing
         /// <summary>
         /// Execute the parsing.
         /// </summary>
-        /// <param name="file">The file data.</param>
-        /// <param name="filename">The filename.</param>
+        /// <param name="parseParameter"><see cref="ParseParameter"/></param>
         /// <returns><see cref="ReceiptInference"/></returns>
-        Task<ReceiptInference> ExecuteAsync(Stream file, string filename);
+        Task<ReceiptInference> ExecuteAsync(ParseParameter parseParameter);
     }
 }

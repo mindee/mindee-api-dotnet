@@ -15,7 +15,8 @@ namespace Mindee.Domain.Parsing
         private readonly IReceiptParsing _receiptParsing;
         private readonly IPassportParsing _passportParsing;
 
-        public DocumentParser(IInvoiceParsing invoiceParsing
+        public DocumentParser(
+            IInvoiceParsing invoiceParsing
             , IReceiptParsing receiptParsing
             , IPassportParsing passportParsing)
         {
@@ -24,19 +25,19 @@ namespace Mindee.Domain.Parsing
             _passportParsing = passportParsing;
         }
 
-        public async Task<InvoiceInference> WithInvoiceType(Stream file, string filename)
+        public async Task<InvoiceInference> WithInvoiceType(ParseParameter parseParameter)
         {
-            return await _invoiceParsing.ExecuteAsync(file, filename);
+            return await _invoiceParsing.ExecuteAsync(parseParameter);
         }
 
-        public Task<ReceiptInference> WithReceiptType(Stream stream, string filename)
+        public Task<ReceiptInference> WithReceiptType(ParseParameter parseParameter)
         {
-            return _receiptParsing.ExecuteAsync(stream, filename);
+            return _receiptParsing.ExecuteAsync(parseParameter);
         }
 
-        public Task<PassportInference> WithPassportType(Stream stream, string filename)
+        public Task<PassportInference> WithPassportType(ParseParameter parseParameter)
         {
-            return _passportParsing.ExecuteAsync(stream, filename);
+            return _passportParsing.ExecuteAsync(parseParameter);
         }
     }
 }

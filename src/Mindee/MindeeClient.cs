@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using Mindee.Domain;
 using Mindee.Domain.Parsing;
 using Mindee.Domain.Parsing.Invoice;
 using Mindee.Domain.Parsing.Passport;
@@ -41,7 +42,7 @@ namespace Mindee
                 return null;
             }
 
-            return await _documentParser.WithInvoiceType(DocumentClient.File, DocumentClient.Filename);
+            return await _documentParser.WithInvoiceType(new ParseParameter(DocumentClient));
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace Mindee
                 return null;
             }
 
-            return await _documentParser.WithReceiptType(DocumentClient.File, DocumentClient.Filename);
+            return await _documentParser.WithReceiptType(new ParseParameter(DocumentClient));
 
         }
 
@@ -70,7 +71,7 @@ namespace Mindee
                 return null;
             }
 
-            return await _documentParser.WithPassportType(DocumentClient.File, DocumentClient.Filename);
+            return await _documentParser.WithPassportType(new ParseParameter(DocumentClient));
         }
     }
 }

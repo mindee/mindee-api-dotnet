@@ -5,6 +5,7 @@ using Mindee.Infrastructure.Api;
 using Mindee.Infrastructure.Prediction;
 using Mindee.Domain.Parsing;
 using RichardSzalay.MockHttp;
+using Mindee.Domain;
 
 namespace Mindee.UnitTests.Parsing
 {
@@ -15,7 +16,7 @@ namespace Mindee.UnitTests.Parsing
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
             var documentParser = new DocumentParser(null, receiptParsing, null);
-            var prediction = await documentParser.WithReceiptType(Stream.Null, "Bou");
+            var prediction = await documentParser.WithReceiptType(GetFakeParseParameter());
 
             Assert.NotNull(prediction);
         }
@@ -25,7 +26,7 @@ namespace Mindee.UnitTests.Parsing
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
             var documentParser = new DocumentParser(null, receiptParsing, null);
-            var prediction = await documentParser.WithReceiptType(Stream.Null, "Bou");
+            var prediction = await documentParser.WithReceiptType(GetFakeParseParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Category.Confidence);
             Assert.Equal("transport", prediction.Inference.Pages.First().Prediction.Category.Value);
@@ -36,7 +37,7 @@ namespace Mindee.UnitTests.Parsing
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
             var documentParser = new DocumentParser(null, receiptParsing, null);
-            var prediction = await documentParser.WithReceiptType(Stream.Null, "Bou");
+            var prediction = await documentParser.WithReceiptType(GetFakeParseParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Date.Confidence);
             Assert.Equal(0, prediction.Inference.Pages.First().Id);
@@ -48,7 +49,7 @@ namespace Mindee.UnitTests.Parsing
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
             var documentParser = new DocumentParser(null, receiptParsing, null);
-            var prediction = await documentParser.WithReceiptType(Stream.Null, "Bou");
+            var prediction = await documentParser.WithReceiptType(GetFakeParseParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Time.Confidence);
             Assert.Equal(0, prediction.Inference.Pages.First().Id);
@@ -68,7 +69,7 @@ namespace Mindee.UnitTests.Parsing
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
             var documentParser = new DocumentParser(null, receiptParsing, null);
-            var prediction = await documentParser.WithReceiptType(Stream.Null, "Bou");
+            var prediction = await documentParser.WithReceiptType(GetFakeParseParameter());
 
             Assert.Equal("fi", prediction.Inference.Pages.First().Prediction.Locale.Language);
             Assert.Equal("FI", prediction.Inference.Pages.First().Prediction.Locale.Country);
@@ -80,11 +81,19 @@ namespace Mindee.UnitTests.Parsing
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
             var documentParser = new DocumentParser(null, receiptParsing, null);
-            var prediction = await documentParser.WithReceiptType(Stream.Null, "Bou");
+            var prediction = await documentParser.WithReceiptType(GetFakeParseParameter());
 
             Assert.Equal(473.88, prediction.Inference.Pages.First().Prediction.TotalIncl.Value);
         }
 
+        private ParseParameter GetFakeParseParameter()
+        {
+            return
+                new ParseParameter(
+                    new DocumentClient(
+                        Stream.Null,
+                        "Bou"));
+        }
         private static MindeeApi GetMindeeApi()
         {
             var mockHttp = new MockHttpMessageHandler();

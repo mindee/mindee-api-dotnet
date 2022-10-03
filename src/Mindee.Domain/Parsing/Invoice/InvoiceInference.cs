@@ -2,7 +2,7 @@
 
 namespace Mindee.Domain.Parsing.Invoice
 {
-    public sealed class InvoiceInference
+    public class InvoiceInference
     {
         public Inference<InvoicePrediction> Inference { get; set; }
     }

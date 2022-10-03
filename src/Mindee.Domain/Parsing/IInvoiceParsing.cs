@@ -12,9 +12,8 @@ namespace Mindee.Domain.Parsing
         /// <summary>
         /// Execute the parsing.
         /// </summary>
-        /// <param name="file">The file data.</param>
-        /// <param name="filename">The filename.</param>
+        /// <param name="parseParameter"><see cref="ParseParameter"/></param>
         /// <returns><see cref="InvoiceInference"/></returns>
-        Task<InvoiceInference> ExecuteAsync(Stream file, string filename);
+        Task<InvoiceInference> ExecuteAsync(ParseParameter parseParameter);
     }
 }
