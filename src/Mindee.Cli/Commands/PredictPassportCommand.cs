@@ -32,7 +32,7 @@ namespace Mindee.Cli.Commands
             {
                 _logger.LogInformation("About to predict a passport..");
 
-                var prediction = await _documentParser.FromPassport(File.OpenRead(FilePath), Path.GetFileName(FilePath));
+                var prediction = await _documentParser.WithPassportType(File.OpenRead(FilePath), Path.GetFileName(FilePath));
 
                 _logger.LogInformation("See the associated JSON below :");
                 _logger.LogInformation(JsonSerializer.Serialize(prediction));

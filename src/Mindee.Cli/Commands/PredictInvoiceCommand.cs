@@ -32,7 +32,7 @@ namespace Mindee.Cli.Commands
             {
                 _logger.LogInformation("About to predict an invoice..");
 
-                var invoicePrediction = await _documentParser.FromInvoice(File.OpenRead(FilePath), Path.GetFileName(FilePath));
+                var invoicePrediction = await _documentParser.WithInvoiceType(File.OpenRead(FilePath), Path.GetFileName(FilePath));
 
                 _logger.LogInformation("See the associated JSON below :");
                 _logger.LogInformation(JsonSerializer.Serialize(invoicePrediction));

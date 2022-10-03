@@ -60,11 +60,11 @@ namespace Mindee.Infrastructure.Api
         }
 
         private async Task<PredictResponse<TModel>> PredictAsync<TModel>(
-                    Endpoint credential,
+                    Endpoint endpoint,
                     PredictParameter predictParameter)
             where TModel : class, new()
         {
-            var request = new RestRequest($"products/mindee/{credential.ProductName}/v{credential.Version}/predict", Method.Post);
+            var request = new RestRequest($"products/mindee/{endpoint.ProductName}/v{endpoint.Version}/predict", Method.Post);
 
             _logger.LogInformation($"HTTP request to {BaseUrl}/{request.Resource} started.");
 
