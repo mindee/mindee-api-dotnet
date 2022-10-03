@@ -25,9 +25,9 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IPassportParsing passportParsing = new PassportParsing(GetMindeeApi());
             var prediction = await passportParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal("string", prediction.Country.Value);
-            Assert.Equal(0.99, prediction.Country.Confidence);
-            Assert.Equal(0, prediction.Country.PageId); 
+            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Country.Value);
+            Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Country.Confidence);
+            Assert.Equal(0, prediction.Inference.Pages.First().Id); 
             Assert.Equal(new List<List<double>>()
             {
                 new List<double>() { 0.2988, 0.9426 },
@@ -35,7 +35,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
                 new List<double>() { 0.3998, 0.7691 },
                 new List<double>() { 0.8192, 0.0147 },
             }
-            , prediction.Country.Polygon);
+            , prediction.Inference.Pages.First().Prediction.Country.Polygon);
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IPassportParsing passportParsing = new PassportParsing(GetMindeeApi());
             var prediction = await passportParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal("string", prediction.IdNumber.Value);
+            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.IdNumber.Value);
 
         }
 
@@ -54,13 +54,13 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IPassportParsing passportParsing = new PassportParsing(GetMindeeApi());
             var prediction = await passportParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            var firstGivenNames = prediction.GivenNames.FirstOrDefault();
+            var firstGivenNames = prediction.Inference.Pages.First().Prediction.GivenNames.FirstOrDefault();
 
             Assert.NotNull(firstGivenNames);
-            Assert.Single(prediction.GivenNames);
+            Assert.Single(prediction.Inference.Pages.First().Prediction.GivenNames);
             Assert.Equal("string", firstGivenNames!.Value);
             Assert.Equal(0.99, firstGivenNames!.Confidence);
-            Assert.Equal(0, firstGivenNames!.PageId);
+            Assert.Equal(0, prediction.Inference.Pages.First().Id);
 
         }
 
@@ -70,7 +70,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IPassportParsing passportParsing = new PassportParsing(GetMindeeApi());
             var prediction = await passportParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal("string", prediction.Surname.Value);
+            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Surname.Value);
         }
 
         [Fact]
@@ -79,7 +79,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IPassportParsing passportParsing = new PassportParsing(GetMindeeApi());
             var prediction = await passportParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal("1963-08-03", prediction.BirthDate.Value);
+            Assert.Equal("1963-08-03", prediction.Inference.Pages.First().Prediction.BirthDate.Value);
         }
 
         [Fact]
@@ -88,7 +88,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IPassportParsing passportParsing = new PassportParsing(GetMindeeApi());
             var prediction = await passportParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal("string", prediction.BirthPlace.Value);
+            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.BirthPlace.Value);
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IPassportParsing passportParsing = new PassportParsing(GetMindeeApi());
             var prediction = await passportParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal("string", prediction.Gender.Value);
+            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Gender.Value);
         }
 
         [Fact]
@@ -106,7 +106,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IPassportParsing passportParsing = new PassportParsing(GetMindeeApi());
             var prediction = await passportParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal("2013-04-12", prediction.IssuanceDate.Value);
+            Assert.Equal("2013-04-12", prediction.Inference.Pages.First().Prediction.IssuanceDate.Value);
         }
 
         [Fact]
@@ -115,16 +115,16 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IPassportParsing passportParsing = new PassportParsing(GetMindeeApi());
             var prediction = await passportParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal("2029-08-03", prediction.ExpiryDate.Value);
+            Assert.Equal("2029-08-03", prediction.Inference.Pages.First().Prediction.ExpiryDate.Value);
         }
 
-        [Fact(Skip = "Orientation can not be get for now.")]
+        [Fact]
         public async Task Execute_WithPassportData_MustSuccessForOrientation()
         {
             IPassportParsing passportParsing = new PassportParsing(GetMindeeApi());
             var prediction = await passportParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal(90, prediction.Orientation.Degrees);
+            Assert.Equal(90, prediction.Inference.Pages.First().Prediction.Orientation.Degrees);
         }
 
         [Fact]
@@ -133,7 +133,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IPassportParsing passportParsing = new PassportParsing(GetMindeeApi());
             var prediction = await passportParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal("string", prediction.Mrz1.Value);
+            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Mrz1.Value);
         }
 
         [Fact]
@@ -142,7 +142,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IPassportParsing passportParsing = new PassportParsing(GetMindeeApi());
             var prediction = await passportParsing.ExecuteAsync(Stream.Null, "Bou");
 
-            Assert.Equal("string", prediction.Mrz2.Value);
+            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Mrz2.Value);
         }
 
         private static MindeeApi GetMindeeApi()

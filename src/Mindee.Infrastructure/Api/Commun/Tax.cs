@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Mindee.Infrastructure.Api.Commun
 {
-    public class Taxis
+    public class Tax
     {
         [JsonPropertyName("code")]
         public string Code { get; set; }

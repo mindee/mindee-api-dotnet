@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using Mindee.Prediction.Commun;
 using Mindee.Prediction.Receipt;
 
 namespace Mindee.Prediction
@@ -14,7 +15,7 @@ namespace Mindee.Prediction
         /// </summary>
         /// <param name="file">The file data.</param>
         /// <param name="filename">The filename.</param>
-        /// <returns><see cref="ReceiptPrediction"/></returns>
-        Task<ReceiptPrediction> ExecuteAsync(Stream file, string filename);
+        /// <returns><see cref="ReceiptInference"/></returns>
+        Task<ReceiptInference> ExecuteAsync(Stream file, string filename);
     }
 }

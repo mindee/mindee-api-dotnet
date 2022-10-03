@@ -24,17 +24,17 @@ namespace Mindee.Prediction
             _passportParsing = passportParsing;
         }
 
-        public async Task<InvoicePrediction> FromInvoice(Stream file, string filename)
+        public async Task<InvoiceInference> FromInvoice(Stream file, string filename)
         {
             return await _invoiceParsing.ExecuteAsync(file, filename);
         }
 
-        public Task<ReceiptPrediction> FromReceipt(Stream stream, string filename)
+        public Task<ReceiptInference> FromReceipt(Stream stream, string filename)
         {
             return _receiptParsing.ExecuteAsync(stream, filename);
         }
 
-        public Task<PassportPrediction> FromPassport(Stream stream, string filename)
+        public Task<PassportInference> FromPassport(Stream stream, string filename)
         {
             return _passportParsing.ExecuteAsync(stream, filename);
         }

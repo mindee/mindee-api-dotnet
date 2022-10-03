@@ -12,7 +12,7 @@ namespace Mindee.Infrastructure.Api.Commun
         public Supplier Supplier { get; set; }
 
         [JsonPropertyName("taxes")]
-        public List<Taxis> Taxes { get; set; }
+        public List<Tax> Taxes { get; set; }
 
         [JsonPropertyName("total_incl")]
         public TotalIncl TotalIncl { get; set; }
