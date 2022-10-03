@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Mindee.Infrastructure.Api;
-using Mindee.Infrastructure.Api.Commun;
+using Mindee.Infrastructure.Api.Common;
 using Mindee.Infrastructure.Api.Invoice;
 
 namespace Mindee.IntegrationTests.Infrastructure.Api

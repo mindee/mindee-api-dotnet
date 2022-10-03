@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Mindee.Infrastructure.Api;
 using Mindee.Infrastructure.Prediction;
-using Mindee.Prediction;
+using Mindee.Parsing;
 
 namespace Mindee.Extensions.DependencyInjection
 {

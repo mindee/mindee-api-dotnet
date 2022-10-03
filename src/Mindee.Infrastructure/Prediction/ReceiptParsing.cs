@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Mapster;
 using Mindee.Infrastructure.Api;
-using Mindee.Prediction;
-using Mindee.Prediction.Commun;
-using Mindee.Prediction.Receipt;
+using Mindee.Parsing;
+using Mindee.Parsing.Common;
+using Mindee.Parsing.Receipt;
 
 namespace Mindee.Infrastructure.Prediction
 {

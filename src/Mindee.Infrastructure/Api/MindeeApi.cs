@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Mindee.Infrastructure.Api.Commun;
+using Mindee.Infrastructure.Api.Common;
 using RestSharp;
 
 namespace Mindee.Infrastructure.Api

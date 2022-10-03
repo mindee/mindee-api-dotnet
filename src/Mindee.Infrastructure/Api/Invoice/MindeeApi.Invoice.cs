@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Mindee.Infrastructure.Api.Commun;
+using Mindee.Infrastructure.Api.Common;
 using Mindee.Infrastructure.Api.Invoice;
 
 namespace Mindee.Infrastructure.Api

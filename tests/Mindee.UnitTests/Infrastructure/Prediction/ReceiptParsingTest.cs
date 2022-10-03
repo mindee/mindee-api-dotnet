@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Mindee.Infrastructure.Api;
 using Mindee.Infrastructure.Prediction;
-using Mindee.Prediction;
+using Mindee.Parsing;
 using RichardSzalay.MockHttp;
 
 namespace Mindee.UnitTests.Infrastructure.Prediction
