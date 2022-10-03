@@ -2,26 +2,27 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Mindee.Infrastructure.Api;
 using Mindee.Infrastructure.Prediction;
-using Mindee.Parsing;
+using Mindee.Domain.Parsing;
 
 namespace Mindee.Extensions.DependencyInjection
 {
     public static class ServiceCollectionsExtensions
     {
-        public static IServiceCollection AddMindeeApi(
+        /// <summary>
+        /// Add parsing services.
+        /// </summary>
+        /// <remarks>In transcient scope, except for the HTTP API calls.</remarks>
+        public static IServiceCollection AddParsing(
             this IServiceCollection services)
         {
-            services.TryAddSingleton<MindeeApi>();
-            services.AddOptions<MindeeApiSettings>()
-                        .Validate(settings =>
-                        {
-                            return !string.IsNullOrWhiteSpace(settings.ApiKey);
-                        }, "The Mindee API key is not defined.");
+            services.AddInvoiceParsing();
+            services.AddReceiptParsing();
+            services.AddPassportParsing();
 
             return services;
         }
 
-        public static IServiceCollection AddInvoiceParsing(
+        private static IServiceCollection AddInvoiceParsing(
             this IServiceCollection services)
         {
             services.TryAddTransient<DocumentParser>();
@@ -31,7 +32,7 @@ namespace Mindee.Extensions.DependencyInjection
             return services;
         }
 
-        public static IServiceCollection AddReceiptParsing(
+        private static IServiceCollection AddReceiptParsing(
             this IServiceCollection services)
         {
             services.TryAddTransient<DocumentParser>();
@@ -41,12 +42,25 @@ namespace Mindee.Extensions.DependencyInjection
             return services;
         }
 
-        public static IServiceCollection AddPassportParsing(
+        private static IServiceCollection AddPassportParsing(
             this IServiceCollection services)
         {
             services.TryAddTransient<DocumentParser>();
             services.TryAddTransient<IPassportParsing, PassportParsing>();
             services.AddMindeeApi();
+
+            return services;
+        }
+
+        private static IServiceCollection AddMindeeApi(
+            this IServiceCollection services)
+        {
+            services.TryAddSingleton<MindeeApi>();
+            services.AddOptions<MindeeApiSettings>()
+                        .Validate(settings =>
+                        {
+                            return !string.IsNullOrWhiteSpace(settings.ApiKey);
+                        }, "The Mindee API key is not defined.");
 
             return services;
         }

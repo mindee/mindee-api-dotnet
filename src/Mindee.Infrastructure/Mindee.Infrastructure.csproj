@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mindee\Mindee.csproj" />
+    <ProjectReference Include="..\Mindee.Domain\Mindee.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

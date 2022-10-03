@@ -1,5 +1,5 @@
 ﻿using Mindee.Infrastructure.Pdf;
-using Mindee.Pdf;
+using Mindee.Domain.Pdf;
 
 namespace Mindee.UnitTests.Infrastructure.Pdf
 {

@@ -1,7 +1,7 @@
 ﻿using System.CommandLine.Invocation;
 using System.CommandLine;
 using Microsoft.Extensions.Logging;
-using Mindee.Parsing;
+using Mindee.Domain.Parsing;
 using System.Text.Json;
 
 namespace Mindee.Cli.Commands
