@@ -11,7 +11,7 @@ namespace Mindee.Extensions.DependencyInjection
         /// <summary>
         /// Add parsing services.
         /// </summary>
-        /// <remarks>In transcient scope, except for the HTTP API calls.</remarks>
+        /// <remarks>In transient scope, except for the HTTP API calls.</remarks>
         public static IServiceCollection AddParsing(
             this IServiceCollection services)
         {
