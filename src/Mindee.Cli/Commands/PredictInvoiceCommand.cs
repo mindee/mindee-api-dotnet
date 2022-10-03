@@ -19,20 +19,22 @@ namespace Mindee.Cli.Commands
         public new class Handler : ICommandHandler
         {
             private readonly ILogger<Handler> _logger;
-            private readonly DocumentParser _documentParser;
+            private readonly MindeeClient _mindeeClient;
 
             public string FilePath { get; set; } = null!;
 
-            public Handler(ILogger<Handler> logger, DocumentParser documentParser)
+            public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
             {
                 _logger = logger;
-                _documentParser = documentParser;
+                _mindeeClient = mindeeClient;
             }
             public async Task<int> InvokeAsync(InvocationContext context)
             {
                 _logger.LogInformation("About to predict an invoice..");
 
-                var invoicePrediction = await _documentParser.WithInvoiceType(File.OpenRead(FilePath), Path.GetFileName(FilePath));
+                var invoicePrediction = await _mindeeClient
+                    .LoadDocument(File.OpenRead(FilePath), Path.GetFileName(FilePath))
+                    .ParseInvoiceAsync();
 
                 _logger.LogInformation("See the associated JSON below :");
                 _logger.LogInformation(JsonSerializer.Serialize(invoicePrediction));

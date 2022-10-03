@@ -19,20 +19,22 @@ namespace Mindee.Cli.Commands
         public new class Handler : ICommandHandler
         {
             private readonly ILogger<Handler> _logger;
-            private readonly DocumentParser _documentParser;
+            private readonly MindeeClient _mindeeClient;
 
             public string FilePath { get; set; } = null!;
 
-            public Handler(ILogger<Handler> logger, DocumentParser documentParser)
+            public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
             {
                 _logger = logger;
-                _documentParser = documentParser;
+                _mindeeClient = mindeeClient;
             }
             public async Task<int> InvokeAsync(InvocationContext context)
             {
                 _logger.LogInformation("About to predict a passport..");
 
-                var prediction = await _documentParser.WithPassportType(File.OpenRead(FilePath), Path.GetFileName(FilePath));
+                var prediction = await _mindeeClient
+                    .LoadDocument(File.OpenRead(FilePath), Path.GetFileName(FilePath))
+                    .ParsePassportAsync();
 
                 _logger.LogInformation("See the associated JSON below :");
                 _logger.LogInformation(JsonSerializer.Serialize(prediction));

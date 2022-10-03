@@ -13,9 +13,7 @@ var runner = BuildCommandLine()
         builder.UseEnvironment("CLI")
         .ConfigureServices((hostContext, services) =>
         {
-            services.AddInvoiceParsing();
-            services.AddReceiptParsing();
-            services.AddPassportParsing();
+            services.AddMindeeClient();
         })
         .UseCommandHandler<PredictInvoiceCommand, PredictInvoiceCommand.Handler>()
         .UseCommandHandler<PredictReceiptCommand, PredictReceiptCommand.Handler>()
