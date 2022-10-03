@@ -19,7 +19,7 @@ namespace Mindee.Infrastructure.Prediction
 
         async Task<ReceiptInference> IReceiptParsing.ExecuteAsync(Stream file, string filename)
         {
-            var response = await _mindeeApi.PredictReceiptAsync(file, filename);
+            var response = await _mindeeApi.PredictReceiptAsync(new PredictParameter(file, filename));
 
             return new ReceiptInference()
             {

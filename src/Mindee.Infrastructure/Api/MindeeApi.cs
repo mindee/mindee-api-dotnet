@@ -60,9 +60,8 @@ namespace Mindee.Infrastructure.Api
         }
 
         private async Task<PredictResponse<TModel>> PredictAsync<TModel>(
-                    Credential credential, 
-                    Stream file,
-                    string filename)
+                    Credential credential,
+                    PredictParameter predictParameter)
             where TModel : class, new()
         {
             var request = new RestRequest($"products/mindee/{credential.ProductName}/v{credential.Version}/predict", Method.Post);
@@ -71,8 +70,8 @@ namespace Mindee.Infrastructure.Api
 
             using (var memoryStream = new MemoryStream())
             {
-                await file.CopyToAsync(memoryStream);
-                request.AddFile("document", memoryStream.ToArray(), filename);
+                await predictParameter.File.CopyToAsync(memoryStream);
+                request.AddFile("document", memoryStream.ToArray(), predictParameter.Filename);
             }
 
             var response = await _httpClient.ExecutePostAsync<PredictResponse<TModel>> (request);

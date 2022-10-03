@@ -19,7 +19,7 @@ namespace Mindee.Infrastructure.Prediction
 
         async Task<PassportInference> IPassportParsing.ExecuteAsync(Stream file, string filename)
         {
-            var response = await _mindeeApi.PredictPassportAsync(file, filename);
+            var response = await _mindeeApi.PredictPassportAsync(new PredictParameter(file, filename));
 
             return new PassportInference()
             {

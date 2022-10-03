@@ -19,7 +19,7 @@ namespace Mindee.Infrastructure.Prediction
 
         async Task<InvoiceInference> IInvoiceParsing.ExecuteAsync(Stream file, string filename)
         {
-            var response = await _mindeeApi.PredictInvoiceAsync(file, filename);
+            var response = await _mindeeApi.PredictInvoiceAsync(new PredictParameter(file, filename));
 
             return new InvoiceInference()
             {
