@@ -16,7 +16,7 @@ namespace Mindee.Infrastructure.Api
             PredictParameter predictParameter)
         {
             return PredictAsync<InvoicePrediction>(
-                new Credential("invoices", "3"),
+                new Endpoint("invoices", "3"),
                 predictParameter);
         }
     }

@@ -60,7 +60,7 @@ namespace Mindee.Infrastructure.Api
         }
 
         private async Task<PredictResponse<TModel>> PredictAsync<TModel>(
-                    Credential credential,
+                    Endpoint credential,
                     PredictParameter predictParameter)
             where TModel : class, new()
         {
