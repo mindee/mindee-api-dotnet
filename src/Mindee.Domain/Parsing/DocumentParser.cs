@@ -31,7 +31,7 @@ namespace Mindee.Domain.Parsing
             return await _invoiceParsing.ExecuteAsync(parseParameter);
         }
 
-        public Task<ReceiptInference> WithReceiptType(ParseParameter parseParameter)
+        public Task<Document<ReceiptPrediction>> WithReceiptType(ParseParameter parseParameter)
         {
             return _receiptParsing.ExecuteAsync(parseParameter);
         }

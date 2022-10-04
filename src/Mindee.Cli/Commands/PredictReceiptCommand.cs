@@ -14,6 +14,7 @@ namespace Mindee.Cli.Commands
             : base(name: "receipt", "Invokes the receipt API")
         {
             AddArgument(new Argument<string>("filePath", "The path of the file to parse"));
+            AddOption(new Option<bool>("-words", "To get all the words in the current document"));
         }
 
         public new class Handler : ICommandHandler
@@ -22,6 +23,7 @@ namespace Mindee.Cli.Commands
             private readonly MindeeClient _mindeeClient;
 
             public string FilePath { get; set; } = null!;
+            public bool Words { get; set; } = false;
 
             public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
             {
@@ -34,7 +36,7 @@ namespace Mindee.Cli.Commands
 
                 var invoicePrediction = await _mindeeClient
                     .LoadDocument(File.OpenRead(FilePath), Path.GetFileName(FilePath))
-                    .ParseReceiptAsync();
+                    .ParseReceiptAsync(Words);
 
                 _logger.LogInformation("See the associated JSON below :");
                 _logger.LogInformation(JsonSerializer.Serialize(invoicePrediction));

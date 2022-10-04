@@ -36,7 +36,7 @@ namespace Mindee
         /// Try to parse the current document as an invoice.
         /// </summary>
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
-        /// <returns><see cref="InvoiceInference"/></returns>
+        /// <returns><see cref="Document{InvoicePrediction}"/></returns>
         public async Task<Document<InvoicePrediction>> ParseInvoiceAsync(bool withFullText = false)
         {
             if(DocumentClient == null)
@@ -51,8 +51,8 @@ namespace Mindee
         /// Try to parse the current document as a receipt.
         /// </summary>
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
-        /// <returns><see cref="ReceiptInference"/></returns>
-        public async Task<ReceiptInference> ParseReceiptAsync(bool withFullText = false)
+        /// <returns><see cref="Document{ReceiptPrediction}"/></returns>
+        public async Task<Document<ReceiptPrediction>> ParseReceiptAsync(bool withFullText = false)
         {
             if (DocumentClient == null)
             {

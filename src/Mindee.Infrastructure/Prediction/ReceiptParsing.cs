@@ -16,7 +16,7 @@ namespace Mindee.Infrastructure.Prediction
             _mindeeApi = mindeeApi;
         }
 
-        async Task<ReceiptInference> IReceiptParsing.ExecuteAsync(ParseParameter parseParameter)
+        async Task<Document<ReceiptPrediction>> IReceiptParsing.ExecuteAsync(ParseParameter parseParameter)
         {
             var response = await _mindeeApi.PredictReceiptAsync(
                 new PredictParameter(
@@ -24,9 +24,10 @@ namespace Mindee.Infrastructure.Prediction
                     parseParameter.DocumentClient.Filename,
                     parseParameter.WithFullText));
 
-            return new ReceiptInference()
+            return new Document<ReceiptPrediction>()
             {
-                Inference = response.Document.Inference.Adapt<Inference<ReceiptPrediction>>()
+                Inference = response.Document.Inference.Adapt<Inference<ReceiptPrediction>>(),
+                Ocr = response.Document.Ocr.Adapt<Ocr>()
             };
         }
     }
