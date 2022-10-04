@@ -51,5 +51,11 @@ namespace Mindee.UnitTests.Domain
         {
             Assert.True(FileVerification.IsFileNameExtensionRespectLimitation("ravenclaw.tif"));
         }
+
+        [Fact]
+        public void IsFileNameExtensionRespectLimitation_WithMp4_MustFail()
+        {
+            Assert.False(FileVerification.IsFileNameExtensionRespectLimitation("ravenclaw.mp4"));
+        }
     }
 }
