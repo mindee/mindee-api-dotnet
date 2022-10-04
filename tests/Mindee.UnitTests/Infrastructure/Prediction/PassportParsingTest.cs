@@ -159,7 +159,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
         {
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When("*")
-                    .Respond("application/json", File.ReadAllText("passport_response_full_v1.json"));
+                    .Respond("application/json", File.ReadAllText("resources/passport_response_full_v1.json"));
 
             var config = new ConfigurationBuilder()
                             .AddInMemoryCollection(new Dictionary<string, string>() {

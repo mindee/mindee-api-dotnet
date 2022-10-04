@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.Infrastructure.Api
         [Fact]
         public async Task Execute_WithInvoiceData_WithOcrAsked_MustGetOcrData()
         {
-            var mindeeApi = GetMindeeApi("inv2 - withFullText.json");
+            var mindeeApi = GetMindeeApi("resources/inv2 - withFullText.json");
             var predictParameter = new PredictParameter(
                         Stream.Null,
                         "Bou",

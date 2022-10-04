@@ -90,7 +90,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
         [Fact]
         public async Task Execute_WithInvoiceDataWithOcrAsked_MustSuccessForOcr()
         {
-            IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi("inv2 - withFullText.json"));
+            IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi("resources/inv2 - withFullText.json"));
             var parseParameter = new ParseParameter(
                     new DocumentClient(
                         Stream.Null,
@@ -119,7 +119,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
                         "Bou"));
         }
 
-        private static MindeeApi GetMindeeApi(string fileName = "inv2.json")
+        private static MindeeApi GetMindeeApi(string fileName = "resources/inv2.json")
         {
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When("*")
