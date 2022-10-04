@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Docnet.Core;
 using Docnet.Core.Exceptions;
-using Mindee.Pdf;
+using Mindee.Domain.Pdf;
 
 namespace Mindee.Infrastructure.Pdf
 {

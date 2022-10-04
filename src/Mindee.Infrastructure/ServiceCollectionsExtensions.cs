@@ -2,13 +2,54 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Mindee.Infrastructure.Api;
 using Mindee.Infrastructure.Prediction;
-using Mindee.Prediction;
+using Mindee.Domain.Parsing;
 
 namespace Mindee.Extensions.DependencyInjection
 {
     public static class ServiceCollectionsExtensions
     {
-        public static IServiceCollection AddMindeeApi(
+        /// <summary>
+        /// Add parsing services.
+        /// </summary>
+        /// <remarks>In transient scope, except for the HTTP API calls.</remarks>
+        public static IServiceCollection AddParsing(
+            this IServiceCollection services)
+        {
+            services.AddInvoiceParsing();
+            services.AddReceiptParsing();
+            services.AddPassportParsing();
+
+            return services;
+        }
+
+        private static IServiceCollection AddInvoiceParsing(
+            this IServiceCollection services)
+        {
+            services.TryAddTransient<IInvoiceParsing, InvoiceParsing>();
+            services.AddMindeeApi();
+
+            return services;
+        }
+
+        private static IServiceCollection AddReceiptParsing(
+            this IServiceCollection services)
+        {
+            services.TryAddTransient<IReceiptParsing, ReceiptParsing>();
+            services.AddMindeeApi();
+
+            return services;
+        }
+
+        private static IServiceCollection AddPassportParsing(
+            this IServiceCollection services)
+        {
+            services.TryAddTransient<IPassportParsing, PassportParsing>();
+            services.AddMindeeApi();
+
+            return services;
+        }
+
+        private static IServiceCollection AddMindeeApi(
             this IServiceCollection services)
         {
             services.TryAddSingleton<MindeeApi>();
@@ -17,36 +58,6 @@ namespace Mindee.Extensions.DependencyInjection
                         {
                             return !string.IsNullOrWhiteSpace(settings.ApiKey);
                         }, "The Mindee API key is not defined.");
-
-            return services;
-        }
-
-        public static IServiceCollection AddInvoiceParsing(
-            this IServiceCollection services)
-        {
-            services.TryAddTransient<DocumentParser>();
-            services.TryAddTransient<IInvoiceParsing, InvoiceParsing>();
-            services.AddMindeeApi();
-
-            return services;
-        }
-
-        public static IServiceCollection AddReceiptParsing(
-            this IServiceCollection services)
-        {
-            services.TryAddTransient<DocumentParser>();
-            services.TryAddTransient<IReceiptParsing, ReceiptParsing>();
-            services.AddMindeeApi();
-
-            return services;
-        }
-
-        public static IServiceCollection AddPassportParsing(
-            this IServiceCollection services)
-        {
-            services.TryAddTransient<DocumentParser>();
-            services.TryAddTransient<IPassportParsing, PassportParsing>();
-            services.AddMindeeApi();
 
             return services;
         }

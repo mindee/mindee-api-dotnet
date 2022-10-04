@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Mindee.Infrastructure.Api.Commun;
+using Mindee.Infrastructure.Api.Common;
 
 namespace Mindee.Infrastructure.Api.Invoice
 {

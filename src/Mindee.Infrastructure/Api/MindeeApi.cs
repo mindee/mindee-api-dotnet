@@ -1,11 +1,12 @@
 ﻿using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Mindee.Infrastructure.Api.Commun;
+using Mindee.Infrastructure.Api.Common;
 using RestSharp;
 
 namespace Mindee.Infrastructure.Api
@@ -60,28 +61,36 @@ namespace Mindee.Infrastructure.Api
         }
 
         private async Task<PredictResponse<TModel>> PredictAsync<TModel>(
-                    Credential credential, 
-                    Stream file,
-                    string filename)
+                    Endpoint endpoint,
+                    PredictParameter predictParameter)
             where TModel : class, new()
         {
-            var request = new RestRequest($"products/mindee/{credential.ProductName}/v{credential.Version}/predict", Method.Post);
+            var request = new RestRequest($"products/mindee/{endpoint.ProductName}/v{endpoint.Version}/predict", Method.Post);
 
             _logger.LogInformation($"HTTP request to {BaseUrl}/{request.Resource} started.");
 
             using (var memoryStream = new MemoryStream())
             {
-                await file.CopyToAsync(memoryStream);
-                request.AddFile("document", memoryStream.ToArray(), filename);
+                await predictParameter.File.CopyToAsync(memoryStream);
+                request.AddFile("document", memoryStream.ToArray(), predictParameter.Filename);
+                request.AddParameter("include_mvision", predictParameter.WithFullText);
             }
 
-            var response = await _httpClient.ExecutePostAsync<PredictResponse<TModel>> (request);
+            var response = await _httpClient.ExecutePostAsync(request);
 
+            _logger.LogDebug($"HTTP response : {response.Content}");
             _logger.LogInformation($"HTTP request to {BaseUrl + request.Resource} finished.");
 
-            if (response.IsSuccessful)
+            PredictResponse<TModel> predictResponse = null; 
+
+            if (response.Content != null)
             {
-                return response.Data;
+                predictResponse = JsonSerializer.Deserialize<PredictResponse<TModel>>(response.Content);
+
+                if (response.IsSuccessful)
+                {
+                    return predictResponse;
+                }
             }
 
             string errorMessage = "Mindee API client : ";
@@ -92,9 +101,9 @@ namespace Mindee.Infrastructure.Api
                 _logger.LogCritical(errorMessage);
             }
 
-            if (response.Data != null)
+            if (predictResponse != null)
             {
-                errorMessage += response.Data.ApiRequest.Error.ToString();
+                errorMessage += predictResponse.ApiRequest.Error.ToString();
                 _logger.LogError(errorMessage);
             }
             else

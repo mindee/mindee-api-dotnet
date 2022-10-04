@@ -1,6 +1,5 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using Mindee.Infrastructure.Api.Commun;
+﻿using System.Threading.Tasks;
+using Mindee.Infrastructure.Api.Common;
 using Mindee.Infrastructure.Api.Passport;
 
 namespace Mindee.Infrastructure.Api
@@ -10,18 +9,15 @@ namespace Mindee.Infrastructure.Api
         /// <summary>
         /// Call the Mindee Passport API.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="filename"></param>
+        /// <param name="predictParameter"><see cref="PredictParameter"/></param>
         /// <returns><see cref="PredictResponse{PassportPrediction}"/></returns>
         /// <exception cref="MindeeApiException"></exception>
         public Task<PredictResponse<PassportPrediction>> PredictPassportAsync(
-            Stream file,
-            string filename)
+            PredictParameter predictParameter)
         {
             return PredictAsync<PassportPrediction>(
-                new Credential("passport", "1"),
-                file,
-                filename);
+                new Endpoint("passport", "1"),
+                predictParameter);
         }
     }
 }

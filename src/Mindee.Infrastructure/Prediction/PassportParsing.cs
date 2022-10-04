@@ -1,10 +1,9 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Mapster;
 using Mindee.Infrastructure.Api;
-using Mindee.Prediction;
-using Mindee.Prediction.Commun;
-using Mindee.Prediction.Passport;
+using Mindee.Domain.Parsing;
+using Mindee.Domain.Parsing.Common;
+using Mindee.Domain.Parsing.Passport;
 
 namespace Mindee.Infrastructure.Prediction
 {
@@ -17,13 +16,18 @@ namespace Mindee.Infrastructure.Prediction
             _mindeeApi = mindeeApi;
         }
 
-        async Task<PassportInference> IPassportParsing.ExecuteAsync(Stream file, string filename)
+        async Task<Document<PassportPrediction>> IPassportParsing.ExecuteAsync(ParseParameter parseParameter)
         {
-            var response = await _mindeeApi.PredictPassportAsync(file, filename);
+            var response = await _mindeeApi.PredictPassportAsync(
+                new PredictParameter(
+                    parseParameter.DocumentClient.File,
+                    parseParameter.DocumentClient.Filename,
+                    parseParameter.WithFullText));
 
-            return new PassportInference()
+            return new Document<PassportPrediction>()
             {
-                Inference = response.Document.Inference.Adapt<Inference<PassportPrediction>>()
+                Inference = response.Document.Inference.Adapt<Inference<PassportPrediction>>(),
+                Ocr = response.Document.Ocr.Adapt<Ocr>()
             };
         }
     }

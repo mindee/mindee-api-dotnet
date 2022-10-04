@@ -1,6 +1,5 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using Mindee.Infrastructure.Api.Commun;
+﻿using System.Threading.Tasks;
+using Mindee.Infrastructure.Api.Common;
 using Mindee.Infrastructure.Api.Invoice;
 
 namespace Mindee.Infrastructure.Api
@@ -10,18 +9,15 @@ namespace Mindee.Infrastructure.Api
         /// <summary>
         /// Call the Mindee Invoice API.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="filename"></param>
+        /// <param name="predictParameter"><see cref="PredictParameter"/></param>
         /// <returns><see cref="PredictResponse{InvoicePrediction}"/></returns>
         /// <exception cref="MindeeApiException"></exception>
         public Task<PredictResponse<InvoicePrediction>> PredictInvoiceAsync(
-            Stream file,
-            string filename)
+            PredictParameter predictParameter)
         {
             return PredictAsync<InvoicePrediction>(
-                new Credential("invoices", "3"),
-                file,
-                filename);
+                new Endpoint("invoices", "3"),
+                predictParameter);
         }
     }
 }

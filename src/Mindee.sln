@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee", "Mindee\Mindee.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.Infrastructure", "Mindee.Infrastructure\Mindee.Infrastructure.csproj", "{737B925F-E3AF-42D1-97C8-088058C4F6AA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.Domain", "Mindee.Domain\Mindee.Domain.csproj", "{A0C8195B-BF6E-4EE3-8B4C-BC0B1AB226D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{737B925F-E3AF-42D1-97C8-088058C4F6AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{737B925F-E3AF-42D1-97C8-088058C4F6AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{737B925F-E3AF-42D1-97C8-088058C4F6AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0C8195B-BF6E-4EE3-8B4C-BC0B1AB226D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0C8195B-BF6E-4EE3-8B4C-BC0B1AB226D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0C8195B-BF6E-4EE3-8B4C-BC0B1AB226D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0C8195B-BF6E-4EE3-8B4C-BC0B1AB226D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
