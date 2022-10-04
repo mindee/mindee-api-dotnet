@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Mindee.Domain.Parsing.Common;
 using Mindee.Domain.Parsing.Passport;
 
 namespace Mindee.Domain.Parsing
@@ -13,7 +13,7 @@ namespace Mindee.Domain.Parsing
         /// Execute the parsing.
         /// </summary>
         /// <param name="parseParameter"><see cref="ParseParameter"/></param>
-        /// <returns><see cref="PassportInference"/></returns>
-        Task<PassportInference> ExecuteAsync(ParseParameter parseParameter);
+        /// <returns><see cref="Document{PassportPrediction}"/></returns>
+        Task<Document<PassportPrediction>> ExecuteAsync(ParseParameter parseParameter);
     }
 }

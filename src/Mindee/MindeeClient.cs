@@ -67,8 +67,8 @@ namespace Mindee
         /// Try to parse the current document as a passport.
         /// </summary>
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
-        /// <returns><see cref="PassportInference"/></returns>
-        public async Task<PassportInference> ParsePassportAsync(bool withFullText = false)
+        /// <returns><see cref="Document{PassportPrediction}"/></returns>
+        public async Task<Document<PassportPrediction>> ParsePassportAsync(bool withFullText = false)
         {
             if (DocumentClient == null)
             {

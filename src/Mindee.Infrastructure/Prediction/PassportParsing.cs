@@ -16,7 +16,7 @@ namespace Mindee.Infrastructure.Prediction
             _mindeeApi = mindeeApi;
         }
 
-        async Task<PassportInference> IPassportParsing.ExecuteAsync(ParseParameter parseParameter)
+        async Task<Document<PassportPrediction>> IPassportParsing.ExecuteAsync(ParseParameter parseParameter)
         {
             var response = await _mindeeApi.PredictPassportAsync(
                 new PredictParameter(
@@ -24,9 +24,10 @@ namespace Mindee.Infrastructure.Prediction
                     parseParameter.DocumentClient.Filename,
                     parseParameter.WithFullText));
 
-            return new PassportInference()
+            return new Document<PassportPrediction>()
             {
-                Inference = response.Document.Inference.Adapt<Inference<PassportPrediction>>()
+                Inference = response.Document.Inference.Adapt<Inference<PassportPrediction>>(),
+                Ocr = response.Document.Ocr.Adapt<Ocr>()
             };
         }
     }
