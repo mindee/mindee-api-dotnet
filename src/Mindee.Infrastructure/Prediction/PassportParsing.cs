@@ -21,7 +21,8 @@ namespace Mindee.Infrastructure.Prediction
             var response = await _mindeeApi.PredictPassportAsync(
                 new PredictParameter(
                     parseParameter.DocumentClient.File,
-                    parseParameter.DocumentClient.Filename));
+                    parseParameter.DocumentClient.Filename,
+                    parseParameter.WithFullText));
 
             return new PassportInference()
             {

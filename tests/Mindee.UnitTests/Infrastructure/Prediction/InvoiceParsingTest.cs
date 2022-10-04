@@ -87,6 +87,29 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             Assert.Equal(90, invoicePrediction.Inference.Pages.First().Prediction.Orientation.Degrees);
         }
 
+        [Fact]
+        public async Task Execute_WithInvoiceDataWithOcrAsked_MustSuccessForOcr()
+        {
+            IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi("inv2 - withFullText.json"));
+            var parseParameter = new ParseParameter(
+                    new DocumentClient(
+                        Stream.Null,
+                        "Bou"),
+                    true);
+            var invoicePrediction = await invoiceParsing.ExecuteAsync(parseParameter);
+
+            Assert.Equal(0.92, invoicePrediction.Ocr.MvisionV1.Pages.First().AllWords.First().Confidence);
+            Assert.Equal(new List<List<double>>()
+            {
+                new List<double>() { 0.635, 0.924 },
+                new List<double>() { 0.705, 0.924 },
+                new List<double>() { 0.705, 0.936 },
+                new List<double>() { 0.635, 0.936 },
+            }
+            , invoicePrediction.Ocr.MvisionV1.Pages.First().AllWords.First().Polygon);
+            Assert.Equal("Payment", invoicePrediction.Ocr.MvisionV1.Pages.First().AllWords.First().Text);
+        }
+
         private ParseParameter GetFakeParseParameter()
         {
             return
@@ -96,11 +119,11 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
                         "Bou"));
         }
 
-        private static MindeeApi GetMindeeApi()
+        private static MindeeApi GetMindeeApi(string fileName = "inv2.json")
         {
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When("*")
-                    .Respond("application/json", File.ReadAllText("inv2.json"));
+                    .Respond("application/json", File.ReadAllText(fileName));
 
             var config = new ConfigurationBuilder()
                             .AddInMemoryCollection(new Dictionary<string, string>() {

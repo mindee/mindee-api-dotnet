@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Mindee.Domain.Parsing.Common;
 using Mindee.Domain.Parsing.Invoice;
 
 namespace Mindee.Domain.Parsing
@@ -14,6 +14,6 @@ namespace Mindee.Domain.Parsing
         /// </summary>
         /// <param name="parseParameter"><see cref="ParseParameter"/></param>
         /// <returns><see cref="InvoiceInference"/></returns>
-        Task<InvoiceInference> ExecuteAsync(ParseParameter parseParameter);
+        Task<Document<InvoicePrediction>> ExecuteAsync(ParseParameter parseParameter);
     }
 }

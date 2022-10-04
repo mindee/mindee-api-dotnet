@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Mindee.Domain.Parsing.Common;
 using Mindee.Domain.Parsing.Invoice;
 using Mindee.Domain.Parsing.Passport;
 using Mindee.Domain.Parsing.Receipt;
@@ -25,7 +25,7 @@ namespace Mindee.Domain.Parsing
             _passportParsing = passportParsing;
         }
 
-        public async Task<InvoiceInference> WithInvoiceType(ParseParameter parseParameter)
+        public async Task<Document<InvoicePrediction>> WithInvoiceType(ParseParameter parseParameter)
         {
             return await _invoiceParsing.ExecuteAsync(parseParameter);
         }

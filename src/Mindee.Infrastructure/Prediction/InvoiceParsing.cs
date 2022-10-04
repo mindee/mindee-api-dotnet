@@ -16,16 +16,18 @@ namespace Mindee.Infrastructure.Prediction
             _mindeeApi = mindeeApi;
         }
 
-        async Task<InvoiceInference> IInvoiceParsing.ExecuteAsync(ParseParameter parseParameter)
+        async Task<Document<InvoicePrediction>> IInvoiceParsing.ExecuteAsync(ParseParameter parseParameter)
         {
             var response = await _mindeeApi.PredictInvoiceAsync(
                 new PredictParameter(
                     parseParameter.DocumentClient.File,
-                    parseParameter.DocumentClient.Filename));
+                    parseParameter.DocumentClient.Filename,
+                    parseParameter.WithFullText));
 
-            return new InvoiceInference()
+            return new Document<InvoicePrediction>()
             {
-                Inference = response.Document.Inference.Adapt<Inference<InvoicePrediction>>()
+                Inference = response.Document.Inference.Adapt<Inference<InvoicePrediction>>(),
+                Ocr = response.Document.Ocr.Adapt<Ocr>()
             };
         }
     }

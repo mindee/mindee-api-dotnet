@@ -6,11 +6,23 @@ namespace Mindee.Infrastructure.Api
     {
         public Stream File { get; }
         public string Filename { get; }
+        public bool WithFullText { get; }
 
-        public PredictParameter(Stream file, string filename)
+        public PredictParameter(
+            Stream file, 
+            string filename)
+            : this (file, filename, false)
+        {
+        }
+
+        public PredictParameter(
+            Stream file,
+            string filename,
+            bool withFullText) 
         {
             File = file;
             Filename = filename;
+            WithFullText = withFullText;
         }
     }
 }

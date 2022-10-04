@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -72,15 +73,24 @@ namespace Mindee.Infrastructure.Api
             {
                 await predictParameter.File.CopyToAsync(memoryStream);
                 request.AddFile("document", memoryStream.ToArray(), predictParameter.Filename);
+                request.AddParameter("include_mvision", predictParameter.WithFullText);
             }
 
-            var response = await _httpClient.ExecutePostAsync<PredictResponse<TModel>> (request);
+            var response = await _httpClient.ExecutePostAsync(request);
 
+            _logger.LogDebug($"HTTP response : {response.Content}");
             _logger.LogInformation($"HTTP request to {BaseUrl + request.Resource} finished.");
 
-            if (response.IsSuccessful)
+            PredictResponse<TModel> predictResponse = null; 
+
+            if (response.Content != null)
             {
-                return response.Data;
+                predictResponse = JsonSerializer.Deserialize<PredictResponse<TModel>>(response.Content);
+
+                if (response.IsSuccessful)
+                {
+                    return predictResponse;
+                }
             }
 
             string errorMessage = "Mindee API client : ";
@@ -91,9 +101,9 @@ namespace Mindee.Infrastructure.Api
                 _logger.LogCritical(errorMessage);
             }
 
-            if (response.Data != null)
+            if (predictResponse != null)
             {
-                errorMessage += response.Data.ApiRequest.Error.ToString();
+                errorMessage += predictResponse.ApiRequest.Error.ToString();
                 _logger.LogError(errorMessage);
             }
             else
