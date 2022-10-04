@@ -25,7 +25,6 @@ namespace Mindee.Extensions.DependencyInjection
         private static IServiceCollection AddInvoiceParsing(
             this IServiceCollection services)
         {
-            services.TryAddTransient<DocumentParser>();
             services.TryAddTransient<IInvoiceParsing, InvoiceParsing>();
             services.AddMindeeApi();
 
@@ -35,7 +34,6 @@ namespace Mindee.Extensions.DependencyInjection
         private static IServiceCollection AddReceiptParsing(
             this IServiceCollection services)
         {
-            services.TryAddTransient<DocumentParser>();
             services.TryAddTransient<IReceiptParsing, ReceiptParsing>();
             services.AddMindeeApi();
 
@@ -45,7 +43,6 @@ namespace Mindee.Extensions.DependencyInjection
         private static IServiceCollection AddPassportParsing(
             this IServiceCollection services)
         {
-            services.TryAddTransient<DocumentParser>();
             services.TryAddTransient<IPassportParsing, PassportParsing>();
             services.AddMindeeApi();
 

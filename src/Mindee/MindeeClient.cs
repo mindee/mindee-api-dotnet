@@ -11,12 +11,20 @@ namespace Mindee
 {
     public sealed class MindeeClient
     {
-        private readonly DocumentParser _documentParser;
+        private readonly IInvoiceParsing _invoiceParsing;
+        private readonly IReceiptParsing _receiptParsing;
+        private readonly IPassportParsing _passportParsing;
+
         public DocumentClient DocumentClient { get; private set; }
 
-        public MindeeClient(DocumentParser documentParser)
+        public MindeeClient(
+            IInvoiceParsing invoiceParsing, 
+            IReceiptParsing receiptParsing, 
+            IPassportParsing passportParsing)
         {
-            _documentParser = documentParser;
+            _invoiceParsing = invoiceParsing;
+            _receiptParsing = receiptParsing;
+            _passportParsing = passportParsing;
         }
 
         /// <summary>
@@ -44,7 +52,7 @@ namespace Mindee
                 return null;
             }
 
-            return await _documentParser.WithInvoiceType(new ParseParameter(DocumentClient, withFullText));
+            return await _invoiceParsing.ExecuteAsync(new ParseParameter(DocumentClient, withFullText));
         }
 
         /// <summary>
@@ -59,7 +67,7 @@ namespace Mindee
                 return null;
             }
 
-            return await _documentParser.WithReceiptType(new ParseParameter(DocumentClient, withFullText));
+            return await _receiptParsing.ExecuteAsync(new ParseParameter(DocumentClient, withFullText));
 
         }
 
@@ -75,7 +83,7 @@ namespace Mindee
                 return null;
             }
 
-            return await _documentParser.WithPassportType(new ParseParameter(DocumentClient, withFullText));
+            return await _passportParsing.ExecuteAsync(new ParseParameter(DocumentClient, withFullText));
         }
     }
 }
