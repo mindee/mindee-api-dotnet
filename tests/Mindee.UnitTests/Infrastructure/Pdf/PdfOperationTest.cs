@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.Infrastructure.Pdf
 
         public PdfOperationTest()
         {
-            _pdfOperation = new DocNetApi(new NullLogger<IPdfOperation>());
+            _pdfOperation = new DocNetApi(new NullLogger<DocNetApi>());
         }
 
         [Fact]
