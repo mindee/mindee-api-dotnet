@@ -16,6 +16,8 @@ namespace Mindee.Extensions.DependencyInjection
 
             services.AddParsing();
 
+            services.AddPdfOperation();
+
             return services;
         }
     }

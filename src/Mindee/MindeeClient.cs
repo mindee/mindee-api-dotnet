@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Mindee.Domain;
 using Mindee.Domain.Exceptions;
@@ -7,11 +8,13 @@ using Mindee.Domain.Parsing.Common;
 using Mindee.Domain.Parsing.Invoice;
 using Mindee.Domain.Parsing.Passport;
 using Mindee.Domain.Parsing.Receipt;
+using Mindee.Domain.Pdf;
 
 namespace Mindee
 {
     public sealed class MindeeClient
     {
+        private readonly IPdfOperation _pdfOperation;
         private readonly IInvoiceParsing _invoiceParsing;
         private readonly IReceiptParsing _receiptParsing;
         private readonly IPassportParsing _passportParsing;
@@ -19,10 +22,12 @@ namespace Mindee
         public DocumentClient DocumentClient { get; private set; }
 
         public MindeeClient(
-            IInvoiceParsing invoiceParsing, 
+            IPdfOperation pdfOperation, 
+            IInvoiceParsing invoiceParsing,
             IReceiptParsing receiptParsing, 
             IPassportParsing passportParsing)
         {
+            _pdfOperation = pdfOperation;
             _invoiceParsing = invoiceParsing;
             _receiptParsing = receiptParsing;
             _passportParsing = passportParsing;
@@ -41,6 +46,14 @@ namespace Mindee
             if(!FileVerification.IsFileNameExtensionRespectLimitation(filename))
             {
                 throw new MindeeException($"The file type '{Path.GetExtension(filename)}' is not supported.");
+            }
+
+            if (DocumentClient.Extension.Equals(
+                ".pdf",
+                StringComparison.InvariantCultureIgnoreCase) 
+                && !_pdfOperation.CanBeOpen(file))
+            {
+                throw new MindeeException($"This document is not recognized as a PDF file.");
             }
 
             return this;

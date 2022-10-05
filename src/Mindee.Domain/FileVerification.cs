@@ -24,5 +24,10 @@ namespace Mindee.Domain
 
             return _authorizedFileExtensions.Any(f => f.Equals(extension, StringComparison.InvariantCultureIgnoreCase));
         }
+
+        public static void Test()
+        {
+            
+        }
     }
 }
