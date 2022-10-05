@@ -20,6 +20,9 @@
         {
           "extras": {},
           "id": 0,
+          "orientation": {
+            "value": 0
+          },
           "prediction": {
             "category": {
               "confidence": 0.99,

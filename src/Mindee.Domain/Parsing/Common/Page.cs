@@ -13,6 +13,11 @@
         public int Id { get; set; }
 
         /// <summary>
+        /// <see cref="Orientation"/>
+        /// </summary>
+        public Orientation Orientation { get; set; }
+
+        /// <summary>
         /// The prediction model type.
         /// </summary>
         public TPredictionModel Prediction { get; set; }

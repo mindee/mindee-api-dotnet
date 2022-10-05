@@ -11,7 +11,7 @@
         /// <see cref="Inference{TPredictionModel}"/>
         /// </summary>
         public Inference<TPredictionModel> Inference { get; set; }
-        
+
         /// <summary>
         /// <see cref="Ocr"/>
         /// </summary>

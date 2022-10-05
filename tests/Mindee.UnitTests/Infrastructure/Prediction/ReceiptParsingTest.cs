@@ -80,13 +80,13 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             Assert.Equal(473.88, prediction.Inference.Pages.First().Prediction.TotalIncl.Value);
         }
 
-        [Fact(Skip = "Orientation can not be get for now.")]
+        [Fact]
         public async Task Execute_WithReceiptData_MustSuccessForOrientation()
         {
             IReceiptParsing receiptParsing = new ReceiptParsing(GetMindeeApi());
             var prediction = await receiptParsing.ExecuteAsync(GetFakeParseParameter());
 
-            Assert.Equal(90, prediction.Inference.Pages.First().Prediction.Orientation.Degrees);
+            Assert.Equal(0, prediction.Inference.Pages.First().Orientation.Value);
         }
 
         private ParseParameter GetFakeParseParameter()

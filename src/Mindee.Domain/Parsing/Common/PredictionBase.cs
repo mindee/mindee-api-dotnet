@@ -6,10 +6,5 @@
         /// <see cref="Locale"/>
         /// </summary>
         public Locale Locale { get; set; }
-
-        /// <summary>
-        /// <see cref="Orientation"/>
-        /// </summary>
-        public Orientation Orientation { get; set; }
     }
 }
