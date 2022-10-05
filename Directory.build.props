@@ -1,26 +1,27 @@
 <Project>
-	<PropertyGroup>
-		<VersionPrefix>0.1.0</VersionPrefix>
-		<Authors>Mindee</Authors>
-	</PropertyGroup>
+  <PropertyGroup>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <Authors>Mindee</Authors>
+  </PropertyGroup>
 
-	<PropertyGroup>
-		<AssemblyVersion>$(Version)</AssemblyVersion>
-		<AssemblyFileVersion>$(Version)</AssemblyFileVersion>
-		<AssemblyCompany>$(Authors)</AssemblyCompany>
-		<AssemblyCopyright>Copyright © Mindee $([System.DateTime]::UtcNow.Year)</AssemblyCopyright>
-	</PropertyGroup>
+  <PropertyGroup>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <AssemblyFileVersion>$(Version)</AssemblyFileVersion>
+    <AssemblyProduct>Mindee API Helper Library.</AssemblyProduct>
+    <AssemblyCompany>$(Authors)</AssemblyCompany>
+    <AssemblyCopyright>Copyright © Mindee $([System.DateTime]::UtcNow.Year)</AssemblyCopyright>
+  </PropertyGroup>
 
-	<PropertyGroup>
-		<Deterministic>true</Deterministic>
-		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-		<GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-		<UseVSHostingProcess>false</UseVSHostingProcess>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<LangVersion>latest</LangVersion>
-		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-		<GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-		<FileAlignment>512</FileAlignment>
-	</PropertyGroup>
+  <PropertyGroup>
+    <Deterministic>true</Deterministic>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
 </Project>

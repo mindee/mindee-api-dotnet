@@ -74,12 +74,8 @@ namespace Mindee.Infrastructure.Api
 
             _logger.LogInformation($"HTTP request to {BaseUrl}/{request.Resource} started.");
 
-            using (var memoryStream = new MemoryStream())
-            {
-                await predictParameter.File.CopyToAsync(memoryStream);
-                request.AddFile("document", memoryStream.ToArray(), predictParameter.Filename);
-                request.AddParameter("include_mvision", predictParameter.WithFullText);
-            }
+            request.AddFile("document", predictParameter.File, predictParameter.Filename);
+            request.AddParameter("include_mvision", predictParameter.WithFullText);
 
             var response = await _httpClient.ExecutePostAsync(request);
 

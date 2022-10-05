@@ -13,7 +13,7 @@ namespace Mindee.UnitTests.Infrastructure.Api
         {
             var mindeeApi = GetMindeeApi("Resources/inv2 - withFullText.json");
             var predictParameter = new PredictParameter(
-                        Stream.Null,
+                        new byte[] { byte.MinValue },
                         "Bou",
                         true);
             var predictResponse = await mindeeApi.PredictInvoiceAsync(predictParameter);

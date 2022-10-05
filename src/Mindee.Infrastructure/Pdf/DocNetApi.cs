@@ -71,18 +71,13 @@ namespace Mindee.Infrastructure.Pdf
             }
         }
 
-        public bool CanBeOpen(Stream file)
+        public bool CanBeOpen(byte[] file)
         {
             try
             {
-                using(var memoryStream = new MemoryStream())
+                using (var docReader = _docLib.GetDocReader(file, new Docnet.Core.Models.PageDimensions()))
                 {
-                    file.CopyTo(memoryStream);
-
-                    using (var docReader = _docLib.GetDocReader(memoryStream.ToArray(), new Docnet.Core.Models.PageDimensions()))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
             catch(DocnetLoadDocumentException ex)

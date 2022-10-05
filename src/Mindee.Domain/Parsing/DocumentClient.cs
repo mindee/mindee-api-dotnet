@@ -10,7 +10,7 @@ namespace Mindee.Domain
         /// <summary>
         /// The file as a stream.
         /// </summary>
-        public Stream File { get; }
+        public byte[] File { get; }
 
         /// <summary>
         /// The name of the file.
@@ -22,7 +22,7 @@ namespace Mindee.Domain
         /// </summary>
         public string Extension { get; }
 
-        public DocumentClient(Stream file, string filename)
+        public DocumentClient(byte[] file, string filename)
         {
             File = file;
             Filename = filename;
