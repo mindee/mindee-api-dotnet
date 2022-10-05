@@ -1,16 +1,20 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Mindee.Domain;
+using Mindee.Domain.Exceptions;
 using Mindee.Domain.Parsing;
 using Mindee.Domain.Parsing.Common;
 using Mindee.Domain.Parsing.Invoice;
 using Mindee.Domain.Parsing.Passport;
 using Mindee.Domain.Parsing.Receipt;
+using Mindee.Domain.Pdf;
 
 namespace Mindee
 {
     public sealed class MindeeClient
     {
+        private readonly IPdfOperation _pdfOperation;
         private readonly IInvoiceParsing _invoiceParsing;
         private readonly IReceiptParsing _receiptParsing;
         private readonly IPassportParsing _passportParsing;
@@ -18,10 +22,12 @@ namespace Mindee
         public DocumentClient DocumentClient { get; private set; }
 
         public MindeeClient(
-            IInvoiceParsing invoiceParsing, 
+            IPdfOperation pdfOperation, 
+            IInvoiceParsing invoiceParsing,
             IReceiptParsing receiptParsing, 
             IPassportParsing passportParsing)
         {
+            _pdfOperation = pdfOperation;
             _invoiceParsing = invoiceParsing;
             _receiptParsing = receiptParsing;
             _passportParsing = passportParsing;
@@ -30,12 +36,25 @@ namespace Mindee
         /// <summary>
         /// Load the document to perform some checks.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="filename"></param>
-        /// <returns></returns>
+        /// <param name="file">The stream file.</param>
+        /// <param name="filename">The file name.</param>
+        /// <exception cref="MindeeException"></exception>
         public MindeeClient LoadDocument(Stream file, string filename)
         {
             DocumentClient = new DocumentClient(file, filename);
+
+            if(!FileVerification.IsFileNameExtensionRespectLimitation(filename))
+            {
+                throw new MindeeException($"The file type '{Path.GetExtension(filename)}' is not supported.");
+            }
+
+            if (DocumentClient.Extension.Equals(
+                ".pdf",
+                StringComparison.InvariantCultureIgnoreCase) 
+                && !_pdfOperation.CanBeOpen(file))
+            {
+                throw new MindeeException($"This document is not recognized as a PDF file.");
+            }
 
             return this;
         }
@@ -45,6 +64,7 @@ namespace Mindee
         /// </summary>
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
         /// <returns><see cref="Document{InvoicePrediction}"/></returns>
+        /// <exception cref="MindeeException"></exception>
         public async Task<Document<InvoicePrediction>> ParseInvoiceAsync(bool withFullText = false)
         {
             if(DocumentClient == null)
@@ -60,6 +80,7 @@ namespace Mindee
         /// </summary>
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
         /// <returns><see cref="Document{ReceiptPrediction}"/></returns>
+        /// <exception cref="MindeeException"></exception>
         public async Task<Document<ReceiptPrediction>> ParseReceiptAsync(bool withFullText = false)
         {
             if (DocumentClient == null)
@@ -76,6 +97,7 @@ namespace Mindee
         /// </summary>
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
         /// <returns><see cref="Document{PassportPrediction}"/></returns>
+        /// <exception cref="MindeeException"></exception>
         public async Task<Document<PassportPrediction>> ParsePassportAsync(bool withFullText = false)
         {
             if (DocumentClient == null)

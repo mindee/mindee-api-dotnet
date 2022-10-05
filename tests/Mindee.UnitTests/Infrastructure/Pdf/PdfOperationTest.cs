@@ -1,5 +1,6 @@
 ﻿using Mindee.Infrastructure.Pdf;
 using Mindee.Domain.Pdf;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Mindee.UnitTests.Infrastructure.Pdf
 {
@@ -9,13 +10,13 @@ namespace Mindee.UnitTests.Infrastructure.Pdf
 
         public PdfOperationTest()
         {
-            _pdfOperation = new DocNetApi();
+            _pdfOperation = new DocNetApi(new NullLogger<DocNetApi>());
         }
 
         [Fact]
         public async Task Split_With2Pages_Wants1Page_MustGetOnly1Page()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("sample_2pages.pdf"), 2, 2);
+            var splitQuery = new SplitQuery(File.OpenRead("Resources/sample_2pages.pdf"), 2, 2);
 
             var splittedPdf = await _pdfOperation.SplitAsync(splitQuery);
 
@@ -27,7 +28,7 @@ namespace Mindee.UnitTests.Infrastructure.Pdf
         [Fact]
         public async Task Split_With2Pages_Wants3Page_MustFail()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("sample_2pages.pdf"), 1, 3);
+            var splitQuery = new SplitQuery(File.OpenRead("Resources/sample_2pages.pdf"), 1, 3);
 
             await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => _pdfOperation.SplitAsync(splitQuery));
         }
@@ -35,7 +36,7 @@ namespace Mindee.UnitTests.Infrastructure.Pdf
         [Fact]
         public async Task Split_With2Pages_WantsStartPageTo0_MustFail()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("sample_2pages.pdf"), 0, 3);
+            var splitQuery = new SplitQuery(File.OpenRead("Resources/sample_2pages.pdf"), 0, 3);
 
             await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => _pdfOperation.SplitAsync(splitQuery));
         }
@@ -43,7 +44,7 @@ namespace Mindee.UnitTests.Infrastructure.Pdf
         [Fact]
         public async Task Split_OtherThanAPdf_MustFail()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("Logo-docTR-full-black.png"), 0, 3);
+            var splitQuery = new SplitQuery(File.OpenRead("Resources/Logo-docTR-full-black.png"), 0, 3);
 
             await Assert.ThrowsAsync<ArgumentException>(() => _pdfOperation.SplitAsync(splitQuery));
         }

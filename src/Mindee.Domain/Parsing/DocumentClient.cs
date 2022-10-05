@@ -17,10 +17,16 @@ namespace Mindee.Domain
         /// </summary>
         public string Filename { get; }
 
+        /// <summary>
+        /// Extension file's.
+        /// </summary>
+        public string Extension { get; }
+
         public DocumentClient(Stream file, string filename)
         {
             File = file;
             Filename = filename;
+            Extension = Path.GetExtension(Filename);
         }
     }
 }

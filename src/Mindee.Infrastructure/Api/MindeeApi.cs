@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Mindee.Domain.Exceptions;
 using Mindee.Infrastructure.Api.Common;
 using RestSharp;
 
@@ -112,7 +113,7 @@ namespace Mindee.Infrastructure.Api
                 _logger.LogError(errorMessage);
             }
 
-            throw new MindeeApiException(errorMessage);
+            throw new MindeeException(errorMessage);
         }
     }
 }

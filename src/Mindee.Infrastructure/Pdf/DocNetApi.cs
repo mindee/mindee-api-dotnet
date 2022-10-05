@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Docnet.Core;
 using Docnet.Core.Exceptions;
+using Microsoft.Extensions.Logging;
 using Mindee.Domain.Pdf;
 
 namespace Mindee.Infrastructure.Pdf
@@ -11,6 +12,12 @@ namespace Mindee.Infrastructure.Pdf
         : IPdfOperation
     {
         private readonly DocLib _docLib = DocLib.Instance;
+        private readonly ILogger _logger;
+
+        public DocNetApi(ILogger<IPdfOperation> logger)
+        {
+            _logger = logger;
+        }
 
         public async Task<SplittedPdf> SplitAsync(SplitQuery splitQuery)
         {
@@ -61,6 +68,27 @@ namespace Mindee.Infrastructure.Pdf
             catch (DocnetLoadDocumentException ex)
             {
                 throw new ArgumentException(nameof(file), ex.ToString());
+            }
+        }
+
+        public bool CanBeOpen(Stream file)
+        {
+            try
+            {
+                using(var memoryStream = new MemoryStream())
+                {
+                    file.CopyTo(memoryStream);
+
+                    using (var docReader = _docLib.GetDocReader(memoryStream.ToArray(), new Docnet.Core.Models.PageDimensions()))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch(DocnetLoadDocumentException ex)
+            {
+                _logger.LogError(ex, null);
+                return false;
             }
         }
     }

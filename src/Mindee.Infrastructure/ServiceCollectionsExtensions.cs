@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Mindee.Infrastructure.Api;
 using Mindee.Infrastructure.Prediction;
 using Mindee.Domain.Parsing;
+using Mindee.Domain.Pdf;
+using Mindee.Infrastructure.Pdf;
 
 namespace Mindee.Extensions.DependencyInjection
 {
@@ -18,6 +20,14 @@ namespace Mindee.Extensions.DependencyInjection
             services.AddInvoiceParsing();
             services.AddReceiptParsing();
             services.AddPassportParsing();
+
+            return services;
+        }
+
+        public static IServiceCollection AddPdfOperation(
+            this IServiceCollection services)
+        {
+            services.AddSingleton<IPdfOperation, DocNetApi>();
 
             return services;
         }

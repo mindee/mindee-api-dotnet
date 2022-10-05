@@ -102,7 +102,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
         {
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When("*")
-                    .Respond("application/json", File.ReadAllText("receipt_response_full_v3.json"));
+                    .Respond("application/json", File.ReadAllText("Resources/receipt_response_full_v3.json"));
 
             var config = new ConfigurationBuilder()
                             .AddInMemoryCollection(new Dictionary<string, string>() {

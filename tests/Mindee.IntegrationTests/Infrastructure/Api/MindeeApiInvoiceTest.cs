@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
+using Mindee.Domain.Exceptions;
 using Mindee.Infrastructure.Api;
 using Mindee.Infrastructure.Api.Common;
 using Mindee.Infrastructure.Api.Invoice;
@@ -15,7 +16,7 @@ namespace Mindee.IntegrationTests.Infrastructure.Api
         {
             var api = GetMindeeApi("WrongKey");
 
-            await Assert.ThrowsAsync<MindeeApiException>(
+            await Assert.ThrowsAsync<MindeeException>(
                 () => api.PredictInvoiceAsync(new PredictParameter(File.OpenRead("sample_2pages.pdf"), "sample_2pages.pdf")));
         }
 
