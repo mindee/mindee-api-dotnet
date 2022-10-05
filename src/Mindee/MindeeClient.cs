@@ -67,6 +67,20 @@ namespace Mindee
             return this;
         }
 
+        /// <summary>
+        /// Load the document to perform some checks.
+        /// </summary>
+        /// <param name="fileinfo">File information from the file to load from disk.</param>
+        /// <exception cref="MindeeException"></exception>
+        public MindeeClient LoadDocument(FileInfo fileinfo)
+        {
+            DocumentClient = new DocumentClient(File.ReadAllBytes(fileinfo.FullName), fileinfo.Name);
+
+            LoadDocument();
+
+            return this;
+        }
+
         private void LoadDocument()
         {
             if (!FileVerification.IsFileNameExtensionRespectLimitation(DocumentClient.Filename))
