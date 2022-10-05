@@ -93,7 +93,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IInvoiceParsing invoiceParsing = new InvoiceParsing(GetMindeeApi("Resources/inv2 - withFullText.json"));
             var parseParameter = new ParseParameter(
                     new DocumentClient(
-                        Stream.Null,
+                        new byte[] { byte.MinValue },
                         "Bou"),
                     true);
             var invoicePrediction = await invoiceParsing.ExecuteAsync(parseParameter);
@@ -115,7 +115,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             return
                 new ParseParameter(
                     new DocumentClient(
-                        Stream.Null,
+                        new byte[] { byte.MinValue },
                         "Bou"));
         }
 

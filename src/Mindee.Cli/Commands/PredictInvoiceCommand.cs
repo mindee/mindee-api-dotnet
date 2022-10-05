@@ -34,7 +34,7 @@ namespace Mindee.Cli.Commands
                 _logger.LogInformation("About to predict an invoice..");
 
                 var invoicePrediction = await _mindeeClient
-                    .LoadDocument(File.OpenRead(FilePath), Path.GetFileName(FilePath))
+                    .LoadDocument(new FileInfo(FilePath))
                     .ParseInvoiceAsync(Words);
 
                 _logger.LogInformation("See the associated JSON below :");

@@ -94,7 +94,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             return
                 new ParseParameter(
                     new DocumentClient(
-                        Stream.Null,
+                        new byte[] { byte.MinValue },
                         "Bou"));
         }
 

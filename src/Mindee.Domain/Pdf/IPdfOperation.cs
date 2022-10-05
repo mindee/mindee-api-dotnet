@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace Mindee.Domain.Pdf
@@ -22,6 +21,6 @@ namespace Mindee.Domain.Pdf
         /// Check if the file can be opened.
         /// </summary>
         /// <param name="file">The file data.</param>
-        bool CanBeOpen(Stream file);
+        bool CanBeOpen(byte[] file);
     }
 }
