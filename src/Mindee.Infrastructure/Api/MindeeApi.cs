@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -44,6 +46,8 @@ namespace Mindee.Infrastructure.Api
             var client = new RestClient(options,
                 p => p.Add("Authorization", $"Token {_apiKey}")
             );
+
+            client.AddDefaultHeader("User-Agent", BuildUserAgent());
 
             return client;
         }
@@ -114,6 +118,13 @@ namespace Mindee.Infrastructure.Api
             }
 
             throw new MindeeException(errorMessage);
+        }
+
+        private string BuildUserAgent()
+        {
+            return $"mindee-api-dotnet@v{Assembly.GetExecutingAssembly().GetName().Version}" 
+                + $" dotnet-v{Environment.Version}"
+                + $" {Environment.OSVersion}";
         }
     }
 }
