@@ -10,8 +10,5 @@ namespace Mindee.Infrastructure.Api.Common
 
         [JsonPropertyName("locale")]
         public Locale Locale { get; set; }
-
-        [JsonPropertyName("orientation")]
-        public Orientation Orientation { get; set; }
     }
 }

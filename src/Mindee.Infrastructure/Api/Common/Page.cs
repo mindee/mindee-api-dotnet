@@ -10,6 +10,9 @@ namespace Mindee.Infrastructure.Api.Common
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
+        [JsonPropertyName("orientation")]
+        public Orientation Orientation { get; set; }
+
         [JsonPropertyName("prediction")]
         public TModel Prediction { get; set; }
     }

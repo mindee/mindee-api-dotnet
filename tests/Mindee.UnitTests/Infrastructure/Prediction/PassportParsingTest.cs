@@ -125,7 +125,7 @@ namespace Mindee.UnitTests.Infrastructure.Prediction
             IPassportParsing passportParsing = new PassportParsing(GetMindeeApi());
             var prediction = await passportParsing.ExecuteAsync(GetFakeParseParameter());
 
-            Assert.Equal(90, prediction.Inference.Pages.First().Prediction.Orientation.Degrees);
+            Assert.Equal(180, prediction.Inference.Pages.First().Orientation.Value);
         }
 
         [Fact]

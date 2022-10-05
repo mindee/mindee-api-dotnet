@@ -20,6 +20,9 @@
         {
           "extras": {},
           "id": 0,
+          "orientation": {
+            "value": 180
+          },
           "prediction": {
             "birth_date": {
               "confidence": 0.99,
