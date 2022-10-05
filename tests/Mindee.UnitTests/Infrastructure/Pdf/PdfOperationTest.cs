@@ -1,5 +1,6 @@
 ﻿using Mindee.Infrastructure.Pdf;
 using Mindee.Domain.Pdf;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Mindee.UnitTests.Infrastructure.Pdf
 {
@@ -9,7 +10,7 @@ namespace Mindee.UnitTests.Infrastructure.Pdf
 
         public PdfOperationTest()
         {
-            _pdfOperation = new DocNetApi();
+            _pdfOperation = new DocNetApi(new NullLogger<IPdfOperation>());
         }
 
         [Fact]
