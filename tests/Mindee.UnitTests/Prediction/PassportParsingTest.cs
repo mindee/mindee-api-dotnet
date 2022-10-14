@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using RichardSzalay.MockHttp;
-using MindeeApi = Mindee.Domain.Parsing.MindeeApi;
-using PredictParameter = Mindee.Domain.Parsing.PredictParameter;
+using MindeeApi = Mindee.Parsing.MindeeApi;
+using PredictParameter = Mindee.Parsing.PredictParameter;
 
 namespace Mindee.UnitTests.Prediction
 {

@@ -1,4 +1,4 @@
-﻿using Mindee.Domain;
+﻿using Mindee;
 
 namespace Mindee.UnitTests
 {

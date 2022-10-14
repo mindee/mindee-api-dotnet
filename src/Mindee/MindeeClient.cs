@@ -1,36 +1,34 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Mindee.Domain;
-using Mindee.Domain.Exceptions;
-using Mindee.Domain.Parsing;
-using Mindee.Domain.Parsing.Common;
-using Mindee.Domain.Parsing.Invoice;
-using Mindee.Domain.Parsing.Passport;
-using Mindee.Domain.Parsing.Receipt;
-using Mindee.Domain.Pdf;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Mindee.Exceptions;
+using Mindee.Parsing;
+using Mindee.Parsing.Common;
+using Mindee.Parsing.Invoice;
+using Mindee.Parsing.Passport;
+using Mindee.Parsing.Receipt;
+using Mindee.Pdf;
 
-namespace Mindee
+namespace Mindee.Domain
 {
     public sealed class MindeeClient
     {
+        private readonly ILogger _logger;
         private readonly IPdfOperation _pdfOperation;
-        private readonly IInvoiceParsing _invoiceParsing;
-        private readonly IReceiptParsing _receiptParsing;
-        private readonly IPassportParsing _passportParsing;
+        private readonly MindeeApi _mindeeApi;
 
         public DocumentClient DocumentClient { get; private set; }
 
         public MindeeClient(
-            IPdfOperation pdfOperation, 
-            IInvoiceParsing invoiceParsing,
-            IReceiptParsing receiptParsing, 
-            IPassportParsing passportParsing)
+            ILogger<MindeeClient> logger, 
+            IPdfOperation pdfOperation,
+            IConfiguration configuration)
         {
+            _logger = logger;
             _pdfOperation = pdfOperation;
-            _invoiceParsing = invoiceParsing;
-            _receiptParsing = receiptParsing;
-            _passportParsing = passportParsing;
+            _mindeeApi = new MindeeApi(_logger, configuration);
         }
 
         /// <summary>
@@ -110,7 +108,11 @@ namespace Mindee
                 return null;
             }
 
-            return await _invoiceParsing.ExecuteAsync(new ParseParameter(DocumentClient, withFullText));
+            return await _mindeeApi.PredictInvoiceAsync(
+                new PredictParameter(
+                    DocumentClient.File,
+                    DocumentClient.Filename,
+                    withFullText));
         }
 
         /// <summary>
@@ -126,8 +128,11 @@ namespace Mindee
                 return null;
             }
 
-            return await _receiptParsing.ExecuteAsync(new ParseParameter(DocumentClient, withFullText));
-
+            return await _mindeeApi.PredictReceiptAsync(
+                new PredictParameter(
+                    DocumentClient.File,
+                    DocumentClient.Filename,
+                    withFullText));
         }
 
         /// <summary>
@@ -136,14 +141,17 @@ namespace Mindee
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
         /// <returns><see cref="Document{PassportPrediction}"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<Document<PassportPrediction>> ParsePassportAsync(bool withFullText = false)
+        public async Task<Document<PassportPrediction>> ParsePassportAsync()
         {
             if (DocumentClient == null)
             {
                 return null;
             }
 
-            return await _passportParsing.ExecuteAsync(new ParseParameter(DocumentClient, withFullText));
+            return await _mindeeApi.PredictPassportAsync(
+                new PredictParameter(
+                    DocumentClient.File,
+                    DocumentClient.Filename));
         }
     }
 }

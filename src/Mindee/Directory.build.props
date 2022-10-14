@@ -1,18 +1,5 @@
 <Project>
   <PropertyGroup>
-    <VersionPrefix>0.1.0</VersionPrefix>
-    <Authors>Mindee</Authors>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <AssemblyVersion>$(Version)</AssemblyVersion>
-    <AssemblyFileVersion>$(Version)</AssemblyFileVersion>
-    <AssemblyProduct>Mindee API Helper Library.</AssemblyProduct>
-    <AssemblyCompany>$(Authors)</AssemblyCompany>
-    <AssemblyCopyright>Copyright © Mindee $([System.DateTime]::UtcNow.Year)</AssemblyCopyright>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 </Project>

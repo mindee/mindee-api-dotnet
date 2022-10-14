@@ -53,7 +53,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Mindee.Infrastructure\Mindee.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Mindee\Mindee.csproj" />
   </ItemGroup>
 
 </Project>

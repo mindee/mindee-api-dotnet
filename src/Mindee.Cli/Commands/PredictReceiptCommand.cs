@@ -2,6 +2,7 @@
 using System.CommandLine;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using Mindee.Domain;
 
 namespace Mindee.Cli.Commands
 {

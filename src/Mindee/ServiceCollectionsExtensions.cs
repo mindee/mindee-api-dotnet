@@ -1,10 +1,20 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Mindee.Domain;
+using Mindee.Pdf;
 
 namespace Mindee.Extensions.DependencyInjection
 {
     public static class ServiceCollectionsExtensions
     {
+        public static IServiceCollection AddPdfOperation(
+            this IServiceCollection services)
+        {
+            services.AddSingleton<IPdfOperation, DocNetApi>();
+
+            return services;
+        }
+
         /// <summary>
         /// Configure the Mindee client in the DI.
         /// </summary>
@@ -13,8 +23,6 @@ namespace Mindee.Extensions.DependencyInjection
             this IServiceCollection services)
         {
             services.TryAddTransient<MindeeClient>();
-
-            services.AddParsing();
 
             services.AddPdfOperation();
 

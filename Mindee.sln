@@ -7,14 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		Directory.Build.props = Directory.build.props
+		Directory.Build.props = Directory.Build.props
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.Infrastructure", "src\Mindee.Infrastructure\Mindee.Infrastructure.csproj", "{E8BF882A-F6B1-4D8D-9282-2AE59FAA143D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee", "src\Mindee\Mindee.csproj", "{07AD742F-3D0F-4C4B-95F2-C3E88A71FBF3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C018C686-8082-437A-9888-62F0B95B985A}"
 EndProject
@@ -26,9 +22,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.IntegrationTests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.Cli", "src\Mindee.Cli\Mindee.Cli.csproj", "{FAFCE7C5-4D8A-494C-979A-525DD3B421A2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.Domain", "src\Mindee.Domain\Mindee.Domain.csproj", "{27880558-4F4F-47E9-A097-CB076C101634}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "interfaces", "interfaces", "{70B4C864-6795-48C7-8E60-AE5CD5A04C2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee", "src\Mindee\Mindee.csproj", "{27880558-4F4F-47E9-A097-CB076C101634}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,14 +30,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E8BF882A-F6B1-4D8D-9282-2AE59FAA143D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8BF882A-F6B1-4D8D-9282-2AE59FAA143D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8BF882A-F6B1-4D8D-9282-2AE59FAA143D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8BF882A-F6B1-4D8D-9282-2AE59FAA143D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07AD742F-3D0F-4C4B-95F2-C3E88A71FBF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07AD742F-3D0F-4C4B-95F2-C3E88A71FBF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07AD742F-3D0F-4C4B-95F2-C3E88A71FBF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07AD742F-3D0F-4C4B-95F2-C3E88A71FBF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1228287D-8E16-4947-B821-25180A36F9F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1228287D-8E16-4947-B821-25180A36F9F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1228287D-8E16-4947-B821-25180A36F9F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -65,13 +51,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E8BF882A-F6B1-4D8D-9282-2AE59FAA143D} = {4E2BEA7B-A744-4D1B-A5F0-87E9186BE0C0}
-		{07AD742F-3D0F-4C4B-95F2-C3E88A71FBF3} = {4E2BEA7B-A744-4D1B-A5F0-87E9186BE0C0}
 		{1228287D-8E16-4947-B821-25180A36F9F3} = {C018C686-8082-437A-9888-62F0B95B985A}
 		{8F3E7E11-74E6-4C22-B05F-0B4CE6442FCC} = {C018C686-8082-437A-9888-62F0B95B985A}
-		{FAFCE7C5-4D8A-494C-979A-525DD3B421A2} = {70B4C864-6795-48C7-8E60-AE5CD5A04C2D}
+		{FAFCE7C5-4D8A-494C-979A-525DD3B421A2} = {4E2BEA7B-A744-4D1B-A5F0-87E9186BE0C0}
 		{27880558-4F4F-47E9-A097-CB076C101634} = {4E2BEA7B-A744-4D1B-A5F0-87E9186BE0C0}
-		{70B4C864-6795-48C7-8E60-AE5CD5A04C2D} = {4E2BEA7B-A744-4D1B-A5F0-87E9186BE0C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A4CA814-44CB-4687-86AF-9230DD686585}

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
-using Mindee.Domain.Parsing;
+using Mindee.Parsing;
 using RichardSzalay.MockHttp;
 
 namespace Mindee.UnitTests.Prediction
