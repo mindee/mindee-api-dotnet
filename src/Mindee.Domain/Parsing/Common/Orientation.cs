@@ -1,4 +1,6 @@
-﻿namespace Mindee.Domain.Parsing.Common
+﻿using System.Text.Json.Serialization;
+
+namespace Mindee.Domain.Parsing.Common
 {
     /// <summary>
     /// The orientation which was applied from the original page.
@@ -9,6 +11,7 @@
         /// Degrees of the rotation
         /// </summary>
         /// <example>90</example>
+        [JsonPropertyName("value")]
         public int Value { get; set; }
     }
 }

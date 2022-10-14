@@ -1,7 +1,7 @@
 ﻿using Mindee.Domain.Pdf;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Mindee.UnitTests.Infrastructure.Pdf
+namespace Mindee.UnitTests.Domain.Pdf
 {
     public class PdfOperationTest
     {

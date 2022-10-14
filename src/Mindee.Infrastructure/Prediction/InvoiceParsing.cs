@@ -4,6 +4,8 @@ using Mindee.Infrastructure.Api;
 using Mindee.Domain.Parsing;
 using Mindee.Domain.Parsing.Common;
 using Mindee.Domain.Parsing.Invoice;
+using MindeeApi = Mindee.Infrastructure.Api.MindeeApi;
+using PredictParameter = Mindee.Infrastructure.Api.PredictParameter;
 
 namespace Mindee.Infrastructure.Prediction
 {

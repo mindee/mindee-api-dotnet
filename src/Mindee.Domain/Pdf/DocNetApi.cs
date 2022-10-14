@@ -6,7 +6,7 @@ using Docnet.Core.Exceptions;
 using Microsoft.Extensions.Logging;
 using Mindee.Domain.Pdf;
 
-namespace Mindee.Infrastructure.Pdf
+namespace Mindee.Domain.Pdf
 {
     internal sealed class DocNetApi
         : IPdfOperation

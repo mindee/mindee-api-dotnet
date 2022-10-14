@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Mapster;
-using Mindee.Infrastructure.Api;
 using Mindee.Domain.Parsing;
 using Mindee.Domain.Parsing.Common;
 using Mindee.Domain.Parsing.Passport;
+using MindeeApi = Mindee.Infrastructure.Api.MindeeApi;
+using PredictParameter = Mindee.Infrastructure.Api.PredictParameter;
 
 namespace Mindee.Infrastructure.Prediction
 {

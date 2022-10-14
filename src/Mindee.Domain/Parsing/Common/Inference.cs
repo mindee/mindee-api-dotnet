@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Mindee.Domain.Parsing.Common
 {
@@ -12,6 +13,8 @@ namespace Mindee.Domain.Parsing.Common
         /// <summary>
         /// The pages and the associated values which was detected on the document.
         /// </summary>
+        [JsonPropertyName("pages")]
         public List<Page<TPredictionModel>> Pages { get; set; }
     }
 }
+

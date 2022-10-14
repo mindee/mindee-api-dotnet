@@ -1,4 +1,6 @@
-﻿namespace Mindee.Domain.Parsing.Common
+﻿using System.Text.Json.Serialization;
+
+namespace Mindee.Domain.Parsing.Common
 {
     public class Tax : BaseField
     {
@@ -6,12 +8,14 @@
         /// The rate of the taxe.
         /// </summary>
         /// <example>5</example>
+        [JsonPropertyName("rate")]
         public double? Rate { get; set; }
 
         /// <summary>
         /// The total amount of the tax.
         /// </summary>
         /// <example>10.5</example>
+        [JsonPropertyName("value")]
         public double? Value { get; set; }
     }
 }

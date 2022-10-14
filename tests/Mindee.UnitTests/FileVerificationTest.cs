@@ -1,6 +1,6 @@
 ﻿using Mindee.Domain;
 
-namespace Mindee.UnitTests.Domain
+namespace Mindee.UnitTests
 {
     public class FileVerificationTest
     {

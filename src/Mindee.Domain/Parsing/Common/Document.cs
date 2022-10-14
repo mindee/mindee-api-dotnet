@@ -1,4 +1,6 @@
-﻿namespace Mindee.Domain.Parsing.Common
+﻿using System.Text.Json.Serialization;
+
+namespace Mindee.Domain.Parsing.Common
 {
     /// <summary>
     /// Define the parsed document.
@@ -10,11 +12,13 @@
         /// <summary>
         /// <see cref="Inference{TPredictionModel}"/>
         /// </summary>
+        [JsonPropertyName("inference")]
         public Inference<TPredictionModel> Inference { get; set; }
 
         /// <summary>
         /// <see cref="Ocr"/>
         /// </summary>
+        [JsonPropertyName("ocr")]
         public Ocr Ocr { get; set; }
     }
 }

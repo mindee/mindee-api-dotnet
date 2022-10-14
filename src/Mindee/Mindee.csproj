@@ -7,5 +7,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Mindee.Infrastructure\Mindee.Infrastructure.csproj" />
   </ItemGroup>
-
+  
 </Project>
