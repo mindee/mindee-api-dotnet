@@ -22,7 +22,7 @@ namespace Mindee.Domain
         public DocumentClient DocumentClient { get; private set; }
 
         public MindeeClient(
-            ILogger<MindeeClient> logger, 
+            ILogger<MindeeClient> logger,
             IPdfOperation pdfOperation,
             IConfiguration configuration)
         {
@@ -103,7 +103,7 @@ namespace Mindee.Domain
         /// <exception cref="MindeeException"></exception>
         public async Task<Document<InvoicePrediction>> ParseInvoiceAsync(bool withFullText = false)
         {
-            if(DocumentClient == null)
+            if (DocumentClient == null)
             {
                 return null;
             }

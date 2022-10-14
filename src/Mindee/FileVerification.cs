@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace Mindee
 {
-    static public class FileVerification
+    public static class FileVerification
     {
         private static readonly string[] _authorizedFileExtensions =
-            { 
+            {
                 ".pdf",
                 ".webp",
                 ".jpg",
@@ -27,7 +27,6 @@ namespace Mindee
 
         public static void Test()
         {
-            
         }
     }
 }

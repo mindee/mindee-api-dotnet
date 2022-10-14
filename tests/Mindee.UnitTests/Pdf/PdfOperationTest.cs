@@ -1,5 +1,5 @@
-﻿using Mindee.Pdf;
-using Microsoft.Extensions.Logging.Abstractions;
+﻿using Microsoft.Extensions.Logging.Abstractions;
+using Mindee.Pdf;
 
 namespace Mindee.UnitTests.Domain.Pdf
 {

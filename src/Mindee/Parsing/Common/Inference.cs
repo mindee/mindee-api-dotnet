@@ -17,4 +17,3 @@ namespace Mindee.Parsing.Common
         public List<Page<TPredictionModel>> Pages { get; set; }
     }
 }
-

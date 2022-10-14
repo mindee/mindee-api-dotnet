@@ -25,7 +25,7 @@ namespace Mindee.UnitTests.Prediction
 
             Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Country.Value);
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Country.Confidence);
-            Assert.Equal(0, prediction.Inference.Pages.First().Id); 
+            Assert.Equal(0, prediction.Inference.Pages.First().Id);
             Assert.Equal(new List<List<double>>()
             {
                 new List<double>() { 0.2988, 0.9426 },
@@ -43,7 +43,6 @@ namespace Mindee.UnitTests.Prediction
             var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
 
             Assert.Equal("string", prediction.Inference.Pages.First().Prediction.IdNumber.Value);
-
         }
 
         [Fact]
@@ -59,7 +58,6 @@ namespace Mindee.UnitTests.Prediction
             Assert.Equal("string", firstGivenNames!.Value);
             Assert.Equal(0.99, firstGivenNames!.Confidence);
             Assert.Equal(0, prediction.Inference.Pages.First().Id);
-
         }
 
         [Fact]

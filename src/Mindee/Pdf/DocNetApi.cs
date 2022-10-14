@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Docnet.Core;
 using Docnet.Core.Exceptions;
 using Microsoft.Extensions.Logging;
-using Mindee.Pdf;
 
 namespace Mindee.Pdf
 {
@@ -80,7 +79,7 @@ namespace Mindee.Pdf
                     return true;
                 }
             }
-            catch(DocnetLoadDocumentException ex)
+            catch (DocnetLoadDocumentException ex)
             {
                 _logger.LogError(ex, null);
                 return false;

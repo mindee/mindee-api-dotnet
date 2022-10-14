@@ -21,6 +21,5 @@ namespace Mindee.Parsing.Common
 
         [JsonPropertyName("page_id")]
         public int? PageId { get; set; }
-
     }
 }

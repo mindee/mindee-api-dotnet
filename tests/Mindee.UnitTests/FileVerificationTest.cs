@@ -1,6 +1,4 @@
-﻿using Mindee;
-
-namespace Mindee.UnitTests
+﻿namespace Mindee.UnitTests
 {
     public class FileVerificationTest
     {

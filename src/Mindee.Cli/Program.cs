@@ -22,7 +22,6 @@ var runner = BuildCommandLine()
     .UseDefaults().Build();
 
 return await runner.InvokeAsync(args);
-        
 
 static CommandLineBuilder BuildCommandLine()
 {

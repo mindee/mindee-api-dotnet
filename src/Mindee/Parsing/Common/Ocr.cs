@@ -20,7 +20,7 @@ namespace Mindee.Parsing.Common
         [JsonPropertyName("all_words")]
         public List<AllWord> AllWords { get; set; }
     }
-    
+
     public class AllWord
     {
         [JsonPropertyName("confidence")]
