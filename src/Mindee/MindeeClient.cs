@@ -119,26 +119,6 @@ namespace Mindee.Domain
         }
 
         /// <summary>
-        /// Try to parse the current document as a receipt.
-        /// </summary>
-        /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
-        /// <returns><see cref="Document{ReceiptPrediction}"/></returns>
-        /// <exception cref="MindeeException"></exception>
-        public async Task<Document<ReceiptPrediction>> ParseReceiptAsync(bool withFullText = false)
-        {
-            if (DocumentClient == null)
-            {
-                return null;
-            }
-
-            return await _mindeeApi.PredictReceiptAsync(
-                new PredictParameter(
-                    DocumentClient.File,
-                    DocumentClient.Filename,
-                    withFullText));
-        }
-
-        /// <summary>
         /// Try to parse the current document as a passport.
         /// </summary>
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>

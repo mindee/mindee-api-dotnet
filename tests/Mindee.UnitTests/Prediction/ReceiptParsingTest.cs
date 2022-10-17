@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Parsing;
+using Mindee.Parsing.Receipt;
 using RichardSzalay.MockHttp;
 using MindeeApi = Mindee.Parsing.MindeeApi;
 
@@ -11,8 +12,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccess()
         {
-            var receiptParsing = GetMindeeApi();
-            var prediction = await receiptParsing.PredictReceiptAsync(GetFakePredictParameter());
+            var mindeeAPi = GetMindeeApi();
+            var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.NotNull(prediction);
         }
@@ -20,8 +21,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccessForCategory()
         {
-            var receiptParsing = GetMindeeApi();
-            var prediction = await receiptParsing.PredictReceiptAsync(GetFakePredictParameter());
+            var mindeeAPi = GetMindeeApi();
+            var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Category.Confidence);
             Assert.Equal("transport", prediction.Inference.Pages.First().Prediction.Category.Value);
@@ -30,8 +31,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccessForDate()
         {
-            var receiptParsing = GetMindeeApi();
-            var prediction = await receiptParsing.PredictReceiptAsync(GetFakePredictParameter());
+            var mindeeAPi = GetMindeeApi();
+            var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Date.Confidence);
             Assert.Equal(0, prediction.Inference.Pages.First().Id);
@@ -41,8 +42,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccessForTime()
         {
-            var receiptParsing = GetMindeeApi();
-            var prediction = await receiptParsing.PredictReceiptAsync(GetFakePredictParameter());
+            var mindeeAPi = GetMindeeApi();
+            var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Time.Confidence);
             Assert.Equal(0, prediction.Inference.Pages.First().Id);
@@ -60,8 +61,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccessForLocale()
         {
-            var receiptParsing = GetMindeeApi();
-            var prediction = await receiptParsing.PredictReceiptAsync(GetFakePredictParameter());
+            var mindeeAPi = GetMindeeApi();
+            var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.Equal("fi", prediction.Inference.Pages.First().Prediction.Locale.Language);
             Assert.Equal("FI", prediction.Inference.Pages.First().Prediction.Locale.Country);
@@ -71,8 +72,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccessForTotalTaxesIncluded()
         {
-            var receiptParsing = GetMindeeApi();
-            var prediction = await receiptParsing.PredictReceiptAsync(GetFakePredictParameter());
+            var mindeeAPi = GetMindeeApi();
+            var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.Equal(473.88, prediction.Inference.Pages.First().Prediction.TotalIncl.Value);
         }
@@ -80,8 +81,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccessForOrientation()
         {
-            var receiptParsing = GetMindeeApi();
-            var prediction = await receiptParsing.PredictReceiptAsync(GetFakePredictParameter());
+            var mindeeAPi = GetMindeeApi();
+            var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.Equal(0, prediction.Inference.Pages.First().Orientation.Value);
         }

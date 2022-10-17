@@ -3,6 +3,7 @@ using Mindee.Parsing.Common;
 
 namespace Mindee.Parsing.Receipt
 {
+    [Endpoint("expense_receipts", "v3")]
     public sealed class ReceiptPrediction : FinancialPredictionBase
     {
         [JsonPropertyName("category")]
@@ -10,5 +11,6 @@ namespace Mindee.Parsing.Receipt
 
         [JsonPropertyName("time")]
         public Time Time { get; set; }
+
     }
 }
