@@ -96,6 +96,29 @@ namespace Mindee.Domain
         }
 
         /// <summary>
+        /// Try to parse the current document.
+        /// </summary>
+        /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
+        /// <typeparam name="TPredictionModel">Define the targeted expected type of the parsing.</typeparam>
+        /// <returns><see cref="Document{TPredictionModel}"/></returns>
+        /// <exception cref="MindeeException"></exception>
+        /// <remarks>With full text doesn't work for all the types.</remarks>
+        public async Task<Document<TPredictionModel>> ParseAsync<TPredictionModel>(bool withFullText = false)
+            where TPredictionModel : class, new()
+        {
+            if (DocumentClient == null)
+            {
+                return null;
+            }
+
+            return await _mindeeApi.PredictAsync<TPredictionModel>(
+                new PredictParameter(
+                    DocumentClient.File,
+                    DocumentClient.Filename,
+                    withFullText));
+        }
+
+        /// <summary>
         /// Try to parse the current document as an invoice.
         /// </summary>
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>

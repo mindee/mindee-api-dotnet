@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 using Mindee.Parsing.Common;
+using Mindee.Parsing.Invoice;
 using RestSharp;
 
 namespace Mindee.Parsing
@@ -60,6 +62,18 @@ namespace Mindee.Parsing
             );
 
             return client;
+        }
+
+        public Task<Document<TModel>> PredictAsync<TModel>(
+            PredictParameter predictParameter)
+            where TModel : class, new()
+        {
+            EndpointAttribute endpointAttribute =
+            (EndpointAttribute)Attribute.GetCustomAttribute(typeof(TModel), typeof(EndpointAttribute));
+
+            return PredictAsync<TModel>(
+                new Endpoint(endpointAttribute.ProductName, endpointAttribute.Version),
+                predictParameter);
         }
 
         private async Task<Document<TModel>> PredictAsync<TModel>(
