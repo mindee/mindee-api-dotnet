@@ -3,7 +3,7 @@ using Mindee.Parsing.Common;
 
 namespace Mindee.Parsing.Receipt
 {
-    [Endpoint("expense_receipts", "v3")]
+    [Endpoint("expense_receipts", "3")]
     public sealed class ReceiptPrediction : FinancialPredictionBase
     {
         [JsonPropertyName("category")]

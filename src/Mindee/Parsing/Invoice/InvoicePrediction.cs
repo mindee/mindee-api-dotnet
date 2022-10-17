@@ -4,7 +4,7 @@ using Mindee.Parsing.Common;
 
 namespace Mindee.Parsing.Invoice
 {
-    [Endpoint("invoices", "v3")]
+    [Endpoint("invoices", "3")]
     public sealed class InvoicePrediction : FinancialPredictionBase
     {
         [JsonPropertyName("company_registration")]
