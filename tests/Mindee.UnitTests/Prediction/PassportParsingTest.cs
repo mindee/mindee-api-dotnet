@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
+using Mindee.Parsing.Passport;
 using RichardSzalay.MockHttp;
 using MindeeApi = Mindee.Parsing.MindeeApi;
 using PredictParameter = Mindee.Parsing.PredictParameter;
@@ -11,8 +12,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithPassportData_MustSuccess()
         {
-            var passportParsing = GetMindeeApi();
-            var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
+            var mindeeApi = GetMindeeApi();
+            var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
             Assert.NotNull(prediction);
         }
@@ -20,8 +21,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithPassportData_MustSuccessForCountry()
         {
-            var passportParsing = GetMindeeApi();
-            var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
+            var mindeeApi = GetMindeeApi();
+            var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
             Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Country.Value);
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Country.Confidence);
@@ -39,8 +40,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithPassportData_MustSuccessForIdNumber()
         {
-            var passportParsing = GetMindeeApi();
-            var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
+            var mindeeApi = GetMindeeApi();
+            var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
             Assert.Equal("string", prediction.Inference.Pages.First().Prediction.IdNumber.Value);
         }
@@ -48,8 +49,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithPassportData_MustSuccessForGivenNames()
         {
-            var passportParsing = GetMindeeApi();
-            var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
+            var mindeeApi = GetMindeeApi();
+            var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
             var firstGivenNames = prediction.Inference.Pages.First().Prediction.GivenNames.FirstOrDefault();
 
@@ -63,8 +64,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithPassportData_MustSuccessForSurname()
         {
-            var passportParsing = GetMindeeApi();
-            var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
+            var mindeeApi = GetMindeeApi();
+            var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
             Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Surname.Value);
         }
@@ -72,8 +73,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithPassportData_MustSuccessForBirthdate()
         {
-            var passportParsing = GetMindeeApi();
-            var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
+            var mindeeApi = GetMindeeApi();
+            var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
             Assert.Equal("1963-08-03", prediction.Inference.Pages.First().Prediction.BirthDate.Value);
         }
@@ -81,8 +82,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithPassportData_MustSuccessForBirthplace()
         {
-            var passportParsing = GetMindeeApi();
-            var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
+            var mindeeApi = GetMindeeApi();
+            var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
             Assert.Equal("string", prediction.Inference.Pages.First().Prediction.BirthPlace.Value);
         }
@@ -90,8 +91,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithPassportData_MustSuccessForGender()
         {
-            var passportParsing = GetMindeeApi();
-            var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
+            var mindeeApi = GetMindeeApi();
+            var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
             Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Gender.Value);
         }
@@ -99,8 +100,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithPassportData_MustSuccessForIssuanceDate()
         {
-            var passportParsing = GetMindeeApi();
-            var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
+            var mindeeApi = GetMindeeApi();
+            var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
             Assert.Equal("2013-04-12", prediction.Inference.Pages.First().Prediction.IssuanceDate.Value);
         }
@@ -108,8 +109,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithPassportData_MustSuccessForExpiryDate()
         {
-            var passportParsing = GetMindeeApi();
-            var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
+            var mindeeApi = GetMindeeApi();
+            var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
             Assert.Equal("2029-08-03", prediction.Inference.Pages.First().Prediction.ExpiryDate.Value);
         }
@@ -117,8 +118,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithPassportData_MustSuccessForOrientation()
         {
-            var passportParsing = GetMindeeApi();
-            var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
+            var mindeeApi = GetMindeeApi();
+            var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
             Assert.Equal(180, prediction.Inference.Pages.First().Orientation.Value);
         }
@@ -126,8 +127,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithPassportData_MustSuccessForMrz1()
         {
-            var passportParsing = GetMindeeApi();
-            var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
+            var mindeeApi = GetMindeeApi();
+            var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
             Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Mrz1.Value);
         }
@@ -135,8 +136,8 @@ namespace Mindee.UnitTests.Prediction
         [Fact]
         public async Task Execute_WithPassportData_MustSuccessForMrz2()
         {
-            var passportParsing = GetMindeeApi();
-            var prediction = await passportParsing.PredictPassportAsync(GetFakePredictParameter());
+            var mindeeApi = GetMindeeApi();
+            var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
             Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Mrz2.Value);
         }

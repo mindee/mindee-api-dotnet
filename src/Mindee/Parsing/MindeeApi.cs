@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -9,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Invoice;
 using RestSharp;
 
 namespace Mindee.Parsing
@@ -68,6 +66,13 @@ namespace Mindee.Parsing
             PredictParameter predictParameter)
             where TModel : class, new()
         {
+            if(!Attribute.IsDefined(typeof(TModel), typeof(EndpointAttribute)))
+            {
+                throw new NotSupportedException($"The type {typeof(TModel)} is not supported as a prediction model. " +
+                    $"The endpoint attribute is missing. " +
+                    $"Please refer to the document or contact the support.");
+            }
+
             EndpointAttribute endpointAttribute =
             (EndpointAttribute)Attribute.GetCustomAttribute(typeof(TModel), typeof(EndpointAttribute));
 

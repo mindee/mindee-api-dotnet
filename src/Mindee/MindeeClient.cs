@@ -117,24 +117,5 @@ namespace Mindee.Domain
                     DocumentClient.Filename,
                     withFullText));
         }
-
-        /// <summary>
-        /// Try to parse the current document as a passport.
-        /// </summary>
-        /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
-        /// <returns><see cref="Document{PassportPrediction}"/></returns>
-        /// <exception cref="MindeeException"></exception>
-        public async Task<Document<PassportPrediction>> ParsePassportAsync()
-        {
-            if (DocumentClient == null)
-            {
-                return null;
-            }
-
-            return await _mindeeApi.PredictPassportAsync(
-                new PredictParameter(
-                    DocumentClient.File,
-                    DocumentClient.Filename));
-        }
     }
 }
