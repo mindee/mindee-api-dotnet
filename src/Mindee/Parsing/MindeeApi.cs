@@ -77,7 +77,7 @@ namespace Mindee.Parsing
             (EndpointAttribute)Attribute.GetCustomAttribute(typeof(TModel), typeof(EndpointAttribute));
 
             return PredictAsync<TModel>(
-                new Endpoint(endpointAttribute.ProductName, endpointAttribute.Version),
+                new Endpoint(endpointAttribute.ProductName, endpointAttribute.Version, endpointAttribute.OrganizationName),
                 predictParameter);
         }
 
