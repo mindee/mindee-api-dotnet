@@ -5,10 +5,6 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee", "Mindee\Mindee.csproj", "{3354DEBC-F5B9-470E-A13A-7ACDD956983C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.Infrastructure", "Mindee.Infrastructure\Mindee.Infrastructure.csproj", "{737B925F-E3AF-42D1-97C8-088058C4F6AA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.Domain", "Mindee.Domain\Mindee.Domain.csproj", "{A0C8195B-BF6E-4EE3-8B4C-BC0B1AB226D4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

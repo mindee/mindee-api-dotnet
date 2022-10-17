@@ -1,7 +1,8 @@
-﻿using System.CommandLine.Invocation;
-using System.CommandLine;
-using Microsoft.Extensions.Logging;
+﻿using System.CommandLine;
+using System.CommandLine.Invocation;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
+using Mindee.Domain;
 
 namespace Mindee.Cli.Commands
 {
@@ -29,6 +30,7 @@ namespace Mindee.Cli.Commands
                 _logger = logger;
                 _mindeeClient = mindeeClient;
             }
+
             public async Task<int> InvokeAsync(InvocationContext context)
             {
                 _logger.LogInformation("About to predict a receipt..");

@@ -3,13 +3,13 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Mindee.Exceptions;
-using Mindee.Parsing;
-using Mindee.Parsing.Common;
-using Mindee.Parsing.Invoice;
-using Mindee.Parsing.Passport;
-using Mindee.Parsing.Receipt;
-using Mindee.Pdf;
+using Mindee.Domain.Exceptions;
+using Mindee.Domain.Parsing;
+using Mindee.Domain.Parsing.Common;
+using Mindee.Domain.Parsing.Invoice;
+using Mindee.Domain.Parsing.Passport;
+using Mindee.Domain.Parsing.Receipt;
+using Mindee.Domain.Pdf;
 
 namespace Mindee.Domain
 {
@@ -22,7 +22,7 @@ namespace Mindee.Domain
         public DocumentClient DocumentClient { get; private set; }
 
         public MindeeClient(
-            ILogger<MindeeClient> logger,
+            ILogger<MindeeClient> logger, 
             IPdfOperation pdfOperation,
             IConfiguration configuration)
         {
@@ -103,7 +103,7 @@ namespace Mindee.Domain
         /// <exception cref="MindeeException"></exception>
         public async Task<Document<InvoicePrediction>> ParseInvoiceAsync(bool withFullText = false)
         {
-            if (DocumentClient == null)
+            if(DocumentClient == null)
             {
                 return null;
             }
