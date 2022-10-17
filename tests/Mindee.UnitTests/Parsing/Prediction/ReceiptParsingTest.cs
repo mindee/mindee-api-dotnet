@@ -1,17 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging.Abstractions;
-using Mindee.Parsing;
+﻿using Mindee.Parsing;
 using Mindee.Parsing.Receipt;
-using RichardSzalay.MockHttp;
 
 namespace Mindee.UnitTests.Parsing.Prediction
 {
-    public class ReceiptParsingTest : FakeParsingTest
+    public class ReceiptParsingTest : ParsingTestBase
     {
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccess()
         {
-            var mindeeAPi = GetMindeeApi();
+            var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.NotNull(prediction);
@@ -20,7 +17,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccessForCategory()
         {
-            var mindeeAPi = GetMindeeApi();
+            var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Category.Confidence);
@@ -30,7 +27,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccessForDate()
         {
-            var mindeeAPi = GetMindeeApi();
+            var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Date.Confidence);
@@ -41,7 +38,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccessForTime()
         {
-            var mindeeAPi = GetMindeeApi();
+            var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Time.Confidence);
@@ -60,7 +57,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccessForLocale()
         {
-            var mindeeAPi = GetMindeeApi();
+            var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.Equal("fi", prediction.Inference.Pages.First().Prediction.Locale.Language);
@@ -71,7 +68,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccessForTotalTaxesIncluded()
         {
-            var mindeeAPi = GetMindeeApi();
+            var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.Equal(473.88, prediction.Inference.Pages.First().Prediction.TotalIncl.Value);
@@ -80,29 +77,15 @@ namespace Mindee.UnitTests.Parsing.Prediction
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccessForOrientation()
         {
-            var mindeeAPi = GetMindeeApi();
+            var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.Equal(0, prediction.Inference.Pages.First().Orientation.Value);
         }
 
-        private static MindeeApi GetMindeeApi(string fileName = "Resources/receipt_response_full_v3.json")
+        private MindeeApi GetMindeeApiForReceipt(string fileName = "Resources/receipt_response_full_v3.json")
         {
-            var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When("*")
-                    .Respond("application/json", File.ReadAllText(fileName));
-
-            var config = new ConfigurationBuilder()
-                            .AddInMemoryCollection(new Dictionary<string, string>() {
-                                { "MindeeApiSettings:ApiKey", "blou" }
-                            })
-                        .Build();
-
-            return new MindeeApi(
-                new NullLogger<MindeeApi>(),
-                config,
-                mockHttp
-                );
+            return GetMindeeApi(fileName);
         }
     }
 }

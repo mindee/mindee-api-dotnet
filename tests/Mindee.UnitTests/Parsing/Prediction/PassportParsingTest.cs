@@ -1,8 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging.Abstractions;
-using Mindee.Parsing;
+﻿using Mindee.Parsing;
 using Mindee.Parsing.Passport;
-using RichardSzalay.MockHttp;
 
 namespace Mindee.UnitTests.Parsing.Prediction
 {
