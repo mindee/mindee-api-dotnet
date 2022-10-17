@@ -3,11 +3,10 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Parsing;
 using Mindee.Parsing.Receipt;
 using RichardSzalay.MockHttp;
-using MindeeApi = Mindee.Parsing.MindeeApi;
 
-namespace Mindee.UnitTests.Prediction
+namespace Mindee.UnitTests.Parsing.Prediction
 {
-    public class ReceiptParsingTest
+    public class ReceiptParsingTest : FakeParsingTest
     {
         [Fact]
         public async Task Execute_WithReceiptData_MustSuccess()
@@ -85,14 +84,6 @@ namespace Mindee.UnitTests.Prediction
             var prediction = await mindeeAPi.PredictAsync<ReceiptPrediction>(GetFakePredictParameter());
 
             Assert.Equal(0, prediction.Inference.Pages.First().Orientation.Value);
-        }
-
-        private PredictParameter GetFakePredictParameter()
-        {
-            return
-                new PredictParameter(
-                    new byte[] { byte.MinValue },
-                        "Bou");
         }
 
         private static MindeeApi GetMindeeApi(string fileName = "Resources/receipt_response_full_v3.json")

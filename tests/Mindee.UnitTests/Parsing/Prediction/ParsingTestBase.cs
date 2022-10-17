@@ -2,23 +2,13 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Parsing;
-using Mindee.Parsing.Common;
 using RichardSzalay.MockHttp;
 
-namespace Mindee.UnitTests.Prediction
+namespace Mindee.UnitTests.Parsing.Prediction
 {
-    public class FakeParsingTest
+    public abstract class ParsingTestBase
     {
-        [Fact]
-        public async Task Execute_WithAnyKindOfData_MustFail()
-        {
-            var mindeeAPi = GetMindeeApi();
-
-            await Assert.ThrowsAsync<NotSupportedException>(
-               () => _ = mindeeAPi.PredictAsync<FakePrediction>(GetFakePredictParameter()));
-        }
-
-        private PredictParameter GetFakePredictParameter()
+        protected PredictParameter GetFakePredictParameter()
         {
             return
                 new PredictParameter(
@@ -26,7 +16,7 @@ namespace Mindee.UnitTests.Prediction
                         "Bou");
         }
 
-        private static MindeeApi GetMindeeApi(string fileName = "Resources/receipt_response_full_v3.json")
+        protected MindeeApi GetMindeeApi(string fileName = "Resources/receipt_response_full_v3.json")
         {
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When("*")
@@ -44,10 +34,5 @@ namespace Mindee.UnitTests.Prediction
                 mockHttp
                 );
         }
-    }
-
-    internal sealed class FakePrediction : PredictionBase
-    {
-
     }
 }

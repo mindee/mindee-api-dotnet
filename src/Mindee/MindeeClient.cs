@@ -6,9 +6,6 @@ using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 using Mindee.Parsing;
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Invoice;
-using Mindee.Parsing.Passport;
-using Mindee.Parsing.Receipt;
 using Mindee.Pdf;
 
 namespace Mindee.Domain
