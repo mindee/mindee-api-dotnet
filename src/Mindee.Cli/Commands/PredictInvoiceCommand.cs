@@ -3,6 +3,7 @@ using System.CommandLine.Invocation;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Mindee.Domain;
+using Mindee.Parsing.Invoice;
 
 namespace Mindee.Cli.Commands
 {
@@ -37,7 +38,7 @@ namespace Mindee.Cli.Commands
 
                 var invoicePrediction = await _mindeeClient
                     .LoadDocument(new FileInfo(FilePath))
-                    .ParseInvoiceAsync(Words);
+                    .ParseAsync<InvoicePrediction>(Words);
 
                 _logger.LogInformation("See the associated JSON below :");
                 _logger.LogInformation(JsonSerializer.Serialize(invoicePrediction));

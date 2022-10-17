@@ -3,6 +3,7 @@ using System.CommandLine.Invocation;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Mindee.Domain;
+using Mindee.Parsing.Passport;
 
 namespace Mindee.Cli.Commands
 {
@@ -35,7 +36,7 @@ namespace Mindee.Cli.Commands
 
                 var prediction = await _mindeeClient
                     .LoadDocument(File.OpenRead(FilePath), Path.GetFileName(FilePath))
-                    .ParsePassportAsync();
+                    .ParseAsync<PassportPrediction>();
 
                 _logger.LogInformation("See the associated JSON below :");
                 _logger.LogInformation(JsonSerializer.Serialize(prediction));

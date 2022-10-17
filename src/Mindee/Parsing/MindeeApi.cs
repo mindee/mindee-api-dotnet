@@ -62,6 +62,25 @@ namespace Mindee.Parsing
             return client;
         }
 
+        public Task<Document<TModel>> PredictAsync<TModel>(
+            PredictParameter predictParameter)
+            where TModel : class, new()
+        {
+            if(!Attribute.IsDefined(typeof(TModel), typeof(EndpointAttribute)))
+            {
+                throw new NotSupportedException($"The type {typeof(TModel)} is not supported as a prediction model. " +
+                    $"The endpoint attribute is missing. " +
+                    $"Please refer to the document or contact the support.");
+            }
+
+            EndpointAttribute endpointAttribute =
+            (EndpointAttribute)Attribute.GetCustomAttribute(typeof(TModel), typeof(EndpointAttribute));
+
+            return PredictAsync<TModel>(
+                new Endpoint(endpointAttribute.ProductName, endpointAttribute.Version),
+                predictParameter);
+        }
+
         private async Task<Document<TModel>> PredictAsync<TModel>(
                     Endpoint endpoint,
                     PredictParameter predictParameter)

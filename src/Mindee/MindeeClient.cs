@@ -6,9 +6,6 @@ using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 using Mindee.Parsing;
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Invoice;
-using Mindee.Parsing.Passport;
-using Mindee.Parsing.Receipt;
 using Mindee.Pdf;
 
 namespace Mindee.Domain
@@ -96,62 +93,26 @@ namespace Mindee.Domain
         }
 
         /// <summary>
-        /// Try to parse the current document as an invoice.
+        /// Try to parse the current document.
         /// </summary>
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
-        /// <returns><see cref="Document{InvoicePrediction}"/></returns>
+        /// <typeparam name="TPredictionModel">Define the targeted expected type of the parsing.</typeparam>
+        /// <returns><see cref="Document{TPredictionModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<Document<InvoicePrediction>> ParseInvoiceAsync(bool withFullText = false)
+        /// <remarks>With full text doesn't work for all the types.</remarks>
+        public async Task<Document<TPredictionModel>> ParseAsync<TPredictionModel>(bool withFullText = false)
+            where TPredictionModel : class, new()
         {
             if (DocumentClient == null)
             {
                 return null;
             }
 
-            return await _mindeeApi.PredictInvoiceAsync(
+            return await _mindeeApi.PredictAsync<TPredictionModel>(
                 new PredictParameter(
                     DocumentClient.File,
                     DocumentClient.Filename,
                     withFullText));
-        }
-
-        /// <summary>
-        /// Try to parse the current document as a receipt.
-        /// </summary>
-        /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
-        /// <returns><see cref="Document{ReceiptPrediction}"/></returns>
-        /// <exception cref="MindeeException"></exception>
-        public async Task<Document<ReceiptPrediction>> ParseReceiptAsync(bool withFullText = false)
-        {
-            if (DocumentClient == null)
-            {
-                return null;
-            }
-
-            return await _mindeeApi.PredictReceiptAsync(
-                new PredictParameter(
-                    DocumentClient.File,
-                    DocumentClient.Filename,
-                    withFullText));
-        }
-
-        /// <summary>
-        /// Try to parse the current document as a passport.
-        /// </summary>
-        /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
-        /// <returns><see cref="Document{PassportPrediction}"/></returns>
-        /// <exception cref="MindeeException"></exception>
-        public async Task<Document<PassportPrediction>> ParsePassportAsync()
-        {
-            if (DocumentClient == null)
-            {
-                return null;
-            }
-
-            return await _mindeeApi.PredictPassportAsync(
-                new PredictParameter(
-                    DocumentClient.File,
-                    DocumentClient.Filename));
         }
     }
 }

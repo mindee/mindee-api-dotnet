@@ -4,6 +4,7 @@ using Mindee.Parsing.Common;
 
 namespace Mindee.Parsing.Passport
 {
+    [Endpoint("passport", "1")]
     public sealed class PassportPrediction : PredictionBase
     {
         [JsonPropertyName("birth_date")]
