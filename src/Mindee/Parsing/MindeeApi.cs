@@ -81,12 +81,12 @@ namespace Mindee.Parsing
                 predictParameter);
         }
 
-        private async Task<Document<TModel>> PredictAsync<TModel>(
+        public async Task<Document<TModel>> PredictAsync<TModel>(
                     Endpoint endpoint,
                     PredictParameter predictParameter)
             where TModel : class, new()
         {
-            var request = new RestRequest($"products/mindee/{endpoint.ProductName}/v{endpoint.Version}/predict", Method.Post);
+            var request = new RestRequest($"/products/{endpoint.OrganizationName}/{endpoint.ProductName}/v{endpoint.Version}/predict", Method.Post);
 
             _logger.LogInformation($"HTTP request to {BaseUrl}/{request.Resource} started.");
 

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 using Mindee.Parsing;
 using Mindee.Parsing.Common;
+using Mindee.Parsing.CustomBuilder;
 using Mindee.Pdf;
 
 namespace Mindee.Domain
@@ -90,6 +91,26 @@ namespace Mindee.Domain
             {
                 throw new MindeeException($"This document is not recognized as a PDF file.");
             }
+        }
+
+        /// <summary>
+        /// Try to parse the current document using custom builder API.
+        /// </summary>
+        /// <param name="endpoint"><see cref="Endpoint"/></param>
+        /// <returns><see cref="Document{CustomPrediction}"/></returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<Document<CustomPrediction>> ParseAsync(Endpoint endpoint)
+        {
+            if (DocumentClient == null)
+            {
+                return null;
+            }
+
+            return await _mindeeApi.PredictAsync<CustomPrediction>(
+                endpoint,
+                new PredictParameter(
+                    DocumentClient.File,
+                    DocumentClient.Filename));
         }
 
         /// <summary>
