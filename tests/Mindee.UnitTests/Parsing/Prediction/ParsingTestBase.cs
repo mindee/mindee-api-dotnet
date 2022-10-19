@@ -16,7 +16,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
                         "Bou");
         }
 
-        protected MindeeApi GetMindeeApi(string fileName = "Resources/receipt_response_full_v3.json")
+        protected MindeeApi GetMindeeApi(string fileName)
         {
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When("*")
