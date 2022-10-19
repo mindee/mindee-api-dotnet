@@ -17,7 +17,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
 
         private MindeeApi GetMindeeApiForFake()
         {
-            return GetMindeeApi("Resources/inv2 - withFullText.json");
+            return GetMindeeApi("Resources/invoice/response/complete.json");
         }
     }
 

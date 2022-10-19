@@ -86,7 +86,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
         [Fact]
         public async Task Predict_MustSuccessForOcr()
         {
-            var mindeeAPi = GetMindeeApiForInvoice("Resources/inv2 - withFullText.json");
+            var mindeeAPi = GetMindeeApiForInvoice("Resources/invoice/response/complete_withFullText.json");
             var parseParameter = new PredictParameter(
                         new byte[] { byte.MinValue },
                         "Bou",

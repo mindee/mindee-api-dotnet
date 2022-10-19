@@ -13,9 +13,9 @@ namespace Mindee.UnitTests.Domain.Pdf
         }
 
         [Fact]
-        public async Task Split_With2Pages_Wants1Page_MustGetOnly1Page()
+        public async Task Split_Wants1Page_MustGetOnly1Page()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("Resources/sample_2pages.pdf"), 2, 2);
+            var splitQuery = new SplitQuery(File.OpenRead("Resources/pdf/multipage.pdf"), 2, 2);
 
             var splittedPdf = await _pdfOperation.SplitAsync(splitQuery);
 
@@ -25,17 +25,17 @@ namespace Mindee.UnitTests.Domain.Pdf
         }
 
         [Fact]
-        public async Task Split_With2Pages_Wants3Page_MustFail()
+        public async Task Split_WantsTooManyPages_MustFail()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("Resources/sample_2pages.pdf"), 1, 3);
+            var splitQuery = new SplitQuery(File.OpenRead("Resources/pdf/multipage.pdf"), 1, 14);
 
             await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => _pdfOperation.SplitAsync(splitQuery));
         }
 
         [Fact]
-        public async Task Split_With2Pages_WantsStartPageTo0_MustFail()
+        public async Task Split_WantsStartPageTo0_MustFail()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("Resources/sample_2pages.pdf"), 0, 3);
+            var splitQuery = new SplitQuery(File.OpenRead("Resources/pdf/multipage.pdf"), 0, 3);
 
             await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => _pdfOperation.SplitAsync(splitQuery));
         }
@@ -43,7 +43,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         [Fact]
         public async Task Split_OtherThanAPdf_MustFail()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("Resources/Logo-docTR-full-black.png"), 0, 3);
+            var splitQuery = new SplitQuery(File.OpenRead("Resources/passport/passport.jpeg"), 0, 3);
 
             await Assert.ThrowsAsync<ArgumentException>(() => _pdfOperation.SplitAsync(splitQuery));
         }
