@@ -10,6 +10,10 @@ namespace Mindee.Parsing.CustomBuilder
     [Serializable]
     public sealed class CustomPrediction : Dictionary<string, ListField>
     {
+        public CustomPrediction()
+        { 
+        }
+
         private CustomPrediction(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }

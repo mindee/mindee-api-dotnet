@@ -15,10 +15,14 @@
     <None Remove="Logo-docTR-full-black.png" />
     <None Remove="passport_response_full_v1.json" />
     <None Remove="receipt_response_full_v3.json" />
+    <None Remove="Resources\custom_response.json" />
     <None Remove="sample_2pages.pdf" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\custom_response.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\inv2 - withFullText.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
