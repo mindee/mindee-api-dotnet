@@ -1,3 +1,3 @@
-[submodule "tests/Resources"]
-	path = tests/Resources
+[submodule "tests/resources"]
+	path = tests/resources
 	url = https://github.com/mindee/client-lib-test-data
