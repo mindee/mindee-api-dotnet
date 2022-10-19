@@ -1,0 +1,4 @@
+----- Cropper Data -----
+Filename:
+Cropping:
+------------------------

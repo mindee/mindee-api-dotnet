@@ -1,0 +1,3 @@
+[submodule "tests/Mindee.UnitTests/resources"]
+    path = tests/Mindee.UnitTests/resources
+	url = https://github.com/mindee/client-lib-test-data
