@@ -6,7 +6,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
     public class InvoiceParsingTest : ParsingTestBase
     {
         [Fact]
-        public async Task Execute_WithInvoicePdf_MustSuccess()
+        public async Task Predict_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
             var invoicePrediction = await mindeeAPi.PredictAsync<InvoicePrediction>(GetFakePredictParameter());
@@ -15,37 +15,39 @@ namespace Mindee.UnitTests.Parsing.Prediction
         }
 
         [Fact]
-        public async Task Execute_WithInvoicePdf_MustSuccessForCustomer()
+        public async Task Predict_MustSuccessForCustomer()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
             var invoicePrediction = await mindeeAPi.PredictAsync<InvoicePrediction>(GetFakePredictParameter());
 
-            Assert.Equal(0.87, invoicePrediction.Inference.Pages.First().Prediction.Customer.Confidence);
+            Assert.Equal(0, invoicePrediction.Inference.Pages.First().Prediction.Customer.Confidence);
             Assert.Equal(0, invoicePrediction.Inference.Pages.First().Id);
             Assert.Equal(new List<List<double>>()
-            {
-                new List<double>() { 0.072, 0.291 },
-                new List<double>() { 0.164, 0.291 },
-                new List<double>() { 0.164, 0.302 },
-                new List<double>() { 0.072, 0.302 },
-            }
             , invoicePrediction.Inference.Pages.First().Prediction.Customer.Polygon);
-            Assert.Equal("TEST BUSINESS", invoicePrediction.Inference.Pages.First().Prediction.Customer.Value);
+            Assert.Null(invoicePrediction.Inference.Pages.First().Prediction.Customer.Value);
         }
 
         [Fact]
-        public async Task Execute_WithInvoicePdf_MustSuccessForDate()
+        public async Task Predict_MustSuccessForDate()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
             var invoicePrediction = await mindeeAPi.PredictAsync<InvoicePrediction>(GetFakePredictParameter());
 
             Assert.Equal(0.99, invoicePrediction.Inference.Pages.First().Prediction.Date.Confidence);
             Assert.Equal(0, invoicePrediction.Inference.Pages.First().Id);
-            Assert.Equal("2016-01-25", invoicePrediction.Inference.Pages.First().Prediction.Date.Value);
+            Assert.Equal("2020-02-17", invoicePrediction.Inference.Pages.First().Prediction.Date.Value); 
+            Assert.Equal(new List<List<double>>()
+            {
+                new List<double>() { 0.382, 0.306 },
+                new List<double>() { 0.44, 0.306 },
+                new List<double>() { 0.44, 0.318 },
+                new List<double>() { 0.382, 0.318 },
+            }
+            , invoicePrediction.Inference.Pages.First().Prediction.Date.Polygon);
         }
 
         [Fact]
-        public async Task Execute_WithInvoicePdf_MustSuccessForDocumentType()
+        public async Task Predict_MustSuccessForDocumentType()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
             var invoicePrediction = await mindeeAPi.PredictAsync<InvoicePrediction>(GetFakePredictParameter());
@@ -54,37 +56,37 @@ namespace Mindee.UnitTests.Parsing.Prediction
         }
 
         [Fact]
-        public async Task Execute_WithInvoicePdf_MustSuccessForLocale()
+        public async Task Predict_MustSuccessForLocale()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
             var invoicePrediction = await mindeeAPi.PredictAsync<InvoicePrediction>(GetFakePredictParameter());
 
-            Assert.Equal("en", invoicePrediction.Inference.Pages.First().Prediction.Locale.Language);
-            Assert.Equal("USD", invoicePrediction.Inference.Pages.First().Prediction.Locale.Currency);
+            Assert.Equal("fr", invoicePrediction.Inference.Pages.First().Prediction.Locale.Language);
+            Assert.Equal("EUR", invoicePrediction.Inference.Pages.First().Prediction.Locale.Currency);
         }
 
         [Fact]
-        public async Task Execute_WithInvoicePdf_MustSuccessForTotalTaxesIncluded()
+        public async Task Predict_MustSuccessForTotalTaxesIncluded()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
             var invoicePrediction = await mindeeAPi.PredictAsync<InvoicePrediction>(GetFakePredictParameter());
 
-            Assert.Equal(93.5, invoicePrediction.Inference.Pages.First().Prediction.TotalIncl.Value);
+            Assert.Equal(587.95, invoicePrediction.Inference.Pages.First().Prediction.TotalIncl.Value);
         }
 
         [Fact]
-        public async Task Execute_WithInvoicePdf_MustSuccessForOrientation()
+        public async Task Predict_MustSuccessForOrientation()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
             var invoicePrediction = await mindeeAPi.PredictAsync<InvoicePrediction>(GetFakePredictParameter());
 
-            Assert.Equal(90, invoicePrediction.Inference.Pages.First().Orientation.Value);
+            Assert.Equal(0, invoicePrediction.Inference.Pages.First().Orientation.Value);
         }
 
         [Fact]
-        public async Task Execute_WithInvoiceDataWithOcrAsked_MustSuccessForOcr()
+        public async Task Predict_MustSuccessForOcr()
         {
-            var mindeeAPi = GetMindeeApiForInvoice("Resources/inv2 - withFullText.json");
+            var mindeeAPi = GetMindeeApiForInvoice("Resources/invoice/response/complete_withFullText.json");
             var parseParameter = new PredictParameter(
                         new byte[] { byte.MinValue },
                         "Bou",
@@ -103,7 +105,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
             Assert.Equal("Payment", invoicePrediction.Ocr.MvisionV1.Pages.First().AllWords.First().Text);
         }
 
-        private MindeeApi GetMindeeApiForInvoice(string fileName = "Resources/inv2.json")
+        private MindeeApi GetMindeeApiForInvoice(string fileName = "Resources/invoice/response/complete.json")
         {
             return GetMindeeApi(fileName);
 

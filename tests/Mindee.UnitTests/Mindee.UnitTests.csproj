@@ -10,40 +10,9 @@
 
   <ItemGroup>
     <None Remove="inv2 - withFullText.json" />
-    <None Remove="inv2.json" />
     <None Remove="inv2.pdf" />
     <None Remove="Logo-docTR-full-black.png" />
-    <None Remove="passport_response_full_v1.json" />
-    <None Remove="receipt_response_full_v3.json" />
-    <None Remove="Resources\custom_response.json" />
     <None Remove="sample_2pages.pdf" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Resources\custom_response.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\inv2 - withFullText.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\passport_response_full_v1.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\receipt_response_full_v3.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\inv2.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\inv2.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Logo-docTR-full-black.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\sample_2pages.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -64,6 +33,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Mindee\Mindee.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\resources\**\*.*" Link="Resources\%(RecursiveDir)%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

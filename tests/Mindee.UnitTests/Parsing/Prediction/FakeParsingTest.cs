@@ -9,7 +9,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
         [Fact]
         public async Task Execute_WithAnyKindOfData_MustFail()
         {
-            var mindeeAPi = GetMindeeApi();
+            var mindeeAPi = GetMindeeApiForFake();
 
             await Assert.ThrowsAsync<NotSupportedException>(
                () => _ = mindeeAPi.PredictAsync<FakePrediction>(GetFakePredictParameter()));
@@ -17,7 +17,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
 
         private MindeeApi GetMindeeApiForFake()
         {
-            return GetMindeeApi("Resources/receipt_response_full_v3.json");
+            return GetMindeeApi("Resources/invoice/response/complete.json");
         }
     }
 

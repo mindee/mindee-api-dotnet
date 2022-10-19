@@ -20,15 +20,15 @@ namespace Mindee.UnitTests.Parsing.Prediction
             var mindeeApi = GetMindeeApiForPassport();
             var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
-            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Country.Value);
-            Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Country.Confidence);
+            Assert.Equal("GBR", prediction.Inference.Pages.First().Prediction.Country.Value);
+            Assert.Equal(1.0, prediction.Inference.Pages.First().Prediction.Country.Confidence);
             Assert.Equal(0, prediction.Inference.Pages.First().Id);
             Assert.Equal(new List<List<double>>()
             {
-                new List<double>() { 0.2988, 0.9426 },
-                new List<double>() { 0.5498, 0.0769 },
-                new List<double>() { 0.3998, 0.7691 },
-                new List<double>() { 0.8192, 0.0147 },
+                new List<double>() { 0.508, 0.547 },
+                new List<double>() { 0.559, 0.547 },
+                new List<double>() { 0.559, 0.568 },
+                new List<double>() { 0.508, 0.568 },
             }
             , prediction.Inference.Pages.First().Prediction.Country.Polygon);
         }
@@ -39,7 +39,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
             var mindeeApi = GetMindeeApiForPassport();
             var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
-            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.IdNumber.Value);
+            Assert.Equal("707797979", prediction.Inference.Pages.First().Prediction.IdNumber.Value);
         }
 
         [Fact]
@@ -52,7 +52,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
 
             Assert.NotNull(firstGivenNames);
             Assert.Single(prediction.Inference.Pages.First().Prediction.GivenNames);
-            Assert.Equal("string", firstGivenNames!.Value);
+            Assert.Equal("HENERT", firstGivenNames!.Value);
             Assert.Equal(0.99, firstGivenNames!.Confidence);
             Assert.Equal(0, prediction.Inference.Pages.First().Id);
         }
@@ -63,7 +63,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
             var mindeeApi = GetMindeeApiForPassport();
             var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
-            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Surname.Value);
+            Assert.Equal("PUDARSAN", prediction.Inference.Pages.First().Prediction.Surname.Value);
         }
 
         [Fact]
@@ -72,7 +72,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
             var mindeeApi = GetMindeeApiForPassport();
             var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
-            Assert.Equal("1963-08-03", prediction.Inference.Pages.First().Prediction.BirthDate.Value);
+            Assert.Equal("1995-05-20", prediction.Inference.Pages.First().Prediction.BirthDate.Value);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
             var mindeeApi = GetMindeeApiForPassport();
             var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
-            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.BirthPlace.Value);
+            Assert.Equal("CAMTETH", prediction.Inference.Pages.First().Prediction.BirthPlace.Value);
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
             var mindeeApi = GetMindeeApiForPassport();
             var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
-            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Gender.Value);
+            Assert.Equal("M", prediction.Inference.Pages.First().Prediction.Gender.Value);
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
             var mindeeApi = GetMindeeApiForPassport();
             var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
-            Assert.Equal("2013-04-12", prediction.Inference.Pages.First().Prediction.IssuanceDate.Value);
+            Assert.Equal("2012-04-22", prediction.Inference.Pages.First().Prediction.IssuanceDate.Value);
         }
 
         [Fact]
@@ -108,7 +108,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
             var mindeeApi = GetMindeeApiForPassport();
             var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
-            Assert.Equal("2029-08-03", prediction.Inference.Pages.First().Prediction.ExpiryDate.Value);
+            Assert.Equal("2057-04-22", prediction.Inference.Pages.First().Prediction.ExpiryDate.Value);
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
             var mindeeApi = GetMindeeApiForPassport();
             var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
-            Assert.Equal(180, prediction.Inference.Pages.First().Orientation.Value);
+            Assert.Equal(0, prediction.Inference.Pages.First().Orientation.Value);
         }
 
         [Fact]
@@ -126,7 +126,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
             var mindeeApi = GetMindeeApiForPassport();
             var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
-            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Mrz1.Value);
+            Assert.Equal("P<GBRPUDARSAN<<HENERT<<<<<<<<<<<<<<<<<<<<<<<", prediction.Inference.Pages.First().Prediction.Mrz1.Value);
         }
 
         [Fact]
@@ -135,10 +135,10 @@ namespace Mindee.UnitTests.Parsing.Prediction
             var mindeeApi = GetMindeeApiForPassport();
             var prediction = await mindeeApi.PredictAsync<PassportPrediction>(GetFakePredictParameter());
 
-            Assert.Equal("string", prediction.Inference.Pages.First().Prediction.Mrz2.Value);
+            Assert.Equal("7077979792GBR9505209M1704224<<<<<<<<<<<<<<00", prediction.Inference.Pages.First().Prediction.Mrz2.Value);
         }
 
-        private MindeeApi GetMindeeApiForPassport(string fileName = "Resources/passport_response_full_v1.json")
+        private MindeeApi GetMindeeApiForPassport(string fileName = "Resources/passport/response/complete.json")
         {
             return GetMindeeApi(fileName);
         }
