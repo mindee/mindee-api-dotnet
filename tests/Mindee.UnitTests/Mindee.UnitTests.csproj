@@ -60,7 +60,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\resources\**\*.*" Link="resources\%(RecursiveDir)%(Filename)%(Extension)">
+    <Content Include="..\resources\**\*.*" Link="Resources\%(RecursiveDir)%(Filename)%(Extension)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
