@@ -1,7 +1,13 @@
 <Project>
   <PropertyGroup>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionPrefix>1.0.0</VersionPrefix>
     <Authors>Mindee</Authors>
+    <Description>Mindee is a .NET 4.6.1+ client, and a portable class library for the Mindee API. (Official Library)</Description>
+    <PackageProjectUrl>https://github.com/mindee/mindee-api-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mindee/mindee-api-dotnet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>ocr;vision;invoice;receipt</PackageTags>
+    <Copyright>Copyright © Mindee $([System.DateTime]::UtcNow.Year)</Copyright>
   </PropertyGroup>
 
   <PropertyGroup>
