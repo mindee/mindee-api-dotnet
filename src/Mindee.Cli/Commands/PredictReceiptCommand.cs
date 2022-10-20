@@ -14,8 +14,8 @@ namespace Mindee.Cli.Commands
         public PredictReceiptCommand()
             : base(name: "receipt", "Invokes the receipt API")
         {
-            AddArgument(new Argument<string>("filePath", "The path of the file to parse"));
-            AddOption(new Option<bool>("-words", "To get all the words in the current document"));
+            AddArgument(new Argument<string>("path", "The path of the file to parse"));
+            AddOption(new Option<bool>(new string[] { "-w", "--with-words", "withWords" }, "To get all the words in the current document"));
         }
 
         public new class Handler : ICommandHandler
@@ -23,8 +23,8 @@ namespace Mindee.Cli.Commands
             private readonly ILogger<Handler> _logger;
             private readonly MindeeClient _mindeeClient;
 
-            public string FilePath { get; set; } = null!;
-            public bool Words { get; set; } = false;
+            public string Path { get; set; } = null!;
+            public bool WithWords { get; set; } = false;
 
             public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
             {
@@ -36,12 +36,12 @@ namespace Mindee.Cli.Commands
             {
                 _logger.LogInformation("About to predict a receipt..");
 
-                var invoicePrediction = await _mindeeClient
-                    .LoadDocument(File.OpenRead(FilePath), Path.GetFileName(FilePath))
-                    .ParseAsync<ReceiptPrediction>(Words);
+                var prediction = await _mindeeClient
+                    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
+                    .ParseAsync<ReceiptPrediction>(WithWords);
 
-                _logger.LogInformation("See the associated JSON below :");
-                _logger.LogInformation(JsonSerializer.Serialize(invoicePrediction));
+
+                context.Console.Out.Write(JsonSerializer.Serialize(prediction, new JsonSerializerOptions { WriteIndented = true }));
 
                 return 0;
             }

@@ -4,8 +4,6 @@ using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Mindee.Domain;
 using Mindee.Parsing;
-using Mindee.Parsing.Common;
-using Mindee.Parsing.CustomBuilder;
 
 namespace Mindee.Cli.Commands
 {
@@ -16,7 +14,7 @@ namespace Mindee.Cli.Commands
         public PredictCustomCommand()
             : base(name: "custom", "Invokes a builder API")
         {
-            AddArgument(new Argument<string>("filePath", "The path of the file to parse"));
+            AddArgument(new Argument<string>("path", "The path of the file to parse"));
             AddArgument(new Argument<string>("organizationName", "The name of the organization"));
             AddArgument(new Argument<string>("productName", "The name of the product"));
             AddArgument(new Argument<string>("version", "Version of the custom API builder"));
@@ -27,7 +25,7 @@ namespace Mindee.Cli.Commands
             private readonly ILogger<Handler> _logger;
             private readonly MindeeClient _mindeeClient;
 
-            public string FilePath { get; set; } = null!;
+            public string Path { get; set; } = null!;
             public string ProductName { get; set; } = null!;
             public string OrganizationName { get; set; } = null!;
             public string Version { get; set; } = null!;
@@ -42,15 +40,14 @@ namespace Mindee.Cli.Commands
             {
                 _logger.LogInformation("About to predict a custom document..");
 
-                var invoicePrediction = await _mindeeClient
-                    .LoadDocument(new FileInfo(FilePath))
+                var prediction = await _mindeeClient
+                    .LoadDocument(new FileInfo(Path))
                     .ParseAsync(new Endpoint(
                         ProductName,
                         Version, 
                         OrganizationName));
 
-                _logger.LogInformation("See the associated JSON below :");
-                _logger.LogInformation(JsonSerializer.Serialize(invoicePrediction));
+                context.Console.Out.Write(JsonSerializer.Serialize(prediction, new JsonSerializerOptions { WriteIndented = true }));
 
                 return 0;
             }

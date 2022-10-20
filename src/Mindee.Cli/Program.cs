@@ -10,7 +10,7 @@ using Mindee.Extensions.DependencyInjection;
 var runner = BuildCommandLine()
     .UseHost(_ => Host.CreateDefaultBuilder(args), (builder) =>
     {
-        builder.UseEnvironment("CLI")
+        builder
         .ConfigureServices((hostContext, services) =>
         {
             services.AddMindeeClient();
@@ -27,7 +27,10 @@ return await runner.InvokeAsync(args);
 static CommandLineBuilder BuildCommandLine()
 {
     var root = new RootCommand();
-    root.AddCommand(BuildPredictCommands());
+    root.AddCommand(new PredictInvoiceCommand());
+    root.AddCommand(new PredictReceiptCommand());
+    root.AddCommand(new PredictPassportCommand());
+    root.AddCommand(new PredictCustomCommand());
 
     root.AddGlobalOption(new Option<bool>("--silent", "Disables diagnostics output"));
     root.Handler = CommandHandler.Create(() =>
@@ -36,16 +39,4 @@ static CommandLineBuilder BuildCommandLine()
     });
 
     return new CommandLineBuilder(root);
-
-    static Command BuildPredictCommands()
-    {
-        var predictCommands = new Command("predict", "To predict with API")
-        {
-            new PredictInvoiceCommand(),
-            new PredictReceiptCommand(),
-            new PredictPassportCommand(),
-            new PredictCustomCommand(),
-        };
-        return predictCommands;
-    }
 }
