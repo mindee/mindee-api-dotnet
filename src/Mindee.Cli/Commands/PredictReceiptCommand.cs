@@ -3,7 +3,6 @@ using System.CommandLine.Invocation;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Mindee.Domain;
-using Mindee.Parsing.Invoice;
 using Mindee.Parsing.Receipt;
 
 namespace Mindee.Cli.Commands
