@@ -14,7 +14,9 @@ namespace Mindee.Cli.Commands
         public PredictPassportCommand()
             : base(name: "passport", "Invokes the passport API")
         {
-            AddArgument(new Argument<string>("path", "The path of the file to parse"));
+            AddArgument(new Argument<string>("path", "The path of the file to parse")); 
+            AddOption(new Option<string>(new string[] { "-o", "--output", "output" }, "Choose the displayed result format. " +
+                "Options values : 'raw' to get result as json, 'summary' to get a prettier format. 'raw' by default."));
         }
 
         public new class Handler : ICommandHandler
@@ -23,6 +25,7 @@ namespace Mindee.Cli.Commands
             private readonly MindeeClient _mindeeClient;
 
             public string Path { get; set; } = null!;
+            public string Output { get; set; } = "raw";
 
             public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
             {
@@ -38,7 +41,14 @@ namespace Mindee.Cli.Commands
                     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
                     .ParseAsync<PassportPrediction>();
 
-                context.Console.Out.Write(JsonSerializer.Serialize(prediction, new JsonSerializerOptions { WriteIndented = true }));
+                if (Output == "summary")
+                {
+                    context.Console.Out.Write(prediction != null ? prediction.Inference.Prediction.ToString()! : "null");
+                }
+                else
+                {
+                    context.Console.Out.Write(JsonSerializer.Serialize(prediction, new JsonSerializerOptions { WriteIndented = true }));
+                }
 
                 return 0;
             }

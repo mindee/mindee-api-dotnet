@@ -3,6 +3,7 @@ using System.CommandLine.Invocation;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Mindee.Domain;
+using Mindee.Parsing.Invoice;
 using Mindee.Parsing.Receipt;
 
 namespace Mindee.Cli.Commands
@@ -15,7 +16,9 @@ namespace Mindee.Cli.Commands
             : base(name: "receipt", "Invokes the receipt API")
         {
             AddArgument(new Argument<string>("path", "The path of the file to parse"));
-            AddOption(new Option<bool>(new string[] { "-w", "--with-words", "withWords" }, "To get all the words in the current document"));
+            AddOption(new Option<bool>(new string[] { "-w", "--with-words", "withWords" }, "To get all the words in the current document. False by default."));
+            AddOption(new Option<string>(new string[] { "-o", "--output", "output" }, "Choose the displayed result format. " +
+                "Options values : 'raw' to get result as json, 'summary' to get a prettier format. 'raw' by default."));
         }
 
         public new class Handler : ICommandHandler
@@ -25,6 +28,7 @@ namespace Mindee.Cli.Commands
 
             public string Path { get; set; } = null!;
             public bool WithWords { get; set; } = false;
+            public string Output { get; set; } = "raw";
 
             public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
             {
@@ -40,8 +44,14 @@ namespace Mindee.Cli.Commands
                     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
                     .ParseAsync<ReceiptPrediction>(WithWords);
 
-
-                context.Console.Out.Write(JsonSerializer.Serialize(prediction, new JsonSerializerOptions { WriteIndented = true }));
+                if (Output == "summary")
+                {
+                    context.Console.Out.Write(prediction != null ? prediction.Inference.Prediction.ToString()! : "null");
+                }
+                else
+                {
+                    context.Console.Out.Write(JsonSerializer.Serialize(prediction, new JsonSerializerOptions { WriteIndented = true }));
+                }
 
                 return 0;
             }

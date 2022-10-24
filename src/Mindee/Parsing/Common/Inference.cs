@@ -15,5 +15,11 @@ namespace Mindee.Parsing.Common
         /// </summary>
         [JsonPropertyName("pages")]
         public List<Page<TPredictionModel>> Pages { get; set; }
+
+        /// <summary>
+        /// The prediction model values.
+        /// </summary>
+        [JsonPropertyName("prediction")]
+        public TPredictionModel Prediction { get; set; }
     }
 }
