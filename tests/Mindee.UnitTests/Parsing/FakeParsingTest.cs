@@ -6,6 +6,7 @@ namespace Mindee.UnitTests.Parsing
     public class FakeParsingTest : ParsingTestBase
     {
         [Fact]
+        [Trait("Category", "Wrong prediction configuration")]
         public async Task Execute_WithAnyKindOfData_MustFail()
         {
             var mindeeAPi = GetMindeeApiForFake();
