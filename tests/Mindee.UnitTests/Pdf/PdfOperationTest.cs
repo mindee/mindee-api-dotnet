@@ -13,6 +13,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         }
 
         [Fact]
+        [Trait("Category", "Pdf operations")]
         public async Task Split_Wants1Page_MustGetOnly1Page()
         {
             var splitQuery = new SplitQuery(File.OpenRead("Resources/pdf/multipage.pdf"), 2, 2);
@@ -25,6 +26,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         }
 
         [Fact]
+        [Trait("Category", "Pdf operations")]
         public async Task Split_WantsTooManyPages_MustFail()
         {
             var splitQuery = new SplitQuery(File.OpenRead("Resources/pdf/multipage.pdf"), 1, 14);
@@ -33,6 +35,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         }
 
         [Fact]
+        [Trait("Category", "Pdf operations")]
         public async Task Split_WantsStartPageTo0_MustFail()
         {
             var splitQuery = new SplitQuery(File.OpenRead("Resources/pdf/multipage.pdf"), 0, 3);
@@ -41,6 +44,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         }
 
         [Fact]
+        [Trait("Category", "Pdf operations")]
         public async Task Split_OtherThanAPdf_MustFail()
         {
             var splitQuery = new SplitQuery(File.OpenRead("Resources/passport/passport.jpeg"), 0, 3);

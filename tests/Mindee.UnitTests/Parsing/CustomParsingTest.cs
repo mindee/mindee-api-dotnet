@@ -6,6 +6,7 @@ namespace Mindee.UnitTests.Parsing
     public class CustomParsingTest : ParsingTestBase
     {
         [Fact]
+        [Trait("Category", "Custom API")]
         public async Task Execute_WithReceiptData_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -17,6 +18,7 @@ namespace Mindee.UnitTests.Parsing
         }
 
         [Fact]
+        [Trait("Category", "Custom API")]
         public async Task Predict_WithFieldWithOnlyOneValue_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -40,6 +42,7 @@ namespace Mindee.UnitTests.Parsing
         }
 
         [Fact]
+        [Trait("Category", "Custom API")]
         public async Task Predict_WithFieldWithMultipleValues_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -64,6 +67,7 @@ namespace Mindee.UnitTests.Parsing
         }
 
         [Fact]
+        [Trait("Category", "Custom API")]
         public async Task Predict_WithFieldWithNoValues_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -78,6 +82,7 @@ namespace Mindee.UnitTests.Parsing
         }
 
         [Fact]
+        [Trait("Category", "Custom API")]
         public async Task Predict_MustSuccessfullyGetOrientation()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -89,6 +94,7 @@ namespace Mindee.UnitTests.Parsing
         }
 
         [Fact]
+        [Trait("Category", "Custom API")]
         public async Task Predict_MustSuccessfullyHandleMultiplePages()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
