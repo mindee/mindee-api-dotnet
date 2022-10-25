@@ -33,6 +33,12 @@ namespace Mindee.Parsing.Invoice
         [JsonPropertyName("supplier_address")]
         public SupplierAddress SupplierAddress { get; set; }
 
+        [JsonPropertyName("total_incl")]
+        public TotalIncl TotalIncl { get; set; }
+
+        [JsonPropertyName("total_excl")]
+        public TotalExcl TotalExcl { get; set; }
+
         public override string ToString()
         {
             StringBuilder result = new StringBuilder("-----Invoice data-----\n");
