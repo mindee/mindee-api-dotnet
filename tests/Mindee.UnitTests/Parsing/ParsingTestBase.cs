@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Parsing;
 using RichardSzalay.MockHttp;
 
-namespace Mindee.UnitTests.Parsing.Prediction
+namespace Mindee.UnitTests.Parsing
 {
     public abstract class ParsingTestBase
     {

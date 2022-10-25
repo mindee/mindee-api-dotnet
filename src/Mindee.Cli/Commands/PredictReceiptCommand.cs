@@ -41,7 +41,7 @@ namespace Mindee.Cli.Commands
 
                 var prediction = await _mindeeClient
                     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<ReceiptPrediction>(WithWords);
+                    .ParseAsync<ReceiptV3Prediction>(WithWords);
 
                 if (Output == "summary")
                 {

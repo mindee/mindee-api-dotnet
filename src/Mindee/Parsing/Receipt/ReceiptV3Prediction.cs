@@ -6,7 +6,7 @@ using Mindee.Parsing.Common;
 namespace Mindee.Parsing.Receipt
 {
     [Endpoint("expense_receipts", "3")]
-    public sealed class ReceiptPrediction : FinancialPredictionBase
+    public sealed class ReceiptV3Prediction : FinancialPredictionBase
     {
         [JsonPropertyName("category")]
         public Category Category { get; set; }
