@@ -8,10 +8,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="appsettings.json">
+    <Content Include="appsettings.Development.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
+
+  <Choose>
+    <When Condition="'$(EnvironmentName)' != 'Development'">
+      <ItemGroup>
+        <Content Update="appsettings.Development.json">
+          <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+        </Content>
+      </ItemGroup>
+    </When>
+  </Choose>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="6.0.0" />
@@ -27,5 +41,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Mindee\Mindee.csproj" />
   </ItemGroup>
+
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
 </Project>

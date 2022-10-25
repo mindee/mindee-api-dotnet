@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.Common
 {
@@ -17,5 +18,22 @@ namespace Mindee.Parsing.Common
         /// <example>10.5</example>
         [JsonPropertyName("value")]
         public double? Value { get; set; }
+
+        public override string ToString()
+        {
+            StringBuilder result = new StringBuilder();
+
+            if(Value != null)
+            {
+                result.Append(Value);
+            }
+
+            if (Rate != null)
+            {
+                result.Append($" {Rate}%");
+            }
+
+            return result.ToString().Trim();
+        }
     }
 }

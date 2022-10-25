@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.Common
 {
@@ -35,5 +36,25 @@ namespace Mindee.Parsing.Common
         /// <example>FR</example>
         [JsonPropertyName("country")]
         public string Country { get; set; }
+
+        public override string ToString()
+        {
+            StringBuilder result = new StringBuilder();
+
+            if(!string.IsNullOrWhiteSpace(Language))
+            {
+                result.Append($"{Language}; ");
+            }
+            if (!string.IsNullOrWhiteSpace(Country))
+            {
+                result.Append($"{Country}; ");
+            }
+            if (!string.IsNullOrWhiteSpace(Currency))
+            {
+                result.Append($"{Currency}; ");
+            }
+
+            return result.ToString().Trim();
+        }
     }
 }
