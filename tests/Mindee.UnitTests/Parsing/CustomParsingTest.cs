@@ -1,7 +1,7 @@
 ﻿using Mindee.Parsing;
 using Mindee.Parsing.CustomBuilder;
 
-namespace Mindee.UnitTests.Parsing.Prediction
+namespace Mindee.UnitTests.Parsing
 {
     public class CustomParsingTest : ParsingTestBase
     {
@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
         {
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
-                new Endpoint("customProduct", "1", "fakeOrga"), 
+                new Endpoint("customProduct", "1", "fakeOrga"),
                 GetFakePredictParameter());
 
             Assert.NotNull(prediction);

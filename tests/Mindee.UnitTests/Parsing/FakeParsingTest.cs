@@ -1,8 +1,7 @@
-﻿
-using Mindee.Parsing;
+﻿using Mindee.Parsing;
 using Mindee.Parsing.Common;
 
-namespace Mindee.UnitTests.Parsing.Prediction
+namespace Mindee.UnitTests.Parsing
 {
     public class FakeParsingTest : ParsingTestBase
     {
@@ -17,7 +16,7 @@ namespace Mindee.UnitTests.Parsing.Prediction
 
         private MindeeApi GetMindeeApiForFake()
         {
-            return GetMindeeApi("Resources/invoice/response/complete.json");
+            return GetMindeeApi("Resources/invoice/response_v3/complete.json");
         }
     }
 
