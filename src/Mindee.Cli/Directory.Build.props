@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <Description>A CLI to use the Mindee client.</Description>
+  </PropertyGroup>
+</Project>

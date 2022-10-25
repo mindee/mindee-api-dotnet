@@ -1,5 +1,6 @@
 <Project>
   <PropertyGroup>
+    <Description>Mindee is a .NET 4.6.1+ client, and a portable class library for the Mindee API. (Official Library)</Description>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 </Project>
