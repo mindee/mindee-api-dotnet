@@ -6,9 +6,9 @@ using RichardSzalay.MockHttp;
 
 namespace Mindee.UnitTests.Parsing
 {
-    public abstract class ParsingTestBase
+    public static class ParsingTestBase
     {
-        protected PredictParameter GetFakePredictParameter()
+        internal static PredictParameter GetFakePredictParameter()
         {
             return
                 new PredictParameter(
@@ -16,7 +16,7 @@ namespace Mindee.UnitTests.Parsing
                         "Bou");
         }
 
-        protected MindeeApi GetMindeeApi(string fileName)
+        internal static MindeeApi GetMindeeApi(string fileName)
         {
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When("*")

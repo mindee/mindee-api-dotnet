@@ -44,4 +44,9 @@
 
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="..\..\Logo.png" Pack="true" Visible="false" PackagePath="" />
+  </ItemGroup>
+
 </Project>

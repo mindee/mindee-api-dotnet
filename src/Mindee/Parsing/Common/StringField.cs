@@ -3,19 +3,14 @@
 namespace Mindee.Parsing.Common
 {
     /// <summary>
-    /// Represent a date.
+    /// Represent a string field.
     /// </summary>
-    public class Date : BaseField
+    public sealed class StringField : BaseField
     {
-        /// <summary>
-        /// The raw value of it.
-        /// </summary>
-        [JsonPropertyName("raw")]
-        public string Raw { get; set; }
-
         /// <summary>
         /// The value of the field.
         /// </summary>
+        /// <example>food</example>
         [JsonPropertyName("value")]
         public string Value { get; set; }
     }

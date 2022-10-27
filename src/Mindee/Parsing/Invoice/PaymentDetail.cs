@@ -4,20 +4,38 @@ using Mindee.Parsing.Common;
 
 namespace Mindee.Parsing.Invoice
 {
+    /// <summary>
+    /// Represent a payment detail.
+    /// </summary>
     public class PaymentDetail : BaseField
     {
+        /// <summary>
+        /// The account number.
+        /// </summary>
         [JsonPropertyName("account_number")]
         public string AccountNumber { get; set; }
 
+        /// <summary>
+        /// The full IBAN.
+        /// </summary>
         [JsonPropertyName("iban")]
         public string Iban { get; set; }
 
+        /// <summary>
+        /// The routing number.
+        /// </summary>
         [JsonPropertyName("routing_number")]
         public string RoutingNumber { get; set; }
 
+        /// <summary>
+        /// The SWIFT value.
+        /// </summary>
         [JsonPropertyName("swift")]
         public string Swift { get; set; }
 
+        /// <summary>
+        /// A prettier reprensentation of the payment details.
+        /// </summary>
         public override string ToString()
         {
             StringBuilder result = new StringBuilder();

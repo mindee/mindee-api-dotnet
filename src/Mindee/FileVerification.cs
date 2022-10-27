@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Mindee
 {
-    public static class FileVerification
+    internal static class FileVerification
     {
         private static readonly string[] _authorizedFileExtensions =
             {

@@ -5,27 +5,51 @@ using Mindee.Parsing.Common;
 
 namespace Mindee.Parsing.Receipt
 {
+    /// <summary>
+    /// The receipt model for the v4.
+    /// </summary>
     [Endpoint("expense_receipts", "4")]
     public sealed class ReceiptV4Prediction : FinancialPredictionBase
     {
+        /// <summary>
+        /// The category of the receipt.
+        /// </summary>
         [JsonPropertyName("category")]
-        public Category Category { get; set; }
+        public StringField Category { get; set; }
 
+        /// <summary>
+        /// <see cref="Time"/>
+        /// </summary>
         [JsonPropertyName("time")]
         public Time Time { get; set; }
 
+        /// <summary>
+        /// Total amount including taxes and the tip.
+        /// </summary>
         [JsonPropertyName("total_amount")]
         public Amount TotalAmount { get; set; }
-        
+
+        /// <summary>
+        /// Total amount excluding taxes.
+        /// </summary>
         [JsonPropertyName("total_net")]
         public Amount TotalNet { get; set; }
-        
+
+        /// <summary>
+        /// Total taxes.
+        /// </summary>
         [JsonPropertyName("total_tax")]
         public Amount TotalTax { get; set; }
 
+        /// <summary>
+        /// The tip.
+        /// </summary>
         [JsonPropertyName("tip")]
         public Amount Tip { get; set; }
 
+        /// <summary>
+        /// Generate a pretty to read summary of the model.
+        /// </summary>
         public override string ToString()
         {
             StringBuilder result = new StringBuilder("-----Receipt data-----\n");

@@ -3,14 +3,14 @@ using Mindee.Parsing.Receipt;
 
 namespace Mindee.UnitTests.Parsing.Receipt
 {
-    public class ReceiptV4Test : ParsingTestBase
+    public class ReceiptV4Test
     {
         [Fact]
         [Trait("Category", "Receipt V4")]
         public async Task Predict_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.NotNull(prediction);
         }
@@ -20,7 +20,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_MustSuccessForCategory()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0.94, prediction.Inference.Pages.First().Prediction.Category.Confidence);
             Assert.Equal("food", prediction.Inference.Pages.First().Prediction.Category.Value);
@@ -31,7 +31,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_MustSuccessForDate()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Date.Confidence);
             Assert.Equal(0, prediction.Inference.Pages.First().Id);
@@ -43,7 +43,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_MustSuccessForTime()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Time.Confidence);
             Assert.Equal(0, prediction.Inference.Pages.First().Id);
@@ -63,7 +63,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_WithReceiptData_MustSuccessForLocale()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal("en", prediction.Inference.Pages.First().Prediction.Locale.Language);
             Assert.Equal("US", prediction.Inference.Pages.First().Prediction.Locale.Country);
@@ -75,7 +75,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_WithReceiptData_MustSuccessForTotalTaxes()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(3.34, prediction.Inference.Pages.First().Prediction.TotalTax.Value);
         }
@@ -85,7 +85,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_WithReceiptData_MustSuccessForTip()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(10.0, prediction.Inference.Pages.First().Prediction.Tip.Value);
         }
@@ -95,7 +95,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_WithReceiptData_MustSuccessForNetTotal()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(40.48, prediction.Inference.Pages.First().Prediction.TotalNet.Value);
         }
@@ -105,7 +105,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_WithReceiptData_MustSuccessForTotal()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(53.82, prediction.Inference.Pages.First().Prediction.TotalAmount.Value);
         }
@@ -115,14 +115,14 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_WithReceiptData_MustSuccessForOrientation()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0, prediction.Inference.Pages.First().Orientation.Value);
         }
 
         private MindeeApi GetMindeeApiForReceipt(string fileName = "Resources/receipt/response_v4/complete-with-tip.json")
         {
-            return GetMindeeApi(fileName);
+            return ParsingTestBase.GetMindeeApi(fileName);
         }
     }
 }

@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.Common
 {
+    /// <summary>
+    /// Represent a tax.
+    /// </summary>
     public class Tax : BaseField
     {
         /// <summary>

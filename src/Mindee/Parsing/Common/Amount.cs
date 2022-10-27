@@ -2,10 +2,13 @@
 
 namespace Mindee.Parsing.Common
 {
+    /// <summary>
+    /// Represent an amount.
+    /// </summary>
     public class Amount : BaseField
     {
         /// <summary>
-        /// The amount value.
+        /// An amount value.
         /// </summary>
         /// <example>5.89</example>
         [JsonPropertyName("value")]

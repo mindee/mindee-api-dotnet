@@ -3,7 +3,7 @@ using Mindee.Parsing.Common;
 
 namespace Mindee.UnitTests.Parsing
 {
-    public class FakeParsingTest : ParsingTestBase
+    public class FakeParsingTest
     {
         [Fact]
         [Trait("Category", "Wrong prediction configuration")]
@@ -12,12 +12,12 @@ namespace Mindee.UnitTests.Parsing
             var mindeeAPi = GetMindeeApiForFake();
 
             await Assert.ThrowsAsync<NotSupportedException>(
-               () => _ = mindeeAPi.PredictAsync<FakePrediction>(GetFakePredictParameter()));
+               () => _ = mindeeAPi.PredictAsync<FakePrediction>(ParsingTestBase.GetFakePredictParameter()));
         }
 
         private MindeeApi GetMindeeApiForFake()
         {
-            return GetMindeeApi("Resources/invoice/response_v3/complete.json");
+            return ParsingTestBase.GetMindeeApi("Resources/invoice/response_v3/complete.json");
         }
     }
 
