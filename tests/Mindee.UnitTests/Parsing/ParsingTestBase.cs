@@ -6,7 +6,7 @@ using RichardSzalay.MockHttp;
 
 namespace Mindee.UnitTests.Parsing
 {
-    public abstract class ParsingTestBase
+    internal abstract class ParsingTestBase
     {
         protected PredictParameter GetFakePredictParameter()
         {

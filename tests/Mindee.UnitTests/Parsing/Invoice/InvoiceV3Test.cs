@@ -110,7 +110,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
                 new List<double>() { 0.635, 0.936 },
             }
             , invoicePrediction.Ocr.MvisionV1.Pages.First().AllWords.First().Polygon);
-            Assert.Equal("Payment", invoicePrediction.Ocr.MvisionV1.Pages.First().AllWords.First().Text);
+            Assert.Equal("Payment", invoicePrediction.Ocr.MvisionV1.Pages.First().AllWords.First().Value);
         }
 
         private MindeeApi GetMindeeApiForInvoice(string fileName = "Resources/invoice/response_v3/complete.json")

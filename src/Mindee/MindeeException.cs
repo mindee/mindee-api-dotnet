@@ -2,6 +2,9 @@
 
 namespace Mindee.Exceptions
 {
+    /// <summary>
+    /// Represent a Mindee exception.
+    /// </summary>
     public sealed class MindeeException : Exception
     {
         public MindeeException()

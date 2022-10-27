@@ -5,21 +5,39 @@ using Mindee.Parsing.Common;
 
 namespace Mindee.Parsing.Receipt
 {
+    /// <summary>
+    /// The receipt model for the v3.
+    /// </summary>
     [Endpoint("expense_receipts", "3")]
     public sealed class ReceiptV3Prediction : FinancialPredictionBase
     {
+        /// <summary>
+        /// <see cref="Category"/>
+        /// </summary>
         [JsonPropertyName("category")]
         public Category Category { get; set; }
-
+        
+        /// <summary>
+        /// <see cref="Time"/>
+        /// </summary>
         [JsonPropertyName("time")]
         public Time Time { get; set; }
 
+        /// <summary>
+        /// <see cref="TotalIncl"/>
+        /// </summary>
         [JsonPropertyName("total_incl")]
         public TotalIncl TotalIncl { get; set; }
 
+        /// <summary>
+        /// <see cref="TotalExcl"/>
+        /// </summary>
         [JsonPropertyName("total_excl")]
         public TotalExcl TotalExcl { get; set; }
 
+        /// <summary>
+        /// Generate a pretty to read summary of the model.
+        /// </summary>
         public override string ToString()
         {
             StringBuilder result = new StringBuilder("-----Receipt data-----\n");

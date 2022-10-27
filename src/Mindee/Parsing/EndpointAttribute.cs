@@ -2,6 +2,9 @@
 
 namespace Mindee.Parsing
 {
+    /// <summary>
+    /// Is used to parameterize the associated endpoint on a model.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class EndpointAttribute : Attribute
     {

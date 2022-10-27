@@ -22,6 +22,11 @@ namespace Mindee
         /// </summary>
         public string Extension { get; }
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="filename">The name of the file.</param>
         public DocumentClient(byte[] file, string filename)
         {
             File = file;

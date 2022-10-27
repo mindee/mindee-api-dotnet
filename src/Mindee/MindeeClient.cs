@@ -9,14 +9,19 @@ using Mindee.Parsing.Common;
 using Mindee.Parsing.CustomBuilder;
 using Mindee.Pdf;
 
-namespace Mindee.Domain
+namespace Mindee
 {
+    /// <summary>
+    /// The entrypoint to use the Mindee features.
+    /// </summary>
     public sealed class MindeeClient
     {
-        private readonly ILogger _logger;
         private readonly IPdfOperation _pdfOperation;
         private readonly MindeeApi _mindeeApi;
 
+        /// <summary>
+        /// <see cref="Mindee.DocumentClient"/>
+        /// </summary>
         public DocumentClient DocumentClient { get; private set; }
 
         public MindeeClient(
@@ -24,9 +29,8 @@ namespace Mindee.Domain
             IPdfOperation pdfOperation,
             IConfiguration configuration)
         {
-            _logger = logger;
             _pdfOperation = pdfOperation;
-            _mindeeApi = new MindeeApi(_logger, configuration);
+            _mindeeApi = new MindeeApi(logger, configuration);
         }
 
         /// <summary>

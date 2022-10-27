@@ -5,6 +5,9 @@ namespace Mindee.Parsing.Passport
 {
     public class Mrz1 : BaseField
     {
+        /// <summary>
+        /// The value of the field.
+        /// </summary>
         [JsonPropertyName("value")]
         public string Value { get; set; }
     }

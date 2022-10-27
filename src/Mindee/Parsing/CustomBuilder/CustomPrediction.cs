@@ -10,6 +10,9 @@ namespace Mindee.Parsing.CustomBuilder
     [Serializable]
     public sealed class CustomPrediction : Dictionary<string, ListField>
     {
+        /// <summary>
+        /// Default empty constructor.
+        /// </summary>
         public CustomPrediction()
         { 
         }

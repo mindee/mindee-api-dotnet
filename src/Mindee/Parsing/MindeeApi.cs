@@ -12,7 +12,7 @@ using RestSharp;
 
 namespace Mindee.Parsing
 {
-    public partial class MindeeApi
+    internal sealed class MindeeApi
     {
         private const string BaseUrl = "https://api.mindee.net/v1";
         private readonly string _apiKey;
