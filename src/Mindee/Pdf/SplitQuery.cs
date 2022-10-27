@@ -2,7 +2,7 @@
 
 namespace Mindee.Pdf
 {
-    public sealed class SplitQuery
+    internal sealed class SplitQuery
     {
         public Stream Stream { get; }
         public ushort PageNumberStart { get; }

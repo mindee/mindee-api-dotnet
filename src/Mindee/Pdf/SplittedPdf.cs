@@ -1,6 +1,6 @@
 ﻿namespace Mindee.Pdf
 {
-    public sealed class SplittedPdf
+    internal sealed class SplittedPdf
     {
         public byte[] File { get; }
         public ushort TotalPageNumber { get; }

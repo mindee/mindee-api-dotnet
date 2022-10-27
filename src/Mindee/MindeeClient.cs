@@ -24,6 +24,12 @@ namespace Mindee
         /// </summary>
         public DocumentClient DocumentClient { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logger"><see cref="ILogger"/></param>
+        /// <param name="pdfOperation"><see cref="IPdfOperation"/></param>
+        /// <param name="configuration"><see cref="IConfiguration"/></param>
         public MindeeClient(
             ILogger<MindeeClient> logger,
             IPdfOperation pdfOperation,
