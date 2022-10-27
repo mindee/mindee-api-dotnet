@@ -13,70 +13,70 @@ namespace Mindee.Parsing.Passport
     public sealed class PassportV1Prediction : PredictionBase
     {
         /// <summary>
-        /// <see cref="BirthDate"/>
+        /// The birth date of the person.
         /// </summary>
         [JsonPropertyName("birth_date")]
-        public BirthDate BirthDate { get; set; }
+        public StringField BirthDate { get; set; }
 
         /// <summary>
-        /// <see cref="BirthPlace"/>
+        /// The birth place  of the person
         /// </summary>
         [JsonPropertyName("birth_place")]
-        public BirthPlace BirthPlace { get; set; }
+        public StringField BirthPlace { get; set; }
 
         /// <summary>
-        /// <see cref="Country"/>
+        /// The country.
         /// </summary>
         [JsonPropertyName("country")]
-        public Country Country { get; set; }
+        public StringField Country { get; set; }
 
         /// <summary>
-        /// <see cref="ExpiryDate"/>
+        /// The expiry date.
         /// </summary>
         [JsonPropertyName("expiry_date")]
-        public ExpiryDate ExpiryDate { get; set; }
+        public StringField ExpiryDate { get; set; }
 
         /// <summary>
-        /// <see cref="Gender"/>
+        /// The gender.
         /// </summary>
         [JsonPropertyName("gender")]
-        public Gender Gender { get; set; }
+        public StringField Gender { get; set; }
 
         /// <summary>
-        /// <see cref="GivenName"/>
+        /// The list of the person given names.
         /// </summary>
         [JsonPropertyName("given_names")]
-        public List<GivenName> GivenNames { get; set; }
+        public List<StringField> GivenNames { get; set; }
 
         /// <summary>
-        /// <see cref="IdNumber"/>
+        /// The id of the passport.
         /// </summary>
         [JsonPropertyName("id_number")]
-        public IdNumber IdNumber { get; set; }
+        public StringField IdNumber { get; set; }
 
         /// <summary>
-        /// <see cref="IssuanceDate"/>
+        /// The date of issuance of the passport.
         /// </summary>
         [JsonPropertyName("issuance_date")]
-        public IssuanceDate IssuanceDate { get; set; }
+        public StringField IssuanceDate { get; set; }
 
         /// <summary>
-        /// <see cref="Mrz1"/>
+        /// The first MRZ line.
         /// </summary>
         [JsonPropertyName("mrz1")]
-        public Mrz1 Mrz1 { get; set; }
+        public StringField Mrz1 { get; set; }
 
         /// <summary>
-        /// <see cref="Mrz2"/>
+        ///The second MRZ line.
         /// </summary>
         [JsonPropertyName("mrz2")]
-        public Mrz2 Mrz2 { get; set; }
+        public StringField Mrz2 { get; set; }
 
         /// <summary>
-        /// <see cref="Surname"/>
+        /// The surname of the person.
         /// </summary>
         [JsonPropertyName("surname")]
-        public Surname Surname { get; set; }
+        public StringField Surname { get; set; }
 
         /// <summary>
         /// 

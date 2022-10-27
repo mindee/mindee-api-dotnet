@@ -2,7 +2,6 @@
 using System.CommandLine.Invocation;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using Mindee.Domain;
 using Mindee.Parsing.Passport;
 
 namespace Mindee.Cli.Commands

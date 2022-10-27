@@ -3,7 +3,7 @@ using Mindee.Parsing.CustomBuilder;
 
 namespace Mindee.UnitTests.Parsing
 {
-    public class CustomParsingTest : ParsingTestBase
+    public class CustomParsingTest
     {
         [Fact]
         [Trait("Category", "Custom API")]
@@ -12,7 +12,7 @@ namespace Mindee.UnitTests.Parsing
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
                 new Endpoint("customProduct", "1", "fakeOrga"),
-                GetFakePredictParameter());
+                ParsingTestBase.GetFakePredictParameter());
 
             Assert.NotNull(prediction);
         }
@@ -24,7 +24,7 @@ namespace Mindee.UnitTests.Parsing
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
                 new Endpoint("customProduct", "1", "fakeOrga"),
-                GetFakePredictParameter());
+                ParsingTestBase.GetFakePredictParameter());
 
             var listField = prediction.Inference.Pages.First().Prediction.GetValueOrDefault("date_normal");
             Assert.NotNull(listField);
@@ -48,7 +48,7 @@ namespace Mindee.UnitTests.Parsing
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
                 new Endpoint("customProduct", "1", "fakeOrga"),
-                GetFakePredictParameter());
+                ParsingTestBase.GetFakePredictParameter());
 
             var listField = prediction.Inference.Pages.First().Prediction.GetValueOrDefault("string_all");
             Assert.NotNull(listField);
@@ -73,7 +73,7 @@ namespace Mindee.UnitTests.Parsing
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
                 new Endpoint("customProduct", "1", "fakeOrga"),
-                GetFakePredictParameter());
+                ParsingTestBase.GetFakePredictParameter());
 
             var listField = prediction.Inference.Pages.First().Prediction.GetValueOrDefault("url");
             Assert.NotNull(listField);
@@ -88,7 +88,7 @@ namespace Mindee.UnitTests.Parsing
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
                 new Endpoint("customProduct", "1", "fakeOrga"),
-                GetFakePredictParameter());
+                ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0, prediction.Inference.Pages.First().Orientation.Value);
         }
@@ -100,14 +100,14 @@ namespace Mindee.UnitTests.Parsing
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
                 new Endpoint("customProduct", "1", "fakeOrga"),
-                GetFakePredictParameter());
+                ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(2, prediction.Inference.Pages.Count);
         }
 
         private MindeeApi GetMindeeApiForReceipt(string fileName = "Resources/custom/response/complete.json")
         {
-            return GetMindeeApi(fileName);
+            return ParsingTestBase.GetMindeeApi(fileName);
         }
     }
 }

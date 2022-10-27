@@ -19,16 +19,16 @@ namespace Mindee.Parsing.Invoice
         public List<CompanyRegistration> CompanyRegistrations { get; set; }
 
         /// <summary>
-        /// <see cref="Customer"/>
+        /// The customer.
         /// </summary>
         [JsonPropertyName("customer")]
-        public Customer Customer { get; set; }
+        public StringField Customer { get; set; }
 
         /// <summary>
-        /// <see cref="Invoice.CustomerAddress"/>
+        /// The adress of the customer.
         /// </summary>
         [JsonPropertyName("customer_address")]
-        public CustomerAddress CustomerAddress { get; set; }
+        public StringField CustomerAddress { get; set; }
 
         /// <summary>
         /// List of customer company registrations.
@@ -43,10 +43,10 @@ namespace Mindee.Parsing.Invoice
         public DueDate DueDate { get; set; }
 
         /// <summary>
-        /// <see cref="Invoice.InvoiceNumber"/>
+        /// The invoice number.
         /// </summary>
         [JsonPropertyName("invoice_number")]
-        public InvoiceNumber InvoiceNumber { get; set; }
+        public StringField InvoiceNumber { get; set; }
 
         /// <summary>
         /// List of payment details.
@@ -55,10 +55,10 @@ namespace Mindee.Parsing.Invoice
         public List<PaymentDetail> PaymentDetails { get; set; }
 
         /// <summary>
-        /// <see cref="Invoice.SupplierAddress"/>
+        /// The supplier address.
         /// </summary>
         [JsonPropertyName("supplier_address")]
-        public SupplierAddress SupplierAddress { get; set; }
+        public StringField SupplierAddress { get; set; }
 
         /// <summary>
         /// <see cref="Common.TotalIncl"/>

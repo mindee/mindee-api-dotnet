@@ -21,10 +21,10 @@ namespace Mindee.Parsing.Common
         public Date Date { get; set; }
 
         /// <summary>
-        /// <see cref="Common.Supplier"/>
+        /// The supplier name.
         /// </summary>
         [JsonPropertyName("supplier")]
-        public Supplier Supplier { get; set; }
+        public StringField Supplier { get; set; }
 
         /// <summary>
         /// <see cref="Tax"/>

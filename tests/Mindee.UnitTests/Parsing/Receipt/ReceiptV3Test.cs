@@ -3,14 +3,14 @@ using Mindee.Parsing.Receipt;
 
 namespace Mindee.UnitTests.Parsing.Receipt
 {
-    public class ReceiptV3Test : ParsingTestBase
+    public class ReceiptV3Test
     {
         [Fact]
         [Trait("Category", "Receipt V3")]
         public async Task Predict_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.NotNull(prediction);
         }
@@ -20,7 +20,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_MustSuccessForCategory()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Category.Confidence);
             Assert.Equal("food", prediction.Inference.Pages.First().Prediction.Category.Value);
@@ -31,7 +31,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_MustSuccessForDate()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Date.Confidence);
             Assert.Equal(0, prediction.Inference.Pages.First().Id);
@@ -43,7 +43,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_MustSuccessForTime()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0.99, prediction.Inference.Pages.First().Prediction.Time.Confidence);
             Assert.Equal(0, prediction.Inference.Pages.First().Id);
@@ -63,7 +63,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_WithReceiptData_MustSuccessForLocale()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal("en", prediction.Inference.Pages.First().Prediction.Locale.Language);
             Assert.Equal("GB", prediction.Inference.Pages.First().Prediction.Locale.Country);
@@ -75,7 +75,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_WithReceiptData_MustSuccessForTotalTaxesIncluded()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(10.2, prediction.Inference.Pages.First().Prediction.TotalIncl.Value);
         }
@@ -85,14 +85,14 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_WithReceiptData_MustSuccessForOrientation()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV3Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0, prediction.Inference.Pages.First().Orientation.Value);
         }
 
         private MindeeApi GetMindeeApiForReceipt(string fileName = "Resources/receipt/response_v3/complete.json")
         {
-            return GetMindeeApi(fileName);
+            return ParsingTestBase.GetMindeeApi(fileName);
         }
     }
 }

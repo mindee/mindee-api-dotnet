@@ -12,10 +12,10 @@ namespace Mindee.Parsing.Receipt
     public sealed class ReceiptV4Prediction : FinancialPredictionBase
     {
         /// <summary>
-        /// <see cref="Category"/>
+        /// The category of the receipt.
         /// </summary>
         [JsonPropertyName("category")]
-        public Category Category { get; set; }
+        public StringField Category { get; set; }
 
         /// <summary>
         /// <see cref="Time"/>

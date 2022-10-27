@@ -12,25 +12,25 @@ namespace Mindee.Parsing.Receipt
     public sealed class ReceiptV3Prediction : FinancialPredictionBase
     {
         /// <summary>
-        /// <see cref="Category"/>
+        /// The category of the receipt.
         /// </summary>
         [JsonPropertyName("category")]
-        public Category Category { get; set; }
+        public StringField Category { get; set; }
         
         /// <summary>
-        /// <see cref="Time"/>
+        /// <see cref="Receipt.Time"/>
         /// </summary>
         [JsonPropertyName("time")]
         public Time Time { get; set; }
 
         /// <summary>
-        /// <see cref="TotalIncl"/>
+        /// <see cref="Common.TotalIncl"/>
         /// </summary>
         [JsonPropertyName("total_incl")]
         public TotalIncl TotalIncl { get; set; }
 
         /// <summary>
-        /// <see cref="TotalExcl"/>
+        /// <see cref="Common.TotalExcl"/>
         /// </summary>
         [JsonPropertyName("total_excl")]
         public TotalExcl TotalExcl { get; set; }

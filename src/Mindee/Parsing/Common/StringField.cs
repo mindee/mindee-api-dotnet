@@ -1,13 +1,16 @@
 ﻿using System.Text.Json.Serialization;
-using Mindee.Parsing.Common;
 
-namespace Mindee.Parsing.Passport
+namespace Mindee.Parsing.Common
 {
-    public class Mrz1 : BaseField
+    /// <summary>
+    /// Represent a string field.
+    /// </summary>
+    public sealed class StringField : BaseField
     {
         /// <summary>
         /// The value of the field.
         /// </summary>
+        /// <example>food</example>
         [JsonPropertyName("value")]
         public string Value { get; set; }
     }

@@ -42,7 +42,26 @@ namespace Mindee.Parsing.Common
     /// <summary>
     /// Represent a word.
     /// </summary>
-    public class AllWord : BaseField
+    public class AllWord
     {
+        /// <summary>
+        /// The confidence about the zone of the value extracted.
+        /// A value from 0 to 1.
+        /// </summary>
+        /// <example>0.9</example>
+        [JsonPropertyName("confidence")]
+        public double Confidence { get; set; }
+
+        /// <summary>
+        /// Define the coordinates of the zone in the page where the values has been found.
+        /// </summary>
+        [JsonPropertyName("polygon")]
+        public List<List<double>> Polygon { get; set; }
+
+        /// <summary>
+        /// Represent the content.
+        /// </summary>
+        [JsonPropertyName("text")]
+        public string Text { get; set; }
     }
 }
