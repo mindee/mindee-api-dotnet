@@ -1,3 +1,5 @@
+[![CI](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml)
+
 # mindee-api-dotnet
 Mindee API Helper Library for .NET ecosystem.
 
