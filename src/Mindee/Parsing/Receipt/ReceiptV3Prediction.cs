@@ -24,13 +24,13 @@ namespace Mindee.Parsing.Receipt
         public Time Time { get; set; }
 
         /// <summary>
-        /// <see cref="Common.TotalIncl"/>
+        /// Total amount including excluding taxes.
         /// </summary>
         [JsonPropertyName("total_incl")]
         public Amount TotalIncl { get; set; }
 
         /// <summary>
-        /// <see cref="Common.TotalExcl"/>
+        /// Total amount excluding taxes.
         /// </summary>
         [JsonPropertyName("total_excl")]
         public Amount TotalExcl { get; set; }

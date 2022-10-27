@@ -15,7 +15,7 @@ namespace Mindee.Parsing.Common
         public DocumentType DocumentType { get; set; }
 
         /// <summary>
-        /// <see cref="Common.Date"/>
+        /// The date.
         /// </summary>
         [JsonPropertyName("date")]
         public Date Date { get; set; }
