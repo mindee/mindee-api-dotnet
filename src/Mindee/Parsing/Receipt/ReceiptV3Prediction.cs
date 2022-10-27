@@ -27,13 +27,13 @@ namespace Mindee.Parsing.Receipt
         /// <see cref="Common.TotalIncl"/>
         /// </summary>
         [JsonPropertyName("total_incl")]
-        public TotalIncl TotalIncl { get; set; }
+        public Amount TotalIncl { get; set; }
 
         /// <summary>
         /// <see cref="Common.TotalExcl"/>
         /// </summary>
         [JsonPropertyName("total_excl")]
-        public TotalExcl TotalExcl { get; set; }
+        public Amount TotalExcl { get; set; }
 
         /// <summary>
         /// Generate a pretty to read summary of the model.
