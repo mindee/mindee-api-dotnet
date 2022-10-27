@@ -18,7 +18,7 @@ namespace Mindee.Pdf
             _logger = logger;
         }
 
-        public async Task<SplittedPdf> SplitAsync(SplitQuery splitQuery)
+        public async Task<SplitPdf> SplitAsync(SplitQuery splitQuery)
         {
             MemoryStream ms = new MemoryStream();
             await splitQuery.Stream.CopyToAsync(ms);
@@ -52,7 +52,7 @@ namespace Mindee.Pdf
                 splitQuery.PageNumberStart - 1,
                 splitQuery.PageNumberEnd - 1);
 
-            return new SplittedPdf(splittedFile, GetTotalPagesNumber(splittedFile));
+            return new SplitPdf(splittedFile, GetTotalPagesNumber(splittedFile));
         }
 
         private ushort GetTotalPagesNumber(byte[] file)
