@@ -1,5 +1,8 @@
 [![CI](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml)
 
+:exclamation: **It is not production ready yet** :exclamation:
+======
+
 # Mindee API Helper Library for .NET
 
 The official Mindee API Helper Library for .NET ecosystem to quickly and easily connect to Mindee's API services
