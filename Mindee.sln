@@ -25,6 +25,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee.Cli", "src\Mindee.Cl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mindee", "src\Mindee\Mindee.csproj", "{27880558-4F4F-47E9-A097-CB076C101634}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B9F282D0-337D-4B42-81EB-6830486BA103}"
+	ProjectSection(SolutionItems) = preProject
+		docs\dotnet-api-builder.md = docs\dotnet-api-builder.md
+		docs\dotnet-getting-started.md = docs\dotnet-getting-started.md
+		docs\dotnet-invoice-ocr.md = docs\dotnet-invoice-ocr.md
+		docs\dotnet-passport-ocr.md = docs\dotnet-passport-ocr.md
+		docs\dotnet-receipt-ocr.md = docs\dotnet-receipt-ocr.md
+		index.md = index.md
+		docs\index.md = docs\index.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
