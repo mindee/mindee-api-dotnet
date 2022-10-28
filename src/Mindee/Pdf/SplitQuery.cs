@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Mindee.Input;
 
 namespace Mindee.Pdf
 {
@@ -22,6 +23,8 @@ namespace Mindee.Pdf
         /// </summary>
         public ushort PageNumberEnd { get; }
 
+        public PageOptions PageOptions { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
@@ -33,6 +36,12 @@ namespace Mindee.Pdf
             Stream = stream;
             PageNumberStart = pageNumberStart;
             PageNumberEnd = pageNumberEnd;
+        }
+
+        public SplitQuery(Stream stream, PageOptions pageOptions)
+        {
+            Stream = stream;
+            PageOptions = pageOptions;
         }
     }
 }

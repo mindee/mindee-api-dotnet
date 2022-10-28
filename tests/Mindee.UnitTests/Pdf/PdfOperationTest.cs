@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
+using Mindee.Input;
 using Mindee.Pdf;
 
 namespace Mindee.UnitTests.Domain.Pdf
@@ -50,6 +51,19 @@ namespace Mindee.UnitTests.Domain.Pdf
             var splitQuery = new SplitQuery(File.OpenRead("Resources/passport/passport.jpeg"), 0, 3);
 
             await Assert.ThrowsAsync<ArgumentException>(() => _pdfOperation.SplitAsync(splitQuery));
+        }
+
+        [Fact]
+        [Trait("Category", "Pdf operations")]
+        public async Task NewSplit_Wants1Page_MustGetOnly1Page()
+        {
+            var splitQuery = new SplitQuery(File.OpenRead("Resources/pdf/multipage.pdf"), new PageOptions(new ushort[] { 2 }));
+
+            var splittedPdf = await _pdfOperation.NewSplitAsync(splitQuery);
+
+            Assert.NotNull(splittedPdf);
+            Assert.NotNull(splittedPdf.File);
+            Assert.Equal(1, splittedPdf.TotalPageNumber);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Docnet.Core;
 using Docnet.Core.Exceptions;
@@ -16,6 +17,30 @@ namespace Mindee.Pdf
         public DocNetApi(ILogger<IPdfOperation> logger)
         {
             _logger = logger;
+        }
+
+        public async Task<SplitPdf> NewSplitAsync(SplitQuery splitQuery)
+        {
+            MemoryStream ms = new MemoryStream();
+            await splitQuery.Stream.CopyToAsync(ms);
+
+            var currentFile = ms.ToArray();
+
+            var totalPages = GetTotalPagesNumber(currentFile);
+
+            if (totalPages == 0)
+            {
+                throw new InvalidOperationException("The total pages of the pdf is zero. We can not do a split on it.");
+            }
+
+            // index pages must start to 0
+            string range = string.Join(",", splitQuery.PageOptions.PageNumbers.Select(pn => pn - 1));
+
+            var splittedFile = _docLib.Split(
+                currentFile,
+                range);
+
+            return new SplitPdf(splittedFile, GetTotalPagesNumber(splittedFile));
         }
 
         public async Task<SplitPdf> SplitAsync(SplitQuery splitQuery)
