@@ -15,18 +15,30 @@
         /// <summary>
         /// <see cref="Input.PageOptionsOperation"/>
         /// </summary>
+        /// <remarks>KeepOnly by default.</remarks>
         public PageOptionsOperation PageOptionsOperation { get; }
+
+        /// <summary>
+        /// Apply the operation only if document has at least this many pages.
+        /// </summary>
+        /// <remarks>0 by default.</remarks>
+        public ushort OnMinPages { get; }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="pageNumbers"><see cref="PageNumbers"/></param>
         /// <param name="pageOptionsOperation"><see cref="PageOptionsOperation"/></param>
-        /// <remarks>KeepOnly by default.</remarks>
-        public PageOptions(short[] pageNumbers, PageOptionsOperation pageOptionsOperation = PageOptionsOperation.KeepOnly)
+        /// <param name="onMinPages"><see cref="PageOptionsOperation"/></param>
+        public PageOptions(
+            short[] pageNumbers
+            , PageOptionsOperation pageOptionsOperation = PageOptionsOperation.KeepOnly
+            , ushort onMinPages = 0
+            )
         {
             PageNumbers = pageNumbers;
             PageOptionsOperation = pageOptionsOperation;
+            OnMinPages = onMinPages;
         }
     }
 }

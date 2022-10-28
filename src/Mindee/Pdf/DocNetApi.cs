@@ -34,6 +34,11 @@ namespace Mindee.Pdf
                 throw new InvalidOperationException("The total pages of the pdf is zero. We can not do a split on it.");
             }
 
+            if (totalPages < splitQuery.PageOptions.OnMinPages)
+            {
+                return new SplitPdf(currentFile, totalPages);
+            }
+
             var targetedRange = splitQuery.PageOptions.PageNumbers.Select(pn =>
             {
                 if (pn < 0)
