@@ -13,12 +13,20 @@
         public short[] PageNumbers { get; }
 
         /// <summary>
-        /// 
+        /// <see cref="Input.PageOptionsOperation"/>
+        /// </summary>
+        public PageOptionsOperation PageOptionsOperation { get; }
+
+        /// <summary>
+        ///
         /// </summary>
         /// <param name="pageNumbers"><see cref="PageNumbers"/></param>
-        public PageOptions(short[] pageNumbers)
+        /// <param name="pageOptionsOperation"><see cref="PageOptionsOperation"/></param>
+        /// <remarks>KeepOnly by default.</remarks>
+        public PageOptions(short[] pageNumbers, PageOptionsOperation pageOptionsOperation = PageOptionsOperation.KeepOnly)
         {
             PageNumbers = pageNumbers;
+            PageOptionsOperation = pageOptionsOperation;
         }
     }
 }

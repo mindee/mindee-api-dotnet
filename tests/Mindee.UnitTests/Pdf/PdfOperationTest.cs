@@ -78,5 +78,22 @@ namespace Mindee.UnitTests.Domain.Pdf
             Assert.NotNull(splitPdf.File);
             Assert.Equal(3, splitPdf.TotalPageNumber);
         }
+
+        [Fact]
+        [Trait("Category", "Pdf operations")]
+        public async Task NewSplit_ShouldRemovePages_MustSuccess()
+        {
+            var splitQuery = new SplitQuery(
+                File.OpenRead("Resources/pdf/multipage.pdf")
+                , new PageOptions(
+                    new short[] { 1, 2, 3 }
+                    , PageOptionsOperation.Remove));
+
+            var splitPdf = await _pdfOperation.SplitAsync(splitQuery);
+
+            Assert.NotNull(splitPdf);
+            Assert.NotNull(splitPdf.File);
+            Assert.Equal(9, splitPdf.TotalPageNumber);
+        }
     }
 }

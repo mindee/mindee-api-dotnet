@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Docnet.Core;
 using Docnet.Core.Exceptions;
 using Microsoft.Extensions.Logging;
+using Mindee.Input;
 
 namespace Mindee.Pdf
 {
@@ -34,17 +34,15 @@ namespace Mindee.Pdf
                 throw new InvalidOperationException("The total pages of the pdf is zero. We can not do a split on it.");
             }
 
-
-
             var targetedRange = splitQuery.PageOptions.PageNumbers.Select(pn =>
             {
                 if (pn < 0)
                 {
-                    return (short)(totalPages - Math.Abs(pn));
+                    return (totalPages - Math.Abs(pn));
                 }
 
                 return pn;
-            });
+            }).ToArray();
 
             if (targetedRange.Count() > totalPages)
             {
@@ -56,28 +54,24 @@ namespace Mindee.Pdf
                 throw new ArgumentOutOfRangeException($"Some indexes pages ({string.Join(",", splitQuery.PageOptions.PageNumbers)} are not existing in the file which have {totalPages} pages.");
             }
 
-            string range = string.Join(",", targetedRange);
+            string range;
+            if (splitQuery.PageOptions.PageOptionsOperation == PageOptionsOperation.KeepOnly)
+            {
+                range = string.Join(",", targetedRange);
+            }
+            else if (splitQuery.PageOptions.PageOptionsOperation == PageOptionsOperation.Remove)
+            {
+                var pageIndiceOriginalDocument = Enumerable.Range(1, totalPages);
+                range = string.Join(",", pageIndiceOriginalDocument.Where(v => !targetedRange.Contains(v)));
+            }
+            else
+            {
+                throw new InvalidOperationException($"This operation is not available ({splitQuery.PageOptions.PageOptionsOperation}).");
+            }
 
-            var splittedFile = _docLib.Split(
-                currentFile,
-                range);
+            var splittedFile = _docLib.Split(currentFile, range);
 
             return new SplitPdf(splittedFile, GetTotalPagesNumber(splittedFile));
-        }
-
-        private ushort GetTotalPagesNumber(byte[] file)
-        {
-            try
-            {
-                using (var docReader = _docLib.GetDocReader(file, new Docnet.Core.Models.PageDimensions()))
-                {
-                    return (ushort)docReader.GetPageCount();
-                }
-            }
-            catch (DocnetLoadDocumentException ex)
-            {
-                throw new ArgumentException(nameof(file), ex.ToString());
-            }
         }
 
         public bool CanBeOpen(byte[] file)
@@ -93,6 +87,21 @@ namespace Mindee.Pdf
             {
                 _logger.LogError(ex, null);
                 return false;
+            }
+        }
+
+        private ushort GetTotalPagesNumber(byte[] file)
+        {
+            try
+            {
+                using (var docReader = _docLib.GetDocReader(file, new Docnet.Core.Models.PageDimensions()))
+                {
+                    return (ushort)docReader.GetPageCount();
+                }
+            }
+            catch (DocnetLoadDocumentException ex)
+            {
+                throw new ArgumentException(nameof(file), ex.ToString());
             }
         }
     }
