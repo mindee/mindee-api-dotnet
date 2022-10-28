@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Docnet.Core;
 using Docnet.Core.Exceptions;
 using Microsoft.Extensions.Logging;
@@ -20,14 +18,9 @@ namespace Mindee.Pdf
             _logger = logger;
         }
 
-        public async Task<SplitPdf> SplitAsync(SplitQuery splitQuery)
+        public SplitPdf Split(SplitQuery splitQuery)
         {
-            MemoryStream ms = new MemoryStream();
-            await splitQuery.Stream.CopyToAsync(ms);
-
-            var currentFile = ms.ToArray();
-
-            var totalPages = GetTotalPagesNumber(currentFile);
+            var totalPages = GetTotalPagesNumber(splitQuery.File);
 
             if (totalPages == 0)
             {
@@ -36,7 +29,7 @@ namespace Mindee.Pdf
 
             if (totalPages < splitQuery.PageOptions.OnMinPages)
             {
-                return new SplitPdf(currentFile, totalPages);
+                return new SplitPdf(splitQuery.File, totalPages);
             }
 
             var targetedRange = splitQuery.PageOptions.PageNumbers.Select(pn =>
@@ -74,7 +67,7 @@ namespace Mindee.Pdf
                 throw new InvalidOperationException($"This operation is not available ({splitQuery.PageOptions.PageOptionsOperation}).");
             }
 
-            var splittedFile = _docLib.Split(currentFile, range);
+            var splittedFile = _docLib.Split(splitQuery.File, range);
 
             return new SplitPdf(splittedFile, GetTotalPagesNumber(splittedFile));
         }

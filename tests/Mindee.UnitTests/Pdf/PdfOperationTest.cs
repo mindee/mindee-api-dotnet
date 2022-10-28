@@ -15,11 +15,11 @@ namespace Mindee.UnitTests.Domain.Pdf
 
         [Fact]
         [Trait("Category", "Pdf operations")]
-        public async Task Split_Wants1Page_MustGetOnly1Page()
+        public void Split_Wants1Page_MustGetOnly1Page()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 2 }));
+            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 2 }));
 
-            var splittedPdf = await _pdfOperation.SplitAsync(splitQuery);
+            var splittedPdf = _pdfOperation.Split(splitQuery);
 
             Assert.NotNull(splittedPdf);
             Assert.NotNull(splittedPdf.File);
@@ -28,11 +28,11 @@ namespace Mindee.UnitTests.Domain.Pdf
 
         [Fact]
         [Trait("Category", "Pdf operations")]
-        public async Task Split_Wants2Page_MustGet2Page()
+        public void Split_Wants2Page_MustGet2Page()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 1, 2 }));
+            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 1, 2 }));
 
-            var splitPdf = await _pdfOperation.SplitAsync(splitQuery);
+            var splitPdf = _pdfOperation.Split(splitQuery);
 
             Assert.NotNull(splitPdf);
             Assert.NotNull(splitPdf.File);
@@ -41,38 +41,38 @@ namespace Mindee.UnitTests.Domain.Pdf
 
         [Fact]
         [Trait("Category", "Pdf operations")]
-        public async Task Split_WantsTooManyPages_MustFail()
+        public void Split_WantsTooManyPages_MustFail()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 }));
+            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 }));
 
-            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => _pdfOperation.SplitAsync(splitQuery));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _pdfOperation.Split(splitQuery));
         }
 
         [Fact]
         [Trait("Category", "Pdf operations")]
-        public async Task Split_WantsStartPageTo0_MustFail()
+        public void Split_WantsStartPageTo0_MustFail()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 0, 1, 2, 3 }));
+            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 0, 1, 2, 3 }));
 
-            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => _pdfOperation.SplitAsync(splitQuery));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _pdfOperation.Split(splitQuery));
         }
 
         [Fact]
         [Trait("Category", "Pdf operations")]
-        public async Task Split_OtherThanAPdf_MustFail()
+        public void Split_OtherThanAPdf_MustFail()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("Resources/passport/passport.jpeg"), new PageOptions(new short[] { 1, 2, 3 }));
+            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/passport/passport.jpeg"), new PageOptions(new short[] { 1, 2, 3 }));
 
-            await Assert.ThrowsAsync<ArgumentException>(() => _pdfOperation.SplitAsync(splitQuery));
+            Assert.Throws<ArgumentException>(() => _pdfOperation.Split(splitQuery));
         }
 
         [Fact]
         [Trait("Category", "Pdf operations")]
-        public async Task Split_ShouldCutTheFirstAndThe2LastPages_MustSuccess()
+        public void Split_ShouldCutTheFirstAndThe2LastPages_MustSuccess()
         {
-            var splitQuery = new SplitQuery(File.OpenRead("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 1, -2, -1 }));
+            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 1, -2, -1 }));
 
-            var splitPdf = await _pdfOperation.SplitAsync(splitQuery);
+            var splitPdf = _pdfOperation.Split(splitQuery);
 
             Assert.NotNull(splitPdf);
             Assert.NotNull(splitPdf.File);
@@ -81,15 +81,15 @@ namespace Mindee.UnitTests.Domain.Pdf
 
         [Fact]
         [Trait("Category", "Pdf operations")]
-        public async Task Split_ShouldRemovePages_MustSuccess()
+        public void Split_ShouldRemovePages_MustSuccess()
         {
             var splitQuery = new SplitQuery(
-                File.OpenRead("Resources/pdf/multipage.pdf")
+                File.ReadAllBytes("Resources/pdf/multipage.pdf")
                 , new PageOptions(
                     new short[] { 1, 2, 3 }
                     , PageOptionsOperation.Remove));
 
-            var splitPdf = await _pdfOperation.SplitAsync(splitQuery);
+            var splitPdf = _pdfOperation.Split(splitQuery);
 
             Assert.NotNull(splitPdf);
             Assert.NotNull(splitPdf.File);
@@ -98,16 +98,16 @@ namespace Mindee.UnitTests.Domain.Pdf
 
         [Fact]
         [Trait("Category", "Pdf operations")]
-        public async Task Split_ShouldNotRemovePagesBecauseMinPagesAreNotMet()
+        public void Split_ShouldNotRemovePagesBecauseMinPagesAreNotMet()
         {
             var splitQuery = new SplitQuery(
-                File.OpenRead("Resources/pdf/multipage_cut-2.pdf")
+                File.ReadAllBytes("Resources/pdf/multipage_cut-2.pdf")
                 , new PageOptions(
                     new short[] { 1 }
                     , PageOptionsOperation.Remove
                     , 5));
 
-            var splitPdf = await _pdfOperation.SplitAsync(splitQuery);
+            var splitPdf = _pdfOperation.Split(splitQuery);
 
             Assert.NotNull(splitPdf);
             Assert.NotNull(splitPdf.File);

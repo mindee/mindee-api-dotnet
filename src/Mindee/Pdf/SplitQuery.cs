@@ -11,21 +11,21 @@ namespace Mindee.Pdf
         /// <summary>
         /// The file.
         /// </summary>
-        public Stream Stream { get; }
-        
+        public byte[] File { get; }
+
         /// <summary>
         /// <see cref="Input.PageOptions"/>
         /// </summary>
         public PageOptions PageOptions { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        /// <param name="stream"><see cref="Stream"/></param>
+        /// <param name="file"><see cref="File"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
-        public SplitQuery(Stream stream, PageOptions pageOptions)
+        public SplitQuery(byte[] file, PageOptions pageOptions)
         {
-            Stream = stream;
+            File = file;
             PageOptions = pageOptions;
         }
     }

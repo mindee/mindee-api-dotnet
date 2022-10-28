@@ -10,7 +10,7 @@ namespace Mindee
         /// <summary>
         /// The file as a stream.
         /// </summary>
-        public byte[] File { get; }
+        public byte[] File { get; set; }
 
         /// <summary>
         /// The name of the file.
