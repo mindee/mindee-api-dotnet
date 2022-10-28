@@ -19,30 +19,6 @@ namespace Mindee.Pdf
             _logger = logger;
         }
 
-        public async Task<SplitPdf> NewSplitAsync(SplitQuery splitQuery)
-        {
-            MemoryStream ms = new MemoryStream();
-            await splitQuery.Stream.CopyToAsync(ms);
-
-            var currentFile = ms.ToArray();
-
-            var totalPages = GetTotalPagesNumber(currentFile);
-
-            if (totalPages == 0)
-            {
-                throw new InvalidOperationException("The total pages of the pdf is zero. We can not do a split on it.");
-            }
-
-            // index pages must start to 0
-            string range = string.Join(",", splitQuery.PageOptions.PageNumbers.Select(pn => pn - 1));
-
-            var splittedFile = _docLib.Split(
-                currentFile,
-                range);
-
-            return new SplitPdf(splittedFile, GetTotalPagesNumber(splittedFile));
-        }
-
         public async Task<SplitPdf> SplitAsync(SplitQuery splitQuery)
         {
             MemoryStream ms = new MemoryStream();
@@ -57,25 +33,21 @@ namespace Mindee.Pdf
                 throw new InvalidOperationException("The total pages of the pdf is zero. We can not do a split on it.");
             }
 
-            if (splitQuery.PageNumberStart == 0)
+            if (splitQuery.PageOptions.PageNumbers.Length > totalPages)
             {
-                throw new ArgumentOutOfRangeException(
-                    nameof(splitQuery.PageNumberStart),
-                    "The start number can not be equal to 0.");
+                throw new ArgumentOutOfRangeException($"The total indexes of pages to cut is superior to the total page count of the file ({totalPages}).");
             }
 
-            if (splitQuery.PageNumberEnd > totalPages)
+            if(splitQuery.PageOptions.PageNumbers.Any(pn => pn >= totalPages || pn <= 0))
             {
-                throw new ArgumentOutOfRangeException(
-                    nameof(splitQuery.PageNumberEnd),
-                    $"The end number can not be > to the max page of the current pdf ({totalPages}.");
+                throw new ArgumentOutOfRangeException($"Some indexes pages ({string.Join(",", splitQuery.PageOptions.PageNumbers)} are not existing in the file which have {totalPages} pages.");
             }
 
-            // index pages start to 0
+            string range = string.Join(",", splitQuery.PageOptions.PageNumbers);
+
             var splittedFile = _docLib.Split(
                 currentFile,
-                splitQuery.PageNumberStart - 1,
-                splitQuery.PageNumberEnd - 1);
+                range);
 
             return new SplitPdf(splittedFile, GetTotalPagesNumber(splittedFile));
         }
