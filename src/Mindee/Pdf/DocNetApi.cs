@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,17 +34,29 @@ namespace Mindee.Pdf
                 throw new InvalidOperationException("The total pages of the pdf is zero. We can not do a split on it.");
             }
 
-            if (splitQuery.PageOptions.PageNumbers.Length > totalPages)
+
+
+            var targetedRange = splitQuery.PageOptions.PageNumbers.Select(pn =>
+            {
+                if (pn < 0)
+                {
+                    return (short)(totalPages - Math.Abs(pn));
+                }
+
+                return pn;
+            });
+
+            if (targetedRange.Count() > totalPages)
             {
                 throw new ArgumentOutOfRangeException($"The total indexes of pages to cut is superior to the total page count of the file ({totalPages}).");
             }
 
-            if(splitQuery.PageOptions.PageNumbers.Any(pn => pn >= totalPages || pn <= 0))
+            if (targetedRange.Any(pn => pn >= totalPages || pn <= 0))
             {
                 throw new ArgumentOutOfRangeException($"Some indexes pages ({string.Join(",", splitQuery.PageOptions.PageNumbers)} are not existing in the file which have {totalPages} pages.");
             }
 
-            string range = string.Join(",", splitQuery.PageOptions.PageNumbers);
+            string range = string.Join(",", targetedRange);
 
             var splittedFile = _docLib.Split(
                 currentFile,
