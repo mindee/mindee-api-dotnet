@@ -1,9 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Exceptions;
 using Microsoft.Extensions.Logging;
+using Mindee.Input;
 
 namespace Mindee.Pdf
 {
@@ -18,56 +18,58 @@ namespace Mindee.Pdf
             _logger = logger;
         }
 
-        public async Task<SplitPdf> SplitAsync(SplitQuery splitQuery)
+        public SplitPdf Split(SplitQuery splitQuery)
         {
-            MemoryStream ms = new MemoryStream();
-            await splitQuery.Stream.CopyToAsync(ms);
-
-            var currentFile = ms.ToArray();
-
-            var totalPages = GetTotalPagesNumber(currentFile);
+            var totalPages = GetTotalPagesNumber(splitQuery.File);
 
             if (totalPages == 0)
             {
                 throw new InvalidOperationException("The total pages of the pdf is zero. We can not do a split on it.");
             }
 
-            if (splitQuery.PageNumberStart == 0)
+            if (totalPages < splitQuery.PageOptions.OnMinPages)
             {
-                throw new ArgumentOutOfRangeException(
-                    nameof(splitQuery.PageNumberStart),
-                    "The start number can not be equal to 0.");
+                return new SplitPdf(splitQuery.File, totalPages);
             }
 
-            if (splitQuery.PageNumberEnd > totalPages)
+            var targetedRange = splitQuery.PageOptions.PageNumbers.Select(pn =>
             {
-                throw new ArgumentOutOfRangeException(
-                    nameof(splitQuery.PageNumberEnd),
-                    $"The end number can not be > to the max page of the current pdf ({totalPages}.");
+                if (pn < 0)
+                {
+                    return (totalPages - Math.Abs(pn));
+                }
+
+                return pn;
+            }).ToArray();
+
+            if (targetedRange.Count() > totalPages)
+            {
+                throw new ArgumentOutOfRangeException($"The total indexes of pages to cut is superior to the total page count of the file ({totalPages}).");
             }
 
-            // index pages start to 0
-            var splittedFile = _docLib.Split(
-                currentFile,
-                splitQuery.PageNumberStart - 1,
-                splitQuery.PageNumberEnd - 1);
+            if (targetedRange.Any(pn => pn >= totalPages || pn <= 0))
+            {
+                throw new ArgumentOutOfRangeException($"Some indexes pages ({string.Join(",", splitQuery.PageOptions.PageNumbers)} are not existing in the file which have {totalPages} pages.");
+            }
+
+            string range;
+            if (splitQuery.PageOptions.PageOptionsOperation == PageOptionsOperation.KeepOnly)
+            {
+                range = string.Join(",", targetedRange);
+            }
+            else if (splitQuery.PageOptions.PageOptionsOperation == PageOptionsOperation.Remove)
+            {
+                var pageIndiceOriginalDocument = Enumerable.Range(1, totalPages);
+                range = string.Join(",", pageIndiceOriginalDocument.Where(v => !targetedRange.Contains(v)));
+            }
+            else
+            {
+                throw new InvalidOperationException($"This operation is not available ({splitQuery.PageOptions.PageOptionsOperation}).");
+            }
+
+            var splittedFile = _docLib.Split(splitQuery.File, range);
 
             return new SplitPdf(splittedFile, GetTotalPagesNumber(splittedFile));
-        }
-
-        private ushort GetTotalPagesNumber(byte[] file)
-        {
-            try
-            {
-                using (var docReader = _docLib.GetDocReader(file, new Docnet.Core.Models.PageDimensions()))
-                {
-                    return (ushort)docReader.GetPageCount();
-                }
-            }
-            catch (DocnetLoadDocumentException ex)
-            {
-                throw new ArgumentException(nameof(file), ex.ToString());
-            }
         }
 
         public bool CanBeOpen(byte[] file)
@@ -83,6 +85,21 @@ namespace Mindee.Pdf
             {
                 _logger.LogError(ex, null);
                 return false;
+            }
+        }
+
+        private ushort GetTotalPagesNumber(byte[] file)
+        {
+            try
+            {
+                using (var docReader = _docLib.GetDocReader(file, new Docnet.Core.Models.PageDimensions()))
+                {
+                    return (ushort)docReader.GetPageCount();
+                }
+            }
+            catch (DocnetLoadDocumentException ex)
+            {
+                throw new ArgumentException(nameof(file), ex.ToString());
             }
         }
     }

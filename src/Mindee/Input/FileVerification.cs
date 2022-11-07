@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace Mindee
+namespace Mindee.Input
 {
     internal static class FileVerification
     {

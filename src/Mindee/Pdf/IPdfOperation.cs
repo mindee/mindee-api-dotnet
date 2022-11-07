@@ -15,7 +15,7 @@ namespace Mindee.Pdf
         /// <returns><see cref="SplitPdf"/></returns>
         /// <exception cref="InvalidOperationException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        Task<SplitPdf> SplitAsync(SplitQuery splitQuery);
+        SplitPdf Split(SplitQuery splitQuery);
 
         /// <summary>
         /// Check if the file can be opened.

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
+using Mindee.Input;
 using Mindee.Parsing;
 using Mindee.Parsing.Common;
 using Mindee.Parsing.CustomBuilder;
@@ -25,7 +26,7 @@ namespace Mindee
         public DocumentClient DocumentClient { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="logger"><see cref="ILogger"/></param>
         /// <param name="pdfOperation"><see cref="IPdfOperation"/></param>
@@ -124,6 +125,36 @@ namespace Mindee
         }
 
         /// <summary>
+        /// Try to parse the current document using custom builder API.
+        /// </summary>
+        /// <param name="endpoint"><see cref="Endpoint"/></param>
+        /// <param name="pageOptions"><see cref="PageOptions"/></param>
+        /// <returns><see cref="Document{CustomPrediction}"/></returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<Document<CustomPrediction>> ParseAsync(
+            Endpoint endpoint
+            , PageOptions pageOptions)
+        {
+            if (DocumentClient == null)
+            {
+                return null;
+            }
+
+            if (DocumentClient.Extension.Equals(
+            ".pdf",
+                StringComparison.InvariantCultureIgnoreCase))
+            {
+                DocumentClient.File = _pdfOperation.Split(new SplitQuery(DocumentClient.File, pageOptions)).File;
+            }
+
+            return await _mindeeApi.PredictAsync<CustomPrediction>(
+                endpoint,
+                new PredictParameter(
+                    DocumentClient.File,
+                    DocumentClient.Filename));
+        }
+
+        /// <summary>
         /// Try to parse the current document.
         /// </summary>
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
@@ -137,6 +168,39 @@ namespace Mindee
             if (DocumentClient == null)
             {
                 return null;
+            }
+
+            return await _mindeeApi.PredictAsync<TPredictionModel>(
+                new PredictParameter(
+                    DocumentClient.File,
+                    DocumentClient.Filename,
+                    withFullText));
+        }
+
+        /// <summary>
+        /// Try to parse the current document.
+        /// </summary>
+        /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
+        /// <param name="pageOptions"><see cref="PageOptions"/></param>
+        /// <typeparam name="TPredictionModel">Define the targeted expected type of the parsing.</typeparam>
+        /// <returns><see cref="Document{TPredictionModel}"/></returns>
+        /// <exception cref="MindeeException"></exception>
+        /// <remarks>With full text doesn't work for all the types. Check the API documentation first.</remarks>
+        public async Task<Document<TPredictionModel>> ParseAsync<TPredictionModel>(
+            PageOptions pageOptions
+            , bool withFullText = false)
+            where TPredictionModel : class, new()
+        {
+            if (DocumentClient == null)
+            {
+                return null;
+            }
+
+            if (DocumentClient.Extension.Equals(
+                ".pdf",
+                StringComparison.InvariantCultureIgnoreCase))
+            {
+                DocumentClient.File = _pdfOperation.Split(new SplitQuery(DocumentClient.File, pageOptions)).File;
             }
 
             return await _mindeeApi.PredictAsync<TPredictionModel>(
