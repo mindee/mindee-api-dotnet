@@ -23,7 +23,7 @@ namespace Mindee.Pdf
         {
             if (!CanBeOpen(splitQuery.File))
             {
-                throw new MindeeException($"This document is not recognized as a PDF file and can not be split.");
+                throw new MindeeException($"This document is not recognized as a PDF file and cannot be split.");
             }
 
             var totalPages = GetTotalPagesNumber(splitQuery.File);
