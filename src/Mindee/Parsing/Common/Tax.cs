@@ -28,6 +28,12 @@ namespace Mindee.Parsing.Common
         [JsonPropertyName("base")]
         public double? Base { get; set; }
 
+        /// <summary>
+        /// The tax base.
+        /// </summary>
+        [JsonPropertyName("code")]
+        public string Code { get; set; }
+
         public override string ToString()
         {
             StringBuilder result = new StringBuilder();
@@ -42,9 +48,14 @@ namespace Mindee.Parsing.Common
                 result.Append($" {Rate}%");
             }
 
+            if (Code != null)
+            {
+                result.Append($" {Code}");
+            }
+
             if (Base != null)
             {
-                result.Append($" {Base}%");
+                result.Append($" {Base}");
             }
 
             return result.ToString().Trim();

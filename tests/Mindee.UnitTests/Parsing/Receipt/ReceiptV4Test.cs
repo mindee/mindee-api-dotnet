@@ -127,6 +127,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
 
             Assert.Null(prediction.Inference.Pages.First().Prediction.Taxes.First().Base);
             Assert.Null(prediction.Inference.Pages.First().Prediction.Taxes.First().Rate);
+            Assert.Equal("TAX", prediction.Inference.Pages.First().Prediction.Taxes.First().Code);
             Assert.Equal(3.34, prediction.Inference.Pages.First().Prediction.Taxes.First().Value);
         }
 
