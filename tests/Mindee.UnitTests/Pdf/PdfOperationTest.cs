@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
+using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.Pdf;
 
@@ -63,7 +64,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         {
             var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/passport/passport.jpeg"), new PageOptions(new short[] { 1, 2, 3 }));
 
-            Assert.Throws<ArgumentException>(() => _pdfOperation.Split(splitQuery));
+            Assert.Throws<MindeeException>(() => _pdfOperation.Split(splitQuery));
         }
 
         [Fact]

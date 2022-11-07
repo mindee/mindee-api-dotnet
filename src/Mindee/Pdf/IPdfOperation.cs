@@ -16,11 +16,5 @@ namespace Mindee.Pdf
         /// <exception cref="InvalidOperationException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         SplitPdf Split(SplitQuery splitQuery);
-
-        /// <summary>
-        /// Check if the file can be opened.
-        /// </summary>
-        /// <param name="file">The file data.</param>
-        bool CanBeOpen(byte[] file);
     }
 }
