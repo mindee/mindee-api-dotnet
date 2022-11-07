@@ -120,6 +120,17 @@ namespace Mindee.UnitTests.Parsing.Receipt
             Assert.Equal(0, prediction.Inference.Pages.First().Orientation.Value);
         }
 
+        public async Task Predict_WithReceiptData_MustSuccessForTaxes()
+        {
+            var mindeeAPi = GetMindeeApiForReceipt();
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+
+            Assert.Null(prediction.Inference.Pages.First().Prediction.Taxes.First().Base);
+            Assert.Null(prediction.Inference.Pages.First().Prediction.Taxes.First().Rate);
+            Assert.Equal("TAX", prediction.Inference.Pages.First().Prediction.Taxes.First().Code);
+            Assert.Equal(3.34, prediction.Inference.Pages.First().Prediction.Taxes.First().Value);
+        }
+
         private MindeeApi GetMindeeApiForReceipt(string fileName = "Resources/receipt/response_v4/complete-with-tip.json")
         {
             return ParsingTestBase.GetMindeeApi(fileName);

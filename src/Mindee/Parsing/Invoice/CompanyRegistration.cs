@@ -3,6 +3,9 @@ using Mindee.Parsing.Common;
 
 namespace Mindee.Parsing.Invoice
 {
+    /// <summary>
+    /// Represent a company registration.
+    /// </summary>
     public class CompanyRegistration : BaseField
     {
         /// <summary>

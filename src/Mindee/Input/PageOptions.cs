@@ -19,7 +19,7 @@
         public PageOptionsOperation PageOptionsOperation { get; }
 
         /// <summary>
-        /// Apply the operation only if document has at least this many pages.
+        /// Apply the operation only if the document has at least this many pages.
         /// </summary>
         /// <remarks>0 by default.</remarks>
         public ushort OnMinPages { get; }

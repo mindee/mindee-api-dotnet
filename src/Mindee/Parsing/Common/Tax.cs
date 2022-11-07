@@ -22,11 +22,27 @@ namespace Mindee.Parsing.Common
         [JsonPropertyName("value")]
         public double? Value { get; set; }
 
+        /// <summary>
+        /// The tax base.
+        /// </summary>
+        [JsonPropertyName("base")]
+        public double? Base { get; set; }
+
+        /// <summary>
+        /// The tax code.
+        /// </summary>
+        [JsonPropertyName("code")]
+        public string Code { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns>A pretty summary of the value.</returns>
         public override string ToString()
         {
             StringBuilder result = new StringBuilder();
 
-            if(Value != null)
+            if (Value != null)
             {
                 result.Append(Value);
             }
@@ -34,6 +50,16 @@ namespace Mindee.Parsing.Common
             if (Rate != null)
             {
                 result.Append($" {Rate}%");
+            }
+
+            if (Code != null)
+            {
+                result.Append($" {Code}");
+            }
+
+            if (Base != null)
+            {
+                result.Append($" {Base}");
             }
 
             return result.ToString().Trim();

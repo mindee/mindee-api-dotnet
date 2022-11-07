@@ -157,8 +157,9 @@ namespace Mindee
         /// <summary>
         /// Try to parse the current document.
         /// </summary>
-        /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
-        /// <typeparam name="TPredictionModel">Define the targeted expected type of the parsing.</typeparam>
+        /// <param name="withFullText">Get all the words in the current document.By default, set to false.</param>
+        /// <typeparam name="TPredictionModel">Set the prediction model used to parse the document.
+        /// The response object will be instantiated based on this parameter.</typeparam>
         /// <returns><see cref="Document{TPredictionModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         /// <remarks>With full text doesn't work for all the types.</remarks>
@@ -182,7 +183,8 @@ namespace Mindee
         /// </summary>
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
-        /// <typeparam name="TPredictionModel">Define the targeted expected type of the parsing.</typeparam>
+        /// <typeparam name="TPredictionModel">Set the prediction model used to parse the document.
+        /// The response object will be instantiated based on this parameter.</typeparam>
         /// <returns><see cref="Document{TPredictionModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         /// <remarks>With full text doesn't work for all the types. Check the API documentation first.</remarks>

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.Common
 {
-    public class ApiRequest
+    internal class ApiRequest
     {
         [JsonPropertyName("error")]
         public Error Error { get; set; }

@@ -4,6 +4,9 @@ using Mindee.Pdf;
 
 namespace Mindee.Extensions.DependencyInjection
 {
+    /// <summary>
+    /// To configure DI.
+    /// </summary>
     public static class ServiceCollectionsExtensions
     {
         /// <summary>
