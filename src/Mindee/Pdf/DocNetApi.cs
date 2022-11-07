@@ -3,6 +3,7 @@ using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Exceptions;
 using Microsoft.Extensions.Logging;
+using Mindee.Exceptions;
 using Mindee.Input;
 
 namespace Mindee.Pdf
@@ -20,6 +21,11 @@ namespace Mindee.Pdf
 
         public SplitPdf Split(SplitQuery splitQuery)
         {
+            if (!CanBeOpen(splitQuery.File))
+            {
+                throw new MindeeException($"This document is not recognized as a PDF file and cannot be split.");
+            }
+
             var totalPages = GetTotalPagesNumber(splitQuery.File);
 
             if (totalPages == 0)
@@ -72,7 +78,7 @@ namespace Mindee.Pdf
             return new SplitPdf(splittedFile, GetTotalPagesNumber(splittedFile));
         }
 
-        public bool CanBeOpen(byte[] file)
+        private bool CanBeOpen(byte[] file)
         {
             try
             {

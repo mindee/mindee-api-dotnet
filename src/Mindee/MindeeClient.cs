@@ -94,14 +94,6 @@ namespace Mindee
             {
                 throw new MindeeException($"The file type '{Path.GetExtension(DocumentClient.Extension)}' is not supported.");
             }
-
-            if (DocumentClient.Extension.Equals(
-            ".pdf",
-                StringComparison.InvariantCultureIgnoreCase)
-                && !_pdfOperation.CanBeOpen(DocumentClient.File))
-            {
-                throw new MindeeException($"This document is not recognized as a PDF file.");
-            }
         }
 
         /// <summary>
