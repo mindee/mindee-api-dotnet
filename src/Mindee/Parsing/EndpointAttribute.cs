@@ -45,7 +45,7 @@ namespace Mindee.Parsing
         }
 
         /// <summary>
-        /// The name of the organization wich hold the API. Usefull when using custom builder. By default to mindee.
+        /// The name of the organization that owns the API. Useful when using custom builder. Defaults to mindee.
         /// </summary>
         public virtual string OrganizationName
         {
