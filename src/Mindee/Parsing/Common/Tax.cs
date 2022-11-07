@@ -29,7 +29,7 @@ namespace Mindee.Parsing.Common
         public double? Base { get; set; }
 
         /// <summary>
-        /// The tax base.
+        /// The tax code.
         /// </summary>
         [JsonPropertyName("code")]
         public string Code { get; set; }
