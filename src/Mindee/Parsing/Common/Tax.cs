@@ -34,6 +34,10 @@ namespace Mindee.Parsing.Common
         [JsonPropertyName("code")]
         public string Code { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns>A pretty summary of the value.</returns>
         public override string ToString()
         {
             StringBuilder result = new StringBuilder();

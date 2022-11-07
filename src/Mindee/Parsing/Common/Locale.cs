@@ -37,11 +37,15 @@ namespace Mindee.Parsing.Common
         [JsonPropertyName("country")]
         public string Country { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns>A pretty summary of the value.</returns>
         public override string ToString()
         {
             StringBuilder result = new StringBuilder();
 
-            if(!string.IsNullOrWhiteSpace(Language))
+            if (!string.IsNullOrWhiteSpace(Language))
             {
                 result.Append($"{Language}; ");
             }
