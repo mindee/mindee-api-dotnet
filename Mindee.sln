@@ -32,7 +32,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B9F282D0-3
 		docs\dotnet-invoice-ocr.md = docs\dotnet-invoice-ocr.md
 		docs\dotnet-passport-ocr.md = docs\dotnet-passport-ocr.md
 		docs\dotnet-receipt-ocr.md = docs\dotnet-receipt-ocr.md
-		index.md = index.md
 		docs\index.md = docs\index.md
 	EndProjectSection
 EndProject

@@ -55,6 +55,7 @@ Complete details on the working of the library are available in the following gu
 * [.NET invoices OCR](https://developers.mindee.com/docs/dotnet-invoice-ocr-1)
 * [.NET receipts OCR](https://developers.mindee.com/docs/dotnet-receipt-ocr-1)
 * [.NET passports OCR](https://developers.mindee.com/docs/dotnet-passport-ocr-1)
+* [Mindee API Reference](https://github.com/mindee/mindee-api-dotnet/blob/main/docs/api-reference/Mindee)
 
 You can view the source code on [GitHub](https://github.com/mindee/mindee-api-dotnet).
 
