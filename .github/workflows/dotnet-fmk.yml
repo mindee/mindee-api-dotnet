@@ -1,4 +1,4 @@
-name: ".NET FMK 4"
+name: .NET 4.7.2
 
 on:
   push:
@@ -23,9 +23,10 @@ jobs:
       - name: Build Solution
         run: |
           msbuild.exe "src/Mindee.sln" /p:platform="Any CPU" /p:configuration="Release" /p:TargetFramework=net472
+
   test:
     runs-on: windows-2019
-    name: Test 4.7.2
+
     steps:
       - uses: actions/checkout@v3
           with:
