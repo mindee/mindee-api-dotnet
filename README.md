@@ -1,9 +1,6 @@
 [![CI](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
-:exclamation: **It is not production ready yet** :exclamation:
-======
-
 # Mindee API Helper Library for .NET
 
 The official Mindee API Helper Library for .NET ecosystem to quickly and easily connect to Mindee's API services
