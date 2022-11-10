@@ -5,7 +5,7 @@
 
 The official Mindee API Helper Library for .NET ecosystem to quickly and easily connect to Mindee's API services
 
-It targets .NET Standard 2.0 to be used with .NET Framework 4.6+ as well that with .NET Core 3+.
+It targets .NET Standard 2.0 to be used with .NET Framework 4.7.2 as well that with .NET 6.
 
 ## Quick Start
 Here's the TL;DR of getting started.

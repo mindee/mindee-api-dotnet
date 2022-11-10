@@ -1,4 +1,4 @@
-name: ".NET FMK 4.[6+].x"
+name: ".NET FMK 4.7.2"
 
 on:
   push:
@@ -27,4 +27,4 @@ jobs:
 
       - name: Build Solution
         run: |
-          msbuild.exe "src/Mindee.sln" /p:platform="Any CPU" /p:configuration="Release"
+          msbuild.exe "src/Mindee.sln" /p:platform="Any CPU" /p:configuration="Release" /p:TargetFramework=netstandard2.0
