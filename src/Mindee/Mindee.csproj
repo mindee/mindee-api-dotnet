@@ -28,6 +28,7 @@
     <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
     <None Include="..\..\Logo.png" Pack="true" Visible="false" PackagePath="" />
     <None Include="..\..\README.md" Pack="true" Visible="false" PackagePath="" />
+    <None Include="..\..\CHANGELOG.md" Pack="true" Visible="false" PackagePath="" />
   </ItemGroup>
 
 </Project>
