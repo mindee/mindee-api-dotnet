@@ -17,13 +17,13 @@ var prediction = await _mindeeClient
         "invest"));
 ```
 
-Every time a new model is trained will required to update the version. This is probably not needed for development but essential for production use.
+Every time a new model is trained will require to update the version. This is probably not needed for development but it is essential for production use.
 
 ## Parsing Documents
 Use the `parse` method to call the API prediction on your custom document.
 The response class and document type must be specified when calling this method.
 
-You have two different way to parse a custom document.
+You have two different ways to parse a custom document.
 
 1. Use the default prediction class named ``CustomPrediction`` 
 ```csharp
@@ -35,7 +35,7 @@ var prediction = await _mindeeClient
                         OrganizationName));
 ```
 
-2. You can also use your own class which will represent the required field. For example, with the custom objet below :
+2. You can also use your own class which will represent the required field. For example, see the custom objet below :
 ```csharp
 
 // The Endpoint attribute is required when using you own model.
@@ -57,9 +57,9 @@ var prediction = await _mindeeClient
 ```
 
 ## CustomPrediction object
-All the fields defined in the API builder when creating your custom document are available.
+All the fields which are defined in the API builder when creating your custom document, are available.
 
-`CustomPrediction` is a `Dictionary` with the key as a `string` for the name of the field and a `ListField` as a value, to hold the values extracted for this field. 
+`CustomPrediction` is a `Dictionary` with the key as a `string` for the name of the field, and a `ListField` as a value, to get values extracted for this field. 
 
 Value fields are accessed via the `Values` property.
 

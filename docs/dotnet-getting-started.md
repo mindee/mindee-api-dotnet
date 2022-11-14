@@ -11,7 +11,7 @@ dotnet add package Mindee
 ```
 
 ### Development Installation
-If you'll be modifying the source code, you'll need to follow these steps to get started.
+If you plan to update the source code, you'll need to follow these steps to get started.
 
 1. First clone the repo.
 
@@ -50,7 +50,7 @@ Using Mindee's APIs can be broken down into the following steps:
 Let's take a deep dive into how this works.
 
 ### Initializing the Client
-The `MindeeClient` will enable you to load a document and execute the parse method on it, according to a specific model.
+The `MindeeClient` enables you to load a document and execute the parse method on it, according to a specific model.
 
 In most cases, you'll just to pass MindeeClient as a constructor parameter of your class and your DI engine will be the rest.
 
@@ -83,7 +83,7 @@ You could also define the key in your appsettings.json config file :
 ```
 
 ## Loading a Document File
-Before being able to send a document to the API, it must first be loaded.
+Before being able to send a document to the API, it must be loaded first.
 
 You don't need to worry about different MIME types, the library will take care of handling
 all supported types automatically.

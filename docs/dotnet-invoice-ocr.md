@@ -1,6 +1,6 @@
 The .NET OCR SDK supports the [invoice API](https://developers.mindee.com/docs/invoice-ocr) for extracting data from invoices.
 
-Using this [sample invoice](https://files.readme.io/a74eaa5-c8e283b-sample_invoice.jpeg) below, we are going to illustrate how to extract the data that we want using the  OCR SDK.
+Using this [sample invoice](https://files.readme.io/a74eaa5-c8e283b-sample_invoice.jpeg) below, we are going to illustrate how to extract the data that we want, using the OCR SDK.
 ![sample invoice](https://files.readme.io/a74eaa5-c8e283b-sample_invoice.jpeg)
 
 ## Quick Start
