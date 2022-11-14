@@ -11,18 +11,18 @@ jobs:
     runs-on: windows-2019
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1.0.5
-      - name: Navigate to Workspace
-        run: cd $GITHUB_WORKSPACE
-      - name: Restore Packages
-        run: nuget restore "src/Mindee.sln"
-      - name: Build Solution
-        run: |
-          msbuild.exe "src/Mindee.sln" /p:platform="Any CPU" /p:configuration="Release" /p:TargetFramework=net472
+    - uses: actions/checkout@v2
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.5
+    - name: Navigate to Workspace
+      run: cd $GITHUB_WORKSPACE
+    - name: Restore Packages
+      run: nuget restore "src/Mindee.sln"
+    - name: Build Solution
+      run: |
+        msbuild.exe "src/Mindee.sln" /p:platform="Any CPU" /p:configuration="Release" /p:TargetFramework=net472
 
   test:
     runs-on: windows-2019
