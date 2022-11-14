@@ -1,4 +1,4 @@
-name: .NET 5+
+name: .NET 6
 
 on:
   push:
@@ -9,16 +9,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dotnet-version: ['5.0.x', '6.0.x']
         
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+    - name: Setup .NET Core SDK .NET 6
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: ${{ matrix.dotnet-version }}
+        dotnet-version: '6.0.x'
     - name: Install dependencies
       run: dotnet restore "src"
     - name: Build
@@ -31,7 +28,7 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Setup .NET Core SDK '6.0.x'
+    - name: Setup .NET Core SDK 6
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: '6.0.x'
