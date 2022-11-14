@@ -24,7 +24,7 @@ services.AddMindeeClient();
 ```
 This call will configure the client entry point and the pdf library used internally.
 
-Then, in your controller or service instance, pass as an argument the class ``MindeeClient``.
+Then, in your controller or service instance, pass the class ``MindeeClient`` as an argument of your constructor (or methods if you are using this possibility).
 
 Let's parse an invoice :
 ```csharp
