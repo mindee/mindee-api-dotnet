@@ -11,16 +11,15 @@ jobs:
     runs-on: windows-2019
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.5
-    - name: Navigate to Workspace
-      run: cd $GITHUB_WORKSPACE
-    - name: Build Solution
-      run: |
-        msbuild.exe "src/Mindee.sln" /p:platform="Any CPU" /p:configuration="Release" /p:TargetFramework=net472 -t:restore
+    - uses: actions/checkout@v3
+    - name: Setup .NET Core SDK .NET 6
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0.x'
+    - name: Install dependencies
+      run: dotnet restore "src"
+    - name: Build
+      run: dotnet build "src" --configuration Release --no-restore -f net472
 
   test:
     runs-on: windows-2019
