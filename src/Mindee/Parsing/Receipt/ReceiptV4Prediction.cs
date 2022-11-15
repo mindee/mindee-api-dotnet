@@ -27,25 +27,25 @@ namespace Mindee.Parsing.Receipt
         /// Total amount including taxes and the tip.
         /// </summary>
         [JsonPropertyName("total_amount")]
-        public Amount TotalAmount { get; set; }
+        public AmountField TotalAmount { get; set; }
 
         /// <summary>
         /// Total amount excluding taxes.
         /// </summary>
         [JsonPropertyName("total_net")]
-        public Amount TotalNet { get; set; }
+        public AmountField TotalNet { get; set; }
 
         /// <summary>
         /// Total taxes.
         /// </summary>
         [JsonPropertyName("total_tax")]
-        public Amount TotalTax { get; set; }
+        public AmountField TotalTax { get; set; }
 
         /// <summary>
         /// The tip.
         /// </summary>
         [JsonPropertyName("tip")]
-        public Amount Tip { get; set; }
+        public AmountField Tip { get; set; }
 
         /// <summary>
         /// Generate a pretty to read summary of the model.
