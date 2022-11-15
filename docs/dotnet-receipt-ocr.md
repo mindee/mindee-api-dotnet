@@ -96,14 +96,16 @@ The following date fields are available:
     * `Raw` (string): In any format as seen on the receipt.
 
 ### Tip
-**`tip`** (AmountField): Total amount of tip and gratuity.
+**`Tip`** (AmountField): Total amount of tip and gratuity.
+
 
 ### Total Amounts
-* **`TotalIncl`** (AmountField): Total amount including taxes
+* **`TotalAmount`** (AmountField): Total amount including taxes and tips
 
-* **`TotalExcl`** (AmountField): Total amount paid excluding taxes
+* **`TotalNet`** (AmountField): Total amount paid excluding taxes and tip
 
 * **`TotalTax`** (AmountField): Total tax value from tax lines
+
 
 &nbsp;
 &nbsp;

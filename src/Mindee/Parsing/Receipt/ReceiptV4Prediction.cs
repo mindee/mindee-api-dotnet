@@ -24,7 +24,7 @@ namespace Mindee.Parsing.Receipt
         public Time Time { get; set; }
 
         /// <summary>
-        /// Total amount including taxes and the tip.
+        /// Total amount including taxes and tips.
         /// </summary>
         [JsonPropertyName("total_amount")]
         public AmountField TotalAmount { get; set; }
