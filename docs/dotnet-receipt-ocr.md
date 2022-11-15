@@ -52,6 +52,7 @@ Attributes that will be extracted from the document and available in the `Receip
 - [Supplier Information](#supplier-information)
 - [Taxes](#taxes)
 - [Time](#time)
+- [Tip](#tip)
 - [Total Amounts](#total-amounts)
 
 ### Category
@@ -87,11 +88,15 @@ The following date fields are available:
 * `Value` (Float): The tax amount.
 * `Code` (String): The tax code (HST, GST... for Canadian; City Tax, State tax for US, etc..).
 * `Rate` (Float): The tax rate.
+* `basis` (Float): The tax base.
 
 ### Time
 * **`Time`**: Time of purchase as seen on the receipt
     * `Value` (string): Time of purchase with 24 hours formatting (hh:mm).
     * `Raw` (string): In any format as seen on the receipt.
+
+### Tip
+**`tip`** (AmountField): Total amount of tip and gratuity.
 
 ### Total Amounts
 * **`TotalIncl`** (AmountField): Total amount including taxes
