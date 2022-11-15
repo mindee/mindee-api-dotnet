@@ -36,11 +36,11 @@ Locale: en-US; en; US; USD;
 ## Field Objects
 Each `Field` object contains at a minimum the following attributes:
 
-* `value` (string or number depending on the field type):
+* `Value` (string or number depending on the field type):
   Corresponds to the field value. Can be `null` if no value was extracted.
-* `confidence` (Float):
+* `Confidence` (Float):
   The confidence score of the field prediction.
-* `polygon` (List<List<double>>):
+* `Polygon` (List<List<double>>):
   Contains the relative vertices coordinates (points) of a polygon containing the field in the image.
 
 ## Extracted Fields
@@ -55,7 +55,7 @@ Attributes that will be extracted from the document and available in the `Receip
 - [Total Amounts](#total-amounts)
 
 ### Category
-* **`category`** (Field): Receipt category as seen on the receipt.
+* **`Category`** (Field): Receipt category as seen on the receipt.
   The following categories are supported: toll, food, parking, transport, accommodation, gasoline, miscellaneous.
 
 ### Date
@@ -64,41 +64,41 @@ Date fields:
 * have a `value` attribute which is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) representation of the date, regardless of the `raw` contents.
 
 The following date fields are available:
-* **`date`**: Date the receipt was issued
+* **`Date`**: Date the receipt was issued
 
 ### Locale
-**`locale`** (Locale): Locale information.
+**`Locale`** (Locale): Locale information.
 
-* `locale.language` (String): Language code in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format as seen on the document.
+* `Locale.Language` (String): Language code in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format as seen on the document.
   The following language codes are supported: `ca`, `de`, `en`, `es`, `fr`, `it`, `nl` and `pt`.
 
-* `locale.currency` (String): Currency code in [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) format as seen on the document.
+* `Locale.Currency` (String): Currency code in [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) format as seen on the document.
   The following country codes are supported: `CAD`, `CHF`, `GBP`, `EUR`, `USD`.
 
-* `locale.country` (String): Country code in [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1) alpha-2 format as seen on the document.
+* `Locale.Country` (String): Country code in [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1) alpha-2 format as seen on the document.
   The following country codes are supported: `CA`, `CH`, `DE`, `ES`, `FR,` `GB`, `IT`, `NL`, `PT` and `US`.
 
 ### Supplier Information
-* **`supplier`** (Field): Supplier name as written in the receipt.
+* **`Supplier`** (StringField): Supplier name as written in the receipt.
 
 ### Taxes
-**`taxes`** (Array< TaxField >): Contains tax fields as seen on the receipt.
+**`Taxes`** (Array< TaxField >): Contains tax fields as seen on the receipt.
 
-* `value` (Float): The tax amount.
-* `code` (String): The tax code (HST, GST... for Canadian; City Tax, State tax for US, etc..).
-* `rate` (Float): The tax rate.
+* `Value` (Float): The tax amount.
+* `Code` (String): The tax code (HST, GST... for Canadian; City Tax, State tax for US, etc..).
+* `Rate` (Float): The tax rate.
 
 ### Time
-* **`time`**: Time of purchase as seen on the receipt
-    * `value` (string): Time of purchase with 24 hours formatting (hh:mm).
-    * `raw` (string): In any format as seen on the receipt.
+* **`Time`**: Time of purchase as seen on the receipt
+    * `Value` (string): Time of purchase with 24 hours formatting (hh:mm).
+    * `Raw` (string): In any format as seen on the receipt.
 
 ### Total Amounts
-* **`totalIncl`** (Field): Total amount including taxes
+* **`TotalIncl`** (AmountField): Total amount including taxes
 
-* **`totalExcl`** (Field): Total amount paid excluding taxes
+* **`TotalExcl`** (AmountField): Total amount paid excluding taxes
 
-* **`totalTax`** (Field): Total tax value from tax lines
+* **`TotalTax`** (AmountField): Total tax value from tax lines
 
 &nbsp;
 &nbsp;

@@ -40,11 +40,11 @@ Locale: en; en; CAD;
 ## Properties
 Each properties of the object contains at a minimum the following attributes:
 
-* `value` (string or double depending on the field type):
+* `Value` (string or double depending on the field type):
   Corresponds to the field value. Can be `null` if no value was extracted.
-* `confidence` (a `double`):
+* `Confidence` (a `double`):
   The confidence score of the field prediction.
-* `polygon` (a `List<List<double>>`):
+* `Polygon` (a `List<List<double>>`):
   Contains the relative vertices coordinates (points) of a polygon containing the field in the image.
 
 ## Extracted Fields
@@ -59,11 +59,11 @@ Attributes that will be extracted from the document and available in the `Invoic
 - [Total Amounts](#total-amounts)
 
 ### Customer Information
-* **`customerName`** (Field): Customer's name
+* **`CustomerName`** (StringField): Customer's name
 
-* **`customerAddress`** (Field): Customer's postal address
+* **`CustomerAddress`** (StringField): Customer's postal address
 
-* **`customerCompanyRegistration`** (List<CompanyRegistration>): Customer's company registration
+* **`CustomerCompanyRegistration`** (List<CompanyRegistration>): Customer's company registration
 
 ### Dates
 Date fields:
@@ -72,55 +72,55 @@ Date fields:
 
 The following date fields are available:
 
-* **`date`**: Date the invoice was issued
+* **`Date`**: Date the invoice was issued
 
-* **`dueDate`**: Payment due date of the invoice.
+* **`DueDate`**: Payment due date of the invoice.
 
 ### Locale
-**`locale`** (Locale): Locale information.
+**`Locale`** (Locale): Locale information.
 
-* `locale.language` (string): Language code in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format as seen on the document.
+* `Locale.Language` (string): Language code in [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) format as seen on the document.
   The following language codes are supported: `ca`, `de`, `en`, `es`, `fr`, `it`, `nl` and `pt`.
 
-* `locale.currency` (string): Currency code in [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) format as seen on the document.
+* `Locale.Currency` (string): Currency code in [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) format as seen on the document.
   The following country codes are supported: `CAD`, `CHF`, `GBP`, `EUR`, `USD`.
 
-* `locale.country` (string): Country code in [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1) alpha-2 format as seen on the document.
+* `Locale.Country` (string): Country code in [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1) alpha-2 format as seen on the document.
   The following country codes are supported: `CA`, `CH`, `DE`, `ES`, `FR,` `GB`, `IT`, `NL`, `PT` and `US`.
 
 ### Payment Information
-**`paymentDetails`** (List<PaymentDetails>): List of invoice's supplier payment details. Each object in the list contains extra attributes:
-* `iban` (string)
-* `swift` (string)
-* `routingNumber` (string)
-* `accountNumber` (string)
+**`PaymentDetails`** (List<PaymentDetails>): List of invoice's supplier payment details. Each object in the list contains extra attributes:
+* `Iban` (string)
+* `Swift` (string)
+* `RoutingNumber` (string)
+* `AccountNumber` (string)
 
 ### Supplier Information
 
-**`companyRegistration`** (List<CompanyRegistration>):  List of detected supplier's company registration numbers. Each object in the list contains an extra attribute:
+**`CompanyRegistration`** (List<CompanyRegistration>):  List of detected supplier's company registration numbers. Each object in the list contains an extra attribute:
 
-* `type` (String): Type of company registration number among: [VAT NUMBER](https://en.wikipedia.org/wiki/VAT_identification_number), [SIRET](https://en.wikipedia.org/wiki/SIRET_code), [SIREN](https://en.wikipedia.org/wiki/SIREN_code), [NIF](https://en.wikipedia.org/wiki/National_identification_number), [CF](https://en.wikipedia.org/wiki/Italian_fiscal_code), [UID](https://en.wikipedia.org/wiki/VAT_identification_number), [STNR](https://de.wikipedia.org/wiki/Steuernummer), [HRA/HRB](https://en.wikipedia.org/wiki/German_Commercial_Register), [TIN](https://en.wikipedia.org/wiki/Taxpayer_Identification_Number) (includes EIN, FEIN, SSN, ATIN, PTIN, ITIN), [RFC](https://wise.com/us/blog/clabe-rfc-curp-abm-meaning-mexico), [BTW](https://en.wikipedia.org/wiki/European_Union_value_added_tax), [ABN](https://abr.business.gov.au/Help/AbnFormat), [UEN](https://www.uen.gov.sg/ueninternet/faces/pages/admin/aboutUEN.jspx), [CVR](https://en.wikipedia.org/wiki/Central_Business_Register_(Denmark)), [ORGNR](https://en.wikipedia.org/wiki/VAT_identification_number), [INN](https://www.nalog.gov.ru/eng/exchinf/inn/), [DPH](https://en.wikipedia.org/wiki/Value-added_tax), [GSTIN](https://en.wikipedia.org/wiki/VAT_identification_number), [COMPANY REGISTRATION NUMBER](https://en.wikipedia.org/wiki/VAT_identification_number) (UK), [KVK](https://business.gov.nl/starting-your-business/registering-your-business/lei-rsin-vat-and-kvk-number-which-is-which/), [DIC](https://www.vatify.eu/czech-vat-number.html)
+* `Type` (string): Type of company registration number among: [VAT NUMBER](https://en.wikipedia.org/wiki/VAT_identification_number), [SIRET](https://en.wikipedia.org/wiki/SIRET_code), [SIREN](https://en.wikipedia.org/wiki/SIREN_code), [NIF](https://en.wikipedia.org/wiki/National_identification_number), [CF](https://en.wikipedia.org/wiki/Italian_fiscal_code), [UID](https://en.wikipedia.org/wiki/VAT_identification_number), [STNR](https://de.wikipedia.org/wiki/Steuernummer), [HRA/HRB](https://en.wikipedia.org/wiki/German_Commercial_Register), [TIN](https://en.wikipedia.org/wiki/Taxpayer_Identification_Number) (includes EIN, FEIN, SSN, ATIN, PTIN, ITIN), [RFC](https://wise.com/us/blog/clabe-rfc-curp-abm-meaning-mexico), [BTW](https://en.wikipedia.org/wiki/European_Union_value_added_tax), [ABN](https://abr.business.gov.au/Help/AbnFormat), [UEN](https://www.uen.gov.sg/ueninternet/faces/pages/admin/aboutUEN.jspx), [CVR](https://en.wikipedia.org/wiki/Central_Business_Register_(Denmark)), [ORGNR](https://en.wikipedia.org/wiki/VAT_identification_number), [INN](https://www.nalog.gov.ru/eng/exchinf/inn/), [DPH](https://en.wikipedia.org/wiki/Value-added_tax), [GSTIN](https://en.wikipedia.org/wiki/VAT_identification_number), [COMPANY REGISTRATION NUMBER](https://en.wikipedia.org/wiki/VAT_identification_number) (UK), [KVK](https://business.gov.nl/starting-your-business/registering-your-business/lei-rsin-vat-and-kvk-number-which-is-which/), [DIC](https://www.vatify.eu/czech-vat-number.html)
 
-* `value` (string): Value of the company identifier
+* `Value` (string): Value of the company identifier
 
-* **`supplier`**: Supplier name as written in the invoice (logo or supplier Info).
+* **`Supplier`**: Supplier name as written in the invoice (logo or supplier Info).
 
-* **`supplierAddress`**: Supplier address as written in the invoice.
+* **`SupplierAddress`**: Supplier address as written in the invoice.
 
 ### Taxes
-**`taxes`** (List<TaxField>): Contains tax fields as seen on the receipt.
+**`Taxes`** (List<TaxField>): Contains tax fields as seen on the receipt.
 
-* `value` (double): The tax amount.
-* `code` (string): The tax code (HST, GST... for Canadian; City Tax, State tax for US, etc..).
-* `rate` (double): The tax rate.
+* `Value` (double): The tax amount.
+* `Code` (string): The tax code (HST, GST... for Canadian; City Tax, State tax for US, etc..).
+* `Rate` (double): The tax rate.
 
 ### Total Amounts
 
-* **`totalIncl`** (Field): Total amount including taxes.
+* **`TotalIncl`** (AmountField): Total amount including taxes.
 
-* **`totalExcl`** (Field): Total amount excluding taxes.
+* **`TotalExcl`** (AmountField): Total amount excluding taxes.
 
-* **`totalTax`** (Field): Total tax value from tax lines.
+* **`TotalTax`** (AmountField): Total tax value from tax lines.
 
 &nbsp;
 &nbsp;

@@ -59,10 +59,10 @@ Using the above [passport example](https://files.readme.io/4a16b1d-passport_pic.
 
 ### Birth Place
 
-* **`birthPlace`** (Field): Passport owner birthplace.
+* **`BirthPlace`** (Field): Passport owner birthplace.
 
 ### Country
-* **`country`** (Field): Passport country in [ISO 3166-1 alpha-3 code format](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) (3 letters code).
+* **`Country`** (Field): Passport country in [ISO 3166-1 alpha-3 code format](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) (3 letters code).
 
 ### Dates
 Date fields:
@@ -70,32 +70,32 @@ Date fields:
 * have a `value` attribute which is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) representation of the date, regardless of the `raw` contents.
 
 The following date fields are available:
-- **`expiry_date`**: Passport expiry date.
+- **`ExpiryDate`**: Passport expiry date.
 
-- **`issuance_date`**: Passport date of issuance.
+- **`IssuanceDate`**: Passport date of issuance.
 
-- **`birth_date`**: Passport's owner date of birth.
+- **`BirthDate`**: Passport's owner date of birth.
 
 ### Gender
 
-- **`gender`** (Field): Passport owner's gender (M / F).
+- **`Gender`** (StringField): Passport owner's gender (M / F).
 
 ### Given Names
 
-* **`givenNames`** (Array< Field >): List of passport owner's given names.
+* **`GivenNames`** (List<StringField>): List of passport owner's given names.
 
 ### ID
 
-* **`id_number`** (Field): Passport identification number.
+* **`IdNumber`** (StringField): Passport identification number.
 
 ### Machine Readable Zone
 
-* **`mrz1`** (Field): Passport first line of machine-readable zone.
+* **`Mrz1`** (StringField): Passport first line of machine-readable zone.
 
-* **`mrz2`** (Field): Passport second line of machine-readable zone.
+* **`Mrz2`** (StringField): Passport second line of machine-readable zone.
 
 ### Surname
-* **`surname`** (Field): Passport's owner surname.
+* **`Surname`** (StringField): Passport's owner surname.
 
 &nbsp;
 &nbsp;
