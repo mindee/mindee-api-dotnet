@@ -6,13 +6,15 @@ For the following examples, we are using our own [W9s custom API](https://develo
 ## Quick Start
 
 ```csharp
-string path = "/src/mypath/myfile.pdf";
+CustomEndpoint myEndpoint = new CustomEndpoint(
+    endpointName: "wnine",
+    accountName: "john",
+    version: "1.1" // optional
+);
+
 var prediction = await _mindeeClient
-    .LoadDocument(new FileInfo(path))
-    .ParseAsync(new Endpoint(
-        "wsnine",
-        "1", 
-        "john"));
+    .LoadDocument(new FileInfo(Path))
+    .ParseAsync(myEndpoint);
 ```
 
 If the `version` argument is set, you'll be required to update it every time a new model is trained.
@@ -24,22 +26,24 @@ The response class and document type must be specified when calling this method.
 
 You have two different ways to parse a custom document.
 
-1. Use the default prediction class named ``CustomPrediction`` 
+1. Don't specify the return class, and use the default one (named ``CustomPrediction``):
 ```csharp
 var prediction = await _mindeeClient
     .LoadDocument(new FileInfo(Path))
-    .ParseAsync(new Endpoint(
-        ProductName,
-        Version, 
-        OrganizationName));
+    .ParseAsync(myEndpoint);
 ```
 
-2. You can also use your own class which will represent the required field. For example, the custom objet below:
+2. You can also use your own class which will represent the required fields. For example:
 ```csharp
 
-// The Endpoint attribute is required when using your own model.
+// The CustomEndpoint attribute is required when using your own model.
 // It will be used to know which Mindee API called.
-[Endpoint(productName: "wsnine", version:"1", organizationName:"john")]
+
+[CustomEndpoint(
+    endpointName: "wnine",
+    accountName: "john",
+    version: "1.1" // optional
+)]
 
 public sealed class WNine
 {
@@ -48,17 +52,20 @@ public sealed class WNine
 
   [JsonPropertyName("employer_id")]
   public StringField EmployerId { get; set; }
+  
+  ...
 }
 
 var prediction = await _mindeeClient
     .LoadDocument(new FileInfo(Path))
-    .ParseAsync<RentInsurance>();
+    .ParseAsync<WNine>();
 ```
 
 ## CustomPrediction object
 All the fields which are defined in the API builder when creating your custom document, are available.
 
-`CustomPrediction` is a `Dictionary` with the key as a `string` for the name of the field, and a `ListField` as a value, to get values extracted for this field. 
+`CustomPrediction` is a `Dictionary` with the key as a `string` for the name of the field, and a `ListField` as a value.
+Each `ListField` contains a list of all values extracted for this field. 
 
 Value fields are accessed via the `Values` property.
 
@@ -74,13 +81,15 @@ A Map with the following structure:
 In the examples below we'll use the `employer_id` field.
 
 ```csharp
-string path = "/src/mypath/myfile.pdf";
+CustomEndpoint myEndpoint = new CustomEndpoint(
+    endpointName: "wnine",
+    accountName: "john",
+    version: "1.1" // optional
+);
+
 var prediction = await _mindeeClient
     .LoadDocument(new FileInfo(path))
-    .ParseAsync(new Endpoint(
-        "wnine",
-        "1", 
-        "john"));
+    .ParseAsync(myEndpoint);
 
 ListField? employerId = prediction.Inference.Prediction.GetValueOrDefault("employer_id");
 ```

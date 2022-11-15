@@ -10,8 +10,17 @@ This library is compatible with:
 You'll also need NuGet for installing the package.
 
 ### Standard Installation
+Using the .NET Core command-line interface (CLI) tools:
 ```shell
 dotnet add package Mindee
+```
+Or using the NuGet Command Line Interface (CLI):
+```shell
+nuget install Mindee
+```
+Or using the Package Manager Console:
+```shell
+Install-Package Mindee
 ```
 
 ### Development Installation
@@ -136,7 +145,7 @@ This will determine which API endpoint is used and how the API return will be ha
 
 More specifically, we need to set the class object which will represent the values extracted by the API.
 
-The `parse` method is generic, and its return type will depend on it.
+The `ParseAsync` method is generic, and its return type will depend on it.
 
 Each document type available in the library has its corresponding object class.
 This is detailed in each document-specific guide.
@@ -155,21 +164,17 @@ In this case, you will have two ways to handle them.
 The first one enables the possibility to use a class object which represents a kind of dictionary where,
 keys will be the name of each field define in your Custom API model (on the Mindee platform).
 
-It also requires that you instantiate a new `Endpoint` object to define the information of your custom API built.
+It also requires that you instantiate a new `CustomEndpoint` object to define the information of your custom API built.
 ```csharp
+CustomEndpoint myEndpoint = new CustomEndpoint(
+    endpointName: "wnine",
+    accountName: "john",
+    version: "1.1" // optional
+);
+
 var prediction = await _mindeeClient
     .LoadDocument(new FileInfo(Path))
-    .ParseAsync(new Endpoint(
-        "myProductName",
-        "1", 
-        "myCompany"));
-```
-
-The second one allows you to use your own class which should have for each field, a typed property.  
-```csharp
-var prediction = await _mindeeClient
-    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-    .ParseAsync<MyOwnClass>();
+    .ParseAsync(myEndpoint);
 ```
 
 ## Process the result

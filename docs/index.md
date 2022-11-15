@@ -3,22 +3,12 @@ Here's the TL;DR of getting started.
 
 First, get an [API Key](https://developers.mindee.com/docs/create-api-key)
 
-Then, install this library.
-
-Using the .NET Core command-line interface (CLI) tools:
+Then, install this library:
 ```shell
 dotnet add package Mindee
 ```
-Or using the NuGet Command Line Interface (CLI):
-```shell
-nuget install Mindee
-```
-Or using the Package Manager Console:
-```shell
-Install-Package Mindee
-```
 
-In your Startup.cs or Program.cs file, configure the DI as follows:
+In your Startup.cs or Program.cs file, configure the dependency injection (DI) as follows:
 ```csharp
 services.AddMindeeClient();
 ```
@@ -37,12 +27,15 @@ var prediction = await _mindeeClient
 
 You can also use the client with your custom documents:
 ```csharp
+CustomEndpoint myEndpoint = new CustomEndpoint(
+    EndpointName: "wnine",
+    AccountName: "john",
+    Version: "1.1" // optional
+);
+
 var prediction = await _mindeeClient
     .LoadDocument(new FileInfo(Path))
-    .ParseAsync(new Endpoint(
-        ProductName,
-        Version, 
-        OrganizationName));
+    .ParseAsync(myEndpoint);
 ```
 
 Or even with a custom representation of your model:
