@@ -9,8 +9,8 @@ Using this [sample receipt](https://files.readme.io/ffc127d-sample_receipt.jpg) 
 
 string path = "./ffc127d-sample_receipt.jpeg";
 var prediction = await _mindeeClient
-                    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<ReceiptV3Prediction>();
+    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
+    .ParseAsync<ReceiptV3Prediction>();
 
 // Print a summary of the parsed data
 System.Console.WriteLine(prediction.Inference.Prediction.ToString());
@@ -18,17 +18,19 @@ System.Console.WriteLine(prediction.Inference.Prediction.ToString());
 
 Output:
 ```
------Receipt data-----
-Total amount including taxes: 10.2
-Total amount excluding taxes: 8.5
-Date: 2016-02-26
+----- Receipt V4 -----
+Filename: 6882f91-receipt23.png
+Total amount: 7.27
+Total net: 6.86
+Tip:
+Date: 2022-04-03
 Category: food
-Time: 15:20
-Merchant name: CLACHAN
-Taxes: 1.7 20.0%
-Total taxes: 1.7
-Locale: en; GB; GBP;
----------------------
+Time: 10:00
+Supplier name: MINDEE TAKE OUT
+Taxes: 0.41 TAX
+Total taxes: 0.41
+Locale: en-US; en; US; USD;
+----------------------
 ```
 
 ## Field Objects

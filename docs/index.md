@@ -29,24 +29,24 @@ Then, in your controller or service instance, pass the class ``MindeeClient`` as
 Let's parse an invoice :
 ```csharp
 var prediction = await _mindeeClient
-                    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<ReceiptV3Prediction>();
+    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
+    .ParseAsync<ReceiptV3Prediction>();
 ```
 
 You can also use the client with your custom documents:
 ```csharp
 var prediction = await _mindeeClient
-                    .LoadDocument(new FileInfo(Path))
-                    .ParseAsync(new Endpoint(
-                        ProductName,
-                        Version, 
-                        OrganizationName));
+    .LoadDocument(new FileInfo(Path))
+    .ParseAsync(new Endpoint(
+        ProductName,
+        Version, 
+        OrganizationName));
 ```
-or with you custom representation of your model !
+or with you custom representation of your model!
 ```csharp
 var prediction = await _mindeeClient
-                    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<YourAwesomeModel>();
+    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
+    .ParseAsync<YourAwesomeModel>();
 ```
 
 Complete details on the working of the library are available in the following guides: 

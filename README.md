@@ -4,7 +4,7 @@
 
 # Mindee API Helper Library for .NET
 
-The official Mindee API Helper Library for .NET ecosystem to quickly and easily connect to Mindee's API services
+The official Mindee API Helper Library for the .NET ecosystem to quickly and easily connect to Mindee's API services
 
 It targets .NET Standard 2.0 to be used with .NET Framework 4.7.2 as well that with .NET 5/6.
 
@@ -39,37 +39,34 @@ Then, in your controller or service instance, pass as an argument the class ``Mi
 Let's parse an invoice :
 ```csharp
 var prediction = await _mindeeClient
-                    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<ReceiptV3Prediction>();
+    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
+    .ParseAsync<ReceiptV3Prediction>();
 ```
 
 You can also use the client with your custom documents:
 ```csharp
 var prediction = await _mindeeClient
-                    .LoadDocument(new FileInfo(Path))
-                    .ParseAsync(new Endpoint(
-                        ProductName,
-                        Version, 
-                        OrganizationName));
+    .LoadDocument(new FileInfo(Path))
+    .ParseAsync(new Endpoint(
+        ProductName,
+        Version, 
+        OrganizationName));
 ```
-or with you custom representation of your model !
+or with you custom representation of your model!
 ```csharp
 var prediction = await _mindeeClient
-                    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<YourAwesomeModel>();
+    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
+    .ParseAsync<YourAwesomeModel>();
 ```
 
-Complete details on the working of the library are available in the following guides: 
-* [Overview](https://developers.mindee.com/docs/dotnet-overview-1)
-* [.NET Custom APIs OCR](https://developers.mindee.com/docs/dotnet-api-builder-1)
-* [.NET invoices OCR](https://developers.mindee.com/docs/dotnet-invoice-ocr-1)
-* [.NET receipts OCR](https://developers.mindee.com/docs/dotnet-receipt-ocr-1)
-* [.NET passports OCR](https://developers.mindee.com/docs/dotnet-passport-ocr-1)
+## Further Reading
+There's more to it than that for those that need more features, or want to
+customize the experience.
 
-You can view the source code on [GitHub](https://github.com/mindee/mindee-api-dotnet).
+All the juicy details are described in the
+**[Official Guide](https://developers.mindee.com/docs/dotnet-ocr-sdk)**.
 
-&nbsp;
-&nbsp;
-**Questions?**
-<img alt="Slack Logo Icon" style="display:inline!important" src="https://files.readme.io/5b83947-Slack.png" width="20" height="20">&nbsp;&nbsp;[Join our Slack](https://slack.mindee.com)
+## License
+Copyright © Mindee
 
+Available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

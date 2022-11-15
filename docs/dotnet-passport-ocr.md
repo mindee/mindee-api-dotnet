@@ -9,8 +9,8 @@ Using this [sample passport](https://files.readme.io/4a16b1d-passport_pic.jpg) b
 
 string path = "./4a16b1d-passport_pic.jpg";
 var prediction = await _mindeeClient
-                    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<PassportV1Prediction>();
+    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
+    .ParseAsync<PassportV1Prediction>();
 
 // Print a summary of the parsed data
 System.Console.WriteLine(prediction.Inference.Prediction.ToString());
@@ -67,7 +67,7 @@ Using the above [passport example](https://files.readme.io/4a16b1d-passport_pic.
 ### Dates
 Date fields:
 * can contain the `raw` attribute, which is the textual representation found on the document.
-* have a `value` attribute which is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)  representation of the date, regardless of the `raw` contents.
+* have a `value` attribute which is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) representation of the date, regardless of the `raw` contents.
 
 The following date fields are available:
 - **`expiry_date`**: Passport expiry date.

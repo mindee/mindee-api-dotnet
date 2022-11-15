@@ -9,8 +9,8 @@ Using this [sample invoice](https://files.readme.io/a74eaa5-c8e283b-sample_invoi
 
 string path = "./a74eaa5-c8e283b-sample_invoice.jpeg";
 var prediction = await _mindeeClient
-                    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<InvoiceV3Prediction>();
+    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
+    .ParseAsync<InvoiceV3Prediction>();
 
 // Print a summary of the parsed data
 System.Console.WriteLine(prediction.Inference.Prediction.ToString());
@@ -68,7 +68,7 @@ Attributes that will be extracted from the document and available in the `Invoic
 ### Dates
 Date fields:
 * contain the `raw` attribute, which is the textual representation found on the document.
-* have a `value` attribute which is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)  representation of the date, regardless of the `raw` contents.
+* have a `value` attribute which is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) representation of the date, regardless of the `raw` contents.
 
 The following date fields are available:
 

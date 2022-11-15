@@ -52,17 +52,17 @@ Let's take a deep dive into how this works.
 ### Initializing the Client
 The `MindeeClient` enables you to load a document and execute the parse method on it, according to a specific model.
 
-In most cases, you'll just to pass MindeeClient as a constructor parameter of your class and your DI engine will be the rest.
+In most cases, you'll just to pass MindeeClient as a constructor parameter of your class and your DI engine will do the rest.
 
 However, you will need to declare the MindeeClient in your Startup.cs or Program.cs file as below :
 ```csharp
 services.AddMindeeClient();
 ```
-This call will configure the client entry point and the pdf library used internally.
+This call will configure the client entry point and the PDF library used internally.
 
 Do not forget to initialize your [API key](https://developers.mindee.com/docs/make-your-first-request#create-an-api-key).
 
-You must pass the value through arguments of your app, environment variables or from app settings directly.
+You must pass the value through arguments of your application, environment variables or from app settings directly.
 
 #### Set the API key in the environment
 API keys should be set as environment variables, especially for any production deployment.
@@ -72,12 +72,12 @@ The following environment variable will set the global API key:
 MindeeApiSettings__ApiKey="my-api-key"
 ```
 
-You could also define the key in your appsettings.json config file :
+You could also define the key in your appsettings.json config file:
 ```json
 {
   "$schema": "https://json.schemastore.org/appsettings.json",
   "MindeeApiSettings": {
-    "ApiKey": "BadKey"
+    "ApiKey": "my-api-key"
   }
 }
 ```
@@ -101,7 +101,7 @@ Load from a file directly from disk. Requires an absolute path, as a string.
 
 ```csharp
 var mindeeClient = await _mindeeClient
-                    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path));
+    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path));
 ```
 
 ### Stream Object
@@ -112,7 +112,7 @@ Load a standard readable stream object.
 ```csharp
 Stream myStream;
 var mindeeClient = await _mindeeClient
-                    .LoadDocument(myStream, System.IO.Path.GetFileName(Path));
+    .LoadDocument(myStream, System.IO.Path.GetFileName(Path));
 ```
 
 ### Bytes
@@ -123,7 +123,7 @@ Load file contents from a string of raw bytes.
 ```csharp
 byte[] myFileInBytes = new byte[] { byte.MinValue };
 var mindeeClient = await _mindeeClient
-                    .LoadDocument(myFileInBytes, System.IO.Path.GetFileName(Path));
+    .LoadDocument(myFileInBytes, System.IO.Path.GetFileName(Path));
 ```
 
 ## Sending a Document
@@ -141,16 +141,17 @@ This is detailed in each document-specific guide.
 Simply setting the correct class is enough:
 ```csharp
 var prediction = await _mindeeClient
-                    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<ReceiptV3Prediction>();
+    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
+    .ParseAsync<ReceiptV3Prediction>();
 ```
 
 ### Custom Documents
 In this case, you will have two ways to handle them.
 
-The first one enable the possibility to use a class object which represent a kinf of dictionnary where, keys will be the name of each field define in your Custom API model (on the Mindee platform).
+The first one enables the possibility to use a class object which represents a kind of dictionary where,
+keys will be the name of each field define in your Custom API model (on the Mindee platform).
 
-It also require that you instanciate a new `Endpoint` instance to define the information of your custom API built.
+It also requires that you instantiate a new `Endpoint` object to define the information of your custom API built.
 ```csharp
 var prediction = await _mindeeClient
     .LoadDocument(new FileInfo(Path))
@@ -160,17 +161,17 @@ var prediction = await _mindeeClient
         "myCompany"));
 ```
 
-The second one allows you to use your own class which will have for each field, a typed property.  
+The second one allows you to use your own class which should have for each field, a typed property.  
 ```csharp
 var prediction = await _mindeeClient
-                    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<MyOwnClass>();
+    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
+    .ParseAsync<MyOwnClass>();
 ```
 
 ## Process the result
-Whatever the model is, it will be encapsulate in a `Document` object and therefore will have the following attributes:
+Regardless of the model, it will be encapsulated in a `Document` object and therefore will have the following attributes:
 * `inference` — [Inference](#inference)
-* `ocr` — [Ocr data](#Ocr)
+* `ocr` — [OCR data](#OCR)
 
 ### Inference
 Regroup the prediction on all the pages of the document and the prediction for all the document.
@@ -203,10 +204,10 @@ The order of the elements in the array matches the order of the pages in the doc
 All response objects have this property, regardless of the number of pages.
 Single page documents will have a single entry.
 
-### Ocr
+### OCR
 The `ocr` attribute could be filled by the API when setting `withFullText` to true.
 
-It will contains all the words that have been read in the document.
+It will contain all the words that have been read in the document.
 
 
 &nbsp;
