@@ -3,7 +3,11 @@ This guide will help you get the most out of the Mindee .NET OCR SDK to easily e
 ## Installation
 
 ### Prerequisites
-You'll need .NET Core 3.1/5.0/6+ or .NET 4.6+ and nuget, of course.
+This library is compatible with:
+* .NET 4.7.2
+* .NET 6+
+
+You'll also need NuGet for installing the package.
 
 ### Standard Installation
 ```shell
@@ -26,16 +30,15 @@ dotnet restore
 ```
 
 ## Updating the Library
-It is important to always check the version of the Mindee OCR SDK you are using, as new and updated features won’t work on older versions.
+It is important to always check the version of the Mindee OCR SDK you are using, as new and updated
+features won’t work on older versions.
 
 To get the latest version of your OCR SDK:
-
 ```shell
 dotnet update package Mindee
 ```
 
 To install a specific version of Mindee:
-
 ```shell
 dotnet add package Mindee -v <VERSION>
 ```
@@ -54,10 +57,11 @@ The `MindeeClient` enables you to load a document and execute the parse method o
 
 In most cases, you'll just to pass MindeeClient as a constructor parameter of your class and your DI engine will do the rest.
 
-However, you will need to declare the MindeeClient in your Startup.cs or Program.cs file as below :
+However, you will need to declare the MindeeClient in your Startup.cs or Program.cs file as follows:
 ```csharp
 services.AddMindeeClient();
 ```
+
 This call will configure the client entry point and the PDF library used internally.
 
 Do not forget to initialize your [API key](https://developers.mindee.com/docs/make-your-first-request#create-an-api-key).
@@ -180,9 +184,10 @@ Regroup the prediction on all the pages of the document and the prediction for a
 
 #### Document level prediction
 The `prediction` attribute is an object specific to the type of document being processed.
-
 It contains the data extracted from the entire document, all pages combined.
-It's possible to have the same field in various pages, but at the document level only the highest confidence field data will be shown (this is all done automatically at the API level).
+
+It's possible to have the same field in various pages, but at the document level,
+only the highest confidence field data will be shown (this is all done automatically at the API level).
 
 ```csharp
 // print a summary of the document-level info

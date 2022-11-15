@@ -18,15 +18,17 @@ Or using the Package Manager Console:
 Install-Package Mindee
 ```
 
-In your Startup.cs or Program.cs file, configure the DI as below :
+In your Startup.cs or Program.cs file, configure the DI as follows:
 ```csharp
 services.AddMindeeClient();
 ```
-This call will configure the client entry point and the pdf library used internally.
 
-Then, in your controller or service instance, pass the class ``MindeeClient`` as an argument of your constructor (or methods if you are using this possibility).
+This call will configure the client entry point and the PDF library used internally.
 
-Let's parse an invoice :
+Then, in your controller or service instance, pass the class ``MindeeClient`` as an argument of your constructor
+(or methods if you are using this possibility).
+
+Let's parse an invoice:
 ```csharp
 var prediction = await _mindeeClient
     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
@@ -42,7 +44,8 @@ var prediction = await _mindeeClient
         Version, 
         OrganizationName));
 ```
-or with you custom representation of your model!
+
+Or even with a custom representation of your model:
 ```csharp
 var prediction = await _mindeeClient
     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
