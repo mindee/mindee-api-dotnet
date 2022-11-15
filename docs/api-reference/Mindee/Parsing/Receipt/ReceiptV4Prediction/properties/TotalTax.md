@@ -10,18 +10,18 @@
 **Declaring Type:** [ReceiptV4Prediction](../index.md)  
 **Namespace:** [Mindee.Parsing.Receipt](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc1
+**Assembly Version:** 1.0.0\-rc2
 
 Total taxes.
 
 ```csharp
 [JsonPropertyName("total_tax")]
-public Amount TotalTax { get; set; }
+public AmountField TotalTax { get; set; }
 ```
 
 ## Property Value
 
-[Amount](../../../Common/Amount/index.md)
+[AmountField](../../../Common/AmountField/index.md)
 
 ___
 

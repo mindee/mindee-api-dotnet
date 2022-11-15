@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Parsing.Passport](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc1
+**Assembly Version:** 1.0.0\-rc2
 
 The passport model for the v1.
 

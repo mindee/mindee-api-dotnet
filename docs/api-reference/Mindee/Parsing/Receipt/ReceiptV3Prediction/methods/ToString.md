@@ -10,7 +10,7 @@
 **Declaring Type:** [ReceiptV3Prediction](../index.md)  
 **Namespace:** [Mindee.Parsing.Receipt](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc1
+**Assembly Version:** 1.0.0\-rc2
 
 Generate a pretty to read summary of the model.
 

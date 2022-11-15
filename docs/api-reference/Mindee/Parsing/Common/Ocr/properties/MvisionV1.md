@@ -10,7 +10,7 @@
 **Declaring Type:** [Ocr](../index.md)  
 **Namespace:** [Mindee.Parsing.Common](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc1
+**Assembly Version:** 1.0.0\-rc2
 
 [MvisionV1](../../MvisionV1/index.md)
 

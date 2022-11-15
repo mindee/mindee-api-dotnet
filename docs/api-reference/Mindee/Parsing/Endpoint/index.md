@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Parsing](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc1
+**Assembly Version:** 1.0.0\-rc2
 
 Define a Mindee API endpoint.
 

@@ -14,7 +14,7 @@
 | Name                                                        | Description                                               |
 | ----------------------------------------------------------- | --------------------------------------------------------- |
 | [AllWord](AllWord/index.md)                                 | Represent a word.                                         |
-| [Amount](Amount/index.md)                                   | Represent an amount.                                      |
+| [AmountField](AmountField/index.md)                         | Represent an amount.                                      |
 | [BaseField](BaseField/index.md)                             | Represent basics of a field.                              |
 | [Date](Date/index.md)                                       | Represent a date.                                         |
 | [Document\<TPredictionModel\>](Document-1/index.md)         | Define the parsed document.                               |

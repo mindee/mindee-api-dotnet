@@ -10,7 +10,7 @@
 **Declaring Type:** [EndpointAttribute](../index.md)  
 **Namespace:** [Mindee.Parsing](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc1
+**Assembly Version:** 1.0.0\-rc2
 
 ```csharp
 public EndpointAttribute(string productName, string version, string organizationName = "mindee");

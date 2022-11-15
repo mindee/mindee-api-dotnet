@@ -10,7 +10,7 @@
 **Declaring Type:** [PageOptions](../index.md)  
 **Namespace:** [Mindee.Input](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc1
+**Assembly Version:** 1.0.0\-rc2
 
 [PageOptionsOperation](../../PageOptionsOperation/index.md)
 

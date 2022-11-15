@@ -10,18 +10,18 @@
 **Declaring Type:** [ReceiptV3Prediction](../index.md)  
 **Namespace:** [Mindee.Parsing.Receipt](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc1
+**Assembly Version:** 1.0.0\-rc2
 
 Total amount including excluding taxes.
 
 ```csharp
 [JsonPropertyName("total_incl")]
-public Amount TotalIncl { get; set; }
+public AmountField TotalIncl { get; set; }
 ```
 
 ## Property Value
 
-[Amount](../../../Common/Amount/index.md)
+[AmountField](../../../Common/AmountField/index.md)
 
 ___
 

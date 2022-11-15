@@ -10,18 +10,18 @@
 **Declaring Type:** [ReceiptV4Prediction](../index.md)  
 **Namespace:** [Mindee.Parsing.Receipt](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc1
+**Assembly Version:** 1.0.0\-rc2
 
 The tip.
 
 ```csharp
 [JsonPropertyName("tip")]
-public Amount Tip { get; set; }
+public AmountField Tip { get; set; }
 ```
 
 ## Property Value
 
-[Amount](../../../Common/Amount/index.md)
+[AmountField](../../../Common/AmountField/index.md)
 
 ___
 

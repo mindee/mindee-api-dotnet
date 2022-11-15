@@ -5,25 +5,25 @@
   </auto-generated>   
 -->
 
-# Amount Class
+# AmountField Class
 
 **Namespace:** [Mindee.Parsing.Common](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc1
+**Assembly Version:** 1.0.0\-rc2
 
 Represent an amount.
 
 ```csharp
-public class Amount : BaseField
+public class AmountField : BaseField
 ```
 
-**Inheritance:** object → [BaseField](../BaseField/index.md) → Amount
+**Inheritance:** object → [BaseField](../BaseField/index.md) → AmountField
 
 ## Constructors
 
-| Name                              | Description |
-| --------------------------------- | ----------- |
-| [Amount()](constructors/index.md) |             |
+| Name                                   | Description |
+| -------------------------------------- | ----------- |
+| [AmountField()](constructors/index.md) |             |
 
 ## Properties
 

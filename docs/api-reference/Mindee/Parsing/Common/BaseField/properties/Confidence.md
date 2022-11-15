@@ -10,7 +10,7 @@
 **Declaring Type:** [BaseField](../index.md)  
 **Namespace:** [Mindee.Parsing.Common](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc1
+**Assembly Version:** 1.0.0\-rc2
 
 The confidence about the zone of the value extracted. A value from 0 to 1.
 

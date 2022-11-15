@@ -10,7 +10,7 @@
 **Declaring Type:** [CompanyRegistration](../index.md)  
 **Namespace:** [Mindee.Parsing.Invoice](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc1
+**Assembly Version:** 1.0.0\-rc2
 
 The value of the field.
 

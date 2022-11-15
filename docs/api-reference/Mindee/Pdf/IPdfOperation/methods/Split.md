@@ -10,7 +10,7 @@
 **Declaring Type:** [IPdfOperation](../index.md)  
 **Namespace:** [Mindee.Pdf](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc1
+**Assembly Version:** 1.0.0\-rc2
 
 To split a pdf file.
 
