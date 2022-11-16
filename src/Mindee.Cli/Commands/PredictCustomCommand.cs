@@ -41,7 +41,7 @@ namespace Mindee.Cli.Commands
 
                 var prediction = await _mindeeClient
                     .LoadDocument(new FileInfo(Path))
-                    .ParseAsync(new Endpoint(
+                    .ParseAsync(new CustomEndpoint(
                         ProductName,
                         Version, 
                         OrganizationName));

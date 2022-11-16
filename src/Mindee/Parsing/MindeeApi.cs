@@ -66,7 +66,7 @@ namespace Mindee.Parsing
             PredictParameter predictParameter)
             where TModel : class, new()
         {
-            if(!Attribute.IsDefined(typeof(TModel), typeof(EndpointAttribute)))
+            if (!Attribute.IsDefined(typeof(TModel), typeof(EndpointAttribute)))
             {
                 throw new NotSupportedException($"The type {typeof(TModel)} is not supported as a prediction model. " +
                     $"The endpoint attribute is missing. " +
@@ -77,16 +77,16 @@ namespace Mindee.Parsing
             (EndpointAttribute)Attribute.GetCustomAttribute(typeof(TModel), typeof(EndpointAttribute));
 
             return PredictAsync<TModel>(
-                new Endpoint(endpointAttribute.ProductName, endpointAttribute.Version, endpointAttribute.OrganizationName),
+                new CustomEndpoint(endpointAttribute.EndpointName, endpointAttribute.Version, endpointAttribute.AccountName),
                 predictParameter);
         }
 
         public async Task<Document<TModel>> PredictAsync<TModel>(
-                    Endpoint endpoint,
+                    CustomEndpoint endpoint,
                     PredictParameter predictParameter)
             where TModel : class, new()
         {
-            var request = new RestRequest($"/products/{endpoint.OrganizationName}/{endpoint.ProductName}/v{endpoint.Version}/predict", Method.Post);
+            var request = new RestRequest($"/products/{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/predict", Method.Post);
 
             _logger.LogInformation($"HTTP request to {BaseUrl}/{request.Resource} started.");
 
