@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.Parsing
         {
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
-                new CustomEndpoint("customProduct", "1", "fakeOrga"),
+                new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
 
             Assert.NotNull(prediction);
@@ -23,7 +23,7 @@ namespace Mindee.UnitTests.Parsing
         {
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
-                new CustomEndpoint("customProduct", "1", "fakeOrga"),
+                new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
 
             var listField = prediction.Inference.Pages.First().Prediction["date_normal"];
@@ -46,7 +46,7 @@ namespace Mindee.UnitTests.Parsing
         {
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
-                new CustomEndpoint("customProduct", "1", "fakeOrga"),
+                new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
 
             var listField = prediction.Inference.Pages.First().Prediction["string_all"];
@@ -70,7 +70,7 @@ namespace Mindee.UnitTests.Parsing
         {
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
-                new CustomEndpoint("customProduct", "1", "fakeOrga"),
+                new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
 
             var listField = prediction.Inference.Pages.First().Prediction["url"];
@@ -84,7 +84,7 @@ namespace Mindee.UnitTests.Parsing
         {
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
-                new CustomEndpoint("customProduct", "1", "fakeOrga"),
+                new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0, prediction.Inference.Pages.First().Orientation.Value);
@@ -96,7 +96,7 @@ namespace Mindee.UnitTests.Parsing
         {
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
-                new CustomEndpoint("customProduct", "1", "fakeOrga"),
+                new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(2, prediction.Inference.Pages.Count);

@@ -27,7 +27,7 @@ namespace Mindee.Cli.Commands
             public string Path { get; set; } = null!;
             public string ProductName { get; set; } = null!;
             public string OrganizationName { get; set; } = null!;
-            public string Version { get; set; } = null!;
+            public string Version { get; set; } = "1.0";
 
             public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
             {
@@ -43,8 +43,8 @@ namespace Mindee.Cli.Commands
                     .LoadDocument(new FileInfo(Path))
                     .ParseAsync(new CustomEndpoint(
                         ProductName,
-                        Version, 
-                        OrganizationName));
+                        OrganizationName,
+                        Version));
 
                 context.Console.Out.Write(JsonSerializer.Serialize(prediction, new JsonSerializerOptions { WriteIndented = true }));
 
