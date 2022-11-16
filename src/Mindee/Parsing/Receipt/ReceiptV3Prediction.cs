@@ -27,13 +27,13 @@ namespace Mindee.Parsing.Receipt
         /// Total amount including excluding taxes.
         /// </summary>
         [JsonPropertyName("total_incl")]
-        public Amount TotalIncl { get; set; }
+        public AmountField TotalIncl { get; set; }
 
         /// <summary>
         /// Total amount excluding taxes.
         /// </summary>
         [JsonPropertyName("total_excl")]
-        public Amount TotalExcl { get; set; }
+        public AmountField TotalExcl { get; set; }
 
         /// <summary>
         /// Generate a pretty to read summary of the model.

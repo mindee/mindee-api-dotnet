@@ -1,0 +1,29 @@
+#
+# Publish releases to Nuget
+#
+name: Publish
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  publish:
+    name: Publish release to Nuget
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+      - name: Setup .NET SDK '6.0.x'
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+      - name: Install dependencies
+        run: dotnet restore "src"
+      - name: Build
+        run: dotnet build "src" --configuration Release --no-restore
+      - name: Pack
+        run: dotnet pack "src" -c Release -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
+      - name: Publish NuGet packages to NuGet
+        run: dotnet nuget push nuget/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source "nuget.org"

@@ -1,4 +1,4 @@
-name: ".NET FMK 4.[6+].x"
+name: .NET 4.7.2
 
 on:
   push:
@@ -11,20 +11,30 @@ jobs:
     runs-on: windows-2019
 
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+    - name: Setup .NET Core SDK .NET 6
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0.x'
+    - name: Install dependencies
+      run: dotnet restore "src"
+    - name: Build
+      run: dotnet build "src" --configuration Release --no-restore -f net472
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
+  test:
+    runs-on: windows-2019
 
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1.0.5
-
-      - name: Navigate to Workspace
-        run: cd $GITHUB_WORKSPACE
-
-      - name: Restore Packages
-        run: nuget restore "src/Mindee.sln"
-
-      - name: Build Solution
-        run: |
-          msbuild.exe "src/Mindee.sln" /p:platform="Any CPU" /p:configuration="Release"
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Setup .NET Core SDK '6.0.x'
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0.x'
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet test "tests\Mindee.UnitTests" -f net472 --no-restore --verbosity normal

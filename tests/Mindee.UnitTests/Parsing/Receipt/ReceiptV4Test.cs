@@ -120,6 +120,8 @@ namespace Mindee.UnitTests.Parsing.Receipt
             Assert.Equal(0, prediction.Inference.Pages.First().Orientation.Value);
         }
 
+        [Fact]
+        [Trait("Category", "Receipt V4")]
         public async Task Predict_WithReceiptData_MustSuccessForTaxes()
         {
             var mindeeAPi = GetMindeeApiForReceipt();

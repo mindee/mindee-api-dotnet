@@ -8,32 +8,32 @@ namespace Mindee.Parsing
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class EndpointAttribute : Attribute
     {
-        private readonly string _productName;
+        private readonly string _endpointName;
         private readonly string _version;
-        private readonly string _organizationName;
+        private readonly string _accountName;
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="productName">The name of the product associated to the expected model.</param>
+        /// <param name="endpointName">The name of the product associated to the expected model.</param>
         /// <param name="version">The version number of the API. Without the v (for example for the v1.2: 1.2).</param>
-        /// <param name="organizationName">The name of the organization wich hold the API. Usefull when using custom builder. By default to mindee.</param>
+        /// <param name="accountName">The name of the organization wich hold the API. Usefull when using custom builder. By default to mindee.</param>
         public EndpointAttribute(
-            string productName
+            string endpointName
             , string version
-            , string organizationName = "mindee")
+            , string accountName = "mindee")
         {
-            _productName = productName;
+            _endpointName = endpointName;
             _version = version;
-            _organizationName = organizationName;
+            _accountName = accountName;
         }
 
         /// <summary>
         /// The name of the product associated to the expected model.
         /// </summary>
-        public virtual string ProductName
+        public virtual string EndpointName
         {
-            get { return _productName; }
+            get { return _endpointName; }
         }
 
         /// <summary>
@@ -45,11 +45,11 @@ namespace Mindee.Parsing
         }
 
         /// <summary>
-        /// The name of the organization that owns the API. Useful when using custom builder. Defaults to mindee.
+        /// The name of the account that owns the API. Useful when using custom builder. Default to mindee.
         /// </summary>
-        public virtual string OrganizationName
+        public virtual string AccountName
         {
-            get { return _organizationName; }
+            get { return _accountName; }
         }
     }
 }

@@ -64,13 +64,13 @@ namespace Mindee.Parsing.Invoice
         /// Total amount including taxes.
         /// </summary>
         [JsonPropertyName("total_incl")]
-        public Amount TotalIncl { get; set; }
+        public AmountField TotalIncl { get; set; }
 
         /// <summary>
         /// Total amount excluding taxes.
         /// </summary>
         [JsonPropertyName("total_excl")]
-        public Amount TotalExcl { get; set; }
+        public AmountField TotalExcl { get; set; }
 
         /// <summary>
         /// A prettier reprensentation of the current model values.

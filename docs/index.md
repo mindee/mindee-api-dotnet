@@ -1,0 +1,61 @@
+﻿## Quick Start
+Here's the TL;DR of getting started.
+
+First, get an [API Key](https://developers.mindee.com/docs/create-api-key)
+
+Then, install this library:
+```shell
+dotnet add package Mindee
+```
+
+In your Startup.cs or Program.cs file, configure the dependency injection (DI) as follows:
+```csharp
+services.AddMindeeClient();
+```
+
+This call will configure the client entry point and the PDF library used internally.
+
+Then, in your controller or service instance, pass the class ``MindeeClient`` as an argument of your constructor
+(or methods if you are using this possibility).
+
+Let's parse an invoice:
+```csharp
+var prediction = await _mindeeClient
+    .LoadDocument(new FileInfo("/path/to/the/file.ext"))
+    .ParseAsync<ReceiptV3Prediction>();
+```
+
+You can also use the client with your custom documents:
+```csharp
+CustomEndpoint myEndpoint = new CustomEndpoint(
+    EndpointName: "wnine",
+    AccountName: "john",
+    Version: "1.1" // optional
+);
+
+var prediction = await _mindeeClient
+    .LoadDocument(new FileInfo("/path/to/the/file.ext"))
+    .ParseAsync(myEndpoint);
+```
+
+Or even with a custom representation of your model:
+```csharp
+var prediction = await _mindeeClient
+    .LoadDocument(new FileInfo("/path/to/the/file.ext"))
+    .ParseAsync<YourAwesomeModel>();
+```
+
+Complete details on the working of the library are available in the following guides: 
+* [Overview](https://developers.mindee.com/docs/dotnet-overview-1)
+* [.NET Custom APIs OCR](https://developers.mindee.com/docs/dotnet-api-builder-1)
+* [.NET invoices OCR](https://developers.mindee.com/docs/dotnet-invoice-ocr-1)
+* [.NET receipts OCR](https://developers.mindee.com/docs/dotnet-receipt-ocr-1)
+* [.NET passports OCR](https://developers.mindee.com/docs/dotnet-passport-ocr-1)
+* [Mindee API Reference](https://github.com/mindee/mindee-api-dotnet/blob/main/docs/api-reference/Mindee)
+
+You can view the source code on [GitHub](https://github.com/mindee/mindee-api-dotnet).
+
+&nbsp;
+&nbsp;
+**Questions?**
+<img alt="Slack Logo Icon" style="display:inline!important" src="https://files.readme.io/5b83947-Slack.png" width="20" height="20">&nbsp;&nbsp;[Join our Slack](https://slack.mindee.com)

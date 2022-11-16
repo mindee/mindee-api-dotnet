@@ -99,10 +99,10 @@ namespace Mindee
         /// <summary>
         /// Try to parse the current document using custom builder API.
         /// </summary>
-        /// <param name="endpoint"><see cref="Endpoint"/></param>
+        /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
         /// <returns><see cref="Document{CustomPrediction}"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<Document<CustomPrediction>> ParseAsync(Endpoint endpoint)
+        public async Task<Document<CustomPrediction>> ParseAsync(CustomEndpoint endpoint)
         {
             if (DocumentClient == null)
             {
@@ -119,12 +119,12 @@ namespace Mindee
         /// <summary>
         /// Try to parse the current document using custom builder API.
         /// </summary>
-        /// <param name="endpoint"><see cref="Endpoint"/></param>
+        /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <returns><see cref="Document{CustomPrediction}"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<Document<CustomPrediction>> ParseAsync(
-            Endpoint endpoint
+            CustomEndpoint endpoint
             , PageOptions pageOptions)
         {
             if (DocumentClient == null)

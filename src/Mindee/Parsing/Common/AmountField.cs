@@ -5,7 +5,7 @@ namespace Mindee.Parsing.Common
     /// <summary>
     /// Represent an amount.
     /// </summary>
-    public class Amount : BaseField
+    public class AmountField : BaseField
     {
         /// <summary>
         /// An amount value.
