@@ -68,8 +68,9 @@ namespace Mindee.IntegrationTests.Infrastructure.Api
                         .Build();
 
             return new MindeeApi(
-                new NullLogger<MindeeApi>(),
-                configuration);
+                configuration
+                , new NullLogger<MindeeApi>()
+                );
         }
     }
 }

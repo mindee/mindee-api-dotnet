@@ -61,7 +61,7 @@ namespace Mindee.Parsing.Receipt
             result.Append($"Time: {Time.Value}\n");
             result.Append($"Merchant name: {Supplier.Value}\n");
             result.Append($"Taxes: {string.Join("\n                 ", Taxes.Select(t => t))}\n");
-            result.Append($"Total taxes: {Locale}\n");
+            result.Append($"Total taxes: {TotalTax}\n");
             result.Append($"Locale: {Locale}\n");
 
             result.Append("----------------------");

@@ -20,8 +20,8 @@ namespace Mindee.Parsing
         private readonly ILogger _logger;
 
         public MindeeApi(
-            ILogger logger
-            , IConfiguration configuration
+            IConfiguration configuration
+            , ILogger logger = null
             , HttpMessageHandler httpMessageHandler = null
             )
         {
@@ -77,7 +77,7 @@ namespace Mindee.Parsing
             (EndpointAttribute)Attribute.GetCustomAttribute(typeof(TModel), typeof(EndpointAttribute));
 
             return PredictAsync<TModel>(
-                new CustomEndpoint(endpointAttribute.EndpointName, endpointAttribute.Version, endpointAttribute.AccountName),
+                new CustomEndpoint(endpointAttribute.EndpointName, endpointAttribute.AccountName, endpointAttribute.Version),
                 predictParameter);
         }
 
@@ -88,15 +88,15 @@ namespace Mindee.Parsing
         {
             var request = new RestRequest($"/products/{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/predict", Method.Post);
 
-            _logger.LogInformation($"HTTP request to {BaseUrl}/{request.Resource} started.");
+            _logger?.LogInformation($"HTTP request to {BaseUrl}/{request.Resource} started.");
 
             request.AddFile("document", predictParameter.File, predictParameter.Filename);
             request.AddParameter("include_mvision", predictParameter.WithFullText);
 
             var response = await _httpClient.ExecutePostAsync(request);
 
-            _logger.LogDebug($"HTTP response : {response.Content}");
-            _logger.LogInformation($"HTTP request to {BaseUrl + request.Resource} finished.");
+            _logger?.LogDebug($"HTTP response : {response.Content}");
+            _logger?.LogInformation($"HTTP request to {BaseUrl + request.Resource} finished.");
 
             PredictResponse<TModel> predictResponse = null;
 
@@ -115,18 +115,18 @@ namespace Mindee.Parsing
             if (response.StatusCode == HttpStatusCode.InternalServerError)
             {
                 errorMessage += response.ErrorMessage;
-                _logger.LogCritical(errorMessage);
+                _logger?.LogCritical(errorMessage);
             }
 
             if (predictResponse != null)
             {
                 errorMessage += predictResponse.ApiRequest.Error.ToString();
-                _logger.LogError(errorMessage);
+                _logger?.LogError(errorMessage);
             }
             else
             {
                 errorMessage += $" Unhandled error - {response.ErrorMessage}";
-                _logger.LogError(errorMessage);
+                _logger?.LogError(errorMessage);
             }
 
             throw new MindeeException(errorMessage);
