@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Parsing;
 using RichardSzalay.MockHttp;
@@ -29,8 +28,8 @@ namespace Mindee.UnitTests.Parsing
                         .Build();
 
             return new MindeeApi(
-                new NullLogger<MindeeApi>(),
                 config,
+                new NullLogger<MindeeApi>(),
                 mockHttp
                 );
         }

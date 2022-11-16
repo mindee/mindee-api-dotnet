@@ -19,6 +19,21 @@ Then, install this library:
 dotnet add package Mindee
 ```
 
+### Define the API Key
+The api key is got with `IConfiguration`. 
+So you could define it in multiple ways : 
+- From environment
+```
+MindeeApiSettings__ApiKey
+```
+- From an appsettings.json file
+```
+"MindeeApiSettings": {
+    "ApiKey": ""m-api-key"
+},
+```
+
+### Instanciate from dependency injection (DI)
 In your Startup.cs or Program.cs file, configure the dependency injection (DI) as follows:
 ```csharp
 services.AddMindeeClient();
@@ -27,13 +42,25 @@ This call will configure the client entry point and the pdf library used interna
 
 Then, in your controller or service instance, pass as an argument the class ``MindeeClient``.
 
+
+### Instanciate manually
+Or, you could also simply instanciate a new instance of `MindeeClient`:
+```csharp
+import Mindee;
+
+IConfiguration configuration;
+
+var mindeeClient = new MindeeClient(configuration);
+```
+
 Let's parse an invoice:
 ```csharp
 var prediction = await _mindeeClient
     .LoadDocument(new FileInfo("/path/to/the/file.ext"))
-    .ParseAsync<InvoiceV3Prediction>();
+    .ParseAsync<InvoiceV4Prediction>();
 ```
 
+### Using
 You can also use the client with your custom documents:
 ```csharp
 CustomEndpoint myEndpoint = new CustomEndpoint(

@@ -14,7 +14,7 @@ namespace Mindee.Pdf
         private readonly DocLib _docLib = DocLib.Instance;
         private readonly ILogger _logger;
 
-        public DocNetApi(ILogger<IPdfOperation> logger)
+        public DocNetApi(ILogger logger = null)
         {
             _logger = logger;
         }
@@ -89,7 +89,7 @@ namespace Mindee.Pdf
             }
             catch (DocnetLoadDocumentException ex)
             {
-                _logger.LogError(ex, null);
+                _logger?.LogError(ex, null);
                 return false;
             }
         }

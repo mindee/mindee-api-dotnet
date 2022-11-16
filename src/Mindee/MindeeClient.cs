@@ -32,12 +32,12 @@ namespace Mindee
         /// <param name="pdfOperation"><see cref="IPdfOperation"/></param>
         /// <param name="configuration"><see cref="IConfiguration"/></param>
         public MindeeClient(
-            ILogger<MindeeClient> logger,
-            IPdfOperation pdfOperation,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IPdfOperation pdfOperation = null,
+            ILogger logger = null)
         {
-            _pdfOperation = pdfOperation;
-            _mindeeApi = new MindeeApi(logger, configuration);
+            _pdfOperation = pdfOperation ?? new DocNetApi(logger);
+            _mindeeApi = new MindeeApi(configuration, logger);
         }
 
         /// <summary>
