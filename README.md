@@ -30,7 +30,7 @@ Then, in your controller or service instance, pass as an argument the class ``Mi
 Let's parse an invoice:
 ```csharp
 var prediction = await _mindeeClient
-    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
+    .LoadDocument(new FileInfo("/path/to/the/file.ext"))
     .ParseAsync<InvoiceV3Prediction>();
 ```
 
@@ -43,7 +43,7 @@ CustomEndpoint myEndpoint = new CustomEndpoint(
 );
 
 var prediction = await _mindeeClient
-    .LoadDocument(new FileInfo(Path))
+    .LoadDocument(new FileInfo("/path/to/the/file.ext"))
     .ParseAsync(myEndpoint);
 ```
 

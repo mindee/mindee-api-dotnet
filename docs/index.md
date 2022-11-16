@@ -21,7 +21,7 @@ Then, in your controller or service instance, pass the class ``MindeeClient`` as
 Let's parse an invoice:
 ```csharp
 var prediction = await _mindeeClient
-    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
+    .LoadDocument(new FileInfo("/path/to/the/file.ext"))
     .ParseAsync<ReceiptV3Prediction>();
 ```
 
@@ -34,14 +34,14 @@ CustomEndpoint myEndpoint = new CustomEndpoint(
 );
 
 var prediction = await _mindeeClient
-    .LoadDocument(new FileInfo(Path))
+    .LoadDocument(new FileInfo("/path/to/the/file.ext"))
     .ParseAsync(myEndpoint);
 ```
 
 Or even with a custom representation of your model:
 ```csharp
 var prediction = await _mindeeClient
-    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
+    .LoadDocument(new FileInfo("/path/to/the/file.ext"))
     .ParseAsync<YourAwesomeModel>();
 ```
 
