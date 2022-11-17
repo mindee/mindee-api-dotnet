@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Parsing.Invoice](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
 Represent a payment detail.
 

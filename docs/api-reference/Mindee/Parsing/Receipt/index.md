@@ -13,7 +13,6 @@
 
 | Name                                                | Description                   |
 | --------------------------------------------------- | ----------------------------- |
-| [ReceiptV3Prediction](ReceiptV3Prediction/index.md) | The receipt model for the v3. |
 | [ReceiptV4Prediction](ReceiptV4Prediction/index.md) | The receipt model for the v4. |
 | [Time](Time/index.md)                               | Represent a time.             |
 

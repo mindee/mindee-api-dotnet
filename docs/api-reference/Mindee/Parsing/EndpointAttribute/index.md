@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Parsing](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
 Is used to parameterize the associated endpoint on a model.
 
@@ -30,11 +30,11 @@ public class EndpointAttribute : Attribute
 
 ## Properties
 
-| Name                                               | Description                                                                                           |
-| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| [OrganizationName](properties/OrganizationName.md) | The name of the organization that owns the API. Useful when using custom builder. Defaults to mindee. |
-| [ProductName](properties/ProductName.md)           | The name of the product associated to the expected model.                                             |
-| [Version](properties/Version.md)                   | The version number of the API. Without the v (for example for the v1.2: 1.2).                         |
+| Name                                       | Description                                                                                     |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| [AccountName](properties/AccountName.md)   | The name of the account that owns the API. Useful when using custom builder. Default to mindee. |
+| [EndpointName](properties/EndpointName.md) | The name of the product associated to the expected model.                                       |
+| [Version](properties/Version.md)           | The version number of the API. Without the v (for example for the v1.2: 1.2).                   |
 
 ___
 

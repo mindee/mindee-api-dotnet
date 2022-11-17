@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Parsing.CustomBuilder](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
 Define a simple prediction from a model built thanks to an API builder.
 

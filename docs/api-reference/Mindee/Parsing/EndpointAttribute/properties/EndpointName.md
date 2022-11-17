@@ -5,20 +5,20 @@
   </auto-generated>   
 -->
 
-# ReceiptV3Prediction.ToString Method
+# EndpointAttribute.EndpointName Property
 
-**Declaring Type:** [ReceiptV3Prediction](../index.md)  
-**Namespace:** [Mindee.Parsing.Receipt](../../index.md)  
+**Declaring Type:** [EndpointAttribute](../index.md)  
+**Namespace:** [Mindee.Parsing](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
-Generate a pretty to read summary of the model.
+The name of the product associated to the expected model.
 
 ```csharp
-public string ToString();
+public string EndpointName { get; }
 ```
 
-## Returns
+## Property Value
 
 string
 

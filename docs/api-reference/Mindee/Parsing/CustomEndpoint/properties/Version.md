@@ -5,14 +5,14 @@
   </auto-generated>   
 -->
 
-# Endpoint.Version Property
+# CustomEndpoint.Version Property
 
-**Declaring Type:** [Endpoint](../index.md)  
+**Declaring Type:** [CustomEndpoint](../index.md)  
 **Namespace:** [Mindee.Parsing](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
-The version number of the API. Without the v (for example for the v1.2: 1.2).
+The version number of the API. Without the v (for example for the v1.2: 1.2). By default set to 1.0.
 
 ```csharp
 public string Version { get; }

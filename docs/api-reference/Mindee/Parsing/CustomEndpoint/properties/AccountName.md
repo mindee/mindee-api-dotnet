@@ -5,17 +5,17 @@
   </auto-generated>   
 -->
 
-# EndpointAttribute.OrganizationName Property
+# CustomEndpoint.AccountName Property
 
-**Declaring Type:** [EndpointAttribute](../index.md)  
+**Declaring Type:** [CustomEndpoint](../index.md)  
 **Namespace:** [Mindee.Parsing](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
-The name of the organization that owns the API. Useful when using custom builder. Defaults to mindee.
+The name of the organization wich hold the API. Usefull when using custom builder. By default to mindee.
 
 ```csharp
-public string OrganizationName { get; }
+public string AccountName { get; }
 ```
 
 ## Property Value

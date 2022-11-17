@@ -6,6 +6,7 @@
 The official Mindee API Helper Library for the .NET ecosystem to quickly and easily connect to Mindee's API services.
 
 This library is compatible with:
+* .NET Standard 2.0
 * .NET 4.7.2
 * .NET 6+
 

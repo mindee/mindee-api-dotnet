@@ -10,32 +10,32 @@
 **Declaring Type:** [MindeeClient](../index.md)  
 **Namespace:** [Mindee](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
 ## Overloads
 
 | Signature                                                                                        | Description                                                 |
 | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
-| [ParseAsync(Endpoint)](#parseasyncendpoint)                                                      | Try to parse the current document using custom builder API. |
-| [ParseAsync(Endpoint, PageOptions)](#parseasyncendpoint-pageoptions)                             | Try to parse the current document using custom builder API. |
+| [ParseAsync(CustomEndpoint)](#parseasynccustomendpoint)                                          | Try to parse the current document using custom builder API. |
+| [ParseAsync(CustomEndpoint, PageOptions)](#parseasynccustomendpoint-pageoptions)                 | Try to parse the current document using custom builder API. |
 | [ParseAsync\<TPredictionModel\>(PageOptions, bool)](#parseasynctpredictionmodelpageoptions-bool) | Try to parse the current document.                          |
 | [ParseAsync\<TPredictionModel\>(bool)](#parseasynctpredictionmodelbool)                          | Try to parse the current document.                          |
 
-## ParseAsync(Endpoint)
+## ParseAsync(CustomEndpoint)
 
 Try to parse the current document using custom builder API.
 
 ```csharp
 [AsyncStateMachine(Mindee.MindeeClient/<ParseAsync>d__11)]
 [DebuggerStepThrough]
-public Task<Document<CustomPrediction>> ParseAsync(Endpoint endpoint);
+public Task<Document<CustomPrediction>> ParseAsync(CustomEndpoint endpoint);
 ```
 
 ### Parameters
 
-`endpoint`  [Endpoint](../../Parsing/Endpoint/index.md)
+`endpoint`  [CustomEndpoint](../../Parsing/CustomEndpoint/index.md)
 
-[Endpoint](../../Parsing/Endpoint/index.md)
+[CustomEndpoint](../../Parsing/CustomEndpoint/index.md)
 
 ### Returns
 
@@ -47,21 +47,21 @@ Task\<Document\<[CustomPrediction](../../Parsing/CustomBuilder/CustomPrediction/
 
 [MindeeException](../../Exceptions/MindeeException/index.md)
 
-## ParseAsync(Endpoint, PageOptions)
+## ParseAsync(CustomEndpoint, PageOptions)
 
 Try to parse the current document using custom builder API.
 
 ```csharp
 [AsyncStateMachine(Mindee.MindeeClient/<ParseAsync>d__12)]
 [DebuggerStepThrough]
-public Task<Document<CustomPrediction>> ParseAsync(Endpoint endpoint, PageOptions pageOptions);
+public Task<Document<CustomPrediction>> ParseAsync(CustomEndpoint endpoint, PageOptions pageOptions);
 ```
 
 ### Parameters
 
-`endpoint`  [Endpoint](../../Parsing/Endpoint/index.md)
+`endpoint`  [CustomEndpoint](../../Parsing/CustomEndpoint/index.md)
 
-[Endpoint](../../Parsing/Endpoint/index.md)
+[CustomEndpoint](../../Parsing/CustomEndpoint/index.md)
 
 `pageOptions`  [PageOptions](../../Input/PageOptions/index.md)
 
