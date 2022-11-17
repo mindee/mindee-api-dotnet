@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
 The entrypoint to use the Mindee features.
 
@@ -21,9 +21,9 @@ public sealed class MindeeClient
 
 ## Constructors
 
-| Name                                                                                          | Description |
-| --------------------------------------------------------------------------------------------- | ----------- |
-| [MindeeClient(ILogger\<MindeeClient\>, IPdfOperation, IConfiguration)](constructors/index.md) |             |
+| Name                                                                          | Description |
+| ----------------------------------------------------------------------------- | ----------- |
+| [MindeeClient(IConfiguration, IPdfOperation, ILogger)](constructors/index.md) |             |
 
 ## Properties
 
@@ -38,8 +38,8 @@ public sealed class MindeeClient
 | [LoadDocument(FileInfo)](methods/LoadDocument.md#loaddocumentfileinfo)                                                | Load the document to perform some checks.                   |
 | [LoadDocument(Stream, string)](methods/LoadDocument.md#loaddocumentstream-string)                                     | Load the document to perform some checks.                   |
 | [LoadDocument(byte\[\], string)](methods/LoadDocument.md#loaddocumentbyte-string)                                     | Load the document to perform some checks.                   |
-| [ParseAsync(Endpoint)](methods/ParseAsync.md#parseasyncendpoint)                                                      | Try to parse the current document using custom builder API. |
-| [ParseAsync(Endpoint, PageOptions)](methods/ParseAsync.md#parseasyncendpoint-pageoptions)                             | Try to parse the current document using custom builder API. |
+| [ParseAsync(CustomEndpoint)](methods/ParseAsync.md#parseasynccustomendpoint)                                          | Try to parse the current document using custom builder API. |
+| [ParseAsync(CustomEndpoint, PageOptions)](methods/ParseAsync.md#parseasynccustomendpoint-pageoptions)                 | Try to parse the current document using custom builder API. |
 | [ParseAsync\<TPredictionModel\>(PageOptions, bool)](methods/ParseAsync.md#parseasynctpredictionmodelpageoptions-bool) | Try to parse the current document.                          |
 | [ParseAsync\<TPredictionModel\>(bool)](methods/ParseAsync.md#parseasynctpredictionmodelbool)                          | Try to parse the current document.                          |
 

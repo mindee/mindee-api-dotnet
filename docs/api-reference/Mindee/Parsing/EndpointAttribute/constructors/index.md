@@ -10,15 +10,15 @@
 **Declaring Type:** [EndpointAttribute](../index.md)  
 **Namespace:** [Mindee.Parsing](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
 ```csharp
-public EndpointAttribute(string productName, string version, string organizationName = "mindee");
+public EndpointAttribute(string endpointName, string version, string accountName = "mindee");
 ```
 
 ## Parameters
 
-`productName`  string
+`endpointName`  string
 
 The name of the product associated to the expected model.
 
@@ -26,7 +26,7 @@ The name of the product associated to the expected model.
 
 The version number of the API. Without the v (for example for the v1.2: 1.2).
 
-`organizationName`  string
+`accountName`  string
 
 The name of the organization wich hold the API. Usefull when using custom builder. By default to mindee.
 

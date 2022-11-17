@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Parsing.Receipt](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
 The receipt model for the v4.
 
@@ -30,14 +30,14 @@ public sealed class ReceiptV4Prediction : FinancialPredictionBase
 
 ## Properties
 
-| Name                                     | Description                               |
-| ---------------------------------------- | ----------------------------------------- |
-| [Category](properties/Category.md)       | The category of the receipt.              |
-| [Time](properties/Time.md)               | [Time](properties/Time.md)                |
-| [Tip](properties/Tip.md)                 | The tip.                                  |
-| [TotalAmount](properties/TotalAmount.md) | Total amount including taxes and the tip. |
-| [TotalNet](properties/TotalNet.md)       | Total amount excluding taxes.             |
-| [TotalTax](properties/TotalTax.md)       | Total taxes.                              |
+| Name                                     | Description                            |
+| ---------------------------------------- | -------------------------------------- |
+| [Category](properties/Category.md)       | The category of the receipt.           |
+| [Time](properties/Time.md)               | [Time](properties/Time.md)             |
+| [Tip](properties/Tip.md)                 | The tip.                               |
+| [TotalAmount](properties/TotalAmount.md) | Total amount including taxes and tips. |
+| [TotalNet](properties/TotalNet.md)       | Total amount excluding taxes.          |
+| [TotalTax](properties/TotalTax.md)       | Total taxes.                           |
 
 ## Methods
 

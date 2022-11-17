@@ -10,9 +10,9 @@
 **Declaring Type:** [ReceiptV4Prediction](../index.md)  
 **Namespace:** [Mindee.Parsing.Receipt](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
-Total amount including taxes and the tip.
+Total amount including taxes and tips.
 
 ```csharp
 [JsonPropertyName("total_amount")]

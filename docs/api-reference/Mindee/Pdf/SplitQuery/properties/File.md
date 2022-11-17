@@ -10,7 +10,7 @@
 **Declaring Type:** [SplitQuery](../index.md)  
 **Namespace:** [Mindee.Pdf](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
 The file.
 

@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Input](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
 Represent options to cut a document.
 

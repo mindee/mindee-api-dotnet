@@ -19,10 +19,11 @@
 
 ## Classes
 
-| Name                                            | Description                                                 |
-| ----------------------------------------------- | ----------------------------------------------------------- |
-| [Endpoint](Endpoint/index.md)                   | Define a Mindee API endpoint.                               |
-| [EndpointAttribute](EndpointAttribute/index.md) | Is used to parameterize the associated endpoint on a model. |
+| Name                                                        | Description                                                 |
+| ----------------------------------------------------------- | ----------------------------------------------------------- |
+| [CustomEndpoint](CustomEndpoint/index.md)                   | Define a Mindee API endpoint.                               |
+| [CustomEndpointAttribute](CustomEndpointAttribute/index.md) | Is used to parameterize the associated endpoint on a model. |
+| [EndpointAttribute](EndpointAttribute/index.md)             | Is used to parameterize the associated endpoint on a model. |
 
 ___
 

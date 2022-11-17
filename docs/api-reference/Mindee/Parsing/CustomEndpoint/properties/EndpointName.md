@@ -5,17 +5,17 @@
   </auto-generated>   
 -->
 
-# Endpoint.ProductName Property
+# CustomEndpoint.EndpointName Property
 
-**Declaring Type:** [Endpoint](../index.md)  
+**Declaring Type:** [CustomEndpoint](../index.md)  
 **Namespace:** [Mindee.Parsing](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0\-rc2
+**Assembly Version:** 1.0.0
 
 The name of the product associated to the expected model.
 
 ```csharp
-public string ProductName { get; }
+public string EndpointName { get; }
 ```
 
 ## Property Value
