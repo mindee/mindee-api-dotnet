@@ -80,7 +80,8 @@ There's more to it than that for those that need more features, or want to
 customize the experience.
 
 All the juicy details are described in the
-**[Official Guide](https://developers.mindee.com/docs/dotnet-ocr-sdk)**.
+**[Official Guide](docs/index.md)**.
+**[API Reference](docs/api-reference/Mindee/index.md)**.
 
 ## License
 Copyright © Mindee
