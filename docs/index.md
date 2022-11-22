@@ -46,12 +46,12 @@ var prediction = await _mindeeClient
 ```
 
 Complete details on the working of the library are available in the following guides: 
-* [Overview](https://developers.mindee.com/docs/dotnet-overview-1)
-* [.NET Custom APIs OCR](https://developers.mindee.com/docs/dotnet-api-builder-1)
-* [.NET invoices OCR](https://developers.mindee.com/docs/dotnet-invoice-ocr-1)
-* [.NET receipts OCR](https://developers.mindee.com/docs/dotnet-receipt-ocr-1)
-* [.NET passports OCR](https://developers.mindee.com/docs/dotnet-passport-ocr-1)
-* [Mindee API Reference](https://github.com/mindee/mindee-api-dotnet/blob/main/docs/api-reference/Mindee)
+* [Overview](dotnet-getting-started.md)
+* [.NET Custom APIs OCR](dotnet-api-builder.md)
+* [.NET invoices OCR](dotnet-invoice-ocr.md)
+* [.NET receipts OCR](dotnet-receipt-ocr.md)
+* [.NET passports OCR](dotnet-passport-ocr.md)
+* [.NET API Reference](api-reference/Mindee/index.md)
 
 You can view the source code on [GitHub](https://github.com/mindee/mindee-api-dotnet).
 

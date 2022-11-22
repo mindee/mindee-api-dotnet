@@ -202,10 +202,10 @@ _logger.Debug(prediction.Inference.Prediction.ToString());
 ```
 
 The various attributes are detailed in these document-specific guides:
-* [Invoice](https://developers.mindee.com/docs/dotnet-invoice-ocr)
-* [Receipt](https://developers.mindee.com/docs/dotnet-receipt-ocr)
-* [Passport](https://developers.mindee.com/docs/dotnet-passport-ocr)
-* [custom-built API](https://developers.mindee.com/docs/dotnet-api-builder)
+* [Invoice](dotnet-invoice-ocr.md)
+* [Receipt](dotnet-receipt-ocr.md)
+* [Passport](dotnet-passport-ocr.md)
+* [custom-built API](dotnet-api-builder.md)
 
 #### Page level prediction
 The `pages` attribute is a list of `prediction` object of the same class as the [`prediction` attribute](#document-level-prediction).

@@ -79,8 +79,9 @@ var prediction = await _mindeeClient
 There's more to it than that for those that need more features, or want to
 customize the experience.
 
-All the juicy details are described in the
-**[Official Guide](https://developers.mindee.com/docs/dotnet-ocr-sdk)**.
+All the juicy details are described in the **[Official Guide](docs/index.md)**.
+
+You also can use the **[Reference documentation](docs/api-reference/Mindee/index.md)** to dig deeper in the code.
 
 ## License
 Copyright © Mindee
