@@ -81,7 +81,7 @@ customize the experience.
 
 All the juicy details are described in the **[Official Guide](docs/index.md)**.
 
-You also can use the **[API Reference documentation](docs/api-reference/Mindee/index.md)** to dig deeper in the code.
+You also can use the **[Reference documentation](docs/api-reference/Mindee/index.md)** to dig deeper in the code.
 
 ## License
 Copyright © Mindee
