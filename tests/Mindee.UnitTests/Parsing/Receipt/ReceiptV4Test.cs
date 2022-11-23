@@ -133,6 +133,77 @@ namespace Mindee.UnitTests.Parsing.Receipt
             Assert.Equal(3.34, prediction.Inference.Pages.First().Prediction.Taxes.First().Value);
         }
 
+        [Fact]
+        [Trait("Category", "Receipt V4")]
+        public async Task Predict_WithCropping_MustSuccess()
+        {
+            var mindeeAPi = GetMindeeApiForReceipt("Resources/receipt/response_v4/complete_with_cropper.json");
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(
+                new PredictParameter(
+                    new byte[] { byte.MinValue },
+                        "Bou",
+                        false,
+                        true));
+
+            Assert.NotNull(prediction.Inference.Pages.First().Extras.Cropper);
+            Assert.Single(prediction.Inference.Pages.First().Extras.Cropper.Cropping);
+            Assert.Equal(new List<List<double>>()
+            {
+                new List<double>() { 0.057, 0.008 },
+                new List<double>() { 0.846, 0.008 },
+                new List<double>() { 0.846, 1.0 },
+                new List<double>() { 0.057, 1.0 },
+            }
+            , prediction.Inference.Pages.First().Extras.Cropper.Cropping.First().BoundingBox);
+
+            Assert.Equal(new List<List<double>>()
+            {
+                new List<double>() { 0.161, 0.016 },
+                new List<double>() { 0.744, 0.009 },
+                new List<double>() { 0.845, 0.996 },
+                new List<double>() { 0.057, 0.998 },
+            }
+            , prediction.Inference.Pages.First().Extras.Cropper.Cropping.First().Quadrangle);
+
+            Assert.Equal(new List<List<double>>()
+            {
+                new List<double>() { 0.052, 0.011 },
+                new List<double>() { 0.839, 0.007 },
+                new List<double>() { 0.844, 0.994 },
+                new List<double>() { 0.057, 0.998 },
+            }
+            , prediction.Inference.Pages.First().Extras.Cropper.Cropping.First().Rectangle);
+
+            Assert.Equal(new List<List<double>>()
+            {
+                new List<double>() { 0.127, 0.344 },
+                new List<double>() { 0.152, 0.16 },
+                new List<double>() { 0.156, 0.053 },
+                new List<double>() { 0.18, 0.004 },
+                new List<double>() { 0.191, 0.004 },
+                new List<double>() { 0.215, 0.016 },
+                new List<double>() { 0.426, 0.006 },
+                new List<double>() { 0.484, 0.018 },
+                new List<double>() { 0.686, 0.01 },
+                new List<double>() { 0.725, 0.016 },
+                new List<double>() { 0.744, 0.045 },
+                new List<double>() { 0.773, 0.242 },
+                new List<double>() { 0.775, 0.318 },
+                new List<double>() { 0.789, 0.436 },
+                new List<double>() { 0.801, 0.473 },
+                new List<double>() { 0.807, 0.662 },
+                new List<double>() { 0.822, 0.719 },
+                new List<double>() { 0.842, 0.936 },
+                new List<double>() { 0.836, 0.996 },
+                new List<double>() { 0.061, 0.996 },
+                new List<double>() { 0.055, 0.975 },
+                new List<double>() { 0.07, 0.828 },
+                new List<double>() { 0.086, 0.732 },
+                new List<double>() { 0.113, 0.514 },
+            }
+            , prediction.Inference.Pages.First().Extras.Cropper.Cropping.First().Polygon);
+        }
+
         private MindeeApi GetMindeeApiForReceipt(string fileName = "Resources/receipt/response_v4/complete-with-tip.json")
         {
             return ParsingTestBase.GetMindeeApi(fileName);
