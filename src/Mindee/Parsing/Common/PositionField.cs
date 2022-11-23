@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.Common
 {
+    /// <summary>
+    /// List of all detected cropped elements in the image.
+    /// </summary>
     public sealed class PositionField
     {
         /// <summary>

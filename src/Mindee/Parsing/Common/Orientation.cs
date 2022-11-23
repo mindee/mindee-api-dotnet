@@ -12,6 +12,6 @@ namespace Mindee.Parsing.Common
         /// </summary>
         /// <example>90</example>
         [JsonPropertyName("value")]
-        public int Value { get; set; }
+        public int? Value { get; set; }
     }
 }
