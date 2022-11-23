@@ -44,7 +44,6 @@ var prediction = await _mindeeClient
     accountName: "john",
     version: "1.1" // optional
 )]
-
 public sealed class WNine
 {
   [JsonPropertyName("name")]
@@ -53,7 +52,7 @@ public sealed class WNine
   [JsonPropertyName("employer_id")]
   public StringField EmployerId { get; set; }
   
-  ...
+  (...)
 }
 
 var prediction = await _mindeeClient

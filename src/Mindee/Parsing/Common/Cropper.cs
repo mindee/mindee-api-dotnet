@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.Common
 {
+    /// <summary>
+    /// Cropping result.
+    /// </summary>
     public sealed class Cropper
     {
         /// <summary>
