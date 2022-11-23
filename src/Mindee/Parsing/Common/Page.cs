@@ -16,7 +16,7 @@ namespace Mindee.Parsing.Common
         public int Id { get; set; }
 
         /// <summary>
-        /// <see cref="Orientation"/>
+        /// <see cref="Common.Orientation"/>
         /// </summary>
         [JsonPropertyName("orientation")]
         public Orientation Orientation { get; set; }
@@ -26,5 +26,11 @@ namespace Mindee.Parsing.Common
         /// </summary>
         [JsonPropertyName("prediction")]
         public TPredictionModel Prediction { get; set; }
+
+        /// <summary>
+        /// <see cref="Common.Extras"/>
+        /// </summary>
+        [JsonPropertyName("extras")]
+        public Extras Extras { get; set; }
     }
 }

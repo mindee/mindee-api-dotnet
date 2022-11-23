@@ -2,20 +2,19 @@
 using System.CommandLine.Invocation;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using Mindee.Parsing.Receipt;
+using Mindee.Parsing.Cropper;
 
 namespace Mindee.Cli.Commands
 {
-    internal class PredictReceiptCommand : Command
+    internal class PredictCropperCommand : Command
     {
         public IConsole Console { get; set; } = null!;
 
-        public PredictReceiptCommand()
-            : base(name: "receipt", "Invokes the receipt API")
+        public PredictCropperCommand()
+            : base(name: "cropper", "Invokes the cropper API")
         {
             AddArgument(new Argument<string>("path", "The path of the file to parse"));
-            AddOption(new Option<bool>(new string[] { "-w", "--with-words", "withWords" }, "To get all the words in the current document. False by default."));
-            AddOption(new Option<string>(new string[] { "-o", "--output", "output" }, "Choose the displayed result format. " +
+            AddOption(new Option<string>(new string[] { "-o", "--output", "output" }, "Choose the displayed result format." +
                 "Options values : 'raw' to get result as json, 'summary' to get a prettier format. 'raw' by default."));
         }
 
@@ -25,7 +24,6 @@ namespace Mindee.Cli.Commands
             private readonly MindeeClient _mindeeClient;
 
             public string Path { get; set; } = null!;
-            public bool WithWords { get; set; } = false;
             public string Output { get; set; } = "raw";
 
             public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
@@ -36,19 +34,19 @@ namespace Mindee.Cli.Commands
 
             public async Task<int> InvokeAsync(InvocationContext context)
             {
-                _logger.LogInformation("About to predict a receipt..");
+                _logger.LogInformation("About to predict use cropper..");
 
-                var prediction = await _mindeeClient
-                    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<ReceiptV4Prediction>(WithWords, true);
+                var invoicePrediction = await _mindeeClient
+                    .LoadDocument(new FileInfo(Path))
+                    .ParseAsync<CropperV1Prediction>();
 
                 if (Output == "summary")
                 {
-                    context.Console.Out.Write(prediction != null ? prediction.Inference.Prediction.ToString()! : "null");
+                    context.Console.Out.Write(invoicePrediction != null ? invoicePrediction.Inference.Prediction.ToString()! : "null");
                 }
                 else
                 {
-                    context.Console.Out.Write(JsonSerializer.Serialize(prediction, new JsonSerializerOptions { WriteIndented = true }));
+                    context.Console.Out.Write(JsonSerializer.Serialize(invoicePrediction, new JsonSerializerOptions { WriteIndented = true }));
                 }
 
                 return 0;

@@ -92,6 +92,7 @@ namespace Mindee.Parsing
 
             request.AddFile("document", predictParameter.File, predictParameter.Filename);
             request.AddParameter("include_mvision", predictParameter.WithFullText);
+            request.AddQueryParameter("cropper", predictParameter.WithCropper);
 
             var response = await _httpClient.ExecutePostAsync(request);
 

@@ -150,12 +150,15 @@ namespace Mindee
         /// Try to parse the current document.
         /// </summary>
         /// <param name="withFullText">Get all the words in the current document.By default, set to false.</param>
+        /// <param name="withCropper">To get the cropper information about the current document.By default, set to false.</param>
         /// <typeparam name="TPredictionModel">Set the prediction model used to parse the document.
         /// The response object will be instantiated based on this parameter.</typeparam>
         /// <returns><see cref="Document{TPredictionModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         /// <remarks>With full text doesn't work for all the types.</remarks>
-        public async Task<Document<TPredictionModel>> ParseAsync<TPredictionModel>(bool withFullText = false)
+        public async Task<Document<TPredictionModel>> ParseAsync<TPredictionModel>(
+            bool withFullText = false
+            , bool withCropper = false)
             where TPredictionModel : class, new()
         {
             if (DocumentClient == null)
@@ -167,13 +170,15 @@ namespace Mindee
                 new PredictParameter(
                     DocumentClient.File,
                     DocumentClient.Filename,
-                    withFullText));
+                    withFullText,
+                    withCropper));
         }
 
         /// <summary>
         /// Try to parse the current document.
         /// </summary>
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
+        /// <param name="withCropper">To get the cropping results about the current document.By default, set to false.</param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <typeparam name="TPredictionModel">Set the prediction model used to parse the document.
         /// The response object will be instantiated based on this parameter.</typeparam>
@@ -182,7 +187,8 @@ namespace Mindee
         /// <remarks>With full text doesn't work for all the types. Check the API documentation first.</remarks>
         public async Task<Document<TPredictionModel>> ParseAsync<TPredictionModel>(
             PageOptions pageOptions
-            , bool withFullText = false)
+            , bool withFullText = false
+            , bool withCropper = false)
             where TPredictionModel : class, new()
         {
             if (DocumentClient == null)
@@ -201,7 +207,8 @@ namespace Mindee
                 new PredictParameter(
                     DocumentClient.File,
                     DocumentClient.Filename,
-                    withFullText));
+                    withFullText,
+                    withCropper));
         }
     }
 }
