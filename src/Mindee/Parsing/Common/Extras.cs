@@ -3,7 +3,7 @@
 namespace Mindee.Parsing.Common
 {
     /// <summary>
-    /// Optionnals informationabout the document.
+    /// Optional information about the document.
     /// </summary>
     public sealed class Extras
     {
