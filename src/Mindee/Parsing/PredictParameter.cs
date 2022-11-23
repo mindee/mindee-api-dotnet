@@ -22,7 +22,7 @@
         public bool WithFullText { get; }
 
         /// <summary>
-        /// Want the cropping result about the document ?
+        /// Want the cropping result about the document?
         /// </summary>
         /// <remarks>It is not available in API builder.</remarks>
         public bool WithCropper { get; }
