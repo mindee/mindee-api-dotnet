@@ -102,7 +102,7 @@ namespace Mindee.UnitTests.Parsing
             Assert.Equal(2, prediction.Inference.Pages.Count);
         }
 
-        private MindeeApi GetMindeeApiForReceipt(string fileName = "Resources/custom/response/complete.json")
+        private MindeeApi GetMindeeApiForReceipt(string fileName = "Resources/custom/response_v1/complete.json")
         {
             return ParsingTestBase.GetMindeeApi(fileName);
         }
