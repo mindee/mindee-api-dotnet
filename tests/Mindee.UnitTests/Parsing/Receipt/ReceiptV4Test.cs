@@ -204,7 +204,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
             , prediction.Inference.Pages.First().Extras.Cropper.Cropping.First().Polygon);
         }
 
-        private MindeeApi GetMindeeApiForReceipt(string fileName = "Resources/receipt/response_v4/complete-with-tip.json")
+        private MindeeApi GetMindeeApiForReceipt(string fileName = "Resources/receipt/response_v4/complete.json")
         {
             return ParsingTestBase.GetMindeeApi(fileName);
         }
