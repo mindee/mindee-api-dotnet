@@ -13,7 +13,7 @@ var runner = BuildCommandLine()
         builder
         .ConfigureServices((hostContext, services) =>
         {
-            services.AddMindeeClient();
+            services.AddMindeeClient(hostContext.Configuration);
         })
         .UseCommandHandler<PredictInvoiceCommand, PredictInvoiceCommand.Handler>()
         .UseCommandHandler<PredictReceiptCommand, PredictReceiptCommand.Handler>()

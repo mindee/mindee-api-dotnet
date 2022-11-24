@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.Parsing;
@@ -32,7 +33,7 @@ namespace Mindee
         /// <param name="pdfOperation"><see cref="IPdfOperation"/></param>
         /// <param name="configuration"><see cref="IConfiguration"/></param>
         public MindeeClient(
-            IConfiguration configuration,
+            IOptions<MindeeSettings> configuration,
             IPdfOperation pdfOperation = null,
             ILogger logger = null)
         {

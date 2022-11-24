@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
 using Mindee.Parsing.Common;
 using RestSharp;
@@ -20,13 +21,13 @@ namespace Mindee.Parsing
         private readonly ILogger _logger;
 
         public MindeeApi(
-            IConfiguration configuration
+            IOptions<MindeeSettings> mindeeSettings
             , ILogger logger = null
             , HttpMessageHandler httpMessageHandler = null
             )
         {
             _logger = logger;
-            _apiKey = configuration.GetSection("MindeeApiSettings:ApiKey").Value;
+            _apiKey = mindeeSettings.Value.ApiKey;
             if (httpMessageHandler != null)
             {
                 _httpClient = BuildClient(httpMessageHandler);

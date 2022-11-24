@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Mindee.Pdf;
 
@@ -17,6 +18,22 @@ namespace Mindee.Extensions.DependencyInjection
             this IServiceCollection services)
         {
             services.TryAddTransient<MindeeClient>();
+
+            services.AddPdfOperation();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Configure the Mindee client in the DI.
+        /// </summary>
+        /// <remarks>The <see cref="MindeeClient"/> instance is registered as a transient.</remarks>
+        public static IServiceCollection AddMindeeClient(
+            this IServiceCollection services,
+            IConfiguration namedConfigurationSection)
+        {
+            services.TryAddTransient<MindeeClient>();
+            services.Configure<MindeeSettings>(namedConfigurationSection.GetSection("MindeeSettings"));
 
             services.AddPdfOperation();
 
