@@ -18,22 +18,12 @@ namespace Mindee.Extensions.DependencyInjection
             this IServiceCollection services)
         {
             services.TryAddTransient<MindeeClient>();
-
-            services.AddPdfOperation();
-
-            return services;
-        }
-
-        /// <summary>
-        /// Configure the Mindee client in the DI.
-        /// </summary>
-        /// <remarks>The <see cref="MindeeClient"/> instance is registered as a transient.</remarks>
-        public static IServiceCollection AddMindeeClient(
-            this IServiceCollection services,
-            IConfiguration namedConfigurationSection)
-        {
-            services.TryAddTransient<MindeeClient>();
-            services.Configure<MindeeSettings>(namedConfigurationSection.GetSection("MindeeSettings"));
+            services.AddOptions<MindeeSettings>()
+                .BindConfiguration("MindeeSettings")
+                .Validate(settings =>
+                {
+                    return !string.IsNullOrEmpty(settings.ApiKey);
+                }, "The Mindee api key is missing");
 
             services.AddPdfOperation();
 
