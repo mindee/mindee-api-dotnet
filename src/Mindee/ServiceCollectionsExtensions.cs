@@ -13,13 +13,16 @@ namespace Mindee.Extensions.DependencyInjection
         /// <summary>
         /// Configure the Mindee client in the DI.
         /// </summary>
+        /// <param name="services"><see cref="IServiceCollection"/></param>
+        /// <param name="sectionName">The name of the section to bind from the configuration.</param>
         /// <remarks>The <see cref="MindeeClient"/> instance is registered as a transient.</remarks>
         public static IServiceCollection AddMindeeClient(
-            this IServiceCollection services)
+            this IServiceCollection services,
+            string sectionName = "MindeeSettings")
         {
             services.TryAddTransient<MindeeClient>();
             services.AddOptions<MindeeSettings>()
-                .BindConfiguration("MindeeSettings")
+                .BindConfiguration(sectionName)
                 .Validate(settings =>
                 {
                     return !string.IsNullOrEmpty(settings.ApiKey);
