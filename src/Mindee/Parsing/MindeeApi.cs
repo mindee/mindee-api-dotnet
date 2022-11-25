@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
@@ -15,7 +14,7 @@ namespace Mindee.Parsing
 {
     internal sealed class MindeeApi
     {
-        private const string BaseUrl = "https://api.mindee.net/v1";
+        private readonly string _baseUrl = "https://api.mindee.net/v1";
         private readonly string _apiKey;
         private readonly RestClient _httpClient;
         private readonly ILogger _logger;
@@ -28,6 +27,11 @@ namespace Mindee.Parsing
         {
             _logger = logger;
             _apiKey = mindeeSettings.Value.ApiKey;
+            if (string.IsNullOrWhiteSpace(mindeeSettings.Value.MindeeBaseUrl))
+            {
+                _baseUrl = mindeeSettings.Value.MindeeBaseUrl;
+            }
+
             if (httpMessageHandler != null)
             {
                 _httpClient = BuildClient(httpMessageHandler);
@@ -40,7 +44,7 @@ namespace Mindee.Parsing
 
         private RestClient BuildClient()
         {
-            var options = new RestClientOptions(BaseUrl);
+            var options = new RestClientOptions(_baseUrl);
             var client = new RestClient(options,
                 p => p.Add("Authorization", $"Token {_apiKey}")
             );
@@ -52,7 +56,7 @@ namespace Mindee.Parsing
 
         private RestClient BuildClient(HttpMessageHandler httpMessageHandler)
         {
-            var options = new RestClientOptions(BaseUrl)
+            var options = new RestClientOptions(_baseUrl)
             {
                 ConfigureMessageHandler = _ => httpMessageHandler
             };
@@ -89,7 +93,7 @@ namespace Mindee.Parsing
         {
             var request = new RestRequest($"/products/{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/predict", Method.Post);
 
-            _logger?.LogInformation($"HTTP request to {BaseUrl}/{request.Resource} started.");
+            _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
 
             request.AddFile("document", predictParameter.File, predictParameter.Filename);
             request.AddParameter("include_mvision", predictParameter.WithFullText);
@@ -98,7 +102,7 @@ namespace Mindee.Parsing
             var response = await _httpClient.ExecutePostAsync(request);
 
             _logger?.LogDebug($"HTTP response : {response.Content}");
-            _logger?.LogInformation($"HTTP request to {BaseUrl + request.Resource} finished.");
+            _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
 
             PredictResponse<TModel> predictResponse = null;
 

@@ -31,7 +31,7 @@ namespace Mindee
         /// </summary>
         /// <param name="logger"><see cref="ILogger"/></param>
         /// <param name="pdfOperation"><see cref="IPdfOperation"/></param>
-        /// <param name="configuration"><see cref="IConfiguration"/></param>
+        /// <param name="configuration"><see cref="IOptions{MindeeSettings}"/></param>
         public MindeeClient(
             IOptions<MindeeSettings> configuration,
             IPdfOperation pdfOperation = null,
