@@ -27,7 +27,7 @@ namespace Mindee.Parsing
         {
             _logger = logger;
             _apiKey = mindeeSettings.Value.ApiKey;
-            if (string.IsNullOrWhiteSpace(mindeeSettings.Value.MindeeBaseUrl))
+            if (!string.IsNullOrWhiteSpace(mindeeSettings.Value.MindeeBaseUrl))
             {
                 _baseUrl = mindeeSettings.Value.MindeeBaseUrl;
             }
