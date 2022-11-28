@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
 using Mindee.Parsing;
 using Mindee.Parsing.Common;
@@ -61,14 +62,8 @@ namespace Mindee.IntegrationTests.Infrastructure.Api
 
         private MindeeApi GetMindeeApi(string apiKey)
         {
-            var configuration = new ConfigurationBuilder()
-                            .AddInMemoryCollection(new Dictionary<string, string>() {
-                                { "MindeeApiSettings:ApiKey", apiKey }
-                            })
-                        .Build();
-
             return new MindeeApi(
-                configuration
+                Options.Create(new MindeeSettings() { ApiKey = "MyKey" })
                 , new NullLogger<MindeeApi>()
                 );
         }

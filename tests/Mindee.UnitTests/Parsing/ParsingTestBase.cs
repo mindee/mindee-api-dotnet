@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Mindee.Parsing;
 using RichardSzalay.MockHttp;
 
@@ -21,14 +22,8 @@ namespace Mindee.UnitTests.Parsing
             mockHttp.When("*")
                     .Respond("application/json", File.ReadAllText(fileName));
 
-            var config = new ConfigurationBuilder()
-                            .AddInMemoryCollection(new Dictionary<string, string>() {
-                                { "MindeeApiSettings:ApiKey", "blou" }
-                            })
-                        .Build();
-
             return new MindeeApi(
-                config,
+                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
                 new NullLogger<MindeeApi>(),
                 mockHttp
                 );
