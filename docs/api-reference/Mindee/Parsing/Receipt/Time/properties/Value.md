@@ -10,7 +10,7 @@
 **Declaring Type:** [Time](../index.md)  
 **Namespace:** [Mindee.Parsing.Receipt](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0
+**Assembly Version:** 1.1.0
 
 The value of the field.
 

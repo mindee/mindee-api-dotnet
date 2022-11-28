@@ -10,17 +10,23 @@
 **Declaring Type:** [ServiceCollectionsExtensions](../index.md)  
 **Namespace:** [Mindee.Extensions.DependencyInjection](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0
+**Assembly Version:** 1.1.0
 
 Configure the Mindee client in the DI.
 
 ```csharp
-public static IServiceCollection AddMindeeClient(this IServiceCollection services);
+public static IServiceCollection AddMindeeClient(this IServiceCollection services, string sectionName = "MindeeSettings");
 ```
 
 ## Parameters
 
 `services`  IServiceCollection
+
+IServiceCollection
+
+`sectionName`  string
+
+The name of the section to bind from the configuration.
 
 ## Remarks
 

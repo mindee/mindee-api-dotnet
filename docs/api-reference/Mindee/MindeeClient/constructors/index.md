@@ -10,17 +10,17 @@
 **Declaring Type:** [MindeeClient](../index.md)  
 **Namespace:** [Mindee](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0
+**Assembly Version:** 1.1.0
 
 ```csharp
-public MindeeClient(IConfiguration configuration, IPdfOperation pdfOperation = , ILogger logger = );
+public MindeeClient(IOptions<MindeeSettings> configuration, IPdfOperation pdfOperation = , ILogger logger = );
 ```
 
 ## Parameters
 
-`configuration`  IConfiguration
+`configuration`  IOptions\<[MindeeSettings](../../MindeeSettings/index.md)\>
 
-IConfiguration
+IOptions\<T\>
 
 `pdfOperation`  [IPdfOperation](../../Pdf/IPdfOperation/index.md)
 

@@ -10,7 +10,7 @@
 **Declaring Type:** [ServiceCollectionsExtensions](../index.md)  
 **Namespace:** [Mindee.Extensions.DependencyInjection](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0
+**Assembly Version:** 1.1.0
 
 Configure the Mindee client in the DI with your own custom pdf implementation.
 

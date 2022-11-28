@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Parsing.Common](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0
+**Assembly Version:** 1.1.0
 
 Define a page in the parsed document.
 
@@ -33,11 +33,12 @@ The prediction model type.
 
 ## Properties
 
-| Name                                     | Description                              |
-| ---------------------------------------- | ---------------------------------------- |
-| [Id](properties/Id.md)                   | The id of the page. It starts at 0.      |
-| [Orientation](properties/Orientation.md) | [Orientation](properties/Orientation.md) |
-| [Prediction](properties/Prediction.md)   | The prediction model type.               |
+| Name                                     | Description                            |
+| ---------------------------------------- | -------------------------------------- |
+| [Extras](properties/Extras.md)           | [Extras](../Extras/index.md)           |
+| [Id](properties/Id.md)                   | The id of the page. It starts at 0.    |
+| [Orientation](properties/Orientation.md) | [Orientation](../Orientation/index.md) |
+| [Prediction](properties/Prediction.md)   | The prediction model type.             |
 
 ___
 

@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0
+**Assembly Version:** 1.1.0
 
 The entrypoint to use the Mindee features.
 
@@ -21,9 +21,9 @@ public sealed class MindeeClient
 
 ## Constructors
 
-| Name                                                                          | Description |
-| ----------------------------------------------------------------------------- | ----------- |
-| [MindeeClient(IConfiguration, IPdfOperation, ILogger)](constructors/index.md) |             |
+| Name                                                                                      | Description |
+| ----------------------------------------------------------------------------------------- | ----------- |
+| [MindeeClient(IOptions\<MindeeSettings\>, IPdfOperation, ILogger)](constructors/index.md) |             |
 
 ## Properties
 
@@ -33,15 +33,15 @@ public sealed class MindeeClient
 
 ## Methods
 
-| Name                                                                                                                  | Description                                                 |
-| --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| [LoadDocument(FileInfo)](methods/LoadDocument.md#loaddocumentfileinfo)                                                | Load the document to perform some checks.                   |
-| [LoadDocument(Stream, string)](methods/LoadDocument.md#loaddocumentstream-string)                                     | Load the document to perform some checks.                   |
-| [LoadDocument(byte\[\], string)](methods/LoadDocument.md#loaddocumentbyte-string)                                     | Load the document to perform some checks.                   |
-| [ParseAsync(CustomEndpoint)](methods/ParseAsync.md#parseasynccustomendpoint)                                          | Try to parse the current document using custom builder API. |
-| [ParseAsync(CustomEndpoint, PageOptions)](methods/ParseAsync.md#parseasynccustomendpoint-pageoptions)                 | Try to parse the current document using custom builder API. |
-| [ParseAsync\<TPredictionModel\>(PageOptions, bool)](methods/ParseAsync.md#parseasynctpredictionmodelpageoptions-bool) | Try to parse the current document.                          |
-| [ParseAsync\<TPredictionModel\>(bool)](methods/ParseAsync.md#parseasynctpredictionmodelbool)                          | Try to parse the current document.                          |
+| Name                                                                                                                             | Description                                                 |
+| -------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| [LoadDocument(FileInfo)](methods/LoadDocument.md#loaddocumentfileinfo)                                                           | Load the document to perform some checks.                   |
+| [LoadDocument(Stream, string)](methods/LoadDocument.md#loaddocumentstream-string)                                                | Load the document to perform some checks.                   |
+| [LoadDocument(byte\[\], string)](methods/LoadDocument.md#loaddocumentbyte-string)                                                | Load the document to perform some checks.                   |
+| [ParseAsync(CustomEndpoint)](methods/ParseAsync.md#parseasynccustomendpoint)                                                     | Try to parse the current document using custom builder API. |
+| [ParseAsync(CustomEndpoint, PageOptions)](methods/ParseAsync.md#parseasynccustomendpoint-pageoptions)                            | Try to parse the current document using custom builder API. |
+| [ParseAsync\<TPredictionModel\>(PageOptions, bool, bool)](methods/ParseAsync.md#parseasynctpredictionmodelpageoptions-bool-bool) | Try to parse the current document.                          |
+| [ParseAsync\<TPredictionModel\>(bool, bool)](methods/ParseAsync.md#parseasynctpredictionmodelbool-bool)                          | Try to parse the current document.                          |
 
 ___
 

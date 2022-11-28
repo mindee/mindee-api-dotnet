@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Parsing.Receipt](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0
+**Assembly Version:** 1.1.0
 
 The receipt model for the v4.
 
