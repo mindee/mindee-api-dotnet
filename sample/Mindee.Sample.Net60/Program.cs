@@ -4,11 +4,11 @@ using Mindee.Parsing.Receipt;
 
 namespace Mindee.Sample.Net60
 {
-    internal class Program
+    internal static class Program
     {
         private static async Task Main(string[] args)
         {
-            string filePath = @"C:\Users\33621\Downloads\myReceipt.pdf";
+            string filePath = @"C:\Users\33621\Downloads\t2i.pdf";
 
             var mindeeClient = new MindeeClient(
                 Options.Create(new MindeeSettings() { ApiKey = "MyKey" }));

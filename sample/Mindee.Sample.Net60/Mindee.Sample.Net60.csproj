@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Mindee\Mindee.csproj" />
+    <PackageReference Include="Mindee" Version="1.1.0" />
   </ItemGroup>
 
 </Project>
