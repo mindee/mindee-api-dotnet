@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Parsing](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0
+**Assembly Version:** 1.1.0
 
 Is used to parameterize the associated endpoint on a model.
 

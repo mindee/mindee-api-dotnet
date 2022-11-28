@@ -10,16 +10,16 @@
 **Declaring Type:** [MindeeClient](../index.md)  
 **Namespace:** [Mindee](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0
+**Assembly Version:** 1.1.0
 
 ## Overloads
 
-| Signature                                                                                        | Description                                                 |
-| ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
-| [ParseAsync(CustomEndpoint)](#parseasynccustomendpoint)                                          | Try to parse the current document using custom builder API. |
-| [ParseAsync(CustomEndpoint, PageOptions)](#parseasynccustomendpoint-pageoptions)                 | Try to parse the current document using custom builder API. |
-| [ParseAsync\<TPredictionModel\>(PageOptions, bool)](#parseasynctpredictionmodelpageoptions-bool) | Try to parse the current document.                          |
-| [ParseAsync\<TPredictionModel\>(bool)](#parseasynctpredictionmodelbool)                          | Try to parse the current document.                          |
+| Signature                                                                                                   | Description                                                 |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| [ParseAsync(CustomEndpoint)](#parseasynccustomendpoint)                                                     | Try to parse the current document using custom builder API. |
+| [ParseAsync(CustomEndpoint, PageOptions)](#parseasynccustomendpoint-pageoptions)                            | Try to parse the current document using custom builder API. |
+| [ParseAsync\<TPredictionModel\>(PageOptions, bool, bool)](#parseasynctpredictionmodelpageoptions-bool-bool) | Try to parse the current document.                          |
+| [ParseAsync\<TPredictionModel\>(bool, bool)](#parseasynctpredictionmodelbool-bool)                          | Try to parse the current document.                          |
 
 ## ParseAsync(CustomEndpoint)
 
@@ -77,14 +77,14 @@ Task\<Document\<[CustomPrediction](../../Parsing/CustomBuilder/CustomPrediction/
 
 [MindeeException](../../Exceptions/MindeeException/index.md)
 
-## ParseAsync\<TPredictionModel\>(PageOptions, bool)
+## ParseAsync\<TPredictionModel\>(PageOptions, bool, bool)
 
 Try to parse the current document.
 
 ```csharp
 [AsyncStateMachine(Mindee.MindeeClient/<ParseAsync>d__14`1)]
 [DebuggerStepThrough]
-public Task<Document<TPredictionModel>> ParseAsync<TPredictionModel>(PageOptions pageOptions, bool withFullText = false);
+public Task<Document<TPredictionModel>> ParseAsync<TPredictionModel>(PageOptions pageOptions, bool withFullText = false, bool withCropper = false);
 ```
 
 ### Type Parameters
@@ -103,6 +103,10 @@ Set the prediction model used to parse the document.             The response ob
 
 To get all the words in the current document.By default, set to false.
 
+`withCropper`  bool
+
+To get the cropping results about the current document.By default, set to false.
+
 ### Remarks
 
 With full text doesn't work for all the types. Check the API documentation first.
@@ -117,14 +121,14 @@ Task\<Document\<TPredictionModel\>\>
 
 [MindeeException](../../Exceptions/MindeeException/index.md)
 
-## ParseAsync\<TPredictionModel\>(bool)
+## ParseAsync\<TPredictionModel\>(bool, bool)
 
 Try to parse the current document.
 
 ```csharp
 [AsyncStateMachine(Mindee.MindeeClient/<ParseAsync>d__13`1)]
 [DebuggerStepThrough]
-public Task<Document<TPredictionModel>> ParseAsync<TPredictionModel>(bool withFullText = false);
+public Task<Document<TPredictionModel>> ParseAsync<TPredictionModel>(bool withFullText = false, bool withCropper = false);
 ```
 
 ### Type Parameters
@@ -138,6 +142,10 @@ Set the prediction model used to parse the document.             The response ob
 `withFullText`  bool
 
 Get all the words in the current document.By default, set to false.
+
+`withCropper`  bool
+
+To get the cropper information about the current document.By default, set to false.
 
 ### Remarks
 

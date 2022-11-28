@@ -10,7 +10,7 @@
 **Declaring Type:** [Date](../index.md)  
 **Namespace:** [Mindee.Parsing.Common](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0
+**Assembly Version:** 1.1.0
 
 The raw value of it.
 

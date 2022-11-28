@@ -10,7 +10,7 @@
 **Declaring Type:** [EndpointAttribute](../index.md)  
 **Namespace:** [Mindee.Parsing](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0
+**Assembly Version:** 1.1.0
 
 The version number of the API. Without the v (for example for the v1.2: 1.2).
 

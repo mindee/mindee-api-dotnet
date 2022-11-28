@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Extensions.DependencyInjection](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0
+**Assembly Version:** 1.1.0
 
 To configure DI.
 
@@ -23,7 +23,7 @@ public static class ServiceCollectionsExtensions
 
 | Name                                                                                                                                                   | Description                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| [AddMindeeClient(IServiceCollection)](methods/AddMindeeClient.md)                                                                                      | Configure the Mindee client in the DI.                                         |
+| [AddMindeeClient(IServiceCollection, string)](methods/AddMindeeClient.md)                                                                              | Configure the Mindee client in the DI.                                         |
 | [AddMindeeClientWithCustomPdfImplementation\<TPdfOperationImplementation\>(IServiceCollection)](methods/AddMindeeClientWithCustomPdfImplementation.md) | Configure the Mindee client in the DI with your own custom pdf implementation. |
 
 ___

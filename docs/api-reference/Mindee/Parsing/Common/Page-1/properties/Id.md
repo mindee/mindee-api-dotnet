@@ -10,7 +10,7 @@
 **Declaring Type:** [Page\<TPredictionModel\>](../index.md)  
 **Namespace:** [Mindee.Parsing.Common](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.0.0
+**Assembly Version:** 1.1.0
 
 The id of the page. It starts at 0.
 

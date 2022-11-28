@@ -12,6 +12,7 @@
 ## Namespaces
 
 - [Mindee.Parsing.Common](Common/index.md)
+- [Mindee.Parsing.Cropper](Cropper/index.md)
 - [Mindee.Parsing.CustomBuilder](CustomBuilder/index.md)
 - [Mindee.Parsing.Invoice](Invoice/index.md)
 - [Mindee.Parsing.Passport](Passport/index.md)

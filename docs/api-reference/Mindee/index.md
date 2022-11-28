@@ -21,6 +21,7 @@
 | ----------------------------------------- | ------------------------------------------ |
 | [DocumentClient](DocumentClient/index.md) | Represent a document to parse.             |
 | [MindeeClient](MindeeClient/index.md)     | The entrypoint to use the Mindee features. |
+| [MindeeSettings](MindeeSettings/index.md) | Mindee's settings.                         |
 
 ___
 

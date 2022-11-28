@@ -16,10 +16,12 @@
 | [AllWord](AllWord/index.md)                                 | Represent a word.                                         |
 | [AmountField](AmountField/index.md)                         | Represent an amount.                                      |
 | [BaseField](BaseField/index.md)                             | Represent basics of a field.                              |
+| [Cropper](Cropper/index.md)                                 | Cropping result.                                          |
 | [Date](Date/index.md)                                       | Represent a date.                                         |
 | [Document\<TPredictionModel\>](Document-1/index.md)         | Define the parsed document.                               |
 | [DocumentType](DocumentType/index.md)                       | The type of the parsed document.                          |
 | [Error](Error/index.md)                                     | Represent an error information from the API response.     |
+| [Extras](Extras/index.md)                                   | Optional information about the document.                  |
 | [FinancialPredictionBase](FinancialPredictionBase/index.md) | Regroup common data between receipt and invoice.          |
 | [Inference\<TPredictionModel\>](Inference-1/index.md)       | Define the inference model of values.                     |
 | [Locale](Locale/index.md)                                   | The local of the page.                                    |
@@ -28,6 +30,7 @@
 | [Orientation](Orientation/index.md)                         | The orientation which was applied from the original page. |
 | [Page](Page/index.md)                                       | Reprensent a page.                                        |
 | [Page\<TPredictionModel\>](Page-1/index.md)                 | Define a page in the parsed document.                     |
+| [PositionField](PositionField/index.md)                     | List of all detected cropped elements in the image.       |
 | [PredictResponse\<TModel\>](PredictResponse-1/index.md)     | Represent a predict response from Mindee API.             |
 | [PredictionBase](PredictionBase/index.md)                   | Regroup the common properties on a prediction result.     |
 | [StringField](StringField/index.md)                         | Represent a string field.                                 |
