@@ -11,8 +11,11 @@ namespace Mindee.Parsing.Common
     public class PredictResponse<TModel>
         where TModel : class, new()
     {
+        /// <summary>
+        /// <see cref="Common.ApiRequest"/>
+        /// </summary>
         [JsonPropertyName("api_request")]
-        internal ApiRequest ApiRequest { get; set; }
+        public ApiRequest ApiRequest { get; set; }
 
         /// <summary>
         /// Set the prediction model used to parse the document.
