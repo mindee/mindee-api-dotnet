@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Mindee;
 using Mindee.Parsing.Receipt;
 
@@ -7,15 +6,16 @@ internal static class Program
 {
     private static async Task Main(string[] args)
     {
-        string filePath = @"C:\Users\33621\Downloads\t2i.pdf";
+        string filePath = @"Path\to\the\file.ext";
 
         var mindeeClient = new MindeeClient(
             Options.Create(new MindeeSettings() { ApiKey = "MyKey" }));
 
-        var receiptV4Prediction = await mindeeClient.LoadDocument(new FileInfo(filePath))
-            .ParseAsync<ReceiptV4Prediction>();
+        var receiptV4Prediction = 
+            await mindeeClient.LoadDocument(new FileInfo(filePath))
+                .ParseAsync<ReceiptV4Prediction>();
 
-        Console.Write(JsonSerializer.Serialize(receiptV4Prediction, new JsonSerializerOptions { WriteIndented = true }));
+        Console.Write(receiptV4Prediction.ToString());
         Console.ReadKey();
     }
 }
