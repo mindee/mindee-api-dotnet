@@ -25,6 +25,12 @@ namespace Mindee.Parsing.Invoice
         public StringField Customer { get; set; }
 
         /// <summary>
+        /// The supplier name.
+        /// </summary>
+        [JsonPropertyName("supplier")]
+        public StringField Supplier { get; set; }
+
+        /// <summary>
         /// The adress of the customer.
         /// </summary>
         [JsonPropertyName("customer_address")]

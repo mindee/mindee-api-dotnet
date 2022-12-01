@@ -21,12 +21,6 @@ namespace Mindee.Parsing.Common
         public Date Date { get; set; }
 
         /// <summary>
-        /// The supplier name.
-        /// </summary>
-        [JsonPropertyName("supplier")]
-        public StringField Supplier { get; set; }
-
-        /// <summary>
         /// <see cref="Tax"/>
         /// </summary>
         [JsonPropertyName("taxes")]

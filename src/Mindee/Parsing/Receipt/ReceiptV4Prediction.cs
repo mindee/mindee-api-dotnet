@@ -18,6 +18,12 @@ namespace Mindee.Parsing.Receipt
         public StringField Category { get; set; }
 
         /// <summary>
+        /// The supplier name.
+        /// </summary>
+        [JsonPropertyName("supplier")]
+        public StringField Supplier { get; set; }
+
+        /// <summary>
         /// <see cref="Time"/>
         /// </summary>
         [JsonPropertyName("time")]
