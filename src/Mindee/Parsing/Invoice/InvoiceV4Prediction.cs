@@ -9,7 +9,7 @@ namespace Mindee.Parsing.Invoice
     /// <summary>
     /// The invoice model for the v4.
     /// </summary>
-    [Endpoint("invoices_beta", "4")]
+    [Endpoint("invoices", "4")]
     public sealed class InvoiceV4Prediction : FinancialPredictionBase
     {
         /// <summary>

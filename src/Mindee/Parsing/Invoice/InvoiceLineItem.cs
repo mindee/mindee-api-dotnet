@@ -90,7 +90,7 @@ namespace Mindee.Parsing.Invoice
 
             return string.Join(" | ",
                 productCode.PadRight(14),
-                quantity.ToString().PadRight(6),
+                quantity.PadRight(6),
                 unitPrice.PadRight(7),
                 totalAmount.PadRight(8),
                 tax.PadRight(14),
