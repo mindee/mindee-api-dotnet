@@ -47,18 +47,17 @@ Then, in your controller or service instance, pass as an argument the class ``Mi
 ### Instantiate manually
 Or, you could also simply instantiate a new instance of `MindeeClient`:
 ```csharp
-import Mindee;
+using Mindee;
 
-IConfiguration configuration;
-
-var mindeeClient = new MindeeClient(configuration);
+var mindeeClient = new MindeeClient(
+            Options.Create(new MindeeSettings() { ApiKey = "MyKey" }));
 ```
 
 Let's parse an invoice:
 ```csharp
 var prediction = await _mindeeClient
     .LoadDocument(new FileInfo("/path/to/the/file.ext"))
-    .ParseAsync<InvoiceV3Prediction>();
+    .ParseAsync<InvoiceV4Prediction>();
 ```
 
 ### Usage
