@@ -15,6 +15,7 @@
 | ----------------------------------------------------------- | --------------------------------------------------------- |
 | [AllWord](AllWord/index.md)                                 | Represent a word.                                         |
 | [AmountField](AmountField/index.md)                         | Represent an amount.                                      |
+| [ApiRequest](ApiRequest/index.md)                           | Information from Mindee about the api request.            |
 | [BaseField](BaseField/index.md)                             | Represent basics of a field.                              |
 | [Cropper](Cropper/index.md)                                 | Cropping result.                                          |
 | [Date](Date/index.md)                                       | Represent a date.                                         |

@@ -10,7 +10,7 @@
 **Declaring Type:** [PageOptions](../index.md)  
 **Namespace:** [Mindee.Input](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.1.0
+**Assembly Version:** 1.2.0
 
 List of page indexes. A negative index can be used, indicating an offset from the end of the document. \[1, \-1\] represents the first and last pages of the document.
 

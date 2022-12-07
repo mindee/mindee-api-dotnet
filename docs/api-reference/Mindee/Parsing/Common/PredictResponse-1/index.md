@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Parsing.Common](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.1.0
+**Assembly Version:** 1.2.0
 
 Represent a predict response from Mindee API.
 
@@ -33,9 +33,10 @@ Set the prediction model used to parse the document.             The response ob
 
 ## Properties
 
-| Name                               | Description                                                                                                            |
-| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| [Document](properties/Document.md) | Set the prediction model used to parse the document. The response object will be instantiated based on this parameter. |
+| Name                                   | Description                                                                                                            |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [ApiRequest](properties/ApiRequest.md) | [ApiRequest](../ApiRequest/index.md)                                                                                   |
+| [Document](properties/Document.md)     | Set the prediction model used to parse the document. The response object will be instantiated based on this parameter. |
 
 ___
 

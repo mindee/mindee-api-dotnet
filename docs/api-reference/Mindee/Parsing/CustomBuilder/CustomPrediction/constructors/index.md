@@ -10,7 +10,7 @@
 **Declaring Type:** [CustomPrediction](../index.md)  
 **Namespace:** [Mindee.Parsing.CustomBuilder](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.1.0
+**Assembly Version:** 1.2.0
 
 Default empty constructor.
 

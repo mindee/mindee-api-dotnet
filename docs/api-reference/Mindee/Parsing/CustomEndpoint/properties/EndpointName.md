@@ -10,7 +10,7 @@
 **Declaring Type:** [CustomEndpoint](../index.md)  
 **Namespace:** [Mindee.Parsing](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.1.0
+**Assembly Version:** 1.2.0
 
 The name of the product associated to the expected model.
 

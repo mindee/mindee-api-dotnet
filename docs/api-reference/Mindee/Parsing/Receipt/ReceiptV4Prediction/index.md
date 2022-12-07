@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Parsing.Receipt](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.1.0
+**Assembly Version:** 1.2.0
 
 The receipt model for the v4.
 
@@ -33,6 +33,7 @@ public sealed class ReceiptV4Prediction : FinancialPredictionBase
 | Name                                     | Description                            |
 | ---------------------------------------- | -------------------------------------- |
 | [Category](properties/Category.md)       | The category of the receipt.           |
+| [Supplier](properties/Supplier.md)       | The supplier name.                     |
 | [Time](properties/Time.md)               | [Time](properties/Time.md)             |
 | [Tip](properties/Tip.md)                 | The tip.                               |
 | [TotalAmount](properties/TotalAmount.md) | Total amount including taxes and tips. |

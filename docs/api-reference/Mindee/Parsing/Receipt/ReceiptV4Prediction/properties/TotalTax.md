@@ -10,7 +10,7 @@
 **Declaring Type:** [ReceiptV4Prediction](../index.md)  
 **Namespace:** [Mindee.Parsing.Receipt](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.1.0
+**Assembly Version:** 1.2.0
 
 Total taxes.
 

@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Parsing.Common](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.1.0
+**Assembly Version:** 1.2.0
 
 Regroup common data between receipt and invoice.
 
@@ -25,7 +25,6 @@ public abstract class FinancialPredictionBase : PredictionBase
 | ------------------------------------------ | ---------------------------------------- |
 | [Date](properties/Date.md)                 | The date.                                |
 | [DocumentType](properties/DocumentType.md) | [DocumentType](../DocumentType/index.md) |
-| [Supplier](properties/Supplier.md)         | The supplier name.                       |
 | [Taxes](properties/Taxes.md)               | [Tax](../Tax/index.md)                   |
 
 ___

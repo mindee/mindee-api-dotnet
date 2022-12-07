@@ -10,7 +10,7 @@
 **Declaring Type:** [SplitQuery](../index.md)  
 **Namespace:** [Mindee.Pdf](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.1.0
+**Assembly Version:** 1.2.0
 
 ```csharp
 public SplitQuery(byte[] file, PageOptions pageOptions);

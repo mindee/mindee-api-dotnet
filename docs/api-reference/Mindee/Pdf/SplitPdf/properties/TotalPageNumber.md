@@ -10,7 +10,7 @@
 **Declaring Type:** [SplitPdf](../index.md)  
 **Namespace:** [Mindee.Pdf](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.1.0
+**Assembly Version:** 1.2.0
 
 The total page number.
 

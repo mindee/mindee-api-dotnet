@@ -9,7 +9,7 @@
 
 **Namespace:** [Mindee.Parsing.Invoice](../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.1.0
+**Assembly Version:** 1.2.0
 
 The invoice model for the v3.
 
@@ -39,6 +39,7 @@ public sealed class InvoiceV3Prediction : FinancialPredictionBase
 | [DueDate](properties/DueDate.md)                                           | The due date of the invoice.                                   |
 | [InvoiceNumber](properties/InvoiceNumber.md)                               | The invoice number.                                            |
 | [PaymentDetails](properties/PaymentDetails.md)                             | List of payment details.                                       |
+| [Supplier](properties/Supplier.md)                                         | The supplier name.                                             |
 | [SupplierAddress](properties/SupplierAddress.md)                           | The supplier address.                                          |
 | [TotalExcl](properties/TotalExcl.md)                                       | Total amount excluding taxes.                                  |
 | [TotalIncl](properties/TotalIncl.md)                                       | Total amount including taxes.                                  |

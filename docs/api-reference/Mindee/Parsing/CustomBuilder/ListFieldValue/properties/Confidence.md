@@ -10,7 +10,7 @@
 **Declaring Type:** [ListFieldValue](../index.md)  
 **Namespace:** [Mindee.Parsing.CustomBuilder](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.1.0
+**Assembly Version:** 1.2.0
 
 The confidence about the zone of the value extracted. A value from 0 to 1.
 

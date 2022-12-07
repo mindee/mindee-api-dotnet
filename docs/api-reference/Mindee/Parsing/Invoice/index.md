@@ -15,7 +15,9 @@
 | ------------------------------------------------------------------- | -------------------------------------------- |
 | [CompanyRegistration](CompanyRegistration/index.md)                 | Represent a company registration.            |
 | [CustomerCompanyRegistration](CustomerCompanyRegistration/index.md) | Represent the customer company registration. |
+| [InvoiceLineItem](InvoiceLineItem/index.md)                         | Line items details.                          |
 | [InvoiceV3Prediction](InvoiceV3Prediction/index.md)                 | The invoice model for the v3.                |
+| [InvoiceV4Prediction](InvoiceV4Prediction/index.md)                 | The invoice model for the v4.                |
 | [PaymentDetail](PaymentDetail/index.md)                             | Represent a payment detail.                  |
 
 ___

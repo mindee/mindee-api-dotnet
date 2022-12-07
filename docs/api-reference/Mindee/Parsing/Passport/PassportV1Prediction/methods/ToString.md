@@ -10,7 +10,7 @@
 **Declaring Type:** [PassportV1Prediction](../index.md)  
 **Namespace:** [Mindee.Parsing.Passport](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.1.0
+**Assembly Version:** 1.2.0
 
 ```csharp
 public string ToString();

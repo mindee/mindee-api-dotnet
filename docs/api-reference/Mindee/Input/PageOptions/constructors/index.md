@@ -10,7 +10,7 @@
 **Declaring Type:** [PageOptions](../index.md)  
 **Namespace:** [Mindee.Input](../../index.md)  
 **Assembly:** Mindee  
-**Assembly Version:** 1.1.0
+**Assembly Version:** 1.2.0
 
 ```csharp
 public PageOptions(short[] pageNumbers, PageOptionsOperation pageOptionsOperation = PageOptionsOperation.KeepOnly, ushort onMinPages = 0);
