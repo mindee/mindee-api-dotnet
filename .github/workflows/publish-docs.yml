@@ -42,8 +42,6 @@ jobs:
           dotnet-version: '3.1.x'
       - name: Generate documentations
         run: mddocs apireference --assembly './build/Mindee.dll' --outdir ./docs/api-reference
-      - name: Setup Pages
-        uses: actions/configure-pages@v2
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
