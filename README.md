@@ -1,6 +1,7 @@
 [![.NET 6](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml)
 [![.NET 4.7.2](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet-fmk.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet-fmk.yml)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+
+[![Join Mindee on Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)](https://mindee-community.slack.com/join/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw#/shared-invite/email)
 
 # Mindee API Helper Library for .NET
 The official Mindee API Helper Library for the .NET ecosystem to quickly and easily connect to Mindee's API services.
@@ -81,6 +82,8 @@ customize the experience.
 All the juicy details are described in the **[Official Guide](docs/index.md)**.
 
 You also can use the **[Reference documentation](docs/api-reference/Mindee/index.md)** to dig deeper in the code.
+
+Or feel free to reach us in our slack community channel :-) ! 
 
 ## License
 Copyright © Mindee
