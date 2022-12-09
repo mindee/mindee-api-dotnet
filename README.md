@@ -1,6 +1,7 @@
 [![.NET 6](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml)
 [![.NET 4.7.2](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet-fmk.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet-fmk.yml)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+
+[![Join Mindee on Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)](https://mindee-community.slack.com/join/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw#/shared-invite/email)
 
 # Mindee API Helper Library for .NET
 The official Mindee API Helper Library for the .NET ecosystem to quickly and easily connect to Mindee's API services.
@@ -47,18 +48,17 @@ Then, in your controller or service instance, pass as an argument the class ``Mi
 ### Instantiate manually
 Or, you could also simply instantiate a new instance of `MindeeClient`:
 ```csharp
-import Mindee;
+using Mindee;
 
-IConfiguration configuration;
-
-var mindeeClient = new MindeeClient(configuration);
+var mindeeClient = new MindeeClient(
+            Options.Create(new MindeeSettings() { ApiKey = "MyKey" }));
 ```
 
 Let's parse an invoice:
 ```csharp
 var prediction = await _mindeeClient
     .LoadDocument(new FileInfo("/path/to/the/file.ext"))
-    .ParseAsync<InvoiceV3Prediction>();
+    .ParseAsync<InvoiceV4Prediction>();
 ```
 
 ### Usage
@@ -82,6 +82,8 @@ customize the experience.
 All the juicy details are described in the **[Official Guide](docs/index.md)**.
 
 You also can use the **[Reference documentation](docs/api-reference/Mindee/index.md)** to dig deeper in the code.
+
+Or feel free to reach us in our slack community channel :-) ! 
 
 ## License
 Copyright © Mindee

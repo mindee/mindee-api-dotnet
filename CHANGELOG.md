@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.2.0 (2022-12-07)
+
+* :sparkles: Add Invoice V4 support
+
 ## v1.1.0 (2022-11-28)
 
 * :boom: Changing the settings section name from MindeeApiSettings to MindeeSettings.
