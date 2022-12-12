@@ -40,7 +40,7 @@ namespace Mindee.Parsing.Invoice
         {
             StringBuilder result = new StringBuilder();
 
-            if(!string.IsNullOrWhiteSpace(AccountNumber))
+            if (!string.IsNullOrWhiteSpace(AccountNumber))
             {
                 result.Append($"{AccountNumber}; ");
             }

@@ -9,7 +9,7 @@
         /// The file.
         /// </summary>
         public byte[] File { get; }
-        
+
         /// <summary>
         /// The total page number.
         /// </summary>
