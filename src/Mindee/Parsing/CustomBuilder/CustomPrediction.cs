@@ -14,7 +14,7 @@ namespace Mindee.Parsing.CustomBuilder
         /// Default empty constructor.
         /// </summary>
         public CustomPrediction()
-        { 
+        {
         }
 
         private CustomPrediction(SerializationInfo info, StreamingContext context) : base(info, context)
