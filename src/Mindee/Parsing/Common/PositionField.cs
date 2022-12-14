@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.Common
@@ -31,5 +32,13 @@ namespace Mindee.Parsing.Common
         /// </summary>
         [JsonPropertyName("rectangle")]
         public List<List<double>> Rectangle { get; set; }
+
+        /// <summary>
+        /// A prettier reprensentation of the current model values.
+        /// </summary>
+        public override string ToString()
+        {
+            return $"Polygon with {Polygon.Count} points.";
+        }
     }
 }

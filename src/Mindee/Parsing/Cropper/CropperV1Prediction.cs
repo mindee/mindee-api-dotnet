@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing.Common;
 
@@ -15,5 +17,17 @@ namespace Mindee.Parsing.Cropper
         /// </summary>
         [JsonPropertyName("cropping")]
         public List<PositionField> Cropping { get; set; }
+
+        /// <summary>
+        /// A pretty summary of the value.
+        /// </summary>
+        public override string ToString()
+        {
+            StringBuilder result = new StringBuilder("----- Cropper Data -----\n");
+            result.Append($"Cropping:{Cropping?.Select(c => $"{c}        \n")}\n");
+            result.Append("------------------------");
+
+            return result.ToString();
+        }
     }
 }

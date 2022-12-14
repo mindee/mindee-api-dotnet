@@ -6,7 +6,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
     [Trait("Category", "Cropper V1")]
     public class CropperV1Test
     {
-        [Fact(Skip = "Waiting for the summary format update.")]
+        [Fact]
         public async Task Predict_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -14,7 +14,12 @@ namespace Mindee.UnitTests.Parsing.Receipt
 
             var expected = File.ReadAllText("Resources/cropper/response_v1/doc_to_string.txt");
 
-            Assert.Equal(expected, prediction.ToString());
+            var indexFilename = expected.IndexOf("Filename");
+            var indexEOL = expected.IndexOf("\n", indexFilename);
+
+            Assert.Equal(
+                expected.Remove(indexFilename, indexEOL - indexFilename + 1),
+                prediction.Inference.Prediction.ToString());
         }
 
         [Fact]
