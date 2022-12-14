@@ -3,20 +3,21 @@ using Mindee.Parsing.Cropper;
 
 namespace Mindee.UnitTests.Parsing.Receipt
 {
+    [Trait("Category", "Cropper V1")]
     public class CropperV1Test
     {
-        [Fact]
-        [Trait("Category", "Cropper V1")]
+        [Fact(Skip = "Waiting for the summary format update.")]
         public async Task Predict_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CropperV1Prediction>(ParsingTestBase.GetFakePredictParameter());
 
-            Assert.NotNull(prediction);
+            var expected = File.ReadAllText("Resources/cropper/response_v1/doc_to_string.txt");
+
+            Assert.Equal(expected, prediction.ToString());
         }
 
         [Fact]
-        [Trait("Category", "Cropper V1")]
         public async Task Predict_WithCropping_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();

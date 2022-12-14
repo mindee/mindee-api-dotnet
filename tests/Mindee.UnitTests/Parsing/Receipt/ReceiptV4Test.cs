@@ -3,20 +3,21 @@ using Mindee.Parsing.Receipt;
 
 namespace Mindee.UnitTests.Parsing.Receipt
 {
+    [Trait("Category", "Receipt V4")]
     public class ReceiptV4Test
     {
-        [Fact]
-        [Trait("Category", "Receipt V4")]
+        [Fact(Skip = "Waiting for the summary format update.")]
         public async Task Predict_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
-            Assert.NotNull(prediction);
+            var expected = File.ReadAllText("Resources/receipt/response_v4/doc_to_string.txt");
+
+            Assert.Equal(expected, prediction.ToString());
         }
 
         [Fact]
-        [Trait("Category", "Receipt V4")]
         public async Task Predict_MustSuccessForCategory()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -27,7 +28,6 @@ namespace Mindee.UnitTests.Parsing.Receipt
         }
 
         [Fact]
-        [Trait("Category", "Receipt V4")]
         public async Task Predict_MustSuccessForDate()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -39,7 +39,6 @@ namespace Mindee.UnitTests.Parsing.Receipt
         }
 
         [Fact]
-        [Trait("Category", "Receipt V4")]
         public async Task Predict_MustSuccessForTime()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -59,7 +58,6 @@ namespace Mindee.UnitTests.Parsing.Receipt
         }
 
         [Fact]
-        [Trait("Category", "Receipt V4")]
         public async Task Predict_WithReceiptData_MustSuccessForLocale()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -71,7 +69,6 @@ namespace Mindee.UnitTests.Parsing.Receipt
         }
 
         [Fact]
-        [Trait("Category", "Receipt V4")]
         public async Task Predict_WithReceiptData_MustSuccessForTotalTaxes()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -81,7 +78,6 @@ namespace Mindee.UnitTests.Parsing.Receipt
         }
 
         [Fact]
-        [Trait("Category", "Receipt V4")]
         public async Task Predict_WithReceiptData_MustSuccessForTip()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -91,7 +87,6 @@ namespace Mindee.UnitTests.Parsing.Receipt
         }
 
         [Fact]
-        [Trait("Category", "Receipt V4")]
         public async Task Predict_WithReceiptData_MustSuccessForNetTotal()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -101,7 +96,6 @@ namespace Mindee.UnitTests.Parsing.Receipt
         }
 
         [Fact]
-        [Trait("Category", "Receipt V4")]
         public async Task Predict_WithReceiptData_MustSuccessForTotal()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -111,7 +105,6 @@ namespace Mindee.UnitTests.Parsing.Receipt
         }
 
         [Fact]
-        [Trait("Category", "Receipt V4")]
         public async Task Predict_WithReceiptData_MustSuccessForOrientation()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -121,7 +114,6 @@ namespace Mindee.UnitTests.Parsing.Receipt
         }
 
         [Fact]
-        [Trait("Category", "Receipt V4")]
         public async Task Predict_WithReceiptData_MustSuccessForTaxes()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
@@ -134,7 +126,6 @@ namespace Mindee.UnitTests.Parsing.Receipt
         }
 
         [Fact]
-        [Trait("Category", "Receipt V4")]
         public async Task Predict_WithCropping_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt("Resources/receipt/response_v4/complete_with_cropper.json");

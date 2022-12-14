@@ -3,20 +3,21 @@ using Mindee.Parsing.Passport;
 
 namespace Mindee.UnitTests.Parsing.Passport
 {
+    [Trait("Category", "Passport V1")]
     public class PassportV1Test
     {
-        [Fact]
-        [Trait("Category", "Passport V1")]
+        [Fact(Skip = "Waiting for the summary format update.")]
         public async Task Execute_WithPassportData_MustSuccess()
         {
             var mindeeApi = GetMindeeApiForPassport();
             var prediction = await mindeeApi.PredictAsync<PassportV1Prediction>(ParsingTestBase.GetFakePredictParameter());
 
-            Assert.NotNull(prediction);
+            var expected = File.ReadAllText("Resources/passport/response_v1/doc_to_string.txt");
+
+            Assert.Equal(expected, prediction.ToString());
         }
 
         [Fact]
-        [Trait("Category", "Passport V1")]
         public async Task Execute_WithPassportData_MustSuccessForCountry()
         {
             var mindeeApi = GetMindeeApiForPassport();
@@ -36,7 +37,6 @@ namespace Mindee.UnitTests.Parsing.Passport
         }
 
         [Fact]
-        [Trait("Category", "Passport V1")]
         public async Task Execute_WithPassportData_MustSuccessForIdNumber()
         {
             var mindeeApi = GetMindeeApiForPassport();
@@ -46,7 +46,6 @@ namespace Mindee.UnitTests.Parsing.Passport
         }
 
         [Fact]
-        [Trait("Category", "Passport V1")]
         public async Task Execute_WithPassportData_MustSuccessForGivenNames()
         {
             var mindeeApi = GetMindeeApiForPassport();
@@ -62,7 +61,6 @@ namespace Mindee.UnitTests.Parsing.Passport
         }
 
         [Fact]
-        [Trait("Category", "Passport V1")]
         public async Task Execute_WithPassportData_MustSuccessForSurname()
         {
             var mindeeApi = GetMindeeApiForPassport();
@@ -72,7 +70,6 @@ namespace Mindee.UnitTests.Parsing.Passport
         }
 
         [Fact]
-        [Trait("Category", "Passport V1")]
         public async Task Execute_WithPassportData_MustSuccessForBirthdate()
         {
             var mindeeApi = GetMindeeApiForPassport();
@@ -82,7 +79,6 @@ namespace Mindee.UnitTests.Parsing.Passport
         }
 
         [Fact]
-        [Trait("Category", "Passport V1")]
         public async Task Execute_WithPassportData_MustSuccessForBirthplace()
         {
             var mindeeApi = GetMindeeApiForPassport();
@@ -92,7 +88,6 @@ namespace Mindee.UnitTests.Parsing.Passport
         }
 
         [Fact]
-        [Trait("Category", "Passport V1")]
         public async Task Execute_WithPassportData_MustSuccessForGender()
         {
             var mindeeApi = GetMindeeApiForPassport();
@@ -102,7 +97,6 @@ namespace Mindee.UnitTests.Parsing.Passport
         }
 
         [Fact]
-        [Trait("Category", "Passport V1")]
         public async Task Execute_WithPassportData_MustSuccessForIssuanceDate()
         {
             var mindeeApi = GetMindeeApiForPassport();
@@ -112,7 +106,6 @@ namespace Mindee.UnitTests.Parsing.Passport
         }
 
         [Fact]
-        [Trait("Category", "Passport V1")]
         public async Task Execute_WithPassportData_MustSuccessForExpiryDate()
         {
             var mindeeApi = GetMindeeApiForPassport();
@@ -122,7 +115,6 @@ namespace Mindee.UnitTests.Parsing.Passport
         }
 
         [Fact]
-        [Trait("Category", "Passport V1")]
         public async Task Execute_WithPassportData_MustSuccessForOrientation()
         {
             var mindeeApi = GetMindeeApiForPassport();
@@ -132,7 +124,6 @@ namespace Mindee.UnitTests.Parsing.Passport
         }
 
         [Fact]
-        [Trait("Category", "Passport V1")]
         public async Task Execute_WithPassportData_MustSuccessForMrz1()
         {
             var mindeeApi = GetMindeeApiForPassport();
@@ -142,7 +133,6 @@ namespace Mindee.UnitTests.Parsing.Passport
         }
 
         [Fact]
-        [Trait("Category", "Passport V1")]
         public async Task Execute_WithPassportData_MustSuccessForMrz2()
         {
             var mindeeApi = GetMindeeApiForPassport();

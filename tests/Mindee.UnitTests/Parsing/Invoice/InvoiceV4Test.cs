@@ -3,20 +3,21 @@ using Mindee.Parsing.Invoice;
 
 namespace Mindee.UnitTests.Parsing.Invoice
 {
+    [Trait("Category", "Invoice V4")]
     public class InvoiceV4Test
     {
-        [Fact]
-        [Trait("Category", "Invoice V4")]
+        [Fact(Skip = "Waiting for the summary format update.")]
         public async Task Predict_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
             var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
-            Assert.NotNull(invoicePrediction);
+            var expected = File.ReadAllText("Resources/invoice/response_v4/doc_to_string.txt");
+
+            Assert.Equal(expected, invoicePrediction.ToString());
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForInvoiceNumber()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -27,7 +28,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForCustomerName()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -41,7 +41,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForCustomerCompanyRegistrations()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -54,7 +53,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForCustomerAddress()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -65,7 +63,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForDate()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -85,7 +82,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForDueDate()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -95,7 +91,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForDocumentType()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -105,7 +100,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForLocale()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -116,7 +110,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForTotalTaxesIncluded()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -126,7 +119,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForTotalTaxesExcluded()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -136,7 +128,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForSupplierName()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -146,7 +137,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForSupplierAddress()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -157,7 +147,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForSupplierCompanyRegistrations()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -168,7 +157,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForSupplierPaymentDetails()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -178,7 +166,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForLineItems()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -195,7 +182,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V4")]
         public async Task Predict_MustSuccessForOrientation()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
