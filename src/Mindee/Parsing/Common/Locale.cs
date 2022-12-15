@@ -8,6 +8,8 @@ namespace Mindee.Parsing.Common
     /// </summary>
     public class Locale
     {
+        private string _language;
+
         /// <summary>
         /// The confidence about the zone of the value extracted.
         /// A value from 0 to 1.
@@ -28,7 +30,18 @@ namespace Mindee.Parsing.Common
         /// </summary>
         /// <example>fr</example>
         [JsonPropertyName("language")]
-        public string Language { get; set; }
+        public string Language
+        {
+            get
+            {
+                return _language;
+            }
+            set
+            {
+                _language = value;
+                Value = value;
+            }
+        }
 
         /// <summary>
         /// The country which has been detected.

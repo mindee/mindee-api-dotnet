@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing.Common;
 
@@ -77,11 +76,11 @@ namespace Mindee.Parsing.Invoice
         public override string ToString()
         {
             string productCode = ProductCode?.ToString() ?? "";
-            string quantity = Quantity?.ToString() ?? "";
-            string unitPrice = UnitPrice?.ToString() ?? "";
-            string totalAmount = TotalAmount?.ToString() ?? "";
-            string tax = TotalAmount?.ToString() ?? "";
-            tax += TaxRate != null ? $" ({TaxRate} %)" : "";
+            string quantity = Quantity?.ToString(".00###") ?? "";
+            string unitPrice = UnitPrice?.ToString(".00###") ?? "";
+            string totalAmount = TotalAmount?.ToString(".00###") ?? "";
+            string tax = TaxAmount?.ToString(".00###") ?? "";
+            tax += TaxRate != null ? $" ({TaxRate?.ToString(".00")}%)" : "";
             string description = Description ?? "";
             if (description.Length > 32)
             {
@@ -93,7 +92,7 @@ namespace Mindee.Parsing.Invoice
                 quantity.PadRight(6),
                 unitPrice.PadRight(7),
                 totalAmount.PadRight(8),
-                tax.PadRight(14),
+                tax.PadRight(16),
                 description
                 );
         }

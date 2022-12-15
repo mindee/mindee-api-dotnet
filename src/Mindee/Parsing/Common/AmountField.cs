@@ -19,7 +19,7 @@ namespace Mindee.Parsing.Common
         /// </summary>
         public override string ToString()
         {
-            return Value?.ToString("0.00");
+            return Value?.ToString(".00###");
         }
     }
 }

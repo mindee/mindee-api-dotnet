@@ -99,15 +99,15 @@ namespace Mindee.Parsing.Invoice
             result.Append($"Customer name: {Customer.Value}\n");
             result.Append($"Customer company registration: {string.Join("; ", CustomerCompanyRegistrations.Select(c => c.Value))}\n");
             result.Append($"Customer address: {string.Join("; ", CustomerAddress.Value)}\n");
-            result.Append($"Payment details: {string.Join("\n                 ", PaymentDetails.Select(p => p))}\n");
-            result.Append($"Company numbers: {string.Join("\n                 ", CompanyRegistrations.Select(c => c.Value))}\n");
+            result.Append($"Payment details: {string.Join("; ", PaymentDetails.Select(p => p))}\n");
+            result.Append($"Company numbers: {string.Join("; ", CompanyRegistrations.Select(c => c.Value))}\n");
             result.Append($"Taxes: {string.Join("\n                 ", Taxes.Select(t => t))}\n");
             result.Append($"Total taxes: {TotalTaxes}\n");
             result.Append($"Locale: {Locale}\n");
 
             result.Append("----------------------\n");
 
-            return result.ToString();
+            return SummaryHelper.Clean(result.ToString());
         }
     }
 }

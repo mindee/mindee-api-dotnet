@@ -72,7 +72,7 @@ namespace Mindee.Parsing.Receipt
 
             result.Append("----------------------\n");
 
-            return result.ToString();
+            return SummaryHelper.Clean(result.ToString());
         }
     }
 }
