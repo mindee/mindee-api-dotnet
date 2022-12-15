@@ -7,7 +7,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
     public class CropperV1Test
     {
         [Fact]
-        public async Task Predict_MustSuccess()
+        public async Task Predict_CheckSummary()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CropperV1Prediction>(ParsingTestBase.GetFakePredictParameter());
@@ -20,6 +20,22 @@ namespace Mindee.UnitTests.Parsing.Receipt
             Assert.Equal(
                 expected.Remove(indexFilename, indexEOL - indexFilename + 1),
                 prediction.Inference.Prediction.ToString());
+        }
+
+        [Fact]
+        public async Task Predict_CheckSummary_WithMultiplePages()
+        {
+            var mindeeAPi = GetMindeeApiForReceipt();
+            var prediction = await mindeeAPi.PredictAsync<CropperV1Prediction>(ParsingTestBase.GetFakePredictParameter());
+
+            var expected = File.ReadAllText("Resources/cropper/response_v1/page0_to_string.txt");
+
+            var indexFilename = expected.IndexOf("Filename");
+            var indexEOL = expected.IndexOf("\n", indexFilename);
+
+            Assert.Equal(
+                expected.Remove(indexFilename, indexEOL - indexFilename + 1),
+                prediction.Inference.Pages.First().Prediction.ToString());
         }
 
         [Fact]
