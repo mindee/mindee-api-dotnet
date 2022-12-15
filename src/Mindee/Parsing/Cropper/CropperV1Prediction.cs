@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using Mindee.Parsing.Common;
 
 namespace Mindee.Parsing.Cropper
@@ -27,7 +28,9 @@ namespace Mindee.Parsing.Cropper
             result.Append($"Cropping: {string.Join("\n          ", Cropping?.Select(c => c))}\n");
             result.Append("------------------------\n");
 
-            return result.ToString();
+            Regex cleanSpace = new Regex(" \n", RegexOptions.Multiline);
+
+            return cleanSpace.Replace(result.ToString(), "\n");
         }
     }
 }
