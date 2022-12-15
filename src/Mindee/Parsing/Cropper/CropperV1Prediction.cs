@@ -28,9 +28,7 @@ namespace Mindee.Parsing.Cropper
             result.Append($"Cropping: {string.Join("\n          ", Cropping?.Select(c => c))}\n");
             result.Append("------------------------\n");
 
-            Regex cleanSpace = new Regex(" \n", RegexOptions.Multiline);
-
-            return cleanSpace.Replace(result.ToString(), "\n");
+            return SummaryHelper.Clean(result.ToString());
         }
     }
 }

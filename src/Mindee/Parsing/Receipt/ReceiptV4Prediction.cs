@@ -58,21 +58,21 @@ namespace Mindee.Parsing.Receipt
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("-----Receipt data-----\n");
-            result.Append($"Total amount including taxes: {TotalAmount}\n");
-            result.Append($"Total amount excluding taxes: {TotalNet}\n");
+            StringBuilder result = new StringBuilder("----- Receipt V4 -----\n");
+            result.Append($"Total amount: {TotalAmount}\n");
+            result.Append($"Total net: {TotalNet}\n");
             result.Append($"Tip: {Tip}\n");
             result.Append($"Date: {Date.Value}\n");
             result.Append($"Category: {Category.Value}\n");
             result.Append($"Time: {Time.Value}\n");
-            result.Append($"Merchant name: {Supplier.Value}\n");
+            result.Append($"Supplier name: {Supplier.Value}\n");
             result.Append($"Taxes: {string.Join("\n                 ", Taxes.Select(t => t))}\n");
             result.Append($"Total taxes: {TotalTax}\n");
             result.Append($"Locale: {Locale}\n");
 
-            result.Append("----------------------");
+            result.Append("----------------------\n");
 
-            return result.ToString();
+            return SummaryHelper.Clean(result.ToString());
         }
     }
 }

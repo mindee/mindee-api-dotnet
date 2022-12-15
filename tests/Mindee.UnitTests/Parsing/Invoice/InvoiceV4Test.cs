@@ -7,6 +7,38 @@ namespace Mindee.UnitTests.Parsing.Invoice
     public class InvoiceV4Test
     {
         [Fact]
+        public async Task Predict_CheckSummary()
+        {
+            var mindeeAPi = GetMindeeApiForInvoice();
+            var prediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+
+            var expected = File.ReadAllText("Resources/invoice/response_v4/doc_to_string.txt");
+
+            var indexFilename = expected.IndexOf("Filename");
+            var indexEOL = expected.IndexOf("\n", indexFilename);
+
+            Assert.Equal(
+                expected.Remove(indexFilename, indexEOL - indexFilename + 1),
+                prediction.Inference.Prediction.ToString());
+        }
+
+        [Fact]
+        public async Task Predict_CheckSummary_WithMultiplePages()
+        {
+            var mindeeAPi = GetMindeeApiForInvoice();
+            var prediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+
+            var expected = File.ReadAllText("Resources/invoice/response_v4/page0_to_string.txt");
+
+            var indexFilename = expected.IndexOf("Filename");
+            var indexEOL = expected.IndexOf("\n", indexFilename);
+
+            Assert.Equal(
+                expected.Remove(indexFilename, indexEOL - indexFilename + 1),
+                prediction.Inference.Pages.First().Prediction.ToString());
+        }
+
+        [Fact]
         public async Task Predict_MustSuccessForInvoiceNumber()
         {
             var mindeeAPi = GetMindeeApiForInvoice();

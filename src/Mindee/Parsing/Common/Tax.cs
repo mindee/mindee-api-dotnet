@@ -49,7 +49,7 @@ namespace Mindee.Parsing.Common
 
             if (Rate != null)
             {
-                result.Append($" {Rate}%");
+                result.Append($" {Rate?.ToString("0.00")}%");
             }
 
             if (Code != null)
