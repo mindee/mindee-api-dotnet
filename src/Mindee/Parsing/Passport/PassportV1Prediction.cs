@@ -73,18 +73,29 @@ namespace Mindee.Parsing.Passport
         public StringField Mrz2 { get; set; }
 
         /// <summary>
+        /// Combine the MRZ lines.
+        /// </summary>
+        public string Mrz => $"{Mrz1.Value}{Mrz2.Value}";
+
+        /// <summary>
         /// The surname of the person.
         /// </summary>
         [JsonPropertyName("surname")]
         public StringField Surname { get; set; }
 
         /// <summary>
-        /// 
+        /// The full name.
+        /// </summary>
+        public string FullName => $"{string.Join(" ", GivenNames.Select(gn => gn.Value))} {Surname.Value}";
+
+        /// <summary>
+        ///
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("-----Passport data-----\n");
+            StringBuilder result = new StringBuilder("----- Passport V1 -----\n");
+            result.Append($"Full name: {FullName}\n");
             result.Append($"Given names: {string.Join(" ", GivenNames.Select(gn => gn.Value))}\n");
             result.Append($"Surname: {Surname.Value}\n");
             result.Append($"Country: {Country.Value}\n");
@@ -94,10 +105,11 @@ namespace Mindee.Parsing.Passport
             result.Append($"Expiry date: {ExpiryDate.Value}\n");
             result.Append($"MRZ 1: {Mrz1.Value}\n");
             result.Append($"MRZ 2: {Mrz2.Value}\n");
+            result.Append($"MRZ: {Mrz}\n");
 
-            result.Append("----------------------");
+            result.Append("----------------------\n");
 
-            return result.ToString();
+            return SummaryHelper.Clean(result.ToString());
         }
     }
 }
