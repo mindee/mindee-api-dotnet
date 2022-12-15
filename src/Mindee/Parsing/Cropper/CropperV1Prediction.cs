@@ -16,7 +16,7 @@ namespace Mindee.Parsing.Cropper
         /// List of all detected cropped elements in the image.
         /// </summary>
         [JsonPropertyName("cropping")]
-        public List<PositionField> Cropping { get; set; }
+        public List<PositionField> Cropping { get; set; } = new List<PositionField>();
 
         /// <summary>
         /// A pretty summary of the value.
