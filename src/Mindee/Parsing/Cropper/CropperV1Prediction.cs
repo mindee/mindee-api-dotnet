@@ -24,7 +24,7 @@ namespace Mindee.Parsing.Cropper
         public override string ToString()
         {
             StringBuilder result = new StringBuilder("----- Cropper Data -----\n");
-            result.Append($"Cropping: {string.Join("\n          ", Cropping?.Select(c => c))}\n");
+            result.Append($"Cropping:{string.Join("\n          ", Cropping?.Select(c => c))}\n");
             result.Append("------------------------\n");
 
             return result.ToString();
