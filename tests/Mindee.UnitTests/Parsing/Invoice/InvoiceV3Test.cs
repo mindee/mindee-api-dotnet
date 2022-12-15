@@ -3,20 +3,10 @@ using Mindee.Parsing.Invoice;
 
 namespace Mindee.UnitTests.Parsing.Invoice
 {
+    [Trait("Category", "Invoice V3")]
     public class InvoiceV3Test
     {
         [Fact]
-        [Trait("Category", "Invoice V3")]
-        public async Task Predict_MustSuccess()
-        {
-            var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV3Prediction>(ParsingTestBase.GetFakePredictParameter());
-
-            Assert.NotNull(invoicePrediction);
-        }
-
-        [Fact]
-        [Trait("Category", "Invoice V3")]
         public async Task Predict_MustSuccessForCustomer()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -30,7 +20,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V3")]
         public async Task Predict_MustSuccessForDate()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -50,7 +39,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V3")]
         public async Task Predict_MustSuccessForDocumentType()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -60,7 +48,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V3")]
         public async Task Predict_MustSuccessForLocale()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -71,7 +58,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V3")]
         public async Task Predict_MustSuccessForTotalTaxesIncluded()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -81,7 +67,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V3")]
         public async Task Predict_MustSuccessForOrientation()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
@@ -91,7 +76,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         }
 
         [Fact]
-        [Trait("Category", "Invoice V3")]
         public async Task Predict_MustSuccessForOcr()
         {
             var mindeeAPi = GetMindeeApiForInvoice("Resources/invoice/response_v3/complete_with_ocr.json");
@@ -116,7 +100,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
         private MindeeApi GetMindeeApiForInvoice(string fileName = "Resources/invoice/response_v3/complete.json")
         {
             return ParsingTestBase.GetMindeeApi(fileName);
-
         }
     }
 }

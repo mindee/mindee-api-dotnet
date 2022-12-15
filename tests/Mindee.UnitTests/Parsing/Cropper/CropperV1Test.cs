@@ -3,20 +3,42 @@ using Mindee.Parsing.Cropper;
 
 namespace Mindee.UnitTests.Parsing.Receipt
 {
+    [Trait("Category", "Cropper V1")]
     public class CropperV1Test
     {
         [Fact]
-        [Trait("Category", "Cropper V1")]
-        public async Task Predict_MustSuccess()
+        public async Task Predict_CheckSummary()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<CropperV1Prediction>(ParsingTestBase.GetFakePredictParameter());
 
-            Assert.NotNull(prediction);
+            var expected = File.ReadAllText("Resources/cropper/response_v1/doc_to_string.txt");
+
+            var indexFilename = expected.IndexOf("Filename");
+            var indexEOL = expected.IndexOf("\n", indexFilename);
+
+            Assert.Equal(
+                expected.Remove(indexFilename, indexEOL - indexFilename + 1),
+                prediction.Inference.Prediction.ToString());
         }
 
         [Fact]
-        [Trait("Category", "Cropper V1")]
+        public async Task Predict_CheckSummary_WithMultiplePages()
+        {
+            var mindeeAPi = GetMindeeApiForReceipt();
+            var prediction = await mindeeAPi.PredictAsync<CropperV1Prediction>(ParsingTestBase.GetFakePredictParameter());
+
+            var expected = File.ReadAllText("Resources/cropper/response_v1/page0_to_string.txt");
+
+            var indexFilename = expected.IndexOf("Filename");
+            var indexEOL = expected.IndexOf("\n", indexFilename);
+
+            Assert.Equal(
+                expected.Remove(indexFilename, indexEOL - indexFilename + 1),
+                prediction.Inference.Pages.First().Prediction.ToString());
+        }
+
+        [Fact]
         public async Task Predict_WithCropping_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();

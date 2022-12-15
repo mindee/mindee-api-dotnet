@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using Mindee.Parsing.Common;
 
 namespace Mindee.Parsing.Cropper
@@ -14,6 +17,20 @@ namespace Mindee.Parsing.Cropper
         /// List of all detected cropped elements in the image.
         /// </summary>
         [JsonPropertyName("cropping")]
-        public List<PositionField> Cropping { get; set; }
+        public List<PositionField> Cropping { get; set; } = new List<PositionField>();
+
+        /// <summary>
+        /// A pretty summary of the value.
+        /// </summary>
+        public override string ToString()
+        {
+            StringBuilder result = new StringBuilder("----- Cropper Data -----\n");
+            result.Append($"Cropping: {string.Join("\n          ", Cropping?.Select(c => c))}\n");
+            result.Append("------------------------\n");
+
+            Regex cleanSpace = new Regex(" \n", RegexOptions.Multiline);
+
+            return cleanSpace.Replace(result.ToString(), "\n");
+        }
     }
 }
