@@ -25,7 +25,7 @@ namespace Mindee.Parsing.Cropper
         {
             StringBuilder result = new StringBuilder("----- Cropper Data -----\n");
             result.Append($"Cropping:{Cropping?.Select(c => $"{c}        \n")}\n");
-            result.Append("------------------------");
+            result.Append("------------------------\n");
 
             return result.ToString();
         }
