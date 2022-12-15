@@ -6,17 +6,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
     [Trait("Category", "Invoice V3")]
     public class InvoiceV3Test
     {
-        [Fact(Skip = "Waiting for the summary format update.")]
-        public async Task Predict_MustSuccess()
-        {
-            var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
-
-            var expected = File.ReadAllText("Resources/invoice/response_v3/doc_to_string.txt");
-
-            Assert.Equal(expected, invoicePrediction.ToString());
-        }
-
         [Fact]
         public async Task Predict_MustSuccessForCustomer()
         {
