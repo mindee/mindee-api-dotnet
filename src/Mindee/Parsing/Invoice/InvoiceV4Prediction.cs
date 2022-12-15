@@ -119,7 +119,7 @@ namespace Mindee.Parsing.Invoice
             result.Append($"Total taxes: {TotalTaxes}\n");
             result.Append($"Total amount including taxes: {TotalAmount.Value}\n");
             result.Append($"Total amount excluding taxes: {TotalNet.Value}\n");
-            result.Append("----------------------");
+            result.Append("----------------------\n");
 
             return result.ToString();
         }

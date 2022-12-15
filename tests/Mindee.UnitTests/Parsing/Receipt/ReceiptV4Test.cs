@@ -6,15 +6,36 @@ namespace Mindee.UnitTests.Parsing.Receipt
     [Trait("Category", "Receipt V4")]
     public class ReceiptV4Test
     {
-        [Fact(Skip = "Waiting for the summary format update.")]
-        public async Task Predict_MustSuccess()
+        [Fact]
+        public async Task Predict_CheckSummary()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
             var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/receipt/response_v4/doc_to_string.txt");
 
-            Assert.Equal(expected, prediction.ToString());
+            var indexFilename = expected.IndexOf("Filename");
+            var indexEOL = expected.IndexOf("\n", indexFilename);
+
+            Assert.Equal(
+                expected.Remove(indexFilename, indexEOL - indexFilename + 1),
+                prediction.Inference.Prediction.ToString());
+        }
+
+        [Fact]
+        public async Task Predict_CheckSummary_WithMultiplePages()
+        {
+            var mindeeAPi = GetMindeeApiForReceipt();
+            var prediction = await mindeeAPi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+
+            var expected = File.ReadAllText("Resources/receipt/response_v4/page0_to_string.txt");
+
+            var indexFilename = expected.IndexOf("Filename");
+            var indexEOL = expected.IndexOf("\n", indexFilename);
+
+            Assert.Equal(
+                expected.Remove(indexFilename, indexEOL - indexFilename + 1),
+                prediction.Inference.Pages.First().Prediction.ToString());
         }
 
         [Fact]

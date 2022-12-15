@@ -38,6 +38,13 @@ namespace Mindee.Parsing.Common
         public string Country { get; set; }
 
         /// <summary>
+        /// Concatenation of lang and country codes.
+        /// </summary>
+        /// <example>en-GB</example>
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
+
+        /// <summary>
         ///
         /// </summary>
         /// <returns>A pretty summary of the value.</returns>
@@ -45,6 +52,10 @@ namespace Mindee.Parsing.Common
         {
             StringBuilder result = new StringBuilder();
 
+            if (!string.IsNullOrWhiteSpace(Value))
+            {
+                result.Append($"{Value}; ");
+            }
             if (!string.IsNullOrWhiteSpace(Language))
             {
                 result.Append($"{Language}; ");
