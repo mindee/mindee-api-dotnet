@@ -6,15 +6,36 @@ namespace Mindee.UnitTests.Parsing.Passport
     [Trait("Category", "Passport V1")]
     public class PassportV1Test
     {
-        [Fact(Skip = "Waiting for the summary format update.")]
-        public async Task Execute_WithPassportData_MustSuccess()
+        [Fact]
+        public async Task Predict_CheckSummary()
         {
-            var mindeeApi = GetMindeeApiForPassport();
-            var prediction = await mindeeApi.PredictAsync<PassportV1Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var mindeeAPi = GetMindeeApiForPassport();
+            var prediction = await mindeeAPi.PredictAsync<PassportV1Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/passport/response_v1/doc_to_string.txt");
 
-            Assert.Equal(expected, prediction.ToString());
+            var indexFilename = expected.IndexOf("Filename");
+            var indexEOL = expected.IndexOf("\n", indexFilename);
+
+            Assert.Equal(
+                expected.Remove(indexFilename, indexEOL - indexFilename + 1),
+                prediction.Inference.Prediction.ToString());
+        }
+
+        [Fact]
+        public async Task Predict_CheckSummary_WithMultiplePages()
+        {
+            var mindeeAPi = GetMindeeApiForPassport();
+            var prediction = await mindeeAPi.PredictAsync<PassportV1Prediction>(ParsingTestBase.GetFakePredictParameter());
+
+            var expected = File.ReadAllText("Resources/passport/response_v1/page0_to_string.txt");
+
+            var indexFilename = expected.IndexOf("Filename");
+            var indexEOL = expected.IndexOf("\n", indexFilename);
+
+            Assert.Equal(
+                expected.Remove(indexFilename, indexEOL - indexFilename + 1),
+                prediction.Inference.Pages.First().Prediction.ToString());
         }
 
         [Fact]
