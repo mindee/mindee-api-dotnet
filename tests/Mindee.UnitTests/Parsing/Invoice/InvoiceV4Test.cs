@@ -6,17 +6,6 @@ namespace Mindee.UnitTests.Parsing.Invoice
     [Trait("Category", "Invoice V4")]
     public class InvoiceV4Test
     {
-        [Fact(Skip = "Waiting for the summary format update.")]
-        public async Task Predict_MustSuccess()
-        {
-            var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
-
-            var expected = File.ReadAllText("Resources/invoice/response_v4/doc_to_string.txt");
-
-            Assert.Equal(expected, invoicePrediction.ToString());
-        }
-
         [Fact]
         public async Task Predict_MustSuccessForInvoiceNumber()
         {
@@ -188,6 +177,15 @@ namespace Mindee.UnitTests.Parsing.Invoice
             var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0, invoicePrediction.Inference.Pages.First().Orientation.Value);
+        }
+
+        [Fact]
+        public async Task Predict_MustSuccessForTotalTaxes()
+        {
+            var mindeeAPi = GetMindeeApiForInvoice();
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+
+            Assert.Equal(97.98, invoicePrediction.Inference.Pages.First().Prediction.TotalTaxes);
         }
 
         private MindeeApi GetMindeeApiForInvoice(string fileName = "Resources/invoice/response_v4/complete.json")

@@ -13,5 +13,13 @@ namespace Mindee.Parsing.Common
         /// <example>5.89</example>
         [JsonPropertyName("value")]
         public double? Value { get; set; }
+
+        /// <summary>
+        /// A pretty summary of the value.
+        /// </summary>
+        public override string ToString()
+        {
+            return Value?.ToString("0.00");
+        }
     }
 }

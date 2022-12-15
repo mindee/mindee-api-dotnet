@@ -97,6 +97,15 @@ namespace Mindee.UnitTests.Parsing.Invoice
             Assert.Equal("Payment", invoicePrediction.Ocr.MvisionV1.Pages.First().AllWords.First().Text);
         }
 
+        [Fact]
+        public async Task Predict_MustSuccessForTotalTaxes()
+        {
+            var mindeeAPi = GetMindeeApiForInvoice();
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+
+            Assert.Equal(97.98, invoicePrediction.Inference.Pages.First().Prediction.TotalTaxes);
+        }
+
         private MindeeApi GetMindeeApiForInvoice(string fileName = "Resources/invoice/response_v3/complete.json")
         {
             return ParsingTestBase.GetMindeeApi(fileName);
