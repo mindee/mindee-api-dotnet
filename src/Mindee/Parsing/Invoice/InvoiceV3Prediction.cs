@@ -79,11 +79,16 @@ namespace Mindee.Parsing.Invoice
         public AmountField TotalExcl { get; set; }
 
         /// <summary>
+        /// The total amount of taxes.
+        /// </summary>
+        public double? TotalTaxes => Taxes?.Sum(t => t.Value);
+
+        /// <summary>
         /// A prettier reprensentation of the current model values.
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("-----Invoice data-----\n");
+            StringBuilder result = new StringBuilder("----- Invoice V3 -----\n");
             result.Append($"Invoice number: {InvoiceNumber.Value}\n");
             result.Append($"Total amount including taxes: {TotalIncl.Value}\n");
             result.Append($"Total amount excluding taxes: {TotalExcl.Value}\n");
@@ -97,9 +102,10 @@ namespace Mindee.Parsing.Invoice
             result.Append($"Payment details: {string.Join("\n                 ", PaymentDetails.Select(p => p))}\n");
             result.Append($"Company numbers: {string.Join("\n                 ", CompanyRegistrations.Select(c => c.Value))}\n");
             result.Append($"Taxes: {string.Join("\n                 ", Taxes.Select(t => t))}\n");
+            result.Append($"Total taxes: {TotalTaxes}\n");
             result.Append($"Locale: {Locale}\n");
 
-            result.Append("----------------------");
+            result.Append("----------------------\n");
 
             return result.ToString();
         }

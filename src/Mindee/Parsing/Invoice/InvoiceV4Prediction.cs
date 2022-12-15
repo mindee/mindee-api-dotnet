@@ -85,6 +85,11 @@ namespace Mindee.Parsing.Invoice
         public List<InvoiceLineItem> LineItems { get; set; }
 
         /// <summary>
+        /// The total amount of taxes.
+        /// </summary>
+        public double? TotalTaxes => Taxes?.Sum(t => t.Value);
+
+        /// <summary>
         /// A prettier reprensentation of the current model values.
         /// </summary>
         public override string ToString()
@@ -111,6 +116,7 @@ namespace Mindee.Parsing.Invoice
             result.Append($"Customer address: {string.Join("; ", CustomerAddress.Value)}\n");
             result.Append($"Taxes: {string.Join("\n                 ", Taxes.Select(t => t))}\n");
             result.Append($"Line items: {lineItems}\n");
+            result.Append($"Total taxes: {TotalTaxes}\n");
             result.Append($"Total amount including taxes: {TotalAmount.Value}\n");
             result.Append($"Total amount excluding taxes: {TotalNet.Value}\n");
             result.Append("----------------------");
