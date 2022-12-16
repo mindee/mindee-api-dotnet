@@ -34,9 +34,7 @@ namespace Mindee.UnitTests.Parsing.Fr.IdCard
 
         private string CleaningResult(string expectedSummary)
         {
-            var indexFilename = expectedSummary.IndexOf("Filename");
-            var indexFilenameEOL = expectedSummary.IndexOf("\n", indexFilename);
-            string cleanedSummary = expectedSummary.Remove(indexFilename, indexFilenameEOL - indexFilename + 1);
+            string cleanedSummary = ParsingTestBase.CleaningFilenameFromResult(expectedSummary);
 
             // must be deleted when generic wil be place on the inference node
             var indexDocumentSide = cleanedSummary.IndexOf("Document side");

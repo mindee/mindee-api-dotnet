@@ -5,7 +5,7 @@ using RichardSzalay.MockHttp;
 
 namespace Mindee.UnitTests.Parsing
 {
-    public static class ParsingTestBase
+    internal static class ParsingTestBase
     {
         internal static PredictParameter GetFakePredictParameter()
         {
@@ -26,6 +26,15 @@ namespace Mindee.UnitTests.Parsing
                 new NullLogger<MindeeApi>(),
                 mockHttp
                 );
+        }
+
+        public static string CleaningFilenameFromResult(string expectedSummary)
+        {
+            var indexFilename = expectedSummary.IndexOf("Filename");
+            var indexFilenameEOL = expectedSummary.IndexOf("\n", indexFilename);
+            string cleanedSummary = expectedSummary.Remove(indexFilename, indexFilenameEOL - indexFilename + 1);
+
+            return cleanedSummary;
         }
     }
 }

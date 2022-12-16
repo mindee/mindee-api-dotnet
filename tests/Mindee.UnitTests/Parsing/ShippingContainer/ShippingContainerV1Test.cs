@@ -15,17 +15,8 @@ namespace Mindee.UnitTests.Parsing.ShippingContainer
             var expected = File.ReadAllText("Resources/shipping_container/response_v1/doc_to_string.txt");
 
             Assert.Equal(
-                CleaningResult(expected),
+                ParsingTestBase.CleaningFilenameFromResult(expected),
                 prediction.Inference.Prediction.ToString());
-        }
-
-        private string CleaningResult(string expectedSummary)
-        {
-            var indexFilename = expectedSummary.IndexOf("Filename");
-            var indexFilenameEOL = expectedSummary.IndexOf("\n", indexFilename);
-            string cleanedSummary = expectedSummary.Remove(indexFilename, indexFilenameEOL - indexFilename + 1);
-
-            return cleanedSummary;
         }
 
         private MindeeApi GetMindeeApiForCarteVitale(string fileName = "Resources/shipping_container/response_v1/complete.json")

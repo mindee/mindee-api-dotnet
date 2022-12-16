@@ -15,17 +15,8 @@ namespace Mindee.UnitTests.Parsing.Eu.LicensePlates
             var expected = File.ReadAllText("Resources/eu/license_plate/response_v1/doc_to_string.txt");
 
             Assert.Equal(
-                CleaningResult(expected),
+                ParsingTestBase.CleaningFilenameFromResult(expected),
                 prediction.Inference.Prediction.ToString());
-        }
-
-        private string CleaningResult(string expectedSummary)
-        {
-            var indexFilename = expectedSummary.IndexOf("Filename");
-            var indexFilenameEOL = expectedSummary.IndexOf("\n", indexFilename);
-            string cleanedSummary = expectedSummary.Remove(indexFilename, indexFilenameEOL - indexFilename + 1);
-
-            return cleanedSummary;
         }
 
         private MindeeApi GetMindeeApiForLicensePlates(string fileName = "Resources/eu/license_plate/response_v1/complete.json")

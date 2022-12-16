@@ -14,11 +14,8 @@ namespace Mindee.UnitTests.Parsing.Receipt
 
             var expected = File.ReadAllText("Resources/receipt/response_v4/doc_to_string.txt");
 
-            var indexFilename = expected.IndexOf("Filename");
-            var indexEOL = expected.IndexOf("\n", indexFilename);
-
             Assert.Equal(
-                expected.Remove(indexFilename, indexEOL - indexFilename + 1),
+                ParsingTestBase.CleaningFilenameFromResult(expected),
                 prediction.Inference.Prediction.ToString());
         }
 
@@ -30,11 +27,8 @@ namespace Mindee.UnitTests.Parsing.Receipt
 
             var expected = File.ReadAllText("Resources/receipt/response_v4/page0_to_string.txt");
 
-            var indexFilename = expected.IndexOf("Filename");
-            var indexEOL = expected.IndexOf("\n", indexFilename);
-
             Assert.Equal(
-                expected.Remove(indexFilename, indexEOL - indexFilename + 1),
+                ParsingTestBase.CleaningFilenameFromResult(expected),
                 prediction.Inference.Pages.First().Prediction.ToString());
         }
 
