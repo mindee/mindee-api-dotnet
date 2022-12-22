@@ -1,4 +1,4 @@
-The .NET SDK OCR SDK supports the  API  [Licenses plate OCR](https://developers.mindee.com/docs/license-plates-ocr-nodejs)  for extracting data from pictures of containers identification.
+The .NET SDK OCR SDK supports the  API  [Licenses plate OCR](https://developers.mindee.com/docs/license-plates-ocr-nodejs)  for extracting data from pictures (or documents) of cars.
 
 Using this [sample photo](https://files.readme.io/ffc127d-sample_receipt.jpg) below, we are going to illustrate how to extract the data that we want using the OCR SDK.
 ![sample receipt](https://files.readme.io/fd6086e-license_plate.jpg)
