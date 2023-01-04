@@ -13,6 +13,12 @@ namespace Mindee.Parsing.Invoice
     public sealed class InvoiceV4Prediction : FinancialPredictionBase
     {
         /// <summary>
+        /// List of Reference numbers including PO number.
+        /// </summary>
+        [JsonPropertyName("reference_numbers")]
+        public List<StringField> ReferenceNumbers { get; set; }
+
+        /// <summary>
         /// The supplier name.
         /// </summary>
         [JsonPropertyName("supplier_name")]
@@ -105,6 +111,7 @@ namespace Mindee.Parsing.Invoice
             StringBuilder result = new StringBuilder("----- Invoice V4 -----\n");
             result.Append($"Locale: {Locale}\n");
             result.Append($"Invoice number: {InvoiceNumber.Value}\n");
+            result.Append($"Reference numbers: {string.Join(", ", ReferenceNumbers.Select(rn => rn.Value))}\n");
             result.Append($"Invoice date: {Date.Value}\n");
             result.Append($"Invoice due date: {DueDate.Value}\n");
             result.Append($"Supplier name: {SupplierName.Value}\n");
