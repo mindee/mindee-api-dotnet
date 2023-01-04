@@ -21,6 +21,7 @@ Output:
 ----- Invoice V4 -----
 Locale: fr; fr; EUR;
 Invoice number: 0042004801351
+Reference numbers: AD29094
 Invoice date: 2020-02-17
 Invoice due date: 2020-02-17
 Supplier name: TURNPIKE DESIGNS CO.
@@ -60,6 +61,7 @@ Attributes that will be extracted from the document and available in the `Invoic
 - [Customer Information](#customer-information)
 - [Dates](#dates)
 - [Locale and Currency](#locale)
+- [Reference numbers](#reference-numbers)
 - [Supplier Information](#supplier-information)
 - [Line items](#line-items)
 - [Taxes](#taxes)
@@ -94,6 +96,9 @@ The following date fields are available:
 
 * `Locale.Country` (string): Country code in [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1) alpha-2 format as seen on the document.
   The following country codes are supported: `CA`, `CH`, `DE`, `ES`, `FR,` `GB`, `IT`, `NL`, `PT` and `US`.
+
+### Reference numbers
+* `ReferenceNumbers` (List<StringField>) : Represents a list of Reference numbers including PO number.
 
 ### Supplier Information
 
