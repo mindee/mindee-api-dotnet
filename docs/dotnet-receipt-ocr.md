@@ -25,6 +25,8 @@ Total net: 6.86
 Tip:
 Date: 2022-04-03
 Category: food
+Subcategory: restaurant
+Document type: EXPENSE RECEIPT
 Time: 10:00
 Supplier name: MINDEE TAKE OUT
 Taxes: 0.41 TAX
@@ -56,8 +58,12 @@ Attributes that will be extracted from the document and available in the `Receip
 - [Total Amounts](#total-amounts)
 
 ### Category
-* **`Category`** (Field): Receipt category as seen on the receipt.
-  The following categories are supported: toll, food, parking, transport, accommodation, gasoline, miscellaneous.
+* **`Category`** (StringField): Receipt category as seen on the receipt.
+List of supported categories supported: https://developers.mindee.com/docs/receipt-ocr#category.
+* **`SubCategory`** (StringField): More precise subcategory.
+List of supported subcategories supported: https://developers.mindee.com/docs/receipt-ocr#subcategory.
+* **`DocumentType`** (StringField): Is a classification field of the receipt.
+  The document types supported: https://developers.mindee.com/docs/receipt-ocr#document-type
 
 ### Date
 Date fields:
