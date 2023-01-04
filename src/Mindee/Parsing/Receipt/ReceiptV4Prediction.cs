@@ -18,6 +18,12 @@ namespace Mindee.Parsing.Receipt
         public StringField Category { get; set; }
 
         /// <summary>
+        /// The subcategory of the receipt.
+        /// </summary>
+        [JsonPropertyName("subcategory")]
+        public StringField SubCategory { get; set; }
+
+        /// <summary>
         /// The supplier name.
         /// </summary>
         [JsonPropertyName("supplier")]
@@ -64,6 +70,8 @@ namespace Mindee.Parsing.Receipt
             result.Append($"Tip: {Tip}\n");
             result.Append($"Date: {Date.Value}\n");
             result.Append($"Category: {Category.Value}\n");
+            result.Append($"Subcategory: {SubCategory.Value}\n");
+            result.Append($"Document type: {DocumentType.Value}\n");
             result.Append($"Time: {Time.Value}\n");
             result.Append($"Supplier name: {Supplier.Value}\n");
             result.Append($"Taxes: {string.Join("\n                 ", Taxes.Select(t => t))}\n");
