@@ -10,7 +10,7 @@ Using this [sample invoice](https://files.readme.io/a74eaa5-c8e283b-sample_invoi
 string path = "./a74eaa5-c8e283b-sample_invoice.jpeg";
 var prediction = await _mindeeClient
     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-    .ParseAsync<InvoiceV4Prediction>();
+    .ParseAsync<InvoiceV4Inference>();
 
 // Print a summary of the parsed data
 System.Console.WriteLine(prediction.Inference.Prediction.ToString());

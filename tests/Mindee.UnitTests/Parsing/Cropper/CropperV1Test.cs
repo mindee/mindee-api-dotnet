@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_CheckSummary()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<CropperV1Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<CropperV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/cropper/response_v1/doc_to_string.txt");
 
@@ -23,7 +23,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_CheckSummary_WithMultiplePages()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<CropperV1Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<CropperV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/cropper/response_v1/page0_to_string.txt");
 
@@ -36,7 +36,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         public async Task Predict_WithCropping_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<CropperV1Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<CropperV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.NotNull(prediction.Inference.Pages.First().Prediction.Cropping);
             Assert.Equal(2, prediction.Inference.Pages.First().Prediction.Cropping.Count);

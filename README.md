@@ -58,7 +58,7 @@ Let's parse an invoice:
 ```csharp
 var prediction = await _mindeeClient
     .LoadDocument(new FileInfo("/path/to/the/file.ext"))
-    .ParseAsync<InvoiceV4Prediction>();
+    .ParseAsync<InvoiceV4Inference>();
 ```
 
 ### Usage

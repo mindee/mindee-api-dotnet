@@ -1,5 +1,5 @@
 ﻿using Mindee.Parsing;
-using Mindee.Parsing.LicensePlates;
+using Mindee.Parsing.Eu.LicensePlates;
 
 namespace Mindee.UnitTests.Parsing.Eu.LicensePlates
 {
@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.Parsing.Eu.LicensePlates
         public async Task Predict_CheckSummary()
         {
             var mindeeAPi = GetMindeeApiForLicensePlates();
-            var prediction = await mindeeAPi.PredictAsync<LicensePlatesV1Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<LicensePlatesV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/eu/license_plate/response_v1/doc_to_string.txt");
 

@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.Parsing
         public async Task Execute_WithReceiptData_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
+            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
 
@@ -22,7 +22,7 @@ namespace Mindee.UnitTests.Parsing
         public async Task Predict_WithFieldWithOnlyOneValue_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
+            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
 
@@ -45,7 +45,7 @@ namespace Mindee.UnitTests.Parsing
         public async Task Predict_WithFieldWithMultipleValues_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
+            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
 
@@ -69,7 +69,7 @@ namespace Mindee.UnitTests.Parsing
         public async Task Predict_WithFieldWithNoValues_MustSuccess()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
+            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
 
@@ -83,7 +83,7 @@ namespace Mindee.UnitTests.Parsing
         public async Task Predict_MustSuccessfullyGetOrientation()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
+            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
 
@@ -95,7 +95,7 @@ namespace Mindee.UnitTests.Parsing
         public async Task Predict_MustSuccessfullyHandleMultiplePages()
         {
             var mindeeAPi = GetMindeeApiForReceipt();
-            var prediction = await mindeeAPi.PredictAsync<CustomPrediction>(
+            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
 

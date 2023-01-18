@@ -7,8 +7,7 @@ namespace Mindee.Parsing.ShippingContainer
     /// <summary>
     /// The shipping container model for the v1.
     /// </summary>
-    [Endpoint("shipping_containers", "1")]
-    public sealed class ShippingContainerV1Prediction : PredictionBase
+    public sealed class ShippingContainerV1DocumentPrediction : PredictionBase
     {
         /// <summary>
         /// ISO 6346 code for container owner prefix + equipment identifier.

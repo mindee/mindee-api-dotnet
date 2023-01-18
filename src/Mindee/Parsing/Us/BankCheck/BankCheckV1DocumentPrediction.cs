@@ -9,8 +9,7 @@ namespace Mindee.Parsing.Us.BankCheck
     /// <summary>
     /// The us bank check model for the v1.
     /// </summary>
-    [Endpoint("bank_check", "1")]
-    public sealed class BankCheckV1Prediction : PredictionBase
+    public sealed class BankCheckV1DocumentPrediction : PredictionBase
     {
         /// <summary>
         /// Payer's bank account number.

@@ -10,7 +10,7 @@ Using this [sample receipt](https://files.readme.io/ffc127d-sample_receipt.jpg) 
 string path = "./ffc127d-sample_receipt.jpeg";
 var prediction = await _mindeeClient
     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-    .ParseAsync<ReceiptV4Prediction>();
+    .ParseAsync<ReceiptV4Inference>();
 
 // Print a summary of the parsed data
 System.Console.WriteLine(prediction.Inference.Prediction.ToString());
