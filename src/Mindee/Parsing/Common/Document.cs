@@ -5,15 +5,15 @@ namespace Mindee.Parsing.Common
     /// <summary>
     /// Define the parsed document.
     /// </summary>
-    /// <typeparam name="TPredictionModel">The prediction model which defines values.</typeparam>
-    public class Document<TPredictionModel>
-        where TPredictionModel : class, new()
+    /// <typeparam name="TInferenceModel">The model which defines the type of document.</typeparam>
+    public class Document<TInferenceModel>
+        where TInferenceModel : class, new()
     {
         /// <summary>
-        /// <see cref="Inference{TPredictionModel}"/>
+        /// The model which defines the type of document.
         /// </summary>
         [JsonPropertyName("inference")]
-        public Inference<TPredictionModel> Inference { get; set; }
+        public TInferenceModel Inference { get; set; }
 
         /// <summary>
         /// <see cref="Ocr"/>

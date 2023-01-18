@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.Parsing.Fr.IdCard
         public async Task Predict_CheckSummary()
         {
             var mindeeAPi = GetMindeeApiForCarteVitale();
-            var prediction = await mindeeAPi.PredictAsync<CarteVitaleV1Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<CarteVitaleV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/fr/carte_vitale/response_v1/doc_to_string.txt");
 

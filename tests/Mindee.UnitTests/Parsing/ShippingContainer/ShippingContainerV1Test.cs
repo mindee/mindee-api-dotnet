@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.Parsing.ShippingContainer
         public async Task Predict_CheckSummary()
         {
             var mindeeAPi = GetMindeeApiForCarteVitale();
-            var prediction = await mindeeAPi.PredictAsync<ShippingContainerV1Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<ShippingContainerV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/shipping_container/response_v1/doc_to_string.txt");
 

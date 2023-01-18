@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
@@ -10,7 +9,6 @@ using Mindee.Parsing;
 using Mindee.Parsing.Common;
 using Mindee.Parsing.CustomBuilder;
 using Mindee.Pdf;
-
 
 namespace Mindee
 {
@@ -102,16 +100,16 @@ namespace Mindee
         /// Try to parse the current document using custom builder API.
         /// </summary>
         /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
-        /// <returns><see cref="Document{CustomPrediction}"/></returns>
+        /// <returns><see cref="Document{CustomV1Inference}"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<Document<CustomPrediction>> ParseAsync(CustomEndpoint endpoint)
+        public async Task<Document<CustomV1Inference>> ParseAsync(CustomEndpoint endpoint)
         {
             if (DocumentClient == null)
             {
                 return null;
             }
 
-            return await _mindeeApi.PredictAsync<CustomPrediction>(
+            return await _mindeeApi.PredictAsync<CustomV1Inference>(
                 endpoint,
                 new PredictParameter(
                     DocumentClient.File,
@@ -125,7 +123,7 @@ namespace Mindee
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <returns><see cref="Document{CustomPrediction}"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<Document<CustomPrediction>> ParseAsync(
+        public async Task<Document<CustomV1Inference>> ParseAsync(
             CustomEndpoint endpoint
             , PageOptions pageOptions)
         {
@@ -141,7 +139,7 @@ namespace Mindee
                 DocumentClient.File = _pdfOperation.Split(new SplitQuery(DocumentClient.File, pageOptions)).File;
             }
 
-            return await _mindeeApi.PredictAsync<CustomPrediction>(
+            return await _mindeeApi.PredictAsync<CustomV1Inference>(
                 endpoint,
                 new PredictParameter(
                     DocumentClient.File,
@@ -153,22 +151,22 @@ namespace Mindee
         /// </summary>
         /// <param name="withFullText">Get all the words in the current document.By default, set to false.</param>
         /// <param name="withCropper">To get the cropper information about the current document.By default, set to false.</param>
-        /// <typeparam name="TPredictionModel">Set the prediction model used to parse the document.
+        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
         /// The response object will be instantiated based on this parameter.</typeparam>
-        /// <returns><see cref="Document{TPredictionModel}"/></returns>
+        /// <returns><see cref="Document{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         /// <remarks>With full text doesn't work for all the types.</remarks>
-        public async Task<Document<TPredictionModel>> ParseAsync<TPredictionModel>(
+        public async Task<Document<TInferenceModel>> ParseAsync<TInferenceModel>(
             bool withFullText = false
             , bool withCropper = false)
-            where TPredictionModel : class, new()
+            where TInferenceModel : class, new()
         {
             if (DocumentClient == null)
             {
                 return null;
             }
 
-            return await _mindeeApi.PredictAsync<TPredictionModel>(
+            return await _mindeeApi.PredictAsync<TInferenceModel>(
                 new PredictParameter(
                     DocumentClient.File,
                     DocumentClient.Filename,
@@ -182,16 +180,16 @@ namespace Mindee
         /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
         /// <param name="withCropper">To get the cropping results about the current document.By default, set to false.</param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
-        /// <typeparam name="TPredictionModel">Set the prediction model used to parse the document.
+        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
         /// The response object will be instantiated based on this parameter.</typeparam>
-        /// <returns><see cref="Document{TPredictionModel}"/></returns>
+        /// <returns><see cref="Document{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         /// <remarks>With full text doesn't work for all the types. Check the API documentation first.</remarks>
-        public async Task<Document<TPredictionModel>> ParseAsync<TPredictionModel>(
+        public async Task<Document<TInferenceModel>> ParseAsync<TInferenceModel>(
             PageOptions pageOptions
             , bool withFullText = false
             , bool withCropper = false)
-            where TPredictionModel : class, new()
+            where TInferenceModel : class, new()
         {
             if (DocumentClient == null)
             {
@@ -205,7 +203,7 @@ namespace Mindee
                 DocumentClient.File = _pdfOperation.Split(new SplitQuery(DocumentClient.File, pageOptions)).File;
             }
 
-            return await _mindeeApi.PredictAsync<TPredictionModel>(
+            return await _mindeeApi.PredictAsync<TInferenceModel>(
                 new PredictParameter(
                     DocumentClient.File,
                     DocumentClient.Filename,
