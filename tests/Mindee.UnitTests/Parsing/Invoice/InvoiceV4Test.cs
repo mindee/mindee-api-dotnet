@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_CheckSummary()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var prediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/invoice/response_v4/doc_to_string.txt");
 
@@ -23,7 +23,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_CheckSummary_WithMultiplePages()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var prediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/invoice/response_v4/page0_to_string.txt");
 
@@ -36,7 +36,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForInvoiceNumber()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal("0042004801351",
                 invoicePrediction.Inference.Pages.First().Prediction.InvoiceNumber.Value);
@@ -46,7 +46,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForCustomerName()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0, invoicePrediction.Inference.Pages.First().Prediction.CustomerName.Confidence);
             Assert.Equal(0, invoicePrediction.Inference.Pages.First().Id);
@@ -59,7 +59,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForCustomerCompanyRegistrations()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal("FR00000000000",
                 invoicePrediction.Inference.Prediction.CustomerCompanyRegistrations.First().Value);
@@ -71,7 +71,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForCustomerAddress()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal("1954 Bloon Street West Toronto, ON, M6P 3K9 Canada",
                 invoicePrediction.Inference.Pages.Last().Prediction.CustomerAddress.Value);
@@ -81,7 +81,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForDate()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0.99, invoicePrediction.Inference.Pages.First().Prediction.Date.Confidence);
             Assert.Equal(0, invoicePrediction.Inference.Pages.First().Id);
@@ -100,7 +100,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForDueDate()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal("2020-02-17", invoicePrediction.Inference.Pages.First().Prediction.DueDate.Value);
         }
@@ -109,7 +109,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForDocumentType()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal("INVOICE", invoicePrediction.Inference.Pages.First().Prediction.DocumentType.Value);
         }
@@ -118,7 +118,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForLocale()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal("fr", invoicePrediction.Inference.Pages.First().Prediction.Locale.Language);
             Assert.Equal("EUR", invoicePrediction.Inference.Pages.First().Prediction.Locale.Currency);
@@ -128,7 +128,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForTotalTaxesIncluded()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(587.95, invoicePrediction.Inference.Pages.First().Prediction.TotalAmount.Value);
         }
@@ -137,7 +137,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForTotalTaxesExcluded()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(489.97, invoicePrediction.Inference.Pages.First().Prediction.TotalNet.Value);
         }
@@ -146,7 +146,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForSupplierName()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal("TURNPIKE DESIGNS CO.", invoicePrediction.Inference.Pages.Last().Prediction.SupplierName.Value);
         }
@@ -155,7 +155,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForSupplierAddress()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal("156 University Ave, Toronto ON, Canada M5H 2H7",
                 invoicePrediction.Inference.Pages.Last().Prediction.SupplierAddress.Value);
@@ -165,7 +165,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForSupplierCompanyRegistrations()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal("501124705", invoicePrediction.Inference.Pages.First().Prediction.SupplierCompanyRegistrations.First().Value);
             Assert.Equal("FR33501124705", invoicePrediction.Inference.Pages.First().Prediction.SupplierCompanyRegistrations.Last().Value);
@@ -175,7 +175,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForSupplierPaymentDetails()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal("FR7640254025476501124705368", invoicePrediction.Inference.Pages.First().Prediction.SupplierPaymentDetails.First().Iban);
         }
@@ -184,7 +184,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForLineItems()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.NotEmpty(invoicePrediction.Inference.Prediction.LineItems);
 
@@ -200,7 +200,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForOrientation()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(0, invoicePrediction.Inference.Pages.First().Orientation.Value);
         }
@@ -209,7 +209,7 @@ namespace Mindee.UnitTests.Parsing.Invoice
         public async Task Predict_MustSuccessForTotalTaxes()
         {
             var mindeeAPi = GetMindeeApiForInvoice();
-            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var invoicePrediction = await mindeeAPi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.Equal(97.98, invoicePrediction.Inference.Pages.First().Prediction.TotalTaxes);
         }

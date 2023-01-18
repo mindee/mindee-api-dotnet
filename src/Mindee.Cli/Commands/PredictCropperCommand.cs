@@ -38,7 +38,7 @@ namespace Mindee.Cli.Commands
 
                 var invoicePrediction = await _mindeeClient
                     .LoadDocument(new FileInfo(Path))
-                    .ParseAsync<CropperV1Prediction>();
+                    .ParseAsync<CropperV1Inference>();
 
                 if (Output == "summary")
                 {

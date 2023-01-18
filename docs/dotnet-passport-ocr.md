@@ -10,7 +10,7 @@ Using this [sample passport](https://files.readme.io/4a16b1d-passport_pic.jpg) b
 string path = "./4a16b1d-passport_pic.jpg";
 var prediction = await _mindeeClient
     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-    .ParseAsync<PassportV1Prediction>();
+    .ParseAsync<PassportV1Inference>();
 
 // Print a summary of the parsed data
 System.Console.WriteLine(prediction.Inference.Prediction.ToString());

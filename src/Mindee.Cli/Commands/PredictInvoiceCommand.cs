@@ -40,7 +40,7 @@ namespace Mindee.Cli.Commands
 
                 var invoicePrediction = await _mindeeClient
                     .LoadDocument(new FileInfo(Path))
-                    .ParseAsync<InvoiceV4Prediction>(WithWords);
+                    .ParseAsync<InvoiceV4Inference>(WithWords);
 
                 if (Output == "summary")
                 {

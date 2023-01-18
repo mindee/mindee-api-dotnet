@@ -8,8 +8,7 @@ namespace Mindee.Parsing.Receipt
     /// <summary>
     /// The receipt model for the v4.
     /// </summary>
-    [Endpoint("expense_receipts", "4")]
-    public sealed class ReceiptV4Prediction : FinancialPredictionBase
+    public sealed class ReceiptV4DocumentPrediction : FinancialPredictionBase
     {
         /// <summary>
         /// The category of the receipt.

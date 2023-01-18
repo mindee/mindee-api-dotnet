@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.Parsing.Fr.IdCard
         public async Task Predict_CheckSummary()
         {
             var mindeeAPi = GetMindeeApiForFrIdCard();
-            var prediction = await mindeeAPi.PredictAsync<IdCardV1Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<IdCardV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/fr/id_card/response_v1/doc_to_string.txt");
 
@@ -23,7 +23,7 @@ namespace Mindee.UnitTests.Parsing.Fr.IdCard
         public async Task Predict_CheckSummary_WithMultiplePages()
         {
             var mindeeAPi = GetMindeeApiForFrIdCard();
-            var prediction = await mindeeAPi.PredictAsync<IdCardV1Prediction>(ParsingTestBase.GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictAsync<IdCardV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/fr/id_card/response_v1/page0_to_string.txt");
 
