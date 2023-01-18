@@ -38,7 +38,7 @@ namespace Mindee.Cli.Commands
 
                 var prediction = await _mindeeClient
                     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<PassportV1Prediction>();
+                    .ParseAsync<PassportV1Inference>();
 
                 if (Output == "summary")
                 {

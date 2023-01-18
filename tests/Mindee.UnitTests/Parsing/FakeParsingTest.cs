@@ -12,7 +12,7 @@ namespace Mindee.UnitTests.Parsing
             var mindeeAPi = GetMindeeApiForFake();
 
             await Assert.ThrowsAsync<NotSupportedException>(
-               () => _ = mindeeAPi.PredictAsync<FakePrediction>(ParsingTestBase.GetFakePredictParameter()));
+               () => _ = mindeeAPi.PredictAsync<FakeV1Inference>(ParsingTestBase.GetFakePredictParameter()));
         }
 
         private MindeeApi GetMindeeApiForFake()
@@ -21,8 +21,11 @@ namespace Mindee.UnitTests.Parsing
         }
     }
 
-    internal sealed class FakePrediction : PredictionBase
+    internal sealed class FakeV1Inference : Inference<FakeV1DocumentPrediction, FakeV1DocumentPrediction>
     {
+    }
 
+    internal sealed class FakeV1DocumentPrediction : PredictionBase
+    {
     }
 }

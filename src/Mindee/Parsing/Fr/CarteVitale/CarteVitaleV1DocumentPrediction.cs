@@ -9,8 +9,7 @@ namespace Mindee.Parsing.Fr.IdCard
     /// <summary>
     /// The french carte vitale model for the v1.
     /// </summary>
-    [Endpoint("carte_vitale", "1")]
-    public sealed class CarteVitaleV1Prediction
+    public sealed class CarteVitaleV1DocumentPrediction
     {
         /// <summary>
         /// The list of the names of the person.

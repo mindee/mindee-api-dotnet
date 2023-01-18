@@ -22,7 +22,7 @@ Let's parse an invoice:
 ```csharp
 var prediction = await _mindeeClient
     .LoadDocument(new FileInfo("/path/to/the/file.ext"))
-    .ParseAsync<ReceiptV4Prediction>();
+    .ParseAsync<ReceiptV4Inference>();
 ```
 
 You can also use the client with your custom documents:

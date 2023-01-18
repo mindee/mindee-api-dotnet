@@ -9,8 +9,7 @@ namespace Mindee.Parsing.Invoice
     /// <summary>
     /// The invoice model for the v4.
     /// </summary>
-    [Endpoint("invoices", "4")]
-    public sealed class InvoiceV4Prediction : FinancialPredictionBase
+    public sealed class InvoiceV4DocumentPrediction : FinancialPredictionBase
     {
         /// <summary>
         /// List of Reference numbers including PO number.

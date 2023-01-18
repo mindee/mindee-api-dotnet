@@ -25,7 +25,7 @@ namespace Mindee.UnitTests.Parsing
                 );
 
             await Assert.ThrowsAsync<MindeeException>(
-               () => _ = mindeeApi.PredictAsync<ReceiptV4Prediction>(ParsingTestBase.GetFakePredictParameter()));
+               () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
         }
     }
 }
