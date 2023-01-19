@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.Common
 {
@@ -13,5 +14,13 @@ namespace Mindee.Parsing.Common
         /// <example>food</example>
         [JsonPropertyName("value")]
         public string Value { get; set; }
+
+        /// <summary>
+        /// Prettier representation.
+        /// </summary>
+        public override string ToString()
+        {
+            return Value ?? "";
+        }
     }
 }

@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json.Serialization;
+using System.Xml.Schema;
 
 namespace Mindee.Parsing.Common
 {
@@ -13,6 +17,18 @@ namespace Mindee.Parsing.Common
         where TDocumentPrediction : class, new()
     {
         /// <summary>
+        /// Was a rotation applied to parse the document ?
+        /// </summary>
+        [JsonPropertyName("is_rotation_applied")]
+        public bool? IsRotationApplied { get; set; }
+
+        /// <summary>
+        /// Type of product.
+        /// </summary>
+        [JsonPropertyName("product")]
+        public Product Product { get; set; }
+
+        /// <summary>
         /// The pages and the associated values which was detected on the document.
         /// </summary>
         [JsonPropertyName("pages")]
@@ -22,6 +38,26 @@ namespace Mindee.Parsing.Common
         /// The prediction model values.
         /// </summary>
         [JsonPropertyName("prediction")]
-        public TDocumentPrediction Prediction { get; set; }
+        public TDocumentPrediction DocumentPrediction { get; set; }
+
+        /// <summary>
+        /// A prettier reprensentation.
+        /// </summary>
+        public override string ToString()
+        {
+            var result = new StringBuilder();
+            result.Append("\nInference\n");
+            result.Append("#########\n");
+            result.Append($":Product: {Product.Name} v{Product.Version}\n");
+            result.Append($":Rotation applied: {(IsRotationApplied.HasValue && IsRotationApplied.Value ? "Yes" : "No")}\n");
+            result.Append("\nPrediction\n");
+            result.Append("==========\n");
+            result.Append(DocumentPrediction.ToString());
+            result.Append("\nPage Predictions\n");
+            result.Append("================\n\n");
+            result.Append(string.Join("\n", Pages.Select(p => p.ToString())));
+
+            return SummaryHelper.Clean(result.ToString());
+        }
     }
 }
