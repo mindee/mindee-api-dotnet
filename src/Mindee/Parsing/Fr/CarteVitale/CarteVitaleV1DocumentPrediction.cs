@@ -9,7 +9,7 @@ namespace Mindee.Parsing.Fr.IdCard
     /// <summary>
     /// The french carte vitale model for the v1.
     /// </summary>
-    public sealed class CarteVitaleV1DocumentPrediction
+    public class CarteVitaleV1DocumentPrediction
     {
         /// <summary>
         /// The list of the names of the person.
@@ -40,13 +40,11 @@ namespace Mindee.Parsing.Fr.IdCard
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("----- FR Carte Vitale V1 -----\n");
-            result.Append($"Given names: {string.Join(" ", GivenNames.Select(gn => gn.Value))}\n");
-            result.Append($"Surname: {Surname.Value}\n");
-            result.Append($"ID Number: {SocialSecurityNumber.Value}\n");
-            result.Append($"Issuance date: {IssuanceDate.Value}\n");
-
-            result.Append("----------------------\n");
+            StringBuilder result = new StringBuilder();
+            result.Append($":Given names: {string.Join(" ", GivenNames.Select(gn => gn))}\n");
+            result.Append($":Surname: {Surname}\n");
+            result.Append($":Social Security Number: {SocialSecurityNumber}\n");
+            result.Append($":Issuance date: {IssuanceDate}\n");
 
             return SummaryHelper.Clean(result.ToString());
         }

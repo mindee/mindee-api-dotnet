@@ -42,7 +42,7 @@ namespace Mindee.Cli.Commands
 
                 if (Output == "summary")
                 {
-                    context.Console.Out.Write(invoicePrediction != null ? invoicePrediction.Inference.Prediction.ToString()! : "null");
+                    context.Console.Out.Write(invoicePrediction != null ? invoicePrediction.Inference.DocumentPrediction.ToString()! : "null");
                 }
                 else
                 {

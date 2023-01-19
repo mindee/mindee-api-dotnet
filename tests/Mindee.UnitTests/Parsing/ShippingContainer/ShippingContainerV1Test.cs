@@ -12,11 +12,11 @@ namespace Mindee.UnitTests.Parsing.ShippingContainer
             var mindeeAPi = GetMindeeApiForCarteVitale();
             var prediction = await mindeeAPi.PredictAsync<ShippingContainerV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
-            var expected = File.ReadAllText("Resources/shipping_container/response_v1/doc_to_string.txt");
+            var expected = File.ReadAllText("Resources/shipping_container/response_v1/summary_full.rst");
 
             Assert.Equal(
-                ParsingTestBase.CleaningFilenameFromResult(expected),
-                prediction.Inference.Prediction.ToString());
+                expected,
+                prediction.ToString());
         }
 
         private MindeeApi GetMindeeApiForCarteVitale(string fileName = "Resources/shipping_container/response_v1/complete.json")

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing.Common;
 
@@ -22,12 +21,8 @@ namespace Mindee.Parsing.Eu.LicensePlates
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("----- EU License plate V1 -----\n");
-            result.Append($"License plates: {string.Join(", ", LicensePlates.Select(lp => lp.Value))}\n");
-
-            result.Append("----------------------\n");
-
-            return SummaryHelper.Clean(result.ToString());
+            return
+                SummaryHelper.Clean($":License plates: {string.Join(", ", LicensePlates.Select(lp => lp))}\n");
         }
     }
 }

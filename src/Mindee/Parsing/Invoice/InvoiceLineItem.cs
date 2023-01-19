@@ -76,23 +76,23 @@ namespace Mindee.Parsing.Invoice
         public override string ToString()
         {
             string productCode = ProductCode?.ToString() ?? "";
-            string quantity = Quantity?.ToString(".00###") ?? "";
-            string unitPrice = UnitPrice?.ToString(".00###") ?? "";
-            string totalAmount = TotalAmount?.ToString(".00###") ?? "";
-            string tax = TaxAmount?.ToString(".00###") ?? "";
-            tax += TaxRate != null ? $" ({TaxRate?.ToString(".00")}%)" : "";
+            string quantity = SummaryHelper.FormatAmount(Quantity);
+            string unitPrice = SummaryHelper.FormatAmount(UnitPrice);
+            string totalAmount = SummaryHelper.FormatAmount(TotalAmount);
+            string tax = SummaryHelper.FormatAmount(TaxAmount);
+            tax += TaxRate != null ? $" ({SummaryHelper.FormatAmount(TaxRate)}%)" : "";
             string description = Description ?? "";
-            if (description.Length > 32)
+            if (description.Length > 33)
             {
-                description = description.Substring(0, 32) + "...";
+                description = description.Substring(0, 33) + "...";
             }
 
-            return string.Join(" | ",
-                productCode.PadRight(14),
-                quantity.PadRight(6),
-                unitPrice.PadRight(7),
-                totalAmount.PadRight(8),
-                tax.PadRight(16),
+            return string.Join(" ",
+                productCode.PadRight(22),
+                quantity.PadRight(8),
+                unitPrice.PadRight(9),
+                totalAmount.PadRight(10),
+                tax.PadRight(18),
                 description
                 );
         }

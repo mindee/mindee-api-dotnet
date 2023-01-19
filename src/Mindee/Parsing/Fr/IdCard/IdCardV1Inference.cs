@@ -6,7 +6,7 @@ namespace Mindee.Parsing.Fr.IdCard
     /// The ID card fr v1 definition.
     /// </summary>
     [Endpoint("idcard_fr", "1")]
-    public class IdCardV1Inference : Inference<IdCardV1DocumentPrediction, IdCardV1DocumentPrediction>
+    public class IdCardV1Inference : Inference<IdCardV1PagePrediction, IdCardV1DocumentPrediction>
     {
     }
 }

@@ -12,5 +12,13 @@ namespace Mindee.Parsing.Common
         /// </summary>
         [JsonPropertyName("value")]
         public string Value { get; set; }
+
+        /// <summary>
+        /// Prettier representation.
+        /// </summary>
+        public override string ToString()
+        {
+            return Value ?? "";
+        }
     }
 }
