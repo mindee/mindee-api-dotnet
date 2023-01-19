@@ -10,5 +10,10 @@ namespace Mindee.Parsing.Common
 
             return cleanSpace.Replace(summary, "\n");
         }
+
+        public static string FormatAmount(double? amount)
+        {
+            return amount == null ? "" : amount.Value.ToString(".00###");
+        }
     }
 }

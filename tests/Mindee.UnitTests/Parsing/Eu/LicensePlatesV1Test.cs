@@ -12,11 +12,11 @@ namespace Mindee.UnitTests.Parsing.Eu.LicensePlates
             var mindeeAPi = GetMindeeApiForLicensePlates();
             var prediction = await mindeeAPi.PredictAsync<LicensePlatesV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
-            var expected = File.ReadAllText("Resources/eu/license_plate/response_v1/doc_to_string.txt");
+            var expected = File.ReadAllText("Resources/eu/license_plate/response_v1/summary_full.rst");
 
             Assert.Equal(
-                ParsingTestBase.CleaningFilenameFromResult(expected),
-                prediction.Inference.Prediction.ToString());
+                expected,
+                prediction.ToString());
         }
 
         private MindeeApi GetMindeeApiForLicensePlates(string fileName = "Resources/eu/license_plate/response_v1/complete.json")

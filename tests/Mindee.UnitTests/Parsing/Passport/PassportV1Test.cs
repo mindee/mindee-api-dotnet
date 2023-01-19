@@ -12,11 +12,11 @@ namespace Mindee.UnitTests.Parsing.Passport
             var mindeeAPi = GetMindeeApiForPassport();
             var prediction = await mindeeAPi.PredictAsync<PassportV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
-            var expected = File.ReadAllText("Resources/passport/response_v1/doc_to_string.txt");
+            var expected = File.ReadAllText("Resources/passport/response_v1/summary_full.rst");
 
             Assert.Equal(
-                ParsingTestBase.CleaningFilenameFromResult(expected),
-                prediction.Inference.Prediction.ToString());
+                expected,
+                prediction.ToString());
         }
 
         [Fact]
@@ -25,11 +25,11 @@ namespace Mindee.UnitTests.Parsing.Passport
             var mindeeAPi = GetMindeeApiForPassport();
             var prediction = await mindeeAPi.PredictAsync<PassportV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
-            var expected = File.ReadAllText("Resources/passport/response_v1/page0_to_string.txt");
+            var expected = File.ReadAllText("Resources/passport/response_v1/summary_page0.rst");
 
             Assert.Equal(
-                ParsingTestBase.CleaningFilenameFromResult(expected),
-                prediction.Inference.Pages.First().Prediction.ToString());
+                expected,
+                prediction.Inference.Pages.First().ToString());
         }
 
         [Fact]

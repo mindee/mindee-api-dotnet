@@ -12,11 +12,11 @@ namespace Mindee.UnitTests.Parsing.Fr.IdCard
             var mindeeAPi = GetMindeeApiForFrIdCard();
             var prediction = await mindeeAPi.PredictAsync<IdCardV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
-            var expected = File.ReadAllText("Resources/fr/id_card/response_v1/doc_to_string.txt");
+            var expected = File.ReadAllText("Resources/fr/id_card/response_v1/summary_full.rst");
 
             Assert.Equal(
-                CleaningResult(expected),
-                prediction.Inference.Prediction.ToString());
+                expected,
+                prediction.ToString());
         }
 
         [Fact]
@@ -25,23 +25,11 @@ namespace Mindee.UnitTests.Parsing.Fr.IdCard
             var mindeeAPi = GetMindeeApiForFrIdCard();
             var prediction = await mindeeAPi.PredictAsync<IdCardV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
-            var expected = File.ReadAllText("Resources/fr/id_card/response_v1/page0_to_string.txt");
+            var expected = File.ReadAllText("Resources/fr/id_card/response_v1/summary_page0.rst");
 
             Assert.Equal(
-                CleaningResult(expected),
-                prediction.Inference.Prediction.ToString());
-        }
-
-        private string CleaningResult(string expectedSummary)
-        {
-            string cleanedSummary = ParsingTestBase.CleaningFilenameFromResult(expectedSummary);
-
-            // must be deleted when generic wil be place on the inference node
-            var indexDocumentSide = cleanedSummary.IndexOf("Document side");
-            var indexDocumentSideEOL = cleanedSummary.IndexOf("\n", indexDocumentSide);
-            cleanedSummary = cleanedSummary.Remove(indexDocumentSide, indexDocumentSideEOL - indexDocumentSide + 1);
-
-            return cleanedSummary;
+                expected,
+                prediction.Inference.Pages.First().ToString());
         }
 
         private MindeeApi GetMindeeApiForFrIdCard(string fileName = "Resources/fr/id_card/response_v1/complete.json")

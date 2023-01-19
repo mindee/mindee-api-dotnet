@@ -9,8 +9,7 @@ namespace Mindee.Parsing.Fr.IdCard
     /// <summary>
     /// The french id card model for the v1.
     /// </summary>
-    [Endpoint("idcard_fr", "1")]
-    public sealed class IdCardV1DocumentPrediction
+    public class IdCardV1DocumentPrediction
     {
         /// <summary>
         /// The authority which has issued the card.
@@ -77,19 +76,17 @@ namespace Mindee.Parsing.Fr.IdCard
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("----- FR ID Card V1 -----\n");
-            result.Append($"Authority: {Authority.Value}\n");
-            result.Append($"Given names: {string.Join(" ", GivenNames.Select(gn => gn.Value))}\n");
-            result.Append($"Surname: {Surname.Value}\n");
-            result.Append($"Gender: {Gender.Value}\n");
-            result.Append($"ID Number: {IdNumber.Value}\n");
-            result.Append($"Birth date: {BirthDate.Value}\n");
-            result.Append($"Birth place: {BirthPlace.Value}\n");
-            result.Append($"Expiry date: {ExpiryDate.Value}\n");
-            result.Append($"MRZ 1: {Mrz1.Value}\n");
-            result.Append($"MRZ 2: {Mrz2.Value}\n");
-
-            result.Append("----------------------\n");
+            StringBuilder result = new StringBuilder();
+            result.Append($":Authority: {Authority}\n");
+            result.Append($":Given names: {string.Join(" ", GivenNames.Select(gn => gn))}\n");
+            result.Append($":Surname: {Surname}\n");
+            result.Append($":Gender: {Gender}\n");
+            result.Append($":ID Number: {IdNumber}\n");
+            result.Append($":Birth date: {BirthDate}\n");
+            result.Append($":Birth place: {BirthPlace}\n");
+            result.Append($":Expiry date: {ExpiryDate}\n");
+            result.Append($":MRZ 1: {Mrz1}\n");
+            result.Append($":MRZ 2: {Mrz2}\n");
 
             return SummaryHelper.Clean(result.ToString());
         }

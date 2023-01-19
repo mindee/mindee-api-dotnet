@@ -64,15 +64,13 @@ namespace Mindee.Parsing.Us.BankCheck
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("----- US Bank Check V1 -----\n");
-            result.Append($"Routing number: {RoutingNumber?.Value}\n");
-            result.Append($"Account number: {AccountNumber?.Value}\n");
-            result.Append($"Check number: {CheckNumber?.Value}\n");
-            result.Append($"Date: {IssuanceDate?.Value}\n");
-            result.Append($"Amount: {Amount?.Value}\n");
-            result.Append($"Payees: {string.Join(", ", Payees.Select(gn => gn.Value))}\n");
-
-            result.Append("----------------------\n");
+            StringBuilder result = new StringBuilder();
+            result.Append($":Routing number: {RoutingNumber}\n");
+            result.Append($":Account number: {AccountNumber}\n");
+            result.Append($":Check number: {CheckNumber}\n");
+            result.Append($":Date: {IssuanceDate}\n");
+            result.Append($":Amount: {Amount}\n");
+            result.Append($":Payees: {string.Join(", ", Payees.Select(gn => gn))}\n");
 
             return SummaryHelper.Clean(result.ToString());
         }
