@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.Common
 {
@@ -32,5 +33,18 @@ namespace Mindee.Parsing.Common
         /// </summary>
         [JsonPropertyName("extras")]
         public Extras Extras { get; set; }
+
+        /// <summary>
+        /// A prettier reprensentation.
+        /// </summary>
+        public override string ToString()
+        {
+            var result = new StringBuilder();
+            result.Append($"Page {Id}\n");
+            result.Append("------\n");
+            result.Append(Prediction.ToString());
+
+            return result.ToString();
+        }
     }
 }

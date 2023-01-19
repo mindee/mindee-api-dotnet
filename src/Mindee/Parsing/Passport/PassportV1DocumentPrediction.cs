@@ -93,20 +93,18 @@ namespace Mindee.Parsing.Passport
         /// <returns></returns>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("----- Passport V1 -----\n");
-            result.Append($"Full name: {FullName}\n");
-            result.Append($"Given names: {string.Join(" ", GivenNames.Select(gn => gn.Value))}\n");
-            result.Append($"Surname: {Surname.Value}\n");
-            result.Append($"Country: {Country.Value}\n");
-            result.Append($"ID Number: {IdNumber.Value}\n");
-            result.Append($"Issuance date: {IssuanceDate.Value}\n");
-            result.Append($"Birth date: {BirthDate.Value}\n");
-            result.Append($"Expiry date: {ExpiryDate.Value}\n");
-            result.Append($"MRZ 1: {Mrz1.Value}\n");
-            result.Append($"MRZ 2: {Mrz2.Value}\n");
-            result.Append($"MRZ: {Mrz}\n");
-
-            result.Append("----------------------\n");
+            StringBuilder result = new StringBuilder();
+            result.Append($":Full name: {FullName}\n");
+            result.Append($":Given names: {string.Join(" ", GivenNames.Select(gn => gn.Value))}\n");
+            result.Append($":Surname: {Surname}\n");
+            result.Append($":Country: {Country}\n");
+            result.Append($":ID Number: {IdNumber}\n");
+            result.Append($":Issuance date: {IssuanceDate.Value}\n");
+            result.Append($":Birth date: {BirthDate}\n");
+            result.Append($":Expiry date: {ExpiryDate}\n");
+            result.Append($":MRZ 1: {Mrz1}\n");
+            result.Append($":MRZ 2: {Mrz2}\n");
+            result.Append($":MRZ: {Mrz}\n");
 
             return SummaryHelper.Clean(result.ToString());
         }

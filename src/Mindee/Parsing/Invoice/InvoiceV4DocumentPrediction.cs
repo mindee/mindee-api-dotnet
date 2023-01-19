@@ -99,33 +99,43 @@ namespace Mindee.Parsing.Invoice
         /// </summary>
         public override string ToString()
         {
-            string lineItems = "\n";
+            StringBuilder lineItems = new StringBuilder("\n");
             if (LineItems.Any())
             {
-                lineItems =
-                    "\n  Code           | QTY    | Price   | Amount   | Tax (Rate)       | Description\n  ";
-                lineItems += string.Join("\n  ", LineItems.Select(item => item.ToString()));
+                lineItems.Append(
+                    "====================== ======== ========= ========== ================== ====================================\n"
+                    );
+                lineItems.Append(
+                    "Code                   QTY      Price     Amount     Tax (Rate)         Description\n"
+                    );
+                lineItems.Append(
+                    "====================== ======== ========= ========== ================== ====================================\n"
+                    );
+                lineItems.Append(string.Join("\n", LineItems.Select(item => item.ToString())));
+                lineItems.Append(
+                    "\n====================== ======== ========= ========== ================== ===================================="
+                    );
             }
 
-            StringBuilder result = new StringBuilder("----- Invoice V4 -----\n");
-            result.Append($"Locale: {Locale}\n");
-            result.Append($"Invoice number: {InvoiceNumber.Value}\n");
-            result.Append($"Reference numbers: {string.Join(", ", ReferenceNumbers.Select(rn => rn.Value))}\n");
-            result.Append($"Invoice date: {Date.Value}\n");
-            result.Append($"Invoice due date: {DueDate.Value}\n");
-            result.Append($"Supplier name: {SupplierName.Value}\n");
-            result.Append($"Supplier address: {SupplierAddress.Value}\n");
-            result.Append($"Supplier company registrations: {string.Join("; ", SupplierCompanyRegistrations.Select(c => c.Value))}\n");
-            result.Append($"Supplier payment details: {string.Join("; ", SupplierPaymentDetails.Select(p => p))}\n");
-            result.Append($"Customer name: {CustomerName.Value}\n");
-            result.Append($"Customer company registrations: {string.Join("; ", CustomerCompanyRegistrations.Select(c => c.Value))}\n");
-            result.Append($"Customer address: {string.Join("; ", CustomerAddress.Value)}\n");
-            result.Append($"Line Items: {lineItems}\n");
-            result.Append($"Taxes: {string.Join("\n                 ", Taxes.Select(t => t))}\n");
-            result.Append($"Total taxes: {TotalTaxes}\n");
-            result.Append($"Total amount excluding taxes: {TotalNet.Value}\n");
-            result.Append($"Total amount including taxes: {TotalAmount.Value}\n");
-            result.Append("----------------------\n");
+            StringBuilder result = new StringBuilder();
+            result.Append($":Locale: {Locale}\n");
+            result.Append($":Document type: {DocumentType}\n");
+            result.Append($":Invoice number: {InvoiceNumber}\n");
+            result.Append($":Reference numbers: {string.Join(", ", ReferenceNumbers.Select(rn => rn))}\n");
+            result.Append($":Invoice date: {Date.Value}\n");
+            result.Append($":Invoice due date: {DueDate.Value}\n");
+            result.Append($":Supplier name: {SupplierName}\n");
+            result.Append($":Supplier address: {SupplierAddress}\n");
+            result.Append($":Supplier company registrations: {string.Join("; ", SupplierCompanyRegistrations.Select(c => c.Value))}\n");
+            result.Append($":Supplier payment details: {string.Join("; ", SupplierPaymentDetails.Select(p => p))}\n");
+            result.Append($":Customer name: {CustomerName}\n");
+            result.Append($":Customer address: {string.Join("; ", CustomerAddress)}\n");
+            result.Append($":Customer company registrations: {string.Join("; ", CustomerCompanyRegistrations.Select(c => c.Value))}\n");
+            result.Append($":Taxes: {string.Join("\n                 ", Taxes.Select(t => t))}\n");
+            result.Append($":Total net: {TotalNet}\n");
+            result.Append($":Total taxes: {SummaryHelper.FormatAmount(TotalTaxes)}\n");
+            result.Append($":Total amount: {TotalAmount}\n");
+            result.Append($"\n:Line Items: {lineItems}\n");
 
             return SummaryHelper.Clean(result.ToString());
         }

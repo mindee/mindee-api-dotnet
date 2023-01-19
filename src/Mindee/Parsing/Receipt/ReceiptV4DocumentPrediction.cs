@@ -63,21 +63,19 @@ namespace Mindee.Parsing.Receipt
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("----- Receipt V4 -----\n");
-            result.Append($"Total amount: {TotalAmount}\n");
-            result.Append($"Total net: {TotalNet}\n");
-            result.Append($"Tip: {Tip}\n");
-            result.Append($"Date: {Date.Value}\n");
-            result.Append($"Category: {Category.Value}\n");
-            result.Append($"Subcategory: {SubCategory.Value}\n");
-            result.Append($"Document type: {DocumentType.Value}\n");
-            result.Append($"Time: {Time.Value}\n");
-            result.Append($"Supplier name: {Supplier.Value}\n");
-            result.Append($"Taxes: {string.Join("\n                 ", Taxes.Select(t => t))}\n");
-            result.Append($"Total taxes: {TotalTax}\n");
-            result.Append($"Locale: {Locale}\n");
-
-            result.Append("----------------------\n");
+            StringBuilder result = new StringBuilder();
+            result.Append($":Locale: {Locale}\n");
+            result.Append($":Date: {Date.Value}\n");
+            result.Append($":Category: {Category}\n");
+            result.Append($":Subcategory: {SubCategory}\n");
+            result.Append($":Document type: {DocumentType}\n");
+            result.Append($":Time: {Time.Value}\n");
+            result.Append($":Supplier name: {Supplier}\n");
+            result.Append($":Taxes: {string.Join("\n                 ", Taxes.Select(t => t))}\n");
+            result.Append($":Total net: {TotalNet}\n");
+            result.Append($":Total taxes: {TotalTax}\n");
+            result.Append($":Tip: {Tip}\n");
+            result.Append($":Total amount: {TotalAmount}\n");
 
             return SummaryHelper.Clean(result.ToString());
         }

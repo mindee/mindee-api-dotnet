@@ -44,12 +44,12 @@ namespace Mindee.Parsing.Common
 
             if (Value != null)
             {
-                result.Append(Value);
+                result.Append(SummaryHelper.FormatAmount(Value));
             }
 
             if (Rate != null)
             {
-                result.Append($" {Rate?.ToString("0.00")}%");
+                result.Append($" {SummaryHelper.FormatAmount(Rate)}%");
             }
 
             if (Code != null)
@@ -59,7 +59,7 @@ namespace Mindee.Parsing.Common
 
             if (Base != null)
             {
-                result.Append($" {Base}");
+                result.Append($" {SummaryHelper.FormatAmount(Base)}");
             }
 
             return result.ToString().Trim();

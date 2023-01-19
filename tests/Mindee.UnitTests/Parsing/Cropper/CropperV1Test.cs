@@ -16,7 +16,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
 
             Assert.Equal(
                 ParsingTestBase.CleaningFilenameFromResult(expected),
-                prediction.Inference.Prediction.ToString());
+                prediction.Inference.DocumentPrediction.ToString());
         }
 
         [Fact]

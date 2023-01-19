@@ -32,12 +32,10 @@ namespace Mindee.Parsing.ShippingContainer
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("----- Shipping Container V1 -----\n");
-            result.Append($"Owner: {Owner.Value}\n");
-            result.Append($"Serial number: {SerialNumber.Value}\n");
-            result.Append($"Size and type: {SizeType.Value}\n");
-
-            result.Append("----------------------\n");
+            StringBuilder result = new StringBuilder();
+            result.Append($":Owner: {Owner}\n");
+            result.Append($":Serial number: {SerialNumber}\n");
+            result.Append($":Size and type: {SizeType}\n");
 
             return SummaryHelper.Clean(result.ToString());
         }
