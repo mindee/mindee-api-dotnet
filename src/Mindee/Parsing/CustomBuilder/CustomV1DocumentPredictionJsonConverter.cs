@@ -39,39 +39,6 @@ namespace Mindee.Parsing.CustomBuilder
                 }
             }
 
-            //while (reader.Read())
-            //{
-            //    if (reader.TokenType == JsonTokenType.PropertyName)
-            //    {
-            //        string propertyName = reader.GetString();
-            //        if (propertyName == "value")
-            //        {
-            //            classificationFields.Add(
-            //                propertyName,
-            //                (ClassificationField)JsonSerializer.Deserialize(ref reader, typeof(ClassificationField), options)
-            //                );
-
-            //            //classificationFields.Add(
-            //            //    propertyName,
-            //            //    (ClassificationField)JsonSerializer.Deserialize(ref reader, typeof(ClassificationField), options)
-            //            //    );
-
-            //            //classificationFields.Add(
-            //            //    propertyName,
-            //            //    classificationFieldConverter.Read(ref reader, typeof(ClassificationField), options)
-            //            //);
-            //        }
-            //        else
-            //        {
-            //            //reader.Read();
-
-            //            //classificationFields.Add(
-            //            //    propertyName,
-            //            //    classificationFieldConverter.Read(ref reader, typeof(ClassificationField), options)
-            //            //);
-            //        }
-            //    }
-
             return new CustomV1DocumentPrediction()
             {
                 ClassificationFields = classificationFields,
