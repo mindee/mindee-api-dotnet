@@ -6,7 +6,7 @@ namespace Mindee.Parsing.CustomBuilder
     /// <summary>
     /// Define a value available in a field.
     /// </summary>
-    public sealed class ListFieldValue
+    public class ListFieldValue
     {
         /// <summary>
         /// The confidence about the zone of the value extracted.
@@ -27,5 +27,13 @@ namespace Mindee.Parsing.CustomBuilder
         /// </summary>
         [JsonPropertyName("content")]
         public string Content { get; set; }
+
+        /// <summary>
+        /// A prettier reprensentation.
+        /// </summary>
+        public override string ToString()
+        {
+            return Content ?? "";
+        }
     }
 }
