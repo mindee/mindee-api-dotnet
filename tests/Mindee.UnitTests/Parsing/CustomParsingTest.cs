@@ -3,13 +3,29 @@ using Mindee.Parsing.CustomBuilder;
 
 namespace Mindee.UnitTests.Parsing
 {
+    [Trait("Category", "Custom API")]
     public class CustomParsingTest
     {
         [Fact]
-        [Trait("Category", "Custom API")]
+        public async Task Predict_CheckSummary()
+        {
+            var mindeeAPi = GetMindeeApiForCustom();
+
+            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
+                new CustomEndpoint("customProduct", "fakeOrga"),
+                ParsingTestBase.GetFakePredictParameter());
+
+            var expected = File.ReadAllText("Resources/custom/response_v1/summary_full.rst");
+
+            Assert.Equal(
+                expected,
+                prediction.ToString());
+        }
+
+        [Fact]
         public async Task Execute_WithReceiptData_MustSuccess()
         {
-            var mindeeAPi = GetMindeeApiForReceipt();
+            var mindeeAPi = GetMindeeApiForCustom();
             var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
@@ -18,10 +34,9 @@ namespace Mindee.UnitTests.Parsing
         }
 
         [Fact]
-        [Trait("Category", "Custom API")]
         public async Task Predict_WithFieldWithOnlyOneValue_MustSuccess()
         {
-            var mindeeAPi = GetMindeeApiForReceipt();
+            var mindeeAPi = GetMindeeApiForCustom();
             var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
@@ -41,10 +56,9 @@ namespace Mindee.UnitTests.Parsing
         }
 
         [Fact]
-        [Trait("Category", "Custom API")]
         public async Task Predict_WithFieldWithMultipleValues_MustSuccess()
         {
-            var mindeeAPi = GetMindeeApiForReceipt();
+            var mindeeAPi = GetMindeeApiForCustom();
             var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
@@ -65,10 +79,9 @@ namespace Mindee.UnitTests.Parsing
         }
 
         [Fact]
-        [Trait("Category", "Custom API")]
         public async Task Predict_WithFieldWithNoValues_MustSuccess()
         {
-            var mindeeAPi = GetMindeeApiForReceipt();
+            var mindeeAPi = GetMindeeApiForCustom();
             var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
@@ -79,10 +92,9 @@ namespace Mindee.UnitTests.Parsing
         }
 
         [Fact]
-        [Trait("Category", "Custom API")]
         public async Task Predict_MustSuccessfullyGetOrientation()
         {
-            var mindeeAPi = GetMindeeApiForReceipt();
+            var mindeeAPi = GetMindeeApiForCustom();
             var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
@@ -91,10 +103,9 @@ namespace Mindee.UnitTests.Parsing
         }
 
         [Fact]
-        [Trait("Category", "Custom API")]
         public async Task Predict_MustSuccessfullyHandleMultiplePages()
         {
-            var mindeeAPi = GetMindeeApiForReceipt();
+            var mindeeAPi = GetMindeeApiForCustom();
             var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
@@ -102,7 +113,7 @@ namespace Mindee.UnitTests.Parsing
             Assert.Equal(2, prediction.Inference.Pages.Count);
         }
 
-        private MindeeApi GetMindeeApiForReceipt(string fileName = "Resources/custom/response_v1/complete.json")
+        private MindeeApi GetMindeeApiForCustom(string fileName = "Resources/custom/response_v1/complete.json")
         {
             return ParsingTestBase.GetMindeeApi(fileName);
         }
