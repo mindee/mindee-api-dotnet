@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.CustomBuilder
 {
     /// <summary>
-    /// Define the values list of a field.
+    /// Define a classification field.
     /// </summary>
-    public class ListField
+    public class ClassificationField
     {
         /// <summary>
         /// The confidence about the zone of the value extracted.
@@ -17,17 +16,17 @@ namespace Mindee.Parsing.CustomBuilder
         public double Confidence { get; set; }
 
         /// <summary>
-        /// <see cref="ListFieldValue"/>
+        /// The content of the value.
         /// </summary>
-        [JsonPropertyName("values")]
-        public List<ListFieldValue> Values { get; set; }
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
 
         /// <summary>
         /// A prettier reprensentation.
         /// </summary>
         public override string ToString()
         {
-            return $"{string.Join(" ", Values)}";
+            return Value ?? "";
         }
     }
 }
