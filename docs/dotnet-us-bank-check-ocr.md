@@ -7,22 +7,44 @@ The .NET OCR SDK supports the [Bank Checks OCR](https://developers.mindee.com/do
 string path = "./path/to/the/file.ext";
 var prediction = await _mindeeClient
     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-    .ParseAsync<BankCheckV1Prediction>();
+    .ParseAsync<BankCheckV1Inference>();
 
 // Print a summary of the parsed data
-System.Console.WriteLine(prediction.Inference.Prediction.ToString());
+System.Console.WriteLine(prediction.ToString());
 ```
 
 Output:
-```
------ US Bank Check V1 -----
-Routing number: 012345678
-Account number: 12345678910
-Check number: 8620001342
-Date: 2022-04-26
-Amount: 6496.58
-Payees: John Doe, Jane Doe
-----------------------
+########
+Document
+########
+:Mindee ID: 0626bc33-2b9f-4645-b455-6af111c551cf
+:Filename: check.jpg
+
+Inference
+#########
+:Product: mindee/bank_check v1.0
+:Rotation applied: Yes
+
+Prediction
+==========
+:Routing number: 012345678
+:Account number: 12345678910
+:Check number: 8620001342
+:Date: 2022-04-26
+:Amount: 6496.58
+:Payees: John Doe, Jane Doe
+
+Page Predictions
+================
+
+Page 0
+------
+:Routing number: 012345678
+:Account number: 12345678910
+:Check number: 8620001342
+:Date: 2022-04-26
+:Amount: 6496.58
+:Payees: John Doe, Jane Doe
 ```
 
 &nbsp;
