@@ -157,7 +157,7 @@ Simply setting the correct class is enough:
 ```csharp
 var prediction = await _mindeeClient
     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-    .ParseAsync<ReceiptV4Prediction>();
+    .ParseAsync<ReceiptV4Inference>();
 ```
 
 ### Custom Documents
