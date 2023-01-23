@@ -36,15 +36,7 @@ var prediction = await _mindeeClient
 2. You can also use your own class which will represent the required fields. For example:
 ```csharp
 
-// The CustomEndpoint attribute is required when using your own model.
-// It will be used to know which Mindee API called.
-
-[CustomEndpoint(
-    endpointName: "wnine",
-    accountName: "john",
-    version: "1.1" // optional
-)]
-public sealed class WNine
+public sealed class WNineV1DocumentPrediction
 {
   [JsonPropertyName("name")]
   public StringField Name { get; set; }
@@ -55,22 +47,40 @@ public sealed class WNine
   (...)
 }
 
+// The CustomEndpoint attribute is required when using your own model.
+// It will be used to know which Mindee API called.
+[CustomEndpoint(
+    endpointName: "wnine",
+    accountName: "john",
+    version: "1.1" // optional
+)]
+public sealed class WNineV1Inference : Inference<WNineV1DocumentPrediction, WNineV1DocumentPrediction>
+{
+}
+
 var prediction = await _mindeeClient
     .LoadDocument(new FileInfo(Path))
-    .ParseAsync<WNine>();
+    .ParseAsync<WNineV1Inference>();
 ```
 
-## CustomPrediction object
-All the fields which are defined in the API builder when creating your custom document, are available.
+## CustomV1Inference object
+All the fields which are present in the API builder 
+are available (the fields are defined when creating your custom API).
 
-`CustomPrediction` is a `Dictionary` with the key as a `string` for the name of the field, and a `ListField` as a value.
-Each `ListField` contains a list of all values extracted for this field. 
+`CustomV1Inference` is an object which contains a document prediction and pages prediction result.
+### `CustomV1PagePrediction` 
+Which is a `Dictionnary<String, ListField>` with the key as a `string` for the name of the field, and a `ListField` as a value.
 
-Value fields are accessed via the `Values` property.
+### `CustomV1DocumentPrediction` 
+Which contains 2 properties : `ClassificationFields` and `Fields`. 
+Both are a Map and the key is a `string` for the name of the field and for the value :
+* `ClassificationFields` have a `ClassificationField` object as value. Each `ClassificationField` contains a value.
+* `Fields` have a `ListField` object as value. Each `ListField` contains a list of all values extracted for this field.
 
 > 📘 **Info**
 >
 > Both document level and page level objects work in the same way.
+
 
 ### Fields property
 A Map with the following structure:
@@ -90,7 +100,7 @@ var prediction = await _mindeeClient
     .LoadDocument(new FileInfo(path))
     .ParseAsync(myEndpoint);
 
-ListField? employerId = prediction.Inference.Prediction.GetValueOrDefault("employer_id");
+ListField? employerId = prediction.Inference.Pages.FirstOrDefault()?.Prediction.GetValueOrDefault("employer_id");
 ```
 
 &nbsp;

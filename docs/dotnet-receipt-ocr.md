@@ -13,26 +13,54 @@ var prediction = await _mindeeClient
     .ParseAsync<ReceiptV4Inference>();
 
 // Print a summary of the parsed data
-System.Console.WriteLine(prediction.Inference.Prediction.ToString());
+System.Console.WriteLine(prediction.ToString());
 ```
 
 Output:
 ```
------ Receipt V4 -----
-Filename: 6882f91-receipt23.png
-Total amount: 7.27
-Total net: 6.86
-Tip:
-Date: 2022-04-03
-Category: food
-Subcategory: restaurant
-Document type: EXPENSE RECEIPT
-Time: 10:00
-Supplier name: MINDEE TAKE OUT
-Taxes: 0.41 TAX
-Total taxes: 0.41
-Locale: en-US; en; US; USD;
-----------------------
+########
+Document
+########
+:Mindee ID: aa1a8095-20c6-4080-98bd-4684d2807365
+:Filename: receipt.jpg
+
+Inference
+#########
+:Product: mindee/expense_receipts v4.1
+:Rotation applied: Yes
+
+Prediction
+==========
+:Locale: en-US; en; US; USD;
+:Date: 2014-07-07
+:Category: food
+:Subcategory: restaurant
+:Document type: EXPENSE RECEIPT
+:Time: 20:20
+:Supplier name: LOGANS
+:Taxes: 3.34 TAX
+:Total net: 40.48
+:Total taxes: 3.34
+:Tip: 10.00
+:Total amount: 53.82
+
+Page Predictions
+================
+
+Page 0
+------
+:Locale: en-US; en; US; USD;
+:Date: 2014-07-07
+:Category: food
+:Subcategory: restaurant
+:Document type: EXPENSE RECEIPT
+:Time: 20:20
+:Supplier name: LOGANS
+:Taxes: 3.34 TAX
+:Total net: 40.48
+:Total taxes: 3.34
+:Tip: 10.00
+:Total amount: 53.82
 ```
 
 ## Field Objects
