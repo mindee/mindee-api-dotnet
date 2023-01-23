@@ -36,13 +36,13 @@ namespace Mindee.Parsing.Common
         /// List of words found.
         /// </summary>
         [JsonPropertyName("all_words")]
-        public List<AllWord> AllWords { get; set; }
+        public List<Word> AllWords { get; set; }
     }
 
     /// <summary>
     /// Represent a word.
     /// </summary>
-    public class AllWord
+    public class Word
     {
         /// <summary>
         /// The confidence about the zone of the value extracted.
