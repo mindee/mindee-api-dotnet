@@ -1,6 +1,16 @@
 # CHANGELOG
 
-## v3.4.0 - 2023-01-04
+## v2.0.0 - 2023-01-23
+### !BREAKING CHANGES
+* :boom: drop Invoice v3 support
+* :boom: prediction model classes must be replace by using inference model to use OTS API
+
+### Changes
+* :sparkles: improve summaries
+* :sparkles: support classification type for custom document
+* :recycle: renaming AllWord to Word
+
+## v1.4.0 - 2023-01-04
 ### Changes
 * :sparkles: Support Receipt V4.1
 * :sparkles: Support Invoice V4.1
