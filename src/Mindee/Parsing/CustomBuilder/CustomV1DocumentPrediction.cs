@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Mindee.Parsing.Common;
 using System.Text;
 using System.Text.Json.Serialization;
+using Mindee.Parsing.Common;
 
 namespace Mindee.Parsing.CustomBuilder
 {
