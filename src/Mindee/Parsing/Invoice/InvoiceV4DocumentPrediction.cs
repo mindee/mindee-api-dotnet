@@ -72,18 +72,6 @@ namespace Mindee.Parsing.Invoice
         public StringField InvoiceNumber { get; set; }
 
         /// <summary>
-        /// Total amount including taxes.
-        /// </summary>
-        [JsonPropertyName("total_amount")]
-        public AmountField TotalAmount { get; set; }
-
-        /// <summary>
-        /// Total amount excluding taxes.
-        /// </summary>
-        [JsonPropertyName("total_net")]
-        public AmountField TotalNet { get; set; }
-
-        /// <summary>
         /// Line items details.
         /// </summary>
         [JsonPropertyName("line_items")]
