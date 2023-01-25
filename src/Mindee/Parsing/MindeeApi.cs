@@ -38,13 +38,16 @@ namespace Mindee.Parsing
             }
             else
             {
-                _httpClient = BuildClient();
+                _httpClient = BuildClient(mindeeSettings.Value.RequestTimeoutInSeconds);
             }
         }
 
-        private RestClient BuildClient()
+        private RestClient BuildClient(int timeoutInSeconds)
         {
-            var options = new RestClientOptions(_baseUrl);
+            var options = new RestClientOptions(_baseUrl)
+            {
+                MaxTimeout = TimeSpan.FromSeconds(timeoutInSeconds).Milliseconds
+            };
             var client = new RestClient(options,
                 p => p.Add("Authorization", $"Token {_apiKey}")
             );
