@@ -26,10 +26,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B9F282D0-337D-4B42-81EB-6830486BA103}"
 	ProjectSection(SolutionItems) = preProject
 		docs\dotnet-api-builder.md = docs\dotnet-api-builder.md
+		docs\dotnet-financial-document-ocr.md = docs\dotnet-financial-document-ocr.md
 		docs\dotnet-getting-started.md = docs\dotnet-getting-started.md
 		docs\dotnet-invoice-ocr.md = docs\dotnet-invoice-ocr.md
+		docs\dotnet-license-plates-ocr.md = docs\dotnet-license-plates-ocr.md
 		docs\dotnet-passport-ocr.md = docs\dotnet-passport-ocr.md
+		docs\dotnet-proof-of-address-ocr.md = docs\dotnet-proof-of-address-ocr.md
 		docs\dotnet-receipt-ocr.md = docs\dotnet-receipt-ocr.md
+		docs\dotnet-shipping-containers-ocr.md = docs\dotnet-shipping-containers-ocr.md
+		docs\dotnet-us-bank-check-ocr.md = docs\dotnet-us-bank-check-ocr.md
 		docs\index.md = docs\index.md
 	EndProjectSection
 EndProject
