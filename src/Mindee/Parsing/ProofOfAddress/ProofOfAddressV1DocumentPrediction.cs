@@ -18,7 +18,7 @@ namespace Mindee.Parsing.ProofOfAddress
         public DateField IssuanceDate { get; set; }
 
         /// <summary>
-        /// All extrated ISO date yyyy-mm-dd. Works both for European and US dates.
+        /// All extracted ISO date yyyy-mm-dd. Works both for European and US dates.
         /// </summary>
         [JsonPropertyName("dates")]
         public List<DateField> Dates { get; set; } = new List<DateField>();
