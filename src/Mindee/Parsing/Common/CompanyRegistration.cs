@@ -1,7 +1,6 @@
 ﻿using System.Text.Json.Serialization;
-using Mindee.Parsing.Common;
 
-namespace Mindee.Parsing.Invoice
+namespace Mindee.Parsing.Common
 {
     /// <summary>
     /// Represent a company registration.
