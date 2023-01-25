@@ -5,7 +5,7 @@ namespace Mindee.Parsing.Common
     /// <summary>
     /// Represent a date.
     /// </summary>
-    public class Date : BaseField
+    public class DateField : BaseField
     {
         /// <summary>
         /// The value of the field.

@@ -63,7 +63,7 @@ namespace Mindee.Parsing.Invoice
         /// The due date of the invoice.
         /// </summary>
         [JsonPropertyName("due_date")]
-        public Date DueDate { get; set; }
+        public DateField DueDate { get; set; }
 
         /// <summary>
         /// The invoice number.
