@@ -18,7 +18,7 @@ namespace Mindee.Parsing.Common
         /// The date.
         /// </summary>
         [JsonPropertyName("date")]
-        public Date Date { get; set; }
+        public DateField Date { get; set; }
 
         /// <summary>
         /// <see cref="Tax"/>
