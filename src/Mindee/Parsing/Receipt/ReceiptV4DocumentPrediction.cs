@@ -32,7 +32,7 @@ namespace Mindee.Parsing.Receipt
         /// <see cref="Time"/>
         /// </summary>
         [JsonPropertyName("time")]
-        public Time Time { get; set; }
+        public TimeField Time { get; set; }
 
         /// <summary>
         /// Total amount including taxes and tips.
