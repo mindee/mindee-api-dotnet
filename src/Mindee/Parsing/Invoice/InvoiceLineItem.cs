@@ -7,7 +7,7 @@ namespace Mindee.Parsing.Invoice
     /// <summary>
     /// Line items details.
     /// </summary>
-    public sealed class InvoiceLineItem : FinancialPredictionBase
+    public class InvoiceLineItem : FinancialPredictionBase
     {
         /// <summary>
         /// The product code referring to the item.
