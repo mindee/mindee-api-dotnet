@@ -14,5 +14,10 @@
         /// The Mindee base url.
         /// </summary>
         public string MindeeBaseUrl { get; set; } = string.Empty;
+
+        /// <summary>
+        /// The request to Mindee API should time out about.
+        /// </summary>
+        public int RequestTimeoutInSeconds { get; set; } = 120;
     }
 }
