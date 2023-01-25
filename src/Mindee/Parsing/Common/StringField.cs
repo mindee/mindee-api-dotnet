@@ -6,7 +6,7 @@ namespace Mindee.Parsing.Common
     /// <summary>
     /// Represent a string field.
     /// </summary>
-    public sealed class StringField : BaseField
+    public class StringField : BaseField
     {
         /// <summary>
         /// The value of the field.
