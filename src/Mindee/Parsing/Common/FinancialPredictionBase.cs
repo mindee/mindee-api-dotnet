@@ -25,5 +25,17 @@ namespace Mindee.Parsing.Common
         /// </summary>
         [JsonPropertyName("taxes")]
         public List<Tax> Taxes { get; set; }
+
+        /// <summary>
+        /// Total amount including taxes.
+        /// </summary>
+        [JsonPropertyName("total_amount")]
+        public AmountField TotalAmount { get; set; }
+
+        /// <summary>
+        /// Total amount excluding taxes.
+        /// </summary>
+        [JsonPropertyName("total_net")]
+        public AmountField TotalNet { get; set; }
     }
 }
