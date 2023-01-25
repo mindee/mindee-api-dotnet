@@ -1,8 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json.Serialization;
-using Mindee.Parsing.Common;
 
-namespace Mindee.Parsing.Invoice
+namespace Mindee.Parsing.Common
 {
     /// <summary>
     /// Represent a payment detail.
@@ -38,7 +37,7 @@ namespace Mindee.Parsing.Invoice
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
             if (!string.IsNullOrWhiteSpace(AccountNumber))
             {
