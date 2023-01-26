@@ -27,14 +27,14 @@ namespace Mindee.Parsing.Financial
         /// <summary>
         /// List of <see cref="CompanyRegistration"/>
         /// </summary>
-        [JsonPropertyName("supplier_company_registration")]
+        [JsonPropertyName("supplier_company_registrations")]
         public List<CompanyRegistration> SupplierCompanyRegistrations { get; set; }
 
         /// <summary>
         /// List of payment details.
         /// </summary>
         [JsonPropertyName("payment_details")]
-        public List<PaymentDetail> SupplierPaymentDetails { get; set; }
+        public List<PaymentDetail> PaymentDetails { get; set; }
 
         /// <summary>
         /// The supplier address.
@@ -51,7 +51,7 @@ namespace Mindee.Parsing.Financial
         /// <summary>
         /// List of customer company registrations.
         /// </summary>
-        [JsonPropertyName("customer_company_registration")]
+        [JsonPropertyName("customer_company_registrations")]
         public List<CompanyRegistration> CustomerCompanyRegistrations { get; set; }
 
         /// <summary>
@@ -97,12 +97,6 @@ namespace Mindee.Parsing.Financial
         public StringField SubCategory { get; set; }
 
         /// <summary>
-        /// The supplier name.
-        /// </summary>
-        [JsonPropertyName("supplier")]
-        public StringField Supplier { get; set; }
-
-        /// <summary>
         /// <see cref="Time"/>
         /// </summary>
         [JsonPropertyName("time")]
@@ -119,11 +113,11 @@ namespace Mindee.Parsing.Financial
         /// </summary>
         public override string ToString()
         {
-            StringBuilder lineItems = new StringBuilder("\n");
+            var lineItems = new StringBuilder();
             if (LineItems.Any())
             {
                 lineItems.Append(
-                    "====================== ======== ========= ========== ================== ====================================\n"
+                    "\n====================== ======== ========= ========== ================== ====================================\n"
                     );
                 lineItems.Append(
                     "Code                   QTY      Price     Amount     Tax (Rate)         Description\n"
@@ -147,12 +141,10 @@ namespace Mindee.Parsing.Financial
             result.Append($":Time: {Time}\n");
             result.Append($":Number: {InvoiceNumber}\n");
             result.Append($":Reference numbers: {string.Join(", ", ReferenceNumbers.Select(rn => rn))}\n");
-            result.Append($":Date: {Date.Value}\n");
-            result.Append($":Due date: {DueDate.Value}\n");
             result.Append($":Supplier name: {SupplierName}\n");
             result.Append($":Supplier address: {SupplierAddress}\n");
             result.Append($":Supplier company registrations: {string.Join("; ", SupplierCompanyRegistrations.Select(c => c.Value))}\n");
-            result.Append($":Supplier payment details: {string.Join("; ", SupplierPaymentDetails.Select(p => p))}\n");
+            result.Append($":Payment details: {string.Join("; ", PaymentDetails.Select(p => p))}\n");
             result.Append($":Customer name: {CustomerName}\n");
             result.Append($":Customer address: {string.Join("; ", CustomerAddress)}\n");
             result.Append($":Customer company registrations: {string.Join("; ", CustomerCompanyRegistrations.Select(c => c.Value))}\n");
