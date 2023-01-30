@@ -39,7 +39,7 @@ namespace Mindee.Parsing.ProofOfAddress
         /// Generic: VAT NUMBER, TAX ID, COMPANY REGISTRATION NUMBER or country specific.
         /// </summary>
         [JsonPropertyName("issuer_company_registration")]
-        public List<CompanyRegistration> IssuerCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
+        public List<CompanyRegistration> IssuerCompanyRegistration { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
         /// Name of the document's recipient.
@@ -57,7 +57,7 @@ namespace Mindee.Parsing.ProofOfAddress
         /// Generic: VAT NUMBER, TAX ID, COMPANY REGISTRATION NUMBER or country specific.
         /// </summary>
         [JsonPropertyName("recipient_company_registration")]
-        public List<CompanyRegistration> RecipientCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
+        public List<CompanyRegistration> RecipientCompanyRegistration { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
         ///
@@ -70,10 +70,10 @@ namespace Mindee.Parsing.ProofOfAddress
             result.Append($":Locale: {Locale}\n");
             result.Append($":Issuer name: {IssuerName.Value}\n");
             result.Append($":Issuer Address: {IssuerAddress.Value}\n");
-            result.Append($":Issuer Company Registrations: {string.Join("; ", IssuerCompanyRegistrations.Select(c => c.Value))}\n");
+            result.Append($":Issuer Company Registrations: {string.Join("; ", IssuerCompanyRegistration.Select(c => c.Value))}\n");
             result.Append($":Recipient name: {RecipientName.Value}\n");
             result.Append($":Recipient Address: {RecipientAddress.Value}\n");
-            result.Append($":Recipient Company Registrations: {string.Join("; ", RecipientCompanyRegistrations.Select(c => c.Value))}\n");
+            result.Append($":Recipient Company Registrations: {string.Join("; ", RecipientCompanyRegistration.Select(c => c.Value))}\n");
             result.Append($":Issuance date: {IssuanceDate.Value}\n");
             result.Append($":Dates: {string.Join("\n        ", Dates.Select(c => c.Value))}\n");
 

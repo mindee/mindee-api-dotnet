@@ -7,7 +7,7 @@ namespace Mindee.Parsing.Invoice
     /// <summary>
     /// Line items details.
     /// </summary>
-    public class InvoiceLineItem : FinancialPredictionBase
+    public class InvoiceLineItem
     {
         /// <summary>
         /// The product code referring to the item.
@@ -64,14 +64,14 @@ namespace Mindee.Parsing.Invoice
         public double PageId { get; set; }
 
         /// <summary>
-        /// Contains the relative vertices coordinates (points) of a polygon containing
+        /// Contains the relative vertices's coordinates (points) of a polygon containing
         /// the field in the document.
         /// </summary>
         [JsonPropertyName("polygon")]
         public List<List<double>> Polygon { get; set; }
 
         /// <summary>
-        /// A prettier reprensentation of the current model values.
+        /// A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
         {
