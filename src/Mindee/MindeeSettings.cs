@@ -1,12 +1,12 @@
 ﻿namespace Mindee
 {
     /// <summary>
-    /// Mindee's settings.
+    /// Mindee settings.
     /// </summary>
     public sealed class MindeeSettings
     {
         /// <summary>
-        /// The api key.
+        /// The API key.
         /// </summary>
         public string ApiKey { get; set; } = string.Empty;
 
