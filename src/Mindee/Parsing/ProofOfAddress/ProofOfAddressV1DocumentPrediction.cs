@@ -38,7 +38,7 @@ namespace Mindee.Parsing.ProofOfAddress
         /// <summary>
         /// Generic: VAT NUMBER, TAX ID, COMPANY REGISTRATION NUMBER or country specific.
         /// </summary>
-        [JsonPropertyName("issuer_company_registrations")]
+        [JsonPropertyName("issuer_company_registration")]
         public List<CompanyRegistration> IssuerCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Mindee.Parsing.ProofOfAddress
         /// <summary>
         /// Generic: VAT NUMBER, TAX ID, COMPANY REGISTRATION NUMBER or country specific.
         /// </summary>
-        [JsonPropertyName("recipient_company_registrations")]
+        [JsonPropertyName("recipient_company_registration")]
         public List<CompanyRegistration> RecipientCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
