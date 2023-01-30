@@ -1,6 +1,5 @@
 [![.NET 6](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml)
 [![.NET 4.7.2](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet-fmk.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet-fmk.yml)
-
 [![Join Mindee on Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)](https://mindee-community.slack.com/join/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw#/shared-invite/email)
 
 # Mindee API Helper Library for .NET
@@ -50,8 +49,7 @@ Or, you could also simply instantiate a new instance of `MindeeClient`:
 ```csharp
 using Mindee;
 
-var mindeeClient = new MindeeClient(
-            Options.Create(new MindeeSettings() { ApiKey = "MyKey" }));
+var mindeeClient = MindeeClientInit.Create("MyKey");
 ```
 
 Let's parse an invoice:
