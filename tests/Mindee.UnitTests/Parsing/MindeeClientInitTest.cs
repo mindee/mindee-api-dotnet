@@ -1,16 +1,16 @@
 ﻿namespace Mindee.UnitTests.Parsing
 {
-    [Trait("Category", "MindeeClient init")]
+    [Trait("Category", "Mindee client init")]
     public class MindeeClientInitTest
     {
         [Fact]
-        public async Task Create_WithApiKey()
+        public void Create_WithApiKey()
         {
             Assert.NotNull(MindeeClientInit.Create("MyApiKey"));
         }
 
         [Fact]
-        public async Task Create_WithoutApiKey()
+        public void Create_WithoutApiKey()
         {
             Assert.NotNull(MindeeClientInit.Create(new MindeeSettings() { ApiKey = "MyApiKey" }));
         }

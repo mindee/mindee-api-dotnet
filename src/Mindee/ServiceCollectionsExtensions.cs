@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Mindee.Parsing;
 using Mindee.Pdf;
 
 namespace Mindee.Extensions.DependencyInjection
@@ -20,6 +21,7 @@ namespace Mindee.Extensions.DependencyInjection
             string sectionName = "MindeeSettings")
         {
             services.TryAddTransient<MindeeClient>();
+            services.TryAddTransient<IPredictable, MindeeApi>();
             services.AddOptions<MindeeSettings>()
                 .BindConfiguration(sectionName)
                 .Validate(settings =>
