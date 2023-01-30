@@ -19,6 +19,19 @@ namespace Mindee.UnitTests.Parsing.Financial
         }
 
         [Fact]
+        public async Task Predict_Invoice_FirstPage_CheckSummary()
+        {
+            var mindeeAPi = ParsingTestBase.GetMindeeApi("Resources/financial_document/response_v1/complete_invoice.json");
+            var prediction = await mindeeAPi.PredictAsync<FinancialV1Inference>(ParsingTestBase.GetFakePredictParameter());
+
+            var expected = File.ReadAllText("Resources/financial_document/response_v1/summary_page0_invoice.rst");
+
+            Assert.Equal(
+                expected,
+                prediction.Inference.Pages.First().ToString());
+        }
+
+        [Fact]
         public async Task Predict_Receipt_CheckSummary()
         {
             var mindeeAPi = ParsingTestBase.GetMindeeApi("Resources/financial_document/response_v1/complete_receipt.json");
@@ -29,6 +42,19 @@ namespace Mindee.UnitTests.Parsing.Financial
             Assert.Equal(
                 expected,
                 prediction.ToString());
+        }
+
+        [Fact]
+        public async Task Predict_Receipt_FirstPage_CheckSummary()
+        {
+            var mindeeAPi = ParsingTestBase.GetMindeeApi("Resources/financial_document/response_v1/complete_receipt.json");
+            var prediction = await mindeeAPi.PredictAsync<FinancialV1Inference>(ParsingTestBase.GetFakePredictParameter());
+
+            var expected = File.ReadAllText("Resources/financial_document/response_v1/summary_page0_receipt.rst");
+
+            Assert.Equal(
+                expected,
+                prediction.Inference.Pages.First().ToString());
         }
     }
 }
