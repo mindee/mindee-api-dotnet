@@ -33,7 +33,7 @@ namespace Mindee.Parsing.Financial
         /// <summary>
         /// List of payment details.
         /// </summary>
-        [JsonPropertyName("payment_details")]
+        [JsonPropertyName("supplier_payment_details")]
         public List<PaymentDetail> PaymentDetails { get; set; }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Mindee.Parsing.Financial
         public List<CompanyRegistration> CustomerCompanyRegistrations { get; set; }
 
         /// <summary>
-        /// The adress of the customer.
+        /// The address of the customer.
         /// </summary>
         [JsonPropertyName("customer_address")]
         public StringField CustomerAddress { get; set; }
@@ -109,7 +109,7 @@ namespace Mindee.Parsing.Financial
         public AmountField Tip { get; set; }
 
         /// <summary>
-        /// A prettier reprensentation of the current model values.
+        /// A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
         {
@@ -144,7 +144,7 @@ namespace Mindee.Parsing.Financial
             result.Append($":Supplier name: {SupplierName}\n");
             result.Append($":Supplier address: {SupplierAddress}\n");
             result.Append($":Supplier company registrations: {string.Join("; ", SupplierCompanyRegistrations.Select(c => c.Value))}\n");
-            result.Append($":Payment details: {string.Join("; ", PaymentDetails.Select(p => p))}\n");
+            result.Append($":Supplier payment details: {string.Join("; ", PaymentDetails.Select(p => p))}\n");
             result.Append($":Customer name: {CustomerName}\n");
             result.Append($":Customer address: {string.Join("; ", CustomerAddress)}\n");
             result.Append($":Customer company registrations: {string.Join("; ", CustomerCompanyRegistrations.Select(c => c.Value))}\n");
