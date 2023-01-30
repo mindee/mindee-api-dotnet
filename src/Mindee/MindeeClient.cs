@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.Parsing;
@@ -18,7 +16,7 @@ namespace Mindee
     public sealed class MindeeClient
     {
         private readonly IPdfOperation _pdfOperation;
-        private readonly MindeeApi _mindeeApi;
+        private readonly IPredictable _mindeeApi;
 
         /// <summary>
         /// <see cref="Mindee.DocumentClient"/>
@@ -28,16 +26,14 @@ namespace Mindee
         /// <summary>
         ///
         /// </summary>
-        /// <param name="logger"><see cref="ILogger"/></param>
         /// <param name="pdfOperation"><see cref="IPdfOperation"/></param>
-        /// <param name="configuration"><see cref="IOptions{MindeeSettings}"/></param>
+        /// <param name="predictable"><see cref="IPredictable"/></param>
         public MindeeClient(
-            IOptions<MindeeSettings> configuration,
             IPdfOperation pdfOperation,
-            ILogger logger = null)
+            IPredictable predictable)
         {
             _pdfOperation = pdfOperation;
-            _mindeeApi = new MindeeApi(configuration, logger);
+            _mindeeApi = predictable;
         }
 
         /// <summary>
