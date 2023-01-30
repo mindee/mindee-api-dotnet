@@ -13,7 +13,7 @@ using Mindee.Pdf;
 namespace Mindee
 {
     /// <summary>
-    /// The entrypoint to use the Mindee features.
+    /// The entry point to use the Mindee features.
     /// </summary>
     public sealed class MindeeClient
     {
@@ -33,10 +33,10 @@ namespace Mindee
         /// <param name="configuration"><see cref="IOptions{MindeeSettings}"/></param>
         public MindeeClient(
             IOptions<MindeeSettings> configuration,
-            IPdfOperation pdfOperation = null,
+            IPdfOperation pdfOperation,
             ILogger logger = null)
         {
-            _pdfOperation = pdfOperation ?? new DocNetApi(logger);
+            _pdfOperation = pdfOperation;
             _mindeeApi = new MindeeApi(configuration, logger);
         }
 

@@ -71,7 +71,7 @@ However, you will need to declare the MindeeClient in your Startup.cs or Program
 services.AddMindeeClient();
 ```
 
-(Or, you could also simply instantiate a new instance of `MindeeClient` and it will require to pass an instance of ``IOptions<MindeeSettings>`` to get the Api Key.)
+(Or, you could also simply instantiate a new instance of `MindeeClient` using one of `MindeeClientInit` methods.)
 
 This call will configure the client entry point and the PDF library used internally.
 
