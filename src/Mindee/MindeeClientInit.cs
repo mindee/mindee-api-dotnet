@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using Mindee.Parsing;
 using Mindee.Pdf;
 
 namespace Mindee
@@ -29,8 +30,9 @@ namespace Mindee
         public static MindeeClient Create(MindeeSettings mindeeSettings)
         {
             return new MindeeClient(
-                Options.Create(mindeeSettings),
-                new DocNetApi());
+                new DocNetApi(),
+                new MindeeApi(Options.Create(mindeeSettings))
+                );
         }
     }
 }

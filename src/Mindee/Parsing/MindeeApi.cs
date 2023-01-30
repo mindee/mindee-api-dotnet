@@ -12,7 +12,7 @@ using RestSharp;
 
 namespace Mindee.Parsing
 {
-    internal sealed class MindeeApi
+    internal sealed class MindeeApi : IPredictable
     {
         private readonly string _baseUrl = "https://api.mindee.net/v1";
         private readonly string _apiKey;

@@ -3,7 +3,7 @@
     /// <summary>
     /// Parameter required to use the predict feature.
     /// </summary>
-    internal sealed class PredictParameter
+    public sealed class PredictParameter
     {
         /// <summary>
         /// The file.
