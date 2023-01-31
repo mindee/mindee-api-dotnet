@@ -18,8 +18,6 @@ System.Console.WriteLine(prediction.Inference.DocumentPrediction.ToString());
 
 Output:
 ```
-Prediction
-==========
 :Document type: INVOICE
 :Category: miscellaneous
 :Subcategory:
