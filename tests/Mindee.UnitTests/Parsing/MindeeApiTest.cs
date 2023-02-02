@@ -50,5 +50,26 @@ namespace Mindee.UnitTests.Parsing
                 expected,
                 document.ToString());
         }
+
+        [Fact]
+        public async Task Predict_WithErrorResponse()
+        {
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("*")
+                .Respond(
+                    HttpStatusCode.BadRequest,
+                    "application/json",
+                    File.ReadAllText("Resources/errors/complete_with_object_response_in_detail.json")
+                );
+
+            var mindeeApi = new MindeeApi(
+                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
+                new NullLogger<MindeeApi>(),
+                mockHttp
+                );
+
+            await Assert.ThrowsAsync<MindeeException>(
+                           () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
+        }
     }
 }
