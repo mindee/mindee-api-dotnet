@@ -1,14 +1,24 @@
 # CHANGELOG
 
-## v2.0.0 - 2023-01-23
+## v2.0.0 - 2023-02-02
 ### !BREAKING CHANGES
 * :boom: drop Invoice v3 support
 * :boom: prediction model classes must be replace by using inference model to use OTS API
+* :boom: renaming Date to DateField
 
 ### Changes
+* :sparkles: support Financial V1
+* :sparkles: support Proof of Address V1
+* :sparkles: enable the use of custom time out when calling Mindee API
+* :sparkles: improve MindeeClient by using IPredictable instead of instance of MindeeApi
+* :sparkles: expose a static helper to instantiate a new MindeeClient
+* :sparkles: support Proof of Address V1
 * :sparkles: improve summaries
 * :sparkles: support classification type for custom document
 * :recycle: renaming AllWord to Word
+
+### Fixes
+* :bug:! Details property in Error become an object because it can handle both string and object
 
 ## v1.4.0 - 2023-01-04
 ### Changes
