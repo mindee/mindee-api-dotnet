@@ -47,7 +47,6 @@ namespace Mindee.Parsing.CustomBuilder
         }
 
         /// <summary>
-        /// <summary>
         /// <see cref="Write(Utf8JsonWriter, CustomV1DocumentPrediction, JsonSerializerOptions)"/>
         /// </summary>
         public override void Write(Utf8JsonWriter writer, CustomV1DocumentPrediction value, JsonSerializerOptions options)

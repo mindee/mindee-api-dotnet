@@ -28,6 +28,7 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
