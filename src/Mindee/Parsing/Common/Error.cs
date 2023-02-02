@@ -11,7 +11,7 @@ namespace Mindee.Parsing.Common
         /// Details about it.
         /// </summary>
         [JsonPropertyName("details")]
-        public string Details { get; set; }
+        public ErrorDetails Details { get; set; }
 
         /// <summary>
         /// More precise information about the current error.
