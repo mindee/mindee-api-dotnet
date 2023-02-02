@@ -40,7 +40,6 @@ namespace Mindee.Parsing.Common
         }
 
         /// <summary>
-        /// <summary>
         /// <see cref="Write(Utf8JsonWriter, ErrorDetails, JsonSerializerOptions)"/>
         /// </summary>
         public override void Write(Utf8JsonWriter writer, ErrorDetails value, JsonSerializerOptions options)
