@@ -14,6 +14,10 @@ namespace Mindee.Parsing.Common
         /// </summary>
         public string Value { get; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="value"><see cref="Value"/></param>
         public ErrorDetails(string value)
         {
             Value = value;
