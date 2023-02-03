@@ -1,5 +1,7 @@
-[![Tests](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml)
+[![License: MIT](https://img.shields.io/github/license/mindee/mindee-api-nodejs)](https://opensource.org/licenses/MIT)
+[![GitHub Workflow Status](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml)
 [![NuGet](https://img.shields.io/nuget/v/mindee?color=%23fd3246)](https://www.nuget.org/packages/Mindee)
+[![NuGet](https://img.shields.io/nuget/dt/Mindee)](https://www.nuget.org/packages/Mindee)
 [![Join Mindee on Slack](https://img.shields.io/badge/Slack-4A154B?style=flat&logo=slack&label=MindeeCommunity)](https://mindee-community.slack.com/join/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw#/shared-invite/email)
 
 # Mindee API Helper Library for .NET
