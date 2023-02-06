@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using Mindee.Geometry;
 
 namespace Mindee.Parsing.Common
 {
@@ -20,7 +20,8 @@ namespace Mindee.Parsing.Common
         /// Define the coordinates of the zone in the page where the values has been found.
         /// </summary>
         [JsonPropertyName("polygon")]
-        public List<List<double>> Polygon { get; set; }
+        [JsonConverter(typeof(PolygonJsonConverter))]
+        public Polygon Polygon { get; set; }
 
         /// <summary>
         /// The index of the page where the current field was found.

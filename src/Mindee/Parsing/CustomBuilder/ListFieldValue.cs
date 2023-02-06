@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Mindee.Geometry;
 
 namespace Mindee.Parsing.CustomBuilder
 {
@@ -20,7 +21,8 @@ namespace Mindee.Parsing.CustomBuilder
         /// Define the coordinates of the zone in the page where the values has been found.
         /// </summary>
         [JsonPropertyName("polygon")]
-        public List<List<double>> Polygon { get; set; }
+        [JsonConverter(typeof(PolygonJsonConverter))]
+        public Polygon Polygon { get; set; }
 
         /// <summary>
         /// Content of the value.
@@ -29,7 +31,7 @@ namespace Mindee.Parsing.CustomBuilder
         public string Content { get; set; }
 
         /// <summary>
-        /// A prettier reprensentation.
+        /// A prettier representation.
         /// </summary>
         public override string ToString()
         {
