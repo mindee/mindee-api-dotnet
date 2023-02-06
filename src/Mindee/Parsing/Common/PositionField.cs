@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Mindee.Geometry;
 
 namespace Mindee.Parsing.Common
 {
@@ -12,28 +13,32 @@ namespace Mindee.Parsing.Common
         /// Straight rectangle.
         /// </summary>
         [JsonPropertyName("bounding_box")]
-        public List<List<double>> BoundingBox { get; set; } = new List<List<double>>();
+        [JsonConverter(typeof(PolygonJsonConverter))]
+        public Polygon BoundingBox { get; set; }
 
         /// <summary>
         /// Free polygon with up to 30 vertices.
         /// </summary>
         [JsonPropertyName("polygon")]
-        public List<List<double>> Polygon { get; set; } = new List<List<double>>();
+        [JsonConverter(typeof(PolygonJsonConverter))]
+        public Polygon Polygon { get; set; }
 
         /// <summary>
         /// Free polygon with 4 vertices.
         /// </summary>
         [JsonPropertyName("quadrangle")]
-        public List<List<double>> Quadrangle { get; set; } = new List<List<double>>();
+        [JsonConverter(typeof(PolygonJsonConverter))]
+        public Polygon Quadrangle { get; set; }
 
         /// <summary>
         /// Rectangle that may be oriented (can go beyond the canvas).
         /// </summary>
         [JsonPropertyName("rectangle")]
-        public List<List<double>> Rectangle { get; set; } = new List<List<double>>();
+        [JsonConverter(typeof(PolygonJsonConverter))]
+        public Polygon Rectangle { get; set; }
 
         /// <summary>
-        /// A prettier reprensentation of the current model values.
+        /// A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
         {

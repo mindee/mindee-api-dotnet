@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Mindee.Geometry;
 using Mindee.Parsing.Common;
 
 namespace Mindee.Parsing.Invoice
@@ -68,7 +69,8 @@ namespace Mindee.Parsing.Invoice
         /// the field in the document.
         /// </summary>
         [JsonPropertyName("polygon")]
-        public List<List<double>> Polygon { get; set; }
+        [JsonConverter(typeof(PolygonJsonConverter))]
+        public Polygon Polygon { get; set; }
 
         /// <summary>
         /// A prettier representation of the current model values.
