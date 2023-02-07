@@ -31,6 +31,19 @@ namespace Mindee.Parsing.CustomBuilder
         public string Content { get; set; }
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="confidence"><see cref="Confidence"/></param>
+        /// <param name="polygon"><see cref="Polygon"/></param>
+        /// <param name="content"><see cref="Content"/></param>
+        public ListFieldValue(string content, double confidence, Polygon polygon)
+        {
+            Confidence = confidence;
+            Polygon = polygon;
+            Content = content;
+        }
+
+        /// <summary>
         /// A prettier representation.
         /// </summary>
         public override string ToString()

@@ -1,7 +1,7 @@
 ﻿using Mindee.Parsing;
 using Mindee.Parsing.CustomBuilder;
 
-namespace Mindee.UnitTests.Parsing
+namespace Mindee.UnitTests.Parsing.CustomBuilder
 {
     [Trait("Category", "Custom API")]
     public class CustomParsingTest

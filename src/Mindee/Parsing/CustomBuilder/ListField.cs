@@ -23,7 +23,26 @@ namespace Mindee.Parsing.CustomBuilder
         public List<ListFieldValue> Values { get; set; }
 
         /// <summary>
-        /// A prettier reprensentation.
+        ///
+        /// </summary>
+        public ListField()
+        {
+            Values = new List<ListFieldValue>();
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="confidence"><see cref="Confidence"/></param>
+        /// <param name="values"><see cref="Values"/></param>
+        public ListField(double confidence, List<ListFieldValue> values)
+        {
+            Confidence = confidence;
+            Values = values;
+        }
+
+        /// <summary>
+        /// A prettier representation.
         /// </summary>
         public override string ToString()
         {
