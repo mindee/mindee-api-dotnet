@@ -28,7 +28,7 @@ namespace Mindee.Geometry
         /// <summary>
         ///
         /// </summary>
-        /// <param name="coordinates"><see cref="List{Point}"/></param>
+        /// <param name="coordinates"><see cref="IEnumerable{Point}"/></param>
         public Polygon(IEnumerable<Point> coordinates)
         {
             AddRange(coordinates);

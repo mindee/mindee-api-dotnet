@@ -28,5 +28,24 @@ namespace Mindee.Parsing.Common
         /// </summary>
         [JsonPropertyName("page_id")]
         public int? PageId { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="confidence"><see cref="Confidence"/></param>
+        /// <param name="polygon"><see cref="Polygon"/></param>
+        /// <param name="pageId"><see cref="PageId"/></param>
+        protected BaseField(double confidence, Polygon polygon, int? pageId)
+        {
+            Confidence = confidence;
+            Polygon = polygon;
+            PageId = pageId;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        protected BaseField()
+        { }
     }
 }

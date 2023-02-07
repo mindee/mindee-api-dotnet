@@ -57,12 +57,12 @@
                 MaxX = bbox.MaxX;
             }
 
-            if (MinY > bbox.MinX)
+            if (MinY > bbox.MinY)
             {
                 MinY = bbox.MinY;
             }
 
-            if (MaxY < bbox.MinX)
+            if (MaxY < bbox.MaxY)
             {
                 MaxY = bbox.MaxY;
             }
