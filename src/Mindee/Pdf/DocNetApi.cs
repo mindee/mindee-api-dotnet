@@ -42,7 +42,7 @@ namespace Mindee.Pdf
             {
                 if (pn < 0)
                 {
-                    return (totalPages - Math.Abs(pn));
+                    return (totalPages - System.Math.Abs(pn));
                 }
 
                 return pn;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Mindee.Geometry;
-using Mindee.Maths;
+using Mindee.Math;
 
 namespace Mindee.Parsing.CustomBuilder.Table
 {
@@ -20,7 +20,7 @@ namespace Mindee.Parsing.CustomBuilder.Table
         /// this field is most present that the others one, on all lines that we want.
         /// </param>
         /// <exception cref="InvalidOperationException"></exception>
-        public static IEnumerable<Line> GetPreparedLines(
+        internal static IEnumerable<Line> GetPreparedLines(
              Dictionary<string, ListField> fields,
             Anchor fieldForAnchor
             )
@@ -71,11 +71,11 @@ namespace Mindee.Parsing.CustomBuilder.Table
         }
 
         /// <summary>
-        ///
+        /// Generate lines items from a list of names and the fields from API Builder response.
         /// </summary>
         /// <param name="fieldNames">The names of the fields that need to be transformed into lines.</param>
-        /// <param name="fields"></param>
-        /// <param name="anchor"></param>
+        /// <param name="fields">The list of the fields from the API Builder.</param>
+        /// <param name="anchor"><see cref="Anchor"/></param>
         public static LineItems Generate(
             List<string> fieldNames,
             Dictionary<string, ListField> fields,
