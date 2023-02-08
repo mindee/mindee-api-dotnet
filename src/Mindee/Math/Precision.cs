@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace Mindee.Maths
+namespace Mindee.Math
 {
     /// <summary>
-    ///
+    /// Math functions created by Mindee.
     /// </summary>
     public static class Precision
     {
@@ -19,11 +19,11 @@ namespace Mindee.Maths
         /// <param name="tolerance">Tolerance value.</param>
         public static bool Equals(double a, double b, double tolerance)
         {
-            if (Math.Abs(b - a) <= tolerance)
+            if (System.Math.Abs(b - a) <= tolerance)
             {
                 return true;
             }
-            if (Math.Abs(a - b) <= tolerance)
+            if (System.Math.Abs(a - b) <= tolerance)
             {
                 return true;
             }

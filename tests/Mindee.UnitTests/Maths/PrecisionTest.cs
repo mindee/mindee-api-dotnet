@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using Mindee.Maths;
+using Mindee.Math;
 
 namespace Mindee.UnitTests.Maths
 {
