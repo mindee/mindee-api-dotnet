@@ -18,7 +18,7 @@
 
             return new Bbox(
                 polygon.GetMinXCoordinate(),
-                polygon.GetMinXCoordinate(),
+                polygon.GetMaxXCoordinate(),
                 polygon.GetMinYCoordinate(),
                 polygon.GetMaxYCoordinate()
             );
