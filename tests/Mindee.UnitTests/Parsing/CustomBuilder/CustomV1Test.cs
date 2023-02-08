@@ -4,7 +4,7 @@ using Mindee.Parsing.CustomBuilder;
 namespace Mindee.UnitTests.Parsing.CustomBuilder
 {
     [Trait("Category", "Custom API")]
-    public class CustomParsingTest
+    public class CustomV1Test
     {
         [Fact]
         public async Task Predict_CheckSummary()
