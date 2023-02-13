@@ -1,50 +1,52 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing.Common;
 
-namespace Mindee.Parsing.Fr.IdCard
+namespace Mindee.Parsing.Fr.CarteVitale
 {
     /// <summary>
-    /// The french carte vitale model for the v1.
+    /// Document data for Carte Vitale, version 1.
     /// </summary>
     public class CarteVitaleV1DocumentPrediction
     {
         /// <summary>
-        /// The list of the names of the person.
+        /// The given name(s) of the card holder.
         /// </summary>
         [JsonPropertyName("given_names")]
         public List<StringField> GivenNames { get; set; }
 
         /// <summary>
-        /// The surname of the person.
+        /// The surname of the card holder.
         /// </summary>
         [JsonPropertyName("surname")]
         public StringField Surname { get; set; }
 
         /// <summary>
-        /// The social security number.
+        /// The Social Security Number (Numéro de Sécurité Sociale) of the card holder
         /// </summary>
         [JsonPropertyName("social_security")]
-        public StringField SocialSecurityNumber { get; set; }
+        public StringField SocialSecurity { get; set; }
 
         /// <summary>
-        /// The date of issuance of it.
+        /// The date the card was issued.
         /// </summary>
         [JsonPropertyName("issuance_date")]
-        public StringField IssuanceDate { get; set; }
+        public DateField IssuanceDate { get; set; }
 
         /// <summary>
-        /// A prettier reprensentation of the current model values.
+        /// A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
         {
+            string givenNames = string.Join(", ", GivenNames.Select(item => item));
+
             StringBuilder result = new StringBuilder();
-            result.Append($":Given names: {string.Join(" ", GivenNames.Select(gn => gn))}\n");
+            result.Append($":Given Name(s): {givenNames}\n");
             result.Append($":Surname: {Surname}\n");
-            result.Append($":Social Security Number: {SocialSecurityNumber}\n");
-            result.Append($":Issuance date: {IssuanceDate}\n");
+            result.Append($":Social Security Number: {SocialSecurity}\n");
+            result.Append($":Issuance Date: {IssuanceDate}\n");
 
             return SummaryHelper.Clean(result.ToString());
         }

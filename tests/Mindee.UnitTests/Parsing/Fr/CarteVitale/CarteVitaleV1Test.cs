@@ -1,7 +1,7 @@
 ﻿using Mindee.Parsing;
-using Mindee.Parsing.Fr.IdCard;
+using Mindee.Parsing.Fr.CarteVitale;
 
-namespace Mindee.UnitTests.Parsing.Fr.IdCard
+namespace Mindee.UnitTests.Parsing.Fr.CarteVitale
 {
     [Trait("Category", "FR Carte Vitale V1")]
     public class CarteVitaleV1Test
