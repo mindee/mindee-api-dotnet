@@ -1,4 +1,4 @@
-﻿using Mindee.Parsing;
+using Mindee.Parsing;
 using Mindee.Parsing.Passport;
 
 namespace Mindee.UnitTests.Parsing.Passport

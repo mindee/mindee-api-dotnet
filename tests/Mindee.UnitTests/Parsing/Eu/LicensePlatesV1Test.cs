@@ -1,4 +1,4 @@
-﻿using Mindee.Parsing;
+using Mindee.Parsing;
 using Mindee.Parsing.Eu.LicensePlates;
 
 namespace Mindee.UnitTests.Parsing.Eu.LicensePlates

@@ -1,4 +1,4 @@
-﻿using Mindee.Parsing;
+using Mindee.Parsing;
 using Mindee.Parsing.ShippingContainer;
 
 namespace Mindee.UnitTests.Parsing.ShippingContainer

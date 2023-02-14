@@ -1,4 +1,4 @@
-﻿namespace Mindee.Parsing.CustomBuilder.Table
+namespace Mindee.Parsing.CustomBuilder.Table
 {
     /// <summary>
     /// An anchor used to detect each lines.

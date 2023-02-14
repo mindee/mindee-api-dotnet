@@ -1,4 +1,4 @@
-﻿using Mindee.Input;
+using Mindee.Input;
 
 namespace Mindee.UnitTests
 {

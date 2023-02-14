@@ -1,4 +1,4 @@
-﻿namespace Mindee.Pdf
+namespace Mindee.Pdf
 {
     /// <summary>
     /// The split pdf.

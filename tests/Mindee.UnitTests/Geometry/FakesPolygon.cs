@@ -1,4 +1,4 @@
-﻿using Mindee.Geometry;
+using Mindee.Geometry;
 
 namespace Mindee.UnitTests.Geometry
 {

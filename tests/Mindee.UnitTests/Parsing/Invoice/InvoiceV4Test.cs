@@ -1,4 +1,4 @@
-﻿using Mindee.Parsing;
+using Mindee.Parsing;
 using Mindee.Parsing.Invoice;
 
 namespace Mindee.UnitTests.Parsing.Invoice

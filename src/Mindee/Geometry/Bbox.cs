@@ -1,4 +1,4 @@
-﻿namespace Mindee.Geometry
+namespace Mindee.Geometry
 {
     /// <summary>
     /// Define the max and min coordinates.

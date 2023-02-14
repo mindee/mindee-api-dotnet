@@ -1,4 +1,4 @@
-﻿using Mindee.Parsing;
+using Mindee.Parsing;
 using Mindee.Parsing.Us.BankCheck;
 
 namespace Mindee.UnitTests.Parsing.ShippingContainer

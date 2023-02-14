@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.Pdf;

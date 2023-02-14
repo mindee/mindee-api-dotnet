@@ -1,4 +1,4 @@
-﻿using Mindee.Parsing;
+using Mindee.Parsing;
 using Mindee.Parsing.ProofOfAddress;
 
 namespace Mindee.UnitTests.Parsing.ProofOfAddress

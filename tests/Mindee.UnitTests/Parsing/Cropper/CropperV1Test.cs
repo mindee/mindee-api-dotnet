@@ -1,4 +1,4 @@
-﻿using Mindee.Parsing;
+using Mindee.Parsing;
 using Mindee.Parsing.Cropper;
 
 namespace Mindee.UnitTests.Parsing.Receipt
