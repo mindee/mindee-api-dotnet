@@ -1,4 +1,4 @@
-﻿using Mindee.Input;
+using Mindee.Input;
 using Mindee.Parsing;
 using Mindee.Parsing.Common;
 using Mindee.Parsing.CustomBuilder;

@@ -1,4 +1,4 @@
-﻿using Mindee.Parsing.Financial;
+using Mindee.Parsing.Financial;
 
 namespace Mindee.UnitTests.Parsing.Financial
 {

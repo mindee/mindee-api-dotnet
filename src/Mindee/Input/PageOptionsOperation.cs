@@ -1,4 +1,4 @@
-﻿namespace Mindee.Input
+namespace Mindee.Input
 {
     /// <summary>
     /// List the available page operation on a document.

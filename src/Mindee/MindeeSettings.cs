@@ -1,4 +1,4 @@
-﻿namespace Mindee
+namespace Mindee
 {
     /// <summary>
     /// Mindee settings.

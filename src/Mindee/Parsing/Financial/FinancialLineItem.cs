@@ -1,4 +1,4 @@
-﻿using Mindee.Parsing.Invoice;
+using Mindee.Parsing.Invoice;
 
 namespace Mindee.Parsing.Financial
 {

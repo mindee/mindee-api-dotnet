@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Exceptions;

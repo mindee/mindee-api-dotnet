@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Mindee.Parsing.Common;
 
 namespace Mindee.UnitTests.Parsing.Common

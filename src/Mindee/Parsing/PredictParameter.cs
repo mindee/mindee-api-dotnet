@@ -1,4 +1,4 @@
-﻿namespace Mindee.Parsing
+namespace Mindee.Parsing
 {
     /// <summary>
     /// Parameter required to use the predict feature.

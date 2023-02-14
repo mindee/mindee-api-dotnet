@@ -1,4 +1,4 @@
-﻿namespace Mindee.Input
+namespace Mindee.Input
 {
     /// <summary>
     /// Represent options to cut a document.

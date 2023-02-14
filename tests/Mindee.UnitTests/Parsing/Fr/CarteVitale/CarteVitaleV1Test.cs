@@ -1,4 +1,4 @@
-﻿using Mindee.Parsing;
+using Mindee.Parsing;
 using Mindee.Parsing.Fr.CarteVitale;
 
 namespace Mindee.UnitTests.Parsing.Fr.CarteVitale

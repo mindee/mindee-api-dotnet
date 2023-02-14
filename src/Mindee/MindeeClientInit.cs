@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using Mindee.Parsing;
 using Mindee.Pdf;
 

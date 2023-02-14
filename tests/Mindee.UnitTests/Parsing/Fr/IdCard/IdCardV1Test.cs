@@ -1,4 +1,4 @@
-﻿using Mindee.Parsing;
+using Mindee.Parsing;
 using Mindee.Parsing.Fr.IdCard;
 
 namespace Mindee.UnitTests.Parsing.Fr.IdCard

@@ -1,4 +1,4 @@
-﻿using Mindee.Parsing;
+using Mindee.Parsing;
 using Mindee.Parsing.CustomBuilder;
 
 namespace Mindee.UnitTests.Parsing.CustomBuilder

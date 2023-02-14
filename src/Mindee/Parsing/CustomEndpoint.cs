@@ -1,4 +1,4 @@
-﻿namespace Mindee.Parsing
+namespace Mindee.Parsing
 {
     /// <summary>
     /// Define a Mindee API endpoint.

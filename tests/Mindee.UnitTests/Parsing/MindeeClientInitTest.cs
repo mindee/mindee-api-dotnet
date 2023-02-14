@@ -1,4 +1,4 @@
-﻿namespace Mindee.UnitTests.Parsing
+namespace Mindee.UnitTests.Parsing
 {
     [Trait("Category", "Mindee client init")]
     public class MindeeClientInitTest

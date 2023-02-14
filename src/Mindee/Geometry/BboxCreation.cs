@@ -1,4 +1,4 @@
-﻿namespace Mindee.Geometry
+namespace Mindee.Geometry
 {
     /// <summary>
     /// Bbox builder.
