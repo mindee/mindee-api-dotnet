@@ -7,7 +7,7 @@ using Mindee.Parsing.Common;
 namespace Mindee.Parsing.Fr.CarteVitale
 {
     /// <summary>
-    /// Document data for Carte Vitale, version 1.
+    /// Document data for Carte Vitale, API version 1.
     /// </summary>
     public class CarteVitaleV1DocumentPrediction
     {

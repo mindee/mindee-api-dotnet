@@ -7,7 +7,7 @@ using Mindee.Parsing.Common;
 namespace Mindee.Parsing.Fr.IdCard
 {
     /// <summary>
-    /// Document data for Carte Nationale d'Identité, version 1.
+    /// Document data for Carte Nationale d'Identité, API version 1.
     /// </summary>
     public class IdCardV1DocumentPrediction
     {
