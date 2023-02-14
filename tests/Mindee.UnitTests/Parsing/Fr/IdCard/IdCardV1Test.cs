@@ -1,40 +1,33 @@
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Fr.IdCard;
 
 namespace Mindee.UnitTests.Parsing.Fr.IdCard
 {
-    [Trait("Category", "FR Id Card V1")]
+    [Trait("Category", "IdCardV1")]
     public class IdCardV1Test
     {
         [Fact]
         public async Task Predict_CheckSummary()
         {
-            var mindeeAPi = GetMindeeApiForFrIdCard();
-            var prediction = await mindeeAPi.PredictAsync<IdCardV1Inference>(ParsingTestBase.GetFakePredictParameter());
-
+            var prediction = await GetPrediction();
             var expected = File.ReadAllText("Resources/fr/id_card/response_v1/summary_full.rst");
-
-            Assert.Equal(
-                expected,
-                prediction.ToString());
+            Assert.Equal(expected, prediction.ToString());
         }
 
         [Fact]
-        public async Task Predict_CheckSummary_WithMultiplePages()
+        public async Task Predict_CheckPage0()
         {
-            var mindeeAPi = GetMindeeApiForFrIdCard();
-            var prediction = await mindeeAPi.PredictAsync<IdCardV1Inference>(ParsingTestBase.GetFakePredictParameter());
-
+            var prediction = await GetPrediction();
             var expected = File.ReadAllText("Resources/fr/id_card/response_v1/summary_page0.rst");
-
-            Assert.Equal(
-                expected,
-                prediction.Inference.Pages.First().ToString());
+            Assert.Equal(expected, prediction.Inference.Pages[0].ToString());
         }
 
-        private MindeeApi GetMindeeApiForFrIdCard(string fileName = "Resources/fr/id_card/response_v1/complete.json")
+        private async Task<Document<IdCardV1Inference>> GetPrediction()
         {
-            return ParsingTestBase.GetMindeeApi(fileName);
+            string fileName = "Resources/fr/id_card/response_v1/complete.json";
+            var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
+            return await mindeeAPi.PredictAsync<IdCardV1Inference>(ParsingTestBase.GetFakePredictParameter());
         }
     }
 }
