@@ -50,11 +50,11 @@ jobs:
         dotnet nuget add source "nugetLocal" -n "NugetLocal"
         dotnet pack "src/Mindee" -c Release --version-suffix "-test" -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
         dotnet nuget push "nuget/*.nupkg" --source "NugetLocal"
-        
+
     - name: Test samples code
       # Prepare
       run: |
-        dotnet pack "src/Mindee" -c Release --version-suffix "-test" -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
+        dotnet pack "src/Mindee" -c Release --version-suffix "test" -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
         dotnet tool install -g dotnet-script
       # Test Receipt V4
         cd samples
