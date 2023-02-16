@@ -48,7 +48,7 @@ jobs:
       run: |
         mkdir nugetLocal
         dotnet nuget add source "nugetLocal" -n "NugetLocal"
-        dotnet pack "src/Mindee" -c Release --version-suffix "test" -p:TargetFrameworks=${{ matrix.dotnet-version }} -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
+        dotnet pack "src/Mindee" --version-suffix "test" -p:TargetFrameworks=${{ matrix.dotnet-version }} --output nuget
         cd nuget
         dotnet nuget push *.nupkg --source "NugetLocal"
         dotnet tool install -g dotnet-script
