@@ -1,7 +1,7 @@
 #
 # Run unit tests.
 #
-name: Test
+name: Tests
 
 on:
   - push
@@ -43,6 +43,31 @@ jobs:
     - name: Build and test
       run: |
         dotnet test -f ${{ matrix.dotnet-version }} --no-restore --verbosity normal "tests\Mindee.UnitTests"
+    
+    - name: Set up local nuget & prepare Mindee nuget local package
+      run: |
+        mkdir nugetLocal
+      run: |
+        dotnet nuget add source "nugetLocal" -n "NugetLocal"
+      run: |
+        dotnet pack "src/Mindee" -c Release --version-suffix "-test" -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
+      run: |
+        dotnet nuget push nuget/*.nupkg --source "NugetLocal"
+
+    - name: Test samples code
+      # Prepare
+      run: |
+        dotnet pack "src/Mindee" -c Release --version-suffix "-test" -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
+      run: dotnet tool install -g dotnet-script
+      # Test Receipt V4
+      run: |
+        cd samples
+        cat base.csx receiptv4.cs > receiptv4.csx
+      run: |
+        sed 's/MyApiKey/${{ secrets.MINDEE_API_KEY }}/' <receiptv4.csx >receiptv4_.csx
+        sed 's/MyFilePath/..\/tests\/Resources\/receipt\/receipt-with-tip.jpg/' <receiptv4_.csx >receiptv4.csx
+      run: |
+        dotnet script receiptv4.csx
 
   test-windows:
     name: Run Tests on Windows
