@@ -46,8 +46,8 @@ jobs:
     
     - name: Prepare samples code
       run: |
-        mkdir nugetLocal
-        dotnet nuget add source "nugetLocal" -n "NugetLocal"
+        mkdir "./nugetLocal"
+        dotnet nuget add source "./nugetLocal" -n "NugetLocal"
         dotnet nuget list source
         dotnet pack "src/Mindee" --version-suffix "test" -p:TargetFrameworks=${{ matrix.dotnet-version }} --output nuget
         cd nuget
