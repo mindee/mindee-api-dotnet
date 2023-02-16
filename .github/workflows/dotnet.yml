@@ -44,20 +44,23 @@ jobs:
       run: |
         dotnet test -f ${{ matrix.dotnet-version }} --no-restore --verbosity normal "tests\Mindee.UnitTests"
     
-    - name: Test samples code
+    - name: Prepare samples code
       run: |
         mkdir nugetLocal
         dotnet nuget add source "nugetLocal" -n "NugetLocal"
+        dotnet nuget list source
         dotnet pack "src/Mindee" --version-suffix "test" -p:TargetFrameworks=${{ matrix.dotnet-version }} --output nuget
         cd nuget
         dotnet nuget push *.nupkg --source "NugetLocal"
         dotnet tool install -g dotnet-script
+
+    - name: Test samples code
+      run: |
         cd samples
         cat base.csx receiptv4.cs > receiptv4.csx
         sed 's/MyApiKey/${{ secrets.MINDEE_API_KEY }}/' <receiptv4.csx >receiptv4_.csx
         sed 's/MyFilePath/..\/tests\/Resources\/receipt\/receipt-with-tip.jpg/' <receiptv4_.csx >receiptv4.csx
         dotnet script receiptv4.csx
-
   test-windows:
     name: Run Tests on Windows
     timeout-minutes: 30
