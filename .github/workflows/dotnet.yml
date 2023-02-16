@@ -47,11 +47,8 @@ jobs:
     - name: Set up local nuget & prepare Mindee nuget local package
       run: |
         mkdir nugetLocal
-      run: |
         dotnet nuget add source "nugetLocal" -n "NugetLocal"
-      run: |
         dotnet pack "src/Mindee" -c Release --version-suffix "-test" -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
-      run: |
         dotnet nuget push nuget/*.nupkg --source "NugetLocal"
 
     - name: Test samples code
