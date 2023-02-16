@@ -59,7 +59,7 @@ jobs:
         cd samples
         cat base.csx receiptv4.cs > receiptv4.csx
         sed 's/MyApiKey/${{ secrets.MINDEE_API_KEY }}/' <receiptv4.csx >receiptv4_.csx
-        sed 's/MyFilePath/..\/tests\/Resources\/receipt\/receipt-with-tip.jpg/' <receiptv4_.csx >receiptv4.csx
+        sed 's/MyFilePath/..\/tests\/resources\/receipt\/receipt-with-tip.jpg/' <receiptv4_.csx >receiptv4.csx
         dotnet script receiptv4.csx
 
   test-windows:
