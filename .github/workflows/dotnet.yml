@@ -48,10 +48,9 @@ jobs:
       run: |
         mkdir nugetLocal
         dotnet nuget add source "nugetLocal" -n "NugetLocal"
-        dotnet pack "src/Mindee" -c Release --version-suffix "-test" -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
+        dotnet pack "src/Mindee" -c Release --version-suffix "test" -p:TargetFrameworks=${{ matrix.dotnet-version }} -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
         cd nuget
         dotnet nuget push *.nupkg --source "NugetLocal"
-        dotnet pack "src/Mindee" -c Release --version-suffix "test" -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
         dotnet tool install -g dotnet-script
         cd samples
         cat base.csx receiptv4.cs > receiptv4.csx
