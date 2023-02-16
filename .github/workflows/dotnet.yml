@@ -46,8 +46,8 @@ jobs:
     
     - name: Prepare samples code
       run: |
-        mkdir "${{ GITHUB_WORKSPACE }}/localNuget"
-        dotnet nuget add source "${{ GITHUB_WORKSPACE }}/localNuget" -n "NugetLocal"
+        mkdir "${{ github.workspace }}/localNuget"
+        dotnet nuget add source "${{ github.workspace }}/localNuget" -n "NugetLocal"
         dotnet nuget list source
         dotnet pack "src/Mindee" --version-suffix "test" -p:TargetFrameworks=${{ matrix.dotnet-version }} --output nuget
         cd nuget
@@ -99,8 +99,8 @@ jobs:
 
     - name: Prepare samples code
       run: |
-        mkdir "${{ GITHUB_WORKSPACE }}/localNuget"
-        dotnet nuget add source "${{ GITHUB_WORKSPACE }}/localNuget" -n "NugetLocal"
+        mkdir "${{ github.workspace }}/localNuget"
+        dotnet nuget add source "${{ github.workspace }}/localNuget" -n "NugetLocal"
         dotnet nuget list source
         dotnet pack "src/Mindee" --version-suffix "test" -p:TargetFrameworks=${{ matrix.dotnet-version }} --output nuget
         cd nuget
