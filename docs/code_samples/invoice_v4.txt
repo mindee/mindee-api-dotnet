@@ -1,5 +1,5 @@
 using Mindee;
-using Mindee.Parsing.Receipt;
+using Mindee.Parsing.Invoice;
 
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
