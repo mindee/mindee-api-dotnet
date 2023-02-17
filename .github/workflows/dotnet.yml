@@ -58,8 +58,8 @@ jobs:
       run: |
         cd samples
         cat base.csx receipt_v4.cs > receiptv4.csx
-        sed 's/MyApiKey/${{ secrets.MINDEE_API_KEY }}/' <receiptv4.csx >receiptv4_.csx
-        sed 's/MyFilePath/..\/tests\/resources\/receipt\/receipt-with-tip.jpg/' <receiptv4_.csx >receiptv4.csx
+        sed 's/my-api-key/${{ secrets.MINDEE_API_KEY }}/' <receiptv4.csx >receiptv4_.csx
+        sed 's/\/path\/to\/the\/file.ext/..\/tests\/resources\/receipt\/receipt-with-tip.jpg/' <receiptv4_.csx >receiptv4.csx
         dotnet script receiptv4.csx > result.txt
         diff result.txt "tests/resources/receipt/response_v4/summary_full.rst"
 
