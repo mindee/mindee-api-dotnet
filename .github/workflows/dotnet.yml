@@ -92,3 +92,17 @@ jobs:
     - name: Build and test
       run: |
         dotnet test -f ${{ matrix.dotnet-version }} --no-restore --verbosity normal "tests\Mindee.UnitTests"
+
+    - name: Prepare for samples code
+      run: |
+        mkdir "${{ github.workspace }}/localNuget"
+        dotnet nuget add source "${{ github.workspace }}/localNuget" -n "NugetLocal"
+        dotnet nuget list source
+        dotnet pack "src/Mindee" --version-suffix "test" -p:TargetFrameworks=${{ matrix.dotnet-version }} --output nuget
+        cd nuget
+        dotnet nuget push *.nupkg --source "NugetLocal"
+        dotnet tool install -g dotnet-script
+
+    - name: Tests sample code
+      run: |
+        dotnet script test_sample_code.csx ${{ secrets.MINDEE_API_KEY }}
