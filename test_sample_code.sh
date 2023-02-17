@@ -5,6 +5,6 @@ do
   echo $f
   cat docs/code_samples/base.csx $f > _test.csx
   sed -i 's/my-api-key/$1/' _test.csx
-  sed -i 's/\/path\/to\/the\/file.ext/.\/data\/pdf\/blank_1.pdf/' _test.csx
+  sed -i 's/\/path\/to\/the\/file.ext/.\/tests\/ressources\/pdf\/blank_1.pdf/' _test.csx
   dotnet-script _test.csx
 done
