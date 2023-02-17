@@ -8,6 +8,6 @@ MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
 
 var documentParsed = await mindeeClient
     .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
-    .ParseAsync<PassportV4Inference>();
+    .ParseAsync<PassportV1Inference>();
 
 System.Console.WriteLine(documentParsed.ToString());
