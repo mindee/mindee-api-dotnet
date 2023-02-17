@@ -44,7 +44,7 @@ jobs:
       run: |
         dotnet test -f ${{ matrix.dotnet-version }} --no-restore --verbosity normal "tests\Mindee.UnitTests"
     
-    - name: Prepare samples code
+    - name: Prepare for samples code
       run: |
         mkdir "${{ github.workspace }}/localNuget"
         dotnet nuget add source "${{ github.workspace }}/localNuget" -n "NugetLocal"
@@ -54,7 +54,7 @@ jobs:
         dotnet nuget push *.nupkg --source "NugetLocal"
         dotnet tool install -g dotnet-script
 
-    - name: Test samples code
+    - name: Test Receipt V4 sample code
       run: |
         cd samples
         cat base.csx receipt_v4.cs > receiptv4.csx
@@ -62,6 +62,15 @@ jobs:
         sed 's/\/path\/to\/the\/file.ext/..\/tests\/resources\/receipt\/receipt-with-tip.jpg/' <receiptv4_.csx >receiptv4.csx
         dotnet script receiptv4.csx > result.txt
         diff result.txt "tests/resources/receipt/response_v4/summary_full.rst"
+
+    - name: Test Invoice V4 sample code
+      run: |
+        cd samples
+        cat base.csx invoice_v4.cs > invoicev4.csx
+        sed 's/my-api-key/${{ secrets.MINDEE_API_KEY }}/' <invoicev4.csx >invoicev4_.csx
+        sed 's/\/path\/to\/the\/file.ext/..\/tests\/resources\/invoice\/invoice.pdf/' <invoicev4_.csx >invoicev4.csx
+        dotnet script invoicev4.csx > result.txt
+        diff result.txt "tests/resources/invoice/response_v4/summary_full.rst"
 
   test-windows:
     name: Run Tests on Windows
