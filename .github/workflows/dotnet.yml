@@ -61,7 +61,7 @@ jobs:
         sed 's/my-api-key/${{ secrets.MINDEE_API_KEY }}/' <receiptv4.csx >receiptv4_.csx
         sed 's/\/path\/to\/the\/file.ext/..\/tests\/resources\/receipt\/receipt-with-tip.jpg/' <receiptv4_.csx >receiptv4.csx
         dotnet script receiptv4.csx > result.txt
-        diff result.txt ""${{ github.workspace }}/tests/resources/receipt/response_v4/summary_full.rst"
+        diff result.txt "${{ github.workspace }}/tests/resources/receipt/response_v4/summary_full.rst"
 
     - name: Test Invoice V4 sample code
       run: |
@@ -70,7 +70,7 @@ jobs:
         sed 's/my-api-key/${{ secrets.MINDEE_API_KEY }}/' <invoicev4.csx >invoicev4_.csx
         sed 's/\/path\/to\/the\/file.ext/..\/tests\/resources\/invoice\/invoice.pdf/' <invoicev4_.csx >invoicev4.csx
         dotnet script invoicev4.csx > result.txt
-        diff result.txt ""${{ github.workspace }}/tests/resources/invoice/response_v4/summary_full.rst"
+        diff result.txt "${{ github.workspace }}/tests/resources/invoice/response_v4/summary_full.rst"
 
   test-windows:
     name: Run Tests on Windows
