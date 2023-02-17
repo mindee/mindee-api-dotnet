@@ -1,5 +1,5 @@
 #
-# Run unit tests.
+# Run tests.
 #
 name: Tests
 
@@ -106,3 +106,5 @@ jobs:
     - name: Tests sample code
       run: |
         dotnet script test_sample_code.csx ${{ secrets.MINDEE_API_KEY }}
+
+  
