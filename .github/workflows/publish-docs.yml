@@ -39,7 +39,7 @@ jobs:
         with:
           dotnet-version: '7.0.x'
       - name: Generate documentations
-        run: mddocs apireference --assembly './build/Mindee.dll' --outdir ./docs/api-reference
+        run: mddocs apireference --assemblies './build/Mindee.dll' --outdir ./docs/api-reference
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
