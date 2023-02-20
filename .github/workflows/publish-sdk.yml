@@ -20,10 +20,10 @@ jobs:
         with:
           dotnet-version: '7.0.x'
       - name: Install dependencies
-        run: dotnet restore "src"
+        run: dotnet restore "src/Mindee"
       - name: Build
-        run: dotnet build "src" --configuration Release --no-restore
+        run: dotnet build "src/Mindee" --configuration Release --no-restore
       - name: Pack
-        run: dotnet pack "src" -c Release -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
+        run: dotnet pack "src/Mindee" -c Release -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
       - name: Publish NuGet packages to NuGet
         run: dotnet nuget push nuget/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source "nuget.org"

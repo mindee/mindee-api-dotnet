@@ -11,6 +11,7 @@
 
 ### Fixes
 * :bug::boom: details property in Error become an object because it can handle both string and object
+* :bug::arrow_up: update RestSharp to fix a bug on .NET 7 #120 
 
 ## v2.0.0 - 2023-02-02
 ### ¡Breaking Changes!
