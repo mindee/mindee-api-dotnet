@@ -81,7 +81,7 @@ customize the experience.
 
 All the juicy details are described in the **[Official Guide](docs/index.md)**.
 
-You also can use the **[Reference documentation](docs/api-reference/Mindee/index.md)** to dig deeper in the code.
+You also can use the **[Reference documentation](https://mindee.github.io/mindee-api-dotnet/api-reference/Mindee)** to dig deeper in the code.
 
 Or feel free to reach us in our slack community channel :-) ! 
 
