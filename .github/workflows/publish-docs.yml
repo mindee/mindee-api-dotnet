@@ -20,7 +20,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
     steps:
@@ -40,6 +39,8 @@ jobs:
           dotnet-version: '7.0.x'
       - name: Generate documentations
         run: mddocs apireference --assemblies 'src/Mindee/bin/Release/netstandard2.0/Mindee.dll' --outdir ./docs/api-reference
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
@@ -48,12 +49,13 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
 
-  # Deployment job
   deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
-        with:
-          artifact_name: github-pages
+    environment:
+          name: github-pages
+          url: ${{ steps.deployment.outputs.page_url }}
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+          - name: Deploy to GitHub Pages
+            id: deployment
+            uses: actions/deploy-pages@v1
