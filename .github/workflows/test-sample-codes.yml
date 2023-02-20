@@ -4,6 +4,10 @@
 name: Test samples codes
 
 on:
+  pull_request:
+    # Sequence of patterns matched against refs/heads
+    branches:    
+      - main
   push:
     branches:
       - main
