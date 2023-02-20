@@ -1,5 +1,5 @@
 # Sample workflow for building and deploying a Jekyll site to GitHub Pages
-name: Publish documentation (API reference)
+name: Publish documentation
 
 on:  
   release:
@@ -20,40 +20,44 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup .NET SDK '6.0.x'
+      - name: Setup .NET SDK '7.0.x'
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '7.0.x'
       - name: Build
-        run: dotnet build "src" --configuration Release -o "./build"
+        run: dotnet build "src" --configuration Release
       - name: Install MdDocs
         run: dotnet tool install --global Grynwald.MdDocs
-      - name: Setup .NET SDK '3.1.x'
+      - name: Setup .NET SDK '7.0.x'
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '3.1.x'
+          dotnet-version: '7.0.x'
       - name: Generate documentations
-        run: mddocs apireference --assembly './build/Mindee.dll' --outdir ./docs/api-reference
+        run: mddocs apireference --assemblies 'src/Mindee/bin/Release/netstandard2.0/Mindee.dll' --outdir ./docs/api-reference
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
-          source: ./docs/api-reference
+          source: ./docs
           destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
+        with:
+          path: /home/runner/work/mindee-api-dotnet/mindee-api-dotnet/_site
 
-  # Deployment job
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v1
-        with:
-          artifact_name: github-pages

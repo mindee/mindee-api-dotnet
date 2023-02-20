@@ -61,4 +61,4 @@ You can view the source code on [GitHub](https://github.com/mindee/mindee-api-do
 &nbsp;
 &nbsp;
 **Questions?**
-<img alt="Slack Logo Icon" style="display:inline!important" src="https://files.readme.io/5b83947-Slack.png" width="20" height="20">&nbsp;&nbsp;[Join our Slack](https://slack.mindee.com)
+<img alt="Slack Logo Icon" style="display:inline!important" src="https://files.readme.io/5b83947-Slack.png" width="20" height="20">&nbsp;&nbsp;[Join our Slack](https://mindee-community.slack.com/join/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw#/shared-invite/email)
