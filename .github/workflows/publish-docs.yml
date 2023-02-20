@@ -48,6 +48,8 @@ jobs:
           destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
+        with:
+          path: /github/workspace/_site
 
   deploy:
     environment:
