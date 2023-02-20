@@ -15,10 +15,10 @@ jobs:
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
-      - name: Setup .NET SDK '6.0.x'
+      - name: Setup .NET SDK '7.0.x'
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '7.0.x'
       - name: Install dependencies
         run: dotnet restore "src"
       - name: Build
