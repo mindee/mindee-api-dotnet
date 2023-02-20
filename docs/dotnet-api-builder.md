@@ -103,6 +103,36 @@ var prediction = await _mindeeClient
 ListField? employerId = prediction.Inference.Pages.FirstOrDefault()?.Prediction.GetValueOrDefault("employer_id");
 ```
 
+## Line items reconstructions
+We offer the possiblity to use a post processing after you get prediction result from your custom API.
+ 
+In the below example, image that your custom document have 4 columns defined a table.
+So, you want to get all the line items of it.
+
+In that case, you will have to define 4 fields and do the annotation verticaly for each one.
+
+After training your model, test it using the mindee client as below to get your document parsed and line items reconstructed.
+
+```csharp
+CustomEndpoint myEndpoint = new CustomEndpoint(
+    endpointName: "wnine",
+    accountName: "john",
+    version: "1.1" // optional
+);
+
+var documentParsed = await _mindeeClient
+    .LoadDocument(new FileInfo(path))
+    .ParseAsync(myEndpoint);
+
+var fieldNamesToLineItems = new List<string>() { "beneficiary_birth_date", "beneficiary_number", "beneficiary_name", "beneficiary_rank" };
+var lineHeigthTolerance = 0.011d; // it helps to handle line height variation of your lines. The value will depends of your table of course !
+
+var lineItems = LineItemsGenerator.Generate(
+    fieldNamesToLineItems,
+    documentParsed.Inference.DocumentPrediction.Fields,
+    new Anchor("beneficiary_name", lineHeigthTolerance)); // The anchor must be the column where there is always a value in your table. 
+```
+
 &nbsp;
 &nbsp;
 **Questions?**

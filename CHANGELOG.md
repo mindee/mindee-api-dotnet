@@ -1,7 +1,19 @@
 # CHANGELOG
 
+## v2.1.0 - 2023-02-20
+### ¡Breaking Changes!
+* :boom: some properties renaming for French ID card and Carte Vitale
+
+### Changes
+* :sparkles: support lines items post processing reconstruction for API Builder
+* :sparkles: support Polygon object for field coordinates
+* :sparkles: support Math Bbox concept
+
+### Fixes
+* :bug::boom: details property in Error become an object because it can handle both string and object
+
 ## v2.0.0 - 2023-02-02
-### !BREAKING CHANGES
+### ¡Breaking Changes!
 * :boom: drop Invoice v3 support
 * :boom: prediction model classes must be replaced by inference model to use OTS APIs
 * :boom: renaming Date to DateField
