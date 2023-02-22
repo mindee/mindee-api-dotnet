@@ -1,5 +1,5 @@
 using Mindee;
-using Mindee.Parsing.Receipt;
+using Mindee.Parsing;
 
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
@@ -9,11 +9,11 @@ MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
 CustomEndpoint myEndpoint = new CustomEndpoint(
     endpointName: "my-endpoint",
     accountName: "my-account",
-    version: "version"
+    version: "my-version"
 );
 
-var documentParsed = await _mindeeClient
-    .LoadDocument(new FileInfo(path))
+var documentParsed = await mindeeClient
+    .LoadDocument(new FileInfo(filePath))
     .ParseAsync(myEndpoint);
 
 System.Console.WriteLine(documentParsed.ToString());
