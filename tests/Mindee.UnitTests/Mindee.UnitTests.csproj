@@ -35,4 +35,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="..\resources\async">
+      <Link>Resources\async</Link>
+    </Folder>
+  </ItemGroup>
+
 </Project>

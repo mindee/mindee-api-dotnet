@@ -1,18 +1,19 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using Mindee.Parsing.Passport;
+using Mindee.Parsing.Financial;
 
 namespace Mindee.Cli.Commands
 {
-    internal class PredictPassportCommand : Command
+    internal class PredictFinancialDocumentCommand : Command
     {
         public IConsole Console { get; set; } = null!;
 
-        public PredictPassportCommand()
-            : base(name: "passport", "Invokes the passport API")
+        public PredictFinancialDocumentCommand()
+            : base(name: "financial-document", "Invokes the Financial Document API")
         {
+            AddOption(new Option<bool>(new string[] { "-w", "--with-words", "withWords" },
+                "To get all the words in the current document. False by default."));
             AddOption(new Option<string>(new string[] { "-o", "--output", "output" },
                 "Specify how to output the data. \n" +
                 "- summary: a basic summary (default)\n" +
@@ -26,7 +27,8 @@ namespace Mindee.Cli.Commands
             private readonly MindeeClient _mindeeClient;
 
             public string Path { get; set; } = null!;
-            public string Output { get; set; } = "raw";
+            public bool WithWords { get; set; } = false;
+            public string Output { get; set; } = "summary";
 
             public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
             {
@@ -36,11 +38,11 @@ namespace Mindee.Cli.Commands
 
             public async Task<int> InvokeAsync(InvocationContext context)
             {
-                _logger.LogInformation("About to predict a passport..");
+                _logger.LogInformation("About to predict an Financial Document..");
 
                 var response = await _mindeeClient
-                    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<PassportV1Inference>();
+                    .LoadDocument(new FileInfo(Path))
+                    .ParseAsync<FinancialV1Inference>(WithWords);
 
                 if (response == null)
                 {

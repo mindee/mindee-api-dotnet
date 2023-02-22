@@ -9,10 +9,16 @@ MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
 CustomEndpoint myEndpoint = new CustomEndpoint(
     endpointName: "my-endpoint",
     accountName: "my-account"
+    // optionally, lock the version
+    //, version: "1.1"
 );
 
-var documentParsed = await mindeeClient
+var response = await mindeeClient
     .LoadDocument(new FileInfo(filePath))
     .ParseAsync(myEndpoint);
 
-System.Console.WriteLine(documentParsed.ToString());
+// Print a summary of the predictions
+System.Console.WriteLine(response.Document.ToString());
+
+// Print the document-level predictions
+// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());

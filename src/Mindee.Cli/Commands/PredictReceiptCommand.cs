@@ -41,17 +41,23 @@ namespace Mindee.Cli.Commands
             {
                 _logger.LogInformation("About to predict a receipt..");
 
-                var prediction = await _mindeeClient
+                var response = await _mindeeClient
                     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
                     .ParseAsync<ReceiptV4Inference>(WithWords, true);
 
+                if (response == null)
+                {
+                    context.Console.Out.Write("null");
+                    return 1;
+                }
+
                 if (Output == "summary")
                 {
-                    context.Console.Out.Write(prediction != null ? prediction.Inference.DocumentPrediction.ToString()! : "null");
+                    context.Console.Out.Write(response.Document.Inference.Prediction.ToString());
                 }
                 else
                 {
-                    context.Console.Out.Write(JsonSerializer.Serialize(prediction, new JsonSerializerOptions { WriteIndented = true }));
+                    context.Console.Out.Write(response.Document.ToString());
                 }
 
                 return 0;
