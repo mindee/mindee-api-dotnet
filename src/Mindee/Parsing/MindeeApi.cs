@@ -70,22 +70,63 @@ namespace Mindee.Parsing
             return client;
         }
 
-        public Task<Document<TModel>> PredictAsync<TModel>(
-            PredictParameter predictParameter)
+        public Task<PredictEnqueuedResponse> EnqueuePredictAsync<TModel>(PredictParameter predictParameter)
             where TModel : class, new()
+
         {
-            if (!Attribute.IsDefined(typeof(TModel), typeof(EndpointAttribute)))
+            return EnqueuePredictAsyncInternalAsync(predictParameter, GetEndpoint<TModel>());
+        }
+
+        private async Task<PredictEnqueuedResponse> EnqueuePredictAsyncInternalAsync(
+            PredictParameter predictParameter,
+            CustomEndpoint endpoint
+            )
+        {
+            var request = new RestRequest($"/products/" +
+                $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
+                $"predict_async", Method.Post);
+
+            _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
+
+            request.AddFile("document", predictParameter.File, predictParameter.Filename);
+            request.AddParameter("include_mvision", predictParameter.WithFullText);
+            request.AddQueryParameter("cropper", predictParameter.WithCropper);
+
+            var response = await _httpClient.ExecutePostAsync(request);
+
+            _logger?.LogDebug($"HTTP response : {response.Content}");
+            _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
+
+            PredictEnqueuedResponse predictEnqueuedResponse = null;
+
+            if (response.Content != null)
             {
-                throw new NotSupportedException($"The type {typeof(TModel)} is not supported as a prediction model. " +
-                    $"The endpoint attribute is missing. " +
-                    $"Please refer to the document or contact the support.");
+                predictEnqueuedResponse = JsonSerializer.Deserialize<PredictEnqueuedResponse>(response.Content);
+
+                return predictEnqueuedResponse;
             }
 
-            EndpointAttribute endpointAttribute =
-            (EndpointAttribute)Attribute.GetCustomAttribute(typeof(TModel), typeof(EndpointAttribute));
+            var errorMessage = "Mindee API client: ";
 
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                errorMessage += response.ErrorMessage;
+                _logger?.LogCritical(errorMessage);
+            }
+            else
+            {
+                errorMessage += $" Unhandled error - {response.ErrorMessage}";
+                _logger?.LogError(errorMessage);
+            }
+
+            throw new MindeeException(errorMessage);
+        }
+
+        public Task<Document<TModel>> PredictAsync<TModel>(PredictParameter predictParameter)
+            where TModel : class, new()
+        {
             return PredictAsync<TModel>(
-                new CustomEndpoint(endpointAttribute.EndpointName, endpointAttribute.AccountName, endpointAttribute.Version),
+                GetEndpoint<TModel>(),
                 predictParameter);
         }
 
@@ -119,7 +160,7 @@ namespace Mindee.Parsing
                 }
             }
 
-            var errorMessage = "Mindee API client : ";
+            var errorMessage = "Mindee API client: ";
 
             if (response.StatusCode == HttpStatusCode.InternalServerError)
             {
@@ -139,6 +180,21 @@ namespace Mindee.Parsing
             }
 
             throw new MindeeException(errorMessage);
+        }
+
+        private CustomEndpoint GetEndpoint<TModel>()
+        {
+            if (!Attribute.IsDefined(typeof(TModel), typeof(EndpointAttribute)))
+            {
+                throw new NotSupportedException($"The type {typeof(TModel)} is not supported as a prediction model. " +
+                    $"The endpoint attribute is missing. " +
+                    $"Please refer to the document or contact the support.");
+            }
+
+            EndpointAttribute endpointAttribute =
+            (EndpointAttribute)Attribute.GetCustomAttribute(typeof(TModel), typeof(EndpointAttribute));
+
+            return new CustomEndpoint(endpointAttribute.EndpointName, endpointAttribute.AccountName, endpointAttribute.Version);
         }
 
         private string BuildUserAgent()

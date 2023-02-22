@@ -44,7 +44,7 @@ namespace Mindee.Parsing.Common
         /// </summary>
         public override void Write(Utf8JsonWriter writer, ErrorDetails value, JsonSerializerOptions options)
         {
-            throw new NotSupportedException();
+            writer.WriteStringValue(value.ToString());
         }
     }
 }

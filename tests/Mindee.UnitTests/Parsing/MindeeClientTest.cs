@@ -60,6 +60,22 @@ namespace Mindee.UnitTests.Parsing
             predictable.Verify(p => p.PredictAsync<InvoiceV4Inference>(It.IsAny<PredictParameter>()), Times.AtMostOnce());
         }
 
+        [Fact]
+        public async Task EnqueueParsing_With_OTSApi_WithFile()
+        {
+            var predictable = new Mock<IPredictable>();
+            predictable.Setup(x => x.EnqueuePredictAsync<InvoiceV4Inference>(It.IsAny<PredictParameter>()))
+                .ReturnsAsync(new PredictEnqueuedResponse());
+            var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
+
+            mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
+
+            var response = await mindeeClient.EnqueueAsync<InvoiceV4Inference>();
+
+            Assert.NotNull(response);
+            predictable.Verify(p => p.EnqueuePredictAsync<InvoiceV4Inference>(It.IsAny<PredictParameter>()), Times.AtMostOnce());
+        }
+
         private IPdfOperation GetDefaultPdfOperation() => Mock.Of<IPdfOperation>();
     }
 }
