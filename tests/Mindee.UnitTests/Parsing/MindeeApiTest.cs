@@ -12,43 +12,47 @@ namespace Mindee.UnitTests.Parsing
     [Trait("Category", "Mindee Api")]
     public sealed class MindeeApiTest
     {
-        [Fact]
-        public async Task Predict_WithWrongKey()
+        private const string DateOutputFormat = "yyyy-MM-ddTHH:mm:ss.fffff";
+
+        private MindeeApi InitMockServer(HttpStatusCode statusCode, string fileToLoad)
         {
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When("*")
-                    .Respond(HttpStatusCode.BadRequest, "application/json", File.ReadAllText("Resources/errors/wrong_api_key.json"));
-
+                .Respond(
+                    statusCode,
+                    "application/json",
+                    File.ReadAllText(fileToLoad)
+                    );
             var mindeeApi = new MindeeApi(
-                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
+                Options.Create(new MindeeSettings()
+                {
+                    ApiKey = "MyKey"
+                }),
                 new NullLogger<MindeeApi>(),
                 mockHttp
                 );
+            return mindeeApi;
+        }
+
+        [Fact]
+        public async Task Predict_WithWrongKey()
+        {
+            var mindeeApi = InitMockServer(HttpStatusCode.BadRequest, "Resources/errors/wrong_api_key.json");
 
             await Assert.ThrowsAsync<Mindee400Exception>(
-               () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
+               () => _ = mindeeApi.PredictPostAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
         }
 
         [Fact]
         public async Task Predict_WithValidResponse()
         {
-            var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When("*")
-                    .Respond(HttpStatusCode.OK, "application/json", File.ReadAllText("Resources/invoice/response_v4/complete.json"));
+            var mindeeApi = InitMockServer(HttpStatusCode.OK, "Resources/invoice/response_v4/complete.json");
 
-            var mindeeApi = new MindeeApi(
-                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
-                new NullLogger<MindeeApi>(),
-                mockHttp
-                );
-
-            var document = await mindeeApi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
+            var response = await mindeeApi.PredictPostAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
             var expected = File.ReadAllText("Resources/invoice/response_v4/summary_full.rst");
 
-            Assert.NotNull(document);
-            Assert.Equal(
-                expected,
-                document.ToString());
+            Assert.NotNull(response);
+            Assert.Equal(expected, response.Document.ToString());
         }
 
         [Fact]
@@ -69,7 +73,7 @@ namespace Mindee.UnitTests.Parsing
                 );
 
             await Assert.ThrowsAsync<Mindee400Exception>(
-                           () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
+                           () => _ = mindeeApi.PredictPostAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
         }
 
         [Fact]
@@ -90,7 +94,7 @@ namespace Mindee.UnitTests.Parsing
                 );
 
             await Assert.ThrowsAsync<Mindee500Exception>(
-                           () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
+                           () => _ = mindeeApi.PredictPostAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
         }
 
         [Fact]
@@ -111,7 +115,10 @@ namespace Mindee.UnitTests.Parsing
                 );
 
             await Assert.ThrowsAsync<Mindee429Exception>(
-                           () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
+               () => _ = mindeeApi.PredictPostAsync<ReceiptV4Inference>(
+                   ParsingTestBase.GetFakePredictParameter()
+                   )
+               );
         }
 
         [Fact]
@@ -123,7 +130,7 @@ namespace Mindee.UnitTests.Parsing
                     HttpStatusCode.Unauthorized,
                     "application/json",
                     File.ReadAllText("Resources/errors/error_401_from_mindeeapi.json")
-                );
+                    );
 
             var mindeeApi = new MindeeApi(
                 Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
@@ -132,93 +139,73 @@ namespace Mindee.UnitTests.Parsing
                 );
 
             await Assert.ThrowsAsync<Mindee401Exception>(
-                           () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
+                () => _ = mindeeApi.PredictPostAsync<ReceiptV4Inference>(
+                    ParsingTestBase.GetFakePredictParameter()
+                    )
+                );
         }
 
         [Fact]
-        public async Task EnqueuePredict_Success()
+        public async Task PredictAsyncPostAsync_WithFailForbidden()
         {
-            var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When("*")
-                .Respond(
-                    HttpStatusCode.OK,
-                    "application/json",
-                    File.ReadAllText("Resources/async/enqueue_success_response.json")
-                );
-            var mindeeApi = new MindeeApi(
-                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
-                new NullLogger<MindeeApi>(),
-                mockHttp
-                );
+            var mindeeApi = InitMockServer(HttpStatusCode.BadRequest, "Resources/async/post_fail_forbidden.json");
 
-            var response = await mindeeApi.EnqueuePredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
-
-            Assert.NotNull(response);
-            Assert.Equal("success", response.ApiRequest.Status);
-            Assert.Equal("processing", response.Job.Status);
-            Assert.Equal("76c90710-3a1b-4b91-8a39-31a6543e347c", response.Job.Id);
-        }
-
-        [Fact]
-        public async Task EnqueuePredict_WithProductWhichNotSupportsAsync_Fail()
-        {
-            var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When("*")
-                .Respond(
-                    HttpStatusCode.BadRequest,
-                    "application/json",
-                    File.ReadAllText("Resources/async/enqueue_fail_async_not_supported_response.json")
-                );
-            var mindeeApi = new MindeeApi(
-                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
-                new NullLogger<MindeeApi>(),
-                mockHttp
-                );
-
-            var response = await mindeeApi.EnqueuePredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
+            var response = await mindeeApi.PredictAsyncPostAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.NotNull(response);
             Assert.Equal("failure", response.ApiRequest.Status);
             Assert.Null(response.Job.Status);
             Assert.Null(response.Job.Id);
+            Assert.Equal("2023-01-01T00:00:00.00000", response.Job.IssuedAt.ToString(DateOutputFormat));
+            Assert.Null(response.Job.AvailableAt);
         }
 
         [Fact]
-        public async Task GetJobAsync_WithJobInProgress()
+        public async Task PredictAsyncPostAsync_WithSuccess()
         {
-            var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When("*")
-                .Respond(
-                    HttpStatusCode.OK,
-                    "application/json",
-                    File.ReadAllText("Resources/async/get_job_in_progress.json")
-                );
-            var mindeeApi = new MindeeApi(
-                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
-                new NullLogger<MindeeApi>(),
-                mockHttp
-                );
+            var mindeeApi = InitMockServer(HttpStatusCode.OK, "Resources/async/post_success.json");
 
-            var response = await mindeeApi.GetJobAsync<InvoiceV4Inference>("my-job-id");
+            var response = await mindeeApi.PredictAsyncPostAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.NotNull(response);
-            Assert.Equal("job", response.ApiRequest.Resources.First());
-            Assert.Equal("processing", response.Job.Status);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal("waiting", response.Job.Status);
+            Assert.Equal("76c90710-3a1b-4b91-8a39-31a6543e347c", response.Job.Id);
+            Assert.Equal("2023-02-16T12:33:49.60294", response.Job.IssuedAt.ToString(DateOutputFormat));
+            Assert.Null(response.Job.AvailableAt?.ToString(DateOutputFormat));
         }
 
         [Fact]
-        public async Task GetJobAsync_WithSuccessfullJob()
+        public async Task DocumentQueueGetAsync_WithJobProcessing()
+        {
+            var mindeeApi = InitMockServer(HttpStatusCode.OK, "Resources/async/get_processing.json");
+
+            var response = await mindeeApi.DocumentQueueGetAsync<InvoiceV4Inference>("76c90710-3a1b-4b91-8a39-31a6543e347c");
+
+            Assert.NotNull(response);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal("processing", response.Job.Status);
+            Assert.Equal("76c90710-3a1b-4b91-8a39-31a6543e347c", response.Job.Id);
+            Assert.Equal("2023-03-16T12:33:49.60294", response.Job.IssuedAt.ToString(DateOutputFormat));
+            Assert.Null(response.Job.AvailableAt);
+        }
+
+        [Fact]
+        public async Task DocumentQueueGetAsync_WithSuccess()
         {
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When("*/documents/queue/*")
-                .WithHeaders("Location", @"/products/Mindee/invoice_splitter_beta/v1/documents/async/e66cfef5-8a31-4278-8ced-004fd8a345b2")
+                .WithHeaders(
+                    "Location",
+                    @"/products/Mindee/invoice_splitter_beta/v1/documents/async/e66cfef5-8a31-4278-8ced-004fd8a345b2"
+                    )
                 .Respond(HttpStatusCode.Redirect);
 
             mockHttp.When("*/documents/*")
                 .Respond(
                     HttpStatusCode.OK,
                     "application/json",
-                    File.ReadAllText("Resources/async/get_doc_parsed_successfuly.json")
+                    File.ReadAllText("Resources/async/get_completed.json")
                 );
 
             var mindeeApi = new MindeeApi(
@@ -227,7 +214,7 @@ namespace Mindee.UnitTests.Parsing
                 mockHttp
                 );
 
-            var response = await mindeeApi.GetJobAsync<InvoiceV4Inference>("my-job-id");
+            var response = await mindeeApi.DocumentQueueGetAsync<InvoiceV4Inference>("my-job-id");
 
             Assert.NotNull(response);
             Assert.NotNull(response.Document);

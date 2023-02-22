@@ -6,7 +6,7 @@ namespace Mindee.Parsing.Common
     /// <summary>
     /// Regroup common data between receipt and invoice.
     /// </summary>
-    public abstract class FinancialPredictionBase : PredictionBase
+    public abstract class FinancialPredictionBase
     {
         /// <summary>
         /// <see cref="Common.DocumentType"/>
@@ -19,6 +19,12 @@ namespace Mindee.Parsing.Common
         /// </summary>
         [JsonPropertyName("date")]
         public DateField Date { get; set; }
+
+        /// <summary>
+        /// <see cref="Common.Locale"/>
+        /// </summary>
+        [JsonPropertyName("locale")]
+        public Locale Locale { get; set; }
 
         /// <summary>
         /// <see cref="Tax"/>

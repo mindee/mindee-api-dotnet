@@ -1,4 +1,4 @@
-using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.InvoiceSplitter;
 
 namespace Mindee.UnitTests.Parsing.InvoiceSplitter
@@ -9,19 +9,18 @@ namespace Mindee.UnitTests.Parsing.InvoiceSplitter
         [Fact]
         public async Task Predict_CheckSummary()
         {
-            var mindeeAPi = GetMindeeApiForInvoice();
-            var prediction = await mindeeAPi.PredictAsync<InvoiceSplitterV1Inference>(ParsingTestBase.GetFakePredictParameter());
-
+            var response = await GetPrediction();
             var expected = File.ReadAllText("Resources/invoice_splitter/response_v1/2_invoices_summary.rst");
-
             Assert.Equal(
                 expected,
-                prediction.ToString());
+                response.Document.ToString());
         }
 
-        private MindeeApi GetMindeeApiForInvoice(string fileName = "Resources/invoice_splitter/response_v1/2_invoices_response.json")
+        private static async Task<AsyncPredictResponse<InvoiceSplitterV1Inference>> GetPrediction()
         {
-            return ParsingTestBase.GetMindeeApi(fileName);
+            const string fileName = "Resources/invoice_splitter/response_v1/2_invoices_response.json";
+            var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
+            return await mindeeAPi.DocumentQueueGetAsync<InvoiceSplitterV1Inference>("hello");
         }
     }
 }

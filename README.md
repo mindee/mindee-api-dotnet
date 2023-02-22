@@ -20,16 +20,17 @@ dotnet add package Mindee
 ```
 
 ### Define the API Key
-The API key is retrieved using `IConfiguration`. 
+The API key is retrieved using `IConfiguration`.
+
 So you could define it in multiple ways: 
-- From an environment variable
+* From an environment variable
 ```
 MindeeApiSettings__ApiKey
 ```
-- From an appsettings.json file
+* From an appsettings.json file
 ```
 "MindeeApiSettings": {
-    "ApiKey": ""m-api-key"
+    "ApiKey": ""my-api-key"
 },
 ```
 
@@ -66,11 +67,15 @@ string filePath = "/path/to/the/file.ext";
 
 MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
 
-var documentParsed = await mindeeClient
+var response = await mindeeClient
     .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
     .ParseAsync<InvoiceV4Inference>();
 
-System.Console.WriteLine(documentParsed.ToString());
+// Print a summary of the predictions
+System.Console.WriteLine(response.Document.ToString());
+
+// Print the document-level predictions
+// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
 #### Region-Specific Documents
@@ -83,11 +88,15 @@ string filePath = "/path/to/the/file.ext";
 
 MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
 
-var documentParsed = await mindeeClient
+var response = await mindeeClient
     .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
     .ParseAsync<BankCheckV1Inference>();
 
-System.Console.WriteLine(documentParsed.ToString());
+// Print a summary of the predictions
+System.Console.WriteLine(response.Document.ToString());
+
+// Print the document-level predictions
+// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
 #### Custom Document (API Builder)
@@ -104,6 +113,8 @@ MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
 CustomEndpoint myEndpoint = new CustomEndpoint(
     endpointName: "my-endpoint",
     accountName: "my-account"
+    // optionally, lock the version
+    //, version: "1.1"
 );
 
 var documentParsed = await mindeeClient

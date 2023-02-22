@@ -9,7 +9,7 @@ namespace Mindee.Parsing.Us.BankCheck
     /// <summary>
     /// The us bank check model for the v1.
     /// </summary>
-    public sealed class BankCheckV1DocumentPrediction : PredictionBase
+    public sealed class BankCheckV1DocumentPrediction
     {
         /// <summary>
         /// Payer's bank account number.

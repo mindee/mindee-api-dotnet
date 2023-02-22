@@ -9,7 +9,7 @@ namespace Mindee.Parsing.Passport
     /// <summary>
     /// The passport model for the v1.
     /// </summary>
-    public sealed class PassportV1DocumentPrediction : PredictionBase
+    public sealed class PassportV1DocumentPrediction
     {
         /// <summary>
         /// The birth date of the person.

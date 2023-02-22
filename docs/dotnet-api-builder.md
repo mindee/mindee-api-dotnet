@@ -7,18 +7,19 @@ For the following examples, we are using our own [W9s custom API](https://develo
 
 ```csharp
 CustomEndpoint myEndpoint = new CustomEndpoint(
-    endpointName: "wnine",
-    accountName: "john",
-    version: "1.1" // optional
+    endpointName: "my-endpoint",
+    accountName: "my-account",
+    // optionally, lock the version
+    //version: "1.1"
 );
 
-var prediction = await _mindeeClient
+var response = await _mindeeClient
     .LoadDocument(new FileInfo(Path))
     .ParseAsync(myEndpoint);
 ```
 
 If the `version` argument is set, you'll be required to update it every time a new model is trained.
-This is probably not needed for development but essential for production use.
+This is probably not needed for development, but essential for production use.
 
 ## Parsing Documents
 Use the `ParseAsync` method to call the API prediction on your custom document.
@@ -28,7 +29,7 @@ You have two different ways to parse a custom document.
 
 1. Don't specify the return class, and use the default one (named ``CustomPrediction``):
 ```csharp
-var prediction = await _mindeeClient
+var response = await _mindeeClient
     .LoadDocument(new FileInfo(Path))
     .ParseAsync(myEndpoint);
 ```
@@ -52,13 +53,14 @@ public sealed class WNineV1DocumentPrediction
 [CustomEndpoint(
     endpointName: "wnine",
     accountName: "john",
-    version: "1.1" // optional
+    // optionally, lock the version
+    //version: "1.1"
 )]
 public sealed class WNineV1Inference : Inference<WNineV1DocumentPrediction, WNineV1DocumentPrediction>
 {
 }
 
-var prediction = await _mindeeClient
+var response = await _mindeeClient
     .LoadDocument(new FileInfo(Path))
     .ParseAsync<WNineV1Inference>();
 ```
@@ -93,47 +95,62 @@ In the examples below we'll use the `employer_id` field.
 CustomEndpoint myEndpoint = new CustomEndpoint(
     endpointName: "wnine",
     accountName: "john",
-    version: "1.1" // optional
+    // optionally, lock the version
+    //version: "1.1"
 );
 
-var prediction = await _mindeeClient
+var response = await _mindeeClient
     .LoadDocument(new FileInfo(path))
     .ParseAsync(myEndpoint);
 
-ListField? employerId = prediction.Inference.Pages.FirstOrDefault()?.Prediction.GetValueOrDefault("employer_id");
+ListField? employerId = response.Document.Inference.Pages.FirstOrDefault()?.Prediction.GetValueOrDefault("employer_id");
 ```
 
 ## Line items reconstructions
-We offer the possiblity to use a post processing after you get prediction result from your custom API.
+We offer the possibility to use a post processing after you get prediction result from your custom API.
  
 In the below example, image that your custom document have 4 columns defined a table.
 So, you want to get all the line items of it.
 
 In that case, you will have to define 4 fields and do the annotation verticaly for each one.
 
-After training your model, test it using the mindee client as below to get your document parsed and line items reconstructed.
+After training your model, test it using the Mindee client as below to get your document parsed and line items reconstructed.
 
 ```csharp
 CustomEndpoint myEndpoint = new CustomEndpoint(
     endpointName: "wnine",
     accountName: "john",
-    version: "1.1" // optional
+    // optionally, lock the version
+    //, version: "1.1"
 );
 
-var documentParsed = await _mindeeClient
+var response = await _mindeeClient
     .LoadDocument(new FileInfo(path))
     .ParseAsync(myEndpoint);
 
-var fieldNamesToLineItems = new List<string>() { "beneficiary_birth_date", "beneficiary_number", "beneficiary_name", "beneficiary_rank" };
-var lineHeigthTolerance = 0.011d; // it helps to handle line height variation of your lines. The value will depends of your table of course !
+// The fields used to define the columns
+var columnFieldNames = new List<string>() {
+    "beneficiary_birth_date",
+    "beneficiary_number",
+    "beneficiary_name",
+    "beneficiary_rank"
+    };
+
+// You can adjust the height variation of your lines.
+// The value will depend on your table of course!
+var lineHeigthTolerance = 0.011d;
+
+// The anchor must be the column where there is always a value in your table. 
+var anchor = new Anchor("beneficiary_name", lineHeigthTolerance);
 
 var lineItems = LineItemsGenerator.Generate(
-    fieldNamesToLineItems,
-    documentParsed.Inference.DocumentPrediction.Fields,
-    new Anchor("beneficiary_name", lineHeigthTolerance)); // The anchor must be the column where there is always a value in your table. 
+    columnFieldNames,
+    response.Document.Inference.Prediction.Fields,
+    anchor
+    ); 
 ```
 
 &nbsp;
 &nbsp;
 **Questions?**
-<img alt="Slack Logo Icon" style="display:inline!important" src="https://files.readme.io/5b83947-Slack.png" width="20" height="20">&nbsp;&nbsp;[Join our Slack](https://slack.mindee.com)
+[Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

@@ -11,7 +11,7 @@ namespace Mindee.Parsing
         /// <summary>
         /// Get a document which was predicted.
         /// </summary>
-        Task<GetJobResponse<TModel>> GetJobAsync<TModel>(string jobId)
+        Task<AsyncPredictResponse<TModel>> DocumentQueueGetAsync<TModel>(string jobId)
             where TModel : class, new();
     }
 }

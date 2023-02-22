@@ -1,4 +1,5 @@
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.CustomBuilder;
 
 namespace Mindee.UnitTests.Parsing.CustomBuilder
@@ -9,39 +10,27 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
         [Fact]
         public async Task Predict_CheckSummary()
         {
-            var mindeeAPi = GetMindeeApiForCustom();
-
-            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
-                new CustomEndpoint("customProduct", "fakeOrga"),
-                ParsingTestBase.GetFakePredictParameter());
-
+            var response = await GetPrediction();
             var expected = File.ReadAllText("Resources/custom/response_v1/summary_full.rst");
-
             Assert.Equal(
                 expected,
-                prediction.ToString());
+                response.Document.ToString());
         }
 
         [Fact]
-        public async Task Execute_WithReceiptData_MustSuccess()
+        public async Task Predict_CheckPage0()
         {
-            var mindeeAPi = GetMindeeApiForCustom();
-            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
-                new CustomEndpoint("customProduct", "fakeOrga"),
-                ParsingTestBase.GetFakePredictParameter());
-
-            Assert.NotNull(prediction);
+            var prediction = await GetPrediction();
+            var expected = File.ReadAllText("Resources/custom/response_v1/summary_page0.rst");
+            Assert.Equal(expected, prediction.Document.Inference.Pages[0].ToString());
         }
 
         [Fact]
         public async Task Predict_WithFieldWithOnlyOneValue_MustSuccess()
         {
-            var mindeeAPi = GetMindeeApiForCustom();
-            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
-                new CustomEndpoint("customProduct", "fakeOrga"),
-                ParsingTestBase.GetFakePredictParameter());
+            var response = await GetPrediction();
 
-            var listField = prediction.Inference.Pages.First().Prediction["date_normal"];
+            var listField = response.Document.Inference.Pages.First().Prediction["date_normal"];
             Assert.Equal(0.99, listField!.Confidence);
             Assert.Equal(0.99, listField.Values.First().Confidence);
             Assert.Equal("2020-12-17", listField.Values.First().Content);
@@ -58,12 +47,9 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
         [Fact]
         public async Task Predict_WithFieldWithMultipleValues_MustSuccess()
         {
-            var mindeeAPi = GetMindeeApiForCustom();
-            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
-                new CustomEndpoint("customProduct", "fakeOrga"),
-                ParsingTestBase.GetFakePredictParameter());
+            var response = await GetPrediction();
 
-            var listField = prediction.Inference.Pages.First().Prediction["string_all"];
+            var listField = response.Document.Inference.Pages.First().Prediction["string_all"];
             Assert.Equal(3, listField!.Values.Count);
             Assert.Equal(1.0, listField.Confidence);
             Assert.Equal(1.0, listField.Values.Last().Confidence);
@@ -81,12 +67,8 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
         [Fact]
         public async Task Predict_WithFieldWithNoValues_MustSuccess()
         {
-            var mindeeAPi = GetMindeeApiForCustom();
-            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
-                new CustomEndpoint("customProduct", "fakeOrga"),
-                ParsingTestBase.GetFakePredictParameter());
-
-            var listField = prediction.Inference.Pages.First().Prediction["url"];
+            var response = await GetPrediction();
+            var listField = response.Document.Inference.Pages.First().Prediction["url"];
             Assert.Equal(0.0, listField!.Confidence);
             Assert.False(listField.Values.Any());
         }
@@ -94,28 +76,24 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
         [Fact]
         public async Task Predict_MustSuccessfullyGetOrientation()
         {
-            var mindeeAPi = GetMindeeApiForCustom();
-            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
-                new CustomEndpoint("customProduct", "fakeOrga"),
-                ParsingTestBase.GetFakePredictParameter());
-
-            Assert.Equal(0, prediction.Inference.Pages.First().Orientation.Value);
+            var response = await GetPrediction();
+            Assert.Equal(0, response.Document.Inference.Pages.First().Orientation.Value);
         }
 
         [Fact]
         public async Task Predict_MustSuccessfullyHandleMultiplePages()
         {
-            var mindeeAPi = GetMindeeApiForCustom();
-            var prediction = await mindeeAPi.PredictAsync<CustomV1Inference>(
-                new CustomEndpoint("customProduct", "fakeOrga"),
-                ParsingTestBase.GetFakePredictParameter());
-
-            Assert.Equal(2, prediction.Inference.Pages.Count);
+            var response = await GetPrediction();
+            Assert.Equal(2, response.Document.Inference.Pages.Count);
         }
 
-        private MindeeApi GetMindeeApiForCustom(string fileName = "Resources/custom/response_v1/complete.json")
+        private static async Task<PredictResponse<CustomV1Inference>> GetPrediction()
         {
-            return ParsingTestBase.GetMindeeApi(fileName);
+            const string fileName = "Resources/custom/response_v1/complete.json";
+            var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
+            return await mindeeAPi.PredictPostAsync<CustomV1Inference>(
+                new CustomEndpoint("customProduct", "fakeOrga"),
+                ParsingTestBase.GetFakePredictParameter());
         }
     }
 }

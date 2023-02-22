@@ -1,11 +1,12 @@
 using System.Text.Json.Serialization;
 
-namespace Mindee.Parsing.Common.Jobs
+namespace Mindee.Parsing.Common
 {
     /// <summary>
-    /// Represent an enqueued predict response from Mindee API.
+    /// Represent information of a job from Mindee API.
     /// </summary>
-    public class PredictEnqueuedResponse : CommonResponse
+    public class GetJobResponse<TModel> : PredictResponse<TModel>
+        where TModel : class, new()
     {
         /// <summary>
         /// <see cref="Job"/>

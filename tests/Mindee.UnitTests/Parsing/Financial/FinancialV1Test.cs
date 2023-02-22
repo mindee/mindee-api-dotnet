@@ -9,52 +9,48 @@ namespace Mindee.UnitTests.Parsing.Financial
         public async Task Predict_Invoice_CheckSummary()
         {
             var mindeeAPi = ParsingTestBase.GetMindeeApi("Resources/financial_document/response_v1/complete_invoice.json");
-            var prediction = await mindeeAPi.PredictAsync<FinancialV1Inference>(ParsingTestBase.GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictPostAsync<FinancialV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/financial_document/response_v1/summary_full_invoice.rst");
-
             Assert.Equal(
                 expected,
-                prediction.ToString());
+                prediction.Document.ToString());
         }
 
         [Fact]
         public async Task Predict_Invoice_FirstPage_CheckSummary()
         {
             var mindeeAPi = ParsingTestBase.GetMindeeApi("Resources/financial_document/response_v1/complete_invoice.json");
-            var prediction = await mindeeAPi.PredictAsync<FinancialV1Inference>(ParsingTestBase.GetFakePredictParameter());
+            var response = await mindeeAPi.PredictPostAsync<FinancialV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/financial_document/response_v1/summary_page0_invoice.rst");
-
             Assert.Equal(
                 expected,
-                prediction.Inference.Pages.First().ToString());
+                response.Document.Inference.Pages.First().ToString());
         }
 
         [Fact]
         public async Task Predict_Receipt_CheckSummary()
         {
             var mindeeAPi = ParsingTestBase.GetMindeeApi("Resources/financial_document/response_v1/complete_receipt.json");
-            var prediction = await mindeeAPi.PredictAsync<FinancialV1Inference>(ParsingTestBase.GetFakePredictParameter());
+            var prediction = await mindeeAPi.PredictPostAsync<FinancialV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/financial_document/response_v1/summary_full_receipt.rst");
-
             Assert.Equal(
                 expected,
-                prediction.ToString());
+                prediction.Document.ToString());
         }
 
         [Fact]
         public async Task Predict_Receipt_FirstPage_CheckSummary()
         {
             var mindeeAPi = ParsingTestBase.GetMindeeApi("Resources/financial_document/response_v1/complete_receipt.json");
-            var prediction = await mindeeAPi.PredictAsync<FinancialV1Inference>(ParsingTestBase.GetFakePredictParameter());
+            var response = await mindeeAPi.PredictPostAsync<FinancialV1Inference>(ParsingTestBase.GetFakePredictParameter());
 
             var expected = File.ReadAllText("Resources/financial_document/response_v1/summary_page0_receipt.rst");
-
             Assert.Equal(
                 expected,
-                prediction.Inference.Pages.First().ToString());
+                response.Document.Inference.Pages.First().ToString());
         }
     }
 }

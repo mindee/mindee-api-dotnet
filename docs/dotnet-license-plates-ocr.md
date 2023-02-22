@@ -5,15 +5,23 @@ Using this [sample photo](https://files.readme.io/ffc127d-sample_receipt.jpg) be
 
 ## Quick Start
 ```csharp
-// Load a file from disk and parse it
+using Mindee;
+using Mindee.Parsing.Eu.LicensePlate;
 
-string path = "./path/to/the/file.ext";
-var prediction = await _mindeeClient
-    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-    .ParseAsync<LicensePlatesV1Prediction>();
+string apiKey = "my-api-key";
+string filePath = "/path/to/the/file.ext";
 
-// Print a summary of the parsed data
-System.Console.WriteLine(prediction.ToString());
+MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+
+var response = await mindeeClient
+    .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
+    .ParseAsync<LicensePlateV1Inference>();
+
+// Print a summary of the predictions
+System.Console.WriteLine(response.Document.ToString());
+
+// Print the document-level predictions
+// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
 Output:
@@ -44,4 +52,4 @@ Page 0
 &nbsp;
 &nbsp;
 **Questions?**
-<img alt="Slack Logo Icon" style="display:inline!important" src="https://files.readme.io/5b83947-Slack.png" width="20" height="20">&nbsp;&nbsp;[Join our Slack]((https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)
+[Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

@@ -2,9 +2,6 @@ name: Linter
 
 on:
   push:
-    paths:
-      - "**.cs"
-      - ".editorconfig"
 
 jobs:
   check-format:
