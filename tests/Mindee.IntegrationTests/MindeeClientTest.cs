@@ -9,96 +9,98 @@ namespace Mindee.IntegrationTests
     public class MindeeClientTest
     {
         [Fact]
-        public async Task Parse_Invoice_V4_WithMultiplePages_MustSuccess()
+        public async Task Parse_Invoice_V4_WithMultiplePages_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
 
             var mindeeClient = MindeeClientInit.Create(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
 
-            var parsedDocument = await mindeeClient.ParseAsync<InvoiceV4Inference>();
+            var response = await mindeeClient.ParseAsync<InvoiceV4Inference>();
 
-            Assert.NotNull(parsedDocument);
-            Assert.NotNull(parsedDocument.Inference);
-            Assert.NotNull(parsedDocument.Inference.DocumentPrediction);
-            Assert.Equal(2, parsedDocument.Inference.Pages.Count);
+            Assert.NotNull(response);
+            Assert.NotNull(response.Document.Inference);
+            Assert.NotNull(response.Document.Inference.Prediction);
+            Assert.Equal(2, response.Document.Inference.Pages.Count);
         }
 
         [Fact]
-        public async Task Parse_Receipt_V4_MustSuccess()
+        public async Task Parse_Receipt_V4_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
 
             var mindeeClient = MindeeClientInit.Create(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/receipt/sample.jpg"));
 
-            var parsedDocument = await mindeeClient.ParseAsync<ReceiptV4Inference>();
+            var response = await mindeeClient.ParseAsync<ReceiptV4Inference>();
 
-            Assert.NotNull(parsedDocument);
-            Assert.NotNull(parsedDocument.Inference);
-            Assert.NotNull(parsedDocument.Inference.DocumentPrediction);
-            Assert.Single(parsedDocument.Inference.Pages);
+            Assert.NotNull(response);
+            Assert.NotNull(response.Document.Inference);
+            Assert.NotNull(response.Document.Inference.Prediction);
+            Assert.Single(response.Document.Inference.Pages);
 
             var expected = File.ReadAllText("Resources/receipt/response_v4/sample_summary.rst");
 
             Assert.Equal(
                 expected,
-                parsedDocument.Inference.ToString());
+                response.Document.Inference.ToString());
         }
 
         [Fact]
-        public async Task Parse_Receipt_V4_WithTip_MustSuccess()
+        public async Task Parse_Receipt_V4_WithTip_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
 
             var mindeeClient = MindeeClientInit.Create(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/receipt/sample-with-tip.jpg"));
 
-            var parsedDocument = await mindeeClient.ParseAsync<ReceiptV4Inference>();
+            var response = await mindeeClient.ParseAsync<ReceiptV4Inference>();
 
-            Assert.NotNull(parsedDocument);
-            Assert.NotNull(parsedDocument.Inference);
-            Assert.NotNull(parsedDocument.Inference.DocumentPrediction);
-            Assert.Single(parsedDocument.Inference.Pages);
+            Assert.NotNull(response);
+            Assert.NotNull(response.Document.Inference);
+            Assert.NotNull(response.Document.Inference.Prediction);
+            Assert.Single(response.Document.Inference.Pages);
 
             var expected = File.ReadAllText("Resources/receipt/response_v4/sample_with_tip_summary.rst");
 
             Assert.Equal(
                 expected,
-                parsedDocument.Inference.ToString());
+                response.Document.Inference.ToString());
         }
 
         [Fact]
-        public async Task Parse_InvoiceSplitter_V1_2Invoices_MustSuccess()
+        public async Task Parse_InvoiceSplitter_V1_2Invoices_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-
             var mindeeClient = MindeeClientInit.Create(apiKey);
+
             mindeeClient.LoadDocument(new FileInfo("Resources/invoice_splitter/2_invoices.pdf"));
 
-            var parsedDocument = await mindeeClient.ParseAsync<InvoiceSplitterV1Inference>();
+            var response = await mindeeClient.EnqueueAsync<InvoiceSplitterV1Inference>();
 
-            Assert.NotNull(parsedDocument);
-            Assert.NotNull(parsedDocument.Inference);
-            Assert.NotNull(parsedDocument.Inference.DocumentPrediction);
+            Assert.NotNull(response);
 
-            var expected = File.ReadAllText("Resources/invoice_splitter/response_v1/2_invoices_inference_summary.rst");
+            Assert.NotNull(response.ApiRequest);
+            Assert.Equal("https://api.mindee.net/v1/products/mindee/invoice_splitter/v1/predict_async", response.ApiRequest.Url);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal(202, response.ApiRequest.StatusCode);
 
-            Assert.Equal(
-                expected,
-                parsedDocument.Inference.ToString());
+            Assert.NotNull(response.Job);
+            Assert.Equal("waiting", response.Job.Status);
+            Assert.NotNull(response.Job.IssuedAt.ToString("yyyy"));
+            Assert.Null(response.Job.AvailableAt);
         }
 
         [Fact]
         public async Task EnqueueParsing_InvoiceSplitter_V1_2Invoices_MustFail()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-
             var mindeeClient = MindeeClientInit.Create(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/invoice_splitter/2_invoices.pdf"));
 
-            var response = await mindeeClient.EnqueueParsingAsync<InvoiceSplitterV1Inference>();
-            Assert.Equal(403, response.ApiRequest.StatusCode);
+            await Assert.ThrowsAsync<Mindee403Exception>(
+                () => _ = mindeeClient.ParseAsync<InvoiceSplitterV1Inference>()
+            );
         }
     }
 }

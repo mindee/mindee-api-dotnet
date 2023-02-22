@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Common.Jobs;
 
 namespace Mindee.Parsing
 {
@@ -14,7 +13,7 @@ namespace Mindee.Parsing
         /// </summary>
         /// <typeparam name="TModel">Result expected type.</typeparam>
         /// <param name="predictParameter"><see cref="PredictParameter"/></param>
-        Task<Document<TModel>> PredictAsync<TModel>(
+        Task<PredictResponse<TModel>> PredictPostAsync<TModel>(
             PredictParameter predictParameter)
             where TModel : class, new();
 
@@ -24,7 +23,7 @@ namespace Mindee.Parsing
         /// <typeparam name="TModel">Result expected type.</typeparam>
         /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
         /// <param name="predictParameter"><see cref="PredictParameter"/></param>
-        Task<Document<TModel>> PredictAsync<TModel>(
+        Task<PredictResponse<TModel>> PredictPostAsync<TModel>(
             CustomEndpoint endpoint,
             PredictParameter predictParameter)
             where TModel : class, new();
@@ -34,7 +33,7 @@ namespace Mindee.Parsing
         /// </summary>
         /// <param name="predictParameter"><see cref="PredictParameter"/></param>
         /// <typeparam name="TModel">Document type.</typeparam>
-        Task<PredictEnqueuedResponse> EnqueuePredictAsync<TModel>(PredictParameter predictParameter)
+        Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(PredictParameter predictParameter)
             where TModel : class, new();
     }
 }

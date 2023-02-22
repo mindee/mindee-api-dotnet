@@ -36,19 +36,25 @@ namespace Mindee.Cli.Commands
 
             public async Task<int> InvokeAsync(InvocationContext context)
             {
-                _logger.LogInformation("About to predict use cropper..");
+                _logger.LogInformation("About to predict use cropper.");
 
-                var prediction = await _mindeeClient
+                var response = await _mindeeClient
                     .LoadDocument(new FileInfo(Path))
                     .ParseAsync<CropperV1Inference>();
 
+                if (response == null)
+                {
+                    context.Console.Out.Write("null");
+                    return 1;
+                }
+
                 if (Output == "summary")
                 {
-                    context.Console.Out.Write(prediction != null ? prediction.Inference.DocumentPrediction.ToString()! : "null");
+                    context.Console.Out.Write(response.Document.Inference.Prediction.ToString());
                 }
                 else
                 {
-                    context.Console.Out.Write(JsonSerializer.Serialize(prediction, new JsonSerializerOptions { WriteIndented = true }));
+                    context.Console.Out.Write(response.Document.ToString());
                 }
 
                 return 0;

@@ -1,0 +1,40 @@
+using Mindee;
+using Mindee.Parsing.Common;
+using Mindee.Parsing.InvoiceSplitter;
+using System.Threading;
+
+string apiKey = "my-api-key";
+string filePath = "/path/to/the/file.ext";
+
+// Don't try to get the document more than this many times
+const int maxRetries = 10;
+
+// Wait this many seconds between each try
+const int intervalSec = 6;
+
+// Init a new client
+MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+
+var enqueueResponse = await mindeeClient
+    .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
+    .EnqueueAsync<InvoiceSplitterV1Inference>();
+
+string jobId = enqueueResponse.Job.Id;
+
+int retryCount = 0;
+AsyncPredictResponse<InvoiceSplitterV1Inference> response;
+
+while (retryCount < maxRetries)
+{
+    response = await mindeeClient.ParseQueuedAsync<InvoiceSplitterV1Inference>(jobId);
+    if (response.Document != null)
+    {
+        // Print a summary of the predictions
+        System.Console.WriteLine(response.Document.ToString());
+        break;
+    }
+    retryCount++;
+
+    // Wait for intervalSec seconds before retrying
+    Thread.Sleep(intervalSec * 1000);
+}

@@ -9,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Common.Jobs;
 using RestSharp;
 
 namespace Mindee.Parsing
@@ -74,17 +73,17 @@ namespace Mindee.Parsing
             return client;
         }
 
-        public Task<PredictEnqueuedResponse> EnqueuePredictAsync<TModel>(PredictParameter predictParameter)
+        public Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(PredictParameter predictParameter)
             where TModel : class, new()
-
         {
-            return EnqueuePredictAsyncInternalAsync(predictParameter, GetEndpoint<TModel>());
+            return PredictAsyncPostAsync<TModel>(predictParameter, GetEndpoint<TModel>());
         }
 
-        private async Task<PredictEnqueuedResponse> EnqueuePredictAsyncInternalAsync(
+        private async Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(
             PredictParameter predictParameter,
             CustomEndpoint endpoint
             )
+            where TModel : class, new()
         {
             var request = new RestRequest($"v1/products/" +
                 $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
@@ -93,24 +92,27 @@ namespace Mindee.Parsing
             _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
 
             request.AddFile("document", predictParameter.File, predictParameter.Filename);
-            request.AddParameter("include_mvision", predictParameter.WithFullText);
-            request.AddQueryParameter("cropper", predictParameter.WithCropper);
+            if (predictParameter.WithFullText)
+            {
+                request.AddQueryParameter("include_mvision", "true");
+            }
+            if (predictParameter.WithCropper)
+            {
+                request.AddQueryParameter("cropper", "true");
+            }
 
             var response = await _httpClient.ExecutePostAsync(request);
 
             _logger?.LogDebug($"HTTP response : {response.Content}");
             _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
 
-            PredictEnqueuedResponse predictEnqueuedResponse = null;
-
             if (response.Content != null)
             {
-                predictEnqueuedResponse = JsonSerializer.Deserialize<PredictEnqueuedResponse>(response.Content);
-
-                return predictEnqueuedResponse;
+                AsyncPredictResponse<TModel> asyncPredictResponse = JsonSerializer.Deserialize<AsyncPredictResponse<TModel>>(response.Content);
+                return asyncPredictResponse;
             }
 
-            var errorMessage = "Mindee API client : ";
+            var errorMessage = "Mindee API client: ";
 
             if (response.StatusCode == HttpStatusCode.InternalServerError)
             {
@@ -126,15 +128,13 @@ namespace Mindee.Parsing
             throw new MindeeException(errorMessage);
         }
 
-        public Task<Document<TModel>> PredictAsync<TModel>(PredictParameter predictParameter)
+        public Task<PredictResponse<TModel>> PredictPostAsync<TModel>(PredictParameter predictParameter)
             where TModel : class, new()
         {
-            return PredictAsync<TModel>(
-                GetEndpoint<TModel>(),
-                predictParameter);
+            return PredictPostAsync<TModel>(GetEndpoint<TModel>(), predictParameter);
         }
 
-        public async Task<Document<TModel>> PredictAsync<TModel>(
+        public async Task<PredictResponse<TModel>> PredictPostAsync<TModel>(
                     CustomEndpoint endpoint,
                     PredictParameter predictParameter)
             where TModel : class, new()
@@ -144,27 +144,29 @@ namespace Mindee.Parsing
             _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
 
             request.AddFile("document", predictParameter.File, predictParameter.Filename);
-            request.AddParameter("include_mvision", predictParameter.WithFullText);
-            request.AddQueryParameter("cropper", predictParameter.WithCropper);
+            if (predictParameter.WithFullText)
+            {
+                request.AddQueryParameter("include_mvision", "true");
+            }
+            if (predictParameter.WithCropper)
+            {
+                request.AddQueryParameter("cropper", "true");
+            }
 
             var response = await _httpClient.ExecutePostAsync(request);
 
             _logger?.LogDebug($"HTTP response : {response.Content}");
             _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
 
-            PredictResponse<TModel> predictResponse = ResponseHandler<PredictResponse<TModel>>(response);
-
-            return predictResponse.Document;
+            return ResponseHandler<PredictResponse<TModel>>(response);
         }
 
-        public Task<GetJobResponse<TModel>> GetJobAsync<TModel>(string jobId) where TModel : class, new()
+        public Task<AsyncPredictResponse<TModel>> DocumentQueueGetAsync<TModel>(string jobId) where TModel : class, new()
         {
-            return GetJobInternalAsync<TModel>(
-                jobId,
-                GetEndpoint<TModel>());
+            return DocumentQueueGetAsync<TModel>(jobId, GetEndpoint<TModel>());
         }
 
-        private async Task<GetJobResponse<TModel>> GetJobInternalAsync<TModel>(
+        private async Task<AsyncPredictResponse<TModel>> DocumentQueueGetAsync<TModel>(
             string jobId,
             CustomEndpoint endpoint)
             where TModel : class, new()
@@ -192,12 +194,10 @@ namespace Mindee.Parsing
                 _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
             }
 
-            GetJobResponse<TModel> getJobResponse = ResponseHandler<GetJobResponse<TModel>>(response);
-
-            return getJobResponse;
+            return ResponseHandler<AsyncPredictResponse<TModel>>(response);
         }
 
-        private CustomEndpoint GetEndpoint<TModel>()
+        private static CustomEndpoint GetEndpoint<TModel>()
         {
             if (!Attribute.IsDefined(typeof(TModel), typeof(EndpointAttribute)))
             {
@@ -212,7 +212,7 @@ namespace Mindee.Parsing
             return new CustomEndpoint(endpointAttribute.EndpointName, endpointAttribute.AccountName, endpointAttribute.Version);
         }
 
-        private string BuildUserAgent()
+        private static string BuildUserAgent()
         {
             return $"mindee-api-dotnet@v{Assembly.GetExecutingAssembly().GetName().Version}"
                 + $" dotnet-v{Environment.Version}"

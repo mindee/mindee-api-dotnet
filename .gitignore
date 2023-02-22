@@ -358,3 +358,6 @@ docs/api_reference
 
 # Local distribution
 dist
+
+# Tests
+_test.csx

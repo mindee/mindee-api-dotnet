@@ -97,13 +97,13 @@ You could also define the key in your appsettings.json config file:
 }
 ```
 
-## Loading a Document File
-Before being able to send a document to the API, it must be loaded first.
+## Loading a file
+Before being able to send a file to the API, it must be loaded first.
 
 You don't need to worry about different MIME types, the library will take care of handling
 all supported types automatically.
 
-Once a document is loaded, interacting with it is done in exactly the same way, regardless
+Once a file is loaded, interacting with it is done in exactly the same way, regardless
 of how it was loaded.
 
 There are a few different ways of loading a document file, depending on your use case:
@@ -141,7 +141,7 @@ var mindeeClient = await _mindeeClient
     .LoadDocument(myFileInBytes, System.IO.Path.GetFileName(Path));
 ```
 
-## Sending a Document
+## Sending a file
 To send a file to the API, we need to specify how to process the document.
 This will determine which API endpoint is used and how the API return will be handled internally by the library.
 
@@ -225,4 +225,4 @@ It will contain all the words that have been read in the document.
 &nbsp;
 &nbsp;
 **Questions?**
-<img alt="Slack Logo Icon" style="display:inline!important" src="https://files.readme.io/5b83947-Slack.png" width="20" height="20">&nbsp;&nbsp;[Join our Slack](https://slack.mindee.com)
+[Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

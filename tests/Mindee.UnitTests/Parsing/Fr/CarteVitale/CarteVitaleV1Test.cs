@@ -1,4 +1,3 @@
-using Mindee.Parsing;
 using Mindee.Parsing.Common;
 using Mindee.Parsing.Fr.CarteVitale;
 
@@ -10,9 +9,9 @@ namespace Mindee.UnitTests.Parsing.Fr.CarteVitale
         [Fact]
         public async Task Predict_CheckSummary()
         {
-            var prediction = await GetPrediction();
+            var response = await GetPrediction();
             var expected = File.ReadAllText("Resources/fr/carte_vitale/response_v1/summary_full.rst");
-            Assert.Equal(expected, prediction.ToString());
+            Assert.Equal(expected, response.Document.ToString());
         }
 
         [Fact]
@@ -20,14 +19,14 @@ namespace Mindee.UnitTests.Parsing.Fr.CarteVitale
         {
             var prediction = await GetPrediction();
             var expected = File.ReadAllText("Resources/fr/carte_vitale/response_v1/summary_page0.rst");
-            Assert.Equal(expected, prediction.Inference.Pages[0].ToString());
+            Assert.Equal(expected, prediction.Document.Inference.Pages[0].ToString());
         }
 
-        private async Task<Document<CarteVitaleV1Inference>> GetPrediction()
+        private async Task<PredictResponse<CarteVitaleV1Inference>> GetPrediction()
         {
-            string fileName = "Resources/fr/carte_vitale/response_v1/complete.json";
+            const string fileName = "Resources/fr/carte_vitale/response_v1/complete.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictAsync<CarteVitaleV1Inference>(ParsingTestBase.GetFakePredictParameter());
+            return await mindeeAPi.PredictPostAsync<CarteVitaleV1Inference>(ParsingTestBase.GetFakePredictParameter());
         }
     }
 }

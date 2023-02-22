@@ -42,29 +42,35 @@ namespace Mindee.Cli.Commands
                 {
                     var predictEnqueuedResponse = await _mindeeClient
                         .LoadDocument(new FileInfo(Path))
-                        .EnqueueParsingAsync<InvoiceSplitterV1Inference>();
+                        .EnqueueAsync<InvoiceSplitterV1Inference>();
 
                     context.Console.Out.Write(JsonSerializer.Serialize(predictEnqueuedResponse, new JsonSerializerOptions { WriteIndented = true }));
 
                     Thread.Sleep(5000);
 
-                    var jobResponse = await _mindeeClient.GetEnqueuedParsingWithJobAsync<InvoiceSplitterV1Inference>(predictEnqueuedResponse.Job.Id);
+                    var jobResponse = await _mindeeClient.ParseQueuedAsync<InvoiceSplitterV1Inference>(predictEnqueuedResponse.Job.Id);
 
                     context.Console.Out.Write(JsonSerializer.Serialize(jobResponse, new JsonSerializerOptions { WriteIndented = true }));
                 }
                 else
                 {
-                    var invoicePrediction = await _mindeeClient
+                    var response = await _mindeeClient
                         .LoadDocument(new FileInfo(Path))
                         .ParseAsync<InvoiceSplitterV1Inference>();
 
+                    if (response == null)
+                    {
+                        context.Console.Out.Write("null");
+                        return 1;
+                    }
+
                     if (Output == "summary")
                     {
-                        context.Console.Out.Write(invoicePrediction != null ? invoicePrediction.Inference.DocumentPrediction.ToString()! : "null");
+                        context.Console.Out.Write(response.Document.Inference.Prediction.ToString());
                     }
                     else
                     {
-                        context.Console.Out.Write(JsonSerializer.Serialize(invoicePrediction, new JsonSerializerOptions { WriteIndented = true }));
+                        context.Console.Out.Write(response.Document.ToString());
                     }
                 }
 
