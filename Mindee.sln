@@ -38,6 +38,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B9F282D0-3
 		docs\index.md = docs\index.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mindee.IntegrationTests", "tests\Mindee.IntegrationTests\Mindee.IntegrationTests.csproj", "{FD8008ED-478D-4A88-BADB-7842C0A29636}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{27880558-4F4F-47E9-A097-CB076C101634}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27880558-4F4F-47E9-A097-CB076C101634}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27880558-4F4F-47E9-A097-CB076C101634}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD8008ED-478D-4A88-BADB-7842C0A29636}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD8008ED-478D-4A88-BADB-7842C0A29636}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD8008ED-478D-4A88-BADB-7842C0A29636}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD8008ED-478D-4A88-BADB-7842C0A29636}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{1228287D-8E16-4947-B821-25180A36F9F3} = {C018C686-8082-437A-9888-62F0B95B985A}
 		{FAFCE7C5-4D8A-494C-979A-525DD3B421A2} = {4E2BEA7B-A744-4D1B-A5F0-87E9186BE0C0}
 		{27880558-4F4F-47E9-A097-CB076C101634} = {4E2BEA7B-A744-4D1B-A5F0-87E9186BE0C0}
+		{FD8008ED-478D-4A88-BADB-7842C0A29636} = {C018C686-8082-437A-9888-62F0B95B985A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A4CA814-44CB-4687-86AF-9230DD686585}
