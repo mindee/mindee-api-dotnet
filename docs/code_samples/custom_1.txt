@@ -1,0 +1,18 @@
+using Mindee;
+using Mindee.Parsing.Receipt;
+
+string apiKey = "my-api-key";
+string filePath = "/path/to/the/file.ext";
+
+MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+
+CustomEndpoint myEndpoint = new CustomEndpoint(
+    endpointName: "my-endpoint",
+    accountName: "my-account"
+);
+
+var documentParsed = await _mindeeClient
+    .LoadDocument(new FileInfo(path))
+    .ParseAsync(myEndpoint);
+
+System.Console.WriteLine(documentParsed.ToString());
