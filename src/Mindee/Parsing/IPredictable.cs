@@ -27,5 +27,12 @@ namespace Mindee.Parsing
             CustomEndpoint endpoint,
             PredictParameter predictParameter)
             where TModel : class, new();
+
+        /// <summary>
+        /// Enqueue a prediction according parameters.
+        /// </summary>
+        /// <typeparam name="TModel">Document type.</typeparam>
+        Task<PredictEnqueuedResponse> EnqueuePredictAsync<TModel>(PredictParameter predictParameter)
+            where TModel : class, new();
     }
 }

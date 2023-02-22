@@ -71,5 +71,53 @@ namespace Mindee.UnitTests.Parsing
             await Assert.ThrowsAsync<MindeeException>(
                            () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
         }
+
+        [Fact]
+        public async Task EnqueuePredict_Success()
+        {
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("*")
+                .Respond(
+                    HttpStatusCode.OK,
+                    "application/json",
+                    File.ReadAllText("Resources/async/enqueue_success_response.json")
+                );
+            var mindeeApi = new MindeeApi(
+                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
+                new NullLogger<MindeeApi>(),
+                mockHttp
+                );
+
+            var response = await mindeeApi.EnqueuePredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
+
+            Assert.NotNull(response);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal("processing", response.Status);
+            Assert.Equal("76c90710-3a1b-4b91-8a39-31a6543e347c", response.JobId);
+        }
+
+        [Fact]
+        public async Task EnqueuePredict_WithProductWhichNotSupportsAsync_Fail()
+        {
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("*")
+                .Respond(
+                    HttpStatusCode.BadRequest,
+                    "application/json",
+                    File.ReadAllText("Resources/async/enqueue_fail_async_not_supported_response.json")
+                );
+            var mindeeApi = new MindeeApi(
+                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
+                new NullLogger<MindeeApi>(),
+                mockHttp
+                );
+
+            var response = await mindeeApi.EnqueuePredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
+
+            Assert.NotNull(response);
+            Assert.Equal("failure", response.ApiRequest.Status);
+            Assert.Null(response.Status);
+            Assert.Null(response.JobId);
+        }
     }
 }
