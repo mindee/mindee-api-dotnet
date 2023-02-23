@@ -1,7 +1,7 @@
 #
-# Run tests.
+# Run Unit tests.
 #
-name: Tests
+name: Unit Tests
 
 on:
   - push

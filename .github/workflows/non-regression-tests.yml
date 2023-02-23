@@ -1,5 +1,5 @@
 #
-# Noin regression tests.
+# Non regression tests.
 #
 name: Non regression tests
 
@@ -9,6 +9,9 @@ on:
       - main
   schedule:
     - cron:  '41 04 * * *'
+
+env:
+  Mindee__ApiKey: ${{ secrets.MINDEE_API_KEY }}
 
 jobs:
   test-nix:
@@ -38,14 +41,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-nuget-
 
-    - name: Install dependencies
-      run: |
-        dotnet restore
-
-    - name: Define env variables
-      run: |
-        set Mindee__ApiKey=${{ secrets.MINDEE_API_KEY }}
-
     - name: Build and test
       run: |
-        dotnet test -f ${{ matrix.dotnet-version }} --no-restore --verbosity normal "tests\Mindee.IntegrationTests"
+        dotnet test -f ${{ matrix.dotnet-version }} --verbosity normal "tests\Mindee.IntegrationTests"

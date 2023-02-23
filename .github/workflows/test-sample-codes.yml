@@ -42,13 +42,9 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-nuget-
 
-    - name: Install dependencies
-      run: |
-        dotnet restore
-
     - name: Build and test
       run: |
-        dotnet build -f ${{ matrix.dotnet-version }} --no-restore --verbosity normal
+        dotnet build "src/Mindee" -f ${{ matrix.dotnet-version }} --verbosity normal
     
     - name: Prepare for samples code
       run: |
