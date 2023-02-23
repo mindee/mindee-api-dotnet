@@ -1,3 +1,6 @@
+#
+# Noin regression tests.
+#
 name: Non regression tests
 
 on:
