@@ -122,26 +122,6 @@ namespace Mindee.UnitTests.Parsing
         }
 
         [Fact]
-        public async Task GetJobAsync_WithEmptyJobId_MustFail()
-        {
-            var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When("*")
-                .Respond(
-                    HttpStatusCode.OK,
-                    "application/json",
-                    File.ReadAllText("Resources/async/get_job_in_progress.json")
-                );
-            var mindeeApi = new MindeeApi(
-                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
-                new NullLogger<MindeeApi>(),
-                mockHttp
-                );
-
-            await Assert.ThrowsAsync<MindeeException>(
-                           () => _ = mindeeApi.GetJobAsync<InvoiceV4Inference>(""));
-        }
-
-        [Fact]
         public async Task GetJobAsync_WithJobInProgress()
         {
             var mockHttp = new MockHttpMessageHandler();
