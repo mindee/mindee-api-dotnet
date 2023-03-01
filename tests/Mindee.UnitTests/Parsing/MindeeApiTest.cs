@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -118,6 +119,78 @@ namespace Mindee.UnitTests.Parsing
             Assert.Equal("failure", response.ApiRequest.Status);
             Assert.Null(response.Status);
             Assert.Null(response.JobId);
+        }
+
+        [Fact]
+        public async Task GetJobAsync_WithEmptyJobId_MustFail()
+        {
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("*")
+                .Respond(
+                    HttpStatusCode.OK,
+                    "application/json",
+                    File.ReadAllText("Resources/async/get_job_in_progress.json")
+                );
+            var mindeeApi = new MindeeApi(
+                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
+                new NullLogger<MindeeApi>(),
+                mockHttp
+                );
+
+            await Assert.ThrowsAsync<MindeeException>(
+                           () => _ = mindeeApi.GetJobAsync<InvoiceV4Inference>(""));
+        }
+
+        [Fact]
+        public async Task GetJobAsync_WithJobInProgress()
+        {
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("*")
+                .Respond(
+                    HttpStatusCode.OK,
+                    "application/json",
+                    File.ReadAllText("Resources/async/get_job_in_progress.json")
+                );
+            var mindeeApi = new MindeeApi(
+                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
+                new NullLogger<MindeeApi>(),
+                mockHttp
+                );
+
+            var response = await mindeeApi.GetJobAsync<InvoiceV4Inference>("my-job-id");
+
+            Assert.NotNull(response);
+            Assert.Equal("job", response.ApiRequest.Resources.First());
+            Assert.Equal("processing", response.Job.Status);
+        }
+
+        [Fact]
+        public async Task GetJobAsync_WithSuccessfullJob()
+        {
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("*/documents/queue/*")
+                .WithHeaders("Location", @"/products/Mindee/invoice_splitter_beta/v1/documents/async/e66cfef5-8a31-4278-8ced-004fd8a345b2")
+                .Respond(HttpStatusCode.Redirect);
+
+            mockHttp.When("*/documents/*")
+                .Respond(
+                    HttpStatusCode.OK,
+                    "application/json",
+                    File.ReadAllText("Resources/async/get_doc_parsed_successfuly.json")
+                );
+
+            var mindeeApi = new MindeeApi(
+                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
+                new NullLogger<MindeeApi>(),
+                mockHttp
+                );
+
+            var response = await mindeeApi.GetJobAsync<InvoiceV4Inference>("my-job-id");
+
+            Assert.NotNull(response);
+            Assert.NotNull(response.Document);
+            Assert.Contains(response.ApiRequest.Resources, r => r.Equals("job"));
+            Assert.Contains(response.ApiRequest.Resources, r => r.Equals("document"));
         }
     }
 }

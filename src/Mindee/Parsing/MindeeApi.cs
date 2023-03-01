@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
@@ -172,6 +173,68 @@ namespace Mindee.Parsing
             {
                 errorMessage += predictResponse.ApiRequest.Error.ToString();
                 _logger?.LogError(errorMessage);
+            }
+            else
+            {
+                errorMessage += $" Unhandled error - {response.ErrorMessage}";
+                _logger?.LogError(errorMessage);
+            }
+
+            throw new MindeeException(errorMessage);
+        }
+
+        public Task<GetJobResponse<TModel>> GetJobAsync<TModel>(string jobId) where TModel : class, new()
+        {
+            return GetJobInternalAsync<TModel>(
+                jobId,
+                GetEndpoint<TModel>());
+        }
+
+        private async Task<GetJobResponse<TModel>> GetJobInternalAsync<TModel>(
+            string jobId,
+            CustomEndpoint endpoint)
+            where TModel : class, new()
+        {
+            var request = new RestRequest($"/products/" +
+                $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
+                "documents/queue/{" +
+                $"{jobId}" +
+                "}", Method.Get);
+
+            _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
+
+            request.AddUrlSegment(nameof(jobId), jobId);
+
+            var response = await _httpClient.ExecuteGetAsync(request);
+
+            _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
+
+            _logger?.LogDebug($"HTTP response : {response.Content}");
+
+            if (response.StatusCode == HttpStatusCode.Redirect)
+            {
+                var locationHeader = response.ContentHeaders.First(h => h.Name == "Location");
+
+                request = new RestRequest(locationHeader.Value?.ToString());
+
+                _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
+                response = await _httpClient.ExecuteGetAsync(request);
+                _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
+            }
+
+            if (response.Content != null)
+            {
+                var getJobResponse = JsonSerializer.Deserialize<GetJobResponse<TModel>>(response.Content);
+                return getJobResponse;
+            }
+
+            var errorMessage = "Mindee API client : ";
+
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                errorMessage += response.ErrorMessage;
+
+                _logger?.LogCritical(errorMessage);
             }
             else
             {

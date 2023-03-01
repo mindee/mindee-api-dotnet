@@ -193,5 +193,45 @@ namespace Mindee
                     withFullText,
                     withCropper));
         }
+
+        /// <summary>
+        /// Get the parsed enqueued document.
+        /// </summary>
+        /// <param name="jobId">The job id.</param>
+        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
+        /// The response object will be instantiated based on this parameter.</typeparam>
+        /// <returns><see cref="Document{TInferenceModel}"/></returns>
+        public async Task<Document<TInferenceModel>> GetEnqueuedParsingAsync<TInferenceModel>(string jobId)
+            where TInferenceModel : class, new()
+        {
+            if (string.IsNullOrWhiteSpace(jobId))
+            {
+                throw new ArgumentNullException(jobId);
+            }
+
+            var jobResponse = await _mindeeApi.GetJobAsync<TInferenceModel>(jobId);
+
+            return jobResponse.Document;
+        }
+
+        /// <summary>
+        /// Get the full job response from the parsed enqueued document.
+        /// </summary>
+        /// <param name="jobId">The job id.</param>
+        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
+        /// The response object will be instantiated based on this parameter.</typeparam>
+        /// <returns><see cref="Document{TInferenceModel}"/></returns>
+        public async Task<GetJobResponse<TInferenceModel>> GetEnqueuedParsingWithJobAsync<TInferenceModel>(string jobId)
+            where TInferenceModel : class, new()
+        {
+            if (string.IsNullOrWhiteSpace(jobId))
+            {
+                throw new ArgumentNullException(jobId);
+            }
+
+            var jobResponse = await _mindeeApi.GetJobAsync<TInferenceModel>(jobId);
+
+            return jobResponse;
+        }
     }
 }
