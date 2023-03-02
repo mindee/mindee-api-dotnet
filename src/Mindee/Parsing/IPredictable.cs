@@ -6,7 +6,7 @@ namespace Mindee.Parsing
     /// <summary>
     /// Make predictions and returned a result of it.
     /// </summary>
-    public interface IPredictable
+    public interface IPredictable : IPredictableJob
     {
         /// <summary>
         /// Do a prediction according parameters.
@@ -26,6 +26,14 @@ namespace Mindee.Parsing
         Task<Document<TModel>> PredictAsync<TModel>(
             CustomEndpoint endpoint,
             PredictParameter predictParameter)
+            where TModel : class, new();
+
+        /// <summary>
+        /// Enqueue a prediction according parameters.
+        /// </summary>
+        /// <param name="predictParameter"><see cref="PredictParameter"/></param>
+        /// <typeparam name="TModel">Document type.</typeparam>
+        Task<PredictEnqueuedResponse> EnqueuePredictAsync<TModel>(PredictParameter predictParameter)
             where TModel : class, new();
     }
 }
