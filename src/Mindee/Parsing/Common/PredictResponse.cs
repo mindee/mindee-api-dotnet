@@ -8,15 +8,9 @@ namespace Mindee.Parsing.Common
     /// <typeparam name="TModel">Set the prediction model used to parse the document.
     /// The response object will be instantiated based on this parameter.
     /// </typeparam>
-    public class PredictResponse<TModel>
+    public class PredictResponse<TModel> : CommonResponse
         where TModel : class, new()
     {
-        /// <summary>
-        /// <see cref="Common.ApiRequest"/>
-        /// </summary>
-        [JsonPropertyName("api_request")]
-        public ApiRequest ApiRequest { get; set; }
-
         /// <summary>
         /// Set the prediction model used to parse the document.
         /// The response object will be instantiated based on this parameter.
