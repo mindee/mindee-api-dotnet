@@ -9,7 +9,7 @@ namespace Mindee.Parsing.Common
     public class Job
     {
         /// <summary>
-        /// Issuance date of the job.
+        /// Date and time the job was issued at.
         /// </summary>
         [JsonPropertyName("issued_at")]
         public DateTime IssuedAt { get; set; }
