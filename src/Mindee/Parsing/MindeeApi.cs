@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
 using Mindee.Parsing.Common;
+using Mindee.Parsing.Common.Jobs;
 using RestSharp;
 
 namespace Mindee.Parsing
@@ -46,8 +48,10 @@ namespace Mindee.Parsing
         {
             var options = new RestClientOptions(_baseUrl)
             {
-                MaxTimeout = TimeSpan.FromSeconds(timeoutInSeconds).Milliseconds
+                MaxTimeout = TimeSpan.FromSeconds(timeoutInSeconds).Milliseconds,
+                FollowRedirects = false
             };
+
             var client = new RestClient(options,
                 p => p.Add("Authorization", $"Token {_apiKey}")
             );
@@ -70,22 +74,63 @@ namespace Mindee.Parsing
             return client;
         }
 
-        public Task<Document<TModel>> PredictAsync<TModel>(
-            PredictParameter predictParameter)
+        public Task<PredictEnqueuedResponse> EnqueuePredictAsync<TModel>(PredictParameter predictParameter)
             where TModel : class, new()
+
         {
-            if (!Attribute.IsDefined(typeof(TModel), typeof(EndpointAttribute)))
+            return EnqueuePredictAsyncInternalAsync(predictParameter, GetEndpoint<TModel>());
+        }
+
+        private async Task<PredictEnqueuedResponse> EnqueuePredictAsyncInternalAsync(
+            PredictParameter predictParameter,
+            CustomEndpoint endpoint
+            )
+        {
+            var request = new RestRequest($"/products/" +
+                $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
+                $"predict_async", Method.Post);
+
+            _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
+
+            request.AddFile("document", predictParameter.File, predictParameter.Filename);
+            request.AddParameter("include_mvision", predictParameter.WithFullText);
+            request.AddQueryParameter("cropper", predictParameter.WithCropper);
+
+            var response = await _httpClient.ExecutePostAsync(request);
+
+            _logger?.LogDebug($"HTTP response : {response.Content}");
+            _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
+
+            PredictEnqueuedResponse predictEnqueuedResponse = null;
+
+            if (response.Content != null)
             {
-                throw new NotSupportedException($"The type {typeof(TModel)} is not supported as a prediction model. " +
-                    $"The endpoint attribute is missing. " +
-                    $"Please refer to the document or contact the support.");
+                predictEnqueuedResponse = JsonSerializer.Deserialize<PredictEnqueuedResponse>(response.Content);
+
+                return predictEnqueuedResponse;
             }
 
-            EndpointAttribute endpointAttribute =
-            (EndpointAttribute)Attribute.GetCustomAttribute(typeof(TModel), typeof(EndpointAttribute));
+            var errorMessage = "Mindee API client : ";
 
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                errorMessage += response.ErrorMessage;
+                _logger?.LogCritical(errorMessage);
+            }
+            else
+            {
+                errorMessage += $" Unhandled error - {response.ErrorMessage}";
+                _logger?.LogError(errorMessage);
+            }
+
+            throw new MindeeException(errorMessage);
+        }
+
+        public Task<Document<TModel>> PredictAsync<TModel>(PredictParameter predictParameter)
+            where TModel : class, new()
+        {
             return PredictAsync<TModel>(
-                new CustomEndpoint(endpointAttribute.EndpointName, endpointAttribute.AccountName, endpointAttribute.Version),
+                GetEndpoint<TModel>(),
                 predictParameter);
         }
 
@@ -107,38 +152,64 @@ namespace Mindee.Parsing
             _logger?.LogDebug($"HTTP response : {response.Content}");
             _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
 
-            PredictResponse<TModel> predictResponse = null;
+            PredictResponse<TModel> predictResponse = ResponseHandler<PredictResponse<TModel>>(response);
 
-            if (response.Content != null)
+            return predictResponse.Document;
+        }
+
+        public Task<GetJobResponse<TModel>> GetJobAsync<TModel>(string jobId) where TModel : class, new()
+        {
+            return GetJobInternalAsync<TModel>(
+                jobId,
+                GetEndpoint<TModel>());
+        }
+
+        private async Task<GetJobResponse<TModel>> GetJobInternalAsync<TModel>(
+            string jobId,
+            CustomEndpoint endpoint)
+            where TModel : class, new()
+        {
+            var request = new RestRequest($"/products/" +
+                $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
+                $"documents/queue/{jobId}", Method.Get);
+
+            _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
+
+            var response = await _httpClient.ExecuteGetAsync(request);
+
+            _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
+
+            _logger?.LogDebug($"HTTP response : {response.Content}");
+
+            if (response.StatusCode == HttpStatusCode.Redirect)
             {
-                predictResponse = JsonSerializer.Deserialize<PredictResponse<TModel>>(response.Content);
+                var locationHeader = response.ContentHeaders.First(h => h.Name == "Location");
 
-                if (response.IsSuccessful)
-                {
-                    return predictResponse.Document;
-                }
+                request = new RestRequest(locationHeader.Value?.ToString());
+
+                _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
+                response = await _httpClient.ExecuteGetAsync(request);
+                _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
             }
 
-            var errorMessage = "Mindee API client : ";
+            GetJobResponse<TModel> getJobResponse = ResponseHandler<GetJobResponse<TModel>>(response);
 
-            if (response.StatusCode == HttpStatusCode.InternalServerError)
+            return getJobResponse;
+        }
+
+        private CustomEndpoint GetEndpoint<TModel>()
+        {
+            if (!Attribute.IsDefined(typeof(TModel), typeof(EndpointAttribute)))
             {
-                errorMessage += response.ErrorMessage;
-                _logger?.LogCritical(errorMessage);
+                throw new NotSupportedException($"The type {typeof(TModel)} is not supported as a prediction model. " +
+                    $"The endpoint attribute is missing. " +
+                    $"Please refer to the document or contact the support.");
             }
 
-            if (predictResponse != null)
-            {
-                errorMessage += predictResponse.ApiRequest.Error.ToString();
-                _logger?.LogError(errorMessage);
-            }
-            else
-            {
-                errorMessage += $" Unhandled error - {response.ErrorMessage}";
-                _logger?.LogError(errorMessage);
-            }
+            EndpointAttribute endpointAttribute =
+            (EndpointAttribute)Attribute.GetCustomAttribute(typeof(TModel), typeof(EndpointAttribute));
 
-            throw new MindeeException(errorMessage);
+            return new CustomEndpoint(endpointAttribute.EndpointName, endpointAttribute.AccountName, endpointAttribute.Version);
         }
 
         private string BuildUserAgent()
@@ -146,6 +217,55 @@ namespace Mindee.Parsing
             return $"mindee-api-dotnet@v{Assembly.GetExecutingAssembly().GetName().Version}"
                 + $" dotnet-v{Environment.Version}"
                 + $" {Environment.OSVersion}";
+        }
+
+        private TModel ResponseHandler<TModel>(RestResponse restResponse)
+            where TModel : CommonResponse, new()
+        {
+            string errorMessage = "Mindee API client : ";
+            TModel model = null;
+
+            if (!string.IsNullOrWhiteSpace(restResponse.Content))
+            {
+                try
+                {
+                    model = JsonSerializer.Deserialize<TModel>(restResponse.Content);
+                }
+                catch (Exception ex)
+                {
+                    errorMessage += ex.Message;
+                    _logger?.LogCritical(errorMessage);
+                    throw new MindeeException(errorMessage);
+                }
+
+                if (restResponse.IsSuccessful)
+                {
+                    return model;
+                }
+            }
+
+            errorMessage += model.ApiRequest.Error.ToString();
+
+            _logger?.LogError(errorMessage);
+
+            switch (restResponse.StatusCode)
+            {
+                case HttpStatusCode.InternalServerError:
+                    throw new Mindee500Exception(errorMessage);
+                case HttpStatusCode.BadRequest:
+                    throw new Mindee400Exception(errorMessage);
+                case HttpStatusCode.Unauthorized:
+                    throw new Mindee401Exception(errorMessage);
+                case HttpStatusCode.Forbidden:
+                    throw new Mindee403Exception(errorMessage);
+                case HttpStatusCode.NotFound:
+                    throw new Mindee404Exception(errorMessage);
+                case (HttpStatusCode)429:
+                    throw new Mindee429Exception(errorMessage);
+
+                default:
+                    throw new MindeeException(errorMessage);
+            }
         }
     }
 }
