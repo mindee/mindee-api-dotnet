@@ -19,7 +19,8 @@ var runner = BuildCommandLine()
         .UseCommandHandler<PredictReceiptCommand, PredictReceiptCommand.Handler>()
         .UseCommandHandler<PredictPassportCommand, PredictPassportCommand.Handler>()
         .UseCommandHandler<PredictCropperCommand, PredictCropperCommand.Handler>()
-        .UseCommandHandler<PredictCustomCommand, PredictCustomCommand.Handler>();
+        .UseCommandHandler<PredictCustomCommand, PredictCustomCommand.Handler>()
+        .UseCommandHandler<PredictInvoiceSplitterCommand, PredictInvoiceSplitterCommand.Handler>();
     })
     .UseDefaults().Build();
 
@@ -33,6 +34,7 @@ static CommandLineBuilder BuildCommandLine()
     root.AddCommand(new PredictPassportCommand());
     root.AddCommand(new PredictCropperCommand());
     root.AddCommand(new PredictCustomCommand());
+    root.AddCommand(new PredictInvoiceSplitterCommand());
 
     root.AddGlobalOption(new Option<bool>("--silent", "Disables diagnostics output"));
     root.Handler = CommandHandler.Create(() =>
