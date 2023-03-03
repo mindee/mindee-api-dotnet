@@ -3,7 +3,7 @@ set -e
 for f in `find docs/code_samples -name "*.txt"`
 do
   echo $f
-  if echo "$f" | grep -q "custom_1.txt" 
+  if echo "$f" | grep -q "custom_v1.txt" 
   then 
     echo "Not processed."
     continue
