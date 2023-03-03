@@ -3,19 +3,21 @@ set -e
 for f in `find docs/code_samples -name "*.txt"`
 do
   echo $f
-  if echo "$f" | grep -q "custom_1.txt" 
+  if echo "$f" | grep -q "custom_v1.txt" 
   then 
     echo "Not processed."
     continue
-  elif echo "$f" | grep -q "default.txt"
+  fi
+
+  cat docs/code_samples/base.csx $f > _test.csx
+
+  if echo "$f" | grep -q "default.txt"
   then
-    cat docs/code_samples/base.csx $f > _test.csx
     sed -i "s/my-endpoint/bank_account_details/" _test.csx
     sed -i "s/my-account/mindee/" _test.csx
     sed -i "s/my-version/1/" _test.csx
-  else
-    cat docs/code_samples/base.csx $f > _test.csx
   fi
+
   sed -i "s/my-api-key/$1/" _test.csx
   sed -i "s/\/path\/to\/the\/file.ext/tests\/resources\/pdf\/blank_1.pdf/" _test.csx
     
