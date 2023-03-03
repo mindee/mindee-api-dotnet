@@ -18,7 +18,7 @@ namespace Mindee.Parsing.Common.Jobs
         /// Date and time the job was available at.
         /// </summary>
         [JsonPropertyName("available_at")]
-        public DateTime AvailableAt { get; set; }
+        public DateTime? AvailableAt { get; set; }
 
         /// <summary>
         /// Unique identifier of the job.
