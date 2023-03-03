@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace Mindee.Parsing.Common
+namespace Mindee.Parsing.Common.Jobs
 {
     /// <summary>
     /// Define an enqueued job.
@@ -17,8 +17,8 @@ namespace Mindee.Parsing.Common
         /// <summary>
         /// Unique identifier of the job.
         /// </summary>
-        [JsonPropertyName("job_id")]
-        public string JobId { get; set; }
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
 
         /// <summary>
         /// Status of the job.

@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Mindee.Parsing.Common.Jobs;
 
 namespace Mindee.Parsing.Common
 {
@@ -9,7 +10,7 @@ namespace Mindee.Parsing.Common
         where TModel : class, new()
     {
         /// <summary>
-        /// <see cref="Common.Job"/>
+        /// <see cref="Jobs.Job"/>
         /// </summary>
         [JsonPropertyName("job")]
         public Job Job { get; set; }

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Mindee.Parsing.Common;
+using Mindee.Parsing.Common.Jobs;
 
 namespace Mindee.Parsing
 {
