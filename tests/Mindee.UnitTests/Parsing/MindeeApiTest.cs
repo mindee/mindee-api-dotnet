@@ -93,8 +93,8 @@ namespace Mindee.UnitTests.Parsing
 
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
-            Assert.Equal("processing", response.Status);
-            Assert.Equal("76c90710-3a1b-4b91-8a39-31a6543e347c", response.JobId);
+            Assert.Equal("processing", response.Job.Status);
+            Assert.Equal("76c90710-3a1b-4b91-8a39-31a6543e347c", response.Job.Id);
         }
 
         [Fact]
@@ -117,8 +117,8 @@ namespace Mindee.UnitTests.Parsing
 
             Assert.NotNull(response);
             Assert.Equal("failure", response.ApiRequest.Status);
-            Assert.Null(response.Status);
-            Assert.Null(response.JobId);
+            Assert.Null(response.Job.Status);
+            Assert.Null(response.Job.Id);
         }
 
         [Fact]

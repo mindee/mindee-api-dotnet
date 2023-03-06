@@ -40,11 +40,17 @@ namespace Mindee.Cli.Commands
 
                 if (WithAsync)
                 {
-                    var response = await _mindeeClient
+                    var predictEnqueuedResponse = await _mindeeClient
                         .LoadDocument(new FileInfo(Path))
                         .EnqueueParsingAsync<InvoiceSplitterV1Inference>();
 
-                    context.Console.Out.Write(JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true }));
+                    context.Console.Out.Write(JsonSerializer.Serialize(predictEnqueuedResponse, new JsonSerializerOptions { WriteIndented = true }));
+
+                    Thread.Sleep(5000);
+
+                    var jobResponse = await _mindeeClient.GetEnqueuedParsingWithJobAsync<InvoiceSplitterV1Inference>(predictEnqueuedResponse.Job.Id);
+
+                    context.Console.Out.Write(JsonSerializer.Serialize(jobResponse, new JsonSerializerOptions { WriteIndented = true }));
                 }
                 else
                 {

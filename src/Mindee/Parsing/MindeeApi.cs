@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
 using Mindee.Parsing.Common;
+using Mindee.Parsing.Common.Jobs;
 using RestSharp;
 
 namespace Mindee.Parsing
@@ -151,17 +152,25 @@ namespace Mindee.Parsing
 
             PredictResponse<TModel> predictResponse = null;
 
+            var errorMessage = "Mindee API client : ";
+
             if (response.Content != null)
             {
-                predictResponse = JsonSerializer.Deserialize<PredictResponse<TModel>>(response.Content);
+                try
+                {
+                    predictResponse = JsonSerializer.Deserialize<PredictResponse<TModel>>(response.Content);
+                }
+                catch (Exception ex)
+                {
+                    errorMessage += ex.Message;
+                    _logger?.LogCritical(errorMessage);
+                }
 
                 if (response.IsSuccessful)
                 {
                     return predictResponse.Document;
                 }
             }
-
-            var errorMessage = "Mindee API client : ";
 
             if (response.StatusCode == HttpStatusCode.InternalServerError)
             {
@@ -197,13 +206,9 @@ namespace Mindee.Parsing
         {
             var request = new RestRequest($"/products/" +
                 $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
-                "documents/queue/{" +
-                $"{jobId}" +
-                "}", Method.Get);
+                $"documents/queue/{jobId}", Method.Get);
 
             _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
-
-            request.AddUrlSegment(nameof(jobId), jobId);
 
             var response = await _httpClient.ExecuteGetAsync(request);
 
