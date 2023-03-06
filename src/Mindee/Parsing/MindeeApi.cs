@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -151,23 +150,7 @@ namespace Mindee.Parsing
             _logger?.LogDebug($"HTTP response : {response.Content}");
             _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
 
-            PredictResponse<TModel> predictResponse = null;
-
-            if (!string.IsNullOrWhiteSpace(response.Content))
-            {
-                try
-                {
-                    predictResponse = JsonSerializer.Deserialize<PredictResponse<TModel>>(response.Content);
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = "Mindee API client : " + ex.Message;
-                    _logger?.LogCritical(errorMessage);
-                    throw new MindeeException(errorMessage);
-                }
-            }
-
-            HandlingError(response, predictResponse.ApiRequest);
+            PredictResponse<TModel> predictResponse = ResponseHandler<PredictResponse<TModel>>(response);
 
             return predictResponse.Document;
         }
@@ -207,23 +190,7 @@ namespace Mindee.Parsing
                 _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
             }
 
-            GetJobResponse<TModel> getJobResponse = null;
-
-            if (!string.IsNullOrWhiteSpace(response.Content))
-            {
-                try
-                {
-                    getJobResponse = JsonSerializer.Deserialize<GetJobResponse<TModel>>(response.Content);
-                }
-                catch (Exception ex)
-                {
-                    string errorMessage = "Mindee API client : " + ex.Message;
-                    _logger?.LogCritical(errorMessage);
-                    throw new MindeeException(errorMessage);
-                }
-            }
-
-            HandlingError(response, getJobResponse.ApiRequest);
+            GetJobResponse<TModel> getJobResponse = ResponseHandler<GetJobResponse<TModel>>(response);
 
             return getJobResponse;
         }
@@ -250,14 +217,32 @@ namespace Mindee.Parsing
                 + $" {Environment.OSVersion}";
         }
 
-        private void HandlingError(RestResponse restResponse, ApiRequest apiRequest)
+        private TModel ResponseHandler<TModel>(RestResponse restResponse)
+            where TModel : CommonResponse, new()
         {
-            if (restResponse.IsSuccessful)
+            string errorMessage = "Mindee API client : ";
+            TModel model = null;
+
+            if (!string.IsNullOrWhiteSpace(restResponse.Content))
             {
-                return;
+                try
+                {
+                    model = JsonSerializer.Deserialize<TModel>(restResponse.Content);
+                }
+                catch (Exception ex)
+                {
+                    errorMessage += ex.Message;
+                    _logger?.LogCritical(errorMessage);
+                    throw new MindeeException(errorMessage);
+                }
+
+                if (restResponse.IsSuccessful)
+                {
+                    return model;
+                }
             }
 
-            string errorMessage = "Mindee API client : " + apiRequest.Error.ToString();
+            errorMessage += model.ApiRequest.Error.ToString();
 
             _logger?.LogError(errorMessage);
 
