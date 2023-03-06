@@ -153,8 +153,6 @@ namespace Mindee.Parsing
 
             PredictResponse<TModel> predictResponse = null;
 
-            var errorMessage = "Mindee API client : ";
-
             if (!string.IsNullOrWhiteSpace(response.Content))
             {
                 try
@@ -163,38 +161,15 @@ namespace Mindee.Parsing
                 }
                 catch (Exception ex)
                 {
-                    errorMessage += ex.Message;
+                    string errorMessage = "Mindee API client : " + ex.Message;
                     _logger?.LogCritical(errorMessage);
                     throw new MindeeException(errorMessage);
                 }
             }
 
-            if (response.IsSuccessful)
-            {
-                return predictResponse.Document;
-            }
+            HandlingError(response, predictResponse.ApiRequest);
 
-            errorMessage += predictResponse.ApiRequest.Error.ToString();
-            _logger?.LogError(errorMessage);
-
-            switch (response.StatusCode)
-            {
-                case HttpStatusCode.InternalServerError:
-                    throw new Mindee500Exception(errorMessage);
-                case HttpStatusCode.BadRequest:
-                    throw new Mindee400Exception(errorMessage);
-                case HttpStatusCode.Unauthorized:
-                    throw new Mindee401Exception(errorMessage);
-                case HttpStatusCode.Forbidden:
-                    throw new Mindee403Exception(errorMessage);
-                case HttpStatusCode.NotFound:
-                    throw new Mindee404Exception(errorMessage);
-                case (HttpStatusCode)429:
-                    throw new Mindee429Exception(errorMessage);
-
-                default:
-                    throw new MindeeException(errorMessage);
-            }
+            return predictResponse.Document;
         }
 
         public Task<GetJobResponse<TModel>> GetJobAsync<TModel>(string jobId) where TModel : class, new()
@@ -232,27 +207,25 @@ namespace Mindee.Parsing
                 _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
             }
 
-            if (response.Content != null)
+            GetJobResponse<TModel> getJobResponse = null;
+
+            if (!string.IsNullOrWhiteSpace(response.Content))
             {
-                var getJobResponse = JsonSerializer.Deserialize<GetJobResponse<TModel>>(response.Content);
-                return getJobResponse;
+                try
+                {
+                    getJobResponse = JsonSerializer.Deserialize<GetJobResponse<TModel>>(response.Content);
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = "Mindee API client : " + ex.Message;
+                    _logger?.LogCritical(errorMessage);
+                    throw new MindeeException(errorMessage);
+                }
             }
 
-            var errorMessage = "Mindee API client : ";
+            HandlingError(response, getJobResponse.ApiRequest);
 
-            if (response.StatusCode == HttpStatusCode.InternalServerError)
-            {
-                errorMessage += response.ErrorMessage;
-
-                _logger?.LogCritical(errorMessage);
-            }
-            else
-            {
-                errorMessage += $" Unhandled error - {response.ErrorMessage}";
-                _logger?.LogError(errorMessage);
-            }
-
-            throw new MindeeException(errorMessage);
+            return getJobResponse;
         }
 
         private CustomEndpoint GetEndpoint<TModel>()
@@ -275,6 +248,37 @@ namespace Mindee.Parsing
             return $"mindee-api-dotnet@v{Assembly.GetExecutingAssembly().GetName().Version}"
                 + $" dotnet-v{Environment.Version}"
                 + $" {Environment.OSVersion}";
+        }
+
+        private void HandlingError(RestResponse restResponse, ApiRequest apiRequest)
+        {
+            if (restResponse.IsSuccessful)
+            {
+                return;
+            }
+
+            string errorMessage = "Mindee API client : " + apiRequest.Error.ToString();
+
+            _logger?.LogError(errorMessage);
+
+            switch (restResponse.StatusCode)
+            {
+                case HttpStatusCode.InternalServerError:
+                    throw new Mindee500Exception(errorMessage);
+                case HttpStatusCode.BadRequest:
+                    throw new Mindee400Exception(errorMessage);
+                case HttpStatusCode.Unauthorized:
+                    throw new Mindee401Exception(errorMessage);
+                case HttpStatusCode.Forbidden:
+                    throw new Mindee403Exception(errorMessage);
+                case HttpStatusCode.NotFound:
+                    throw new Mindee404Exception(errorMessage);
+                case (HttpStatusCode)429:
+                    throw new Mindee429Exception(errorMessage);
+
+                default:
+                    throw new MindeeException(errorMessage);
+            }
         }
     }
 }

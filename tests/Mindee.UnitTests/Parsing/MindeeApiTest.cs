@@ -59,7 +59,7 @@ namespace Mindee.UnitTests.Parsing
                 .Respond(
                     HttpStatusCode.BadRequest,
                     "application/json",
-                    File.ReadAllText("Resources/errors/complete_with_object_response_in_detail.json")
+                    File.ReadAllText("Resources/errors/error_400_from_mindeeapi_with_object_response_in_detail.json")
                 );
 
             var mindeeApi = new MindeeApi(
@@ -68,7 +68,7 @@ namespace Mindee.UnitTests.Parsing
                 mockHttp
                 );
 
-            await Assert.ThrowsAsync<MindeeException>(
+            await Assert.ThrowsAsync<Mindee400Exception>(
                            () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
         }
 
