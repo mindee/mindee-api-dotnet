@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -154,7 +155,7 @@ namespace Mindee.Parsing
 
             var errorMessage = "Mindee API client : ";
 
-            if (response.Content != null)
+            if (!string.IsNullOrWhiteSpace(response.Content))
             {
                 try
                 {
@@ -164,32 +165,36 @@ namespace Mindee.Parsing
                 {
                     errorMessage += ex.Message;
                     _logger?.LogCritical(errorMessage);
-                }
-
-                if (response.IsSuccessful)
-                {
-                    return predictResponse.Document;
+                    throw new MindeeException(errorMessage);
                 }
             }
 
-            if (response.StatusCode == HttpStatusCode.InternalServerError)
+            if (response.IsSuccessful)
             {
-                errorMessage += response.ErrorMessage;
-                _logger?.LogCritical(errorMessage);
+                return predictResponse.Document;
             }
 
-            if (predictResponse != null)
-            {
-                errorMessage += predictResponse.ApiRequest.Error.ToString();
-                _logger?.LogError(errorMessage);
-            }
-            else
-            {
-                errorMessage += $" Unhandled error - {response.ErrorMessage}";
-                _logger?.LogError(errorMessage);
-            }
+            errorMessage += predictResponse.ApiRequest.Error.ToString();
+            _logger?.LogError(errorMessage);
 
-            throw new MindeeException(errorMessage);
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.InternalServerError:
+                    throw new Mindee500Exception(errorMessage);
+                case HttpStatusCode.BadRequest:
+                    throw new Mindee400Exception(errorMessage);
+                case HttpStatusCode.Unauthorized:
+                    throw new Mindee401Exception(errorMessage);
+                case HttpStatusCode.Forbidden:
+                    throw new Mindee403Exception(errorMessage);
+                case HttpStatusCode.NotFound:
+                    throw new Mindee404Exception(errorMessage);
+                case (HttpStatusCode)429:
+                    throw new Mindee429Exception(errorMessage);
+
+                default:
+                    throw new MindeeException(errorMessage);
+            }
         }
 
         public Task<GetJobResponse<TModel>> GetJobAsync<TModel>(string jobId) where TModel : class, new()
