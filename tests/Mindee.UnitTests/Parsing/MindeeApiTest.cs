@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Net;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -26,7 +25,7 @@ namespace Mindee.UnitTests.Parsing
                 mockHttp
                 );
 
-            await Assert.ThrowsAsync<MindeeException>(
+            await Assert.ThrowsAsync<Mindee400Exception>(
                () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
         }
 
@@ -60,7 +59,7 @@ namespace Mindee.UnitTests.Parsing
                 .Respond(
                     HttpStatusCode.BadRequest,
                     "application/json",
-                    File.ReadAllText("Resources/errors/complete_with_object_response_in_detail.json")
+                    File.ReadAllText("Resources/errors/error_400_from_mindeeapi_with_object_response_in_detail.json")
                 );
 
             var mindeeApi = new MindeeApi(
@@ -69,7 +68,70 @@ namespace Mindee.UnitTests.Parsing
                 mockHttp
                 );
 
-            await Assert.ThrowsAsync<MindeeException>(
+            await Assert.ThrowsAsync<Mindee400Exception>(
+                           () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
+        }
+
+        [Fact]
+        public async Task Predict_500Error()
+        {
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("*")
+                .Respond(
+                    HttpStatusCode.InternalServerError,
+                    "application/json",
+                    File.ReadAllText("Resources/errors/error_500_from_mindeeapi.json")
+                );
+
+            var mindeeApi = new MindeeApi(
+                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
+                new NullLogger<MindeeApi>(),
+                mockHttp
+                );
+
+            await Assert.ThrowsAsync<Mindee500Exception>(
+                           () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
+        }
+
+        [Fact]
+        public async Task Predict_429Error()
+        {
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("*")
+                .Respond(
+                    (HttpStatusCode)429,
+                    "application/json",
+                    File.ReadAllText("Resources/errors/error_429_from_mindeeapi.json")
+                );
+
+            var mindeeApi = new MindeeApi(
+                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
+                new NullLogger<MindeeApi>(),
+                mockHttp
+                );
+
+            await Assert.ThrowsAsync<Mindee429Exception>(
+                           () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
+        }
+
+        [Fact]
+        public async Task Predict_401Error()
+        {
+            var mockHttp = new MockHttpMessageHandler();
+            mockHttp.When("*")
+                .Respond(
+                    HttpStatusCode.Unauthorized,
+                    "application/json",
+                    File.ReadAllText("Resources/errors/error_401_from_mindeeapi.json")
+                );
+
+            var mindeeApi = new MindeeApi(
+                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
+                new NullLogger<MindeeApi>(),
+                mockHttp
+                );
+
+            await Assert.ThrowsAsync<Mindee401Exception>(
                            () => _ = mindeeApi.PredictAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter()));
         }
 

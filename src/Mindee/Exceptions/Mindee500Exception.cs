@@ -3,28 +3,28 @@ using System;
 namespace Mindee.Exceptions
 {
     /// <summary>
-    /// Represent a Mindee exception.
+    /// Represent a 500 error from Mindee API.
     /// </summary>
-    public sealed class MindeeException : Exception
+    public class Mindee500Exception : MindeeException
     {
         /// <summary>
         /// <see cref="Exception"/>
         /// </summary>
-        public MindeeException()
+        public Mindee500Exception()
         {
         }
 
         /// <summary>
         /// <see cref="Exception"/>
         /// </summary>
-        public MindeeException(string message) : base(message)
+        public Mindee500Exception(string message) : base(message)
         {
         }
 
         /// <summary>
         /// <see cref="Exception"/>
         /// </summary>
-        public MindeeException(string message, Exception innerException) : base(message, innerException)
+        public Mindee500Exception(string message, Exception innerException) : base(message, innerException)
         {
         }
     }
