@@ -63,7 +63,7 @@
       <HintPath>..\packages\Microsoft.Extensions.Primitives.6.0.0\lib\net461\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="Mindee, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mindee.2.1.1-preview1\lib\net472\Mindee.dll</HintPath>
+      <HintPath>..\packages\Mindee.2.1.1-preview2\lib\net472\Mindee.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=109.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.109.0.0-preview.2\lib\net471\RestSharp.dll</HintPath>
