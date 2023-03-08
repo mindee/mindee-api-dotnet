@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - main
-      - 141-cannot-install-on-net-48-project
   schedule:
     - cron:  '41 04 * * *'
 
