@@ -48,8 +48,10 @@ namespace Mindee.Parsing
         {
             var options = new RestClientOptions(_baseUrl)
             {
-                MaxTimeout = TimeSpan.FromSeconds(timeoutInSeconds).Milliseconds
+                MaxTimeout = TimeSpan.FromSeconds(timeoutInSeconds).Milliseconds,
+                FollowRedirects = false
             };
+
             var client = new RestClient(options,
                 p => p.Add("Authorization", $"Token {_apiKey}")
             );
