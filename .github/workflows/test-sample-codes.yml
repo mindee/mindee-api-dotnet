@@ -50,11 +50,11 @@ jobs:
       run: |
         mkdir "${{ github.workspace }}/localNuget"
         dotnet nuget add source "${{ github.workspace }}/localNuget" -n "NugetLocal"
-        dotnet nuget list source
-        dotnet pack "src/Mindee" --version-suffix "test" -p:TargetFrameworks=${{ matrix.dotnet-version }} --output nuget
+        dotnet pack "src/Mindee" --version-suffix "for-sample-codes" -p:TargetFrameworks=${{ matrix.dotnet-version }} --output nuget
         cd nuget
         dotnet nuget push *.nupkg --source "NugetLocal"
         dotnet tool install -g dotnet-script
+        dotnet nuget disable source nuget.org
 
     - name: Tests sample code
       run: |
