@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mindee" Version="1.1.0" />
+    <PackageReference Include="Mindee" Version="2.1.1-preview1" />
   </ItemGroup>
 
 </Project>
