@@ -16,7 +16,7 @@ namespace Mindee.Parsing
 {
     internal sealed class MindeeApi : IPredictable
     {
-        private readonly string _baseUrl = "https://api.mindee.net/v1";
+        private readonly string _baseUrl = "https://api.mindee.net/";
         private readonly string _apiKey;
         private readonly RestClient _httpClient;
         private readonly ILogger _logger;
@@ -86,7 +86,7 @@ namespace Mindee.Parsing
             CustomEndpoint endpoint
             )
         {
-            var request = new RestRequest($"/products/" +
+            var request = new RestRequest($"v1/products/" +
                 $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
                 $"predict_async", Method.Post);
 
@@ -139,7 +139,7 @@ namespace Mindee.Parsing
                     PredictParameter predictParameter)
             where TModel : class, new()
         {
-            var request = new RestRequest($"/products/{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/predict", Method.Post);
+            var request = new RestRequest($"v1/products/{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/predict", Method.Post);
 
             _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
 
@@ -169,7 +169,7 @@ namespace Mindee.Parsing
             CustomEndpoint endpoint)
             where TModel : class, new()
         {
-            var request = new RestRequest($"/products/" +
+            var request = new RestRequest($"v1/products/" +
                 $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
                 $"documents/queue/{jobId}", Method.Get);
 
@@ -183,7 +183,7 @@ namespace Mindee.Parsing
 
             if (response.StatusCode == HttpStatusCode.Redirect)
             {
-                var locationHeader = response.ContentHeaders.First(h => h.Name == "Location");
+                var locationHeader = response.Headers.First(h => h.Name == "Location");
 
                 request = new RestRequest(locationHeader.Value?.ToString());
 
