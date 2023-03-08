@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.1.1 - 2023-03-08
+### Fixes
+* :bug: fix trouble with .NET 4.8/4.7.2 usage
+
 ## v2.1.0 - 2023-02-20
 ### ¡Breaking Changes!
 * :boom: some properties renaming for French ID card and Carte Vitale
