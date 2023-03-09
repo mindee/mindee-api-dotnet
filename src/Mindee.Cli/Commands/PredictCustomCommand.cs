@@ -1,6 +1,5 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Mindee.Parsing;
 
@@ -27,7 +26,7 @@ namespace Mindee.Cli.Commands
             public string Path { get; set; } = null!;
             public string ProductName { get; set; } = null!;
             public string OrganizationName { get; set; } = null!;
-            public string Version { get; set; } = "1.0";
+            public string Version { get; set; } = "1";
 
             public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
             {
@@ -46,7 +45,7 @@ namespace Mindee.Cli.Commands
                         OrganizationName,
                         Version));
 
-                context.Console.Out.Write(JsonSerializer.Serialize(prediction, new JsonSerializerOptions { WriteIndented = true }));
+                context.Console.Out.Write(prediction.ToString());
 
                 return 0;
             }
