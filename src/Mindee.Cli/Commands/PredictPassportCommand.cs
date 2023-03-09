@@ -13,9 +13,11 @@ namespace Mindee.Cli.Commands
         public PredictPassportCommand()
             : base(name: "passport", "Invokes the passport API")
         {
+            AddOption(new Option<string>(new string[] { "-o", "--output", "output" },
+                "Specify how to output the data. \n" +
+                "- summary: a basic summary (default)\n" +
+                "- raw: full JSON object\n"));
             AddArgument(new Argument<string>("path", "The path of the file to parse"));
-            AddOption(new Option<string>(new string[] { "-o", "--output", "output" }, "Choose the displayed result format. " +
-                "Options values : 'raw' to get result as json, 'summary' to get a prettier format. 'raw' by default."));
         }
 
         public new class Handler : ICommandHandler

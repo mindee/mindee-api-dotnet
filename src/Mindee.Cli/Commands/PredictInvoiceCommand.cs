@@ -13,10 +13,13 @@ namespace Mindee.Cli.Commands
         public PredictInvoiceCommand()
             : base(name: "invoice", "Invokes the invoice API")
         {
+            AddOption(new Option<bool>(new string[] { "-w", "--with-words", "withWords" },
+                "To get all the words in the current document. False by default."));
+            AddOption(new Option<string>(new string[] { "-o", "--output", "output" },
+                "Specify how to output the data. \n" +
+                "- summary: a basic summary (default)\n" +
+                "- raw: full JSON object\n"));
             AddArgument(new Argument<string>("path", "The path of the file to parse"));
-            AddOption(new Option<bool>(new string[] { "-w", "--with-words", "withWords" }, "To get all the words in the current document. False by default."));
-            AddOption(new Option<string>(new string[] { "-o", "--output", "output" }, "Choose the displayed result format." +
-                "Options values : 'raw' to get result as json, 'summary' to get a prettier format. 'raw' by default."));
         }
 
         public new class Handler : ICommandHandler
@@ -26,7 +29,7 @@ namespace Mindee.Cli.Commands
 
             public string Path { get; set; } = null!;
             public bool WithWords { get; set; } = false;
-            public string Output { get; set; } = "raw";
+            public string Output { get; set; } = "summary";
 
             public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
             {
@@ -38,17 +41,17 @@ namespace Mindee.Cli.Commands
             {
                 _logger.LogInformation("About to predict an invoice..");
 
-                var invoicePrediction = await _mindeeClient
+                var prediction = await _mindeeClient
                     .LoadDocument(new FileInfo(Path))
                     .ParseAsync<InvoiceV4Inference>(WithWords);
 
                 if (Output == "summary")
                 {
-                    context.Console.Out.Write(invoicePrediction != null ? invoicePrediction.Inference.DocumentPrediction.ToString()! : "null");
+                    context.Console.Out.Write(prediction != null ? prediction.Inference.DocumentPrediction.ToString()! : "null");
                 }
                 else
                 {
-                    context.Console.Out.Write(JsonSerializer.Serialize(invoicePrediction, new JsonSerializerOptions { WriteIndented = true }));
+                    context.Console.Out.Write(JsonSerializer.Serialize(prediction, new JsonSerializerOptions { WriteIndented = true }));
                 }
 
                 return 0;

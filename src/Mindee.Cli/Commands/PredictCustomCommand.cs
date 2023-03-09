@@ -1,5 +1,6 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Mindee.Parsing;
 
@@ -12,10 +13,16 @@ namespace Mindee.Cli.Commands
         public PredictCustomCommand()
             : base(name: "custom", "Invokes a builder API")
         {
+            AddOption(new Option<string>(
+                new string[] { "-o", "--output" },
+                "Specify how to output the data. \n" +
+                "- summary: a basic summary (default)\n" +
+                "- raw: full JSON object\n"));
+            AddOption(new Option<string>(
+                new string[] { "-v", "--version" }, "Version of the custom API, default 1"));
+            AddArgument(new Argument<string>("account", "The path of the file to parse"));
+            AddArgument(new Argument<string>("endpoint", "The path of the file to parse"));
             AddArgument(new Argument<string>("path", "The path of the file to parse"));
-            AddArgument(new Argument<string>("organizationName", "The name of the organization"));
-            AddArgument(new Argument<string>("productName", "The name of the product"));
-            AddArgument(new Argument<string>("version", "Version of the custom API builder"));
         }
 
         public new class Handler : ICommandHandler
@@ -24,9 +31,10 @@ namespace Mindee.Cli.Commands
             private readonly MindeeClient _mindeeClient;
 
             public string Path { get; set; } = null!;
-            public string ProductName { get; set; } = null!;
-            public string OrganizationName { get; set; } = null!;
+            public string Endpoint { get; set; } = null!;
+            public string Account { get; set; } = null!;
             public string Version { get; set; } = "1";
+            public string Output { get; set; } = "summary";
 
             public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
             {
@@ -41,11 +49,18 @@ namespace Mindee.Cli.Commands
                 var prediction = await _mindeeClient
                     .LoadDocument(new FileInfo(Path))
                     .ParseAsync(new CustomEndpoint(
-                        ProductName,
-                        OrganizationName,
+                        Endpoint,
+                        Account,
                         Version));
 
-                context.Console.Out.Write(prediction.ToString());
+                if (Output == "summary")
+                {
+                    context.Console.Out.Write(prediction != null ? prediction.Inference.DocumentPrediction.ToString()! : "null");
+                }
+                else
+                {
+                    context.Console.Out.Write(JsonSerializer.Serialize(prediction, new JsonSerializerOptions { WriteIndented = true }));
+                }
 
                 return 0;
             }
