@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.1.2 - 2023-03-09
+### Fixes
+* :bug: custom document default version must be '1', not '1.0'
+
 ## v2.1.1 - 2023-03-08
 ### Fixes
 * :bug: fix trouble with .NET 4.8/4.7.2 usage
