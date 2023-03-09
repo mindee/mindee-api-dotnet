@@ -29,7 +29,7 @@ namespace Mindee.Parsing
         public CustomEndpoint(
             string endpointName
             , string accountName
-            , string version = "1.0")
+            , string version = "1")
         {
             EndpointName = endpointName;
             AccountName = accountName;

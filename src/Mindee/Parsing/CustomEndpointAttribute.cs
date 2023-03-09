@@ -17,7 +17,7 @@ namespace Mindee.Parsing
         public CustomEndpointAttribute(
             string endpointName
             , string accountName
-            , string version = "1.0") : base(endpointName, version, accountName)
+            , string version = "1") : base(endpointName, version, accountName)
         {
         }
     }
