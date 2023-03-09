@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Mindee.Geometry;
 using Mindee.Parsing.Common;
+using System;
 
 namespace Mindee.Parsing.CustomBuilder.Table
 {
@@ -91,6 +94,21 @@ namespace Mindee.Parsing.CustomBuilder.Table
                         fieldValue.Polygon)
                     );
             }
+        }
+
+        /// <summary>
+        /// Prettier representation.
+        /// </summary>
+        public override string ToString()
+        {
+            StringBuilder result = new StringBuilder("");
+
+            foreach (var field in Fields)
+            {
+                result.Append(" " + field.Value.ToString().PadRight(field.Key.Length));
+            }
+
+            return result.ToString();
         }
     }
 }
