@@ -15,6 +15,13 @@ services.AddMindeeClient();
 
 This call will configure the client entry point and the PDF library used internally.
 
+Or, you could also simply instantiate a new instance of `MindeeClient`:
+```csharp
+using Mindee;
+
+var mindeeClient = MindeeClientInit.Create("MyKey");
+```
+
 Then, in your controller or service instance, pass the class ``MindeeClient`` as an argument of your constructor
 (or methods if you are using this possibility).
 
