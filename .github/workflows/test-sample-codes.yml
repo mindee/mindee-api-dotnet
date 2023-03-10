@@ -1,14 +1,11 @@
-#
-# Run sample codes tests.
-#
-name: Test samples codes
+name: Test Code Samples
 
 on:
   push:
     branches:
       - main
   schedule:
-    - cron:  '23 23 * * *'
+    - cron:  '0 23 * * *'
 
   # Allows to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -45,11 +42,11 @@ jobs:
     - name: Build and test
       run: |
         dotnet build "src/Mindee" -f ${{ matrix.dotnet-version }} --verbosity normal
-    
+
     - name: Prepare for samples code
       run: |
-        mkdir "${{ github.workspace }}/localNuget"
-        dotnet nuget add source "${{ github.workspace }}/localNuget" -n "NugetLocal"
+        mkdir "${{ github.workspace }}/NugetLocal"
+        dotnet nuget add source "${{ github.workspace }}/NugetLocal" -n "NugetLocal"
         dotnet pack "src/Mindee" --version-suffix "for-sample-codes" -p:TargetFrameworks=${{ matrix.dotnet-version }} --output nuget
         cd nuget
         dotnet nuget push *.nupkg --source "NugetLocal"
@@ -58,4 +55,4 @@ jobs:
 
     - name: Tests sample code
       run: |
-        ./test_sample_code.sh ${{ secrets.MINDEE_API_KEY }}
+        ./tests/test_code_samples.sh ${{ secrets.MINDEE_ACCOUNT_SE_TESTS }} ${{ secrets.MINDEE_ENDPOINT_SE_TESTS }} ${{ secrets.MINDEE_API_KEY_SE_TESTS }}
