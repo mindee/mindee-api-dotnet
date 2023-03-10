@@ -1,7 +1,7 @@
 # Sample workflow for building and deploying a Jekyll site to GitHub Pages
 name: Publish documentation
 
-on:  
+on:
   release:
     types: [ published ]
 
@@ -38,13 +38,15 @@ jobs:
         with:
           dotnet-version: '7.0.x'
       - name: Generate documentations
-        run: mddocs apireference --assemblies 'src/Mindee/bin/Release/netstandard2.0/Mindee.dll' --outdir ./docs/api-reference
+        run: mddocs apireference --assemblies 'src/Mindee/bin/Release/netstandard2.0/Mindee.dll' --outdir ./docs/api_reference
+      - name: Copy Samples
+        run: cp -r ./docs/code_samples ./docs/api_reference/Mindee
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
-          source: ./docs
+          source: ./docs/api_reference/Mindee
           destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
