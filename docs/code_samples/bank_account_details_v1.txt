@@ -1,0 +1,13 @@
+using Mindee;
+using Mindee.Parsing.Fr.BankAccountDetails;
+
+string apiKey = "my-api-key";
+string filePath = "/path/to/the/file.ext";
+
+MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+
+var documentParsed = await mindeeClient
+    .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
+    .ParseAsync<BankAccountDetailsV1Inference>();
+
+System.Console.WriteLine(documentParsed.ToString());
