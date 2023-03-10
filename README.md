@@ -1,16 +1,13 @@
-[![License: MIT](https://img.shields.io/github/license/mindee/mindee-api-nodejs)](https://opensource.org/licenses/MIT)
-[![GitHub Workflow Status](https://github.com/mindee/mindee-api-dotnet/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml)
-[![NuGet](https://img.shields.io/nuget/v/mindee?color=%23fd3246)](https://www.nuget.org/packages/Mindee)
-[![NuGet](https://img.shields.io/nuget/dt/Mindee)](https://www.nuget.org/packages/Mindee)
-[![Join Mindee on Slack](https://img.shields.io/badge/Slack-4A154B?style=flat&logo=slack&label=MindeeCommunity)](https://mindee-community.slack.com/join/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw#/shared-invite/email)
+[![License: MIT](https://img.shields.io/github/license/mindee/mindee-api-dotnet)](https://opensource.org/licenses/MIT) [![GitHub Workflow Status](https://github.com/mindee/mindee-api-dotnet/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml) [![NuGet](https://img.shields.io/nuget/v/mindee)](https://www.nuget.org/packages/Mindee) [![NuGet](https://img.shields.io/nuget/dt/Mindee)](https://www.nuget.org/packages/Mindee)
 
 # Mindee API Helper Library for .NET
-The official Mindee API Helper Library for the .NET ecosystem to quickly and easily connect to Mindee's API services.
+Quickly and easily connect to Mindee's API services using .NET.
 
-This library is compatible with:
-* .NET Standard 2.0
-* .NET 4.7.2
-* .NET 6+
+## Requirements
+The following .NET versions are tested and supported:
+* Standard 2.0
+* 4.7.2, 4.8 (Windows only)
+* 6.0, 7.0 (Linux, macOS, Windows)
 
 ## Quick Start
 Here's the TL;DR of getting started.
@@ -36,58 +33,107 @@ MindeeApiSettings__ApiKey
 },
 ```
 
-### Instantiate from dependency injection (DI)
+### Instantiate The Client
+You can instantiate the client either manually or by using dependency injection.
+
+#### Dependency Injection
 In your Startup.cs or Program.cs file, configure the dependency injection (DI) as follows:
 ```csharp
 services.AddMindeeClient();
 ```
-This call will configure the client entry point and the pdf library used internally.
+This call will configure the client entry point and the PDF library used internally.
 
 Then, in your controller or service instance, pass as an argument the class ``MindeeClient``.
 
 
-### Instantiate manually
+#### Manually
 Or, you could also simply instantiate a new instance of `MindeeClient`:
 ```csharp
 using Mindee;
 
-var mindeeClient = MindeeClientInit.Create("MyKey");
+var mindeeClient = MindeeClientInit.Create("my-api-key");
 ```
 
-Let's parse an invoice:
+### Loading a File and Parsing It
+
+#### Global Documents
 ```csharp
-var prediction = await _mindeeClient
-    .LoadDocument(new FileInfo("/path/to/the/file.ext"))
+using Mindee;
+using Mindee.Parsing.Invoice;
+
+string apiKey = "my-api-key";
+string filePath = "/path/to/the/file.ext";
+
+MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+
+var documentParsed = await mindeeClient
+    .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
     .ParseAsync<InvoiceV4Inference>();
+
+System.Console.WriteLine(documentParsed.ToString());
 ```
 
-### Usage
-You can also use the client with your custom documents:
+#### Region-Specific Documents
 ```csharp
+using Mindee;
+using Mindee.Parsing.Us.BankCheck;
+
+string apiKey = "my-api-key";
+string filePath = "/path/to/the/file.ext";
+
+MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+
+var documentParsed = await mindeeClient
+    .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
+    .ParseAsync<BankCheckV1Inference>();
+
+System.Console.WriteLine(documentParsed.ToString());
+```
+
+#### Custom Document (API Builder)
+
+```csharp
+using Mindee;
+using Mindee.Parsing;
+
+string apiKey = "my-api-key";
+string filePath = "/path/to/the/file.ext";
+
+MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+
 CustomEndpoint myEndpoint = new CustomEndpoint(
-    endpointName: "wnine",
-    accountName: "john",
-    version: "1.1" // optional
+    endpointName: "my-endpoint",
+    accountName: "my-account"
 );
 
-var prediction = await _mindeeClient
-    .LoadDocument(new FileInfo("/path/to/the/file.ext"))
+var documentParsed = await mindeeClient
+    .LoadDocument(new FileInfo(filePath))
     .ParseAsync(myEndpoint);
+
+System.Console.WriteLine(documentParsed.ToString());
 ```
 
 ## Further Reading
-There's more to it than that for those that need more features, or want to
-customize the experience.
+Complete details on the working of the library are available in the following guides:
 
-All the juicy details are described in the **[Official Guide](docs/index.md)**.
+* [Overview](https://developers.mindee.com/docs/dotnet-ocr-overview)
+* [Custom APIs](https://developers.mindee.com/docs/dotnet-api-builder)
+* [Invoices](https://developers.mindee.com/docs/dotnet-invoice-ocr)
+* [Receipts](https://developers.mindee.com/docs/dotnet-receipt-ocr)
+* [Passports](https://developers.mindee.com/docs/dotnet-passport-ocr)
+* [Shipping Containers](https://developers.mindee.com/docs/dotnet-shipping-container-ocr)
+* [US bank Checks](https://developers.mindee.com/docs/dotnet-us-bank-check-ocr)
+* [Licenses Plates](https://developers.mindee.com/docs/dotnet-licence-plates-ocr)
 
-You also can use 
-* **[Reference documentation](https://mindee.github.io/mindee-api-dotnet/api-reference/Mindee)** to dig deeper in the code.
-* **[Samples console app project using Mindee](sample)**
+You can view the source code on [GitHub](https://github.com/mindee/mindee-api-nodejs).
 
-Or feel free to reach us in our slack community channel :-) ! 
+You can also take a look at the
+**[Reference Documentation](https://mindee.github.io/mindee-api-dotnet/)**.
 
 ## License
 Copyright © Mindee
 
 Available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Questions?
+[Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)
