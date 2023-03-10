@@ -28,5 +28,13 @@ namespace Mindee.Geometry
             Add(x);
             Add(y);
         }
+
+        /// <summary>
+        /// The default string representation.
+        /// </summary>
+        public override string ToString()
+        {
+            return $"[{X}, {Y}]";
+        }
     }
 }

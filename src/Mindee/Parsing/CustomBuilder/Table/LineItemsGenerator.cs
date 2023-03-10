@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mindee.Geometry;
-using Mindee.Math;
 
 namespace Mindee.Parsing.CustomBuilder.Table
 {
@@ -15,59 +14,67 @@ namespace Mindee.Parsing.CustomBuilder.Table
         /// Prepare he line of a table.
         /// </summary>
         /// <param name="fields">The list of fields that will be transform to line items.</param>
-        /// <param name="fieldForAnchor">
+        /// <param name="anchor">
         /// The line items generation is based on the fact that
         /// this field is most present that the others one, on all lines that we want.
         /// </param>
         /// <exception cref="InvalidOperationException"></exception>
         internal static IEnumerable<Line> GetPreparedLines(
-             Dictionary<string, ListField> fields,
-            Anchor fieldForAnchor
+            Dictionary<string, ListField> fields,
+            Anchor anchor
             )
         {
-            var anchor = fields[fieldForAnchor.Name];
+            var anchorField = fields[anchor.Name];
+            var lines = new Dictionary<int, Line>();
 
-            if (anchor == null)
+            if (anchorField == null)
             {
                 throw new InvalidOperationException("The field selected for the anchor was not found.");
             }
 
-            if (!anchor.Values.Any())
-            {
-                throw new InvalidOperationException("No lines have been detected.");
-            }
+            if (!anchorField.Values.Any()) return lines.Values;
 
-            var table = new Dictionary<int, Line>();
+            // If anchor words are not sorted based on their Y value, strange things will happen.
+            anchorField.Values.Sort(delegate (ListFieldValue a, ListFieldValue b)
+                {
+                    return a.Polygon.GetMinY().CompareTo(b.Polygon.GetMinY());
+                });
 
             var lineNumber = 1;
-            var currentLine = new Line(lineNumber, fieldForAnchor.Tolerance);
-            ListFieldValue currentValue = anchor.Values.First();
-            currentLine.UpdateBbox(BboxCreation.Create(currentValue.Polygon));
+            Line currentLine = new Line(
+                rowNumber: lineNumber,
+                heightTolerance: anchor.Tolerance,
+                anchorBoundingBox: anchorField.Values.First().Polygon);
 
-            for (int i = 1; i < anchor.Values.Count; i++)
+            for (int i = 0; i < anchorField.Values.Count; i++)
             {
-                currentValue = anchor.Values[i];
-                Bbox currentFieldBbox = BboxCreation.Create(currentValue.Polygon);
+                Polygon currentPolygon = anchorField.Values[i].Polygon;
+                Point currentCentroid = currentPolygon.GetCentroid();
 
-                if (!Precision.Equals(
-                    currentLine.Bbox.MinY,
-                    currentFieldBbox.MinY,
-                    fieldForAnchor.Tolerance))
+                // The last word in the list obviously won't have a word after it
+                Polygon nextPolygon = (i >= anchorField.Values.Count - 1)
+                    ? null : anchorField.Values[i + 1].Polygon;
+
+                // If we don't do this first, the last word never gets added
+                // There's no harm in adding the same polygon multiple times
+                currentLine.AddToAnchorBoundingBox(currentPolygon);
+
+                // Create a new line if the next word is not on the same line.
+                bool isPointInY = nextPolygon != null && nextPolygon.IsPointInY(currentCentroid);
+                if (!isPointInY)
                 {
-                    // when it is a new line
-                    table.Add(lineNumber, currentLine);
-                    lineNumber++;
-                    currentLine = new Line(lineNumber, fieldForAnchor.Tolerance);
+                    lines.Add(lineNumber, currentLine);
+                    if (nextPolygon != null)
+                    {
+                        lineNumber++;
+                        currentLine = new Line(
+                            rowNumber: lineNumber,
+                            heightTolerance: anchor.Tolerance,
+                            anchorBoundingBox: nextPolygon);
+                    }
                 }
-                currentLine.UpdateBbox(currentFieldBbox);
             }
-
-            if (!table.ContainsKey(lineNumber))
-            {
-                table.Add(lineNumber, currentLine);
-            }
-
-            return table.Values;
+            return lines.Values;
         }
 
         /// <summary>
@@ -77,20 +84,19 @@ namespace Mindee.Parsing.CustomBuilder.Table
         /// <param name="fields">The list of the fields from the API Builder.</param>
         /// <param name="anchor"><see cref="Anchor"/></param>
         public static LineItems Generate(
+            Anchor anchor,
             List<string> fieldNames,
-            Dictionary<string, ListField> fields,
-            Anchor anchor
+            Dictionary<string, ListField> fields
             )
         {
-            Dictionary<string, ListField> fieldsToTransformIntoLines = fields
+            Dictionary<string, ListField> fieldsDict = fields
                   .Where(field => fieldNames.Contains(field.Key))
                   .ToDictionary(field => field.Key, field => field.Value);
 
-            IEnumerable<Line> lines = PopulateLines(
-              fieldsToTransformIntoLines,
-              GetPreparedLines(fieldsToTransformIntoLines, anchor));
+            IEnumerable<Line> preparedLines = GetPreparedLines(fieldsDict, anchor);
+            IEnumerable<Line> lines = PopulateLines(fieldsDict, preparedLines);
 
-            return new LineItems(lines);
+            return new LineItems(lines, fieldNames);
         }
 
         private static IEnumerable<Line> PopulateLines(
@@ -106,16 +112,14 @@ namespace Mindee.Parsing.CustomBuilder.Table
                 {
                     foreach (var listFieldValue in field.Value.Values)
                     {
-                        double minYCurrentValue = listFieldValue.Polygon.GetMinYCoordinate();
-
-                        if (minYCurrentValue < currentLine.Bbox.MaxY
-                            && minYCurrentValue >= currentLine.Bbox.MinY)
+                        if (currentLine.AnchorBoundingBox.IsPointInY(
+                            point: listFieldValue.Polygon.GetCentroid())
+                        )
                         {
                             currentLine.UpdateField(field.Key, listFieldValue);
                         }
                     }
                 }
-
                 populatedLines.Add(currentLine);
             }
 

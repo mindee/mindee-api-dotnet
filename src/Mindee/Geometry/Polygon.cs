@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using Microsoft.Extensions.Primitives;
 
 namespace Mindee.Geometry
 {
@@ -39,44 +41,70 @@ namespace Mindee.Geometry
         /// </summary>
         public Point GetCentroid()
         {
-            int verticesSum = this.Count();
+            int verticesCount = this.Count();
 
             double xSum = this.Sum(c => c.X);
             double ySum = this.Sum(c => c.Y);
 
-            return new Point(xSum / verticesSum, ySum / verticesSum);
+            return new Point(xSum / verticesCount, ySum / verticesCount);
         }
 
         /// <summary>
         /// Get the Y min coordinate.
         /// </summary>
-        public double GetMinYCoordinate()
+        public double GetMinY()
         {
-            return this.Min(p => p.Y);
+            return this.Min(point => point.Y);
         }
 
         /// <summary>
         /// Get the Y max coordinate.
         /// </summary>
-        public double GetMaxYCoordinate()
+        public double GetMaxY()
         {
-            return this.Max(p => p.Y);
+            return this.Max(point => point.Y);
         }
 
         /// <summary>
         /// Get the X min coordinate.
         /// </summary>
-        public double GetMinXCoordinate()
+        public double GetMinX()
         {
-            return this.Min(p => p.X);
+            return this.Min(point => point.X);
         }
 
         /// <summary>
         /// Get the X max coordinate.
         /// </summary>
-        public double GetMaxXCoordinate()
+        public double GetMaxX()
         {
-            return this.Max(p => p.X);
+            return this.Max(point => point.X);
+        }
+
+        /// <summary>
+        /// Determine if a Point is within the polygon's Y coordinates.
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public bool IsPointInY(Point point)
+        {
+            return Utils.IsPointInY(point: point, minY: GetMinY(), maxY: GetMaxY());
+        }
+
+        /// <summary>
+        /// The default string representation.
+        /// </summary>
+        public override string ToString()
+        {
+            StringBuilder result = new StringBuilder("[\n");
+            for (int i = 0; i < this.Count; i++)
+            {
+                result.Append($"  {this[i]}");
+                if (i >= this.Count - 1) result.Append('\n');
+                else result.Append(",\n");
+            }
+            result.Append(']');
+            return result.ToString();
         }
     }
 }

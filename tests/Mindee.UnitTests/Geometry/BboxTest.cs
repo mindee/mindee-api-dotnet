@@ -16,7 +16,7 @@ namespace Mindee.UnitTests.Geometry
                 new Point(0.081, 0.451)
             });
 
-            Bbox bbox = BboxCreation.Create(polygon);
+            Bbox bbox = Utils.BboxFromPolygon(polygon);
 
             Assert.Equal(0.442, bbox.MinY);
             Assert.Equal(0.081, bbox.MinX);

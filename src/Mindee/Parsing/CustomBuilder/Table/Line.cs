@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using Mindee.Geometry;
 using Mindee.Parsing.Common;
-using System;
 
 namespace Mindee.Parsing.CustomBuilder.Table
 {
@@ -23,9 +22,9 @@ namespace Mindee.Parsing.CustomBuilder.Table
         public Dictionary<string, StringField> Fields { get; }
 
         /// <summary>
-        /// The Bbox of the line.
+        /// The BoundingBox of the anchor, which is used to determine if a word is on this line.
         /// </summary>
-        public Bbox Bbox { get; }
+        public Polygon AnchorBoundingBox { get; set; }
 
         /// <summary>
         /// Height tolerance which define a line.
@@ -37,21 +36,35 @@ namespace Mindee.Parsing.CustomBuilder.Table
         /// </summary>
         /// <param name="rowNumber"><see cref="RowNumber"/></param>
         /// <param name="heightTolerance"><see cref="HeightTolerance"/></param>
-        public Line(int rowNumber, double heightTolerance)
+        /// /// <param name="anchorBoundingBox"><see cref="AnchorBoundingBox"/></param>
+        public Line(int rowNumber, double heightTolerance, Polygon anchorBoundingBox)
         {
             RowNumber = rowNumber;
             Fields = new Dictionary<string, StringField>();
-            Bbox = new Bbox(1, 0, 1, 0);
+            AnchorBoundingBox = anchorBoundingBox;
             HeightTolerance = heightTolerance;
         }
 
         /// <summary>
-        /// Update the current Bbox value.
+        /// Add a polygon to the anchor bounding box.
         /// </summary>
-        /// <param name="bbox">New Bbox to merge with.</param>
-        public void UpdateBbox(Bbox bbox)
+        /// <param name="boundingBox">New Polygon to merge with.</param>
+        public void AddToAnchorBoundingBox(Polygon boundingBox)
         {
-            this.Bbox.Merge(bbox);
+            List<Polygon> polygons = new List<Polygon> { AnchorBoundingBox, boundingBox };
+            AnchorBoundingBox = Utils.BoundingBoxFromPolygons(polygons);
+        }
+
+        /// <summary>
+        /// Get the bounding box of the entire line, encompassing all words.
+        /// </summary>
+        /// <returns></returns>
+        public Polygon GetBoundingBox()
+        {
+            List<Polygon> polygons = Fields
+                .Select(field => field.Value.Polygon)
+                .ToList();
+            return Utils.BoundingBoxFromPolygons(polygons);
         }
 
         /// <summary>
@@ -65,17 +78,16 @@ namespace Mindee.Parsing.CustomBuilder.Table
             {
                 StringField existingField = Fields[name];
 
-                var mergedBoundingBox = BoundingBoxCreation.Create(
+                var mergedBoundingBox = Utils.BoundingBoxFromPolygons(
                     new List<Polygon>()
                     {
-                        BoundingBoxCreation.Create(existingField.Polygon),
-                        BoundingBoxCreation.Create(fieldValue.Polygon)
+                        Utils.BoundingBoxFromPolygon(existingField.Polygon),
+                        Utils.BoundingBoxFromPolygon(fieldValue.Polygon)
                     });
 
                 string content = existingField.Value == null ?
                   fieldValue.Content :
-                  string.Join(" ", existingField.Value, fieldValue.Content
-                  );
+                  string.Join(" ", existingField.Value, fieldValue.Content);
 
                 Fields.Remove(name);
                 Fields.Add(
@@ -97,7 +109,7 @@ namespace Mindee.Parsing.CustomBuilder.Table
         }
 
         /// <summary>
-        /// Prettier representation.
+        /// The default string representation.
         /// </summary>
         public override string ToString()
         {
@@ -105,9 +117,8 @@ namespace Mindee.Parsing.CustomBuilder.Table
 
             foreach (var field in Fields)
             {
-                result.Append(" " + field.Value.ToString().PadRight(field.Key.Length));
+                result.Append($"{field.Key}: {field.Value}\n");
             }
-
             return result.ToString();
         }
     }

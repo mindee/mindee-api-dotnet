@@ -155,22 +155,22 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
 
             // then
             LineItems lineItems = LineItemsGenerator.Generate(
-              new List<string>() { "names", "birthDates" },
-              fakes,
-              new Anchor("birthDates"));
+                new Anchor("birthDates"),
+                new List<string>() { "names", "birthDates" },
+                fakes);
 
             Assert.NotNull(lineItems);
-            Assert.Equal(2, lineItems.Rows.Count());
+            Assert.Equal(2, lineItems.Lines.Count());
             Assert.Equal("Chez Mindee Kevin",
-                lineItems.Rows.First().Fields["names"].Value);
+                lineItems.Lines.First().Fields["names"].Value);
             Assert.Equal("01/01/1990",
-                lineItems.Rows.First().Fields["birthDates"].Value);
+                lineItems.Lines.First().Fields["birthDates"].Value);
             Assert.Equal("Mindee Ianare",
-                lineItems.Rows.Last().Fields["names"].Value);
+                lineItems.Lines.Last().Fields["names"].Value);
             Assert.Equal("01/01/20",
-                lineItems.Rows.Last().Fields["birthDates"].Value);
+                lineItems.Lines.Last().Fields["birthDates"].Value);
             Assert.Equal(0.6,
-              lineItems.Rows.Last().Fields["birthDates"].Confidence);
+              lineItems.Lines.Last().Fields["birthDates"].Confidence);
         }
     }
 }
