@@ -17,7 +17,7 @@ namespace Mindee.UnitTests.Parsing
         {
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When("*")
-                    .Respond(HttpStatusCode.BadRequest, "application/json", File.ReadAllText("Resources/wrong_api_key.json"));
+                    .Respond(HttpStatusCode.BadRequest, "application/json", File.ReadAllText("Resources/errors/wrong_api_key.json"));
 
             var mindeeApi = new MindeeApi(
                 Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
