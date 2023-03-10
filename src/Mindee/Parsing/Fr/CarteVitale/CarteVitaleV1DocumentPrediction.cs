@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,7 +41,9 @@ namespace Mindee.Parsing.Fr.CarteVitale
         /// </summary>
         public override string ToString()
         {
-            string givenNames = string.Join(", ", GivenNames.Select(item => item));
+            string givenNames = string.Join(
+                "\n " + string.Concat(Enumerable.Repeat(" ", 13)),
+                GivenNames.Select(item => item));
 
             StringBuilder result = new StringBuilder();
             result.Append($":Given Name(s): {givenNames}\n");
