@@ -1,7 +1,7 @@
 namespace Mindee.Parsing.CustomBuilder.Table
 {
     /// <summary>
-    /// An anchor used to detect each lines.
+    /// An anchor used to detect a line.
     /// </summary>
     public class Anchor
     {

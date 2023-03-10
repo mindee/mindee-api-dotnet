@@ -43,12 +43,15 @@ jobs:
       run: |
         dotnet build "src/Mindee" -f ${{ matrix.dotnet-version }} --verbosity normal
 
+    - name: Create local NuGet source
+      run: |
+        mkdir "${{ github.workspace }}/nuget_local"
+        dotnet nuget add source "${{ github.workspace }}/nuget_local" -n "NugetLocal"
+
     - name: Prepare for samples code
       run: |
-        mkdir "${{ github.workspace }}/NugetLocal"
-        dotnet nuget add source "${{ github.workspace }}/NugetLocal" -n "NugetLocal"
-        dotnet pack "src/Mindee" --version-suffix "for-sample-codes" -p:TargetFrameworks=${{ matrix.dotnet-version }} --output nuget
-        cd nuget
+        dotnet pack "src/Mindee" --version-suffix "for-sample-codes" -p:TargetFrameworks=${{ matrix.dotnet-version }} --output ./dist
+        cd ./dist
         dotnet nuget push *.nupkg --source "NugetLocal"
         dotnet tool install -g dotnet-script
         dotnet nuget disable source nuget.org

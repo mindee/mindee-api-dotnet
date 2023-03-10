@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Mindee.Parsing.Common;
 
@@ -13,15 +12,57 @@ namespace Mindee.Parsing.CustomBuilder.Table
         /// <summary>
         /// All the lines.
         /// </summary>
-        public IEnumerable<Line> Rows { get; }
+        public IEnumerable<Line> Lines { get; }
+
+        /// <summary>
+        /// List of field names used to construct the line items.
+        /// </summary>
+        public List<string> FieldNames { get; }
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="rows"><see cref="Rows"/></param>
-        public LineItems(IEnumerable<Line> rows)
+        /// <param name="lines"><see cref="Lines"/></param>
+        /// /// <param name="fieldNames"><see cref="FieldNames"/></param>
+        public LineItems(IEnumerable<Line> lines, List<string> fieldNames)
         {
-            Rows = rows;
+            Lines = lines;
+            FieldNames = fieldNames;
+        }
+
+        /// <summary>
+        /// Output the line items as an RST Table.
+        /// </summary>
+        public string ToRst(string title)
+        {
+            StringBuilder result = new StringBuilder($"\n:{title}:\n");
+
+            var header = new StringBuilder();
+            var columnNames = new StringBuilder();
+            foreach (var fieldName in FieldNames)
+            {
+                header.Append(new string('=', fieldName.Length) + " ");
+                columnNames.Append($"{fieldName.PadRight(fieldName.Length)} ");
+            }
+
+            result.Append(header + "\n");
+            result.Append(columnNames + "\n");
+            result.Append(header + "\n");
+
+            foreach (var line in Lines)
+            {
+                foreach (var fieldName in FieldNames)
+                {
+                    StringField field;
+                    string fieldValue = line.Fields.TryGetValue(fieldName, out field) ? field.ToString() : "";
+                    result.Append(fieldValue.PadRight(fieldName.Length + 1));
+                }
+                result.Append('\n');
+            }
+
+            result.Append(header + "\n");
+
+            return SummaryHelper.Clean(result.ToString());
         }
 
         /// <summary>
@@ -29,30 +70,7 @@ namespace Mindee.Parsing.CustomBuilder.Table
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("\n:Table:\n");
-
-            if (Rows.Any())
-            {
-                var header = new StringBuilder();
-                var columnNames = new StringBuilder();
-                foreach (var columnName in Rows
-                    .First(r => r.Fields.Count == Rows.Max(r => r.Fields.Count))
-                        .Fields.Keys)
-                {
-                    header.Append(new string('=', columnName.Length) + " ");
-                    columnNames.Append($"{columnName.PadRight(columnName.Length)} ");
-                }
-
-                result.Append(header.ToString() + "\n");
-                result.Append(columnNames.ToString() + "\n");
-                result.Append(header.ToString() + "\n");
-
-                result.Append(string.Join("\n", Rows.Select(line => line.ToString())));
-
-                result.Append("\n" + header.ToString() + "\n");
-            }
-
-            return SummaryHelper.Clean(result.ToString());
+            return ToRst("Line Items");
         }
     }
 }
