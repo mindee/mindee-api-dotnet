@@ -76,7 +76,9 @@ namespace Mindee.Parsing.Fr.IdCard
         /// </summary>
         public override string ToString()
         {
-            string givenNames = string.Join(", ", GivenNames.Select(item => item));
+            string givenNames = string.Join(
+                "\n " + string.Concat(Enumerable.Repeat(" ", 13)),
+                GivenNames.Select(item => item));
 
             StringBuilder result = new StringBuilder();
             result.Append($":Identity Number: {IdNumber}\n");
