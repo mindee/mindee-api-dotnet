@@ -1,12 +1,26 @@
 # CHANGELOG
 
+## v2.2.0 - 2023-03-16
+### Changes
+* :children_crossing: Improve the UX when in CLI
+* :memo: prediction class documentation updates
+* :sparkles: add support for FR bank account details
+* :sparkles: adding summary for table in custom document
+* :recycle: major rework of line items detection and generation
+
+### Fixes
+* :bug: fix running sample code
+
+
 ## v2.1.2 - 2023-03-09
 ### Fixes
 * :bug: custom document default version must be '1', not '1.0'
 
+
 ## v2.1.1 - 2023-03-08
 ### Fixes
 * :bug: fix trouble with .NET 4.8/4.7.2 usage
+
 
 ## v2.1.0 - 2023-02-20
 ### ¡Breaking Changes!
@@ -20,6 +34,7 @@
 ### Fixes
 * :bug::boom: details property in Error become an object because it can handle both string and object
 * :bug::arrow_up: update RestSharp to fix a bug on .NET 7 #120 
+
 
 ## v2.0.0 - 2023-02-02
 ### ¡Breaking Changes!
@@ -40,10 +55,12 @@
 ### Fixes
 * :bug:! Details property in Error become an object because it can handle both string and object
 
+
 ## v1.4.0 - 2023-01-04
 ### Changes
 * :sparkles: Support Receipt V4.1
 * :sparkles: Support Invoice V4.1
+
 
 ## v1.3.0 - 2022-12-22
 
@@ -57,17 +74,19 @@
 * :sparkles: Support US Bank Check V1
 * :sparkles: Support EU License plates V1
 
-## v1.2.0 - 2022-12-07
 
+## v1.2.0 - 2022-12-07
+### Changes
 * :sparkles: Add Invoice V4 support
 
-## v1.1.0 - 2022-11-28
 
+## v1.1.0 - 2022-11-28
+### Changes
 * :boom: Changing the settings section name from MindeeApiSettings to MindeeSettings.
 * :boom: IConfiguration is replaced by IOptions<MindeeSettings> in MindeeClient.
 * :sparkles: Add cropper support
 * :memo: Publish technical documentation on GitHub pages
 
-## v1.0.0 - 2022-11-17
 
+## v1.0.0 - 2022-11-17
 * :tada: First release
