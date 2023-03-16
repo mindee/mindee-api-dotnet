@@ -1,9 +1,7 @@
 name: Test Code Samples
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
   schedule:
     - cron:  '0 23 * * *'
 
@@ -39,22 +37,26 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-nuget-
 
-    - name: Build and test
+    - name: Install dotnet-script
       run: |
-        dotnet build "src/Mindee" -f ${{ matrix.dotnet-version }} --verbosity normal
+        dotnet tool install -g dotnet-script
 
     - name: Create local NuGet source
       run: |
         mkdir "${{ github.workspace }}/nuget_local"
         dotnet nuget add source "${{ github.workspace }}/nuget_local" -n "NugetLocal"
 
-    - name: Prepare for samples code
+    - name: Set the Version
       run: |
-        dotnet pack "src/Mindee" --version-suffix "for-sample-codes" -p:TargetFrameworks=${{ matrix.dotnet-version }} --output ./dist
+        VERSION=99.99.99
+        sed -i "s/<VersionPrefix>[0-9.]*<\/VersionPrefix>/<VersionPrefix>$VERSION<\/VersionPrefix>/g" Directory.Build.props
+        sed -i "s/\*-\*/$VERSION/g" docs/code_samples/base.csx
+
+    - name: Publish Locally
+      run: |
+        dotnet pack "src/Mindee" -p:TargetFrameworks=${{ matrix.dotnet-version }} --output ./dist
         cd ./dist
         dotnet nuget push *.nupkg --source "NugetLocal"
-        dotnet tool install -g dotnet-script
-        dotnet nuget disable source nuget.org
 
     - name: Tests sample code
       run: |
