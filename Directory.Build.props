@@ -6,7 +6,7 @@
     <RepositoryUrl>https://github.com/mindee/mindee-api-dotnet</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>ocr;vision;invoice;receipt</PackageTags>
-    <Copyright>Copyright © Mindee $([System.DateTime]::UtcNow.Year)</Copyright>
+    <Copyright>Copyright © Mindee 2022-$([System.DateTime]::UtcNow.Year)</Copyright>
     <PackageIcon>Logo.png</PackageIcon>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
