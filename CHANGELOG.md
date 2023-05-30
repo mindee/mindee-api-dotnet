@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v2.2.1 - 2023-05-30
+### Changes
+* :arrow_up: update RestSharp to 109.0.1
+
+
 ## v2.2.0 - 2023-03-16
 ### Changes
 * :children_crossing: Improve the UX when in CLI
