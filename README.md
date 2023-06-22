@@ -121,7 +121,6 @@ Complete details on the working of the library are available in the following gu
 * [Invoices](https://developers.mindee.com/docs/dotnet-invoice-ocr)
 * [Receipts](https://developers.mindee.com/docs/dotnet-receipt-ocr)
 * [Passports](https://developers.mindee.com/docs/dotnet-passport-ocr)
-* [Shipping Containers](https://developers.mindee.com/docs/dotnet-shipping-container-ocr)
 * [US bank Checks](https://developers.mindee.com/docs/dotnet-us-bank-check-ocr)
 * [Licenses Plates](https://developers.mindee.com/docs/dotnet-licence-plates-ocr)
 
