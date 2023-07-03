@@ -70,17 +70,17 @@ namespace Mindee.Parsing
             return client;
         }
 
-        public Task<PredictEnqueuedResponse> EnqueuePredictAsync<TModel>(PredictParameter predictParameter)
+        public Task<AsyncPredictResponse<TModel>> EnqueuePredictAsync<TModel>(PredictParameter predictParameter)
             where TModel : class, new()
-
         {
-            return EnqueuePredictAsyncInternalAsync(predictParameter, GetEndpoint<TModel>());
+            return EnqueuePredictAsyncInternalAsync<TModel>(predictParameter, GetEndpoint<TModel>());
         }
 
-        private async Task<PredictEnqueuedResponse> EnqueuePredictAsyncInternalAsync(
+        private async Task<AsyncPredictResponse<TModel>> EnqueuePredictAsyncInternalAsync<TModel>(
             PredictParameter predictParameter,
             CustomEndpoint endpoint
             )
+            where TModel : class, new()
         {
             var request = new RestRequest($"/products/" +
                 $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
@@ -97,13 +97,13 @@ namespace Mindee.Parsing
             _logger?.LogDebug($"HTTP response : {response.Content}");
             _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
 
-            PredictEnqueuedResponse predictEnqueuedResponse = null;
+            AsyncPredictResponse<TModel> asyncPredictResponse = null;
 
             if (response.Content != null)
             {
-                predictEnqueuedResponse = JsonSerializer.Deserialize<PredictEnqueuedResponse>(response.Content);
+                asyncPredictResponse = JsonSerializer.Deserialize<AsyncPredictResponse<TModel>>(response.Content);
 
-                return predictEnqueuedResponse;
+                return asyncPredictResponse;
             }
 
             var errorMessage = "Mindee API client: ";
@@ -122,7 +122,7 @@ namespace Mindee.Parsing
             throw new MindeeException(errorMessage);
         }
 
-        public Task<Document<TModel>> PredictAsync<TModel>(PredictParameter predictParameter)
+        public Task<PredictResponse<TModel>> PredictAsync<TModel>(PredictParameter predictParameter)
             where TModel : class, new()
         {
             return PredictAsync<TModel>(
@@ -130,7 +130,7 @@ namespace Mindee.Parsing
                 predictParameter);
         }
 
-        public async Task<Document<TModel>> PredictAsync<TModel>(
+        public async Task<PredictResponse<TModel>> PredictAsync<TModel>(
                     CustomEndpoint endpoint,
                     PredictParameter predictParameter)
             where TModel : class, new()
@@ -156,7 +156,7 @@ namespace Mindee.Parsing
 
                 if (response.IsSuccessful)
                 {
-                    return predictResponse.Document;
+                    return predictResponse;
                 }
             }
 

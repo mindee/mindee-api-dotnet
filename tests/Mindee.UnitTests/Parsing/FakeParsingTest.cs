@@ -25,7 +25,7 @@ namespace Mindee.UnitTests.Parsing
     {
     }
 
-    internal sealed class FakeV1DocumentPrediction : PredictionBase
+    internal sealed class FakeV1DocumentPrediction
     {
     }
 }

@@ -20,7 +20,7 @@ namespace Mindee
         /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
         /// <returns><see cref="Document{CustomV1Inference}"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<Document<CustomV1Inference>> ParseAsync(CustomEndpoint endpoint)
+        public async Task<PredictResponse<CustomV1Inference>> ParseAsync(CustomEndpoint endpoint)
         {
             if (DocumentClient == null)
             {
@@ -41,7 +41,7 @@ namespace Mindee
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <returns><see cref="Document{CustomPrediction}"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<Document<CustomV1Inference>> ParseAsync(
+        public async Task<PredictResponse<CustomV1Inference>> ParseAsync(
             CustomEndpoint endpoint
             , PageOptions pageOptions)
         {
@@ -51,7 +51,7 @@ namespace Mindee
             }
 
             if (DocumentClient.Extension.Equals(
-            ".pdf",
+                ".pdf",
                 StringComparison.InvariantCultureIgnoreCase))
             {
                 DocumentClient.File = _pdfOperation.Split(new SplitQuery(DocumentClient.File, pageOptions)).File;
@@ -74,7 +74,7 @@ namespace Mindee
         /// <returns><see cref="Document{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         /// <remarks>With full text doesn't work for all the types.</remarks>
-        public async Task<Document<TInferenceModel>> ParseAsync<TInferenceModel>(
+        public async Task<PredictResponse<TInferenceModel>> ParseAsync<TInferenceModel>(
             bool withFullText = false
             , bool withCropper = false)
             where TInferenceModel : class, new()
@@ -103,7 +103,7 @@ namespace Mindee
         /// <returns><see cref="Document{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         /// <remarks>With full text doesn't work for all the types. Check the API documentation first.</remarks>
-        public async Task<Document<TInferenceModel>> ParseAsync<TInferenceModel>(
+        public async Task<PredictResponse<TInferenceModel>> ParseAsync<TInferenceModel>(
             PageOptions pageOptions
             , bool withFullText = false
             , bool withCropper = false)
@@ -139,7 +139,7 @@ namespace Mindee
         /// <returns><see cref="Document{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         /// <remarks>With full text doesn't work for all the types.</remarks>
-        public async Task<PredictEnqueuedResponse> EnqueueAsync<TInferenceModel>(
+        public async Task<AsyncPredictResponse<TInferenceModel>> EnqueueAsync<TInferenceModel>(
             bool withFullText = false
             , bool withCropper = false)
             where TInferenceModel : class, new()
@@ -168,7 +168,7 @@ namespace Mindee
         /// <returns><see cref="Document{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         /// <remarks>With full text doesn't work for all the types. Check the API documentation first.</remarks>
-        public async Task<PredictEnqueuedResponse> EnqueueAsync<TInferenceModel>(
+        public async Task<AsyncPredictResponse<TInferenceModel>> EnqueueAsync<TInferenceModel>(
             PageOptions pageOptions
             , bool withFullText = false
             , bool withCropper = false)

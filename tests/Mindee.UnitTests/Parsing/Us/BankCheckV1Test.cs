@@ -1,4 +1,4 @@
-using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Us.BankCheck;
 
 namespace Mindee.UnitTests.Parsing.ShippingContainer
@@ -9,19 +9,28 @@ namespace Mindee.UnitTests.Parsing.ShippingContainer
         [Fact]
         public async Task Predict_CheckSummary()
         {
-            var mindeeAPi = GetMindeeApiForCarteVitale();
-            var prediction = await mindeeAPi.PredictAsync<BankCheckV1Inference>(ParsingTestBase.GetFakePredictParameter());
-
+            var response = await GetPrediction();
             var expected = File.ReadAllText("Resources/us/bank_check/response_v1/summary_full.rst");
-
             Assert.Equal(
                 expected,
-                prediction.ToString());
+                response.Document.ToString());
         }
 
-        private MindeeApi GetMindeeApiForCarteVitale(string fileName = "Resources/us/bank_check/response_v1/complete.json")
+        [Fact]
+        public async Task Predict_CheckPage0()
         {
-            return ParsingTestBase.GetMindeeApi(fileName);
+            var response = await GetPrediction();
+            var expected = File.ReadAllText("Resources/us/bank_check/response_v1/summary_page0.rst");
+            Assert.Equal(
+                expected,
+                response.Document.Inference.Pages.First().ToString());
+        }
+
+        private async Task<PredictResponse<BankCheckV1Inference>> GetPrediction()
+        {
+            const string fileName = "Resources/us/bank_check/response_v1/complete.json";
+            var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
+            return await mindeeAPi.PredictAsync<BankCheckV1Inference>(ParsingTestBase.GetFakePredictParameter());
         }
     }
 }

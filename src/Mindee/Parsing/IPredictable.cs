@@ -13,7 +13,7 @@ namespace Mindee.Parsing
         /// </summary>
         /// <typeparam name="TModel">Result expected type.</typeparam>
         /// <param name="predictParameter"><see cref="PredictParameter"/></param>
-        Task<Document<TModel>> PredictAsync<TModel>(
+        Task<PredictResponse<TModel>> PredictAsync<TModel>(
             PredictParameter predictParameter)
             where TModel : class, new();
 
@@ -23,7 +23,7 @@ namespace Mindee.Parsing
         /// <typeparam name="TModel">Result expected type.</typeparam>
         /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
         /// <param name="predictParameter"><see cref="PredictParameter"/></param>
-        Task<Document<TModel>> PredictAsync<TModel>(
+        Task<PredictResponse<TModel>> PredictAsync<TModel>(
             CustomEndpoint endpoint,
             PredictParameter predictParameter)
             where TModel : class, new();
@@ -32,7 +32,7 @@ namespace Mindee.Parsing
         /// Enqueue a prediction according parameters.
         /// </summary>
         /// <typeparam name="TModel">Document type.</typeparam>
-        Task<PredictEnqueuedResponse> EnqueuePredictAsync<TModel>(PredictParameter predictParameter)
+        Task<AsyncPredictResponse<TModel>> EnqueuePredictAsync<TModel>(PredictParameter predictParameter)
             where TModel : class, new();
     }
 }

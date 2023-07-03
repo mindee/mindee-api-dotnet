@@ -20,14 +20,14 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
                 "beneficiary_rank"
             };
 
-            var document = await mindeeAPi.PredictAsync<CustomV1Inference>(
+            var response = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrg"),
                 ParsingTestBase.GetFakePredictParameter());
 
             var lineItems = LineItemsGenerator.Generate(
                 new Anchor("beneficiary_name", 0.011d),
                 fieldNamesToLineItems,
-                document.Inference.DocumentPrediction.Fields);
+                response.Document.Inference.Prediction.Fields);
 
             Assert.NotNull(lineItems);
             Assert.Equal(3, lineItems.Lines.Count());
@@ -66,14 +66,14 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
                 "taxes_ytd_amt",
             });
 
-            var documentParsed = await mindeeAPi.PredictAsync<CustomV1Inference>(
+            var response = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrg"),
                 ParsingTestBase.GetFakePredictParameter());
 
             var earningsTable = LineItemsGenerator.Generate(
                 earningsAnchor,
                 earningsFields,
-                documentParsed.Inference.DocumentPrediction.Fields);
+                response.Document.Inference.Prediction.Fields);
             Assert.NotNull(earningsTable);
             Assert.Equal(4, earningsTable.Lines.Count());
             var earningsFirstLine = earningsTable.Lines.First();
@@ -82,7 +82,7 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
             var taxesTable = LineItemsGenerator.Generate(
                 taxesAnchor,
                 taxesFields,
-                documentParsed.Inference.DocumentPrediction.Fields);
+                response.Document.Inference.Prediction.Fields);
             Assert.NotNull(taxesTable);
             Assert.Equal(7, taxesTable.Lines.Count());
             var taxesLastLine = taxesTable.Lines.Last();
@@ -114,14 +114,14 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
                 "taxes_ytd_amt",
             });
 
-            var documentParsed = await mindeeAPi.PredictAsync<CustomV1Inference>(
+            var response = await mindeeAPi.PredictAsync<CustomV1Inference>(
                 new CustomEndpoint("customProduct", "fakeOrg"),
                 ParsingTestBase.GetFakePredictParameter());
 
             var earningsTable = LineItemsGenerator.Generate(
                 earningsAnchor,
                 earningsFields,
-                documentParsed.Inference.DocumentPrediction.Fields);
+                response.Document.Inference.Prediction.Fields);
             Assert.NotNull(earningsTable);
             Assert.Equal(2, earningsTable.Lines.Count());
             var earningsFirstLine = earningsTable.Lines.First();
@@ -130,7 +130,7 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
             var taxesTable = LineItemsGenerator.Generate(
                 taxesAnchor,
                 taxesFields,
-                documentParsed.Inference.DocumentPrediction.Fields);
+                response.Document.Inference.Prediction.Fields);
             Assert.NotNull(taxesTable);
             Assert.Equal(7, taxesTable.Lines.Count());
             var taxesLastLine = taxesTable.Lines.Last();

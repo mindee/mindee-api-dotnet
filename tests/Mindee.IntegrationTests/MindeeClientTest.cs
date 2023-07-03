@@ -14,12 +14,12 @@ namespace Mindee.IntegrationTests
             var mindeeClient = MindeeClientInit.Create(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
 
-            var parsedDocument = await mindeeClient.ParseAsync<InvoiceV4Inference>();
+            var response = await mindeeClient.ParseAsync<InvoiceV4Inference>();
 
-            Assert.NotNull(parsedDocument);
-            Assert.NotNull(parsedDocument.Inference);
-            Assert.NotNull(parsedDocument.Inference.DocumentPrediction);
-            Assert.Equal(2, parsedDocument.Inference.Pages.Count);
+            Assert.NotNull(response);
+            Assert.NotNull(response.Document.Inference);
+            Assert.NotNull(response.Document.Inference.Prediction);
+            Assert.Equal(2, response.Document.Inference.Pages.Count);
         }
 
         [Fact]
@@ -30,18 +30,18 @@ namespace Mindee.IntegrationTests
             var mindeeClient = MindeeClientInit.Create(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/receipt/sample.jpg"));
 
-            var parsedDocument = await mindeeClient.ParseAsync<ReceiptV4Inference>();
+            var response = await mindeeClient.ParseAsync<ReceiptV4Inference>();
 
-            Assert.NotNull(parsedDocument);
-            Assert.NotNull(parsedDocument.Inference);
-            Assert.NotNull(parsedDocument.Inference.DocumentPrediction);
-            Assert.Single(parsedDocument.Inference.Pages);
+            Assert.NotNull(response);
+            Assert.NotNull(response.Document.Inference);
+            Assert.NotNull(response.Document.Inference.Prediction);
+            Assert.Single(response.Document.Inference.Pages);
 
             var expected = File.ReadAllText("Resources/receipt/response_v4/sample_summary.rst");
 
             Assert.Equal(
                 expected,
-                parsedDocument.Inference.ToString());
+                response.Document.Inference.ToString());
         }
 
         [Fact]
@@ -52,18 +52,18 @@ namespace Mindee.IntegrationTests
             var mindeeClient = MindeeClientInit.Create(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/receipt/sample-with-tip.jpg"));
 
-            var parsedDocument = await mindeeClient.ParseAsync<ReceiptV4Inference>();
+            var response = await mindeeClient.ParseAsync<ReceiptV4Inference>();
 
-            Assert.NotNull(parsedDocument);
-            Assert.NotNull(parsedDocument.Inference);
-            Assert.NotNull(parsedDocument.Inference.DocumentPrediction);
-            Assert.Single(parsedDocument.Inference.Pages);
+            Assert.NotNull(response);
+            Assert.NotNull(response.Document.Inference);
+            Assert.NotNull(response.Document.Inference.Prediction);
+            Assert.Single(response.Document.Inference.Pages);
 
             var expected = File.ReadAllText("Resources/receipt/response_v4/sample_with_tip_summary.rst");
 
             Assert.Equal(
                 expected,
-                parsedDocument.Inference.ToString());
+                response.Document.Inference.ToString());
         }
     }
 }

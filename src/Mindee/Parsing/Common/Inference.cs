@@ -38,7 +38,7 @@ namespace Mindee.Parsing.Common
         /// The prediction model values.
         /// </summary>
         [JsonPropertyName("prediction")]
-        public TDocumentPrediction DocumentPrediction { get; set; }
+        public TDocumentPrediction Prediction { get; set; }
 
         /// <summary>
         /// A prettier reprensentation.
@@ -52,7 +52,7 @@ namespace Mindee.Parsing.Common
             result.Append($":Rotation applied: {(IsRotationApplied.HasValue && IsRotationApplied.Value ? "Yes" : "No")}\n");
             result.Append("\nPrediction\n");
             result.Append("==========\n");
-            result.Append(DocumentPrediction.ToString());
+            result.Append(Prediction.ToString());
             result.Append("\nPage Predictions\n");
             result.Append("================\n\n");
             result.Append(string.Join("\n", Pages.Select(p => p.ToString())));

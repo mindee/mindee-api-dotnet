@@ -49,11 +49,11 @@ namespace Mindee.UnitTests.Parsing
         {
             var mindeeApi = InitMockServer(HttpStatusCode.OK, "Resources/invoice/response_v4/complete.json");
 
-            var document = await mindeeApi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
+            var response = await mindeeApi.PredictAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
             var expected = File.ReadAllText("Resources/invoice/response_v4/summary_full.rst");
 
-            Assert.NotNull(document);
-            Assert.Equal(expected, document.ToString());
+            Assert.NotNull(response);
+            Assert.Equal(expected, response.Document.ToString());
         }
 
         [Fact]
@@ -77,7 +77,7 @@ namespace Mindee.UnitTests.Parsing
             Assert.Equal("failure", response.ApiRequest.Status);
             Assert.Null(response.Job.Status);
             Assert.Null(response.Job.Id);
-            Assert.Equal("2023-01-01T01:00:00.00000", response.Job.IssuedAt.ToString(DateOutputFormat));
+            Assert.Equal("2023-01-01T00:00:00.00000", response.Job.IssuedAt.ToString(DateOutputFormat));
             Assert.Null(response.Job.AvailableAt);
         }
 
@@ -92,7 +92,7 @@ namespace Mindee.UnitTests.Parsing
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal("waiting", response.Job.Status);
             Assert.Equal("76c90710-3a1b-4b91-8a39-31a6543e347c", response.Job.Id);
-            Assert.Equal("2023-02-16T13:33:49.60294", response.Job.IssuedAt.ToString(DateOutputFormat));
+            Assert.Equal("2023-02-16T12:33:49.60294", response.Job.IssuedAt.ToString(DateOutputFormat));
             Assert.Null(response.Job.AvailableAt?.ToString(DateOutputFormat));
         }
 
@@ -107,7 +107,7 @@ namespace Mindee.UnitTests.Parsing
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal("processing", response.Job.Status);
             Assert.Equal("76c90710-3a1b-4b91-8a39-31a6543e347c", response.Job.Id);
-            Assert.Equal("2023-03-16T12:33:49.60294", response.Job.IssuedAt.ToString(DateOutputFormat));
+            Assert.Equal("2023-03-16T11:33:49.60294", response.Job.IssuedAt.ToString(DateOutputFormat));
             Assert.Null(response.Job.AvailableAt);
         }
     }

@@ -14,7 +14,7 @@ namespace Mindee.Parsing.Common
         /// </summary>
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return DateTime.Parse(reader.GetString());
+            return DateTime.Parse(reader.GetString()).ToUniversalTime();
         }
 
         /// <summary>

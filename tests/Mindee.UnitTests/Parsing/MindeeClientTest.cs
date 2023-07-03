@@ -17,7 +17,7 @@ namespace Mindee.UnitTests.Parsing
             var customEndpoint = new CustomEndpoint("", "");
             var predictable = new Mock<IPredictable>();
             predictable.Setup(x => x.PredictAsync<CustomV1Inference>(It.IsAny<CustomEndpoint>(), It.IsAny<PredictParameter>()))
-                .ReturnsAsync(new Document<CustomV1Inference>());
+                .ReturnsAsync(new PredictResponse<CustomV1Inference>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
             mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
@@ -33,7 +33,7 @@ namespace Mindee.UnitTests.Parsing
         {
             var predictable = new Mock<IPredictable>();
             predictable.Setup(x => x.PredictAsync<InvoiceV4Inference>(It.IsAny<PredictParameter>()))
-                .ReturnsAsync(new Document<InvoiceV4Inference>());
+                .ReturnsAsync(new PredictResponse<InvoiceV4Inference>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
             mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
@@ -49,7 +49,7 @@ namespace Mindee.UnitTests.Parsing
         {
             var predictable = new Mock<IPredictable>();
             predictable.Setup(x => x.PredictAsync<InvoiceV4Inference>(It.IsAny<PredictParameter>()))
-                .ReturnsAsync(new Document<InvoiceV4Inference>());
+                .ReturnsAsync(new PredictResponse<InvoiceV4Inference>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
             mindeeClient.LoadDocument(File.ReadAllBytes("Resources/invoice/invoice.pdf"), "myinvoice.pdf");
@@ -65,7 +65,7 @@ namespace Mindee.UnitTests.Parsing
         {
             var predictable = new Mock<IPredictable>();
             predictable.Setup(x => x.EnqueuePredictAsync<InvoiceV4Inference>(It.IsAny<PredictParameter>()))
-                .ReturnsAsync(new PredictEnqueuedResponse());
+                .ReturnsAsync(new AsyncPredictResponse<InvoiceV4Inference>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
             mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));

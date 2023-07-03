@@ -10,22 +10,22 @@ namespace Mindee.UnitTests.Parsing.ProofOfAddress
         [Fact]
         public async Task Predict_CheckSummary()
         {
-            var prediction = await GetPrediction();
+            var response = await GetPrediction();
             var expected = File.ReadAllText("Resources/proof_of_address/response_v1/summary_full.rst");
-            Assert.Equal(expected, prediction.ToString());
+            Assert.Equal(expected, response.Document.ToString());
         }
 
         [Fact]
         public async Task Predict_CheckPage0()
         {
-            var prediction = await GetPrediction();
+            var response = await GetPrediction();
             var expected = File.ReadAllText("Resources/proof_of_address/response_v1/summary_page0.rst");
-            Assert.Equal(expected, prediction.Inference.Pages[0].ToString());
+            Assert.Equal(expected, response.Document.Inference.Pages[0].ToString());
         }
 
-        private async Task<Document<ProofOfAddressV1Inference>> GetPrediction()
+        private static async Task<PredictResponse<ProofOfAddressV1Inference>> GetPrediction()
         {
-            string fileName = "Resources/proof_of_address/response_v1/complete.json";
+            const string fileName = "Resources/proof_of_address/response_v1/complete.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictAsync<ProofOfAddressV1Inference>(ParsingTestBase.GetFakePredictParameter());
         }
