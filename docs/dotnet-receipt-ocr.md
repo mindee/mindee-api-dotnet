@@ -6,7 +6,7 @@ Using this [sample receipt](https://files.readme.io/ffc127d-sample_receipt.jpg) 
 ## Quick Start
 ```csharp
 using Mindee;
-using Mindee.Parsing.Receipt;
+using Mindee.Product.Receipt;
 
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
@@ -15,7 +15,7 @@ MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
 
 var response = await mindeeClient
     .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
-    .ParseAsync<ReceiptV4Inference>();
+    .ParseAsync<ReceiptV4>();
 
 // Print a summary of the predictions
 System.Console.WriteLine(response.Document.ToString());

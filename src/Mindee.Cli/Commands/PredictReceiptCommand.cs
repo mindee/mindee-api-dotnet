@@ -1,8 +1,7 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using Mindee.Parsing.Receipt;
+using Mindee.Product.Receipt;
 
 namespace Mindee.Cli.Commands
 {
@@ -43,7 +42,7 @@ namespace Mindee.Cli.Commands
 
                 var response = await _mindeeClient
                     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<ReceiptV4Inference>(WithWords, true);
+                    .ParseAsync<ReceiptV4>(WithWords, true);
 
                 if (response == null)
                 {

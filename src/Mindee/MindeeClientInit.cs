@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using Mindee.Parsing;
+using Mindee.Http;
 using Mindee.Pdf;
 
 namespace Mindee

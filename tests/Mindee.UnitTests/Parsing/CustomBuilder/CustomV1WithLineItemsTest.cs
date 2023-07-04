@@ -1,6 +1,6 @@
-using Mindee.Parsing;
-using Mindee.Parsing.CustomBuilder;
-using Mindee.Parsing.CustomBuilder.Table;
+using Mindee.Http;
+using Mindee.Parsing.Custom.LineItem;
+using Mindee.Product.Custom;
 
 namespace Mindee.UnitTests.Parsing.CustomBuilder
 {
@@ -20,7 +20,7 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
                 "beneficiary_rank"
             };
 
-            var response = await mindeeAPi.PredictPostAsync<CustomV1Inference>(
+            var response = await mindeeAPi.PredictPostAsync<CustomV1>(
                 new CustomEndpoint("customProduct", "fakeOrg"),
                 ParsingTestBase.GetFakePredictParameter());
 
@@ -38,8 +38,8 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
             Assert.True(firstLine.Fields.ContainsKey("beneficiary_name"));
             Assert.True(firstLine.Fields.ContainsKey("beneficiary_rank"));
             Assert.Equal(4, lineItems.Lines.Last().Fields.Count);
-            Assert.Equal("2010-07-18", lineItems.Lines.Skip(1).First().Fields["beneficiary_birth_date"].Value);
-            Assert.Equal("3", lineItems.Lines.Last().Fields["beneficiary_rank"].Value);
+            Assert.Equal("2010-07-18", lineItems.Lines.Skip(1).First().Fields["beneficiary_birth_date"].Content);
+            Assert.Equal("3", lineItems.Lines.Last().Fields["beneficiary_rank"].Content);
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
                 "taxes_ytd_amt",
             });
 
-            var response = await mindeeAPi.PredictPostAsync<CustomV1Inference>(
+            var response = await mindeeAPi.PredictPostAsync<CustomV1>(
                 new CustomEndpoint("customProduct", "fakeOrg"),
                 ParsingTestBase.GetFakePredictParameter());
 
@@ -87,7 +87,7 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
             Assert.Equal(7, taxesTable.Lines.Count());
             var taxesLastLine = taxesTable.Lines.Last();
             Assert.Equal(3, taxesLastLine.Fields.Count);
-            Assert.Equal("ZZ Disability", taxesLastLine.Fields["taxes_description"].Value);
+            Assert.Equal("ZZ Disability", taxesLastLine.Fields["taxes_description"].Content);
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
                 "taxes_ytd_amt",
             });
 
-            var response = await mindeeAPi.PredictPostAsync<CustomV1Inference>(
+            var response = await mindeeAPi.PredictPostAsync<CustomV1>(
                 new CustomEndpoint("customProduct", "fakeOrg"),
                 ParsingTestBase.GetFakePredictParameter());
 
@@ -135,7 +135,7 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
             Assert.Equal(7, taxesTable.Lines.Count());
             var taxesLastLine = taxesTable.Lines.Last();
             Assert.Equal(3, taxesLastLine.Fields.Count);
-            Assert.Equal("ZZ Disability", taxesLastLine.Fields["taxes_description"].Value);
+            Assert.Equal("ZZ Disability", taxesLastLine.Fields["taxes_description"].Content);
         }
 
         private MindeeApi GetMindeeApiForCustom(string fileName = "Resources/custom/response_v1/complete.json")

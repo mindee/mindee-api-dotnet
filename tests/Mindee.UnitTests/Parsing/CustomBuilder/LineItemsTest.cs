@@ -1,6 +1,6 @@
 using Mindee.Geometry;
-using Mindee.Parsing.CustomBuilder;
-using Mindee.Parsing.CustomBuilder.Table;
+using Mindee.Parsing.Custom;
+using Mindee.Parsing.Custom.LineItem;
 
 namespace Mindee.UnitTests.Parsing.CustomBuilder
 {
@@ -162,13 +162,13 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
             Assert.NotNull(lineItems);
             Assert.Equal(2, lineItems.Lines.Count());
             Assert.Equal("Chez Mindee Kevin",
-                lineItems.Lines.First().Fields["names"].Value);
+                lineItems.Lines.First().Fields["names"].Content);
             Assert.Equal("01/01/1990",
-                lineItems.Lines.First().Fields["birthDates"].Value);
+                lineItems.Lines.First().Fields["birthDates"].Content);
             Assert.Equal("Mindee Ianare",
-                lineItems.Lines.Last().Fields["names"].Value);
+                lineItems.Lines.Last().Fields["names"].Content);
             Assert.Equal("01/01/20",
-                lineItems.Lines.Last().Fields["birthDates"].Value);
+                lineItems.Lines.Last().Fields["birthDates"].Content);
             Assert.Equal(0.6,
               lineItems.Lines.Last().Fields["birthDates"].Confidence);
         }

@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Fr.IdCard;
+using Mindee.Product.Fr.IdCard;
 
 namespace Mindee.UnitTests.Parsing.Fr.IdCard
 {
@@ -22,11 +22,11 @@ namespace Mindee.UnitTests.Parsing.Fr.IdCard
             Assert.Equal(expected, response.Document.Inference.Pages[0].ToString());
         }
 
-        private async Task<PredictResponse<IdCardV1Inference>> GetPrediction()
+        private async Task<PredictResponse<IdCardV1>> GetPrediction()
         {
             const string fileName = "Resources/fr/id_card/response_v1/complete.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictPostAsync<IdCardV1Inference>(ParsingTestBase.GetFakePredictParameter());
+            return await mindeeAPi.PredictPostAsync<IdCardV1>(ParsingTestBase.GetFakePredictParameter());
         }
     }
 }

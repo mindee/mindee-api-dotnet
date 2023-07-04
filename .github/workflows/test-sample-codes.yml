@@ -30,12 +30,12 @@ jobs:
       with:
         dotnet-version: "7.0.x"
 
-    - uses: actions/cache@v3
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
+#    - uses: actions/cache@v3
+#      with:
+#        path: ~/.nuget/packages
+#        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+#        restore-keys: |
+#          ${{ runner.os }}-nuget-
 
     - name: Install dotnet-script
       run: |

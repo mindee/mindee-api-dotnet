@@ -1,4 +1,4 @@
-using Mindee.Parsing;
+using Mindee.Http;
 using Mindee.Parsing.Common;
 
 namespace Mindee.UnitTests.Parsing

@@ -1,7 +1,7 @@
 using System.IO;
 using Mindee.Exceptions;
+using Mindee.Http;
 using Mindee.Input;
-using Mindee.Parsing;
 using Mindee.Pdf;
 
 namespace Mindee

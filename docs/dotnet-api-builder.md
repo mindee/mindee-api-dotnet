@@ -6,16 +6,31 @@ For the following examples, we are using our own [W9s custom API](https://develo
 ## Quick Start
 
 ```csharp
+using Mindee;
+using Mindee.Http;
+using Mindee.Parsing;
+
+string apiKey = "my-api-key";
+string filePath = "/path/to/the/file.ext";
+
+MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+
 CustomEndpoint myEndpoint = new CustomEndpoint(
     endpointName: "my-endpoint",
-    accountName: "my-account",
+    accountName: "my-account"
     // optionally, lock the version
-    //version: "1.1"
+    //, version: "1.1"
 );
 
-var response = await _mindeeClient
-    .LoadDocument(new FileInfo(Path))
+var response = await mindeeClient
+    .LoadDocument(new FileInfo(filePath))
     .ParseAsync(myEndpoint);
+
+// Print a summary of the predictions
+System.Console.WriteLine(response.Document.ToString());
+
+// Print the document-level predictions
+// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
 If the `version` argument is set, you'll be required to update it every time a new model is trained.

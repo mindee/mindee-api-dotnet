@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Passport;
+using Mindee.Product.Passport;
 
 namespace Mindee.UnitTests.Parsing.Passport
 {
@@ -64,11 +64,11 @@ namespace Mindee.UnitTests.Parsing.Passport
             Assert.Equal(0, response.Document.Inference.Pages.First().Orientation.Value);
         }
 
-        private static async Task<PredictResponse<PassportV1Inference>> GetPrediction()
+        private static async Task<PredictResponse<PassportV1>> GetPrediction()
         {
             const string fileName = "Resources/passport/response_v1/complete.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictPostAsync<PassportV1Inference>(ParsingTestBase.GetFakePredictParameter());
+            return await mindeeAPi.PredictPostAsync<PassportV1>(ParsingTestBase.GetFakePredictParameter());
         }
     }
 }

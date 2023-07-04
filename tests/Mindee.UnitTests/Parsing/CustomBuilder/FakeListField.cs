@@ -1,5 +1,5 @@
 using Mindee.Geometry;
-using Mindee.Parsing.CustomBuilder;
+using Mindee.Parsing.Custom;
 
 namespace Mindee.UnitTests.Parsing.CustomBuilder
 {
