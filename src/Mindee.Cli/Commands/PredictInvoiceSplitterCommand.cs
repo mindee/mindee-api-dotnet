@@ -2,7 +2,7 @@ using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using Mindee.Parsing.InvoiceSplitter;
+using Mindee.Product.InvoiceSplitter;
 
 namespace Mindee.Cli.Commands
 {
@@ -42,13 +42,13 @@ namespace Mindee.Cli.Commands
                 {
                     var predictEnqueuedResponse = await _mindeeClient
                         .LoadDocument(new FileInfo(Path))
-                        .EnqueueAsync<InvoiceSplitterV1Inference>();
+                        .EnqueueAsync<InvoiceSplitterV1>();
 
                     context.Console.Out.Write(JsonSerializer.Serialize(predictEnqueuedResponse, new JsonSerializerOptions { WriteIndented = true }));
 
                     Thread.Sleep(5000);
 
-                    var jobResponse = await _mindeeClient.ParseQueuedAsync<InvoiceSplitterV1Inference>(predictEnqueuedResponse.Job.Id);
+                    var jobResponse = await _mindeeClient.ParseQueuedAsync<InvoiceSplitterV1>(predictEnqueuedResponse.Job.Id);
 
                     context.Console.Out.Write(JsonSerializer.Serialize(jobResponse, new JsonSerializerOptions { WriteIndented = true }));
                 }
@@ -56,7 +56,7 @@ namespace Mindee.Cli.Commands
                 {
                     var response = await _mindeeClient
                         .LoadDocument(new FileInfo(Path))
-                        .ParseAsync<InvoiceSplitterV1Inference>();
+                        .ParseAsync<InvoiceSplitterV1>();
 
                     if (response == null)
                     {

@@ -3,7 +3,7 @@ The .NET OCR SDK supports the [Bank Checks OCR](https://developers.mindee.com/do
 ## Quick Start
 ```csharp
 using Mindee;
-using Mindee.Parsing.Us.BankCheck;
+using Mindee.Product.Us.BankCheck;
 
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
@@ -12,7 +12,7 @@ MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
 
 var response = await mindeeClient
     .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
-    .ParseAsync<BankCheckV1Inference>();
+    .ParseAsync<BankCheckV1>();
 
 // Print a summary of the predictions
 System.Console.WriteLine(response.Document.ToString());

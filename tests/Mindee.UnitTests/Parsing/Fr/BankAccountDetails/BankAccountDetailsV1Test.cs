@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Fr.BankAccountDetails;
+using Mindee.Product.Fr.BankAccountDetails;
 
 namespace Mindee.UnitTests.Parsing.Fr.BankAccountDetails
 {
@@ -22,11 +22,11 @@ namespace Mindee.UnitTests.Parsing.Fr.BankAccountDetails
             Assert.Equal(expected, response.Document.Inference.Pages[0].ToString());
         }
 
-        private async Task<PredictResponse<BankAccountDetailsV1Inference>> GetPrediction()
+        private async Task<PredictResponse<BankAccountDetailsV1>> GetPrediction()
         {
             const string fileName = "Resources/fr/bank_account_details/response_v1/complete.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictPostAsync<BankAccountDetailsV1Inference>(ParsingTestBase.GetFakePredictParameter());
+            return await mindeeAPi.PredictPostAsync<BankAccountDetailsV1>(ParsingTestBase.GetFakePredictParameter());
         }
     }
 }

@@ -1,7 +1,7 @@
 using Mindee.Exceptions;
-using Mindee.Parsing.Invoice;
-using Mindee.Parsing.InvoiceSplitter;
-using Mindee.Parsing.Receipt;
+using Mindee.Product.Invoice;
+using Mindee.Product.InvoiceSplitter;
+using Mindee.Product.Receipt;
 
 namespace Mindee.IntegrationTests
 {
@@ -16,7 +16,7 @@ namespace Mindee.IntegrationTests
             var mindeeClient = MindeeClientInit.Create(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
 
-            var response = await mindeeClient.ParseAsync<InvoiceV4Inference>();
+            var response = await mindeeClient.ParseAsync<InvoiceV4>();
 
             Assert.NotNull(response);
             Assert.NotNull(response.Document.Inference);
@@ -32,7 +32,7 @@ namespace Mindee.IntegrationTests
             var mindeeClient = MindeeClientInit.Create(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/receipt/sample.jpg"));
 
-            var response = await mindeeClient.ParseAsync<ReceiptV4Inference>();
+            var response = await mindeeClient.ParseAsync<ReceiptV4>();
 
             Assert.NotNull(response);
             Assert.NotNull(response.Document.Inference);
@@ -54,7 +54,7 @@ namespace Mindee.IntegrationTests
             var mindeeClient = MindeeClientInit.Create(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/receipt/sample-with-tip.jpg"));
 
-            var response = await mindeeClient.ParseAsync<ReceiptV4Inference>();
+            var response = await mindeeClient.ParseAsync<ReceiptV4>();
 
             Assert.NotNull(response);
             Assert.NotNull(response.Document.Inference);
@@ -76,7 +76,7 @@ namespace Mindee.IntegrationTests
 
             mindeeClient.LoadDocument(new FileInfo("Resources/invoice_splitter/2_invoices.pdf"));
 
-            var response = await mindeeClient.EnqueueAsync<InvoiceSplitterV1Inference>();
+            var response = await mindeeClient.EnqueueAsync<InvoiceSplitterV1>();
 
             Assert.NotNull(response);
 
@@ -99,7 +99,7 @@ namespace Mindee.IntegrationTests
             mindeeClient.LoadDocument(new FileInfo("Resources/invoice_splitter/2_invoices.pdf"));
 
             await Assert.ThrowsAsync<Mindee403Exception>(
-                () => _ = mindeeClient.ParseAsync<InvoiceSplitterV1Inference>()
+                () => _ = mindeeClient.ParseAsync<InvoiceSplitterV1>()
             );
         }
     }

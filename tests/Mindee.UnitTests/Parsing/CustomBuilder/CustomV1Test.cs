@@ -1,6 +1,6 @@
-using Mindee.Parsing;
+using Mindee.Http;
 using Mindee.Parsing.Common;
-using Mindee.Parsing.CustomBuilder;
+using Mindee.Product.Custom;
 
 namespace Mindee.UnitTests.Parsing.CustomBuilder
 {
@@ -87,11 +87,11 @@ namespace Mindee.UnitTests.Parsing.CustomBuilder
             Assert.Equal(2, response.Document.Inference.Pages.Count);
         }
 
-        private static async Task<PredictResponse<CustomV1Inference>> GetPrediction()
+        private static async Task<PredictResponse<CustomV1>> GetPrediction()
         {
             const string fileName = "Resources/custom/response_v1/complete.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictPostAsync<CustomV1Inference>(
+            return await mindeeAPi.PredictPostAsync<CustomV1>(
                 new CustomEndpoint("customProduct", "fakeOrga"),
                 ParsingTestBase.GetFakePredictParameter());
         }

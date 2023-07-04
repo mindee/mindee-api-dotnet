@@ -33,8 +33,4 @@
     <None Include="..\..\CHANGELOG.md" Pack="true" Visible="false" PackagePath="" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Http" />
-  </ItemGroup>
-
 </Project>

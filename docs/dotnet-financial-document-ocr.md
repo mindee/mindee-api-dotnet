@@ -6,7 +6,7 @@ Using this [sample](https://files.readme.io/a8e8cfa-a74eaa5-c8e283b-sample_invoi
 ## Quick Start
 ```csharp
 using Mindee;
-using Mindee.Parsing.Financial;
+using Mindee.Product.FinancialDocument;
 
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
@@ -15,7 +15,7 @@ MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
 
 var response = await mindeeClient
     .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
-    .ParseAsync<FinancialV1Inference>();
+    .ParseAsync<FinancialDocumentV1>();
 
 // Print a summary of the predictions
 System.Console.WriteLine(response.Document.ToString());

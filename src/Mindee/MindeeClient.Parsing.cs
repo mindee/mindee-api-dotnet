@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using Mindee.Exceptions;
+using Mindee.Http;
 using Mindee.Input;
-using Mindee.Parsing;
 using Mindee.Parsing.Common;
-using Mindee.Parsing.CustomBuilder;
 using Mindee.Pdf;
+using Mindee.Product.Custom;
 
 namespace Mindee
 {
@@ -20,14 +20,14 @@ namespace Mindee
         /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
         /// <returns><see cref="PredictResponse{CustomV1Inference}"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<PredictResponse<CustomV1Inference>> ParseAsync(CustomEndpoint endpoint)
+        public async Task<PredictResponse<CustomV1>> ParseAsync(CustomEndpoint endpoint)
         {
             if (DocumentClient == null)
             {
                 return null;
             }
 
-            return await _mindeeApi.PredictPostAsync<CustomV1Inference>(
+            return await _mindeeApi.PredictPostAsync<CustomV1>(
                 endpoint,
                 new PredictParameter(
                     DocumentClient.File,
@@ -41,7 +41,7 @@ namespace Mindee
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <returns><see cref="PredictResponse{CustomV1Inference}"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<PredictResponse<CustomV1Inference>> ParseAsync(
+        public async Task<PredictResponse<CustomV1>> ParseAsync(
             CustomEndpoint endpoint
             , PageOptions pageOptions)
         {
@@ -57,7 +57,7 @@ namespace Mindee
                 DocumentClient.File = _pdfOperation.Split(new SplitQuery(DocumentClient.File, pageOptions)).File;
             }
 
-            return await _mindeeApi.PredictPostAsync<CustomV1Inference>(
+            return await _mindeeApi.PredictPostAsync<CustomV1>(
                 endpoint,
                 new PredictParameter(
                     DocumentClient.File,

@@ -2,7 +2,7 @@ using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using Mindee.Parsing.Invoice;
+using Mindee.Product.Invoice;
 
 namespace Mindee.Cli.Commands
 {
@@ -47,7 +47,7 @@ namespace Mindee.Cli.Commands
                 {
                     var response = await _mindeeClient
                         .LoadDocument(new FileInfo(Path))
-                        .EnqueueAsync<InvoiceV4Inference>(WithWords);
+                        .EnqueueAsync<InvoiceV4>(WithWords);
 
                     context.Console.Out.Write(JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true }));
                 }
@@ -55,7 +55,7 @@ namespace Mindee.Cli.Commands
                 {
                     var response = await _mindeeClient
                         .LoadDocument(new FileInfo(Path))
-                        .ParseAsync<InvoiceV4Inference>(WithWords);
+                        .ParseAsync<InvoiceV4>(WithWords);
 
                     if (response == null)
                     {

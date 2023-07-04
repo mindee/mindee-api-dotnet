@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Invoice;
+using Mindee.Product.Invoice;
 
 namespace Mindee.UnitTests.Parsing.Invoice
 {
@@ -33,11 +33,11 @@ namespace Mindee.UnitTests.Parsing.Invoice
             Assert.Equal(0, response.Document.Inference.Pages.First().Orientation.Value);
         }
 
-        private async Task<PredictResponse<InvoiceV4Inference>> GetPrediction()
+        private async Task<PredictResponse<InvoiceV4>> GetPrediction()
         {
             const string fileName = "Resources/invoice/response_v4/complete.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictPostAsync<InvoiceV4Inference>(ParsingTestBase.GetFakePredictParameter());
+            return await mindeeAPi.PredictPostAsync<InvoiceV4>(ParsingTestBase.GetFakePredictParameter());
         }
     }
 }
