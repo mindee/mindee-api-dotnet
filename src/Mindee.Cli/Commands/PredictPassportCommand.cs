@@ -1,8 +1,7 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using Mindee.Parsing.Passport;
+using Mindee.Product.Passport;
 
 namespace Mindee.Cli.Commands
 {
@@ -40,7 +39,7 @@ namespace Mindee.Cli.Commands
 
                 var response = await _mindeeClient
                     .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-                    .ParseAsync<PassportV1Inference>();
+                    .ParseAsync<PassportV1>();
 
                 if (response == null)
                 {

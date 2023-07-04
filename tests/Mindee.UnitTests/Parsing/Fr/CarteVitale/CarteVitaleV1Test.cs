@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Fr.CarteVitale;
+using Mindee.Product.Fr.CarteVitale;
 
 namespace Mindee.UnitTests.Parsing.Fr.CarteVitale
 {
@@ -22,11 +22,11 @@ namespace Mindee.UnitTests.Parsing.Fr.CarteVitale
             Assert.Equal(expected, prediction.Document.Inference.Pages[0].ToString());
         }
 
-        private async Task<PredictResponse<CarteVitaleV1Inference>> GetPrediction()
+        private async Task<PredictResponse<CarteVitaleV1>> GetPrediction()
         {
             const string fileName = "Resources/fr/carte_vitale/response_v1/complete.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictPostAsync<CarteVitaleV1Inference>(ParsingTestBase.GetFakePredictParameter());
+            return await mindeeAPi.PredictPostAsync<CarteVitaleV1>(ParsingTestBase.GetFakePredictParameter());
         }
     }
 }

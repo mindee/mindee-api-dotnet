@@ -170,8 +170,9 @@ It also requires that you instantiate a new `CustomEndpoint` object to define th
 ```csharp
 CustomEndpoint myEndpoint = new CustomEndpoint(
     endpointName: "wnine",
-    accountName: "john",
-    version: "1.1" // optional
+    accountName: "john"
+    // optionally, lock the version
+    //, version: "1.1"
 );
 
 var prediction = await _mindeeClient

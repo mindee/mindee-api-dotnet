@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Cropper;
+using Mindee.Product.Cropper;
 
 namespace Mindee.UnitTests.Parsing.Receipt
 {
@@ -65,11 +65,11 @@ namespace Mindee.UnitTests.Parsing.Receipt
             , response.Document.Inference.Pages.First().Prediction.Cropping.First().Polygon.First());
         }
 
-        private async Task<PredictResponse<CropperV1Inference>> GetPrediction()
+        private async Task<PredictResponse<CropperV1>> GetPrediction()
         {
             const string fileName = "Resources/cropper/response_v1/complete.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictPostAsync<CropperV1Inference>(ParsingTestBase.GetFakePredictParameter());
+            return await mindeeAPi.PredictPostAsync<CropperV1>(ParsingTestBase.GetFakePredictParameter());
         }
     }
 }

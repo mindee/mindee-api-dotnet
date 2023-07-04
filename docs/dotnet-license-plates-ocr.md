@@ -6,7 +6,7 @@ Using this [sample photo](https://files.readme.io/ffc127d-sample_receipt.jpg) be
 ## Quick Start
 ```csharp
 using Mindee;
-using Mindee.Parsing.Eu.LicensePlate;
+using Mindee.Product.Eu.LicensePlate;
 
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
@@ -15,7 +15,7 @@ MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
 
 var response = await mindeeClient
     .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
-    .ParseAsync<LicensePlateV1Inference>();
+    .ParseAsync<LicensePlateV1>();
 
 // Print a summary of the predictions
 System.Console.WriteLine(response.Document.ToString());

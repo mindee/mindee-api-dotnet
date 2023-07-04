@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Eu.LicensePlate;
+using Mindee.Product.Eu.LicensePlate;
 
 namespace Mindee.UnitTests.Parsing.Eu.LicensePlate
 {
@@ -22,11 +22,11 @@ namespace Mindee.UnitTests.Parsing.Eu.LicensePlate
             Assert.Equal(expected, prediction.Document.Inference.Pages[0].ToString());
         }
 
-        private async Task<PredictResponse<LicensePlateV1Inference>> GetPrediction()
+        private async Task<PredictResponse<LicensePlateV1>> GetPrediction()
         {
             const string fileName = "Resources/eu/license_plate/response_v1/complete.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictPostAsync<LicensePlateV1Inference>(ParsingTestBase.GetFakePredictParameter());
+            return await mindeeAPi.PredictPostAsync<LicensePlateV1>(ParsingTestBase.GetFakePredictParameter());
         }
     }
 }

@@ -1,6 +1,6 @@
 using Mindee;
 using Mindee.Parsing.Common;
-using Mindee.Parsing.InvoiceSplitter;
+using Mindee.Product.InvoiceSplitter;
 using System.Threading;
 
 string apiKey = "my-api-key";
@@ -17,16 +17,16 @@ MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
 
 var enqueueResponse = await mindeeClient
     .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
-    .EnqueueAsync<InvoiceSplitterV1Inference>();
+    .EnqueueAsync<InvoiceSplitterV1>();
 
 string jobId = enqueueResponse.Job.Id;
 
 int retryCount = 0;
-AsyncPredictResponse<InvoiceSplitterV1Inference> response;
+AsyncPredictResponse<InvoiceSplitterV1> response;
 
 while (retryCount < maxRetries)
 {
-    response = await mindeeClient.ParseQueuedAsync<InvoiceSplitterV1Inference>(jobId);
+    response = await mindeeClient.ParseQueuedAsync<InvoiceSplitterV1>(jobId);
     if (response.Document != null)
     {
         // Print a summary of the predictions

@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Parsing.InvoiceSplitter;
+using Mindee.Product.InvoiceSplitter;
 
 namespace Mindee.UnitTests.Parsing.InvoiceSplitter
 {
@@ -16,11 +16,11 @@ namespace Mindee.UnitTests.Parsing.InvoiceSplitter
                 response.Document.ToString());
         }
 
-        private static async Task<AsyncPredictResponse<InvoiceSplitterV1Inference>> GetPrediction()
+        private static async Task<AsyncPredictResponse<InvoiceSplitterV1>> GetPrediction()
         {
             const string fileName = "Resources/invoice_splitter/response_v1/2_invoices_response.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.DocumentQueueGetAsync<InvoiceSplitterV1Inference>("hello");
+            return await mindeeAPi.DocumentQueueGetAsync<InvoiceSplitterV1>("hello");
         }
     }
 }

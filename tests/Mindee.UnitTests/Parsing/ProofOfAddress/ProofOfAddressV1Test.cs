@@ -1,6 +1,5 @@
-using Mindee.Parsing;
 using Mindee.Parsing.Common;
-using Mindee.Parsing.ProofOfAddress;
+using Mindee.Product.ProofOfAddress;
 
 namespace Mindee.UnitTests.Parsing.ProofOfAddress
 {
@@ -23,11 +22,11 @@ namespace Mindee.UnitTests.Parsing.ProofOfAddress
             Assert.Equal(expected, response.Document.Inference.Pages[0].ToString());
         }
 
-        private static async Task<PredictResponse<ProofOfAddressV1Inference>> GetPrediction()
+        private static async Task<PredictResponse<ProofOfAddressV1>> GetPrediction()
         {
             const string fileName = "Resources/proof_of_address/response_v1/complete.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictPostAsync<ProofOfAddressV1Inference>(ParsingTestBase.GetFakePredictParameter());
+            return await mindeeAPi.PredictPostAsync<ProofOfAddressV1>(ParsingTestBase.GetFakePredictParameter());
         }
     }
 }

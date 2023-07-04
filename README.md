@@ -60,7 +60,7 @@ var mindeeClient = MindeeClientInit.Create("my-api-key");
 #### Global Documents
 ```csharp
 using Mindee;
-using Mindee.Parsing.Invoice;
+using Mindee.Product.Invoice;
 
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
@@ -69,7 +69,7 @@ MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
 
 var response = await mindeeClient
     .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
-    .ParseAsync<InvoiceV4Inference>();
+    .ParseAsync<InvoiceV4>();
 
 // Print a summary of the predictions
 System.Console.WriteLine(response.Document.ToString());
@@ -103,6 +103,7 @@ System.Console.WriteLine(response.Document.ToString());
 
 ```csharp
 using Mindee;
+using Mindee.Http;
 using Mindee.Parsing;
 
 string apiKey = "my-api-key";
@@ -117,11 +118,15 @@ CustomEndpoint myEndpoint = new CustomEndpoint(
     //, version: "1.1"
 );
 
-var documentParsed = await mindeeClient
+var response = await mindeeClient
     .LoadDocument(new FileInfo(filePath))
     .ParseAsync(myEndpoint);
 
-System.Console.WriteLine(documentParsed.ToString());
+// Print a summary of the predictions
+System.Console.WriteLine(response.Document.ToString());
+
+// Print the document-level predictions
+// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
 ## Further Reading
