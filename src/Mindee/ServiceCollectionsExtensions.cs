@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Mindee.Parsing;
+using Mindee.Http;
 using Mindee.Pdf;
 
 namespace Mindee.Extensions.DependencyInjection

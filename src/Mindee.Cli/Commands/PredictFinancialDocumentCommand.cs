@@ -1,7 +1,7 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using Microsoft.Extensions.Logging;
-using Mindee.Parsing.Financial;
+using Mindee.Product.FinancialDocument;
 
 namespace Mindee.Cli.Commands
 {
@@ -38,11 +38,11 @@ namespace Mindee.Cli.Commands
 
             public async Task<int> InvokeAsync(InvocationContext context)
             {
-                _logger.LogInformation("About to predict an Financial Document..");
+                _logger.LogInformation("About to predict an Financial Document.");
 
                 var response = await _mindeeClient
                     .LoadDocument(new FileInfo(Path))
-                    .ParseAsync<FinancialV1Inference>(WithWords);
+                    .ParseAsync<FinancialDocumentV1>(WithWords);
 
                 if (response == null)
                 {

@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Receipt;
+using Mindee.Product.Receipt;
 
 namespace Mindee.UnitTests.Parsing.Receipt
 {
@@ -75,7 +75,7 @@ namespace Mindee.UnitTests.Parsing.Receipt
         {
             const string fileName = "Resources/receipt/response_v4/complete_with_cropper.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
-            var response = await mindeeAPi.PredictPostAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter());
+            var response = await mindeeAPi.PredictPostAsync<ReceiptV4>(ParsingTestBase.GetFakePredictParameter());
 
             Assert.NotNull(response.Document.Inference.Pages.First().Extras.Cropper);
             Assert.Single(response.Document.Inference.Pages.First().Extras.Cropper.Cropping);
@@ -136,11 +136,11 @@ namespace Mindee.UnitTests.Parsing.Receipt
             , response.Document.Inference.Pages.First().Extras.Cropper.Cropping.First().Polygon);
         }
 
-        private static async Task<PredictResponse<ReceiptV4Inference>> GetPrediction()
+        private static async Task<PredictResponse<ReceiptV4>> GetPrediction()
         {
             const string fileName = "Resources/receipt/response_v4/complete.json";
             var mindeeAPi = ParsingTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictPostAsync<ReceiptV4Inference>(ParsingTestBase.GetFakePredictParameter());
+            return await mindeeAPi.PredictPostAsync<ReceiptV4>(ParsingTestBase.GetFakePredictParameter());
         }
     }
 }
