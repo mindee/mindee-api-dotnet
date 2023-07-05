@@ -4,6 +4,7 @@ using Mindee.Exceptions;
 using Mindee.Http;
 using Mindee.Input;
 using Mindee.Parsing.Common;
+using Mindee.Parsing.Standard;
 using Mindee.Pdf;
 using Mindee.Product.Custom;
 
@@ -67,7 +68,7 @@ namespace Mindee
         /// <summary>
         /// Try to parse the current document.
         /// </summary>
-        /// <param name="withFullText">Get all the words in the current document.By default, set to false.</param>
+        /// <param name="withAllWords">Get all the words in the file. By default, set to false.</param>
         /// <param name="withCropper">To get the cropper information about the current document.By default, set to false.</param>
         /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
         /// The response object will be instantiated based on this parameter.</typeparam>
@@ -75,7 +76,7 @@ namespace Mindee
         /// <exception cref="MindeeException"></exception>
         /// <remarks>With full text doesn't work for all the types.</remarks>
         public async Task<PredictResponse<TInferenceModel>> ParseAsync<TInferenceModel>(
-            bool withFullText = false
+            bool withAllWords = false
             , bool withCropper = false)
             where TInferenceModel : class, new()
         {
@@ -88,14 +89,14 @@ namespace Mindee
                 new PredictParameter(
                     DocumentClient.File,
                     DocumentClient.Filename,
-                    withFullText,
+                    withAllWords,
                     withCropper));
         }
 
         /// <summary>
         /// Try to parse the current document.
         /// </summary>
-        /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
+        /// <param name="withAllWords">Get all the words in the file. By default, set to false.</param>
         /// <param name="withCropper">To get the cropping results about the current document.By default, set to false.</param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
@@ -105,7 +106,7 @@ namespace Mindee
         /// <remarks>With full text doesn't work for all the types. Check the API documentation first.</remarks>
         public async Task<PredictResponse<TInferenceModel>> ParseAsync<TInferenceModel>(
             PageOptions pageOptions
-            , bool withFullText = false
+            , bool withAllWords = false
             , bool withCropper = false)
             where TInferenceModel : class, new()
         {
@@ -125,14 +126,14 @@ namespace Mindee
                 new PredictParameter(
                     DocumentClient.File,
                     DocumentClient.Filename,
-                    withFullText,
+                    withAllWords,
                     withCropper));
         }
 
         /// <summary>
         /// Try to enqueue the parsing of the current document.
         /// </summary>
-        /// <param name="withFullText">Get all the words in the current document.By default, set to false.</param>
+        /// <param name="withAllWords">Get all the words in the file. By default, set to false.</param>
         /// <param name="withCropper">To get the cropper information about the current document.By default, set to false.</param>
         /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
         /// The response object will be instantiated based on this parameter.</typeparam>
@@ -140,7 +141,7 @@ namespace Mindee
         /// <exception cref="MindeeException"></exception>
         /// <remarks>With full text doesn't work for all the types.</remarks>
         public async Task<AsyncPredictResponse<TInferenceModel>> EnqueueAsync<TInferenceModel>(
-            bool withFullText = false
+            bool withAllWords = false
             , bool withCropper = false)
             where TInferenceModel : class, new()
         {
@@ -153,14 +154,14 @@ namespace Mindee
                 new PredictParameter(
                     DocumentClient.File,
                     DocumentClient.Filename,
-                    withFullText,
+                    withAllWords,
                     withCropper));
         }
 
         /// <summary>
         /// Try to parse the current document.
         /// </summary>
-        /// <param name="withFullText">To get all the words in the current document.By default, set to false.</param>
+        /// <param name="withAllWords">Get all the words in the file. By default, set to false.</param>
         /// <param name="withCropper">To get the cropping results about the current document.By default, set to false.</param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
@@ -170,7 +171,7 @@ namespace Mindee
         /// <remarks>With full text doesn't work for all the types. Check the API documentation first.</remarks>
         public async Task<AsyncPredictResponse<TInferenceModel>> EnqueueAsync<TInferenceModel>(
             PageOptions pageOptions
-            , bool withFullText = false
+            , bool withAllWords = false
             , bool withCropper = false)
             where TInferenceModel : class, new()
         {
@@ -190,7 +191,7 @@ namespace Mindee
                 new PredictParameter(
                     DocumentClient.File,
                     DocumentClient.Filename,
-                    withFullText,
+                    withAllWords,
                     withCropper));
         }
 

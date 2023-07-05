@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.Fr.IdCard
@@ -10,7 +11,7 @@ namespace Mindee.Product.Fr.IdCard
     /// <summary>
     /// Document data for Carte Nationale d'Identité, API version 1.
     /// </summary>
-    public class IdCardV1Document
+    public class IdCardV1Document : IPrediction
     {
         /// <summary>
         /// The identification card number.

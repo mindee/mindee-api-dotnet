@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.Eu.LicensePlate
@@ -10,7 +11,7 @@ namespace Mindee.Product.Eu.LicensePlate
     /// <summary>
     /// Document data for License Plate, API version 1.
     /// </summary>
-    public class LicensePlateV1Document
+    public class LicensePlateV1Document : IPrediction
     {
         /// <summary>
         /// List of all license plates found in the image.

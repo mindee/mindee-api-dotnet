@@ -8,7 +8,7 @@ namespace Mindee.Parsing.Common
     /// </summary>
     /// <typeparam name="TPagePrediction">The prediction model type.</typeparam>
     public class Page<TPagePrediction>
-        where TPagePrediction : class, new()
+        where TPagePrediction : IPrediction, new()
     {
         /// <summary>
         /// The id of the page. It starts at 0.

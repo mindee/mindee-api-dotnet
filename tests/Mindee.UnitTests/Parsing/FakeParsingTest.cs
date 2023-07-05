@@ -25,7 +25,11 @@ namespace Mindee.UnitTests.Parsing
     {
     }
 
-    internal sealed class FakeV1DocumentPrediction
+    internal sealed class FakeV1DocumentPrediction : IPrediction
     {
+        public override string ToString()
+        {
+            return "FAKE";
+        }
     }
 }
