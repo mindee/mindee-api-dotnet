@@ -40,7 +40,11 @@ jobs:
       run: |
         dotnet restore
 
-    - name: Build and test
+    - name: Build
+      run: |
+        dotnet build -f ${{ matrix.dotnet-version }} --no-restore
+
+    - name: Test
       run: |
         dotnet test -f ${{ matrix.dotnet-version }} --no-restore --verbosity normal "tests\Mindee.UnitTests"
 
@@ -75,10 +79,6 @@ jobs:
       run: |
         dotnet restore
 
-    - name: Build
-      run: |
-        dotnet build -f ${{ matrix.dotnet-version }} --no-restore
-
-    - name: Test
+    - name: Build and test
       run: |
         dotnet test -f ${{ matrix.dotnet-version }} --no-restore --verbosity normal "tests\Mindee.UnitTests"
