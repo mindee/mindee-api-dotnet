@@ -1,9 +1,9 @@
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.Fr.CarteVitale
@@ -11,7 +11,7 @@ namespace Mindee.Product.Fr.CarteVitale
     /// <summary>
     /// Document data for Carte Vitale, API version 1.
     /// </summary>
-    public class CarteVitaleV1Document
+    public class CarteVitaleV1Document : IPrediction
     {
         /// <summary>
         /// The given name(s) of the card holder.

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.FinancialDocument
@@ -10,7 +11,7 @@ namespace Mindee.Product.FinancialDocument
     /// <summary>
     /// The financial model for the v1.
     /// </summary>
-    public class FinancialDocumentV1Document
+    public class FinancialDocumentV1Document : IPrediction
     {
         /// <summary>
         /// <see cref="ClassificationField"/>

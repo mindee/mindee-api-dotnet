@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.Receipt
@@ -10,7 +11,7 @@ namespace Mindee.Product.Receipt
     /// <summary>
     /// The receipt model for the v4.
     /// </summary>
-    public sealed class ReceiptV4Document
+    public sealed class ReceiptV4Document : IPrediction
     {
         /// <summary>
         /// <see cref="ClassificationField"/>

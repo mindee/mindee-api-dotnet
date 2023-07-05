@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.Passport
@@ -10,7 +11,7 @@ namespace Mindee.Product.Passport
     /// <summary>
     /// The passport model for the v1.
     /// </summary>
-    public sealed class PassportV1Document
+    public sealed class PassportV1Document : IPrediction
     {
         /// <summary>
         /// The birth date of the person.

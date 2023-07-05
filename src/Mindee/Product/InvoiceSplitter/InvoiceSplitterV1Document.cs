@@ -3,13 +3,14 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 
 namespace Mindee.Product.InvoiceSplitter
 {
     /// <summary>
     /// The invoice splitter model for the v1.
     /// </summary>
-    public sealed class InvoiceSplitterV1Document
+    public sealed class InvoiceSplitterV1Document : IPrediction
     {
         /// <summary>
         /// List of page group.
