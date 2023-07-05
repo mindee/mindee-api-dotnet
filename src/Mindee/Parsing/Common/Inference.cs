@@ -13,8 +13,8 @@ namespace Mindee.Parsing.Common
     /// <typeparam name="TPagePrediction">Page prediction (could be the same that TDocumentPrediction).</typeparam>
     /// <typeparam name="TDocumentPrediction">Document prediction (could be the same that TPagePrediction).</typeparam>
     public abstract class Inference<TPagePrediction, TDocumentPrediction>
-        where TPagePrediction : class, new()
-        where TDocumentPrediction : class, new()
+        where TPagePrediction : IPrediction, new()
+        where TDocumentPrediction : IPrediction, new()
     {
         /// <summary>
         /// Was a rotation applied to parse the document ?

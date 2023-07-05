@@ -19,7 +19,7 @@ namespace Mindee.Http
         /// Want an OCR result ?
         /// </summary>
         /// <remarks>It is not available on all API.</remarks>
-        public bool WithFullText { get; }
+        public bool WithAllWords { get; }
 
         /// <summary>
         /// Want the cropping result about the document?
@@ -44,15 +44,15 @@ namespace Mindee.Http
         /// </summary>
         /// <param name="file"><see cref="File"/></param>
         /// <param name="filename"><see cref="Filename"/></param>
-        /// <param name="withFullText"><see cref="WithFullText"/></param>
+        /// <param name="withAllWords"><see cref="WithAllWords"/></param>
         public PredictParameter(
             byte[] file,
             string filename,
-            bool withFullText)
+            bool withAllWords)
         {
             File = file;
             Filename = filename;
-            WithFullText = withFullText;
+            WithAllWords = withAllWords;
         }
 
         /// <summary>
@@ -60,17 +60,17 @@ namespace Mindee.Http
         /// </summary>
         /// <param name="file"><see cref="File"/></param>
         /// <param name="filename"><see cref="Filename"/></param>
-        /// <param name="withFullText"><see cref="WithFullText"/></param>
+        /// <param name="withAllWords"><see cref="WithAllWords"/></param>
         /// <param name="withCropper"><see cref="WithCropper"/></param>
         public PredictParameter(
             byte[] file,
             string filename,
-            bool withFullText,
+            bool withAllWords,
             bool withCropper)
         {
             File = file;
             Filename = filename;
-            WithFullText = withFullText;
+            WithAllWords = withAllWords;
             WithCropper = withCropper;
         }
     }

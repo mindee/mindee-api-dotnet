@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.Us.BankCheck
@@ -10,7 +11,7 @@ namespace Mindee.Product.Us.BankCheck
     /// <summary>
     /// The us bank check model for the v1.
     /// </summary>
-    public sealed class BankCheckV1Document
+    public sealed class BankCheckV1Document : IPrediction
     {
         /// <summary>
         /// Payer's bank account number.

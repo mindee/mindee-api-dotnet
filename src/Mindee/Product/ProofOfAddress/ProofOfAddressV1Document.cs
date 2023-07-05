@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.ProofOfAddress
@@ -10,7 +11,7 @@ namespace Mindee.Product.ProofOfAddress
     /// <summary>
     /// Document data for Proof of Address, API version 1.
     /// </summary>
-    public class ProofOfAddressV1Document
+    public class ProofOfAddressV1Document : IPrediction
     {
         /// <summary>
         /// The locale detected on the document.
