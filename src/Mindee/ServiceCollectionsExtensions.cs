@@ -18,7 +18,7 @@ namespace Mindee.Extensions.DependencyInjection
         /// <remarks>The <see cref="MindeeClient"/> instance is registered as a transient.</remarks>
         public static IServiceCollection AddMindeeClient(
             this IServiceCollection services,
-            string sectionName = "MindeeSettings")
+            string sectionName = "Mindee")
         {
             services.TryAddTransient<MindeeClient>();
             services.TryAddTransient<IPredictable, MindeeApi>();

@@ -84,14 +84,14 @@ API keys should be set as environment variables, especially for any production d
 
 The following environment variable will set the global API key:
 ```shell
-MindeeApiSettings__ApiKey="my-api-key"
+Mindee__ApiKey="my-api-key"
 ```
 
 You could also define the key in your appsettings.json config file:
 ```json
 {
   "$schema": "https://json.schemastore.org/appsettings.json",
-  "MindeeApiSettings": {
+  "Mindee": {
     "ApiKey": "my-api-key"
   }
 }
