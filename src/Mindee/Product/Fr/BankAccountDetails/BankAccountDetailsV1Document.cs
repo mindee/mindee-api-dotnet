@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.Fr.BankAccountDetails
@@ -8,7 +9,7 @@ namespace Mindee.Product.Fr.BankAccountDetails
     /// <summary>
     /// Document data for Bank Account Details, API version 1.
     /// </summary>
-    public class BankAccountDetailsV1Document
+    public class BankAccountDetailsV1Document : IPrediction
     {
         /// <summary>
         /// The International Bank Account Number (IBAN).

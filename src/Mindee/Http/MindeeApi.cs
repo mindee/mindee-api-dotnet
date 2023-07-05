@@ -92,7 +92,7 @@ namespace Mindee.Http
             _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
 
             request.AddFile("document", predictParameter.File, predictParameter.Filename);
-            if (predictParameter.WithFullText)
+            if (predictParameter.WithAllWords)
             {
                 request.AddQueryParameter("include_mvision", "true");
             }
@@ -144,7 +144,7 @@ namespace Mindee.Http
             _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
 
             request.AddFile("document", predictParameter.File, predictParameter.Filename);
-            if (predictParameter.WithFullText)
+            if (predictParameter.WithAllWords)
             {
                 request.AddQueryParameter("include_mvision", "true");
             }

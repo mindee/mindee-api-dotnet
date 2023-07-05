@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Custom;
 
 namespace Mindee.Product.Custom
@@ -11,7 +12,7 @@ namespace Mindee.Product.Custom
     /// Define a page prediction from a model built thanks to an API builder.
     /// </summary>
     [Serializable]
-    public sealed class CustomV1Page : Dictionary<string, ListField>
+    public sealed class CustomV1Page : Dictionary<string, ListField>, IPrediction
     {
         /// <summary>
         /// Default empty constructor.

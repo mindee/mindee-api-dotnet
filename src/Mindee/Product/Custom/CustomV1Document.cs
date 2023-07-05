@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Custom;
 
 namespace Mindee.Product.Custom
@@ -12,7 +13,7 @@ namespace Mindee.Product.Custom
     /// </summary>
     [Serializable]
     [JsonConverter(typeof(CustomV1DocumentJsonConverter))]
-    public sealed class CustomV1Document
+    public sealed class CustomV1Document : IPrediction
     {
         /// <summary>
         /// Classification fields.
