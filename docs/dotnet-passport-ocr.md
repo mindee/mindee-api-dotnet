@@ -6,6 +6,7 @@ Using this [sample passport](https://files.readme.io/4a16b1d-passport_pic.jpg) b
 ## Quick Start
 ```csharp
 using Mindee;
+using Mindee.Input;
 using Mindee.Product.Passport;
 
 string apiKey = "my-api-key";
@@ -13,15 +14,19 @@ string filePath = "/path/to/the/file.ext";
 
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
-var response = await mindeeClient
-    .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
-    .ParseAsync<PassportV1>();
+// load an input source
+var inputSource = new LocalInputSource(filePath);
 
-// Print a summary of the predictions
+// Call the API and parse the input
+var response = await mindeeClient
+    .ParseAsync<PassportV1>(inputSource);
+
+// Print a summary of all the predictions
 System.Console.WriteLine(response.Document.ToString());
 
-// Print the document-level predictions
+// Print only the document-level predictions
 // System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
+
 ```
 
 Output:

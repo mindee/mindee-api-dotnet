@@ -1,4 +1,5 @@
 using Mindee.Exceptions;
+using Mindee.Input;
 using Mindee.Product.Invoice;
 using Mindee.Product.InvoiceSplitter;
 using Mindee.Product.Receipt;
@@ -12,12 +13,9 @@ namespace Mindee.IntegrationTests
         public async Task Parse_Invoice_V4_WithMultiplePages_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-
             var mindeeClient = new MindeeClient(apiKey);
-            mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
-
-            var response = await mindeeClient.ParseAsync<InvoiceV4>();
-
+            var inputSource = new LocalInputSource("Resources/invoice/invoice.pdf");
+            var response = await mindeeClient.ParseAsync<InvoiceV4>(inputSource);
             Assert.NotNull(response);
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
@@ -28,19 +26,15 @@ namespace Mindee.IntegrationTests
         public async Task Parse_Receipt_V4_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-
             var mindeeClient = new MindeeClient(apiKey);
-            mindeeClient.LoadDocument(new FileInfo("Resources/receipt/sample.jpg"));
-
-            var response = await mindeeClient.ParseAsync<ReceiptV4>();
-
+            var inputSource = new LocalInputSource("Resources/receipt/sample.jpg");
+            var response = await mindeeClient.ParseAsync<ReceiptV4>(inputSource);
             Assert.NotNull(response);
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
             Assert.Single(response.Document.Inference.Pages);
 
             var expected = File.ReadAllText("Resources/receipt/response_v4/sample_summary.rst");
-
             Assert.Equal(
                 expected,
                 response.Document.Inference.ToString());
@@ -50,19 +44,15 @@ namespace Mindee.IntegrationTests
         public async Task Parse_Receipt_V4_WithTip_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-
             var mindeeClient = new MindeeClient(apiKey);
-            mindeeClient.LoadDocument(new FileInfo("Resources/receipt/sample-with-tip.jpg"));
-
-            var response = await mindeeClient.ParseAsync<ReceiptV4>();
-
+            var inputSource = new LocalInputSource("Resources/receipt/sample-with-tip.jpg");
+            var response = await mindeeClient.ParseAsync<ReceiptV4>(inputSource);
             Assert.NotNull(response);
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
             Assert.Single(response.Document.Inference.Pages);
 
             var expected = File.ReadAllText("Resources/receipt/response_v4/sample_with_tip_summary.rst");
-
             Assert.Equal(
                 expected,
                 response.Document.Inference.ToString());
@@ -73,10 +63,8 @@ namespace Mindee.IntegrationTests
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
-
-            mindeeClient.LoadDocument(new FileInfo("Resources/invoice_splitter/2_invoices.pdf"));
-
-            var response = await mindeeClient.EnqueueAsync<InvoiceSplitterV1>();
+            var inputSource = new LocalInputSource("Resources/invoice_splitter/2_invoices.pdf");
+            var response = await mindeeClient.EnqueueAsync<InvoiceSplitterV1>(inputSource);
 
             Assert.NotNull(response);
 
@@ -96,11 +84,10 @@ namespace Mindee.IntegrationTests
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
-            mindeeClient.LoadDocument(new FileInfo("Resources/invoice_splitter/2_invoices.pdf"));
-
+            var inputSource = new LocalInputSource("Resources/invoice_splitter/2_invoices.pdf");
             await Assert.ThrowsAsync<Mindee403Exception>(
-                () => _ = mindeeClient.ParseAsync<InvoiceSplitterV1>()
-            );
+                () => _ = mindeeClient.ParseAsync<InvoiceSplitterV1>(inputSource)
+                );
         }
     }
 }
