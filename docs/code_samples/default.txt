@@ -1,4 +1,5 @@
 using Mindee;
+using Mindee.Input;
 using Mindee.Http;
 using Mindee.Parsing;
 
@@ -7,6 +8,16 @@ string filePath = "/path/to/the/file.ext";
 
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
+// load an input source
+var inputSource = new LocalInputSource(filePath);
+//
+// alternate input sources ...
+// var inputSource = new LocalInputSource(IO.Stream fileStream, string filename)
+// var inputSource = new LocalInputSource(IO.FileInfo fileinfo)
+//
+// etc, check the docs ;-)
+
+// Set the endpoint configuration
 CustomEndpoint myEndpoint = new CustomEndpoint(
     endpointName: "my-endpoint",
     accountName: "my-account",
@@ -14,8 +25,7 @@ CustomEndpoint myEndpoint = new CustomEndpoint(
 );
 
 var response = await mindeeClient
-    .LoadDocument(new FileInfo(filePath))
-    .ParseAsync(myEndpoint);
+    .ParseAsync(inputSource, myEndpoint);
 
 // Print a summary of the predictions
 System.Console.WriteLine(response.Document.ToString());

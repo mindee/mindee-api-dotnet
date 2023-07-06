@@ -2,6 +2,7 @@ using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
+using Mindee.Input;
 using Mindee.Parsing.Common;
 
 namespace Mindee.Cli
@@ -128,9 +129,9 @@ namespace Mindee.Cli
             {
                 _logger.LogInformation("Synchronous parsing of {} ...", typeof(TInferenceModel).Name);
 
-                var response = await _mindeeClient
-                    .LoadDocument(new FileInfo(options.Path))
-                    .ParseAsync<TInferenceModel>(withAllWords: AllWords);
+                var response = await _mindeeClient.ParseAsync<TInferenceModel>(
+                    new LocalInputSource(options.Path),
+                    withAllWords: AllWords);
 
                 if (response == null)
                 {
@@ -159,9 +160,9 @@ namespace Mindee.Cli
                 // Wait this many seconds between each try
                 const int intervalSec = 5;
 
-                var enqueueResponse = await _mindeeClient
-                    .LoadDocument(new FileInfo(options.Path))
-                    .EnqueueAsync<TInferenceModel>(withAllWords: AllWords);
+                var enqueueResponse = await _mindeeClient.EnqueueAsync<TInferenceModel>(
+                    new LocalInputSource(options.Path),
+                    withAllWords: AllWords);
 
                 string jobId = enqueueResponse.Job.Id;
                 _logger.LogInformation("Enqueued with job ID: {}", jobId);

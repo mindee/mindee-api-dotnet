@@ -2,6 +2,7 @@ using System.CommandLine;
 using System.CommandLine.Invocation;
 using Microsoft.Extensions.Logging;
 using Mindee.Http;
+using Mindee.Input;
 
 namespace Mindee.Cli.Commands
 {
@@ -50,9 +51,9 @@ namespace Mindee.Cli.Commands
             {
                 _logger.LogInformation("About to predict a custom document.");
 
-                var response = await _mindeeClient
-                    .LoadDocument(new FileInfo(Path))
-                    .ParseAsync(new CustomEndpoint(
+                var response = await _mindeeClient.ParseAsync(
+                    new LocalInputSource(Path),
+                    new CustomEndpoint(
                         Endpoint,
                         Account,
                         Version));
