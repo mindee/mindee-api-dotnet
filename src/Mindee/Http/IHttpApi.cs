@@ -6,7 +6,7 @@ namespace Mindee.Http
     /// <summary>
     /// Make predictions and returned a result of it.
     /// </summary>
-    public interface IPredictable
+    public interface IHttpApi
     {
         /// <summary>
         /// Do a prediction according parameters.

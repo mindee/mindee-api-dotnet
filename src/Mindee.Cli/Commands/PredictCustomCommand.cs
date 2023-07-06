@@ -12,13 +12,18 @@ namespace Mindee.Cli.Commands
         public PredictCustomCommand()
             : base(name: "custom", "Invokes a builder API")
         {
-            AddOption(new Option<string>(
-                new string[] { "-o", "--output" },
-                "Specify how to output the data. \n" +
+            AddOption(new Option<OutputType>(new string[]
+                {
+                    "-o", "--output", "output"
+                },
+                description: "Specify how to output the data. \n" +
                 "- summary: a basic summary (default)\n" +
                 "- raw: full JSON object\n"));
             AddOption(new Option<string>(
-                new string[] { "-v", "--version" }, "Version of the custom API, default 1"));
+                new string[]
+                {
+                    "-v", "--version"
+                }, "Version of the custom API, default 1"));
             AddArgument(new Argument<string>("account", "The path of the file to parse"));
             AddArgument(new Argument<string>("endpoint", "The path of the file to parse"));
             AddArgument(new Argument<string>("path", "The path of the file to parse"));

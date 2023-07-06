@@ -83,6 +83,8 @@ namespace Mindee.Cli
                         description: "Process the file asynchronously. False by default."));
                     break;
                 case AsyncType.Only:
+                    // Inject an "option" not changeable by the user.
+                    // This will set the `Handler.Async` property to always be `true`.
                     var option = new Option<bool>(alias: "async", getDefaultValue: () => true);
                     option.IsHidden = true;
                     AddOption(option);
@@ -95,6 +97,7 @@ namespace Mindee.Cli
         {
             private readonly ILogger<Handler> _logger;
             private readonly MindeeClient _mindeeClient;
+            private readonly JsonSerializerOptions _jsonSerializerOptions;
 
             public string Path { get; set; } = null!;
             public bool AllWords { get; set; } = false;
@@ -105,6 +108,10 @@ namespace Mindee.Cli
             {
                 _logger = logger;
                 _mindeeClient = mindeeClient;
+                _jsonSerializerOptions = new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                };
             }
 
             public async Task<int> InvokeAsync(InvocationContext context)
@@ -137,12 +144,8 @@ namespace Mindee.Cli
                 }
                 else
                 {
-                    context.Console.Out.Write(JsonSerializer.Serialize(response, new JsonSerializerOptions
-                    {
-                        WriteIndented = true
-                    }));
+                    context.Console.Out.Write(JsonSerializer.Serialize(response, _jsonSerializerOptions));
                 }
-
                 return 0;
             }
 
@@ -180,10 +183,7 @@ namespace Mindee.Cli
                         }
                         else
                         {
-                            context.Console.Out.Write(JsonSerializer.Serialize(response, new JsonSerializerOptions
-                            {
-                                WriteIndented = true
-                            }));
+                            context.Console.Out.Write(JsonSerializer.Serialize(response, _jsonSerializerOptions));
                         }
                         return 0;
                     }

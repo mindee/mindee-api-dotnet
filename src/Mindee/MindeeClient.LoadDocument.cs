@@ -1,4 +1,5 @@
 using System.IO;
+using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
 using Mindee.Http;
 using Mindee.Input;
@@ -12,7 +13,7 @@ namespace Mindee
     public sealed partial class MindeeClient
     {
         private readonly IPdfOperation _pdfOperation;
-        private readonly IPredictable _mindeeApi;
+        private readonly IHttpApi _mindeeApi;
 
         /// <summary>
         /// <see cref="Mindee.DocumentClient"/>
@@ -22,14 +23,38 @@ namespace Mindee
         /// <summary>
         ///
         /// </summary>
+        /// <param name="apiKey">The required API key to use Mindee.</param>
+        public MindeeClient(string apiKey)
+        {
+            var mindeeSettings = new MindeeSettings
+            {
+                ApiKey = apiKey
+            };
+            _pdfOperation = new DocNetApi();
+            _mindeeApi = new MindeeApi(Options.Create(mindeeSettings));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="mindeeSettings"><see cref="MindeeSettings"/></param>
+        public MindeeClient(MindeeSettings mindeeSettings)
+        {
+            _pdfOperation = new DocNetApi();
+            _mindeeApi = new MindeeApi(Options.Create(mindeeSettings));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="pdfOperation"><see cref="IPdfOperation"/></param>
-        /// <param name="predictable"><see cref="IPredictable"/></param>
+        /// <param name="httpApi"><see cref="IHttpApi"/></param>
         public MindeeClient(
             IPdfOperation pdfOperation,
-            IPredictable predictable)
+            IHttpApi httpApi)
         {
             _pdfOperation = pdfOperation;
-            _mindeeApi = predictable;
+            _mindeeApi = httpApi;
         }
 
         /// <summary>

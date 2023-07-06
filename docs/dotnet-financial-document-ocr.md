@@ -11,7 +11,7 @@ using Mindee.Product.FinancialDocument;
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 
-MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+MindeeClient mindeeClient = new MindeeClient(apiKey);
 
 var response = await mindeeClient
     .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
