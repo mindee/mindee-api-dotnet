@@ -7,6 +7,7 @@ For the following examples, we are using our own [W9s custom API](https://develo
 
 ```csharp
 using Mindee;
+using Mindee.Input;
 using Mindee.Http;
 using Mindee.Parsing;
 
@@ -15,6 +16,10 @@ string filePath = "/path/to/the/file.ext";
 
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
+// load an input source
+var inputSource = new LocalInputSource(filePath);
+
+// Set the endpoint configuration
 CustomEndpoint myEndpoint = new CustomEndpoint(
     endpointName: "my-endpoint",
     accountName: "my-account"
@@ -22,9 +27,8 @@ CustomEndpoint myEndpoint = new CustomEndpoint(
     //, version: "1.1"
 );
 
-var response = await mindeeClient
-    .LoadDocument(new FileInfo(filePath))
-    .ParseAsync(myEndpoint);
+var response = await mindeeClient.ParseAsync(
+    inputSource, myEndpoint);
 
 // Print a summary of the predictions
 System.Console.WriteLine(response.Document.ToString());

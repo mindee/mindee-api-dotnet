@@ -1,4 +1,5 @@
 using Mindee;
+using Mindee.Input;
 using Mindee.Product.FinancialDocument;
 
 string apiKey = "my-api-key";
@@ -6,12 +7,21 @@ string filePath = "/path/to/the/file.ext";
 
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
-var response = await mindeeClient
-    .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
-    .ParseAsync<FinancialDocumentV1>();
+// load an input source
+var inputSource = new LocalInputSource(filePath);
+//
+// alternate input sources ...
+// var inputSource = new LocalInputSource(IO.Stream fileStream, string filename)
+// var inputSource = new LocalInputSource(IO.FileInfo fileinfo)
+//
+// etc, check the docs ;-)
 
-// Print a summary of the predictions
+// Call the API and parse the input
+var response = await mindeeClient
+    .ParseAsync<FinancialDocumentV1>(inputSource);
+
+// Print a summary of all the predictions
 System.Console.WriteLine(response.Document.ToString());
 
-// Print the document-level predictions
+// Print only the document-level predictions
 // System.Console.WriteLine(response.Document.Inference.Prediction.ToString());

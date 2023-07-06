@@ -1,4 +1,5 @@
 using Mindee.Http;
+using Mindee.Input;
 using Mindee.Parsing.Common;
 using Mindee.Pdf;
 using Mindee.Product.Custom;
@@ -22,9 +23,9 @@ namespace Mindee.UnitTests
                 .ReturnsAsync(new PredictResponse<CustomV1>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
-            mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
-
-            var document = await mindeeClient.ParseAsync(customEndpoint);
+            var inputSource = new LocalInputSource(new FileInfo("Resources/invoice/invoice.pdf"));
+            var document = await mindeeClient.ParseAsync(
+                inputSource, customEndpoint);
 
             Assert.NotNull(document);
             predictable.Verify(p => p.PredictPostAsync<CustomV1>(
@@ -41,9 +42,9 @@ namespace Mindee.UnitTests
                 .ReturnsAsync(new PredictResponse<InvoiceV4>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
-            mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
-
-            var document = await mindeeClient.ParseAsync<InvoiceV4>();
+            var inputSource = new LocalInputSource(new FileInfo("Resources/invoice/invoice.pdf"));
+            var document = await mindeeClient.ParseAsync<InvoiceV4>(
+                inputSource);
 
             Assert.NotNull(document);
             predictable.Verify(p => p.PredictPostAsync<InvoiceV4>(
@@ -62,9 +63,13 @@ namespace Mindee.UnitTests
                 .ReturnsAsync(new PredictResponse<InvoiceV4>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
-            mindeeClient.LoadDocument(File.ReadAllBytes("Resources/invoice/invoice.pdf"), "myinvoice.pdf");
 
-            var document = await mindeeClient.ParseAsync<InvoiceV4>();
+            var inputSource = new LocalInputSource(
+                File.ReadAllBytes("Resources/invoice/invoice.pdf"),
+                "myinvoice.pdf"
+                );
+            var document = await mindeeClient.ParseAsync<InvoiceV4>(
+                inputSource);
 
             Assert.NotNull(document);
             predictable.Verify(p => p.PredictPostAsync<InvoiceV4>(It.IsAny<PredictParameter>()), Times.AtMostOnce());
@@ -78,8 +83,8 @@ namespace Mindee.UnitTests
                 .ReturnsAsync(new AsyncPredictResponse<InvoiceV4>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
-            mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
-            var response = await mindeeClient.EnqueueAsync<InvoiceV4>();
+            var inputSource = new LocalInputSource("Resources/invoice/invoice.pdf");
+            var response = await mindeeClient.EnqueueAsync<InvoiceV4>(inputSource);
 
             Assert.NotNull(response);
             predictable.Verify(p => p.PredictAsyncPostAsync<InvoiceV4>(It.IsAny<PredictParameter>()), Times.AtMostOnce());
@@ -91,9 +96,8 @@ namespace Mindee.UnitTests
             var predictable = new Mock<IHttpApi>();
             predictable.Setup(x => x.DocumentQueueGetAsync<InvoiceV4>(It.IsAny<string>()))
                 .ReturnsAsync(new AsyncPredictResponse<InvoiceV4>());
-            var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
-            mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
+            var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
             await Assert.ThrowsAsync<ArgumentNullException>(
                            () => _ = mindeeClient.ParseQueuedAsync<InvoiceV4>(""));
@@ -105,10 +109,8 @@ namespace Mindee.UnitTests
             var predictable = new Mock<IHttpApi>();
             predictable.Setup(x => x.DocumentQueueGetAsync<InvoiceV4>(It.IsAny<string>()))
                 .ReturnsAsync(new AsyncPredictResponse<InvoiceV4>());
+
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
-
-            mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
-
             var response = await mindeeClient.ParseQueuedAsync<InvoiceV4>("my-job-id");
 
             Assert.Null(response.Document);
@@ -121,10 +123,8 @@ namespace Mindee.UnitTests
             var predictable = new Mock<IHttpApi>();
             predictable.Setup(x => x.DocumentQueueGetAsync<InvoiceV4>(It.IsAny<string>()))
                 .ReturnsAsync(new AsyncPredictResponse<InvoiceV4>());
+
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
-
-            mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
-
             var response = await mindeeClient.ParseQueuedAsync<InvoiceV4>("my-job-id");
 
             Assert.NotNull(response);

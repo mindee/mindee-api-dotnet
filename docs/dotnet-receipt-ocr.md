@@ -6,6 +6,7 @@ Using this [sample receipt](https://files.readme.io/ffc127d-sample_receipt.jpg) 
 ## Quick Start
 ```csharp
 using Mindee;
+using Mindee.Input;
 using Mindee.Product.Receipt;
 
 string apiKey = "my-api-key";
@@ -13,15 +14,19 @@ string filePath = "/path/to/the/file.ext";
 
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
-var response = await mindeeClient
-    .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
-    .ParseAsync<ReceiptV4>();
+// load an input source
+var inputSource = new LocalInputSource(filePath);
 
-// Print a summary of the predictions
+// Call the API and parse the input
+var response = await mindeeClient
+    .ParseAsync<ReceiptV4>(inputSource);
+
+// Print a summary of all the predictions
 System.Console.WriteLine(response.Document.ToString());
 
-// Print the document-level predictions
+// Print only the document-level predictions
 // System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
+
 ```
 
 Output:

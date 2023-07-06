@@ -65,16 +65,25 @@ using Mindee.Product.Invoice;
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 
-MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+MindeeClient mindeeClient = new MindeeClient(apiKey);
 
+// load an input source
+var inputSource = new LocalInputSource(filePath));
+//
+// alternate input sources ...
+// var inputSource = new LocalInputSource(IO.Stream fileStream, string filename)
+// var inputSource = new LocalInputSource(IO.FileInfo fileinfo)
+// 
+// etc, check the docs ;-)
+
+// Call the API and parse the input
 var response = await mindeeClient
-    .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
-    .ParseAsync<InvoiceV4>();
+    .ParseAsync<InvoiceV4>(inputSource);
 
-// Print a summary of the predictions
+// Print a summary of all the predictions
 System.Console.WriteLine(response.Document.ToString());
 
-// Print the document-level predictions
+// Print only the document-level predictions
 // System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
@@ -86,16 +95,24 @@ using Mindee.Parsing.Us.BankCheck;
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 
-MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+MindeeClient mindeeClient = new MindeeClient(apiKey);
+
+// load an input source
+var inputSource = new LocalInputSource(filePath));
+//
+// alternate input sources ...
+// var inputSource = new LocalInputSource(IO.Stream fileStream, string filename)
+// var inputSource = new LocalInputSource(IO.FileInfo fileinfo)
+// 
+// etc, check the docs ;-)
 
 var response = await mindeeClient
-    .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))
     .ParseAsync<BankCheckV1Inference>();
 
-// Print a summary of the predictions
+// Print a summary of all the predictions
 System.Console.WriteLine(response.Document.ToString());
 
-// Print the document-level predictions
+// Print only the document-level predictions
 // System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
@@ -109,8 +126,18 @@ using Mindee.Parsing;
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 
-MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+MindeeClient mindeeClient = new MindeeClient(apiKey);
 
+// load an input source
+var inputSource = new LocalInputSource(filePath));
+//
+// alternate input sources ...
+// var inputSource = new LocalInputSource(IO.Stream fileStream, string filename)
+// var inputSource = new LocalInputSource(IO.FileInfo fileinfo)
+// 
+// etc, check the docs ;-)
+
+// Set the endpoint configuration 
 CustomEndpoint myEndpoint = new CustomEndpoint(
     endpointName: "my-endpoint",
     accountName: "my-account"
@@ -122,10 +149,10 @@ var response = await mindeeClient
     .LoadDocument(new FileInfo(filePath))
     .ParseAsync(myEndpoint);
 
-// Print a summary of the predictions
+// Print a summary of all the predictions
 System.Console.WriteLine(response.Document.ToString());
 
-// Print the document-level predictions
+// Print only the document-level predictions
 // System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
