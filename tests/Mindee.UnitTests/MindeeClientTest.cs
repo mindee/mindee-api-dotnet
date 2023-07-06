@@ -14,7 +14,7 @@ namespace Mindee.UnitTests
         public async Task Execute_With_CustomDocument_WithFile()
         {
             var customEndpoint = new CustomEndpoint("", "");
-            var predictable = new Mock<IPredictable>();
+            var predictable = new Mock<IHttpApi>();
             predictable.Setup(x => x.PredictPostAsync<CustomV1>(
                     It.IsAny<CustomEndpoint>()
                     , It.IsAny<PredictParameter>()
@@ -36,7 +36,7 @@ namespace Mindee.UnitTests
         [Fact]
         public async Task Execute_With_OTSApi_WithFile()
         {
-            var predictable = new Mock<IPredictable>();
+            var predictable = new Mock<IHttpApi>();
             predictable.Setup(x => x.PredictPostAsync<InvoiceV4>(It.IsAny<PredictParameter>()))
                 .ReturnsAsync(new PredictResponse<InvoiceV4>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
@@ -55,7 +55,7 @@ namespace Mindee.UnitTests
         [Fact]
         public async Task Execute_With_OTSApi_WithByteArray()
         {
-            var predictable = new Mock<IPredictable>();
+            var predictable = new Mock<IHttpApi>();
             predictable.Setup(x => x.PredictPostAsync<InvoiceV4>(
                     It.IsAny<PredictParameter>()
                     ))
@@ -73,7 +73,7 @@ namespace Mindee.UnitTests
         [Fact]
         public async Task EnqueueParsing_With_OTSApi_WithFile()
         {
-            var predictable = new Mock<IPredictable>();
+            var predictable = new Mock<IHttpApi>();
             predictable.Setup(x => x.PredictAsyncPostAsync<InvoiceV4>(It.IsAny<PredictParameter>()))
                 .ReturnsAsync(new AsyncPredictResponse<InvoiceV4>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
@@ -88,7 +88,7 @@ namespace Mindee.UnitTests
         [Fact]
         public async Task GetEnqueuedParsing_With_OTSApi_WithFile_WithNoJobId_MustFail()
         {
-            var predictable = new Mock<IPredictable>();
+            var predictable = new Mock<IHttpApi>();
             predictable.Setup(x => x.DocumentQueueGetAsync<InvoiceV4>(It.IsAny<string>()))
                 .ReturnsAsync(new AsyncPredictResponse<InvoiceV4>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
@@ -102,7 +102,7 @@ namespace Mindee.UnitTests
         [Fact]
         public async Task GetEnqueuedParsing_With_OTSApi_WithFile_WithNoDocumentReadyYet()
         {
-            var predictable = new Mock<IPredictable>();
+            var predictable = new Mock<IHttpApi>();
             predictable.Setup(x => x.DocumentQueueGetAsync<InvoiceV4>(It.IsAny<string>()))
                 .ReturnsAsync(new AsyncPredictResponse<InvoiceV4>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
@@ -118,7 +118,7 @@ namespace Mindee.UnitTests
         [Fact]
         public async Task GetEnqueuedParsingWithJob_With_OTSApi_WithFile_WithNoDocumentReadyYet()
         {
-            var predictable = new Mock<IPredictable>();
+            var predictable = new Mock<IHttpApi>();
             predictable.Setup(x => x.DocumentQueueGetAsync<InvoiceV4>(It.IsAny<string>()))
                 .ReturnsAsync(new AsyncPredictResponse<InvoiceV4>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
