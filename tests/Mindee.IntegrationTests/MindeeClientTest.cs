@@ -13,7 +13,7 @@ namespace Mindee.IntegrationTests
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
 
-            var mindeeClient = MindeeClientInit.Create(apiKey);
+            var mindeeClient = new MindeeClient(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/invoice/invoice.pdf"));
 
             var response = await mindeeClient.ParseAsync<InvoiceV4>();
@@ -29,7 +29,7 @@ namespace Mindee.IntegrationTests
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
 
-            var mindeeClient = MindeeClientInit.Create(apiKey);
+            var mindeeClient = new MindeeClient(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/receipt/sample.jpg"));
 
             var response = await mindeeClient.ParseAsync<ReceiptV4>();
@@ -51,7 +51,7 @@ namespace Mindee.IntegrationTests
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
 
-            var mindeeClient = MindeeClientInit.Create(apiKey);
+            var mindeeClient = new MindeeClient(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/receipt/sample-with-tip.jpg"));
 
             var response = await mindeeClient.ParseAsync<ReceiptV4>();
@@ -72,7 +72,7 @@ namespace Mindee.IntegrationTests
         public async Task Parse_InvoiceSplitter_V1_2Invoices_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = MindeeClientInit.Create(apiKey);
+            var mindeeClient = new MindeeClient(apiKey);
 
             mindeeClient.LoadDocument(new FileInfo("Resources/invoice_splitter/2_invoices.pdf"));
 
@@ -95,7 +95,7 @@ namespace Mindee.IntegrationTests
         public async Task EnqueueParsing_InvoiceSplitter_V1_2Invoices_MustFail()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = MindeeClientInit.Create(apiKey);
+            var mindeeClient = new MindeeClient(apiKey);
             mindeeClient.LoadDocument(new FileInfo("Resources/invoice_splitter/2_invoices.pdf"));
 
             await Assert.ThrowsAsync<Mindee403Exception>(

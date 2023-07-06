@@ -5,7 +5,7 @@ using Mindee.Parsing;
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 
-MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+MindeeClient mindeeClient = new MindeeClient(apiKey);
 
 CustomEndpoint myEndpoint = new CustomEndpoint(
     endpointName: "my-endpoint",

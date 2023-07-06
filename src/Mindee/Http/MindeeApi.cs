@@ -13,7 +13,7 @@ using RestSharp;
 
 namespace Mindee.Http
 {
-    internal sealed class MindeeApi : IPredictable
+    internal sealed class MindeeApi : IHttpApi
     {
         private readonly string _baseUrl = "https://api.mindee.net/";
         private readonly string _apiKey;

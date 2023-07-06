@@ -13,7 +13,7 @@ const int maxRetries = 10;
 const int intervalSec = 6;
 
 // Init a new client
-MindeeClient mindeeClient = MindeeClientInit.Create(apiKey);
+MindeeClient mindeeClient = new MindeeClient(apiKey);
 
 var enqueueResponse = await mindeeClient
     .LoadDocument(File.OpenRead(filePath), System.IO.Path.GetFileName(filePath))

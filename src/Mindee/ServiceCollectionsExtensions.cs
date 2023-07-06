@@ -21,7 +21,7 @@ namespace Mindee.Extensions.DependencyInjection
             string sectionName = "Mindee")
         {
             services.TryAddTransient<MindeeClient>();
-            services.TryAddTransient<IPredictable, MindeeApi>();
+            services.TryAddTransient<IHttpApi, MindeeApi>();
             services.AddOptions<MindeeSettings>()
                 .BindConfiguration(sectionName)
                 .Validate(settings =>
