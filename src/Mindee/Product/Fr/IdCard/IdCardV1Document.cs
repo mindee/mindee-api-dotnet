@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
-using Mindee.Parsing.Common;
 using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.Fr.IdCard
@@ -14,22 +13,10 @@ namespace Mindee.Product.Fr.IdCard
     public class IdCardV1Document : IPrediction
     {
         /// <summary>
-        /// The identification card number.
+        /// The name of the issuing authority.
         /// </summary>
-        [JsonPropertyName("id_number")]
-        public StringField IdNumber { get; set; }
-
-        /// <summary>
-        /// The given name(s) of the card holder.
-        /// </summary>
-        [JsonPropertyName("given_names")]
-        public List<StringField> GivenNames { get; set; }
-
-        /// <summary>
-        /// The surname of the card holder.
-        /// </summary>
-        [JsonPropertyName("surname")]
-        public StringField Surname { get; set; }
+        [JsonPropertyName("authority")]
+        public StringField Authority { get; set; }
 
         /// <summary>
         /// The date of birth of the card holder.
@@ -50,16 +37,22 @@ namespace Mindee.Product.Fr.IdCard
         public DateField ExpiryDate { get; set; }
 
         /// <summary>
-        /// The name of the issuing authority.
-        /// </summary>
-        [JsonPropertyName("authority")]
-        public StringField Authority { get; set; }
-
-        /// <summary>
         /// The gender of the card holder.
         /// </summary>
         [JsonPropertyName("gender")]
         public StringField Gender { get; set; }
+
+        /// <summary>
+        /// The given name(s) of the card holder.
+        /// </summary>
+        [JsonPropertyName("given_names")]
+        public List<StringField> GivenNames { get; set; }
+
+        /// <summary>
+        /// The identification card number.
+        /// </summary>
+        [JsonPropertyName("id_number")]
+        public StringField IdNumber { get; set; }
 
         /// <summary>
         /// Machine Readable Zone, first line
@@ -72,6 +65,12 @@ namespace Mindee.Product.Fr.IdCard
         /// </summary>
         [JsonPropertyName("mrz2")]
         public StringField Mrz2 { get; set; }
+
+        /// <summary>
+        /// The surname of the card holder.
+        /// </summary>
+        [JsonPropertyName("surname")]
+        public StringField Surname { get; set; }
 
         /// <summary>
         /// A prettier representation of the current model values.
