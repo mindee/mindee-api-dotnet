@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using Mindee.Parsing;
-using Mindee.Parsing.Common;
 using Mindee.Parsing.Custom;
 
 namespace Mindee.Product.Custom
