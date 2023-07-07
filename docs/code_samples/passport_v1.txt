@@ -5,16 +5,12 @@ using Mindee.Product.Passport;
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 
+// Construct a new client
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
-// load an input source
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
 var inputSource = new LocalInputSource(filePath);
-//
-// alternate input sources ...
-// var inputSource = new LocalInputSource(IO.Stream fileStream, string filename)
-// var inputSource = new LocalInputSource(IO.FileInfo fileinfo)
-//
-// etc, check the docs ;-)
 
 // Call the API and parse the input
 var response = await mindeeClient

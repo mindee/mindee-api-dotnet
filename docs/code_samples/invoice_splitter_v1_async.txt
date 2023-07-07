@@ -13,7 +13,7 @@ const int maxRetries = 10;
 // Wait this many seconds between each try
 const int intervalSec = 6;
 
-// Init a new client
+// Construct a new client
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
 // load an input source

@@ -14,8 +14,7 @@ namespace Mindee.Product.Fr.IdCard
         /// The side of the document which is visible.
         /// </summary>
         [JsonPropertyName("document_side")]
-        public StringField DocumentSide { get; set; }
-
+        public ClassificationField DocumentSide { get; set; }
         /// <summary>
         /// A prettier representation of the current model values.
         /// </summary>
