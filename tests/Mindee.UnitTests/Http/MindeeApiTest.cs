@@ -41,7 +41,7 @@ namespace Mindee.UnitTests.Http
             var mindeeApi = InitMockServer(HttpStatusCode.BadRequest, "Resources/errors/wrong_api_key.json");
 
             await Assert.ThrowsAsync<Mindee400Exception>(
-               () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(ParsingTestBase.GetFakePredictParameter()));
+               () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(UnitTestBase.GetFakePredictParameter()));
         }
 
         [Fact]
@@ -49,7 +49,7 @@ namespace Mindee.UnitTests.Http
         {
             var mindeeApi = InitMockServer(HttpStatusCode.OK, "Resources/invoice/response_v4/complete.json");
 
-            var response = await mindeeApi.PredictPostAsync<InvoiceV4>(ParsingTestBase.GetFakePredictParameter());
+            var response = await mindeeApi.PredictPostAsync<InvoiceV4>(UnitTestBase.GetFakePredictParameter());
             var expected = File.ReadAllText("Resources/invoice/response_v4/summary_full.rst");
 
             Assert.NotNull(response);
@@ -74,7 +74,7 @@ namespace Mindee.UnitTests.Http
                 );
 
             await Assert.ThrowsAsync<Mindee400Exception>(
-                           () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(ParsingTestBase.GetFakePredictParameter()));
+                           () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(UnitTestBase.GetFakePredictParameter()));
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace Mindee.UnitTests.Http
                 );
 
             await Assert.ThrowsAsync<Mindee500Exception>(
-                           () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(ParsingTestBase.GetFakePredictParameter()));
+                           () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(UnitTestBase.GetFakePredictParameter()));
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace Mindee.UnitTests.Http
 
             await Assert.ThrowsAsync<Mindee429Exception>(
                () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(
-                   ParsingTestBase.GetFakePredictParameter()
+                   UnitTestBase.GetFakePredictParameter()
                    )
                );
         }
@@ -141,7 +141,7 @@ namespace Mindee.UnitTests.Http
 
             await Assert.ThrowsAsync<Mindee401Exception>(
                 () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(
-                    ParsingTestBase.GetFakePredictParameter()
+                    UnitTestBase.GetFakePredictParameter()
                     )
                 );
         }
@@ -151,7 +151,7 @@ namespace Mindee.UnitTests.Http
         {
             var mindeeApi = InitMockServer(HttpStatusCode.BadRequest, "Resources/async/post_fail_forbidden.json");
 
-            var response = await mindeeApi.PredictAsyncPostAsync<InvoiceV4>(ParsingTestBase.GetFakePredictParameter());
+            var response = await mindeeApi.PredictAsyncPostAsync<InvoiceV4>(UnitTestBase.GetFakePredictParameter());
 
             Assert.NotNull(response);
             Assert.Equal("failure", response.ApiRequest.Status);
@@ -166,7 +166,7 @@ namespace Mindee.UnitTests.Http
         {
             var mindeeApi = InitMockServer(HttpStatusCode.OK, "Resources/async/post_success.json");
 
-            var response = await mindeeApi.PredictAsyncPostAsync<InvoiceV4>(ParsingTestBase.GetFakePredictParameter());
+            var response = await mindeeApi.PredictAsyncPostAsync<InvoiceV4>(UnitTestBase.GetFakePredictParameter());
 
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);

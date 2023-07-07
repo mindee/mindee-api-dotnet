@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
-using Mindee.Parsing.Common;
 
 namespace Mindee.Product.InvoiceSplitter
 {

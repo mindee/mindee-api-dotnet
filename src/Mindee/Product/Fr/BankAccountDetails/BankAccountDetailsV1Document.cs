@@ -1,7 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
-using Mindee.Parsing.Common;
 using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.Fr.BankAccountDetails
@@ -12,16 +11,16 @@ namespace Mindee.Product.Fr.BankAccountDetails
     public class BankAccountDetailsV1Document : IPrediction
     {
         /// <summary>
-        /// The International Bank Account Number (IBAN).
-        /// </summary>
-        [JsonPropertyName("iban")]
-        public StringField Iban { get; set; }
-
-        /// <summary>
         /// The name of the account holder as seen on the document.
         /// </summary>
         [JsonPropertyName("account_holder_name")]
         public StringField AccountHolderName { get; set; }
+
+        /// <summary>
+        /// The International Bank Account Number (IBAN).
+        /// </summary>
+        [JsonPropertyName("iban")]
+        public StringField Iban { get; set; }
 
         /// <summary>
         /// The bank's SWIFT Business Identifier Code (BIC).
