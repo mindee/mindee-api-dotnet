@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
@@ -34,7 +32,8 @@ namespace Mindee.Product.Receipt
         /// <see cref="Tax"/>
         /// </summary>
         [JsonPropertyName("taxes")]
-        public List<Tax> Taxes { get; set; }
+        [JsonConverter(typeof(ObjectListJsonConverter<Taxes, Tax>))]
+        public Taxes Taxes { get; set; }
 
         /// <summary>
         /// Total amount including taxes.
@@ -97,9 +96,9 @@ namespace Mindee.Product.Receipt
             result.Append($":Document type: {DocumentType}\n");
             result.Append($":Time: {Time.Value}\n");
             result.Append($":Supplier name: {Supplier}\n");
-            result.Append($":Taxes: {string.Join("\n                 ", Taxes.Select(t => t))}\n");
+            result.Append($":Taxes:{Taxes}");
             result.Append($":Total net: {TotalNet}\n");
-            result.Append($":Total taxes: {TotalTax}\n");
+            result.Append($":Total tax: {TotalTax}\n");
             result.Append($":Tip: {Tip}\n");
             result.Append($":Total amount: {TotalAmount}\n");
 

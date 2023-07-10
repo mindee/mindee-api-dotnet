@@ -34,7 +34,8 @@ namespace Mindee.Product.Invoice
         /// <see cref="Tax"/>
         /// </summary>
         [JsonPropertyName("taxes")]
-        public List<Tax> Taxes { get; set; }
+        [JsonConverter(typeof(ObjectListJsonConverter<Taxes, Tax>))]
+        public Taxes Taxes { get; set; }
 
         /// <summary>
         /// Total amount including taxes.
@@ -112,7 +113,8 @@ namespace Mindee.Product.Invoice
         /// Line items details.
         /// </summary>
         [JsonPropertyName("line_items")]
-        public List<InvoiceV4LineItem> LineItems { get; set; }
+        [JsonConverter(typeof(ObjectListJsonConverter<InvoiceV4LineItems, InvoiceV4LineItem>))]
+        public InvoiceV4LineItems LineItems { get; set; }
 
         /// <summary>
         /// The total amount of taxes.
@@ -124,24 +126,6 @@ namespace Mindee.Product.Invoice
         /// </summary>
         public override string ToString()
         {
-            StringBuilder lineItems = new StringBuilder("\n");
-            if (LineItems.Any())
-            {
-                lineItems.Append(
-                    "====================== ======== ========= ========== ================== ====================================\n"
-                    );
-                lineItems.Append(
-                    "Code                   QTY      Price     Amount     Tax (Rate)         Description\n"
-                    );
-                lineItems.Append(
-                    "====================== ======== ========= ========== ================== ====================================\n"
-                    );
-                lineItems.Append(string.Join("\n", LineItems.Select(item => item.ToString())));
-                lineItems.Append(
-                    "\n====================== ======== ========= ========== ================== ===================================="
-                    );
-            }
-
             StringBuilder result = new StringBuilder();
             result.Append($":Locale: {Locale}\n");
             result.Append($":Document type: {DocumentType}\n");
@@ -156,12 +140,11 @@ namespace Mindee.Product.Invoice
             result.Append($":Customer name: {CustomerName}\n");
             result.Append($":Customer address: {string.Join("; ", CustomerAddress)}\n");
             result.Append($":Customer company registrations: {string.Join("; ", CustomerCompanyRegistrations.Select(c => c.Value))}\n");
-            result.Append($":Taxes: {string.Join("\n                 ", Taxes.Select(t => t))}\n");
+            result.Append($":Taxes:{Taxes}");
             result.Append($":Total net: {TotalNet}\n");
-            result.Append($":Total taxes: {SummaryHelper.FormatAmount(TotalTaxes)}\n");
+            result.Append($":Total tax: {SummaryHelper.FormatAmount(TotalTaxes)}\n");
             result.Append($":Total amount: {TotalAmount}\n");
-            result.Append($"\n:Line Items: {lineItems}\n");
-
+            result.Append($":Line Items:{LineItems}");
             return SummaryHelper.Clean(result.ToString());
         }
     }
