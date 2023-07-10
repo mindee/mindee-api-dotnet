@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -6,7 +8,7 @@ namespace Mindee.Parsing.Standard
     /// <summary>
     /// Represent a tax.
     /// </summary>
-    public class Tax : BaseField
+    public class Tax : BaseField, ILineItemField
     {
         /// <summary>
         /// The rate of the taxe.
@@ -35,34 +37,70 @@ namespace Mindee.Parsing.Standard
         public string Code { get; set; }
 
         /// <summary>
-        ///
+        /// Output a summary of the line.
         /// </summary>
-        /// <returns>A pretty summary of the value.</returns>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder();
+            Dictionary<string, string> printable = PrintableValues();
+            return "Base: "
+                + printable["base"]
+                + ", Code: "
+                + printable["code"]
+                + ", Rate (%): "
+                + printable["rate"]
+                + ", Amount: "
+                + printable["value"].Trim();
+        }
 
-            if (Value != null)
+        /// <summary>
+        /// Output the line in a format suitable for inclusion in an rST table.
+        /// </summary>
+        public string ToTableLine()
+        {
+            Dictionary<string, string> printable = PrintableValues();
+            return "| "
+                + String.Format("{0,-13}", printable["Base"])
+                + " | "
+                + String.Format("{0,-6}", printable["Code"])
+                + " | "
+                + String.Format("{0,-8}", printable["Rate"])
+                + " | "
+                + String.Format("{0,-13}", printable["Value"])
+                + " |";
+        }
+
+        private Dictionary<string, string> PrintableValues()
+        {
+            var printable = new Dictionary<string, string>();
+            printable.Add("Base", SummaryHelper.FormatAmount(Base));
+            printable.Add("Code", SummaryHelper.FormatString(Code));
+            printable.Add("Rate", SummaryHelper.FormatAmount(Rate));
+            printable.Add("Value", SummaryHelper.FormatAmount(Value));
+            return printable;
+        }
+    }
+
+    /// <summary>
+    /// Represent all the tax lines.
+    /// </summary>
+    public class Taxes : List<Tax>
+    {
+        /// <summary>
+        /// Default string representation.
+        /// </summary>
+        public override string ToString()
+        {
+            if (this.Count == 0)
             {
-                result.Append(SummaryHelper.FormatAmount(Value));
+                return "\n";
             }
-
-            if (Rate != null)
-            {
-                result.Append($" {SummaryHelper.FormatAmount(Rate)}%");
-            }
-
-            if (Code != null)
-            {
-                result.Append($" {Code}");
-            }
-
-            if (Base != null)
-            {
-                result.Append($" {SummaryHelper.FormatAmount(Base)}");
-            }
-
-            return result.ToString().Trim();
+            int[] columnSizes = { 15, 8, 10, 15 };
+            StringBuilder outStr = new StringBuilder("\n");
+            outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '-'));
+            outStr.Append("  | Base          | Code   | Rate (%) | Amount        |\n");
+            outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '='));
+            outStr.Append(SummaryHelper.ArrayToString(this, columnSizes));
+            return outStr.ToString();
         }
     }
 }

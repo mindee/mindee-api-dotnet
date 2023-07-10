@@ -18,7 +18,7 @@ namespace Mindee.Parsing.Standard
         /// </summary>
         public override string ToString()
         {
-            return Value ?? "";
+            return SummaryHelper.FormatString(Value);
         }
     }
 }

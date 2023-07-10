@@ -16,8 +16,15 @@ namespace Mindee.Parsing.Standard
         /// <summary>
         /// The value of the field.
         /// </summary>
-
         [JsonPropertyName("value")]
         public string Value { get; set; }
+
+        /// <summary>
+        /// A pretty summary of the value.
+        /// </summary>
+        public override string ToString()
+        {
+            return SummaryHelper.FormatString(Value);
+        }
     }
 }
