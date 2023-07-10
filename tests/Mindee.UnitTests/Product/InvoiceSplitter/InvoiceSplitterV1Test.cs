@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.Product.InvoiceSplitter
         public async Task Predict_CheckSummary()
         {
             var response = await GetPrediction();
-            var expected = File.ReadAllText("Resources/invoice_splitter/response_v1/2_invoices_summary.rst");
+            var expected = File.ReadAllText("Resources/invoice_splitter/response_v1/summary_full.rst");
             Assert.Equal(
                 expected,
                 response.Document.ToString());
@@ -18,7 +18,7 @@ namespace Mindee.UnitTests.Product.InvoiceSplitter
 
         private static async Task<AsyncPredictResponse<InvoiceSplitterV1>> GetPrediction()
         {
-            const string fileName = "Resources/invoice_splitter/response_v1/2_invoices_response.json";
+            const string fileName = "Resources/invoice_splitter/response_v1/complete.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.DocumentQueueGetAsync<InvoiceSplitterV1>("hello");
         }
