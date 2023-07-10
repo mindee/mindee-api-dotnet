@@ -22,6 +22,10 @@ namespace Mindee.Product.InvoiceSplitter
         /// </summary>
         public override string ToString()
         {
+            if (PageGroups.Count < 1)
+            {
+                return ":Invoice Page Groups:\n";
+            }
             StringBuilder result = new StringBuilder();
             result.Append($":Invoice Page Groups:\n  {string.Join("\n  ", PageGroups.Select(pg => pg.ToString()))}\n");
 
