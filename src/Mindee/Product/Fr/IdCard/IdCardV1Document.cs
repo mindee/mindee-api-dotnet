@@ -80,7 +80,6 @@ namespace Mindee.Product.Fr.IdCard
             string givenNames = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 13)),
                 GivenNames.Select(item => item));
-
             StringBuilder result = new StringBuilder();
             result.Append($":Identity Number: {IdNumber}\n");
             result.Append($":Given Name(s): {givenNames}\n");
@@ -92,7 +91,6 @@ namespace Mindee.Product.Fr.IdCard
             result.Append($":Gender: {Gender}\n");
             result.Append($":MRZ Line 1: {Mrz1}\n");
             result.Append($":MRZ Line 2: {Mrz2}\n");
-
             return SummaryHelper.Clean(result.ToString());
         }
     }
