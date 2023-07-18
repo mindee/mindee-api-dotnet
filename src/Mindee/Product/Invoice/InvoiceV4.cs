@@ -4,7 +4,7 @@ using Mindee.Parsing.Common;
 namespace Mindee.Product.Invoice
 {
     /// <summary>
-    /// The invoice v4 definition.
+    /// The definition for invoices v4.
     /// </summary>
     [Endpoint("invoices", "4")]
     public class InvoiceV4 : Inference<InvoiceV4Document, InvoiceV4Document>

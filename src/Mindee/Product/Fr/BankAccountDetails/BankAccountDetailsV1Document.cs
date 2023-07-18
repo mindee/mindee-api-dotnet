@@ -33,12 +33,10 @@ namespace Mindee.Product.Fr.BankAccountDetails
         /// </summary>
         public override string ToString()
         {
-
             StringBuilder result = new StringBuilder();
             result.Append($":IBAN: {Iban}\n");
             result.Append($":Account Holder's Name: {AccountHolderName}\n");
             result.Append($":SWIFT Code: {Swift}\n");
-
             return SummaryHelper.Clean(result.ToString());
         }
     }

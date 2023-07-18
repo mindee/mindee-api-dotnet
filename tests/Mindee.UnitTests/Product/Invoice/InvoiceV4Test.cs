@@ -3,7 +3,7 @@ using Mindee.Product.Invoice;
 
 namespace Mindee.UnitTests.Product.Invoice
 {
-    [Trait("Category", "Invoice V4")]
+    [Trait("Category", "InvoiceV4")]
     public class InvoiceV4Test
     {
         [Fact]
@@ -11,33 +11,24 @@ namespace Mindee.UnitTests.Product.Invoice
         {
             var response = await GetPrediction();
             var expected = File.ReadAllText("Resources/invoice/response_v4/summary_full.rst");
-            Assert.Equal(
-                expected,
-                response.Document.ToString());
+            Assert.Equal(expected, response.Document.ToString());
         }
 
         [Fact]
-        public async Task Predict_CheckSummary_WithMultiplePages()
+        public async Task Predict_CheckPage0()
         {
             var response = await GetPrediction();
             var expected = File.ReadAllText("Resources/invoice/response_v4/summary_page0.rst");
-            Assert.Equal(
-                expected,
-                response.Document.Inference.Pages.First().ToString());
+            Assert.Equal(expected, response.Document.Inference.Pages[0].ToString());
+            Assert.Equal(0, response.Document.Inference.Pages[0].Orientation.Value);
         }
 
-        [Fact]
-        public async Task Predict_MustSuccessForOrientation()
-        {
-            var response = await GetPrediction();
-            Assert.Equal(0, response.Document.Inference.Pages.First().Orientation.Value);
-        }
-
-        private async Task<PredictResponse<InvoiceV4>> GetPrediction()
+        private static async Task<PredictResponse<InvoiceV4>> GetPrediction()
         {
             const string fileName = "Resources/invoice/response_v4/complete.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictPostAsync<InvoiceV4>(UnitTestBase.GetFakePredictParameter());
+            return await mindeeAPi.PredictPostAsync<InvoiceV4>(
+                UnitTestBase.GetFakePredictParameter());
         }
     }
 }

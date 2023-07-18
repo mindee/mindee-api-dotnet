@@ -19,10 +19,10 @@ namespace Mindee.Product.Fr.CarteVitale
         public List<StringField> GivenNames { get; set; }
 
         /// <summary>
-        /// The surname of the card holder.
+        /// The date the card was issued.
         /// </summary>
-        [JsonPropertyName("surname")]
-        public StringField Surname { get; set; }
+        [JsonPropertyName("issuance_date")]
+        public DateField IssuanceDate { get; set; }
 
         /// <summary>
         /// The Social Security Number (Numéro de Sécurité Sociale) of the card holder
@@ -31,10 +31,10 @@ namespace Mindee.Product.Fr.CarteVitale
         public StringField SocialSecurity { get; set; }
 
         /// <summary>
-        /// The date the card was issued.
+        /// The surname of the card holder.
         /// </summary>
-        [JsonPropertyName("issuance_date")]
-        public DateField IssuanceDate { get; set; }
+        [JsonPropertyName("surname")]
+        public StringField Surname { get; set; }
 
         /// <summary>
         /// A prettier representation of the current model values.
@@ -44,13 +44,11 @@ namespace Mindee.Product.Fr.CarteVitale
             string givenNames = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 13)),
                 GivenNames.Select(item => item));
-
             StringBuilder result = new StringBuilder();
             result.Append($":Given Name(s): {givenNames}\n");
             result.Append($":Surname: {Surname}\n");
             result.Append($":Social Security Number: {SocialSecurity}\n");
             result.Append($":Issuance Date: {IssuanceDate}\n");
-
             return SummaryHelper.Clean(result.ToString());
         }
     }
