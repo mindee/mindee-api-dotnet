@@ -2,23 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
-using Mindee.Geometry;
 using Mindee.Parsing;
 using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.Invoice
 {
     /// <summary>
-    /// Line items details.
+    /// List of line item details.
     /// </summary>
     public class InvoiceV4LineItem : ILineItemField
     {
-        /// <summary>
-        /// The product code referring to the item.
-        /// </summary>
-        [JsonPropertyName("product_code")]
-        public string ProductCode { get; set; }
-
         /// <summary>
         /// The item description.
         /// </summary>
@@ -26,28 +19,16 @@ namespace Mindee.Product.Invoice
         public string Description { get; set; }
 
         /// <summary>
-        /// The item quantity.
+        /// The product code referring to the item.
+        /// </summary>
+        [JsonPropertyName("product_code")]
+        public string ProductCode { get; set; }
+
+        /// <summary>
+        /// The item quantity
         /// </summary>
         [JsonPropertyName("quantity")]
         public double? Quantity { get; set; }
-
-        /// <summary>
-        /// The item unit price.
-        /// </summary>
-        [JsonPropertyName("unit_price")]
-        public double? UnitPrice { get; set; }
-
-        /// <summary>
-        /// The item total amount.
-        /// </summary>
-        [JsonPropertyName("total_amount")]
-        public double? TotalAmount { get; set; }
-
-        /// <summary>
-        /// The item tax rate in percentage.
-        /// </summary>
-        [JsonPropertyName("tax_rate")]
-        public double? TaxRate { get; set; }
 
         /// <summary>
         /// The item tax amount.
@@ -56,37 +37,22 @@ namespace Mindee.Product.Invoice
         public double? TaxAmount { get; set; }
 
         /// <summary>
-        /// Confidence score.
+        /// The item tax rate in percentage.
         /// </summary>
-        [JsonPropertyName("confidence")]
-        public double Confidence { get; set; } = 0.0;
+        [JsonPropertyName("tax_rate")]
+        public double? TaxRate { get; set; }
 
         /// <summary>
-        /// The document page on which the information was found.
+        /// The item total amount.
         /// </summary>
-        [JsonPropertyName("page_id")]
-        public double PageId { get; set; }
+        [JsonPropertyName("total_amount")]
+        public double? TotalAmount { get; set; }
 
         /// <summary>
-        /// Contains the relative vertices's coordinates (points) of a polygon containing
-        /// the field in the document.
+        /// The item unit price.
         /// </summary>
-        [JsonPropertyName("polygon")]
-        [JsonConverter(typeof(PolygonJsonConverter))]
-        public Polygon Polygon { get; set; }
-
-        private Dictionary<string, string> PrintableValues()
-        {
-            var printable = new Dictionary<string, string>();
-            printable.Add("ProductCode", SummaryHelper.FormatString(ProductCode));
-            printable.Add("Quantity", SummaryHelper.FormatAmount(Quantity));
-            printable.Add("UnitPrice", SummaryHelper.FormatAmount(UnitPrice));
-            printable.Add("TotalAmount", SummaryHelper.FormatAmount(TotalAmount));
-            printable.Add("TaxAmount", SummaryHelper.FormatAmount(TaxAmount));
-            printable.Add("TaxRate", SummaryHelper.FormatAmount(TaxRate));
-            printable.Add("Description", SummaryHelper.FormatString(Description, 36));
-            return printable;
-        }
+        [JsonPropertyName("unit_price")]
+        public double? UnitPrice { get; set; }
 
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
@@ -133,6 +99,20 @@ namespace Mindee.Product.Invoice
                 + printable["TaxRate"]
                 + ", Description: "
                 + printable["Description"].Trim();
+        }
+
+        private Dictionary<string, string> PrintableValues()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"Description", SummaryHelper.FormatString(Description, 36)},
+                {"ProductCode", SummaryHelper.FormatString(ProductCode)},
+                {"Quantity", SummaryHelper.FormatAmount(Quantity)},
+                {"TaxAmount", SummaryHelper.FormatAmount(TaxAmount)},
+                {"TaxRate", SummaryHelper.FormatAmount(TaxRate)},
+                {"TotalAmount", SummaryHelper.FormatAmount(TotalAmount)},
+                {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
+            };
         }
     }
 

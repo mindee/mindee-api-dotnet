@@ -80,7 +80,6 @@ namespace Mindee.Product.ProofOfAddress
             string dates = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 7)),
                 Dates.Select(item => item));
-
             StringBuilder result = new StringBuilder();
             result.Append($":Locale: {Locale}\n");
             result.Append($":Issuer Name: {IssuerName}\n");
@@ -91,7 +90,6 @@ namespace Mindee.Product.ProofOfAddress
             result.Append($":Recipient Address: {RecipientAddress}\n");
             result.Append($":Dates: {dates}\n");
             result.Append($":Date of Issue: {Date}\n");
-
             return SummaryHelper.Clean(result.ToString());
         }
     }
