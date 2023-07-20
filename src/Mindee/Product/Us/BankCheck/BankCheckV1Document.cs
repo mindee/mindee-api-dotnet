@@ -8,71 +8,61 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Us.BankCheck
 {
     /// <summary>
-    /// The us bank check model for the v1.
+    /// Document data for Bank Checks (beta), API version 1.
     /// </summary>
-    public sealed class BankCheckV1Document : IPrediction
+    public class BankCheckV1Document : IPrediction
     {
         /// <summary>
-        /// Payer's bank account number.
+        /// The check payer's account number.
         /// </summary>
         [JsonPropertyName("account_number")]
         public StringField AccountNumber { get; set; }
 
         /// <summary>
-        /// Total including taxes.
+        /// The amount of the check.
         /// </summary>
         [JsonPropertyName("amount")]
         public AmountField Amount { get; set; }
 
         /// <summary>
-        /// Payer's bank account number.
+        /// The issuer's check number.
         /// </summary>
         [JsonPropertyName("check_number")]
         public StringField CheckNumber { get; set; }
 
         /// <summary>
-        /// Check's position in the image.
-        /// </summary>
-        [JsonPropertyName("check_position")]
-        public PositionField CheckPosition { get; set; }
-
-        /// <summary>
-        /// Date the check was issued.
+        /// The date the check was issued.
         /// </summary>
         [JsonPropertyName("date")]
-        public StringField IssuanceDate { get; set; }
+        public DateField Date { get; set; }
 
         /// <summary>
-        /// List of payees (full name or company name).
+        /// List of the check's payees (recipients).
         /// </summary>
         [JsonPropertyName("payees")]
         public IList<StringField> Payees { get; set; } = new List<StringField>();
 
         /// <summary>
-        /// Payer's bank account routing number.
+        /// The check issuer's routing number.
         /// </summary>
         [JsonPropertyName("routing_number")]
         public StringField RoutingNumber { get; set; }
 
         /// <summary>
-        /// Signatures' positions in the image.
-        /// </summary>
-        [JsonPropertyName("signatures_positions")]
-        public IList<PositionField> SignaturesPositions { get; set; } = new List<PositionField>();
-
-        /// <summary>
-        /// A prettier reprensentation of the current model values.
+        /// A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
         {
+            string payees = string.Join(
+                "\n " + string.Concat(Enumerable.Repeat(" ", 8)),
+                Payees.Select(item => item));
             StringBuilder result = new StringBuilder();
-            result.Append($":Routing number: {RoutingNumber}\n");
-            result.Append($":Account number: {AccountNumber}\n");
-            result.Append($":Check number: {CheckNumber}\n");
-            result.Append($":Date: {IssuanceDate}\n");
+            result.Append($":Check Issue Date: {Date}\n");
             result.Append($":Amount: {Amount}\n");
-            result.Append($":Payees: {string.Join(", ", Payees.Select(gn => gn))}\n");
-
+            result.Append($":Payees: {payees}\n");
+            result.Append($":Routing Number: {RoutingNumber}\n");
+            result.Append($":Account Number: {AccountNumber}\n");
+            result.Append($":Check Number: {CheckNumber}\n");
             return SummaryHelper.Clean(result.ToString());
         }
     }
