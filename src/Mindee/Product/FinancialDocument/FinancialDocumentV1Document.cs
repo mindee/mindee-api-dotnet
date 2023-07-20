@@ -28,7 +28,7 @@ namespace Mindee.Product.FinancialDocument
         /// List of company registrations associated to the customer.
         /// </summary>
         [JsonPropertyName("customer_company_registrations")]
-        public List<CompanyRegistration> CustomerCompanyRegistrations { get; set; }
+        public IList<CompanyRegistration> CustomerCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
         /// The name of the customer.
@@ -77,7 +77,7 @@ namespace Mindee.Product.FinancialDocument
         /// List of Reference numbers, including PO number.
         /// </summary>
         [JsonPropertyName("reference_numbers")]
-        public List<StringField> ReferenceNumbers { get; set; }
+        public IList<StringField> ReferenceNumbers { get; set; } = new List<StringField>();
 
         /// <summary>
         /// The purchase subcategory among predefined classes for transport and food.
@@ -95,7 +95,7 @@ namespace Mindee.Product.FinancialDocument
         /// List of company registrations associated to the supplier.
         /// </summary>
         [JsonPropertyName("supplier_company_registrations")]
-        public List<CompanyRegistration> SupplierCompanyRegistrations { get; set; }
+        public IList<CompanyRegistration> SupplierCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
         /// The name of the supplier or merchant.
@@ -107,7 +107,7 @@ namespace Mindee.Product.FinancialDocument
         /// List of payment details associated to the supplier.
         /// </summary>
         [JsonPropertyName("supplier_payment_details")]
-        public List<PaymentDetail> SupplierPaymentDetails { get; set; }
+        public IList<PaymentDetail> SupplierPaymentDetails { get; set; } = new List<PaymentDetail>();
 
         /// <summary>
         /// The phone number of the supplier or merchant.
