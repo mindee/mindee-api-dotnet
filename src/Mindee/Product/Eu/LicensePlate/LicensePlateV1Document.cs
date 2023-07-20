@@ -16,7 +16,7 @@ namespace Mindee.Product.Eu.LicensePlate
         /// List of all license plates found in the image.
         /// </summary>
         [JsonPropertyName("license_plates")]
-        public List<StringField> LicensePlates { get; set; }
+        public IList<StringField> LicensePlates { get; set; } = new List<StringField>();
 
         /// <summary>
         /// A prettier representation of the current model values.
@@ -26,10 +26,8 @@ namespace Mindee.Product.Eu.LicensePlate
             string licensePlates = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 16)),
                 LicensePlates.Select(item => item));
-
             StringBuilder result = new StringBuilder();
             result.Append($":License Plates: {licensePlates}\n");
-
             return SummaryHelper.Clean(result.ToString());
         }
     }

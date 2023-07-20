@@ -46,7 +46,7 @@ namespace Mindee.Product.Fr.IdCard
         /// The given name(s) of the card holder.
         /// </summary>
         [JsonPropertyName("given_names")]
-        public List<StringField> GivenNames { get; set; }
+        public IList<StringField> GivenNames { get; set; } = new List<StringField>();
 
         /// <summary>
         /// The identification card number.

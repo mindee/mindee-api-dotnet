@@ -15,6 +15,7 @@ namespace Mindee.Product.Fr.IdCard
         /// </summary>
         [JsonPropertyName("document_side")]
         public ClassificationField DocumentSide { get; set; }
+
         /// <summary>
         /// A prettier representation of the current model values.
         /// </summary>

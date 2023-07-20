@@ -10,7 +10,7 @@ namespace Mindee.Product.Fr.BankAccountDetails
     /// <summary>
     /// Full extraction of BBAN, including: branch code, bank code, account and key.
     /// </summary>
-    public class BankAccountDetailsV2Bban
+    public sealed class BankAccountDetailsV2Bban
     {
         /// <summary>
         /// The BBAN bank code outputted as a string.

@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Receipt
 {
     /// <summary>
-    /// Document data for Expense Receipt, API version 5.
+    /// Document data for Receipt, API version 5.
     /// </summary>
     public class ReceiptV5Document : IPrediction
     {
@@ -59,7 +59,7 @@ namespace Mindee.Product.Receipt
         /// List of company registrations associated to the supplier.
         /// </summary>
         [JsonPropertyName("supplier_company_registrations")]
-        public List<CompanyRegistration> SupplierCompanyRegistrations { get; set; }
+        public IList<CompanyRegistration> SupplierCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
         /// The name of the supplier or merchant.
