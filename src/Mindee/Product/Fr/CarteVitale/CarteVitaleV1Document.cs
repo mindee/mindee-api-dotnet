@@ -16,7 +16,7 @@ namespace Mindee.Product.Fr.CarteVitale
         /// The given name(s) of the card holder.
         /// </summary>
         [JsonPropertyName("given_names")]
-        public List<StringField> GivenNames { get; set; }
+        public IList<StringField> GivenNames { get; set; } = new List<StringField>();
 
         /// <summary>
         /// The date the card was issued.

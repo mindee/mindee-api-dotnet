@@ -22,7 +22,7 @@ namespace Mindee.Product.ProofOfAddress
         /// List of dates found on the document.
         /// </summary>
         [JsonPropertyName("dates")]
-        public List<DateField> Dates { get; set; }
+        public IList<DateField> Dates { get; set; } = new List<DateField>();
 
         /// <summary>
         /// The address of the document's issuer.
@@ -34,7 +34,7 @@ namespace Mindee.Product.ProofOfAddress
         /// List of company registrations found for the issuer.
         /// </summary>
         [JsonPropertyName("issuer_company_registration")]
-        public List<CompanyRegistration> IssuerCompanyRegistration { get; set; }
+        public IList<CompanyRegistration> IssuerCompanyRegistration { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
         /// The name of the person or company issuing the document.
@@ -58,7 +58,7 @@ namespace Mindee.Product.ProofOfAddress
         /// List of company registrations found for the recipient.
         /// </summary>
         [JsonPropertyName("recipient_company_registration")]
-        public List<CompanyRegistration> RecipientCompanyRegistration { get; set; }
+        public IList<CompanyRegistration> RecipientCompanyRegistration { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
         /// The name of the person or company receiving the document.

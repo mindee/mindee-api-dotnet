@@ -10,7 +10,7 @@ namespace Mindee.Product.Receipt
     /// <summary>
     /// List of line item details.
     /// </summary>
-    public class ReceiptV5LineItem : ILineItemField
+    public sealed class ReceiptV5LineItem : ILineItemField
     {
         /// <summary>
         /// The item description.

@@ -46,7 +46,7 @@ namespace Mindee.Product.Passport
         /// The given name(s) of the passport holder.
         /// </summary>
         [JsonPropertyName("given_names")]
-        public List<StringField> GivenNames { get; set; }
+        public IList<StringField> GivenNames { get; set; } = new List<StringField>();
 
         /// <summary>
         /// The passport's identification number.
