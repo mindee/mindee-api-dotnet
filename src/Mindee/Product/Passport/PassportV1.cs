@@ -7,7 +7,7 @@ namespace Mindee.Product.Passport
     /// The definition for passport v1.
     /// </summary>
     [Endpoint("passport", "1")]
-    public class PassportV1 : Inference<PassportV1Document, PassportV1Document>
+    public sealed class PassportV1 : Inference<PassportV1Document, PassportV1Document>
     {
     }
 }

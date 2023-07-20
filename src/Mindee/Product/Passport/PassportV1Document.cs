@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Passport
 {
     /// <summary>
-    /// Document data for International Passport, API version 1.
+    /// Document data for Passport, API version 1.
     /// </summary>
     public class PassportV1Document : IPrediction
     {
@@ -86,7 +86,6 @@ namespace Mindee.Product.Passport
             string givenNames = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 13)),
                 GivenNames.Select(item => item));
-
             StringBuilder result = new StringBuilder();
             result.Append($":Country Code: {Country}\n");
             result.Append($":ID Number: {IdNumber}\n");
@@ -99,7 +98,6 @@ namespace Mindee.Product.Passport
             result.Append($":Expiry Date: {ExpiryDate}\n");
             result.Append($":MRZ Line 1: {Mrz1}\n");
             result.Append($":MRZ Line 2: {Mrz2}\n");
-
             return SummaryHelper.Clean(result.ToString());
         }
     }

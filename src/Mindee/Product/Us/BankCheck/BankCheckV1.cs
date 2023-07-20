@@ -7,7 +7,7 @@ namespace Mindee.Product.Us.BankCheck
     /// The bank check v4 definition.
     /// </summary>
     [Endpoint("bank_check", "1")]
-    public class BankCheckV1 : Inference<BankCheckV1Document, BankCheckV1Document>
+    public sealed class BankCheckV1 : Inference<BankCheckV1Document, BankCheckV1Document>
     {
     }
 }

@@ -7,7 +7,7 @@ namespace Mindee.Product.ProofOfAddress
     /// The definition for proof_of_address v1.
     /// </summary>
     [Endpoint("proof_of_address", "1")]
-    public class ProofOfAddressV1 : Inference<ProofOfAddressV1Document, ProofOfAddressV1Document>
+    public sealed class ProofOfAddressV1 : Inference<ProofOfAddressV1Document, ProofOfAddressV1Document>
     {
     }
 }

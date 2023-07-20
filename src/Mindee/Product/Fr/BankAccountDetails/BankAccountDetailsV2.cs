@@ -7,7 +7,7 @@ namespace Mindee.Product.Fr.BankAccountDetails
     /// The definition for bank_account_details v2.
     /// </summary>
     [Endpoint("bank_account_details", "2")]
-    public class BankAccountDetailsV2 : Inference<BankAccountDetailsV2Document, BankAccountDetailsV2Document>
+    public sealed class BankAccountDetailsV2 : Inference<BankAccountDetailsV2Document, BankAccountDetailsV2Document>
     {
     }
 }
