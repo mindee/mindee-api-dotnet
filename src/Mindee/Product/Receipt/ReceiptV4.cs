@@ -7,7 +7,7 @@ namespace Mindee.Product.Receipt
     /// The receipt v4 definition.
     /// </summary>
     [Endpoint("expense_receipts", "4")]
-    public class ReceiptV4 : Inference<ReceiptV4Document, ReceiptV4Document>
+    public sealed class ReceiptV4 : Inference<ReceiptV4Document, ReceiptV4Document>
     {
     }
 }

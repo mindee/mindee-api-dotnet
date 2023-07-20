@@ -7,7 +7,7 @@ namespace Mindee.Product.Invoice
     /// The definition for invoices v4.
     /// </summary>
     [Endpoint("invoices", "4")]
-    public class InvoiceV4 : Inference<InvoiceV4Document, InvoiceV4Document>
+    public sealed class InvoiceV4 : Inference<InvoiceV4Document, InvoiceV4Document>
     {
     }
 }

@@ -10,7 +10,7 @@ namespace Mindee.Product.FinancialDocument
     /// <summary>
     /// List of line item details.
     /// </summary>
-    public class FinancialDocumentV1LineItem : ILineItemField
+    public sealed class FinancialDocumentV1LineItem : ILineItemField
     {
         /// <summary>
         /// The item description.
