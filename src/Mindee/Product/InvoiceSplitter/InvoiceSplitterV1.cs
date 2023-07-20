@@ -7,7 +7,7 @@ namespace Mindee.Product.InvoiceSplitter
     /// The invoice splitter v1 definition.
     /// </summary>
     [Endpoint("invoice_splitter", "1")]
-    public class InvoiceSplitterV1 : Inference<InvoiceSplitterV1Document, InvoiceSplitterV1Document>
+    public sealed class InvoiceSplitterV1 : Inference<InvoiceSplitterV1Document, InvoiceSplitterV1Document>
     {
     }
 }

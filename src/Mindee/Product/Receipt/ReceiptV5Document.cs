@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Receipt
 {
     /// <summary>
-    /// Document data for Expense Receipt, API version 5.
+    /// Document data for Receipt, API version 5.
     /// </summary>
     public class ReceiptV5Document : IPrediction
     {

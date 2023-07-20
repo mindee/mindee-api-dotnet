@@ -7,7 +7,7 @@ namespace Mindee.Product.FinancialDocument
     /// The definition for financial_document v1.
     /// </summary>
     [Endpoint("financial_document", "1")]
-    public class FinancialDocumentV1 : Inference<FinancialDocumentV1Document, FinancialDocumentV1Document>
+    public sealed class FinancialDocumentV1 : Inference<FinancialDocumentV1Document, FinancialDocumentV1Document>
     {
     }
 }

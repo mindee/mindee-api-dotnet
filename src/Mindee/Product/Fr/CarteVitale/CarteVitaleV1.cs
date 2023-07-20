@@ -7,7 +7,7 @@ namespace Mindee.Product.Fr.CarteVitale
     /// The definition for carte_vitale v1.
     /// </summary>
     [Endpoint("carte_vitale", "1")]
-    public class CarteVitaleV1 : Inference<CarteVitaleV1Document, CarteVitaleV1Document>
+    public sealed class CarteVitaleV1 : Inference<CarteVitaleV1Document, CarteVitaleV1Document>
     {
     }
 }

@@ -26,10 +26,8 @@ namespace Mindee.Product.Eu.LicensePlate
             string licensePlates = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 16)),
                 LicensePlates.Select(item => item));
-
             StringBuilder result = new StringBuilder();
             result.Append($":License Plates: {licensePlates}\n");
-
             return SummaryHelper.Clean(result.ToString());
         }
     }
