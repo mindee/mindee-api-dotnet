@@ -6,7 +6,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Receipt
 {
     /// <summary>
-    /// The receipt model for the v4.
+    /// Document data for Receipt, API version 4.
     /// </summary>
     public sealed class ReceiptV4Document : IPrediction
     {

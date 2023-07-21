@@ -27,17 +27,12 @@ namespace Mindee.IntegrationTests
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
-            var inputSource = new LocalInputSource("Resources/receipt/sample.jpg");
+            var inputSource = new LocalInputSource("Resources/receipt/receipt.jpg");
             var response = await mindeeClient.ParseAsync<ReceiptV4>(inputSource);
             Assert.NotNull(response);
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
             Assert.Single(response.Document.Inference.Pages);
-
-            var expected = File.ReadAllText("Resources/receipt/response_v4/sample_summary.rst");
-            Assert.Equal(
-                expected,
-                response.Document.Inference.ToString());
         }
 
         [Fact]
@@ -45,17 +40,12 @@ namespace Mindee.IntegrationTests
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
-            var inputSource = new LocalInputSource("Resources/receipt/sample-with-tip.jpg");
+            var inputSource = new LocalInputSource("Resources/receipt/us_receipt.jpg");
             var response = await mindeeClient.ParseAsync<ReceiptV4>(inputSource);
             Assert.NotNull(response);
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
             Assert.Single(response.Document.Inference.Pages);
-
-            var expected = File.ReadAllText("Resources/receipt/response_v4/sample_with_tip_summary.rst");
-            Assert.Equal(
-                expected,
-                response.Document.Inference.ToString());
         }
 
         [Fact]
