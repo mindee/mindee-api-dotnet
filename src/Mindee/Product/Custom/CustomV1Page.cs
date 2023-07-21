@@ -8,7 +8,7 @@ using Mindee.Parsing.Custom;
 namespace Mindee.Product.Custom
 {
     /// <summary>
-    /// Define a page prediction from a model built thanks to an API builder.
+    /// Page data for Custom Documents, API version 1.
     /// </summary>
     [Serializable]
     public sealed class CustomV1Page : Dictionary<string, ListField>, IPrediction

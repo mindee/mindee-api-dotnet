@@ -7,7 +7,7 @@ using Mindee.Parsing;
 namespace Mindee.Product.InvoiceSplitter
 {
     /// <summary>
-    /// The invoice splitter model for the v1.
+    /// Document data for Invoice Splitter, API version 1.
     /// </summary>
     public sealed class InvoiceSplitterV1Document : IPrediction
     {

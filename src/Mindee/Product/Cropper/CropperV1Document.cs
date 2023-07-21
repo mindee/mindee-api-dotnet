@@ -3,13 +3,12 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
-using Mindee.Parsing.Common;
 using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.Cropper
 {
     /// <summary>
-    /// The cropper model for the v1.
+    /// Document data for Cropper, API version 1.
     /// </summary>
     public sealed class CropperV1Document : IPrediction
     {
