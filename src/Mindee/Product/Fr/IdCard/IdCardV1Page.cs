@@ -24,7 +24,6 @@ namespace Mindee.Product.Fr.IdCard
             StringBuilder result = new StringBuilder();
             result.Append($":Document Side: {DocumentSide}\n");
             result.Append(base.ToString());
-
             return SummaryHelper.Clean(result.ToString());
         }
     }

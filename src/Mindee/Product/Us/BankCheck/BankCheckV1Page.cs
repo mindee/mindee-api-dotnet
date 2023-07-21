@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Us.BankCheck
 {
     /// <summary>
-    /// Page data for Bank Checks (beta), API version 1.
+    /// Page data for Bank Check, API version 1.
     /// </summary>
     public sealed class BankCheckV1Page : BankCheckV1Document
     {
@@ -36,7 +36,6 @@ namespace Mindee.Product.Us.BankCheck
             result.Append($":Check Position: {CheckPosition}\n");
             result.Append($":Signature Positions: {signaturesPositions}\n");
             result.Append(base.ToString());
-
             return SummaryHelper.Clean(result.ToString());
         }
     }
