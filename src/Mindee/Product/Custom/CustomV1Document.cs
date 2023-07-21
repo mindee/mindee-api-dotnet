@@ -8,7 +8,7 @@ using Mindee.Parsing.Custom;
 namespace Mindee.Product.Custom
 {
     /// <summary>
-    /// Define a document prediction from a model built thanks to an API builder.
+    /// Document data for Custom Documents, API version 1.
     /// </summary>
     [Serializable]
     [JsonConverter(typeof(CustomV1DocumentJsonConverter))]

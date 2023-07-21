@@ -31,7 +31,6 @@ namespace Mindee.Product.Us.DriverLicense
             result.Append($":Photo: {Photo}\n");
             result.Append($":Signature: {Signature}\n");
             result.Append(base.ToString());
-
             return SummaryHelper.Clean(result.ToString());
         }
     }
