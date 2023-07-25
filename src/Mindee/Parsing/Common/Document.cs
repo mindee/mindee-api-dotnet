@@ -17,7 +17,7 @@ namespace Mindee.Parsing.Common
         public TInferenceModel Inference { get; set; }
 
         /// <summary>
-        /// <see cref="Common.Ocr"/>
+        /// <see cref="Ocr"/>
         /// </summary>
         [JsonPropertyName("ocr")]
         public Ocr Ocr { get; set; }
