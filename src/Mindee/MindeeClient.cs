@@ -56,54 +56,45 @@ namespace Mindee
         }
 
         /// <summary>
-        /// Try to parse the current document using custom builder API.
-        /// </summary>
-        /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
-        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <returns><see cref="PredictResponse{CustomV1Inference}"/></returns>
-        /// <exception cref="MindeeException"></exception>
-        public async Task<PredictResponse<CustomV1>> ParseAsync(
-            LocalInputSource inputSource
-            , CustomEndpoint endpoint)
-        {
-            return await _mindeeApi.PredictPostAsync<CustomV1>(
-                endpoint,
-                new PredictParameter(
-                    inputSource.FileBytes,
-                    inputSource.Filename));
-        }
-
-        /// <summary>
-        /// Try to parse the current document using custom builder API.
+        /// Call Custom prediction API on the document and parse the results.
         /// </summary>
         /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
+        /// <param name="predictOptions"><see cref="PageOptions"/></param>
         /// <returns><see cref="PredictResponse{CustomV1Inference}"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<PredictResponse<CustomV1>> ParseAsync(
             LocalInputSource inputSource
             , CustomEndpoint endpoint
-            , PageOptions pageOptions)
+            , PredictOptions predictOptions = null
+            , PageOptions pageOptions = null)
         {
-            if (inputSource.IsPdf())
+            if (predictOptions == null)
             {
-                inputSource.FileBytes = _pdfOperation.Split(new SplitQuery(inputSource.FileBytes, pageOptions)).File;
+                predictOptions = new PredictOptions();
+            }
+            if (pageOptions != null && inputSource.IsPdf())
+            {
+                inputSource.FileBytes = _pdfOperation.Split(
+                    new SplitQuery(inputSource.FileBytes, pageOptions)).File;
             }
 
             return await _mindeeApi.PredictPostAsync<CustomV1>(
                 endpoint,
                 new PredictParameter(
                     inputSource.FileBytes,
-                    inputSource.Filename));
+                    inputSource.Filename,
+                    predictOptions.AllWords,
+                    predictOptions.Cropper));
         }
 
         /// <summary>
-        /// Try to parse the current document.
+        /// Call Standard prediction API on the document and parse the results.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="withAllWords">Get all the words in the file. By default, set to false.</param>
-        /// <param name="withCropper">To get the cropper information about the current document.By default, set to false.</param>
+        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
         /// The response object will be instantiated based on this parameter.</typeparam>
         /// <returns><see cref="PredictResponse{TInferenceModel}"/></returns>
@@ -111,56 +102,33 @@ namespace Mindee
         /// <remarks>With full text doesn't work for all the types.</remarks>
         public async Task<PredictResponse<TInferenceModel>> ParseAsync<TInferenceModel>(
             LocalInputSource inputSource
-            , bool withAllWords = false
-            , bool withCropper = false)
+            , PredictOptions predictOptions = null
+            , PageOptions pageOptions = null)
             where TInferenceModel : class, new()
         {
-            return await _mindeeApi.PredictPostAsync<TInferenceModel>(
-                new PredictParameter(
-                    inputSource.FileBytes,
-                    inputSource.Filename,
-                    withAllWords,
-                    withCropper));
-        }
-
-        /// <summary>
-        /// Try to parse the current document.
-        /// </summary>
-        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="withAllWords">Get all the words in the file. By default, set to false.</param>
-        /// <param name="withCropper">To get the cropping results about the current document.By default, set to false.</param>
-        /// <param name="pageOptions"><see cref="PageOptions"/></param>
-        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
-        /// The response object will be instantiated based on this parameter.</typeparam>
-        /// <returns><see cref="PredictResponse{TInferenceModel}"/></returns>
-        /// <exception cref="MindeeException"></exception>
-        /// <remarks>With full text doesn't work for all the types. Check the API documentation first.</remarks>
-        public async Task<PredictResponse<TInferenceModel>> ParseAsync<TInferenceModel>(
-            LocalInputSource inputSource
-            , PageOptions pageOptions
-            , bool withAllWords = false
-            , bool withCropper = false)
-            where TInferenceModel : class, new()
-        {
-            if (inputSource.IsPdf())
+            if (predictOptions == null)
             {
-                inputSource.FileBytes = _pdfOperation.Split(new SplitQuery(inputSource.FileBytes, pageOptions)).File;
+                predictOptions = new PredictOptions();
             }
-
+            if (pageOptions != null && inputSource.IsPdf())
+            {
+                inputSource.FileBytes = _pdfOperation.Split(
+                    new SplitQuery(inputSource.FileBytes, pageOptions)).File;
+            }
             return await _mindeeApi.PredictPostAsync<TInferenceModel>(
                 new PredictParameter(
                     inputSource.FileBytes,
                     inputSource.Filename,
-                    withAllWords,
-                    withCropper));
+                    predictOptions.AllWords,
+                    predictOptions.Cropper));
         }
 
         /// <summary>
-        /// Try to enqueue the parsing of the current document.
+        /// Add the document to an async queue.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="withAllWords">Get all the words in the file. By default, set to false.</param>
-        /// <param name="withCropper">To get the cropper information about the current document.By default, set to false.</param>
+        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
         /// The response object will be instantiated based on this parameter.</typeparam>
         /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
@@ -168,52 +136,29 @@ namespace Mindee
         /// <remarks>With full text doesn't work for all the types.</remarks>
         public async Task<AsyncPredictResponse<TInferenceModel>> EnqueueAsync<TInferenceModel>(
             LocalInputSource inputSource
-            , bool withAllWords = false
-            , bool withCropper = false)
+            , PredictOptions predictOptions = null
+            , PageOptions pageOptions = null)
             where TInferenceModel : class, new()
         {
-            return await _mindeeApi.PredictAsyncPostAsync<TInferenceModel>(
-                new PredictParameter(
-                    inputSource.FileBytes,
-                    inputSource.Filename,
-                    withAllWords,
-                    withCropper));
-        }
-
-        /// <summary>
-        /// Try to parse the current document.
-        /// </summary>
-        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="withAllWords">Get all the words in the file. By default, set to false.</param>
-        /// <param name="withCropper">To get the cropping results about the current document.By default, set to false.</param>
-        /// <param name="pageOptions"><see cref="PageOptions"/></param>
-        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
-        /// The response object will be instantiated based on this parameter.</typeparam>
-        /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
-        /// <exception cref="MindeeException"></exception>
-        /// <remarks>With full text doesn't work for all the types. Check the API documentation first.</remarks>
-        public async Task<AsyncPredictResponse<TInferenceModel>> EnqueueAsync<TInferenceModel>(
-            LocalInputSource inputSource
-            , PageOptions pageOptions
-            , bool withAllWords = false
-            , bool withCropper = false)
-            where TInferenceModel : class, new()
-        {
-            if (inputSource.IsPdf())
+            if (predictOptions == null)
             {
-                inputSource.FileBytes = _pdfOperation.Split(new SplitQuery(inputSource.FileBytes, pageOptions)).File;
+                predictOptions = new PredictOptions();
             }
-
+            if (pageOptions != null && inputSource.IsPdf())
+            {
+                inputSource.FileBytes = _pdfOperation.Split(
+                    new SplitQuery(inputSource.FileBytes, pageOptions)).File;
+            }
             return await _mindeeApi.PredictAsyncPostAsync<TInferenceModel>(
                 new PredictParameter(
                     inputSource.FileBytes,
                     inputSource.Filename,
-                    withAllWords,
-                    withCropper));
+                    predictOptions.AllWords,
+                    predictOptions.Cropper));
         }
 
         /// <summary>
-        /// Get the full job response from the parsed enqueued document.
+        /// Parse a document from an async queue.
         /// </summary>
         /// <param name="jobId">The job id.</param>
         /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.

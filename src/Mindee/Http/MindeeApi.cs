@@ -39,7 +39,7 @@ namespace Mindee.Http
             }
             else
             {
-                _httpClient = BuildClient(mindeeSettings.Value.RequestTimeoutInSeconds);
+                _httpClient = BuildClient(mindeeSettings.Value.RequestTimeoutSeconds);
             }
         }
 
@@ -147,7 +147,8 @@ namespace Mindee.Http
             return ResponseHandler<PredictResponse<TModel>>(response);
         }
 
-        public Task<AsyncPredictResponse<TModel>> DocumentQueueGetAsync<TModel>(string jobId) where TModel : class, new()
+        public Task<AsyncPredictResponse<TModel>> DocumentQueueGetAsync<TModel>(string jobId)
+            where TModel : class, new()
         {
             return DocumentQueueGetAsync<TModel>(jobId, GetEndpoint<TModel>());
         }
@@ -201,11 +202,11 @@ namespace Mindee.Http
         private static void AddPredictRequestParameters(PredictParameter predictParameter, RestRequest request)
         {
             request.AddFile("document", predictParameter.File, predictParameter.Filename);
-            if (predictParameter.WithAllWords)
+            if (predictParameter.AllWords)
             {
                 request.AddParameter(name: "include_mvision", value: "true");
             }
-            if (predictParameter.WithCropper)
+            if (predictParameter.Cropper)
             {
                 request.AddQueryParameter(name: "cropper", value: "true");
             }

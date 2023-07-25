@@ -18,6 +18,6 @@ namespace Mindee
         /// <summary>
         /// The request to Mindee API should time out about.
         /// </summary>
-        public int RequestTimeoutInSeconds { get; set; } = 120;
+        public int RequestTimeoutSeconds { get; set; } = 120;
     }
 }
