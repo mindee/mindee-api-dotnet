@@ -1,5 +1,6 @@
 using Mindee.Exceptions;
 using Mindee.Input;
+using Mindee.Parsing.Common;
 using Mindee.Product.Invoice;
 using Mindee.Product.InvoiceSplitter;
 using Mindee.Product.Receipt;
@@ -44,7 +45,7 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Parse_WithCropper_MustSucceed()
+        public async Task Parse_Cropper_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
@@ -54,6 +55,46 @@ namespace Mindee.IntegrationTests
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
             Assert.Null(response.Document.Ocr);
+            Assert.NotNull(response.Document.Inference);
+            Assert.NotNull(response.Document.Inference.Prediction);
+            Assert.Single(response.Document.Inference.Pages);
+            Assert.NotNull(response.Document.Inference.Pages.First().Extras.Cropper);
+            Assert.Single(response.Document.Inference.Pages.First().Extras.Cropper.Cropping);
+        }
+
+        [Fact]
+        public async Task Parse_AllWords_MustSucceed()
+        {
+            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+            var mindeeClient = new MindeeClient(apiKey);
+            var inputSource = new LocalInputSource("Resources/receipt/receipt.jpg");
+            var response = await mindeeClient.ParseAsync<InvoiceV4>(inputSource, withAllWords: true);
+            Assert.NotNull(response);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal(201, response.ApiRequest.StatusCode);
+            Assert.NotNull(response.Document.Ocr);
+            Assert.Single(response.Document.Ocr.MvisionV1.Pages);
+            Assert.NotEmpty(response.Document.Ocr.MvisionV1.Pages.First().AllWords);
+            Assert.NotNull(response.Document.Inference);
+            Assert.NotNull(response.Document.Inference.Prediction);
+            Assert.Single(response.Document.Inference.Pages);
+            Assert.Null(response.Document.Inference.Pages.First().Extras.Cropper);
+        }
+
+        [Fact]
+        public async Task Parse_AllWords_And_Cropper_MustSucceed()
+        {
+            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+            var mindeeClient = new MindeeClient(apiKey);
+            var inputSource = new LocalInputSource("Resources/receipt/receipt.jpg");
+            var response = await mindeeClient.ParseAsync<InvoiceV4>(
+                inputSource, withAllWords: true, withCropper: true);
+            Assert.NotNull(response);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal(201, response.ApiRequest.StatusCode);
+            Assert.NotNull(response.Document.Ocr);
+            Assert.Single(response.Document.Ocr.MvisionV1.Pages);
+            Assert.NotEmpty(response.Document.Ocr.MvisionV1.Pages.First().AllWords);
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
             Assert.Single(response.Document.Inference.Pages);
