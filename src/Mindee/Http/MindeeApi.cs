@@ -85,21 +85,13 @@ namespace Mindee.Http
             )
             where TModel : class, new()
         {
-            var request = new RestRequest($"v1/products/" +
+            var request = new RestRequest("v1/products/" +
                 $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
-                $"predict_async", Method.Post);
+                "predict_async", Method.Post);
+
+            AddPredictRequestParameters(predictParameter, request);
 
             _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
-
-            request.AddFile("document", predictParameter.File, predictParameter.Filename);
-            if (predictParameter.WithAllWords)
-            {
-                request.AddQueryParameter("include_mvision", "true");
-            }
-            if (predictParameter.WithCropper)
-            {
-                request.AddQueryParameter("cropper", "true");
-            }
 
             var response = await _httpClient.ExecutePostAsync(request);
 
@@ -139,19 +131,13 @@ namespace Mindee.Http
                     PredictParameter predictParameter)
             where TModel : class, new()
         {
-            var request = new RestRequest($"v1/products/{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/predict", Method.Post);
+            var request = new RestRequest("v1/products/" +
+                $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
+                "predict", Method.Post);
+
+            AddPredictRequestParameters(predictParameter, request);
 
             _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
-
-            request.AddFile("document", predictParameter.File, predictParameter.Filename);
-            if (predictParameter.WithAllWords)
-            {
-                request.AddQueryParameter("include_mvision", "true");
-            }
-            if (predictParameter.WithCropper)
-            {
-                request.AddQueryParameter("cropper", "true");
-            }
 
             var response = await _httpClient.ExecutePostAsync(request);
 
@@ -202,14 +188,27 @@ namespace Mindee.Http
             if (!Attribute.IsDefined(typeof(TModel), typeof(EndpointAttribute)))
             {
                 throw new NotSupportedException($"The type {typeof(TModel)} is not supported as a prediction model. " +
-                    $"The endpoint attribute is missing. " +
-                    $"Please refer to the document or contact the support.");
+                    "The endpoint attribute is missing. " +
+                    "Please refer to the document or contact the support.");
             }
 
-            EndpointAttribute endpointAttribute =
-            (EndpointAttribute)Attribute.GetCustomAttribute(typeof(TModel), typeof(EndpointAttribute));
+            EndpointAttribute endpointAttribute = (EndpointAttribute)Attribute.GetCustomAttribute(
+                element: typeof(TModel), typeof(EndpointAttribute));
 
             return new CustomEndpoint(endpointAttribute.EndpointName, endpointAttribute.AccountName, endpointAttribute.Version);
+        }
+
+        private static void AddPredictRequestParameters(PredictParameter predictParameter, RestRequest request)
+        {
+            request.AddFile("document", predictParameter.File, predictParameter.Filename);
+            if (predictParameter.WithAllWords)
+            {
+                request.AddParameter(name: "include_mvision", value: "true");
+            }
+            if (predictParameter.WithCropper)
+            {
+                request.AddQueryParameter(name: "cropper", value: "true");
+            }
         }
 
         private static string BuildUserAgent()
@@ -222,7 +221,7 @@ namespace Mindee.Http
         private TModel ResponseHandler<TModel>(RestResponse restResponse)
             where TModel : CommonResponse, new()
         {
-            string errorMessage = "Mindee API client : ";
+            string errorMessage = "Mindee API client: ";
             TModel model = null;
 
             if (!string.IsNullOrWhiteSpace(restResponse.Content))
@@ -262,7 +261,6 @@ namespace Mindee.Http
                     throw new Mindee404Exception(errorMessage);
                 case (HttpStatusCode)429:
                     throw new Mindee429Exception(errorMessage);
-
                 default:
                     throw new MindeeException(errorMessage);
             }
