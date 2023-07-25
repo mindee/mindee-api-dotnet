@@ -132,7 +132,7 @@ namespace Mindee.Cli
 
                 var response = await _mindeeClient.ParseAsync<TInferenceModel>(
                     new LocalInputSource(options.Path),
-                    withAllWords: AllWords);
+                    new PredictOptions(allWords: AllWords));
 
                 if (response == null)
                 {
@@ -163,7 +163,7 @@ namespace Mindee.Cli
 
                 var enqueueResponse = await _mindeeClient.EnqueueAsync<TInferenceModel>(
                     new LocalInputSource(options.Path),
-                    withAllWords: AllWords);
+                    new PredictOptions(allWords: AllWords));
 
                 string jobId = enqueueResponse.Job.Id;
                 _logger.LogInformation("Enqueued with job ID: {}", jobId);
