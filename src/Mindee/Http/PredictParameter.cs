@@ -19,59 +19,31 @@ namespace Mindee.Http
         /// Want an OCR result ?
         /// </summary>
         /// <remarks>It is not available on all API.</remarks>
-        public bool WithAllWords { get; }
+        public bool AllWords { get; }
 
         /// <summary>
         /// Want the cropping result about the document?
         /// </summary>
         /// <remarks>It is not available in API builder.</remarks>
-        public bool WithCropper { get; }
+        public bool Cropper { get; }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="file"><see cref="File"/></param>
         /// <param name="filename"><see cref="Filename"/></param>
-        public PredictParameter(
-            byte[] file,
-            string filename)
-            : this(file, filename, false)
-        {
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="file"><see cref="File"/></param>
-        /// <param name="filename"><see cref="Filename"/></param>
-        /// <param name="withAllWords"><see cref="WithAllWords"/></param>
+        /// <param name="allWords"><see cref="AllWords"/></param>
+        /// <param name="cropper"><see cref="Cropper"/></param>
         public PredictParameter(
             byte[] file,
             string filename,
-            bool withAllWords)
+            bool allWords,
+            bool cropper)
         {
             File = file;
             Filename = filename;
-            WithAllWords = withAllWords;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="file"><see cref="File"/></param>
-        /// <param name="filename"><see cref="Filename"/></param>
-        /// <param name="withAllWords"><see cref="WithAllWords"/></param>
-        /// <param name="withCropper"><see cref="WithCropper"/></param>
-        public PredictParameter(
-            byte[] file,
-            string filename,
-            bool withAllWords,
-            bool withCropper)
-        {
-            File = file;
-            Filename = filename;
-            WithAllWords = withAllWords;
-            WithCropper = withCropper;
+            AllWords = allWords;
+            Cropper = cropper;
         }
     }
 }

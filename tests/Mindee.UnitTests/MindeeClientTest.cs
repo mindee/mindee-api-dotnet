@@ -12,7 +12,7 @@ namespace Mindee.UnitTests
     public class MindeeClientTest
     {
         [Fact]
-        public async Task Execute_With_CustomDocument_WithFile()
+        public async Task Parse_CustomDocument_WithFile_NoOptions()
         {
             var customEndpoint = new CustomEndpoint("", "");
             var predictable = new Mock<IHttpApi>();
@@ -30,12 +30,36 @@ namespace Mindee.UnitTests
             Assert.NotNull(document);
             predictable.Verify(p => p.PredictPostAsync<CustomV1>(
                 It.IsAny<PredictParameter>())
-                , Times.AtMostOnce()
-                );
+                , Times.AtMostOnce());
         }
 
         [Fact]
-        public async Task Execute_With_OTSApi_WithFile()
+        public async Task Parse_CustomDocument_WithFile_ParseOptions()
+        {
+            var customEndpoint = new CustomEndpoint("", "");
+            var predictable = new Mock<IHttpApi>();
+            predictable.Setup(x => x.PredictPostAsync<CustomV1>(
+                    It.IsAny<CustomEndpoint>()
+                    , It.IsAny<PredictParameter>()
+                    ))
+                .ReturnsAsync(new PredictResponse<CustomV1>());
+            var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
+
+            var inputSource = new LocalInputSource(new FileInfo("Resources/invoice/invoice.pdf"));
+            var parseOptions = new PredictOptions(allWords: true, cropper: true);
+            var document = await mindeeClient.ParseAsync(
+                inputSource,
+                customEndpoint,
+                predictOptions: parseOptions);
+
+            Assert.NotNull(document);
+            predictable.Verify(p => p.PredictPostAsync<CustomV1>(
+                    It.IsAny<PredictParameter>())
+                , Times.AtMostOnce());
+        }
+
+        [Fact]
+        public async Task Parse_StandardProduct_WithFile_NoOptions()
         {
             var predictable = new Mock<IHttpApi>();
             predictable.Setup(x => x.PredictPostAsync<InvoiceV4>(It.IsAny<PredictParameter>()))
@@ -49,8 +73,26 @@ namespace Mindee.UnitTests
             Assert.NotNull(document);
             predictable.Verify(p => p.PredictPostAsync<InvoiceV4>(
                 It.IsAny<PredictParameter>())
-                , Times.AtMostOnce()
-                );
+                , Times.AtMostOnce());
+        }
+
+        [Fact]
+        public async Task Parse_StandardProduct_WithFile_ParseOptions()
+        {
+            var predictable = new Mock<IHttpApi>();
+            predictable.Setup(x => x.PredictPostAsync<InvoiceV4>(It.IsAny<PredictParameter>()))
+                .ReturnsAsync(new PredictResponse<InvoiceV4>());
+            var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
+
+            var inputSource = new LocalInputSource(new FileInfo("Resources/invoice/invoice.pdf"));
+            var parseOptions = new PredictOptions(allWords: true, cropper: true);
+            var document = await mindeeClient.ParseAsync<InvoiceV4>(
+                inputSource, parseOptions);
+
+            Assert.NotNull(document);
+            predictable.Verify(p => p.PredictPostAsync<InvoiceV4>(
+                    It.IsAny<PredictParameter>())
+                , Times.AtMostOnce());
         }
 
         [Fact]
@@ -87,7 +129,8 @@ namespace Mindee.UnitTests
             var response = await mindeeClient.EnqueueAsync<InvoiceV4>(inputSource);
 
             Assert.NotNull(response);
-            predictable.Verify(p => p.PredictAsyncPostAsync<InvoiceV4>(It.IsAny<PredictParameter>()), Times.AtMostOnce());
+            predictable.Verify(p => p.PredictAsyncPostAsync<InvoiceV4>(
+                It.IsAny<PredictParameter>()), Times.AtMostOnce());
         }
 
         [Fact]

@@ -9,10 +9,11 @@ namespace Mindee.UnitTests
     {
         internal static PredictParameter GetFakePredictParameter()
         {
-            return
-                new PredictParameter(
-                    new byte[] { byte.MinValue },
-                        "Bou");
+            return new PredictParameter(
+                file: new byte[] { byte.MinValue },
+                filename: "Bou",
+                cropper: false,
+                allWords: false);
         }
 
         internal static MindeeApi GetMindeeApi(string fileName)

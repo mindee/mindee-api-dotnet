@@ -1,6 +1,5 @@
 using Mindee.Exceptions;
 using Mindee.Input;
-using Mindee.Parsing.Common;
 using Mindee.Product.Invoice;
 using Mindee.Product.InvoiceSplitter;
 using Mindee.Product.Receipt;
@@ -50,7 +49,8 @@ namespace Mindee.IntegrationTests
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/receipt/receipt.jpg");
-            var response = await mindeeClient.ParseAsync<ReceiptV5>(inputSource, withCropper: true);
+            var parseOptions = new PredictOptions(cropper: true);
+            var response = await mindeeClient.ParseAsync<ReceiptV5>(inputSource, parseOptions);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
@@ -68,7 +68,8 @@ namespace Mindee.IntegrationTests
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/receipt/receipt.jpg");
-            var response = await mindeeClient.ParseAsync<InvoiceV4>(inputSource, withAllWords: true);
+            var parseOptions = new PredictOptions(allWords: true);
+            var response = await mindeeClient.ParseAsync<InvoiceV4>(inputSource, parseOptions);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
@@ -87,8 +88,9 @@ namespace Mindee.IntegrationTests
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/receipt/receipt.jpg");
+            var parseOptions = new PredictOptions(allWords: true, cropper: true);
             var response = await mindeeClient.ParseAsync<InvoiceV4>(
-                inputSource, withAllWords: true, withCropper: true);
+                inputSource, parseOptions);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
