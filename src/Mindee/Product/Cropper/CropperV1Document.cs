@@ -23,10 +23,11 @@ namespace Mindee.Product.Cropper
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("----- Cropper Data -----\n");
-            result.Append($"Cropping: {string.Join("\n          ", Cropping?.Select(c => c))}\n");
-            result.Append("------------------------\n");
-
+            string cropping = string.Join(
+                "\n " + string.Concat(Enumerable.Repeat(" ", 10)),
+                Cropping.Select(item => item));
+            StringBuilder result = new StringBuilder();
+            result.Append($":Cropping: {cropping}\n");
             return SummaryHelper.Clean(result.ToString());
         }
     }

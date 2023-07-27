@@ -9,27 +9,23 @@ namespace Mindee.UnitTests.Product.Cropper
         [Fact]
         public async Task Predict_CheckSummary()
         {
-            var response = await GetPrediction();
-            var expected = File.ReadAllText("Resources/cropper/response_v1/doc_to_string.txt");
-            Assert.Equal(
-                UnitTestBase.CleaningFilenameFromResult(expected),
-                response.Document.Inference.Prediction.ToString());
+            var response = await GetPrediction("complete");
+            var expected = File.ReadAllText("Resources/cropper/response_v1/summary_full.rst");
+            Assert.Equal(expected, response.Document.ToString());
         }
 
         [Fact]
         public async Task Predict_CheckSummary_WithMultiplePages()
         {
-            var response = await GetPrediction();
-            var expected = File.ReadAllText("Resources/cropper/response_v1/page0_to_string.txt");
-            Assert.Equal(
-                UnitTestBase.CleaningFilenameFromResult(expected),
-                response.Document.Inference.Pages.First().Prediction.ToString());
+            var response = await GetPrediction("complete");
+            var expected = File.ReadAllText("Resources/cropper/response_v1/summary_page0.rst");
+            Assert.Equal(expected, response.Document.Inference.Pages[0].ToString());
         }
 
         [Fact]
         public async Task Predict_WithCropping_MustSuccess()
         {
-            var response = await GetPrediction();
+            var response = await GetPrediction("complete");
 
             Assert.NotNull(response.Document.Inference.Pages.First().Prediction.Cropping);
             Assert.Equal(2, response.Document.Inference.Pages.First().Prediction.Cropping.Count);
@@ -65,11 +61,13 @@ namespace Mindee.UnitTests.Product.Cropper
             , response.Document.Inference.Pages.First().Prediction.Cropping.First().Polygon.First());
         }
 
-        private async Task<PredictResponse<CropperV1>> GetPrediction()
+        private async Task<PredictResponse<CropperV1>> GetPrediction(string name)
         {
-            const string fileName = "Resources/cropper/response_v1/complete.json";
+            string fileName = $"Resources/cropper/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictPostAsync<CropperV1>(UnitTestBase.GetFakePredictParameter());
+            return await mindeeAPi.PredictPostAsync<CropperV1>(
+                UnitTestBase.GetFakePredictParameter());
         }
+
     }
 }
