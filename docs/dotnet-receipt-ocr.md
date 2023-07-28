@@ -12,68 +12,53 @@ using Mindee.Product.Receipt;
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 
+// Construct a new client
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
-// load an input source
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
 var inputSource = new LocalInputSource(filePath);
 
 // Call the API and parse the input
 var response = await mindeeClient
-    .ParseAsync<ReceiptV4>(inputSource);
+    .ParseAsync<ReceiptV5>(inputSource);
 
 // Print a summary of all the predictions
-System.Console.WriteLine(response.Document.ToString());
+// System.Console.WriteLine(response.Document.ToString());
 
 // Print only the document-level predictions
-// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
-
+System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
 Output:
 ```
-########
-Document
-########
-:Mindee ID: aa1a8095-20c6-4080-98bd-4684d2807365
-:Filename: receipt.jpg
-
-Inference
-#########
-:Product: mindee/expense_receipts v4.1
-:Rotation applied: Yes
-
-Prediction
-==========
-:Locale: en-US; en; US; USD;
-:Date: 2014-07-07
-:Category: food
-:Subcategory: restaurant
-:Document type: EXPENSE RECEIPT
-:Time: 20:20
-:Supplier name: LOGANS
-:Taxes: 3.34 TAX
-:Total net: 40.48
-:Total taxes: 3.34
-:Tip: 10.00
-:Total amount: 53.82
-
-Page Predictions
-================
-
-Page 0
-------
-:Locale: en-US; en; US; USD;
-:Date: 2014-07-07
-:Category: food
-:Subcategory: restaurant
-:Document type: EXPENSE RECEIPT
-:Time: 20:20
-:Supplier name: LOGANS
-:Taxes: 3.34 TAX
-:Total net: 40.48
-:Total taxes: 3.34
-:Tip: 10.00
-:Total amount: 53.82
+:Expense Locale: en-GB; en; GB; GBP;
+:Purchase Category: food
+:Purchase Subcategory: restaurant
+:Document Type: EXPENSE RECEIPT
+:Purchase Date: 2016-02-26
+:Purchase Time: 15:20
+:Total Amount: 10.20
+:Total Net: 8.50
+:Total Tax: 1.70
+:Tip and Gratuity:
+:Taxes:
+  +---------------+--------+----------+---------------+
+  | Base          | Code   | Rate (%) | Amount        |
+  +===============+========+==========+===============+
+  | 8.50          | VAT    | 20.00    | 1.70          |
+  +---------------+--------+----------+---------------+
+:Supplier Name: CLACHAN
+:Supplier Company Registrations: 232153895
+                                 232153895
+:Supplier Address: 34 kingley street w1b 5qh
+:Supplier Phone Number: 02074940834
+:Line Items:
+  +--------------------------------------+----------+--------------+------------+
+  | Description                          | Quantity | Total Amount | Unit Price |
+  +======================================+==========+==============+============+
+  | Meantime Pale                        | 2.00     | 10.20        |            |
+  +--------------------------------------+----------+--------------+------------+
 ```
 
 ## Field Objects

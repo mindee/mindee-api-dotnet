@@ -12,9 +12,11 @@ using Mindee.Product.Passport;
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 
+// Construct a new client
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
-// load an input source
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
 var inputSource = new LocalInputSource(filePath);
 
 // Call the API and parse the input
@@ -22,56 +24,25 @@ var response = await mindeeClient
     .ParseAsync<PassportV1>(inputSource);
 
 // Print a summary of all the predictions
-System.Console.WriteLine(response.Document.ToString());
+// System.Console.WriteLine(response.Document.ToString());
 
 // Print only the document-level predictions
-// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
-
+System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
 Output:
 ```
-########
-Document
-########
-:Mindee ID: 79db59c7-b312-4692-a77f-e8698666ffba
-:Filename: passport.jpeg
-
-Inference
-#########
-:Product: mindee/passport v1.0
-:Rotation applied: No
-
-Prediction
-==========
-:Full name: HENERT PUDARSAN
-:Given names: HENERT
-:Surname: PUDARSAN
-:Country: GBR
+:Country Code: GBR
 :ID Number: 707797979
-:Issuance date: 2012-04-22
-:Birth date: 1995-05-20
-:Expiry date: 2057-04-22
-:MRZ 1: P<GBRPUDARSAN<<HENERT<<<<<<<<<<<<<<<<<<<<<<<
-:MRZ 2: 7077979792GBR9505209M1704224<<<<<<<<<<<<<<00
-:MRZ: P<GBRPUDARSAN<<HENERT<<<<<<<<<<<<<<<<<<<<<<<7077979792GBR9505209M1704224<<<<<<<<<<<<<<00
-
-Page Predictions
-================
-
-Page 0
-------
-:Full name: HENERT PUDARSAN
-:Given names: HENERT
+:Given Name(s): HENERT
 :Surname: PUDARSAN
-:Country: GBR
-:ID Number: 707797979
-:Issuance date: 2012-04-22
-:Birth date: 1995-05-20
-:Expiry date: 2057-04-22
-:MRZ 1: P<GBRPUDARSAN<<HENERT<<<<<<<<<<<<<<<<<<<<<<<
-:MRZ 2: 7077979792GBR9505209M1704224<<<<<<<<<<<<<<00
-:MRZ: P<GBRPUDARSAN<<HENERT<<<<<<<<<<<<<<<<<<<<<<<7077979792GBR9505209M1704224<<<<<<<<<<<<<<00
+:Date of Birth: 1995-05-20
+:Place of Birth: CAMTETH
+:Gender: M
+:Date of Issue: 2012-04-22
+:Expiry Date: 2017-04-22
+:MRZ Line 1: P<GBRPUDARSAN<<HENERT<<<<<<<<<<<<<<<<<<<<<<<
+:MRZ Line 2: 7077979792GBR9505209M1704224<<<<<<<<<<<<<<00
 ```
 
 ## Field Objects

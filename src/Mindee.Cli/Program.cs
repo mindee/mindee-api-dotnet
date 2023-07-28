@@ -37,10 +37,20 @@ using PredictPassportCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Passport.PassportV1Document,
     Mindee.Product.Passport.PassportV1Document
 >;
+using PredictProofOfAddressCommand = Mindee.Cli.PredictCommand<
+    Mindee.Product.ProofOfAddress.ProofOfAddressV1,
+    Mindee.Product.ProofOfAddress.ProofOfAddressV1Document,
+    Mindee.Product.ProofOfAddress.ProofOfAddressV1Document
+>;
 using PredictReceiptCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Receipt.ReceiptV5,
     Mindee.Product.Receipt.ReceiptV5Document,
     Mindee.Product.Receipt.ReceiptV5Document
+>;
+using PredictUsBankCheckCommand = Mindee.Cli.PredictCommand<
+    Mindee.Product.Us.BankCheck.BankCheckV1,
+    Mindee.Product.Us.BankCheck.BankCheckV1Page,
+    Mindee.Product.Us.BankCheck.BankCheckV1Document
 >;
 
 var runner = BuildCommandLine()
@@ -59,6 +69,8 @@ var runner = BuildCommandLine()
             .UseCommandHandler<PredictCustomCommand, PredictCustomCommand.Handler>()
             .UseCommandHandler<PredictInvoiceSplitterCommand, PredictInvoiceSplitterCommand.Handler>()
             .UseCommandHandler<PredictFrIdCardCommand, PredictFrIdCardCommand.Handler>()
+            .UseCommandHandler<PredictProofOfAddressCommand, PredictProofOfAddressCommand.Handler>()
+            .UseCommandHandler<PredictUsBankCheckCommand, PredictUsBankCheckCommand.Handler>()
             ;
     })
     .UseDefaults().Build();
@@ -85,6 +97,10 @@ static CommandLineBuilder BuildCommandLine()
         name: "passport", description: "Passport V1",
         allWords: false, async: AsyncType.Never
         )));
+    root.AddCommand(new PredictProofOfAddressCommand(new CommandOptions(
+        name: "proof-of-address", description: "Proof Of Address V1",
+        allWords: true, async: AsyncType.Never
+        )));
     root.AddCommand(new PredictCropperCommand(new CommandOptions(
         name: "cropper", description: "Cropper V1",
         allWords: false, async: AsyncType.Never
@@ -95,6 +111,10 @@ static CommandLineBuilder BuildCommandLine()
         )));
     root.AddCommand(new PredictFrIdCardCommand(new CommandOptions(
         name: "fr-id-card", description: "FR ID Card V1",
+        allWords: false, async: AsyncType.Never
+        )));
+    root.AddCommand(new PredictUsBankCheckCommand(new CommandOptions(
+        name: "us-bank-check", description: "US Bank Check V1",
         allWords: false, async: AsyncType.Never
         )));
 
