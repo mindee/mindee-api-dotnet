@@ -1,5 +1,28 @@
 # CHANGELOG
 
+## v3.0.0 - 2023-07-28
+### ¡Breaking Changes!
+* :art: :boom: harmonize response type with other libraries
+* :art: :boom: change appsettings main key to 'Mindee'
+* :art: :boom: separate HTTP classes, move products to Product namespace
+* :fire: :art: :boom: init of client should be done directly
+* :recycle: :art: :boom: send inputSource instances directly to parse methods
+* :recycle: :boom: seal product classes
+* :recycle: :boom: use PredictOptions object to allow more flexibility in the client API
+
+### Changes
+* :coffin: remove shipping container
+* :sparkles: support async and invoice splitter v1
+* :art: rework CLI
+* :sparkles: update to latest version of passport, invoice, receipt, financial doc
+* :sparkles: add support for fr bank account details v2
+* :white_check_mark: add tests for empty responses
+* :white_check_mark: add more relevent integration tests
+
+### Fixes
+* :bug: fix page output in us bank check
+
+
 ## v2.2.1 - 2023-05-30
 ### Changes
 * :arrow_up: update RestSharp to 109.0.1
