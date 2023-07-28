@@ -30,7 +30,7 @@ MindeeApiSettings__ApiKey
 * From an appsettings.json file
 ```
 "MindeeApiSettings": {
-    "ApiKey": ""my-api-key"
+    "ApiKey":  "my-api-key"
 },
 ```
 

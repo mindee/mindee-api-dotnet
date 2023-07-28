@@ -49,8 +49,8 @@ namespace Mindee.IntegrationTests
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/receipt/receipt.jpg");
-            var parseOptions = new PredictOptions(cropper: true);
-            var response = await mindeeClient.ParseAsync<ReceiptV5>(inputSource, parseOptions);
+            var predictOptions = new PredictOptions(cropper: true);
+            var response = await mindeeClient.ParseAsync<ReceiptV5>(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
@@ -68,12 +68,12 @@ namespace Mindee.IntegrationTests
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/receipt/receipt.jpg");
-            var parseOptions = new PredictOptions(allWords: true);
-            var response = await mindeeClient.ParseAsync<InvoiceV4>(inputSource, parseOptions);
+            var predictOptions = new PredictOptions(allWords: true);
+            var response = await mindeeClient.ParseAsync<InvoiceV4>(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
-            Assert.NotNull(response.Document.Ocr);
+            Assert.NotNull(response.Document.Ocr.ToString());
             Assert.Single(response.Document.Ocr.MvisionV1.Pages);
             Assert.NotEmpty(response.Document.Ocr.MvisionV1.Pages.First().AllWords);
             Assert.NotNull(response.Document.Inference);
@@ -88,9 +88,9 @@ namespace Mindee.IntegrationTests
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/receipt/receipt.jpg");
-            var parseOptions = new PredictOptions(allWords: true, cropper: true);
+            var predictOptions = new PredictOptions(allWords: true, cropper: true);
             var response = await mindeeClient.ParseAsync<InvoiceV4>(
-                inputSource, parseOptions);
+                inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);

@@ -38,9 +38,9 @@ using PredictPassportCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Passport.PassportV1Document
 >;
 using PredictReceiptCommand = Mindee.Cli.PredictCommand<
-    Mindee.Product.Receipt.ReceiptV4,
-    Mindee.Product.Receipt.ReceiptV4Document,
-    Mindee.Product.Receipt.ReceiptV4Document
+    Mindee.Product.Receipt.ReceiptV5,
+    Mindee.Product.Receipt.ReceiptV5Document,
+    Mindee.Product.Receipt.ReceiptV5Document
 >;
 
 var runner = BuildCommandLine()
@@ -78,7 +78,7 @@ static CommandLineBuilder BuildCommandLine()
         allWords: true, async: AsyncType.Never
         )));
     root.AddCommand(new PredictReceiptCommand(new CommandOptions(
-        name: "receipt", description: "Receipt V4",
+        name: "receipt", description: "Receipt V5",
         allWords: true, async: AsyncType.Never
         )));
     root.AddCommand(new PredictPassportCommand(new CommandOptions(
