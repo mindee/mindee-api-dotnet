@@ -12,9 +12,11 @@ using Mindee.Product.Eu.LicensePlate;
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 
+// Construct a new client
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
-// load an input source
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
 var inputSource = new LocalInputSource(filePath);
 
 // Call the API and parse the input
@@ -22,35 +24,14 @@ var response = await mindeeClient
     .ParseAsync<LicensePlateV1>(inputSource);
 
 // Print a summary of all the predictions
-System.Console.WriteLine(response.Document.ToString());
+// System.Console.WriteLine(response.Document.ToString());
 
 // Print only the document-level predictions
-// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
-
+System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
 Output:
 ```
-########
-Document
-########
-:Mindee ID: 858d2e05-2166-46ad-81da-c917e3a1b453
-:Filename: multiplate.jpg
-
-Inference
-#########
-:Product: mindee/license_plates v1.0
-:Rotation applied: No
-
-Prediction
-==========
-:License plates: 8LQA341, 8LBW890
-
-Page Predictions
-================
-
-Page 0
-------
 :License plates: 8LQA341, 8LBW890
 ``` 
 

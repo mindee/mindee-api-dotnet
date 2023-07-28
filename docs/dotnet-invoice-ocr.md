@@ -12,9 +12,11 @@ using Mindee.Product.Invoice;
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 
+// Construct a new client
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
-// load an input source
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
 var inputSource = new LocalInputSource(filePath);
 
 // Call the API and parse the input
@@ -22,96 +24,20 @@ var response = await mindeeClient
     .ParseAsync<InvoiceV4>(inputSource);
 
 // Print a summary of all the predictions
-System.Console.WriteLine(response.Document.ToString());
+// System.Console.WriteLine(response.Document.ToString());
 
 // Print only the document-level predictions
-// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
-
+System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
 Output:
 ```
-########
-Document
-########
-:Mindee ID: 656c2ec1-0920-4556-9bc2-772162bc698a
-:Filename: invoice.pdf
-
-Inference
-#########
-:Product: mindee/invoices v4.1
-:Rotation applied: Yes
-
-Prediction
-==========
-:Locale: fr; fr; EUR;
+:Locale: en; en; CAD;
 :Document type: INVOICE
-:Invoice number: 0042004801351
+:Invoice number: 14
 :Reference numbers: AD29094
-:Invoice date: 2020-02-17
-:Invoice due date: 2020-02-17
-:Supplier name: TURNPIKE DESIGNS CO.
-:Supplier address: 156 University Ave, Toronto ON, Canada M5H 2H7
-:Supplier company registrations: 501124705; FR33501124705
-:Supplier payment details: FR7640254025476501124705368;
-:Customer name: JIRO DOI
-:Customer address: 1954 Bloon Street West Toronto, ON, M6P 3K9 Canada
-:Customer company registrations: FR00000000000; 111222333
-:Taxes: 97.98 20.00%
-:Total net: 489.97
-:Total taxes: 97.98
-:Total amount: 587.95
-
-:Line Items:
-====================== ======== ========= ========== ================== ====================================
-Code                   QTY      Price     Amount     Tax (Rate)         Description
-====================== ======== ========= ========== ================== ====================================
-                                          4.31        (2.10%)           PQ20 ETIQ ULTRA RESIS METAXXDC
-                       1.00     65.00     75.00      10.00              Platinum web hosting package Down...
-XXX81125600010         1.00     250.01    275.51     25.50 (10.20%)     a long string describing the item
-ABC456                 200.30   8.101     1622.63    121.70 (7.50%)     Liquid perfection
-                                                                        CARTOUCHE L NR BROTHER TN247BK
-====================== ======== ========= ========== ================== ====================================
-
-Page Predictions
-================
-
-Page 0
-------
-:Locale: fr; fr; EUR;
-:Document type: INVOICE
-:Invoice number: 0042004801351
-:Reference numbers:
-:Invoice date: 2020-02-17
-:Invoice due date: 2020-02-17
-:Supplier name:
-:Supplier address:
-:Supplier company registrations: 501124705; FR33501124705
-:Supplier payment details: FR7640254025476501124705368;
-:Customer name:
-:Customer address:
-:Customer company registrations:
-:Taxes: 97.98 20.00%
-:Total net: 489.97
-:Total taxes: 97.98
-:Total amount: 587.95
-
-:Line Items:
-====================== ======== ========= ========== ================== ====================================
-Code                   QTY      Price     Amount     Tax (Rate)         Description
-====================== ======== ========= ========== ================== ====================================
-                                          4.31        (2.10%)           PQ20 ETIQ ULTRA RESIS METAXXDC
-                       1.00     65.00     75.00      10.00              Platinum web hosting package Down...
-====================== ======== ========= ========== ================== ====================================
-
-Page 1
-------
-:Locale: fr; fr; EUR;
-:Document type: INVOICE
-:Invoice number:
-:Reference numbers: AD29094
-:Invoice date:
-:Invoice due date: 2020-02-17
+:Invoice date: 2018-09-25
+:Invoice due date: 2018-09-25
 :Supplier name: TURNPIKE DESIGNS CO.
 :Supplier address: 156 University Ave, Toronto ON, Canada M5H 2H7
 :Supplier company registrations:
@@ -119,19 +45,25 @@ Page 1
 :Customer name: JIRO DOI
 :Customer address: 1954 Bloon Street West Toronto, ON, M6P 3K9 Canada
 :Customer company registrations:
-:Taxes: 193.20 8.00%
+:Taxes:
+  +---------------+--------+----------+---------------+
+  | Base          | Code   | Rate (%) | Amount        |
+  +===============+========+==========+===============+
+  |               |        | 8.00     | 193.20        |
+  +---------------+--------+----------+---------------+
 :Total net:
-:Total taxes: 193.20
+:Total tax: 193.20
 :Total amount: 2608.20
-
 :Line Items:
-====================== ======== ========= ========== ================== ====================================
-Code                   QTY      Price     Amount     Tax (Rate)         Description
-====================== ======== ========= ========== ================== ====================================
-XXX81125600010         1.00     250.00    250.00      (10.00%)          a long string describing the item
-ABC456                 200.30   8.101     1622.63    121.70 (7.50%)     Liquid perfection
-                                                                        CARTOUCHE L NR BROTHER TN247BK
-====================== ======== ========= ========== ================== ====================================
+  +----------------------+---------+---------+----------+------------------+--------------------------------------+
+  | Code                 | QTY     | Price   | Amount   | Tax (Rate)       | Description                          |
+  +======================+=========+=========+==========+==================+======================================+
+  |                      | 1.00    | 65.00   | 65.00    |                  | Platinum web hosting package Down... |
+  +----------------------+---------+---------+----------+------------------+--------------------------------------+
+  |                      | 3.00    | 2100.00 | 2100.00  |                  | 2 page website design Includes ba... |
+  +----------------------+---------+---------+----------+------------------+--------------------------------------+
+  |                      | 1.00    | 250.00  | 250.00   |                  | Mobile designs Includes responsiv... |
+  +----------------------+---------+---------+----------+------------------+--------------------------------------+
 ```
 
 ## Properties
