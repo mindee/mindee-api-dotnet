@@ -25,29 +25,33 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Setup .NET SDK '7.0.x'
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '7.0.x'
+
       - name: Build
         run: dotnet build "src" --configuration Release
+
       - name: Install MdDocs
         run: dotnet tool install --global Grynwald.MdDocs
-      - name: Setup .NET SDK '7.0.x'
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: '7.0.x'
-      - name: Generate documentations
-        run: mddocs apireference --assemblies 'src/Mindee/bin/Release/netstandard2.0/Mindee.dll' --outdir ./docs/api_reference
+
+      - name: Generate documentation
+        run: mddocs apireference --assemblies 'src/Mindee/bin/Release/net7.0/Mindee.dll' --outdir ./docs/api_reference
+
       - name: Copy Samples
         run: cp -r ./docs/code_samples ./docs/api_reference/Mindee
+
       - name: Setup Pages
         uses: actions/configure-pages@v3
+
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./docs/api_reference/Mindee
           destination: ./_site
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
