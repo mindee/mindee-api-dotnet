@@ -14,9 +14,11 @@ using Mindee.Parsing;
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 
+// Construct a new client
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
-// load an input source
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
 var inputSource = new LocalInputSource(filePath);
 
 // Set the endpoint configuration
@@ -55,6 +57,7 @@ var response = await _mindeeClient
 
 2. You can also use your own class which will represent the required fields. For example:
 ```csharp
+using Mindee.Http;
 
 public sealed class WNineV1DocumentPrediction
 {
@@ -69,7 +72,7 @@ public sealed class WNineV1DocumentPrediction
 
 // The CustomEndpoint attribute is required when using your own model.
 // It will be used to know which Mindee API called.
-[CustomEndpoint(
+[Endpoint(
     endpointName: "wnine",
     accountName: "john",
     // optionally, lock the version
@@ -88,11 +91,11 @@ var response = await _mindeeClient
 All the fields which are present in the API builder 
 are available (the fields are defined when creating your custom API).
 
-`CustomV1Inference` is an object which contains a document prediction and pages prediction result.
-### `CustomV1PagePrediction` 
+`CustomV1` is an object which contains a document prediction and pages prediction result.
+### `CustomV1Page` 
 Which is a `Dictionnary<String, ListField>` with the key as a `string` for the name of the field, and a `ListField` as a value.
 
-### `CustomV1DocumentPrediction` 
+### `CustomV1Document` 
 Which contains 2 properties : `ClassificationFields` and `Fields`. 
 Both are a Map and the key is a `string` for the name of the field and for the value :
 * `ClassificationFields` have a `ClassificationField` object as value. Each `ClassificationField` contains a value.
@@ -111,7 +114,7 @@ A Map with the following structure:
 In the examples below we'll use the `employer_id` field.
 
 ```csharp
-CustomEndpoint myEndpoint = new CustomEndpoint(
+Endpoint myEndpoint = new Endpoint(
     endpointName: "wnine",
     accountName: "john",
     // optionally, lock the version
@@ -126,12 +129,12 @@ ListField? employerId = response.Document.Inference.Pages.FirstOrDefault()?.Pred
 ```
 
 ## Line items reconstructions
-We offer the possibility to use a post processing after you get prediction result from your custom API.
+We offer the possibility to use post-processing for the prediction result from your custom API.
  
-In the below example, image that your custom document have 4 columns defined a table.
-So, you want to get all the line items of it.
+In the example below, imagine that your custom document has a table with 4 columns.
+So, you want to extract all the line items (table rows) from it.
 
-In that case, you will have to define 4 fields and do the annotation verticaly for each one.
+In that case, you will have to define 4 fields and do the annotation vertically for each one.
 
 After training your model, test it using the Mindee client as below to get your document parsed and line items reconstructed.
 

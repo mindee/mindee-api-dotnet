@@ -115,33 +115,41 @@ There are a few different ways of loading a document file, depending on your use
 Load from a file directly from disk. Requires an absolute path, as a string.
 
 ```csharp
-var mindeeClient = await _mindeeClient
-    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path));
+string filePath = "/path/to/the/file.ext";
+var inputSource = new LocalInputSource(filePath);
+```
+
+### FileInfo
+Load from a `FileInfo` object.
+
+```csharp
+string filePath = "/path/to/the/file.ext";
+var inputSource = new LocalInputSource(filePath);
 ```
 
 ### Stream Object
-Load a standard readable stream object.
+Load a standard readable `Stream` object.
 
 **Note**: The original filename of the encoded file is required when calling the method.
 
 ```csharp
 Stream myStream;
-var mindeeClient = await _mindeeClient
-    .LoadDocument(myStream, System.IO.Path.GetFileName(Path));
+string fileName = "myfile.pdf";
+var inputSource = new LocalInputSource(myStream, fileName);
 ```
 
 ### Bytes
-Load file contents from a string of raw bytes.
+Load file contents from a byte array.
 
 **Note**: The original filename of the encoded file is required when calling the method.
 
 ```csharp
 byte[] myFileInBytes = new byte[] { byte.MinValue };
-var mindeeClient = await _mindeeClient
-    .LoadDocument(myFileInBytes, System.IO.Path.GetFileName(Path));
+string fileName = "myfile.pdf";
+var inputSource = new LocalInputSource(myFileInBytes, fileName);
 ```
 
-## Sending a file
+## Parsing a file
 To send a file to the API, we need to specify how to process the document.
 This will determine which API endpoint is used and how the API return will be handled internally by the library.
 
@@ -155,9 +163,12 @@ This is detailed in each document-specific guide.
 ### Off-the-Shelf Documents
 Simply setting the correct class is enough:
 ```csharp
-var prediction = await _mindeeClient
-    .LoadDocument(File.OpenRead(Path), System.IO.Path.GetFileName(Path))
-    .ParseAsync<ReceiptV4Inference>();
+// Load an input source as a path string
+var inputSource = new LocalInputSource(filePath);
+
+// Call the API and parse the input
+var response = await mindeeClient
+    .ParseAsync<InvoiceV4>(inputSource);
 ```
 
 ### Custom Documents
@@ -168,16 +179,17 @@ keys will be the name of each field define in your Custom API model (on the Mind
 
 It also requires that you instantiate a new `CustomEndpoint` object to define the information of your custom API built.
 ```csharp
+// Set the endpoint configuration
 CustomEndpoint myEndpoint = new CustomEndpoint(
-    endpointName: "wnine",
-    accountName: "john"
+    endpointName: "my-endpoint",
+    accountName: "my-account"
     // optionally, lock the version
     //, version: "1.1"
 );
 
-var prediction = await _mindeeClient
-    .LoadDocument(new FileInfo(Path))
-    .ParseAsync(myEndpoint);
+// Call the API and parse the input
+var response = await mindeeClient.ParseAsync(
+    inputSource, myEndpoint);
 ```
 
 ## Process the result
@@ -199,7 +211,7 @@ only the highest confidence field data will be shown (this is all done automatic
 
 ```csharp
 // print a summary of the document-level info
-_logger.Debug(prediction.Inference.Prediction.ToString());
+_logger.Debug(response.Dcocument.Inference.Prediction.ToString());
 ```
 
 The various attributes are detailed in these document-specific guides:
@@ -218,7 +230,17 @@ All response objects have this property, regardless of the number of pages.
 Single page documents will have a single entry.
 
 ### OCR
-The `ocr` attribute could be filled by the API when setting `withFullText` to true.
+The `ocr` attribute can be filled by the API.
+
+This requires a `PredictOptions` object with `fullText` set to `true`.
+
+This object is then sent to the `ParseAsync` method:
+```csharp
+var predictOptions = new PredictOptions(allWords: true);
+var response = await mindeeClient.ParseAsync<InvoiceV4>(inputSource, predictOptions);
+
+_logger.Debug(response.Document.Ocr.MvisionV1.Pages[0].AllWords);
+```
 
 It will contain all the words that have been read in the document.
 
