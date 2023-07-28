@@ -29,7 +29,7 @@ MindeeApiSettings__ApiKey
 ```
 * From an appsettings.json file
 ```
-"MindeeApiSettings": {
+"Mindee": {
     "ApiKey":  "my-api-key"
 },
 ```
@@ -52,7 +52,7 @@ Or, you could also simply instantiate a new instance of `MindeeClient`:
 ```csharp
 using Mindee;
 
-var mindeeClient = MindeeClientInit.Create("my-api-key");
+MindeeClient mindeeClient = new MindeeClient("my-api-key");
 ```
 
 ### Loading a File and Parsing It
@@ -60,59 +60,53 @@ var mindeeClient = MindeeClientInit.Create("my-api-key");
 #### Global Documents
 ```csharp
 using Mindee;
+using Mindee.Input;
 using Mindee.Product.Invoice;
 
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 
+// Construct a new client
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
-// load an input source
-var inputSource = new LocalInputSource(filePath));
-//
-// alternate input sources ...
-// var inputSource = new LocalInputSource(IO.Stream fileStream, string filename)
-// var inputSource = new LocalInputSource(IO.FileInfo fileinfo)
-// 
-// etc, check the docs ;-)
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
+var inputSource = new LocalInputSource(filePath);
 
 // Call the API and parse the input
 var response = await mindeeClient
     .ParseAsync<InvoiceV4>(inputSource);
 
-// Print a summary of all the predictions
+// Print a summary of the predictions
 System.Console.WriteLine(response.Document.ToString());
 
-// Print only the document-level predictions
+// Print the document-level predictions
 // System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
 #### Region-Specific Documents
 ```csharp
 using Mindee;
-using Mindee.Parsing.Us.BankCheck;
+using Mindee.Input;
+using Mindee.Product.Us.BankCheck;
 
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
-// load an input source
-var inputSource = new LocalInputSource(filePath));
-//
-// alternate input sources ...
-// var inputSource = new LocalInputSource(IO.Stream fileStream, string filename)
-// var inputSource = new LocalInputSource(IO.FileInfo fileinfo)
-// 
-// etc, check the docs ;-)
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
+var inputSource = new LocalInputSource(filePath);
 
+// Call the API and parse the input
 var response = await mindeeClient
-    .ParseAsync<BankCheckV1Inference>();
+    .ParseAsync<BankCheckV1>(inputSource);
 
-// Print a summary of all the predictions
+// Print a summary of the predictions
 System.Console.WriteLine(response.Document.ToString());
 
-// Print only the document-level predictions
+// Print the document-level predictions
 // System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
@@ -128,14 +122,9 @@ string filePath = "/path/to/the/file.ext";
 
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
-// load an input source
-var inputSource = new LocalInputSource(filePath));
-//
-// alternate input sources ...
-// var inputSource = new LocalInputSource(IO.Stream fileStream, string filename)
-// var inputSource = new LocalInputSource(IO.FileInfo fileinfo)
-// 
-// etc, check the docs ;-)
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
+var inputSource = new LocalInputSource(filePath);
 
 // Set the endpoint configuration 
 CustomEndpoint myEndpoint = new CustomEndpoint(
@@ -145,14 +134,17 @@ CustomEndpoint myEndpoint = new CustomEndpoint(
     //, version: "1.1"
 );
 
-var response = await mindeeClient
-    .LoadDocument(new FileInfo(filePath))
-    .ParseAsync(myEndpoint);
+// Call the API and parse the input
+var response = await mindeeClient.ParseAsync(
+    inputSource, myEndpoint);
 
 // Print a summary of all the predictions
 System.Console.WriteLine(response.Document.ToString());
 
-// Print only the document-level predictions
+// Print a summary of the predictions
+System.Console.WriteLine(response.Document.ToString());
+
+// Print the document-level predictions
 // System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
