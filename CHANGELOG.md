@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v3.1.0 - 2023-05-30
+### Changes
+* :sparkles: add support for US driver license v1
+
+
 ## v3.0.0 - 2023-07-28
 ### ¡Breaking Changes!
 * :art: :boom: harmonize response type with other libraries
