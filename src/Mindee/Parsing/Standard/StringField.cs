@@ -11,7 +11,7 @@ namespace Mindee.Parsing.Standard
         /// <summary>
         /// The value of the field.
         /// </summary>
-        /// <example>food</example>
+        /// <example>Mindee is cool!</example>
         [JsonPropertyName("value")]
         public string Value { get; set; }
 
@@ -28,7 +28,7 @@ namespace Mindee.Parsing.Standard
             Polygon polygon,
             int? pageId = null) : base(confidence, polygon, pageId)
         {
-            Value = value;
+            Value = value == "" ? null : value;
         }
 
         /// <summary>
