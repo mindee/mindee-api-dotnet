@@ -16,7 +16,12 @@ namespace Mindee.Parsing
 
         public static string FormatAmount(double? amount)
         {
-            return amount == null ? "" : amount.Value.ToString(".00###");
+            return amount == null ? "" : amount.Value.ToString("0.00###");
+        }
+
+        public static string FormatAmount(decimal? amount)
+        {
+            return amount == null ? "" : amount.Value.ToString("0.00###");
         }
 
         public static string FormatString(string str)
