@@ -62,7 +62,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         [Trait("Category", "Pdf operations")]
         public void Split_OtherThanAPdf_MustFail()
         {
-            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/passport/passport.jpeg"), new PageOptions(new short[] { 1, 2, 3 }));
+            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/receipt/us_receipt.jpg"), new PageOptions(new short[] { 1, 2, 3 }));
 
             Assert.Throws<MindeeException>(() => _pdfOperation.Split(splitQuery));
         }

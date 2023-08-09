@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.Input
         public void Can_Load_TYpe_ImageFiles()
         {
             Assert.IsType<LocalInputSource>(new LocalInputSource("Resources/receipt/receipt.heic"));
-            Assert.IsType<LocalInputSource>(new LocalInputSource("Resources/receipt/receipt.jpg"));
+            Assert.IsType<LocalInputSource>(new LocalInputSource("Resources/receipt/us_receipt.jpg"));
             Assert.IsType<LocalInputSource>(new LocalInputSource("Resources/receipt/receipt.jpga"));
             Assert.IsType<LocalInputSource>(new LocalInputSource("Resources/receipt/receipt.tif"));
             Assert.IsType<LocalInputSource>(new LocalInputSource("Resources/receipt/receipt.tiff"));
@@ -32,7 +32,7 @@ namespace Mindee.UnitTests.Input
         [Fact]
         public void Can_Load_Using_FileInfo()
         {
-            FileInfo fileInfo = new FileInfo("Resources/receipt/receipt.jpg");
+            FileInfo fileInfo = new FileInfo("Resources/receipt/us_receipt.jpg");
             Assert.IsType<LocalInputSource>(new LocalInputSource(fileInfo));
         }
     }

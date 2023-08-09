@@ -31,7 +31,7 @@ namespace Mindee.IntegrationTests
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
-            var inputSource = new LocalInputSource("Resources/receipt/receipt.jpg");
+            var inputSource = new LocalInputSource("Resources/receipt/default_sample.jpg");
             var response = await mindeeClient.ParseAsync<ReceiptV5>(inputSource);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
@@ -48,7 +48,7 @@ namespace Mindee.IntegrationTests
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
-            var inputSource = new LocalInputSource("Resources/receipt/receipt.jpg");
+            var inputSource = new LocalInputSource("Resources/receipt/default_sample.jpg");
             var predictOptions = new PredictOptions(cropper: true);
             var response = await mindeeClient.ParseAsync<ReceiptV5>(inputSource, predictOptions);
             Assert.NotNull(response);
@@ -67,7 +67,7 @@ namespace Mindee.IntegrationTests
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
-            var inputSource = new LocalInputSource("Resources/receipt/receipt.jpg");
+            var inputSource = new LocalInputSource("Resources/receipt/default_sample.jpg");
             var predictOptions = new PredictOptions(allWords: true);
             var response = await mindeeClient.ParseAsync<InvoiceV4>(inputSource, predictOptions);
             Assert.NotNull(response);
@@ -87,7 +87,7 @@ namespace Mindee.IntegrationTests
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
-            var inputSource = new LocalInputSource("Resources/receipt/receipt.jpg");
+            var inputSource = new LocalInputSource("Resources/receipt/default_sample.jpg");
             var predictOptions = new PredictOptions(allWords: true, cropper: true);
             var response = await mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource, predictOptions);
@@ -109,7 +109,7 @@ namespace Mindee.IntegrationTests
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
-            var inputSource = new LocalInputSource("Resources/invoice_splitter/2_invoices.pdf");
+            var inputSource = new LocalInputSource("Resources/invoice_splitter/default_sample.pdf");
             var response = await mindeeClient.EnqueueAsync<InvoiceSplitterV1>(inputSource);
 
             Assert.NotNull(response);
@@ -129,7 +129,7 @@ namespace Mindee.IntegrationTests
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
-            var inputSource = new LocalInputSource("Resources/invoice_splitter/2_invoices.pdf");
+            var inputSource = new LocalInputSource("Resources/invoice_splitter/default_sample.pdf");
             await Assert.ThrowsAsync<Mindee403Exception>(
                 () => _ = mindeeClient.ParseAsync<InvoiceSplitterV1>(inputSource)
                 );
