@@ -13,21 +13,23 @@ namespace Mindee.Cli.Commands
         public PredictCustomCommand()
             : base(name: "custom", "Invokes a builder API")
         {
-            AddOption(new Option<OutputType>(new string[]
+            AddOption(new Option<OutputType>(
+                aliases: new string[]
                 {
-                    "-o", "--output", "output"
+                    "-o", "--output"
                 },
                 description: "Specify how to output the data. \n" +
                 "- summary: a basic summary (default)\n" +
                 "- raw: full JSON object\n"));
             AddOption(new Option<string>(
-                new string[]
+                aliases: new string[]
                 {
                     "-v", "--version"
-                }, "Version of the custom API, default 1"));
-            AddArgument(new Argument<string>("account", "The path of the file to parse"));
-            AddArgument(new Argument<string>("endpoint", "The path of the file to parse"));
-            AddArgument(new Argument<string>("path", "The path of the file to parse"));
+                },
+                description: "Version of the custom API, default 1"));
+            AddArgument(new Argument<string>(name: "account", description: "The path of the file to parse"));
+            AddArgument(new Argument<string>(name: "endpoint", description: "The path of the file to parse"));
+            AddArgument(new Argument<string>(name: "path", description: "The path of the file to parse"));
         }
 
         public new class Handler : ICommandHandler
@@ -45,6 +47,11 @@ namespace Mindee.Cli.Commands
             {
                 _logger = logger;
                 _mindeeClient = mindeeClient;
+            }
+
+            public int Invoke(InvocationContext context)
+            {
+                return InvokeAsync(context).GetAwaiter().GetResult();
             }
 
             public async Task<int> InvokeAsync(InvocationContext context)

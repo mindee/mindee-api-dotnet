@@ -1,7 +1,6 @@
 using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
-using System.CommandLine.Invocation;
 using System.CommandLine.Parsing;
 using Microsoft.Extensions.Hosting;
 using Mindee.Cli;
@@ -73,7 +72,15 @@ var runner = BuildCommandLine()
             .UseCommandHandler<PredictUsBankCheckCommand, PredictUsBankCheckCommand.Handler>()
             ;
     })
-    .UseDefaults().Build();
+    .UseHelp()
+    .UseParseErrorReporting()
+    .CancelOnProcessTermination()
+    .UseEnvironmentVariableDirective()
+    .UseParseDirective()
+    .UseSuggestDirective()
+    .UseTypoCorrections()
+    .UseExceptionHandler()
+    .Build();
 
 return await runner.InvokeAsync(args);
 
@@ -118,10 +125,10 @@ static CommandLineBuilder BuildCommandLine()
         allWords: false, async: AsyncType.Never
         )));
 
-    root.AddGlobalOption(new Option<bool>("--silent", "Disables diagnostics output"));
-    root.Handler = CommandHandler.Create(() =>
+    root.AddGlobalOption(new Option<bool>(name: "--silent", "Disables diagnostics output"));
+    root.SetHandler(handle: () =>
     {
-        root.Invoke("-h");
+        root.InvokeAsync(commandLine: "--help");
     });
 
     return new CommandLineBuilder(root);
