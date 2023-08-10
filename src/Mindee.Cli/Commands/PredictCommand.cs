@@ -87,7 +87,7 @@ namespace Mindee.Cli
                 case AsyncType.Only:
                     // Inject an "option" not changeable by the user.
                     // This will set the `Handler.Async` property to always be `true`.
-                    var option = new Option<bool>(alias: "async", getDefaultValue: () => true);
+                    var option = new Option<bool>(name: "async", getDefaultValue: () => true);
                     option.IsHidden = true;
                     AddOption(option);
                     break;
@@ -114,6 +114,11 @@ namespace Mindee.Cli
                 {
                     WriteIndented = true
                 };
+            }
+
+            public int Invoke(InvocationContext context)
+            {
+                return InvokeAsync(context).GetAwaiter().GetResult();
             }
 
             public async Task<int> InvokeAsync(InvocationContext context)
