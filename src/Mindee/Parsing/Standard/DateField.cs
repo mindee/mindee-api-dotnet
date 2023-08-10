@@ -1,3 +1,4 @@
+using System;
 using Mindee.Geometry;
 
 namespace Mindee.Parsing.Standard
@@ -7,6 +8,11 @@ namespace Mindee.Parsing.Standard
     /// </summary>
     public class DateField : StringField
     {
+        /// <summary>
+        /// The value of the field as a <see cref="DateTime"/> object.
+        /// </summary>
+        public DateTime? DateObject { get; set; }
+
         /// <summary>
         ///
         /// </summary>
@@ -20,6 +26,10 @@ namespace Mindee.Parsing.Standard
             Polygon polygon,
             int? pageId = null) : base(value, confidence, polygon, pageId)
         {
+            if (!String.IsNullOrEmpty(Value))
+            {
+                DateObject = DateTime.Parse(Value);
+            }
         }
     }
 }
