@@ -11,7 +11,7 @@ namespace Mindee
         public string ApiKey { get; set; } = string.Empty;
 
         /// <summary>
-        /// The Mindee base url.
+        /// The Mindee base URL.
         /// </summary>
         public string MindeeBaseUrl { get; set; } = string.Empty;
 

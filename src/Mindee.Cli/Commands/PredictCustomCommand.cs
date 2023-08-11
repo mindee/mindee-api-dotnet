@@ -56,8 +56,6 @@ namespace Mindee.Cli.Commands
 
             public async Task<int> InvokeAsync(InvocationContext context)
             {
-                _logger.LogInformation("About to predict a custom document.");
-
                 var response = await _mindeeClient.ParseAsync(
                     new LocalInputSource(Path),
                     new CustomEndpoint(

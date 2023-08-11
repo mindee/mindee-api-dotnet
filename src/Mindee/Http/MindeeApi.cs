@@ -18,11 +18,11 @@ namespace Mindee.Http
         private readonly string _baseUrl = "https://api.mindee.net/";
         private readonly string _apiKey;
         private readonly RestClient _httpClient;
-        private readonly ILogger _logger;
+        private readonly ILogger<MindeeApi> _logger;
 
         public MindeeApi(
             IOptions<MindeeSettings> mindeeSettings
-            , ILogger logger = null
+            , ILogger<MindeeApi> logger = null
             , HttpMessageHandler httpMessageHandler = null
             )
         {
@@ -91,15 +91,15 @@ namespace Mindee.Http
 
             AddPredictRequestParameters(predictParameter, request);
 
-            _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
+            _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
 
             var response = await _httpClient.ExecutePostAsync(request);
 
             _logger?.LogDebug($"HTTP response : {response.Content}");
-            _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
 
             if (response.Content != null)
             {
+                _logger?.LogInformation("Parsing response ...");
                 AsyncPredictResponse<TModel> asyncPredictResponse = JsonSerializer.Deserialize<AsyncPredictResponse<TModel>>(response.Content);
                 return asyncPredictResponse;
             }
@@ -137,13 +137,9 @@ namespace Mindee.Http
 
             AddPredictRequestParameters(predictParameter, request);
 
-            _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
+            _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
 
             var response = await _httpClient.ExecutePostAsync(request);
-
-            _logger?.LogDebug($"HTTP response : {response.Content}");
-            _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
-
             return ResponseHandler<PredictResponse<TModel>>(response);
         }
 
@@ -160,25 +156,22 @@ namespace Mindee.Http
         {
             var request = new RestRequest($"v1/products/" +
                 $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
-                $"documents/queue/{jobId}", Method.Get);
+                $"documents/queue/{jobId}");
 
-            _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
+            _logger?.LogInformation($"HTTP GET to {_baseUrl + request.Resource} ...");
 
             var response = await _httpClient.ExecuteGetAsync(request);
 
-            _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
+            _logger?.LogDebug($"HTTP response: {response.Content}");
 
-            _logger?.LogDebug($"HTTP response : {response.Content}");
-
-            if (response.StatusCode == HttpStatusCode.Redirect)
+            if (response.StatusCode == HttpStatusCode.Redirect && response.Headers != null)
             {
                 var locationHeader = response.Headers.First(h => h.Name == "Location");
 
                 request = new RestRequest(locationHeader.Value?.ToString());
 
-                _logger?.LogInformation($"HTTP request to {_baseUrl}/{request.Resource} started.");
+                _logger?.LogInformation($"HTTP GET to {_baseUrl + request.Resource} ...");
                 response = await _httpClient.ExecuteGetAsync(request);
-                _logger?.LogInformation($"HTTP request to {_baseUrl + request.Resource} finished.");
             }
 
             return ResponseHandler<AsyncPredictResponse<TModel>>(response);
@@ -222,11 +215,14 @@ namespace Mindee.Http
         private TModel ResponseHandler<TModel>(RestResponse restResponse)
             where TModel : CommonResponse, new()
         {
+            _logger?.LogDebug($"HTTP response: {restResponse.Content}");
+
             string errorMessage = "Mindee API client: ";
             TModel model = null;
 
             if (!string.IsNullOrWhiteSpace(restResponse.Content))
             {
+                _logger?.LogInformation($"Parsing response {typeof(TModel).Name} ...");
                 try
                 {
                     model = JsonSerializer.Deserialize<TModel>(restResponse.Content);
@@ -244,7 +240,7 @@ namespace Mindee.Http
                 }
             }
 
-            errorMessage += model.ApiRequest.Error.ToString();
+            errorMessage += model?.ApiRequest.Error.ToString();
 
             _logger?.LogError(errorMessage);
 

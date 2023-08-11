@@ -133,8 +133,6 @@ namespace Mindee.Cli
 
             private async Task<int> ParseAsync(InvocationContext context, ParseOptions options)
             {
-                _logger.LogInformation("Synchronous parsing of {} ...", typeof(TInferenceModel).Name);
-
                 var response = await _mindeeClient.ParseAsync<TInferenceModel>(
                     new LocalInputSource(options.Path),
                     new PredictOptions(allWords: AllWords));

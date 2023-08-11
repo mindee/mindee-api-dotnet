@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
 using Mindee.Http;
@@ -17,12 +18,14 @@ namespace Mindee
     {
         private readonly IPdfOperation _pdfOperation;
         private readonly IHttpApi _mindeeApi;
+        private readonly ILogger<MindeeClient> _logger;
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="apiKey">The required API key to use Mindee.</param>
-        public MindeeClient(string apiKey)
+        /// <param name="logger"></param>
+        public MindeeClient(string apiKey, ILogger<MindeeClient> logger = null)
         {
             var mindeeSettings = new MindeeSettings
             {
@@ -30,16 +33,19 @@ namespace Mindee
             };
             _pdfOperation = new DocNetApi();
             _mindeeApi = new MindeeApi(Options.Create(mindeeSettings));
+            _logger = logger;
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="mindeeSettings"><see cref="MindeeSettings"/></param>
-        public MindeeClient(MindeeSettings mindeeSettings)
+        /// <param name="logger"></param>
+        public MindeeClient(MindeeSettings mindeeSettings, ILogger<MindeeClient> logger = null)
         {
             _pdfOperation = new DocNetApi();
             _mindeeApi = new MindeeApi(Options.Create(mindeeSettings));
+            _logger = logger;
         }
 
         /// <summary>
@@ -47,12 +53,12 @@ namespace Mindee
         /// </summary>
         /// <param name="pdfOperation"><see cref="IPdfOperation"/></param>
         /// <param name="httpApi"><see cref="IHttpApi"/></param>
-        public MindeeClient(
-            IPdfOperation pdfOperation,
-            IHttpApi httpApi)
+        /// <param name="logger"></param>
+        public MindeeClient(IPdfOperation pdfOperation, IHttpApi httpApi, ILogger<MindeeClient> logger = null)
         {
             _pdfOperation = pdfOperation;
             _mindeeApi = httpApi;
+            _logger = logger;
         }
 
         /// <summary>
@@ -70,6 +76,8 @@ namespace Mindee
             , PredictOptions predictOptions = null
             , PageOptions pageOptions = null)
         {
+            _logger?.LogInformation(message: "Synchronous parsing of {} ...", nameof(CustomV1));
+
             if (predictOptions == null)
             {
                 predictOptions = new PredictOptions();
@@ -106,6 +114,8 @@ namespace Mindee
             , PageOptions pageOptions = null)
             where TInferenceModel : class, new()
         {
+            _logger?.LogInformation(message: "Synchronous parsing of {} ...", typeof(TInferenceModel).Name);
+
             if (predictOptions == null)
             {
                 predictOptions = new PredictOptions();
@@ -140,6 +150,8 @@ namespace Mindee
             , PageOptions pageOptions = null)
             where TInferenceModel : class, new()
         {
+            _logger?.LogInformation(message: "Enqueuing of {} ...", typeof(TInferenceModel).Name);
+
             if (predictOptions == null)
             {
                 predictOptions = new PredictOptions();
@@ -167,6 +179,8 @@ namespace Mindee
         public async Task<AsyncPredictResponse<TInferenceModel>> ParseQueuedAsync<TInferenceModel>(string jobId)
             where TInferenceModel : class, new()
         {
+            _logger?.LogInformation(message: "Parse from queue of {} ...", typeof(TInferenceModel).Name);
+
             if (string.IsNullOrWhiteSpace(jobId))
             {
                 throw new ArgumentNullException(jobId);
