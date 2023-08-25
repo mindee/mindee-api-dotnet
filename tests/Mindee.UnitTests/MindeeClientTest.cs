@@ -23,7 +23,7 @@ namespace Mindee.UnitTests
                 .ReturnsAsync(new PredictResponse<CustomV1>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
-            var inputSource = new LocalInputSource(new FileInfo("Resources/invoice/invoice.pdf"));
+            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
             var document = await mindeeClient.ParseAsync(
                 inputSource, customEndpoint);
 
@@ -45,7 +45,7 @@ namespace Mindee.UnitTests
                 .ReturnsAsync(new PredictResponse<CustomV1>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
-            var inputSource = new LocalInputSource(new FileInfo("Resources/invoice/invoice.pdf"));
+            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
             var parseOptions = new PredictOptions(allWords: true, cropper: true);
             var document = await mindeeClient.ParseAsync(
                 inputSource,
@@ -66,7 +66,7 @@ namespace Mindee.UnitTests
                 .ReturnsAsync(new PredictResponse<InvoiceV4>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
-            var inputSource = new LocalInputSource(new FileInfo("Resources/invoice/invoice.pdf"));
+            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
             var document = await mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource);
 
@@ -84,7 +84,7 @@ namespace Mindee.UnitTests
                 .ReturnsAsync(new PredictResponse<InvoiceV4>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
-            var inputSource = new LocalInputSource(new FileInfo("Resources/invoice/invoice.pdf"));
+            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
             var parseOptions = new PredictOptions(allWords: true, cropper: true);
             var document = await mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource, parseOptions);
@@ -107,8 +107,8 @@ namespace Mindee.UnitTests
 
 
             var inputSource = new LocalInputSource(
-                File.ReadAllBytes("Resources/invoice/invoice.pdf"),
-                "myinvoice.pdf"
+                File.ReadAllBytes("Resources/file_types/pdf/blank_1.pdf"),
+                "blank_1.pdf"
                 );
             var document = await mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource);
@@ -125,7 +125,7 @@ namespace Mindee.UnitTests
                 .ReturnsAsync(new AsyncPredictResponse<InvoiceV4>());
             var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
 
-            var inputSource = new LocalInputSource("Resources/invoice/invoice.pdf");
+            var inputSource = new LocalInputSource("Resources/file_types/pdf/blank_1.pdf");
             var response = await mindeeClient.EnqueueAsync<InvoiceV4>(inputSource);
 
             Assert.NotNull(response);

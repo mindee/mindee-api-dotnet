@@ -18,7 +18,9 @@ namespace Mindee.UnitTests.Domain.Pdf
         [Trait("Category", "Pdf operations")]
         public void Split_Wants1Page_MustGetOnly1Page()
         {
-            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 2 }));
+            var splitQuery = new SplitQuery(
+                File.ReadAllBytes("Resources/file_types/pdf/multipage.pdf"),
+                new PageOptions(new short[] { 2 }));
 
             var splittedPdf = _pdfOperation.Split(splitQuery);
 
@@ -31,7 +33,9 @@ namespace Mindee.UnitTests.Domain.Pdf
         [Trait("Category", "Pdf operations")]
         public void Split_Wants2Page_MustGet2Page()
         {
-            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 1, 2 }));
+            var splitQuery = new SplitQuery(File.ReadAllBytes(
+                "Resources/file_types/pdf/multipage.pdf"),
+                new PageOptions(new short[] { 1, 2 }));
 
             var splitPdf = _pdfOperation.Split(splitQuery);
 
@@ -44,7 +48,9 @@ namespace Mindee.UnitTests.Domain.Pdf
         [Trait("Category", "Pdf operations")]
         public void Split_WantsTooManyPages_MustFail()
         {
-            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 }));
+            var splitQuery = new SplitQuery(File.ReadAllBytes(
+                "Resources/file_types/pdf/multipage.pdf"),
+                new PageOptions(new short[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 }));
 
             Assert.Throws<ArgumentOutOfRangeException>(() => _pdfOperation.Split(splitQuery));
         }
@@ -53,7 +59,9 @@ namespace Mindee.UnitTests.Domain.Pdf
         [Trait("Category", "Pdf operations")]
         public void Split_WantsStartPageTo0_MustFail()
         {
-            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 0, 1, 2, 3 }));
+            var splitQuery = new SplitQuery(File.ReadAllBytes(
+                "Resources/file_types/pdf/multipage.pdf"),
+                new PageOptions(new short[] { 0, 1, 2, 3 }));
 
             Assert.Throws<ArgumentOutOfRangeException>(() => _pdfOperation.Split(splitQuery));
         }
@@ -62,7 +70,9 @@ namespace Mindee.UnitTests.Domain.Pdf
         [Trait("Category", "Pdf operations")]
         public void Split_OtherThanAPdf_MustFail()
         {
-            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/receipt/us_receipt.jpg"), new PageOptions(new short[] { 1, 2, 3 }));
+            var splitQuery = new SplitQuery(File.ReadAllBytes(
+                "Resources/file_types/receipt.jpga"),
+                new PageOptions(new short[] { 1, 2, 3 }));
 
             Assert.Throws<MindeeException>(() => _pdfOperation.Split(splitQuery));
         }
@@ -71,7 +81,9 @@ namespace Mindee.UnitTests.Domain.Pdf
         [Trait("Category", "Pdf operations")]
         public void Split_ShouldCutTheFirstAndThe2LastPages_MustSuccess()
         {
-            var splitQuery = new SplitQuery(File.ReadAllBytes("Resources/pdf/multipage.pdf"), new PageOptions(new short[] { 1, -2, -1 }));
+            var splitQuery = new SplitQuery(File.ReadAllBytes(
+                "Resources/file_types/pdf/multipage.pdf"),
+                new PageOptions(new short[] { 1, -2, -1 }));
 
             var splitPdf = _pdfOperation.Split(splitQuery);
 
@@ -85,7 +97,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         public void Split_ShouldRemovePages_MustSuccess()
         {
             var splitQuery = new SplitQuery(
-                File.ReadAllBytes("Resources/pdf/multipage.pdf")
+                File.ReadAllBytes("Resources/file_types/pdf/multipage.pdf")
                 , new PageOptions(
                     new short[] { 1, 2, 3 }
                     , PageOptionsOperation.Remove));
@@ -102,7 +114,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         public void Split_ShouldNotRemovePagesBecauseMinPagesAreNotMet()
         {
             var splitQuery = new SplitQuery(
-                File.ReadAllBytes("Resources/pdf/multipage_cut-2.pdf")
+                File.ReadAllBytes("Resources/file_types/pdf/multipage_cut-2.pdf")
                 , new PageOptions(
                     new short[] { 1 }
                     , PageOptionsOperation.Remove

@@ -32,7 +32,7 @@ do
   fi
 
   sed -i "s/my-api-key/$API_KEY/" $OUTPUT_FILE
-  sed -i "s/\/path\/to\/the\/file.ext/tests\/resources\/pdf\/blank_1.pdf/" $OUTPUT_FILE
+  sed -i "s/\/path\/to\/the\/file.ext/tests\/resources\/file_types\/pdf\/blank_1.pdf/" $OUTPUT_FILE
 
   dotnet-script $OUTPUT_FILE
 done

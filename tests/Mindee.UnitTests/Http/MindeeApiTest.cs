@@ -47,10 +47,10 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task Predict_WithValidResponse()
         {
-            var mindeeApi = InitMockServer(HttpStatusCode.OK, "Resources/invoice/response_v4/complete.json");
+            var mindeeApi = InitMockServer(HttpStatusCode.OK, "Resources/products/invoices/response_v4/complete.json");
 
             var response = await mindeeApi.PredictPostAsync<InvoiceV4>(UnitTestBase.GetFakePredictParameter());
-            var expected = File.ReadAllText("Resources/invoice/response_v4/summary_full.rst");
+            var expected = File.ReadAllText("Resources/products/invoices/response_v4/summary_full.rst");
 
             Assert.NotNull(response);
             Assert.Equal(expected, response.Document.ToString());
