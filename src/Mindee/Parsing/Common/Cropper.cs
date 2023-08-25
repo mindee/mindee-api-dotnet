@@ -9,7 +9,7 @@ namespace Mindee.Parsing.Common
     public sealed class Cropper
     {
         /// <summary>
-        /// Signatures' positions in the image.
+        /// List of positions within the image.
         /// </summary>
         [JsonPropertyName("cropping")]
         public List<Standard.PositionField> Cropping { get; set; }

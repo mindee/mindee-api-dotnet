@@ -14,26 +14,21 @@ namespace Mindee.Cli
         Summary,
     }
 
-    enum AsyncType
-    {
-        Never,
-        Only,
-        Both
-    }
-
     internal struct CommandOptions
     {
         public readonly string Name;
         public readonly string Description;
         public readonly bool AllWords;
-        public readonly AsyncType Async;
+        public readonly bool Async;
+        public readonly bool Sync;
 
-        public CommandOptions(string name, string description, bool allWords, AsyncType async)
+        public CommandOptions(string name, string description, bool allWords, bool sync, bool async)
         {
             this.Name = name;
             this.Description = description;
             this.AllWords = allWords;
             this.Async = async;
+            this.Sync = sync;
         }
     }
 
@@ -75,22 +70,21 @@ namespace Mindee.Cli
                     description: "To get all the words in the current document. False by default.");
                 AddOption(option);
             }
-            switch (options.Async)
+            if (options.Async && !options.Sync)
             {
-                case AsyncType.Both:
-                    AddOption(new Option<bool>(new string[]
-                        {
-                            "--async"
-                        },
-                        description: "Process the file asynchronously. False by default."));
-                    break;
-                case AsyncType.Only:
-                    // Inject an "option" not changeable by the user.
-                    // This will set the `Handler.Async` property to always be `true`.
-                    var option = new Option<bool>(name: "async", getDefaultValue: () => true);
-                    option.IsHidden = true;
-                    AddOption(option);
-                    break;
+                // Inject an "option" not changeable by the user.
+                // This will set the `Handler.Async` property to always be `true`.
+                var option = new Option<bool>(name: "async", getDefaultValue: () => true);
+                option.IsHidden = true;
+                AddOption(option);
+            }
+            else if (options.Async && options.Sync)
+            {
+                AddOption(new Option<bool>(new string[]
+                    {
+                        "--async"
+                    },
+                    description: "Process the file asynchronously. False by default."));
             }
             AddArgument(new Argument<string>("path", "The path of the file to parse"));
         }
