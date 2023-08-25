@@ -90,39 +90,43 @@ static CommandLineBuilder BuildCommandLine()
     root.AddCommand(new PredictCustomCommand());
     root.AddCommand(new PredictInvoiceCommand(new CommandOptions(
         name: "invoice", description: "Invoice V4",
-        allWords: true, async: AsyncType.Never
+        allWords: true, sync: true, async: false
         )));
     root.AddCommand(new PredictFinancialDocumentCommand(new CommandOptions(
         name: "financial-document", description: "Financial Document V1",
-        allWords: true, async: AsyncType.Never
+        allWords: true, sync: true, async: false
         )));
     root.AddCommand(new PredictReceiptCommand(new CommandOptions(
         name: "receipt", description: "Receipt V5",
-        allWords: true, async: AsyncType.Never
+        allWords: true, sync: true, async: false
         )));
     root.AddCommand(new PredictPassportCommand(new CommandOptions(
         name: "passport", description: "Passport V1",
-        allWords: false, async: AsyncType.Never
+        allWords: false, sync: true, async: false
         )));
     root.AddCommand(new PredictProofOfAddressCommand(new CommandOptions(
         name: "proof-of-address", description: "Proof Of Address V1",
-        allWords: true, async: AsyncType.Never
+        allWords: true, sync: true, async: false
         )));
     root.AddCommand(new PredictCropperCommand(new CommandOptions(
         name: "cropper", description: "Cropper V1",
-        allWords: false, async: AsyncType.Never
+        allWords: false, sync: true, async: false
         )));
     root.AddCommand(new PredictInvoiceSplitterCommand(new CommandOptions(
         name: "invoice-splitter", description: "Invoice Splitter V1",
-        allWords: false, async: AsyncType.Only
+        allWords: false, sync: false, async: true
         )));
     root.AddCommand(new PredictFrIdCardCommand(new CommandOptions(
         name: "fr-id-card", description: "FR ID Card V1",
-        allWords: false, async: AsyncType.Never
+        allWords: false, sync: true, async: false
         )));
     root.AddCommand(new PredictUsBankCheckCommand(new CommandOptions(
         name: "us-bank-check", description: "US Bank Check V1",
-        allWords: false, async: AsyncType.Never
+        allWords: false, sync: true, async: false
+        )));
+    root.AddCommand(new PredictUsBankCheckCommand(new CommandOptions(
+        name: "us-driver-license", description: "US Driver License V1",
+        allWords: false, sync: true, async: false
         )));
 
     root.AddGlobalOption(new Option<bool>(name: "--silent", "Disables diagnostics output"));
