@@ -36,7 +36,7 @@ namespace Mindee.UnitTests.Product.FinancialDocument
         public async Task Predict_Invoice_CheckSummary()
         {
             var response = await GetPrediction("complete_invoice");
-            var expected = File.ReadAllText("Resources/financial_document/response_v1/summary_full_invoice.rst");
+            var expected = File.ReadAllText("Resources/products/financial_document/response_v1/summary_full_invoice.rst");
             Assert.Equal(
                 expected,
                 response.Document.ToString());
@@ -46,7 +46,7 @@ namespace Mindee.UnitTests.Product.FinancialDocument
         public async Task Predict_Invoice_FirstPage_CheckSummary()
         {
             var response = await GetPrediction("complete_invoice");
-            var expected = File.ReadAllText("Resources/financial_document/response_v1/summary_page0_invoice.rst");
+            var expected = File.ReadAllText("Resources/products/financial_document/response_v1/summary_page0_invoice.rst");
             Assert.Equal(
                 expected,
                 response.Document.Inference.Pages.First().ToString());
@@ -56,7 +56,7 @@ namespace Mindee.UnitTests.Product.FinancialDocument
         public async Task Predict_Receipt_CheckSummary()
         {
             var response = await GetPrediction("complete_receipt");
-            var expected = File.ReadAllText("Resources/financial_document/response_v1/summary_full_receipt.rst");
+            var expected = File.ReadAllText("Resources/products/financial_document/response_v1/summary_full_receipt.rst");
             Assert.Equal(
                 expected,
                 response.Document.ToString());
@@ -66,7 +66,7 @@ namespace Mindee.UnitTests.Product.FinancialDocument
         public async Task Predict_Receipt_FirstPage_CheckSummary()
         {
             var response = await GetPrediction("complete_receipt");
-            var expected = File.ReadAllText("Resources/financial_document/response_v1/summary_page0_receipt.rst");
+            var expected = File.ReadAllText("Resources/products/financial_document/response_v1/summary_page0_receipt.rst");
             Assert.Equal(
                 expected,
                 response.Document.Inference.Pages.First().ToString());
@@ -74,7 +74,7 @@ namespace Mindee.UnitTests.Product.FinancialDocument
 
         private static async Task<PredictResponse<FinancialDocumentV1>> GetPrediction(string name)
         {
-            string fileName = $"Resources/financial_document/response_v1/{name}.json";
+            string fileName = $"Resources/products/financial_document/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<FinancialDocumentV1>(
                 UnitTestBase.GetFakePredictParameter());

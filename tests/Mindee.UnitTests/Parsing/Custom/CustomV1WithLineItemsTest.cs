@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.Parsing.Custom
         public async Task BuildLineItems_SingeTable01()
         {
             var mindeeAPi = GetMindeeApiForCustom(
-                fileName: "Resources/custom/response_v1/line_items/single_table_01.json");
+                fileName: "Resources/products/custom/response_v1/line_items/single_table_01.json");
             var fieldNamesToLineItems = new List<string>()
             {
                 "beneficiary_name",
@@ -46,7 +46,7 @@ namespace Mindee.UnitTests.Parsing.Custom
         public async Task BuildLineItems_MultipleTables01()
         {
             var mindeeAPi = GetMindeeApiForCustom(
-                fileName: "Resources/custom/response_v1/line_items/multiple_tables_01.json");
+                fileName: "Resources/products/custom/response_v1/line_items/multiple_tables_01.json");
 
             var earningsAnchor = new Anchor(name: "earnings_description", tolerance: 0.002d);
             var earningsFields = new List<string>
@@ -94,7 +94,7 @@ namespace Mindee.UnitTests.Parsing.Custom
         public async Task BuildLineItems_MultipleTables02()
         {
             var mindeeAPi = GetMindeeApiForCustom(
-                fileName: "Resources/custom/response_v1/line_items/multiple_tables_02.json");
+                fileName: "Resources/products/custom/response_v1/line_items/multiple_tables_02.json");
 
             var earningsAnchor = new Anchor(name: "earnings_description", tolerance: 0.002d);
             var earningsFields = new List<string>
@@ -138,7 +138,7 @@ namespace Mindee.UnitTests.Parsing.Custom
             Assert.Equal("ZZ Disability", taxesLastLine.Fields["taxes_description"].Content);
         }
 
-        private MindeeApi GetMindeeApiForCustom(string fileName = "Resources/custom/response_v1/complete.json")
+        private MindeeApi GetMindeeApiForCustom(string fileName = "Resources/products/custom/response_v1/complete.json")
         {
             return UnitTestBase.GetMindeeApi(fileName);
         }

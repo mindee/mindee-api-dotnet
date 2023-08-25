@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.Parsing.Common
         public async Task Can_Load_Ocr()
         {
             var response = await JsonSerializer.DeserializeAsync<PredictResponse<ReceiptV4>>(
-                new FileInfo("Resources/ocr/complete_with_ocr.json").OpenRead());
+                new FileInfo("Resources/extras/ocr/complete.json").OpenRead());
 
             Assert.NotNull(response);
             Assert.NotNull(response.Document.Ocr);

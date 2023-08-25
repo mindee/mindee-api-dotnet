@@ -19,7 +19,7 @@ namespace Mindee.UnitTests.Product.Fr.BankAccountDetails
         public async Task Predict_CheckSummary()
         {
             var response = await GetPrediction("complete");
-            var expected = File.ReadAllText("Resources/fr/bank_account_details/response_v1/summary_full.rst");
+            var expected = File.ReadAllText("Resources/products/bank_account_details/response_v1/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
 
@@ -27,13 +27,13 @@ namespace Mindee.UnitTests.Product.Fr.BankAccountDetails
         public async Task Predict_CheckPage0()
         {
             var response = await GetPrediction("complete");
-            var expected = File.ReadAllText("Resources/fr/bank_account_details/response_v1/summary_page0.rst");
+            var expected = File.ReadAllText("Resources/products/bank_account_details/response_v1/summary_page0.rst");
             Assert.Equal(expected, response.Document.Inference.Pages[0].ToString());
         }
 
         private static async Task<PredictResponse<BankAccountDetailsV1>> GetPrediction(string name)
         {
-            string fileName = $"Resources/fr/bank_account_details/response_v1/{name}.json";
+            string fileName = $"Resources/products/bank_account_details/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<BankAccountDetailsV1>(
                 UnitTestBase.GetFakePredictParameter());
