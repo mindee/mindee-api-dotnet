@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -16,7 +17,7 @@ namespace Mindee.Http
     internal sealed class MindeeApi : IHttpApi
     {
         private readonly string _baseUrl = "https://api.mindee.net/";
-        private readonly string _apiKey;
+        private readonly Dictionary<string, string> _defaultHeaders;
         private readonly RestClient _httpClient;
         private readonly ILogger<MindeeApi> _logger;
 
@@ -27,50 +28,34 @@ namespace Mindee.Http
             )
         {
             _logger = logger;
-            _apiKey = mindeeSettings.Value.ApiKey;
+
             if (!string.IsNullOrWhiteSpace(mindeeSettings.Value.MindeeBaseUrl))
             {
                 _baseUrl = mindeeSettings.Value.MindeeBaseUrl;
             }
 
+            RestClientOptions clientOptions = new RestClientOptions(_baseUrl)
+            {
+                FollowRedirects = false,
+                MaxTimeout = TimeSpan.FromSeconds(mindeeSettings.Value.RequestTimeoutSeconds).Milliseconds
+            };
             if (httpMessageHandler != null)
             {
-                _httpClient = BuildClient(httpMessageHandler);
+                clientOptions.ConfigureMessageHandler = _ => httpMessageHandler;
             }
-            else
-            {
-                _httpClient = BuildClient(mindeeSettings.Value.RequestTimeoutSeconds);
-            }
-        }
 
-        private RestClient BuildClient(int timeoutInSeconds)
-        {
-            var options = new RestClientOptions(_baseUrl)
+            _httpClient = new RestClient(clientOptions);
+
+            _defaultHeaders = new Dictionary<string, string>
             {
-                MaxTimeout = TimeSpan.FromSeconds(timeoutInSeconds).Milliseconds,
-                FollowRedirects = false
+                {
+                    "Authorization", $"Token {mindeeSettings.Value.ApiKey}"
+                },
+                {
+                    "User-Agent", BuildUserAgent()
+                },
             };
-
-            var client = new RestClient(options,
-                p => p.Add("Authorization", $"Token {_apiKey}")
-            );
-
-            client.AddDefaultHeader("User-Agent", BuildUserAgent());
-
-            return client;
-        }
-
-        private RestClient BuildClient(HttpMessageHandler httpMessageHandler)
-        {
-            var options = new RestClientOptions(_baseUrl)
-            {
-                ConfigureMessageHandler = _ => httpMessageHandler
-            };
-            var client = new RestClient(options,
-                p => p.Add("Authorization", $"Token {_apiKey}")
-            );
-
-            return client;
+            _httpClient.AddDefaultHeaders(_defaultHeaders);
         }
 
         public Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(PredictParameter predictParameter)
@@ -154,27 +139,27 @@ namespace Mindee.Http
             CustomEndpoint endpoint)
             where TModel : class, new()
         {
-            var request = new RestRequest($"v1/products/" +
+            var queueRequest = new RestRequest($"v1/products/" +
                 $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
                 $"documents/queue/{jobId}");
 
-            _logger?.LogInformation($"HTTP GET to {_baseUrl + request.Resource} ...");
+            _logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource} ...");
 
-            var response = await _httpClient.ExecuteGetAsync(request);
+            var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest);
 
-            _logger?.LogDebug($"HTTP response: {response.Content}");
+            _logger?.LogDebug($"HTTP response: {queueResponse.Content}");
 
-            if (response.StatusCode == HttpStatusCode.Redirect && response.Headers != null)
+            if (queueResponse.StatusCode == HttpStatusCode.Redirect && queueResponse.Headers != null)
             {
-                var locationHeader = response.Headers.First(h => h.Name == "Location");
+                var locationHeader = queueResponse.Headers.First(h => h.Name == "Location");
 
-                request = new RestRequest(locationHeader.Value?.ToString());
+                var docRequest = new RestRequest(locationHeader.Value?.ToString());
 
-                _logger?.LogInformation($"HTTP GET to {_baseUrl + request.Resource} ...");
-                response = await _httpClient.ExecuteGetAsync(request);
+                _logger?.LogInformation($"HTTP GET to {_baseUrl + docRequest.Resource} ...");
+                var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
+                return ResponseHandler<AsyncPredictResponse<TModel>>(docResponse);
             }
-
-            return ResponseHandler<AsyncPredictResponse<TModel>>(response);
+            return ResponseHandler<AsyncPredictResponse<TModel>>(queueResponse);
         }
 
         private static CustomEndpoint GetEndpoint<TModel>()
