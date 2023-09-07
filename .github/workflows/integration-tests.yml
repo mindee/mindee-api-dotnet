@@ -1,12 +1,7 @@
-#
-# Non regression tests.
-#
-name: Non regression tests
+name: Integration Tests
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
   schedule:
     - cron:  '41 04 * * *'
 
@@ -25,8 +20,8 @@ jobs:
         os:
           - "ubuntu-latest"
           - "macos-latest"
-          - "windows-latest"
         dotnet-version:
+          - "net6.0"
           - "net7.0"
     runs-on: ${{ matrix.os }}
     steps:
@@ -53,3 +48,40 @@ jobs:
     - name: Build and test
       run: |
         dotnet test -f ${{ matrix.dotnet-version }} --verbosity normal "tests\Mindee.IntegrationTests"
+
+  test-windows:
+    name: Run Tests on *nix
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        os:
+          - "windows-latest"
+        dotnet-version:
+          - "net472"
+          - "net6.0"
+          - "net7.0"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "7.0.x"
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Install dependencies
+        run: |
+          dotnet restore
+
+      - name: Build and test
+        run: |
+          dotnet test -f ${{ matrix.dotnet-version }} --verbosity normal "tests\Mindee.IntegrationTests"
