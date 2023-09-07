@@ -13,7 +13,7 @@ env:
 
 jobs:
   test-nix:
-    name: Run Tests on *nix
+    name: Test on *NIX
     timeout-minutes: 30
     strategy:
       matrix:
@@ -50,7 +50,7 @@ jobs:
         dotnet test -f ${{ matrix.dotnet-version }} --verbosity normal "tests\Mindee.IntegrationTests"
 
   test-windows:
-    name: Run Tests on *nix
+    name: Test on Windows
     timeout-minutes: 30
     strategy:
       matrix:
@@ -58,6 +58,7 @@ jobs:
           - "windows-latest"
         dotnet-version:
           - "net472"
+          - "net482"
           - "net6.0"
           - "net7.0"
     runs-on: ${{ matrix.os }}

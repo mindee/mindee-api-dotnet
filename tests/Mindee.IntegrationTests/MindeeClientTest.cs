@@ -134,5 +134,28 @@ namespace Mindee.IntegrationTests
                 () => _ = mindeeClient.ParseAsync<InvoiceSplitterV1>(inputSource)
                 );
         }
+
+        [Fact]
+        public async Task EnqueueAndParse_AsyncOnly_Async_MustSucceed()
+        {
+            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+            var mindeeClient = new MindeeClient(apiKey);
+            var inputSource = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
+            var response = await mindeeClient.EnqueueAndParseAsync<InvoiceSplitterV1>(inputSource);
+
+            Assert.NotNull(response);
+            Assert.NotNull(response.ApiRequest);
+            Assert.Contains("/v1/products/mindee/invoice_splitter/v1/documents/", response.ApiRequest.Url);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal(200, response.ApiRequest.StatusCode);
+
+            Assert.NotNull(response.Job);
+            Assert.Equal("completed", response.Job.Status);
+            Assert.NotNull(response.Job.IssuedAt.ToString("yyyy"));
+            Assert.NotNull(response.Job.AvailableAt?.ToString("yyyy"));
+
+            Assert.NotNull(response.Document);
+            Assert.NotNull(response.Document.Inference.Prediction.PageGroups);
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -107,7 +108,6 @@ namespace Mindee
         /// The response object will be instantiated based on this parameter.</typeparam>
         /// <returns><see cref="PredictResponse{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
-        /// <remarks>With full text doesn't work for all the types.</remarks>
         public async Task<PredictResponse<TInferenceModel>> ParseAsync<TInferenceModel>(
             LocalInputSource inputSource
             , PredictOptions predictOptions = null
@@ -143,7 +143,6 @@ namespace Mindee
         /// The response object will be instantiated based on this parameter.</typeparam>
         /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
-        /// <remarks>With full text doesn't work for all the types.</remarks>
         public async Task<AsyncPredictResponse<TInferenceModel>> EnqueueAsync<TInferenceModel>(
             LocalInputSource inputSource
             , PredictOptions predictOptions = null
@@ -186,6 +185,66 @@ namespace Mindee
                 throw new ArgumentNullException(jobId);
             }
             return await _mindeeApi.DocumentQueueGetAsync<TInferenceModel>(jobId);
+        }
+
+        /// <summary>
+        /// Add the document to an async queue, poll, and parse when complete.
+        /// </summary>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <param name="pageOptions"><see cref="PageOptions"/></param>
+        /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
+        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
+        /// The response object will be instantiated based on this parameter.</typeparam>
+        /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<AsyncPredictResponse<TInferenceModel>> EnqueueAndParseAsync<TInferenceModel>(
+            LocalInputSource inputSource
+            , PredictOptions predictOptions = null
+            , PageOptions pageOptions = null
+            , AsyncPollingOptions pollingOptions = null)
+            where TInferenceModel : class, new()
+        {
+            _logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
+
+            if (pollingOptions == null)
+            {
+                pollingOptions = new AsyncPollingOptions();
+            }
+
+            int maxRetries = pollingOptions.MaxRetries + 1;
+            int initialDelayMilliSec = (int)Math.Floor(pollingOptions.InitialDelaySec * 1000);
+            int intervalMilliSec = (int)Math.Floor(pollingOptions.IntervalSec * 1000);
+
+            var enqueueResponse = await EnqueueAsync<TInferenceModel>(
+                inputSource,
+                predictOptions,
+                pageOptions);
+
+            string jobId = enqueueResponse.Job.Id;
+            _logger?.LogInformation("Enqueued with job ID: {}", jobId);
+
+            _logger?.LogInformation(
+                "Waiting {} seconds before attempting to retrieve the document...",
+                pollingOptions.InitialDelaySec);
+            Thread.Sleep(initialDelayMilliSec);
+
+            int retryCount = 1;
+            AsyncPredictResponse<TInferenceModel> response;
+
+            while (retryCount < maxRetries)
+            {
+                Thread.Sleep(intervalMilliSec);
+                _logger?.LogInformation("Attempting to retrieve: {} of {}", retryCount, maxRetries);
+
+                response = await ParseQueuedAsync<TInferenceModel>(jobId);
+                if (response.Document != null)
+                {
+                    return response;
+                }
+                retryCount++;
+            }
+            throw new MindeeException($"Could not complete after {retryCount} attempts.");
         }
     }
 }

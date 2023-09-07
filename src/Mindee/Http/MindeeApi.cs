@@ -17,7 +17,6 @@ namespace Mindee.Http
     internal sealed class MindeeApi : IHttpApi
     {
         private readonly string _baseUrl = "https://api.mindee.net/";
-        private readonly string _apiKey;
         private readonly Dictionary<string, string> _defaultHeaders;
         private readonly RestClient _httpClient;
         private readonly ILogger<MindeeApi> _logger;
@@ -29,45 +28,34 @@ namespace Mindee.Http
             )
         {
             _logger = logger;
-            _apiKey = mindeeSettings.Value.ApiKey;
+
             if (!string.IsNullOrWhiteSpace(mindeeSettings.Value.MindeeBaseUrl))
             {
                 _baseUrl = mindeeSettings.Value.MindeeBaseUrl;
             }
-            _defaultHeaders = new Dictionary<string, string>
+
+            RestClientOptions clientOptions = new RestClientOptions(_baseUrl)
             {
-                { "Authorization", $"Token {_apiKey}" },
-                { "User-Agent", BuildUserAgent() },
+                FollowRedirects = false,
+                MaxTimeout = TimeSpan.FromSeconds(mindeeSettings.Value.RequestTimeoutSeconds).Milliseconds
             };
             if (httpMessageHandler != null)
             {
-                _httpClient = BuildClient(httpMessageHandler);
+                clientOptions.ConfigureMessageHandler = _ => httpMessageHandler;
             }
-            else
+
+            _httpClient = new RestClient(clientOptions);
+
+            _defaultHeaders = new Dictionary<string, string>
             {
-                _httpClient = BuildClient(mindeeSettings.Value.RequestTimeoutSeconds);
-            }
+                {
+                    "Authorization", $"Token {mindeeSettings.Value.ApiKey}"
+                },
+                {
+                    "User-Agent", BuildUserAgent()
+                },
+            };
             _httpClient.AddDefaultHeaders(_defaultHeaders);
-        }
-
-        private RestClient BuildClient(int timeoutInSeconds)
-        {
-            var options = new RestClientOptions(_baseUrl)
-            {
-                FollowRedirects = false,
-                MaxTimeout = TimeSpan.FromSeconds(timeoutInSeconds).Milliseconds
-            };
-            return new RestClient(options);
-        }
-
-        private RestClient BuildClient(HttpMessageHandler httpMessageHandler)
-        {
-            var options = new RestClientOptions(_baseUrl)
-            {
-                FollowRedirects = false,
-                ConfigureMessageHandler = _ => httpMessageHandler
-            };
-            return new RestClient(options);
         }
 
         public Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(PredictParameter predictParameter)

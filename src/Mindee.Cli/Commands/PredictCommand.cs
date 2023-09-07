@@ -150,45 +150,19 @@ namespace Mindee.Cli
 
             private async Task<int> EnqueueAndParseAsync(InvocationContext context, ParseOptions options)
             {
-                _logger.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
-
-                // Don't try to get the document more than this many times
-                const int maxRetries = 10;
-
-                // Wait this many seconds between each try
-                const int intervalSec = 5;
-
-                var enqueueResponse = await _mindeeClient.EnqueueAsync<TInferenceModel>(
+                var response = await _mindeeClient.EnqueueAndParseAsync<TInferenceModel>(
                     new LocalInputSource(options.Path),
                     new PredictOptions(allWords: AllWords));
 
-                string jobId = enqueueResponse.Job.Id;
-                _logger.LogInformation("Enqueued with job ID: {}", jobId);
-
-                int retryCount = 1;
-                AsyncPredictResponse<TInferenceModel> response;
-
-                while (retryCount < maxRetries + 1)
+                if (options.Output == OutputType.Summary)
                 {
-                    Thread.Sleep(intervalSec * 1000);
-                    _logger.LogInformation("Attempting to retrieve: {} of {}", retryCount, maxRetries);
-
-                    response = await _mindeeClient.ParseQueuedAsync<TInferenceModel>(jobId);
-                    if (response.Document != null)
-                    {
-                        if (options.Output == OutputType.Summary)
-                        {
-                            context.Console.Out.Write(response.Document.Inference.Prediction.ToString());
-                        }
-                        else
-                        {
-                            context.Console.Out.Write(JsonSerializer.Serialize(response, _jsonSerializerOptions));
-                        }
-                        return 0;
-                    }
-                    retryCount++;
+                    context.Console.Out.Write(response.Document.Inference.Prediction.ToString());
                 }
-                return 1;
+                else
+                {
+                    context.Console.Out.Write(JsonSerializer.Serialize(response, _jsonSerializerOptions));
+                }
+                return 0;
             }
         }
     }
