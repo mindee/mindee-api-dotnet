@@ -10,10 +10,11 @@ namespace Mindee.UnitTests.Product.Fr.CarteVitale
         public async Task Predict_CheckEmpty()
         {
             var response = await GetPrediction("empty");
-            Assert.Empty(response.Document.Inference.Prediction.GivenNames);
-            Assert.Null(response.Document.Inference.Prediction.Surname.Value);
-            Assert.Null(response.Document.Inference.Prediction.SocialSecurity.Value);
-            Assert.Null(response.Document.Inference.Prediction.IssuanceDate.Value);
+            var docPrediction = response.Document.Inference.Prediction;
+            Assert.Empty(docPrediction.GivenNames);
+            Assert.Null(docPrediction.Surname.Value);
+            Assert.Null(docPrediction.SocialSecurity.Value);
+            Assert.Null(docPrediction.IssuanceDate.Value);
         }
 
         [Fact]

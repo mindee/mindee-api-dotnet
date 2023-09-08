@@ -10,9 +10,10 @@ namespace Mindee.UnitTests.Product.Fr.BankAccountDetails
         public async Task Predict_CheckEmpty()
         {
             var response = await GetPrediction("empty");
-            Assert.Null(response.Document.Inference.Prediction.Iban.Value);
-            Assert.Null(response.Document.Inference.Prediction.AccountHolderName.Value);
-            Assert.Null(response.Document.Inference.Prediction.Swift.Value);
+            var docPrediction = response.Document.Inference.Prediction;
+            Assert.Null(docPrediction.Iban.Value);
+            Assert.Null(docPrediction.AccountHolderName.Value);
+            Assert.Null(docPrediction.Swift.Value);
         }
 
         [Fact]

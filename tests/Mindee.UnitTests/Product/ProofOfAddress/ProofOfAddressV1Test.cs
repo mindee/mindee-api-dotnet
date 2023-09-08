@@ -10,15 +10,16 @@ namespace Mindee.UnitTests.Product.ProofOfAddress
         public async Task Predict_CheckEmpty()
         {
             var response = await GetPrediction("empty");
-            Assert.Null(response.Document.Inference.Prediction.Locale.Value);
-            Assert.Null(response.Document.Inference.Prediction.IssuerName.Value);
-            Assert.Empty(response.Document.Inference.Prediction.IssuerCompanyRegistration);
-            Assert.Null(response.Document.Inference.Prediction.IssuerAddress.Value);
-            Assert.Null(response.Document.Inference.Prediction.RecipientName.Value);
-            Assert.Empty(response.Document.Inference.Prediction.RecipientCompanyRegistration);
-            Assert.Null(response.Document.Inference.Prediction.RecipientAddress.Value);
-            Assert.Empty(response.Document.Inference.Prediction.Dates);
-            Assert.Null(response.Document.Inference.Prediction.Date.Value);
+            var docPrediction = response.Document.Inference.Prediction;
+            Assert.Null(docPrediction.Locale.Value);
+            Assert.Null(docPrediction.IssuerName.Value);
+            Assert.Empty(docPrediction.IssuerCompanyRegistration);
+            Assert.Null(docPrediction.IssuerAddress.Value);
+            Assert.Null(docPrediction.RecipientName.Value);
+            Assert.Empty(docPrediction.RecipientCompanyRegistration);
+            Assert.Null(docPrediction.RecipientAddress.Value);
+            Assert.Empty(docPrediction.Dates);
+            Assert.Null(docPrediction.Date.Value);
         }
 
         [Fact]

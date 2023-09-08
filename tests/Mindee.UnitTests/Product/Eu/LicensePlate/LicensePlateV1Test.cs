@@ -10,7 +10,8 @@ namespace Mindee.UnitTests.Product.Eu.LicensePlate
         public async Task Predict_CheckEmpty()
         {
             var response = await GetPrediction("empty");
-            Assert.Empty(response.Document.Inference.Prediction.LicensePlates);
+            var docPrediction = response.Document.Inference.Prediction;
+            Assert.Empty(docPrediction.LicensePlates);
         }
 
         [Fact]

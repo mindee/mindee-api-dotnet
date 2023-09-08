@@ -10,19 +10,23 @@ namespace Mindee.UnitTests.Product.Receipt
         public async Task Predict_CheckEmpty()
         {
             var response = await GetPrediction("empty");
-            Assert.Null(response.Document.Inference.Prediction.Locale.Value);
-            Assert.Null(response.Document.Inference.Prediction.Date.Value);
-            Assert.Null(response.Document.Inference.Prediction.Time.Value);
-            Assert.Null(response.Document.Inference.Prediction.TotalAmount.Value);
-            Assert.Null(response.Document.Inference.Prediction.TotalNet.Value);
-            Assert.Null(response.Document.Inference.Prediction.TotalTax.Value);
-            Assert.Null(response.Document.Inference.Prediction.Tip.Value);
-            Assert.Empty(response.Document.Inference.Prediction.Taxes);
-            Assert.Null(response.Document.Inference.Prediction.SupplierName.Value);
-            Assert.Empty(response.Document.Inference.Prediction.SupplierCompanyRegistrations);
-            Assert.Null(response.Document.Inference.Prediction.SupplierAddress.Value);
-            Assert.Null(response.Document.Inference.Prediction.SupplierPhoneNumber.Value);
-            Assert.Empty(response.Document.Inference.Prediction.LineItems);
+            var docPrediction = response.Document.Inference.Prediction;
+            Assert.Null(docPrediction.Locale.Value);
+            Assert.NotNull(docPrediction.Category.Value);
+            Assert.NotNull(docPrediction.Subcategory.Value);
+            Assert.NotNull(docPrediction.DocumentType.Value);
+            Assert.Null(docPrediction.Date.Value);
+            Assert.Null(docPrediction.Time.Value);
+            Assert.Null(docPrediction.TotalAmount.Value);
+            Assert.Null(docPrediction.TotalNet.Value);
+            Assert.Null(docPrediction.TotalTax.Value);
+            Assert.Null(docPrediction.Tip.Value);
+            Assert.Empty(docPrediction.Taxes);
+            Assert.Null(docPrediction.SupplierName.Value);
+            Assert.Empty(docPrediction.SupplierCompanyRegistrations);
+            Assert.Null(docPrediction.SupplierAddress.Value);
+            Assert.Null(docPrediction.SupplierPhoneNumber.Value);
+            Assert.Empty(docPrediction.LineItems);
         }
 
         [Fact]

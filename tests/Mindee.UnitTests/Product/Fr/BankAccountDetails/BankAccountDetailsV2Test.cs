@@ -10,13 +10,14 @@ namespace Mindee.UnitTests.Product.Fr.BankAccountDetails
         public async Task Predict_CheckEmpty()
         {
             var response = await GetPrediction("empty");
-            Assert.Null(response.Document.Inference.Prediction.AccountHoldersNames.Value);
-            Assert.Null(response.Document.Inference.Prediction.Bban.BbanBankCode);
-            Assert.Null(response.Document.Inference.Prediction.Bban.BbanBranchCode);
-            Assert.Null(response.Document.Inference.Prediction.Bban.BbanKey);
-            Assert.Null(response.Document.Inference.Prediction.Bban.BbanNumber);
-            Assert.Null(response.Document.Inference.Prediction.Iban.Value);
-            Assert.Null(response.Document.Inference.Prediction.SwiftCode.Value);
+            var docPrediction = response.Document.Inference.Prediction;
+            Assert.Null(docPrediction.AccountHoldersNames.Value);
+            Assert.Null(docPrediction.Bban.BbanBankCode);
+            Assert.Null(docPrediction.Bban.BbanBranchCode);
+            Assert.Null(docPrediction.Bban.BbanKey);
+            Assert.Null(docPrediction.Bban.BbanNumber);
+            Assert.Null(docPrediction.Iban.Value);
+            Assert.Null(docPrediction.SwiftCode.Value);
         }
 
         [Fact]
