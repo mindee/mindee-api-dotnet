@@ -41,6 +41,10 @@ namespace Mindee.Parsing.Standard
         /// </summary>
         public override string ToString()
         {
+            if (Polygon.Count == 0)
+            {
+                return "";
+            }
             return $"Polygon with {Polygon.Count} points.";
         }
     }
