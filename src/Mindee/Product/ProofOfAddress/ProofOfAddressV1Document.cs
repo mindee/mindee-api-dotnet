@@ -72,10 +72,10 @@ namespace Mindee.Product.ProofOfAddress
         public override string ToString()
         {
             string issuerCompanyRegistration = string.Join(
-                "\n " + string.Concat(Enumerable.Repeat(" ", 29)),
+                "\n " + string.Concat(Enumerable.Repeat(" ", 30)),
                 IssuerCompanyRegistration.Select(item => item));
             string recipientCompanyRegistration = string.Join(
-                "\n " + string.Concat(Enumerable.Repeat(" ", 32)),
+                "\n " + string.Concat(Enumerable.Repeat(" ", 33)),
                 RecipientCompanyRegistration.Select(item => item));
             string dates = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 7)),

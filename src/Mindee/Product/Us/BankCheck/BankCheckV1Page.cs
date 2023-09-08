@@ -30,7 +30,7 @@ namespace Mindee.Product.Us.BankCheck
         public override string ToString()
         {
             string signaturesPositions = string.Join(
-                "\n " + string.Concat(Enumerable.Repeat(" ", 22)),
+                "\n " + string.Concat(Enumerable.Repeat(" ", 21)),
                 SignaturesPositions.Select(item => item));
             StringBuilder result = new StringBuilder();
             result.Append($":Check Position: {CheckPosition}\n");

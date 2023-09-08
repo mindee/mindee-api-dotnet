@@ -10,23 +10,27 @@ namespace Mindee.UnitTests.Product.Us.DriverLicense
         public async Task Predict_CheckEmpty()
         {
             var response = await GetPrediction("empty");
-            Assert.Null(response.Document.Inference.Prediction.State.Value);
-            Assert.Null(response.Document.Inference.Prediction.DriverLicenseId.Value);
-            Assert.Null(response.Document.Inference.Prediction.ExpiryDate.Value);
-            Assert.Null(response.Document.Inference.Prediction.IssuedDate.Value);
-            Assert.Null(response.Document.Inference.Prediction.LastName.Value);
-            Assert.Null(response.Document.Inference.Prediction.FirstName.Value);
-            Assert.Null(response.Document.Inference.Prediction.Address.Value);
-            Assert.Null(response.Document.Inference.Prediction.DateOfBirth.Value);
-            Assert.Null(response.Document.Inference.Prediction.Restrictions.Value);
-            Assert.Null(response.Document.Inference.Prediction.Endorsements.Value);
-            Assert.Null(response.Document.Inference.Prediction.DlClass.Value);
-            Assert.Null(response.Document.Inference.Prediction.Sex.Value);
-            Assert.Null(response.Document.Inference.Prediction.Height.Value);
-            Assert.Null(response.Document.Inference.Prediction.Weight.Value);
-            Assert.Null(response.Document.Inference.Prediction.HairColor.Value);
-            Assert.Null(response.Document.Inference.Prediction.EyeColor.Value);
-            Assert.Null(response.Document.Inference.Prediction.DdNumber.Value);
+            var docPrediction = response.Document.Inference.Prediction;
+            Assert.Null(docPrediction.State.Value);
+            Assert.Null(docPrediction.DriverLicenseId.Value);
+            Assert.Null(docPrediction.ExpiryDate.Value);
+            Assert.Null(docPrediction.IssuedDate.Value);
+            Assert.Null(docPrediction.LastName.Value);
+            Assert.Null(docPrediction.FirstName.Value);
+            Assert.Null(docPrediction.Address.Value);
+            Assert.Null(docPrediction.DateOfBirth.Value);
+            Assert.Null(docPrediction.Restrictions.Value);
+            Assert.Null(docPrediction.Endorsements.Value);
+            Assert.Null(docPrediction.DlClass.Value);
+            Assert.Null(docPrediction.Sex.Value);
+            Assert.Null(docPrediction.Height.Value);
+            Assert.Null(docPrediction.Weight.Value);
+            Assert.Null(docPrediction.HairColor.Value);
+            Assert.Null(docPrediction.EyeColor.Value);
+            Assert.Null(docPrediction.DdNumber.Value);
+            var pagePrediction = response.Document.Inference.Pages.First().Prediction;
+            Assert.Empty(pagePrediction.Photo.Polygon);
+            Assert.Empty(pagePrediction.Signature.Polygon);
         }
 
         [Fact]

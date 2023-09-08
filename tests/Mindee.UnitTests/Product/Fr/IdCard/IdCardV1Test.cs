@@ -10,16 +10,17 @@ namespace Mindee.UnitTests.Product.Fr.IdCard
         public async Task Predict_CheckEmpty()
         {
             var response = await GetPrediction("empty");
-            Assert.Null(response.Document.Inference.Prediction.IdNumber.Value);
-            Assert.Empty(response.Document.Inference.Prediction.GivenNames);
-            Assert.Null(response.Document.Inference.Prediction.Surname.Value);
-            Assert.Null(response.Document.Inference.Prediction.BirthDate.Value);
-            Assert.Null(response.Document.Inference.Prediction.BirthPlace.Value);
-            Assert.Null(response.Document.Inference.Prediction.ExpiryDate.Value);
-            Assert.Null(response.Document.Inference.Prediction.Authority.Value);
-            Assert.Null(response.Document.Inference.Prediction.Gender.Value);
-            Assert.Null(response.Document.Inference.Prediction.Mrz1.Value);
-            Assert.Null(response.Document.Inference.Prediction.Mrz2.Value);
+            var docPrediction = response.Document.Inference.Prediction;
+            Assert.Null(docPrediction.IdNumber.Value);
+            Assert.Empty(docPrediction.GivenNames);
+            Assert.Null(docPrediction.Surname.Value);
+            Assert.Null(docPrediction.BirthDate.Value);
+            Assert.Null(docPrediction.BirthPlace.Value);
+            Assert.Null(docPrediction.ExpiryDate.Value);
+            Assert.Null(docPrediction.Authority.Value);
+            Assert.Null(docPrediction.Gender.Value);
+            Assert.Null(docPrediction.Mrz1.Value);
+            Assert.Null(docPrediction.Mrz2.Value);
         }
 
         [Fact]

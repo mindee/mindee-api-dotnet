@@ -10,7 +10,8 @@ namespace Mindee.UnitTests.Product.Cropper
         public async Task Predict_CheckEmpty()
         {
             var response = await GetPrediction("empty");
-            Assert.Empty(response.Document.Inference.Pages.First().Prediction.Cropping);
+            var pagePrediction = response.Document.Inference.Pages.First().Prediction;
+            Assert.Empty(pagePrediction.Cropping);
         }
 
         [Fact]
