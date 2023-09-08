@@ -3,9 +3,16 @@ using Mindee.Product.Cropper;
 
 namespace Mindee.UnitTests.Product.Cropper
 {
-    [Trait("Category", "Cropper V1")]
+    [Trait("Category", "CropperV1")]
     public class CropperV1Test
     {
+        [Fact]
+        public async Task Predict_CheckEmpty()
+        {
+            var response = await GetPrediction("empty");
+            Assert.Empty(response.Document.Inference.Pages.First().Prediction.Cropping);
+        }
+
         [Fact]
         public async Task Predict_CheckSummary()
         {
@@ -15,53 +22,14 @@ namespace Mindee.UnitTests.Product.Cropper
         }
 
         [Fact]
-        public async Task Predict_CheckSummary_WithMultiplePages()
+        public async Task Predict_CheckPage0()
         {
             var response = await GetPrediction("complete");
             var expected = File.ReadAllText("Resources/products/cropper/response_v1/summary_page0.rst");
             Assert.Equal(expected, response.Document.Inference.Pages[0].ToString());
         }
 
-        [Fact]
-        public async Task Predict_WithCropping_MustSuccess()
-        {
-            var response = await GetPrediction("complete");
-
-            Assert.NotNull(response.Document.Inference.Pages.First().Prediction.Cropping);
-            Assert.Equal(2, response.Document.Inference.Pages.First().Prediction.Cropping.Count);
-            Assert.Equal(new List<List<double>>()
-            {
-                new List<double>() { 0.588, 0.25 },
-                new List<double>() { 0.953, 0.25 },
-                new List<double>() { 0.953, 0.682 },
-                new List<double>() { 0.588, 0.682 },
-            }
-            , response.Document.Inference.Pages.First().Prediction.Cropping.First().BoundingBox);
-
-            Assert.Equal(new List<List<double>>()
-            {
-                new List<double>() { 0.589, 0.252 },
-                new List<double>() { 0.953, 0.25 },
-                new List<double>() { 0.949, 0.639 },
-                new List<double>() { 0.607, 0.681 },
-            }
-            , response.Document.Inference.Pages.First().Prediction.Cropping.First().Quadrangle);
-
-            Assert.Equal(new List<List<double>>()
-            {
-                new List<double>() { 0.588, 0.25 },
-                new List<double>() { 0.951, 0.25 },
-                new List<double>() { 0.951, 0.68 },
-                new List<double>() { 0.588, 0.68 },
-            }
-            , response.Document.Inference.Pages.First().Prediction.Cropping.First().Rectangle);
-
-            Assert.Equal(
-                new List<double>() { 0.598, 0.377 }
-            , response.Document.Inference.Pages.First().Prediction.Cropping.First().Polygon.First());
-        }
-
-        private async Task<PredictResponse<CropperV1>> GetPrediction(string name)
+        private static async Task<PredictResponse<CropperV1>> GetPrediction(string name)
         {
             string fileName = $"Resources/products/cropper/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);

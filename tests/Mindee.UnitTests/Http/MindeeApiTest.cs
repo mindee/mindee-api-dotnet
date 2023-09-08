@@ -38,7 +38,7 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task Predict_WithWrongKey()
         {
-            var mindeeApi = InitMockServer(HttpStatusCode.BadRequest, "Resources/errors/wrong_api_key.json");
+            var mindeeApi = InitMockServer(HttpStatusCode.BadRequest, "Resources/errors/error_401_invalid_token.json");
 
             await Assert.ThrowsAsync<Mindee400Exception>(
                () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(UnitTestBase.GetFakePredictParameter()));
@@ -64,7 +64,7 @@ namespace Mindee.UnitTests.Http
                 .Respond(
                     HttpStatusCode.BadRequest,
                     "application/json",
-                    File.ReadAllText("Resources/errors/error_400_from_mindeeapi_with_object_response_in_detail.json")
+                    File.ReadAllText("Resources/errors/error_400_with_object_in_detail.json")
                 );
 
             var mindeeApi = new MindeeApi(
@@ -85,7 +85,7 @@ namespace Mindee.UnitTests.Http
                 .Respond(
                     HttpStatusCode.InternalServerError,
                     "application/json",
-                    File.ReadAllText("Resources/errors/error_500_from_mindeeapi.json")
+                    File.ReadAllText("Resources/errors/error_500_inference_fail.json")
                 );
 
             var mindeeApi = new MindeeApi(
@@ -106,7 +106,7 @@ namespace Mindee.UnitTests.Http
                 .Respond(
                     (HttpStatusCode)429,
                     "application/json",
-                    File.ReadAllText("Resources/errors/error_429_from_mindeeapi.json")
+                    File.ReadAllText("Resources/errors/error_429_too_many_requests.json")
                 );
 
             var mindeeApi = new MindeeApi(
@@ -130,7 +130,7 @@ namespace Mindee.UnitTests.Http
                 .Respond(
                     HttpStatusCode.Unauthorized,
                     "application/json",
-                    File.ReadAllText("Resources/errors/error_401_from_mindeeapi.json")
+                    File.ReadAllText("Resources/errors/error_401_invalid_token.json")
                     );
 
             var mindeeApi = new MindeeApi(

@@ -8,7 +8,7 @@ using Mindee.Cli.Commands;
 using Mindee.Extensions.DependencyInjection;
 using PredictCropperCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Cropper.CropperV1,
-    Mindee.Product.Cropper.CropperV1Document,
+    Mindee.Product.Cropper.CropperV1Page,
     Mindee.Product.Cropper.CropperV1Document
 >;
 using PredictFinancialDocumentCommand = Mindee.Cli.PredictCommand<

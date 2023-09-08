@@ -7,7 +7,7 @@ namespace Mindee.Product.Cropper
     /// The definition for Cropper, API version 1.
     /// </summary>
     [Endpoint("cropper", "1")]
-    public sealed class CropperV1 : Inference<CropperV1Document, CropperV1Document>
+    public sealed class CropperV1 : Inference<CropperV1Page, CropperV1Document>
     {
     }
 }
