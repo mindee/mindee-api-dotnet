@@ -7,6 +7,22 @@ namespace Mindee.UnitTests.Product.Us.BankCheck
     public class BankCheckV1Test
     {
         [Fact]
+        public async Task Predict_CheckEmpty()
+        {
+            var response = await GetPrediction("empty");
+            var docPrediction = response.Document.Inference.Prediction;
+            Assert.Null(docPrediction.Date.Value);
+            Assert.Null(docPrediction.Amount.Value);
+            Assert.Empty(docPrediction.Payees);
+            Assert.Null(docPrediction.RoutingNumber.Value);
+            Assert.Null(docPrediction.AccountNumber.Value);
+            Assert.Null(docPrediction.CheckNumber.Value);
+            var pagePrediction = response.Document.Inference.Pages.First().Prediction;
+            Assert.Empty(pagePrediction.CheckPosition.Polygon);
+            Assert.Empty(pagePrediction.SignaturesPositions);
+        }
+
+        [Fact]
         public async Task Predict_CheckSummary()
         {
             var response = await GetPrediction("complete");
