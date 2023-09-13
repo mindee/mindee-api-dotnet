@@ -1,6 +1,20 @@
 # CHANGELOG
 
-## v3.1.0 - 2023-05-30
+## v3.2.0 - 2023-09-13
+### Changes
+* :sparkles: add support for FR ID card v2
+* :sparkles: add support for US W9 v1
+* :sparkles: add built-in async call polling
+* :sparkles: add DecimalField
+* :loud_sound: better logging
+* :sparkles: add a dateObject property to DateField class
+
+### Fixes
+* :bug: fix for alignment issues on ToString
+* :bug: StringField value should be null in case of empty string
+
+
+## v3.1.0 - 2023-08-08
 ### Changes
 * :sparkles: add support for US driver license v1
 
