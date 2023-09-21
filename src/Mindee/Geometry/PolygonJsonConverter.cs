@@ -16,8 +16,11 @@ namespace Mindee.Geometry
         public override Polygon Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var points = JsonSerializer.Deserialize<List<List<double>>>(ref reader, options);
-
-            return new Polygon(points);
+            if (points.Count > 0)
+            {
+                return new Polygon(points);
+            }
+            return null;
         }
 
         /// <summary>

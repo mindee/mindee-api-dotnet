@@ -29,8 +29,10 @@ namespace Mindee.UnitTests.Product.Us.DriverLicense
             Assert.Null(docPrediction.EyeColor.Value);
             Assert.Null(docPrediction.DdNumber.Value);
             var pagePrediction = response.Document.Inference.Pages.First().Prediction;
-            Assert.Empty(pagePrediction.Photo.Polygon);
-            Assert.Empty(pagePrediction.Signature.Polygon);
+            Assert.Null(pagePrediction.Photo.Polygon);
+            Assert.Null(pagePrediction.Photo.BoundingBox);
+            Assert.Null(pagePrediction.Signature.Polygon);
+            Assert.Null(pagePrediction.Signature.BoundingBox);
         }
 
         [Fact]

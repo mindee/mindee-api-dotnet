@@ -41,11 +41,23 @@ namespace Mindee.Parsing.Standard
         /// </summary>
         public override string ToString()
         {
-            if (Polygon.Count == 0)
+            if (Polygon != null && Polygon.Count != 0)
             {
-                return "";
+                return $"Polygon with {Polygon.Count} points.";
             }
-            return $"Polygon with {Polygon.Count} points.";
+            if (BoundingBox != null && BoundingBox.Count != 0)
+            {
+                return $"Polygon with {BoundingBox.Count} points.";
+            }
+            if (Quadrangle != null && Quadrangle.Count != 0)
+            {
+                return $"Polygon with {Quadrangle.Count} points.";
+            }
+            if (Rectangle != null && Rectangle.Count != 0)
+            {
+                return $"Polygon with {Rectangle.Count} points.";
+            }
+            return "";
         }
     }
 }

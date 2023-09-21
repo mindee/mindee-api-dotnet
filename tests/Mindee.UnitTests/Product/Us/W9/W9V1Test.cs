@@ -20,8 +20,10 @@ namespace Mindee.UnitTests.Product.Us.W9
             Assert.Null(pagePrediction.TaxClassification.Value);
             Assert.Null(pagePrediction.TaxClassificationOtherDetails.Value);
             Assert.Null(pagePrediction.W9RevisionDate.Value);
-            Assert.Empty(pagePrediction.SignaturePosition.Polygon);
-            Assert.Empty(pagePrediction.SignatureDatePosition.Polygon);
+            Assert.Null(pagePrediction.SignaturePosition.Polygon);
+            Assert.Null(pagePrediction.SignaturePosition.BoundingBox);
+            Assert.Null(pagePrediction.SignatureDatePosition.Polygon);
+            Assert.Null(pagePrediction.SignatureDatePosition.BoundingBox);
             Assert.Null(pagePrediction.TaxClassificationLlc.Value);
         }
 
