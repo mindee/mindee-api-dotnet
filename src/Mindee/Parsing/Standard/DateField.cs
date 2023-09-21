@@ -28,7 +28,14 @@ namespace Mindee.Parsing.Standard
         {
             if (!String.IsNullOrEmpty(Value))
             {
-                DateObject = DateTime.Parse(Value);
+                try
+                {
+                    DateObject = DateTime.Parse(Value);
+                }
+                catch (FormatException)
+                {
+                    // This is fine. Everything is fine. How are you?
+                }
             }
         }
     }
