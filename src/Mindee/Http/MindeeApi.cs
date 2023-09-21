@@ -86,6 +86,7 @@ namespace Mindee.Http
             {
                 _logger?.LogInformation("Parsing response ...");
                 AsyncPredictResponse<TModel> asyncPredictResponse = JsonSerializer.Deserialize<AsyncPredictResponse<TModel>>(response.Content);
+                asyncPredictResponse.RawResponse = response.Content;
                 return asyncPredictResponse;
             }
 
@@ -211,6 +212,7 @@ namespace Mindee.Http
                 try
                 {
                     model = JsonSerializer.Deserialize<TModel>(restResponse.Content);
+                    model.RawResponse = restResponse.Content;
                 }
                 catch (Exception ex)
                 {
