@@ -19,14 +19,14 @@ namespace Mindee
     {
         private readonly IPdfOperation _pdfOperation;
         private readonly IHttpApi _mindeeApi;
-        private readonly ILogger<MindeeClient> _logger;
+        private readonly ILogger _logger;
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="apiKey">The required API key to use Mindee.</param>
         /// <param name="logger"></param>
-        public MindeeClient(string apiKey, ILogger<MindeeClient> logger = null)
+        public MindeeClient(string apiKey, ILoggerFactory logger = null)
         {
             var mindeeSettings = new MindeeSettings
             {
@@ -34,7 +34,11 @@ namespace Mindee
             };
             _pdfOperation = new DocNetApi();
             _mindeeApi = new MindeeApi(Options.Create(mindeeSettings));
-            _logger = logger;
+            if (logger != null)
+            {
+                MindeeLogger.Assign(logger);
+                _logger = MindeeLogger.GetLogger();
+            }
         }
 
         /// <summary>
@@ -42,11 +46,15 @@ namespace Mindee
         /// </summary>
         /// <param name="mindeeSettings"><see cref="MindeeSettings"/></param>
         /// <param name="logger"></param>
-        public MindeeClient(MindeeSettings mindeeSettings, ILogger<MindeeClient> logger = null)
+        public MindeeClient(MindeeSettings mindeeSettings, ILoggerFactory logger = null)
         {
             _pdfOperation = new DocNetApi();
             _mindeeApi = new MindeeApi(Options.Create(mindeeSettings));
-            _logger = logger;
+            if (logger != null)
+            {
+                MindeeLogger.Assign(logger);
+                _logger = MindeeLogger.GetLogger();
+            }
         }
 
         /// <summary>
@@ -55,11 +63,15 @@ namespace Mindee
         /// <param name="pdfOperation"><see cref="IPdfOperation"/></param>
         /// <param name="httpApi"><see cref="IHttpApi"/></param>
         /// <param name="logger"></param>
-        public MindeeClient(IPdfOperation pdfOperation, IHttpApi httpApi, ILogger<MindeeClient> logger = null)
+        public MindeeClient(IPdfOperation pdfOperation, IHttpApi httpApi, ILoggerFactory logger = null)
         {
             _pdfOperation = pdfOperation;
             _mindeeApi = httpApi;
-            _logger = logger;
+            if (logger != null)
+            {
+                MindeeLogger.Assign(logger);
+                _logger = MindeeLogger.GetLogger();
+            }
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Logging;
 using Mindee.Geometry;
 
 namespace Mindee.Parsing.Standard
@@ -13,6 +14,8 @@ namespace Mindee.Parsing.Standard
         /// </summary>
         public DateTime? DateObject { get; set; }
 
+        private readonly ILogger _logger;
+
         /// <summary>
         ///
         /// </summary>
@@ -26,6 +29,8 @@ namespace Mindee.Parsing.Standard
             Polygon polygon,
             int? pageId = null) : base(value, confidence, polygon, pageId)
         {
+            _logger = MindeeLogger.GetLogger();
+
             if (!String.IsNullOrEmpty(Value))
             {
                 try
@@ -34,7 +39,7 @@ namespace Mindee.Parsing.Standard
                 }
                 catch (FormatException)
                 {
-                    // This is fine. Everything is fine. How are you?
+                    _logger?.LogWarning("Unable to parse the date: {}", Value);
                 }
             }
         }
