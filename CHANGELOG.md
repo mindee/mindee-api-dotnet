@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## v3.3.0 - 2023-09-22
+### Changes
+* :recycle: simplify async product example
+* :sparkles: add raw string response in response object
+* :loud_sound: add global logging system
+* :sparkles: add support for barcode reader v1
+* :sparkles: add support for multi receipt detector v1
+
+### Fixes
+* :bug: fix for parsing invalid dates
+* :bug: fix for empty elements in PositionField
+
+
 ## v3.2.0 - 2023-09-13
 ### Changes
 * :sparkles: add support for FR ID card v2

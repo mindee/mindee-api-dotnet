@@ -10,6 +10,10 @@ on:
 
 jobs:
   test:
+    concurrency:
+      group: ${{ github.ref }}_code_samples_run
+      cancel-in-progress: false
+
     name: Run tests
     timeout-minutes: 30
     strategy:
