@@ -16,6 +16,7 @@ jobs:
     name: Test on *NIX
     timeout-minutes: 30
     strategy:
+      max-parallel: 2
       matrix:
         os:
           - "ubuntu-latest"
@@ -53,6 +54,7 @@ jobs:
     name: Test on Windows
     timeout-minutes: 30
     strategy:
+      max-parallel: 2
       matrix:
         os:
           - "windows-latest"
