@@ -54,6 +54,9 @@ namespace Mindee.UnitTests.Product.Custom
             Assert.Equal(1.0, listField.Confidence);
             Assert.Equal(1.0, listField.Values.Last().Confidence);
             Assert.Equal("great", listField.Values.Last().Content);
+            Assert.Equal("Jenny_is_great", listField.ContentsString("_"));
+            Assert.Equal("Jenny is great", listField.ToString());
+            Assert.Equal(new List<string>() { "Jenny", "is", "great" }, listField.ContentsList);
             Assert.Equal(new List<List<double>>()
             {
                 new List<double>() { 0.713, 0.013 },
