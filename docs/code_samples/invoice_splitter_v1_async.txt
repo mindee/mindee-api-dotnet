@@ -1,8 +1,6 @@
 using Mindee;
 using Mindee.Input;
-using Mindee.Parsing.Common;
 using Mindee.Product.InvoiceSplitter;
-using System.Threading;
 
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
