@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.Custom
@@ -23,6 +24,17 @@ namespace Mindee.Parsing.Custom
         public List<ListFieldValue> Values { get; set; }
 
         /// <summary>
+        /// Return a List of the contents of all values.
+        /// </summary>
+        public List<string> ContentsList
+        {
+            get
+            {
+                return Values.Select(value => value.Content).ToList();
+            }
+        }
+
+        /// <summary>
         ///
         /// </summary>
         public ListField()
@@ -42,11 +54,21 @@ namespace Mindee.Parsing.Custom
         }
 
         /// <summary>
+        /// Return a string representation of all values.
+        /// </summary>
+        /// <param name="separator">Character(s) to use when concatenating fields.</param>
+        /// <returns></returns>
+        public string ContentsString(string separator = " ")
+        {
+            return $"{string.Join(separator, Values)}";
+        }
+
+        /// <summary>
         /// A prettier representation.
         /// </summary>
         public override string ToString()
         {
-            return $"{string.Join(" ", Values)}";
+            return ContentsString();
         }
     }
 }
