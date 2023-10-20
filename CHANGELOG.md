@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v3.4.0 - 2023-10-20
+### Changes
+* :sparkles: add string helper functions to custom documents
+
+### Fixes
+* :bug: add missing confidence and polygon data to line items
+
+
 ## v3.3.0 - 2023-09-22
 ### Changes
 * :recycle: simplify async product example
