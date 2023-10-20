@@ -10,7 +10,7 @@ namespace Mindee.Product.Us.PayrollCheckRegister
     /// <summary>
     /// List of payments.
     /// </summary>
-    public sealed class PayrollCheckRegisterV1Payment : ILineItemField
+    public sealed class PayrollCheckRegisterV1Payment : LineItemField
     {
         /// <summary>
         /// The deductions.
@@ -108,7 +108,7 @@ namespace Mindee.Product.Us.PayrollCheckRegister
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
-        public string ToTableLine()
+        public override string ToTableLine()
         {
             Dictionary<string, string> printable = PrintableValues();
             return "| "
