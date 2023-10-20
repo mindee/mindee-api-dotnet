@@ -55,7 +55,7 @@ namespace Mindee.Parsing
         }
 
         public static String ArrayToString<T>(List<T> lineItems, int[] columnSizes)
-        where T : ILineItemField, new()
+        where T : LineItemField, new()
         {
             StringBuilder outStr = new StringBuilder();
             foreach (var lineItem in lineItems)

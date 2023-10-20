@@ -10,7 +10,7 @@ namespace Mindee.Product.Invoice
     /// <summary>
     /// List of line item details.
     /// </summary>
-    public class InvoiceV4LineItem : ILineItemField
+    public class InvoiceV4LineItem : LineItemField
     {
         /// <summary>
         /// The item description.
@@ -57,7 +57,7 @@ namespace Mindee.Product.Invoice
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
-        public string ToTableLine()
+        public override string ToTableLine()
         {
             Dictionary<string, string> printable = PrintableValues();
 

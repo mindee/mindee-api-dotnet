@@ -8,7 +8,7 @@ namespace Mindee.Parsing.Standard
     /// <summary>
     /// Represent a tax.
     /// </summary>
-    public class Tax : BaseField, ILineItemField
+    public class Tax : LineItemField
     {
         /// <summary>
         /// The rate of the taxe.
@@ -55,7 +55,7 @@ namespace Mindee.Parsing.Standard
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
-        public string ToTableLine()
+        public override string ToTableLine()
         {
             Dictionary<string, string> printable = PrintableValues();
             return "| "

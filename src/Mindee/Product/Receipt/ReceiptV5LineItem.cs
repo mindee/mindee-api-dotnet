@@ -10,7 +10,7 @@ namespace Mindee.Product.Receipt
     /// <summary>
     /// List of line item details.
     /// </summary>
-    public sealed class ReceiptV5LineItem : ILineItemField
+    public sealed class ReceiptV5LineItem : LineItemField
     {
         /// <summary>
         /// The item description.
@@ -39,7 +39,7 @@ namespace Mindee.Product.Receipt
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
-        public string ToTableLine()
+        public override string ToTableLine()
         {
             Dictionary<string, string> printable = PrintableValues();
             return "| "
