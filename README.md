@@ -25,7 +25,7 @@ The API key is retrieved using `IConfiguration`.
 So you could define it in multiple ways: 
 * From an environment variable
 ```
-MindeeApiSettings__ApiKey
+Mindee__ApiKey
 ```
 * From an appsettings.json file
 ```
