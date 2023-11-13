@@ -65,7 +65,7 @@ namespace Mindee.UnitTests.Product.Us.PayrollCheckRegister
 
         private static async Task<AsyncPredictResponse<PayrollCheckRegisterV1>> GetPrediction(string name)
         {
-            string fileName = $"Resources/us/payroll_check_register/response_v1/{name}.json";
+            string fileName = $"Resources/products/payroll_check_register/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.DocumentQueueGetAsync<PayrollCheckRegisterV1>(jobId: "fake-job-id");
         }

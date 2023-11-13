@@ -179,11 +179,11 @@ namespace Mindee.Product.FinancialDocument
             result.Append($":Total Amount: {TotalAmount}\n");
             result.Append($":Taxes:{Taxes}");
             result.Append($":Supplier Payment Details: {supplierPaymentDetails}\n");
-            result.Append($":Supplier name: {SupplierName}\n");
+            result.Append($":Supplier Name: {SupplierName}\n");
             result.Append($":Supplier Company Registrations: {supplierCompanyRegistrations}\n");
             result.Append($":Supplier Address: {SupplierAddress}\n");
             result.Append($":Supplier Phone Number: {SupplierPhoneNumber}\n");
-            result.Append($":Customer name: {CustomerName}\n");
+            result.Append($":Customer Name: {CustomerName}\n");
             result.Append($":Customer Company Registrations: {customerCompanyRegistrations}\n");
             result.Append($":Customer Address: {CustomerAddress}\n");
             result.Append($":Document Type: {DocumentType}\n");
