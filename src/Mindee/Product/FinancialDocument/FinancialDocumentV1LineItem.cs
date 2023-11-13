@@ -77,6 +77,28 @@ namespace Mindee.Product.FinancialDocument
               + " |";
         }
 
+        /// <summary>
+        /// A prettier representation of the line values.
+        /// </summary>
+        public override string ToString()
+        {
+            Dictionary<string, string> printable = PrintableValues();
+            return "Description: "
+              + printable["Description"]
+              + ", Product code: "
+              + printable["ProductCode"]
+              + ", Quantity: "
+              + printable["Quantity"]
+              + ", Tax Amount: "
+              + printable["TaxAmount"]
+              + ", Tax Rate (%): "
+              + printable["TaxRate"]
+              + ", Total Amount: "
+              + printable["TotalAmount"]
+              + ", Unit Price: "
+              + printable["UnitPrice"].Trim();
+        }
+
         private Dictionary<string, string> PrintableValues()
         {
             return new Dictionary<string, string>()

@@ -53,6 +53,22 @@ namespace Mindee.Product.Receipt
               + " |";
         }
 
+        /// <summary>
+        /// A prettier representation of the line values.
+        /// </summary>
+        public override string ToString()
+        {
+            Dictionary<string, string> printable = PrintableValues();
+            return "Description: "
+              + printable["Description"]
+              + ", Quantity: "
+              + printable["Quantity"]
+              + ", Total Amount: "
+              + printable["TotalAmount"]
+              + ", Unit Price: "
+              + printable["UnitPrice"].Trim();
+        }
+
         private Dictionary<string, string> PrintableValues()
         {
             return new Dictionary<string, string>()

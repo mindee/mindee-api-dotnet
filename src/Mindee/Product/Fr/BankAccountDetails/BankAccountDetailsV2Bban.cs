@@ -49,6 +49,22 @@ namespace Mindee.Product.Fr.BankAccountDetails
                 + $"  :Account Number: {printable["BbanNumber"]}\n";
         }
 
+        /// <summary>
+        /// A prettier representation of the line values.
+        /// </summary>
+        public override string ToString()
+        {
+            Dictionary<string, string> printable = PrintableValues();
+            return "Bank Code: "
+              + printable["BbanBankCode"]
+              + ", Branch Code: "
+              + printable["BbanBranchCode"]
+              + ", Key: "
+              + printable["BbanKey"]
+              + ", Account Number: "
+              + printable["BbanNumber"].Trim();
+        }
+
         private Dictionary<string, string> PrintableValues()
         {
             return new Dictionary<string, string>()

@@ -1,0 +1,24 @@
+using Mindee;
+using Mindee.Input;
+using Mindee.Parsing.Common;
+using Mindee.Product.Us.PayrollCheckRegister;
+using System.Threading;
+
+string apiKey = "my-api-key";
+string filePath = "/path/to/the/file.ext";
+
+// Construct a new client
+MindeeClient mindeeClient = new MindeeClient(apiKey);
+
+// load an input source
+var inputSource = new LocalInputSource(filePath);
+
+// call the product asynchronously with auto-polling
+var response = await mindeeClient
+    .EnqueueAndParseAsync<PayrollCheckRegisterV1>(inputSource);
+
+// Print a summary of all the predictions
+System.Console.WriteLine(response.Document.ToString());
+
+// Print only the document-level predictions
+// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());

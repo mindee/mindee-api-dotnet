@@ -10,7 +10,7 @@ namespace Mindee.Product.Invoice
     /// <summary>
     /// List of line item details.
     /// </summary>
-    public class InvoiceV4LineItem : LineItemField
+    public sealed class InvoiceV4LineItem : LineItemField
     {
         /// <summary>
         /// The item description.
@@ -60,45 +60,43 @@ namespace Mindee.Product.Invoice
         public override string ToTableLine()
         {
             Dictionary<string, string> printable = PrintableValues();
-
-            string tax = SummaryHelper.FormatAmount(TaxAmount);
-            tax += TaxRate != null ? $" ({SummaryHelper.FormatAmount(TaxRate)}%)" : "";
-
             return "| "
-                + String.Format("{0,-20}", printable["ProductCode"])
-                + " | "
-                + String.Format("{0,-7}", printable["Quantity"])
-                + " | "
-                + String.Format("{0,-7}", printable["UnitPrice"])
-                + " | "
-                + String.Format("{0,-8}", printable["TotalAmount"])
-                + " | "
-                + String.Format("{0,-16}", tax)
-                + " | "
-                + String.Format("{0,-36}", printable["Description"])
-                + " |";
+              + String.Format("{0,-36}", printable["Description"])
+              + " | "
+              + String.Format("{0,-12}", printable["ProductCode"])
+              + " | "
+              + String.Format("{0,-8}", printable["Quantity"])
+              + " | "
+              + String.Format("{0,-10}", printable["TaxAmount"])
+              + " | "
+              + String.Format("{0,-12}", printable["TaxRate"])
+              + " | "
+              + String.Format("{0,-12}", printable["TotalAmount"])
+              + " | "
+              + String.Format("{0,-10}", printable["UnitPrice"])
+              + " |";
         }
 
         /// <summary>
-        /// A prettier representation of the current model values.
+        /// A prettier representation of the line values.
         /// </summary>
         public override string ToString()
         {
             Dictionary<string, string> printable = PrintableValues();
-            return "Product Code: "
-                + printable["ProductCode"]
-                + ", Quantity: "
-                + printable["Quantity"]
-                + ", Unit Price: "
-                + printable["UnitPrice"]
-                + ", Total Amount: "
-                + printable["TotalAmount"]
-                + ", Tax Amount: "
-                + printable["TaxAmount"]
-                + ", Tax Rate: "
-                + printable["TaxRate"]
-                + ", Description: "
-                + printable["Description"].Trim();
+            return "Description: "
+              + printable["Description"]
+              + ", Product code: "
+              + printable["ProductCode"]
+              + ", Quantity: "
+              + printable["Quantity"]
+              + ", Tax Amount: "
+              + printable["TaxAmount"]
+              + ", Tax Rate (%): "
+              + printable["TaxRate"]
+              + ", Total Amount: "
+              + printable["TotalAmount"]
+              + ", Unit Price: "
+              + printable["UnitPrice"].Trim();
         }
 
         private Dictionary<string, string> PrintableValues()
@@ -117,7 +115,7 @@ namespace Mindee.Product.Invoice
     }
 
     /// <summary>
-    /// Represent all the tax lines.
+    /// List of line item details.
     /// </summary>
     public class InvoiceV4LineItems : List<InvoiceV4LineItem>
     {
@@ -130,11 +128,17 @@ namespace Mindee.Product.Invoice
             {
                 return "\n";
             }
-            int[] columnSizes = { 22, 9, 9, 10, 18, 38 };
+            int[] columnSizes = { 38, 14, 10, 12, 14, 14, 12 };
             StringBuilder outStr = new StringBuilder("\n");
-            outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '-'));
-            outStr.Append("  | Code                 | QTY     | Price   | Amount   | Tax (Rate)       | Description                          |\n");
-            outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '='));
+            outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '-') + "  ");
+            outStr.Append("| Description                          ");
+            outStr.Append("| Product code ");
+            outStr.Append("| Quantity ");
+            outStr.Append("| Tax Amount ");
+            outStr.Append("| Tax Rate (%) ");
+            outStr.Append("| Total Amount ");
+            outStr.Append("| Unit Price ");
+            outStr.Append("|\n  " + SummaryHelper.LineSeparator(columnSizes, '='));
             outStr.Append(SummaryHelper.ArrayToString(this, columnSizes));
             return outStr.ToString();
         }
