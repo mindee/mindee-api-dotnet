@@ -51,6 +51,11 @@ using PredictUsBankCheckCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Us.BankCheck.BankCheckV1Page,
     Mindee.Product.Us.BankCheck.BankCheckV1Document
 >;
+using PredictUsPayrollCheckRegisterCommand = Mindee.Cli.PredictCommand<
+    Mindee.Product.Us.PayrollCheckRegister.PayrollCheckRegisterV1,
+    Mindee.Product.Us.PayrollCheckRegister.PayrollCheckRegisterV1Document,
+    Mindee.Product.Us.PayrollCheckRegister.PayrollCheckRegisterV1Document
+>;
 
 var runner = BuildCommandLine()
     .UseHost(_ => Host.CreateDefaultBuilder(args), (builder) =>
@@ -70,6 +75,7 @@ var runner = BuildCommandLine()
             .UseCommandHandler<PredictFrIdCardCommand, PredictFrIdCardCommand.Handler>()
             .UseCommandHandler<PredictProofOfAddressCommand, PredictProofOfAddressCommand.Handler>()
             .UseCommandHandler<PredictUsBankCheckCommand, PredictUsBankCheckCommand.Handler>()
+            .UseCommandHandler<PredictUsPayrollCheckRegisterCommand, PredictUsPayrollCheckRegisterCommand.Handler>()
             ;
     })
     .UseHelp()
@@ -127,6 +133,10 @@ static CommandLineBuilder BuildCommandLine()
     root.AddCommand(new PredictUsBankCheckCommand(new CommandOptions(
         name: "us-driver-license", description: "US Driver License V1",
         allWords: false, sync: true, async: false
+        )));
+    root.AddCommand(new PredictUsPayrollCheckRegisterCommand(new CommandOptions(
+        name: "us-payroll-check-register", description: "US Payroll Check Register V1",
+        allWords: false, sync: false, async: true
         )));
 
     root.AddGlobalOption(new Option<bool>(name: "--silent", "Disables diagnostics output"));
