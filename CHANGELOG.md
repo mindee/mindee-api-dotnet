@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v3.5.0 - 2023-11-13
+### Changes
+* :sparkles: add support for us payroll check register
+
+
 ## v3.4.0 - 2023-10-20
 ### Changes
 * :sparkles: add string helper functions to custom documents
