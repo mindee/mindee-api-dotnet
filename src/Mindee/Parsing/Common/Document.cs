@@ -35,7 +35,13 @@ namespace Mindee.Parsing.Common
         public string Id { get; set; }
 
         /// <summary>
-        /// A prettier reprensentation.
+        /// Number of pages in the document.
+        /// </summary>
+        [JsonPropertyName("n_pages")]
+        public int NPages { get; set; }
+
+        /// <summary>
+        /// A prettier representation.
         /// </summary>
         public override string ToString()
         {
