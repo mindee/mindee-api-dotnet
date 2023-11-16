@@ -10,30 +10,49 @@ namespace Mindee.UnitTests.Product.Custom
         [Fact]
         public async Task Predict_CheckSummary()
         {
-            var response = await GetPrediction();
+            var response = await GetPrediction("complete");
             var expected = File.ReadAllText("Resources/products/custom/response_v1/summary_full.rst");
-            Assert.Equal(
-                expected,
-                response.Document.ToString());
+            Assert.Equal(expected, response.Document.ToString());
         }
 
         [Fact]
         public async Task Predict_CheckPage0()
         {
-            var prediction = await GetPrediction();
+            var prediction = await GetPrediction("complete");
             var expected = File.ReadAllText("Resources/products/custom/response_v1/summary_page0.rst");
             Assert.Equal(expected, prediction.Document.Inference.Pages[0].ToString());
         }
 
         [Fact]
-        public async Task Predict_WithFieldWithOnlyOneValue_MustSuccess()
+        public async Task Predict_Doc_WithFieldWithOnlyOneValue_MustSuccess()
         {
-            var response = await GetPrediction();
+            var response = await GetPrediction("complete");
+
+            var listField = response.Document.Inference.Prediction.Fields["date_normal"];
+            Assert.Equal(0.99, listField!.Confidence);
+            Assert.Equal(0.99, listField.Values.First().Confidence);
+            Assert.Equal("2020-12-17", listField.Values.First().Content);
+            Assert.Equal(0, listField.Values.First().PageId);
+            Assert.Equal(new List<List<double>>()
+                {
+                    new List<double>() { 0.834, 0.177 },
+                    new List<double>() { 0.927, 0.177 },
+                    new List<double>() { 0.927, 0.186 },
+                    new List<double>() { 0.835, 0.187 },
+                },
+                listField.Values.First().Polygon);
+        }
+
+        [Fact]
+        public async Task Predict_Page_WithFieldWithOnlyOneValue_MustSuccess()
+        {
+            var response = await GetPrediction("complete");
 
             var listField = response.Document.Inference.Pages.First().Prediction["date_normal"];
             Assert.Equal(0.99, listField!.Confidence);
             Assert.Equal(0.99, listField.Values.First().Confidence);
             Assert.Equal("2020-12-17", listField.Values.First().Content);
+            Assert.Null(listField.Values.First().PageId);
             Assert.Equal(new List<List<double>>()
             {
                 new List<double>() { 0.834, 0.177 },
@@ -45,9 +64,9 @@ namespace Mindee.UnitTests.Product.Custom
         }
 
         [Fact]
-        public async Task Predict_WithFieldWithMultipleValues_MustSuccess()
+        public async Task Predict_Page_WithFieldWithMultipleValues_MustSuccess()
         {
-            var response = await GetPrediction();
+            var response = await GetPrediction("complete");
 
             var listField = response.Document.Inference.Pages.First().Prediction["string_all"];
             Assert.Equal(3, listField!.Values.Count);
@@ -68,31 +87,31 @@ namespace Mindee.UnitTests.Product.Custom
         }
 
         [Fact]
-        public async Task Predict_WithFieldWithNoValues_MustSuccess()
+        public async Task Predict_Page_WithFieldWithNoValues_MustSuccess()
         {
-            var response = await GetPrediction();
+            var response = await GetPrediction("complete");
             var listField = response.Document.Inference.Pages.First().Prediction["url"];
             Assert.Equal(0.0, listField!.Confidence);
             Assert.False(listField.Values.Any());
         }
 
         [Fact]
-        public async Task Predict_MustSuccessfullyGetOrientation()
+        public async Task Predict_Page_MustSuccessfullyGetOrientation()
         {
-            var response = await GetPrediction();
+            var response = await GetPrediction("complete");
             Assert.Equal(0, response.Document.Inference.Pages.First().Orientation.Value);
         }
 
         [Fact]
         public async Task Predict_MustSuccessfullyHandleMultiplePages()
         {
-            var response = await GetPrediction();
+            var response = await GetPrediction("complete");
             Assert.Equal(2, response.Document.Inference.Pages.Count);
         }
 
-        private static async Task<PredictResponse<CustomV1>> GetPrediction()
+        private static async Task<PredictResponse<CustomV1>> GetPrediction(string name)
         {
-            const string fileName = "Resources/products/custom/response_v1/complete.json";
+            string fileName = $"Resources/products/custom/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<CustomV1>(
                 new CustomEndpoint("customProduct", "fakeOrga"),

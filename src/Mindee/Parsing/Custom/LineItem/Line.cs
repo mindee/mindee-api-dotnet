@@ -95,7 +95,9 @@ namespace Mindee.Parsing.Custom.LineItem
                   new ListFieldValue(
                     content,
                     existingField.Confidence * fieldValue.Confidence,
-                    mergedBoundingBox));
+                    mergedBoundingBox,
+                    existingField.PageId
+                    ));
             }
             else
             {
@@ -103,7 +105,9 @@ namespace Mindee.Parsing.Custom.LineItem
                     new ListFieldValue(
                         fieldValue.Content,
                         fieldValue.Confidence,
-                        fieldValue.Polygon)
+                        fieldValue.Polygon,
+                        fieldValue.PageId
+                        )
                     );
             }
         }

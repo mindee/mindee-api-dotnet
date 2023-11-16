@@ -30,16 +30,24 @@ namespace Mindee.Parsing.Custom
         public string Content { get; set; }
 
         /// <summary>
+        /// The document page on which the information was found.
+        /// </summary>
+        [JsonPropertyName("page_id")]
+        public int? PageId { get; set; }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="confidence"><see cref="Confidence"/></param>
         /// <param name="polygon"><see cref="Polygon"/></param>
         /// <param name="content"><see cref="Content"/></param>
-        public ListFieldValue(string content, double confidence, Polygon polygon)
+        /// <param name="pageId"><see cref="PageId"/></param>
+        public ListFieldValue(string content, double confidence, Polygon polygon, int? pageId)
         {
             Confidence = confidence;
             Polygon = polygon;
             Content = content;
+            PageId = pageId;
         }
 
         /// <summary>

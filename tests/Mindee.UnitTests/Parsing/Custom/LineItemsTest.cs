@@ -88,7 +88,8 @@ namespace Mindee.UnitTests.Parsing.Custom
                                 new Point(0.846, 0.351),
                                 new Point(0.846, 0.36),
                                 new Point(0.764, 0.36)
-                            })
+                            }),
+                            0
                         ),
                         new ListFieldValue(
                             "01/01/20",
@@ -99,7 +100,8 @@ namespace Mindee.UnitTests.Parsing.Custom
                                 new Point(0.847, 0.387),
                                 new Point(0.847, 0.396),
                                 new Point(0.766, 0.396)
-                            })
+                            }),
+                            0
                         )
                     })
                 },
@@ -118,7 +120,9 @@ namespace Mindee.UnitTests.Parsing.Custom
                                 new Point(0.129, 0.351),
                                 new Point(0.129, 0.36),
                                 new Point(0.059, 0.36)
-                            })),
+                            }),
+                            0
+                        ),
                         new ListFieldValue(
                             "Kevin",
                             1.0,
@@ -128,7 +132,9 @@ namespace Mindee.UnitTests.Parsing.Custom
                                 new Point(0.224, 0.351),
                                 new Point(0.224, 0.36),
                                 new Point(0.136, 0.36)
-                            })),
+                            }),
+                            0
+                        ),
                         new ListFieldValue(
                             "Mindee",
                             1.0,
@@ -138,7 +144,9 @@ namespace Mindee.UnitTests.Parsing.Custom
                                 new Point(0.129, 0.388),
                                 new Point(0.129, 0.397),
                                 new Point(0.059, 0.397)
-                            })),
+                            }),
+                            0
+                        ),
                         new ListFieldValue(
                             "Ianare",
                             1.0,
@@ -148,7 +156,9 @@ namespace Mindee.UnitTests.Parsing.Custom
                                 new Point(0.189, 0.388),
                                 new Point(0.189, 0.397),
                                 new Point(0.136, 0.397)
-                            }))
+                            }),
+                            0
+                        )
                     })
                 }
             };
