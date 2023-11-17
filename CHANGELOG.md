@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v3.6.0 - 2023-11-17
+### Changes
+* :sparkles: add NPages property to Document class
+* :sparkles: add pageId to custom doc values
+
+
 ## v3.5.0 - 2023-11-13
 ### Changes
 * :sparkles: add support for us payroll check register
