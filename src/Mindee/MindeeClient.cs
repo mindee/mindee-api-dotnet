@@ -75,7 +75,7 @@ namespace Mindee
         }
 
         /// <summary>
-        /// Call Custom prediction API on the document and parse the results.
+        /// Call Custom prediction API on a local input source and parse the results.
         /// </summary>
         /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
@@ -104,14 +104,42 @@ namespace Mindee
             return await _mindeeApi.PredictPostAsync<CustomV1>(
                 endpoint,
                 new PredictParameter(
-                    inputSource.FileBytes,
-                    inputSource.Filename,
-                    predictOptions.AllWords,
-                    predictOptions.Cropper));
+                    localSource: inputSource,
+                    urlSource: null,
+                    allWords: predictOptions.AllWords,
+                    cropper: predictOptions.Cropper));
         }
 
         /// <summary>
-        /// Call Standard prediction API on the document and parse the results.
+        /// Call Custom prediction API on a URL input source and parse the results.
+        /// </summary>
+        /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <returns><see cref="PredictResponse{CustomV1Inference}"/></returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<PredictResponse<CustomV1>> ParseAsync(
+            UrlInputSource inputSource
+            , CustomEndpoint endpoint
+            , PredictOptions predictOptions = null)
+        {
+            _logger?.LogInformation(message: "Synchronous parsing of {} ...", nameof(CustomV1));
+
+            if (predictOptions == null)
+            {
+                predictOptions = new PredictOptions();
+            }
+            return await _mindeeApi.PredictPostAsync<CustomV1>(
+                endpoint,
+                new PredictParameter(
+                    localSource: null,
+                    urlSource: inputSource,
+                    allWords: predictOptions.AllWords,
+                    cropper: predictOptions.Cropper));
+        }
+
+        /// <summary>
+        /// Call Standard prediction API on a local input source and parse the results.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
         /// <param name="predictOptions"><see cref="PageOptions"/></param>
@@ -139,14 +167,42 @@ namespace Mindee
             }
             return await _mindeeApi.PredictPostAsync<TInferenceModel>(
                 new PredictParameter(
-                    inputSource.FileBytes,
-                    inputSource.Filename,
-                    predictOptions.AllWords,
-                    predictOptions.Cropper));
+                    localSource: inputSource,
+                    urlSource: null,
+                    allWords: predictOptions.AllWords,
+                    cropper: predictOptions.Cropper));
         }
 
         /// <summary>
-        /// Add the document to an async queue.
+        /// Call Standard prediction API on a URL input source and parse the results.
+        /// </summary>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
+        /// The response object will be instantiated based on this parameter.</typeparam>
+        /// <returns><see cref="PredictResponse{TInferenceModel}"/></returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<PredictResponse<TInferenceModel>> ParseAsync<TInferenceModel>(
+            UrlInputSource inputSource
+            , PredictOptions predictOptions = null)
+            where TInferenceModel : class, new()
+        {
+            _logger?.LogInformation(message: "Synchronous parsing of {} ...", typeof(TInferenceModel).Name);
+
+            if (predictOptions == null)
+            {
+                predictOptions = new PredictOptions();
+            }
+            return await _mindeeApi.PredictPostAsync<TInferenceModel>(
+                new PredictParameter(
+                    localSource: null,
+                    urlSource: inputSource,
+                    allWords: predictOptions.AllWords,
+                    cropper: predictOptions.Cropper));
+        }
+
+        /// <summary>
+        /// Add a local input source to an async queue.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
         /// <param name="predictOptions"><see cref="PageOptions"/></param>
@@ -174,10 +230,38 @@ namespace Mindee
             }
             return await _mindeeApi.PredictAsyncPostAsync<TInferenceModel>(
                 new PredictParameter(
-                    inputSource.FileBytes,
-                    inputSource.Filename,
-                    predictOptions.AllWords,
-                    predictOptions.Cropper));
+                    localSource: inputSource,
+                    urlSource: null,
+                    allWords: predictOptions.AllWords,
+                    cropper: predictOptions.Cropper));
+        }
+
+        /// <summary>
+        /// Add a URL input source to an async queue.
+        /// </summary>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
+        /// The response object will be instantiated based on this parameter.</typeparam>
+        /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<AsyncPredictResponse<TInferenceModel>> EnqueueAsync<TInferenceModel>(
+            UrlInputSource inputSource
+            , PredictOptions predictOptions = null)
+            where TInferenceModel : class, new()
+        {
+            _logger?.LogInformation(message: "Enqueuing of {} ...", typeof(TInferenceModel).Name);
+
+            if (predictOptions == null)
+            {
+                predictOptions = new PredictOptions();
+            }
+            return await _mindeeApi.PredictAsyncPostAsync<TInferenceModel>(
+                new PredictParameter(
+                    localSource: null,
+                    urlSource: inputSource,
+                    allWords: predictOptions.AllWords,
+                    cropper: predictOptions.Cropper));
         }
 
         /// <summary>

@@ -180,7 +180,19 @@ namespace Mindee.Http
 
         private static void AddPredictRequestParameters(PredictParameter predictParameter, RestRequest request)
         {
-            request.AddFile("document", predictParameter.File, predictParameter.Filename);
+            if (predictParameter.LocalSource != null)
+            {
+                request.AddFile(
+                    "document",
+                    predictParameter.LocalSource.FileBytes,
+                    predictParameter.LocalSource.Filename);
+            }
+            else if (predictParameter.UrlSource != null)
+            {
+                request.AddParameter(
+                    "document",
+                    predictParameter.UrlSource.FileUrl.ToString());
+            }
             if (predictParameter.AllWords)
             {
                 request.AddParameter(name: "include_mvision", value: "true");

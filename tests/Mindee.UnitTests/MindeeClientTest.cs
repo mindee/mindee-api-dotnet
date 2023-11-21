@@ -34,6 +34,28 @@ namespace Mindee.UnitTests
         }
 
         [Fact]
+        public async Task Parse_CustomDocument_WithUrl_NoOptions()
+        {
+            var customEndpoint = new CustomEndpoint("", "");
+            var predictable = new Mock<IHttpApi>();
+            predictable.Setup(x => x.PredictPostAsync<CustomV1>(
+                    It.IsAny<CustomEndpoint>()
+                    , It.IsAny<PredictParameter>()
+                    ))
+                .ReturnsAsync(new PredictResponse<CustomV1>());
+            var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
+
+            var inputSource = new UrlInputSource("https://example.com/blank_1.pdf");
+            var document = await mindeeClient.ParseAsync(
+                inputSource, customEndpoint);
+
+            Assert.NotNull(document);
+            predictable.Verify(p => p.PredictPostAsync<CustomV1>(
+                    It.IsAny<PredictParameter>())
+                , Times.AtMostOnce());
+        }
+
+        [Fact]
         public async Task Parse_CustomDocument_WithFile_ParseOptions()
         {
             var customEndpoint = new CustomEndpoint("", "");
@@ -73,6 +95,24 @@ namespace Mindee.UnitTests
             Assert.NotNull(document);
             predictable.Verify(p => p.PredictPostAsync<InvoiceV4>(
                 It.IsAny<PredictParameter>())
+                , Times.AtMostOnce());
+        }
+
+        [Fact]
+        public async Task Parse_StandardProduct_WithUrl_NoOptions()
+        {
+            var predictable = new Mock<IHttpApi>();
+            predictable.Setup(x => x.PredictPostAsync<InvoiceV4>(It.IsAny<PredictParameter>()))
+                .ReturnsAsync(new PredictResponse<InvoiceV4>());
+            var mindeeClient = new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
+
+            var inputSource = new UrlInputSource("https://example.com/blank_1.pdf");
+            var document = await mindeeClient.ParseAsync<InvoiceV4>(
+                inputSource);
+
+            Assert.NotNull(document);
+            predictable.Verify(p => p.PredictPostAsync<InvoiceV4>(
+                    It.IsAny<PredictParameter>())
                 , Times.AtMostOnce());
         }
 

@@ -41,12 +41,12 @@ namespace Mindee.Input
         /// <summary>
         /// Construct from bytes.
         /// </summary>
-        /// <param name="file">The file contents as bytes.</param>
+        /// <param name="fileBytes">The file contents as bytes.</param>
         /// <param name="filename">The name of the file.</param>
         /// <exception cref="MindeeInputException"></exception>
-        public LocalInputSource(byte[] file, string filename)
+        public LocalInputSource(byte[] fileBytes, string filename)
         {
-            FileBytes = file;
+            FileBytes = fileBytes;
             SetFileName(filename);
         }
 
