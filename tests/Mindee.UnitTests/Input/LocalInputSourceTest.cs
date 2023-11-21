@@ -4,7 +4,7 @@ using Mindee.Input;
 namespace Mindee.UnitTests.Input
 {
     [Trait("Category", "File loading")]
-    public class LocalInputFileTest
+    public class LocalInputSourceTest
     {
         [Fact]
         public void Can_Load_Type_ImageFiles()
@@ -34,6 +34,21 @@ namespace Mindee.UnitTests.Input
         {
             FileInfo fileInfo = new FileInfo("Resources/file_types/receipt.jpg");
             Assert.IsType<LocalInputSource>(new LocalInputSource(fileInfo));
+        }
+
+        [Fact]
+        public void Can_Load_Using_FileStream()
+        {
+            Stream fileStream = File.OpenRead("Resources/file_types/receipt.jpg");
+            Assert.IsType<LocalInputSource>(new LocalInputSource(fileStream, "receipt.jpg"));
+        }
+
+        [Fact]
+        public void Can_Load_Using_FileBytes()
+        {
+            Assert.IsType<LocalInputSource>(new LocalInputSource(
+                fileBytes: new byte[] { byte.MinValue },
+                filename: "titicaca.jpg"));
         }
     }
 }

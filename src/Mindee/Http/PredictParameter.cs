@@ -1,3 +1,6 @@
+using Mindee.Exceptions;
+using Mindee.Input;
+
 namespace Mindee.Http
 {
     /// <summary>
@@ -6,14 +9,14 @@ namespace Mindee.Http
     public sealed class PredictParameter
     {
         /// <summary>
-        /// The file.
+        /// A local input source.
         /// </summary>
-        public byte[] File { get; }
+        public LocalInputSource LocalSource { get; }
 
         /// <summary>
-        /// The name of the file.
+        /// A URL input source.
         /// </summary>
-        public string Filename { get; }
+        public UrlInputSource UrlSource { get; }
 
         /// <summary>
         /// Want an OCR result ?
@@ -30,18 +33,26 @@ namespace Mindee.Http
         /// <summary>
         ///
         /// </summary>
-        /// <param name="file"><see cref="File"/></param>
-        /// <param name="filename"><see cref="Filename"/></param>
+        /// <param name="localSource"><see cref="LocalSource"/></param>
+        /// <param name="urlSource"><see cref="UrlSource"/></param>
         /// <param name="allWords"><see cref="AllWords"/></param>
         /// <param name="cropper"><see cref="Cropper"/></param>
         public PredictParameter(
-            byte[] file,
-            string filename,
+            LocalInputSource localSource,
+            UrlInputSource urlSource,
             bool allWords,
             bool cropper)
         {
-            File = file;
-            Filename = filename;
+            if (localSource != null && urlSource != null)
+            {
+                throw new MindeeException("localSource and urlSource may not both be specified.");
+            }
+            if (localSource == null && urlSource == null)
+            {
+                throw new MindeeException("One of localSource or urlSource must be specified.");
+            }
+            LocalSource = localSource;
+            UrlSource = urlSource;
             AllWords = allWords;
             Cropper = cropper;
         }

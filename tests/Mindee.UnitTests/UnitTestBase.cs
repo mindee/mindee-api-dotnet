@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Mindee.Http;
+using Mindee.Input;
 using RichardSzalay.MockHttp;
 
 namespace Mindee.UnitTests
@@ -10,8 +11,10 @@ namespace Mindee.UnitTests
         internal static PredictParameter GetFakePredictParameter()
         {
             return new PredictParameter(
-                file: new byte[] { byte.MinValue },
-                filename: "Bou",
+                localSource: new LocalInputSource(
+                    fileBytes: new byte[] { byte.MinValue },
+                    filename: "titicaca.pdf"),
+                urlSource: null,
                 cropper: false,
                 allWords: false);
         }

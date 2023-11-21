@@ -10,7 +10,7 @@ namespace Mindee.IntegrationTests
     public class MindeeClientTest
     {
         [Fact]
-        public async Task Parse_WithMultiplePages_MustSucceed()
+        public async Task Parse_File_MultiplePages_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
@@ -27,7 +27,7 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Parse_WithSinglePage_MustSucceed()
+        public async Task Parse_File_SinglePage_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
@@ -44,7 +44,24 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Parse_Cropper_MustSucceed()
+        public async Task Parse_Url_SinglePage_MustSucceed()
+        {
+            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+            var mindeeClient = new MindeeClient(apiKey);
+            var inputSource = new UrlInputSource("https://raw.githubusercontent.com/mindee/client-lib-test-data/main/products/expense_receipts/default_sample.jpg");
+            var response = await mindeeClient.ParseAsync<ReceiptV5>(inputSource);
+            Assert.NotNull(response);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal(201, response.ApiRequest.StatusCode);
+            Assert.Null(response.Document.Ocr);
+            Assert.NotNull(response.Document.Inference);
+            Assert.NotNull(response.Document.Inference.Prediction);
+            Assert.Single(response.Document.Inference.Pages);
+            Assert.Null(response.Document.Inference.Pages.First().Extras.Cropper);
+        }
+
+        [Fact]
+        public async Task Parse_File_Cropper_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
@@ -63,7 +80,7 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Parse_AllWords_MustSucceed()
+        public async Task Parse_File_AllWords_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
@@ -83,7 +100,7 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Parse_AllWords_And_Cropper_MustSucceed()
+        public async Task Parse_File_AllWords_And_Cropper_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
@@ -105,7 +122,7 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Enqueue_AsyncOnly_Async_MustSucceed()
+        public async Task Enqueue_File_AsyncOnly_Async_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
@@ -125,7 +142,7 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Enqueue_AsyncOnly_Sync_MustFail()
+        public async Task Enqueue_File_AsyncOnly_Sync_MustFail()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
@@ -136,7 +153,7 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task EnqueueAndParse_AsyncOnly_Async_MustSucceed()
+        public async Task EnqueueAndParse_File_AsyncOnly_Async_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var mindeeClient = new MindeeClient(apiKey);
