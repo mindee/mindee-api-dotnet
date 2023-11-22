@@ -18,7 +18,7 @@ namespace Mindee.Http
             where TModel : class, new();
 
         /// <summary>
-        /// Do a prediction according parameters for custom model define in the Studio.
+        /// Do a prediction according parameters for custom model defined in the Studio.
         /// </summary>
         /// <typeparam name="TModel">Result expected type.</typeparam>
         /// <param name="endpoint"><see cref="CustomEndpoint"/></param>

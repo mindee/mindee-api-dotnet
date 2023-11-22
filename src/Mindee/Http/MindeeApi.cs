@@ -79,31 +79,7 @@ namespace Mindee.Http
             _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
 
             var response = await _httpClient.ExecutePostAsync(request);
-
-            _logger?.LogDebug($"HTTP response : {response.Content}");
-
-            if (response.Content != null)
-            {
-                _logger?.LogInformation("Parsing response ...");
-                AsyncPredictResponse<TModel> asyncPredictResponse = JsonSerializer.Deserialize<AsyncPredictResponse<TModel>>(response.Content);
-                asyncPredictResponse.RawResponse = response.Content;
-                return asyncPredictResponse;
-            }
-
-            var errorMessage = "Mindee API client: ";
-
-            if (response.StatusCode == HttpStatusCode.InternalServerError)
-            {
-                errorMessage += response.ErrorMessage;
-                _logger?.LogCritical(errorMessage);
-            }
-            else
-            {
-                errorMessage += $" Unhandled error - {response.ErrorMessage}";
-                _logger?.LogError(errorMessage);
-            }
-
-            throw new MindeeException(errorMessage);
+            return ResponseHandler<AsyncPredictResponse<TModel>>(response);
         }
 
         public Task<PredictResponse<TModel>> PredictPostAsync<TModel>(PredictParameter predictParameter)

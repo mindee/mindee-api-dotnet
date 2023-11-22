@@ -61,6 +61,16 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
+        public async Task Parse_Url_InvalidUrl_MustFail()
+        {
+            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+            var mindeeClient = new MindeeClient(apiKey);
+            var inputSource = new UrlInputSource("https://bad-domain.test/invalid-file.ext");
+            await Assert.ThrowsAsync<Mindee400Exception>(
+                () => mindeeClient.ParseAsync<ReceiptV5>(inputSource));
+        }
+
+        [Fact]
         public async Task Parse_File_Cropper_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
@@ -122,6 +132,16 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
+        public async Task Enqueue_File_SyncOnly_Async_MustFail()
+        {
+            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+            var mindeeClient = new MindeeClient(apiKey);
+            var inputSource = new LocalInputSource("Resources/products/passport/default_sample.jpg");
+            await Assert.ThrowsAsync<Mindee403Exception>(
+                () => mindeeClient.EnqueueAsync<InvoiceV4>(inputSource));
+        }
+
+        [Fact]
         public async Task Enqueue_File_AsyncOnly_Async_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
@@ -148,8 +168,7 @@ namespace Mindee.IntegrationTests
             var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
             await Assert.ThrowsAsync<Mindee403Exception>(
-                () => _ = mindeeClient.ParseAsync<InvoiceSplitterV1>(inputSource)
-                );
+                () => mindeeClient.ParseAsync<InvoiceSplitterV1>(inputSource));
         }
 
         [Fact]
@@ -173,6 +192,15 @@ namespace Mindee.IntegrationTests
 
             Assert.NotNull(response.Document);
             Assert.NotNull(response.Document.Inference.Prediction.PageGroups);
+        }
+
+        [Fact]
+        public async Task ParseQueued_File_InvalidJob_MustFail()
+        {
+            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+            var mindeeClient = new MindeeClient(apiKey);
+            await Assert.ThrowsAsync<Mindee404Exception>(
+                () => mindeeClient.ParseQueuedAsync<InvoiceSplitterV1>("bad-job-id"));
         }
     }
 }

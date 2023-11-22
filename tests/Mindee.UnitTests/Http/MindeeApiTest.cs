@@ -5,7 +5,6 @@ using Mindee.Exceptions;
 using Mindee.Http;
 using Mindee.Product.Invoice;
 using Mindee.Product.Receipt;
-using Mindee.UnitTests.Parsing;
 using RichardSzalay.MockHttp;
 
 namespace Mindee.UnitTests.Http
@@ -38,7 +37,9 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task Predict_WithWrongKey()
         {
-            var mindeeApi = InitMockServer(HttpStatusCode.BadRequest, "Resources/errors/error_401_invalid_token.json");
+            var mindeeApi = InitMockServer(
+                HttpStatusCode.BadRequest,
+                fileToLoad: "Resources/errors/error_401_invalid_token.json");
 
             await Assert.ThrowsAsync<Mindee400Exception>(
                () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(UnitTestBase.GetFakePredictParameter()));
@@ -62,112 +63,74 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task Predict_WithErrorResponse()
         {
-            var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When("*")
-                .Respond(
-                    HttpStatusCode.BadRequest,
-                    "application/json",
-                    File.ReadAllText("Resources/errors/error_400_with_object_in_detail.json")
-                );
-
-            var mindeeApi = new MindeeApi(
-                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
-                new NullLogger<MindeeApi>(),
-                mockHttp
-                );
+            var mindeeApi = InitMockServer(
+                HttpStatusCode.BadRequest,
+                fileToLoad: "Resources/errors/error_400_with_object_in_detail.json");
 
             await Assert.ThrowsAsync<Mindee400Exception>(
-                           () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(UnitTestBase.GetFakePredictParameter()));
+                           () => mindeeApi.PredictPostAsync<ReceiptV4>(
+                               UnitTestBase.GetFakePredictParameter())
+                           );
         }
 
         [Fact]
         public async Task Predict_500Error()
         {
-            var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When("*")
-                .Respond(
-                    HttpStatusCode.InternalServerError,
-                    "application/json",
-                    File.ReadAllText("Resources/errors/error_500_inference_fail.json")
-                );
-
-            var mindeeApi = new MindeeApi(
-                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
-                new NullLogger<MindeeApi>(),
-                mockHttp
-                );
+            var mindeeApi = InitMockServer(
+                HttpStatusCode.InternalServerError,
+                fileToLoad: "Resources/errors/error_500_inference_fail.json");
 
             await Assert.ThrowsAsync<Mindee500Exception>(
-                           () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(UnitTestBase.GetFakePredictParameter()));
+                           () => mindeeApi.PredictPostAsync<ReceiptV4>(
+                               UnitTestBase.GetFakePredictParameter())
+                           );
         }
 
         [Fact]
         public async Task Predict_429Error()
         {
-            var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When("*")
-                .Respond(
-                    (HttpStatusCode)429,
-                    "application/json",
-                    File.ReadAllText("Resources/errors/error_429_too_many_requests.json")
-                );
-
-            var mindeeApi = new MindeeApi(
-                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
-                new NullLogger<MindeeApi>(),
-                mockHttp
-                );
+            var mindeeApi = InitMockServer(
+                (HttpStatusCode)429,
+                fileToLoad: "Resources/errors/error_429_too_many_requests.json");
 
             await Assert.ThrowsAsync<Mindee429Exception>(
-               () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(
-                   UnitTestBase.GetFakePredictParameter()
-                   )
+               () => mindeeApi.PredictPostAsync<ReceiptV4>(
+                   UnitTestBase.GetFakePredictParameter())
                );
         }
 
         [Fact]
         public async Task Predict_401Error()
         {
-            var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When("*")
-                .Respond(
-                    HttpStatusCode.Unauthorized,
-                    "application/json",
-                    File.ReadAllText("Resources/errors/error_401_invalid_token.json")
-                    );
-
-            var mindeeApi = new MindeeApi(
-                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
-                new NullLogger<MindeeApi>(),
-                mockHttp
-                );
+            var mindeeApi = InitMockServer(
+                HttpStatusCode.Unauthorized,
+                fileToLoad: "Resources/errors/error_401_invalid_token.json");
 
             await Assert.ThrowsAsync<Mindee401Exception>(
-                () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(
-                    UnitTestBase.GetFakePredictParameter()
-                    )
+                () => mindeeApi.PredictPostAsync<ReceiptV4>(
+                    UnitTestBase.GetFakePredictParameter())
                 );
         }
 
         [Fact]
         public async Task PredictAsyncPostAsync_WithFailForbidden()
         {
-            var mindeeApi = InitMockServer(HttpStatusCode.BadRequest, "Resources/async/post_fail_forbidden.json");
+            var mindeeApi = InitMockServer(
+                HttpStatusCode.Forbidden,
+                fileToLoad: "Resources/async/post_fail_forbidden.json");
 
-            var response = await mindeeApi.PredictAsyncPostAsync<InvoiceV4>(UnitTestBase.GetFakePredictParameter());
-
-            Assert.NotNull(response);
-            Assert.Equal("failure", response.ApiRequest.Status);
-            Assert.Null(response.Job.Status);
-            Assert.Null(response.Job.Id);
-            Assert.Equal("2023-01-01T00:00:00.00000", response.Job.IssuedAt.ToString(DateOutputFormat));
-            Assert.Null(response.Job.AvailableAt);
+            await Assert.ThrowsAsync<Mindee403Exception>(
+                () => mindeeApi.PredictAsyncPostAsync<ReceiptV4>(
+                    UnitTestBase.GetFakePredictParameter())
+                );
         }
 
         [Fact]
         public async Task PredictAsyncPostAsync_WithSuccess()
         {
-            var mindeeApi = InitMockServer(HttpStatusCode.OK, "Resources/async/post_success.json");
+            var mindeeApi = InitMockServer(
+                HttpStatusCode.OK,
+                fileToLoad: "Resources/async/post_success.json");
 
             var response = await mindeeApi.PredictAsyncPostAsync<InvoiceV4>(UnitTestBase.GetFakePredictParameter());
 
@@ -182,7 +145,9 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task DocumentQueueGetAsync_WithJobProcessing()
         {
-            var mindeeApi = InitMockServer(HttpStatusCode.OK, "Resources/async/get_processing.json");
+            var mindeeApi = InitMockServer(
+                HttpStatusCode.OK,
+                fileToLoad: "Resources/async/get_processing.json");
 
             var response = await mindeeApi.DocumentQueueGetAsync<InvoiceV4>("76c90710-3a1b-4b91-8a39-31a6543e347c");
 
