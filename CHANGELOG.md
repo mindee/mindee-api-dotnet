@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v3.7.0 - 2023-11-22
+### Changes
+* :sparkles: add ability to parse URLs
+
+### Fixes
+* :bug: properly throw exceptions on predict_async API route
+
+
 ## v3.6.0 - 2023-11-17
 ### Changes
 * :sparkles: add NPages property to Document class
