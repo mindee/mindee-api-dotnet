@@ -1,5 +1,5 @@
-using Mindee.Exceptions;
 using System;
+using Mindee.Exceptions;
 
 namespace Mindee
 {
@@ -73,7 +73,8 @@ namespace Mindee
             {
                 throw new MindeeException($"Cannot set polling interval to less than {Math.Floor(minIntervalSec)} seconds.");
             }
-            if (maxRetries < minRetries){
+            if (maxRetries < minRetries)
+            {
                 throw new MindeeException($"Cannot set async retry to less than {minRetries} attempts.");
             }
             InitialDelaySec = initialDelaySec;
