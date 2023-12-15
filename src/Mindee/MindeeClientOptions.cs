@@ -62,8 +62,8 @@ namespace Mindee
         /// <param name="maxRetries"><see cref="MaxRetries"/></param>
         public AsyncPollingOptions(double initialDelaySec = 4.0, double intervalSec = 2.0, int maxRetries = 30)
         {
-            double minInitialDelaySec = 1;
-            double minIntervalSec = 2;
+            double minInitialDelaySec = 2;
+            double minIntervalSec = 1;
             int minRetries = 2;
             if (initialDelaySec < minInitialDelaySec)
             {

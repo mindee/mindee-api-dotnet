@@ -93,7 +93,7 @@ namespace Mindee.UnitTests.Product.Receipt
                 new List<double>() { 0.161, 0.016 },
                 new List<double>() { 0.744, 0.009 },
                 new List<double>() { 0.845, 0.996 },
-                new List<double>() { 0.057, 0.998 },
+                new List<double>() { 0.058, 0.999 },
             }
             , response.Document.Inference.Pages.First().Extras.Cropper.Cropping.First().Quadrangle);
 
