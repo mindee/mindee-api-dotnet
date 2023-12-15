@@ -17,7 +17,7 @@ namespace Mindee.UnitTests.Parsing.Common
             Assert.NotNull(response.Document.Ocr);
             Assert.NotNull(response.Document.Ocr.MvisionV1);
             Assert.Single(response.Document.Ocr.MvisionV1.Pages);
-            Assert.Equal(expected: 61, actual: response.Document.Ocr.MvisionV1.Pages[0].AllWords.Count);
+            Assert.Equal(expected: 95, actual: response.Document.Ocr.MvisionV1.Pages[0].AllWords.Count);
         }
     }
 }

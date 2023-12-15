@@ -12,7 +12,10 @@ namespace Mindee.UnitTests
                 () => _ = new AsyncPollingOptions(initialDelaySec: 1)
                 );
             Assert.Throws<MindeeException>(
-                () => _ = new AsyncPollingOptions(intervalSec: 1)
+                () => _ = new AsyncPollingOptions(intervalSec: 0.5)
+                );
+            Assert.Throws<MindeeException>(
+                () => _ = new AsyncPollingOptions(maxRetries: 1)
                 );
         }
     }

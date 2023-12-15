@@ -1,3 +1,4 @@
+using System;
 using Mindee.Exceptions;
 
 namespace Mindee
@@ -59,15 +60,22 @@ namespace Mindee
         /// <param name="initialDelaySec"><see cref="InitialDelaySec"/></param>
         /// <param name="intervalSec"><see cref="IntervalSec"/></param>
         /// <param name="maxRetries"><see cref="MaxRetries"/></param>
-        public AsyncPollingOptions(double initialDelaySec = 6.0, double intervalSec = 3.0, int maxRetries = 10)
+        public AsyncPollingOptions(double initialDelaySec = 4.0, double intervalSec = 2.0, int maxRetries = 30)
         {
-            if (initialDelaySec < 4)
+            double minInitialDelaySec = 2;
+            double minIntervalSec = 1;
+            int minRetries = 2;
+            if (initialDelaySec < minInitialDelaySec)
             {
-                throw new MindeeException("Cannot set initial polling delay to less than 4 seconds.");
+                throw new MindeeException($"Cannot set initial polling delay to less than {Math.Floor(minInitialDelaySec)} seconds.");
             }
-            if (intervalSec < 2)
+            if (intervalSec < minIntervalSec)
             {
-                throw new MindeeException("Cannot set polling interval to less than 2 seconds.");
+                throw new MindeeException($"Cannot set polling interval to less than {Math.Floor(minIntervalSec)} seconds.");
+            }
+            if (maxRetries < minRetries)
+            {
+                throw new MindeeException($"Cannot set async retry to less than {minRetries} attempts.");
             }
             InitialDelaySec = initialDelaySec;
             IntervalSec = intervalSec;
