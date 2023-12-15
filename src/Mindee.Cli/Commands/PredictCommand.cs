@@ -12,6 +12,7 @@ namespace Mindee.Cli
     {
         Raw,
         Summary,
+        Full,
     }
 
     internal struct CommandOptions
@@ -97,7 +98,7 @@ namespace Mindee.Cli
 
             public string Path { get; set; } = null!;
             public bool AllWords { get; set; } = false;
-            public OutputType Output { get; set; } = OutputType.Summary;
+            public OutputType Output { get; set; } = OutputType.Full;
             public bool Async { get; set; } = false;
 
             public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
@@ -137,7 +138,11 @@ namespace Mindee.Cli
                     return 1;
                 }
 
-                if (options.Output == OutputType.Summary)
+                if (options.Output == OutputType.Full)
+                {
+                    context.Console.Out.Write(response.Document.ToString());
+                }
+                else if (options.Output == OutputType.Summary)
                 {
                     context.Console.Out.Write(response.Document.Inference.Prediction.ToString());
                 }
