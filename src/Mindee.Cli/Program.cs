@@ -21,6 +21,11 @@ using PredictFrIdCardCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Fr.IdCard.IdCardV1Page,
     Mindee.Product.Fr.IdCard.IdCardV1Document
 >;
+using PredictInternationalIdCommand = Mindee.Cli.PredictCommand<
+    Mindee.Product.InternationalId.InternationalIdV1,
+    Mindee.Product.InternationalId.InternationalIdV1Document,
+    Mindee.Product.InternationalId.InternationalIdV1Document
+>;
 using PredictInvoiceCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Invoice.InvoiceV4,
     Mindee.Product.Invoice.InvoiceV4Document,
@@ -76,6 +81,7 @@ var runner = BuildCommandLine()
             .UseCommandHandler<PredictProofOfAddressCommand, PredictProofOfAddressCommand.Handler>()
             .UseCommandHandler<PredictUsBankCheckCommand, PredictUsBankCheckCommand.Handler>()
             .UseCommandHandler<PredictUsPayrollCheckRegisterCommand, PredictUsPayrollCheckRegisterCommand.Handler>()
+            .UseCommandHandler<PredictInternationalIdCommand, PredictInternationalIdCommand.Handler>()
             ;
     })
     .UseHelp()
@@ -109,6 +115,10 @@ static CommandLineBuilder BuildCommandLine()
     root.AddCommand(new PredictPassportCommand(new CommandOptions(
         name: "passport", description: "Passport V1",
         allWords: false, sync: true, async: false
+        )));
+    root.AddCommand(new PredictInternationalIdCommand(new CommandOptions(
+        name: "international-id", description: "International ID V1",
+        allWords: false, sync: false, async: true
         )));
     root.AddCommand(new PredictProofOfAddressCommand(new CommandOptions(
         name: "proof-of-address", description: "Proof Of Address V1",
