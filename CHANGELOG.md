@@ -2,6 +2,13 @@
 
 ## v3.7.0 - 2023-11-22
 ### Changes
+* :recycle: tweak async delays & retry
+* :recycle tweak default async sample delays & retry
+* :memo: update md doc & fix typos
+
+
+## v3.7.0 - 2023-11-22
+### Changes
 * :sparkles: add ability to parse URLs
 
 ### Fixes
