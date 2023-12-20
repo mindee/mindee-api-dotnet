@@ -35,7 +35,7 @@ namespace Mindee.Parsing.Common
         public Extras Extras { get; set; }
 
         /// <summary>
-        /// A prettier reprensentation.
+        /// A prettier representation.
         /// </summary>
         public override string ToString()
         {

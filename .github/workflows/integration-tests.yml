@@ -46,7 +46,11 @@ jobs:
       run: |
         dotnet restore
 
-    - name: Build and test
+    - name: Build
+      run: |
+        dotnet build -f ${{ matrix.dotnet-version }}
+
+    - name: Test
       run: |
         dotnet test -f ${{ matrix.dotnet-version }} --verbosity normal "tests\Mindee.IntegrationTests"
 

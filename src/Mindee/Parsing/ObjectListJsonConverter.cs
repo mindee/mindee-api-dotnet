@@ -4,13 +4,13 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
-namespace Mindee.Parsing.Standard
+namespace Mindee.Parsing
 {
     /// <summary>
-    /// Custom de-serialize for <see cref="Taxes"/>
+    /// Custom de-serializer for custom lists of objects.
     /// </summary>
     public class ObjectListJsonConverter<TList, TItem> : JsonConverter<TList>
-        where TList : List<TItem>, new()
+        where TList : IList<TItem>, new()
         where TItem : class, new()
     {
         /// <summary>
@@ -18,17 +18,17 @@ namespace Mindee.Parsing.Standard
         /// </summary>
         public override TList Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            TList theList = new TList();
+            TList objectList = new TList();
             JsonArray jsonObject = (JsonArray)JsonSerializer.Deserialize(ref reader, typeof(JsonArray), options);
 
             if (jsonObject == null)
-                return theList;
+                return objectList;
 
             foreach (var jsonNode in jsonObject)
             {
-                theList.Add(jsonNode.Deserialize<TItem>());
+                objectList.Add(jsonNode.Deserialize<TItem>());
             }
-            return theList;
+            return objectList;
         }
 
         /// <summary>
