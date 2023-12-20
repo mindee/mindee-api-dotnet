@@ -1,10 +1,9 @@
 # CHANGELOG
 
-## v3.7.0 - 2023-11-22
+## v3.8.0 - 2023-12-20
 ### Changes
-* :recycle: tweak async delays & retry
 * :recycle tweak default async sample delays & retry
-* :memo: update md doc & fix typos
+* :sparkles: add International ID
 
 
 ## v3.7.0 - 2023-11-22
