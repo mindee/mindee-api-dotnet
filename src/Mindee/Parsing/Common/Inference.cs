@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
-using System.Xml.Schema;
 
 namespace Mindee.Parsing.Common
 {
@@ -32,7 +28,7 @@ namespace Mindee.Parsing.Common
         /// The pages and the associated values which was detected on the document.
         /// </summary>
         [JsonPropertyName("pages")]
-        public List<Page<TPagePrediction>> Pages { get; set; }
+        public virtual Pages<TPagePrediction> Pages { get; set; }
 
         /// <summary>
         /// The prediction model values.
@@ -41,7 +37,7 @@ namespace Mindee.Parsing.Common
         public TDocumentPrediction Prediction { get; set; }
 
         /// <summary>
-        /// A prettier reprensentation.
+        /// A prettier representation.
         /// </summary>
         public override string ToString()
         {
@@ -53,10 +49,12 @@ namespace Mindee.Parsing.Common
             result.Append("\nPrediction\n");
             result.Append("==========\n");
             result.Append(Prediction.ToString());
-            result.Append("\nPage Predictions\n");
-            result.Append("================\n\n");
-            result.Append(string.Join("\n", Pages.Select(p => p.ToString())));
-
+            if (Pages.HasPredictions())
+            {
+                result.Append("\nPage Predictions\n");
+                result.Append("================\n\n");
+                result.Append(Pages);
+            }
             return SummaryHelper.Clean(result.ToString());
         }
     }
