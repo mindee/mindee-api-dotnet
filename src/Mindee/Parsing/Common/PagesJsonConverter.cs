@@ -24,11 +24,12 @@ namespace Mindee.Parsing.Common
 
             foreach (var jsonNode in jsonObject)
             {
-                if (jsonNode.ToString().Contains("\"prediction\": {}"))
-                {
-                    continue;
-                }
-                pages.Add(jsonNode.Deserialize<Page<TPage>>());
+                var pageString = jsonNode.ToString()
+                    .Replace("\"prediction\": {}", "\"prediction\": null")
+                    .Replace("\"extras\": {}", "\"extras\": null")
+                    ;
+                var page = (Page<TPage>)JsonSerializer.Deserialize(pageString, typeof(Page<TPage>), options);
+                pages.Add(page);
             }
             return pages;
         }
