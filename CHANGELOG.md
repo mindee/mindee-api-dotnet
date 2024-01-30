@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v3.9.0 - 2024-01-30
+### Changes
+* :sparkles: add RawValue to string fields
+* :arrow_up: update invoice to 4.4
+
+
 ## v3.8.0 - 2023-12-20
 ### Changes
 * :recycle tweak default async sample delays & retry
