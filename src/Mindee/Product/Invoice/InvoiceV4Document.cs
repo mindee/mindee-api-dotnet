@@ -117,6 +117,12 @@ namespace Mindee.Product.Invoice
         public AmountField TotalNet { get; set; }
 
         /// <summary>
+        /// The total tax: includes all the taxes paid for this invoice.
+        /// </summary>
+        [JsonPropertyName("total_tax")]
+        public AmountField TotalTax { get; set; }
+
+        /// <summary>
         /// A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
@@ -141,6 +147,7 @@ namespace Mindee.Product.Invoice
             result.Append($":Due Date: {DueDate}\n");
             result.Append($":Total Net: {TotalNet}\n");
             result.Append($":Total Amount: {TotalAmount}\n");
+            result.Append($":Total Tax: {TotalTax}\n");
             result.Append($":Taxes:{Taxes}");
             result.Append($":Supplier Payment Details: {supplierPaymentDetails}\n");
             result.Append($":Supplier Name: {SupplierName}\n");
