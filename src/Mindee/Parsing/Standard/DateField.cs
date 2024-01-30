@@ -27,7 +27,7 @@ namespace Mindee.Parsing.Standard
             string value,
             double confidence,
             Polygon polygon,
-            int? pageId = null) : base(value, confidence, polygon, pageId)
+            int? pageId = null) : base(value, null, confidence, polygon, pageId)
         {
             _logger = MindeeLogger.GetLogger();
 

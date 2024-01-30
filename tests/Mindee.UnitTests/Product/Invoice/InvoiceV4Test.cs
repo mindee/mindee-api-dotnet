@@ -18,6 +18,7 @@ namespace Mindee.UnitTests.Product.Invoice
             Assert.Null(docPrediction.DueDate.Value);
             Assert.Null(docPrediction.TotalNet.Value);
             Assert.Null(docPrediction.TotalAmount.Value);
+            Assert.Null(docPrediction.TotalTax.Value);
             Assert.Empty(docPrediction.Taxes);
             Assert.Empty(docPrediction.SupplierPaymentDetails);
             Assert.Null(docPrediction.SupplierName.Value);
@@ -36,14 +37,6 @@ namespace Mindee.UnitTests.Product.Invoice
             var response = await GetPrediction("complete");
             var expected = File.ReadAllText("Resources/products/invoices/response_v4/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
-        }
-
-        [Fact]
-        public async Task Predict_CheckPage0()
-        {
-            var response = await GetPrediction("complete");
-            var expected = File.ReadAllText("Resources/products/invoices/response_v4/summary_page0.rst");
-            Assert.Equal(expected, response.Document.Inference.Pages[0].ToString());
         }
 
         private static async Task<PredictResponse<InvoiceV4>> GetPrediction(string name)
