@@ -30,7 +30,6 @@ namespace Mindee.UnitTests.Product.Us.BankCheck
             var expected = File.ReadAllText("Resources/products/bank_check/response_v1/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
-
         [Fact]
         public async Task Predict_CheckPage0()
         {

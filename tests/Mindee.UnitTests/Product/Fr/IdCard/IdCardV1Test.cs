@@ -32,7 +32,6 @@ namespace Mindee.UnitTests.Product.Fr.IdCard
             var expected = File.ReadAllText("Resources/products/idcard_fr/response_v1/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
-
         [Fact]
         public async Task Predict_CheckPage0()
         {

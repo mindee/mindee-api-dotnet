@@ -21,7 +21,6 @@ namespace Mindee.UnitTests.Product.Cropper
             var expected = File.ReadAllText("Resources/products/cropper/response_v1/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
-
         [Fact]
         public async Task Predict_CheckPage0()
         {

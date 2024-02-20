@@ -6,7 +6,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Us.W9
 {
     /// <summary>
-    /// Page data for US W9, API version 1.
+    /// Page data for W9, API version 1.
     /// </summary>
     public sealed class W9V1Page : W9V1Document
     {

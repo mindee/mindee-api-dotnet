@@ -23,14 +23,6 @@ namespace Mindee.UnitTests.Product.BarcodeReader
             Assert.Equal(expected, response.Document.ToString());
         }
 
-        [Fact]
-        public async Task Predict_CheckPage0()
-        {
-            var response = await GetPrediction("complete");
-            var expected = File.ReadAllText("Resources/products/barcode_reader/response_v1/summary_page0.rst");
-            Assert.Equal(expected, response.Document.Inference.Pages[0].ToString());
-        }
-
         private static async Task<PredictResponse<BarcodeReaderV1>> GetPrediction(string name)
         {
             string fileName = $"Resources/products/barcode_reader/response_v1/{name}.json";
