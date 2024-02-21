@@ -8,54 +8,54 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Resume
 {
     /// <summary>
-    /// The list of values that represent the professional experiences of an individual in their global resume.
+    /// The list of the candidate's professional experiences.
     /// </summary>
     public sealed class ResumeV1ProfessionalExperience : LineItemField
     {
         /// <summary>
-        /// The type of contract for a professional experience. Possible values: 'Full-Time', 'Part-Time', 'Internship' and 'Freelance'.
+        /// The type of contract for the professional experience.
         /// </summary>
         [JsonPropertyName("contract_type")]
         public string ContractType { get; set; }
 
         /// <summary>
-        /// The specific department or division within a company where the professional experience was gained.
+        /// The specific department or division within the company.
         /// </summary>
         [JsonPropertyName("department")]
         public string Department { get; set; }
 
         /// <summary>
-        /// The name of the company or organization where the candidate has worked.
+        /// The name of the company or organization.
         /// </summary>
         [JsonPropertyName("employer")]
         public string Employer { get; set; }
 
         /// <summary>
-        /// The month when a professional experience ended.
+        /// The month when the professional experience ended.
         /// </summary>
         [JsonPropertyName("end_month")]
         public string EndMonth { get; set; }
 
         /// <summary>
-        /// The year when a professional experience ended.
+        /// The year when the professional experience ended.
         /// </summary>
         [JsonPropertyName("end_year")]
         public string EndYear { get; set; }
 
         /// <summary>
-        /// The position or job title held by the individual in their previous work experience.
+        /// The position or job title held by the candidate.
         /// </summary>
         [JsonPropertyName("role")]
         public string Role { get; set; }
 
         /// <summary>
-        /// The month when a professional experience began.
+        /// The month when the professional experience began.
         /// </summary>
         [JsonPropertyName("start_month")]
         public string StartMonth { get; set; }
 
         /// <summary>
-        /// The year when a professional experience began.
+        /// The year when the professional experience began.
         /// </summary>
         [JsonPropertyName("start_year")]
         public string StartYear { get; set; }
@@ -126,7 +126,7 @@ namespace Mindee.Product.Resume
     }
 
     /// <summary>
-    /// The list of values that represent the professional experiences of an individual in their global resume.
+    /// The list of the candidate's professional experiences.
     /// </summary>
     public class ResumeV1ProfessionalExperiences : List<ResumeV1ProfessionalExperience>
     {

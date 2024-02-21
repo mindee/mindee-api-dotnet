@@ -8,18 +8,18 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Resume
 {
     /// <summary>
-    /// The list of languages that a person is proficient in, as stated in their resume.
+    /// The list of languages that the candidate is proficient in.
     /// </summary>
     public sealed class ResumeV1Language : LineItemField
     {
         /// <summary>
-        /// The language ISO 639 code.
+        /// The language's ISO 639 code.
         /// </summary>
         [JsonPropertyName("language")]
         public string Language { get; set; }
 
         /// <summary>
-        /// The level for the language. Possible values: 'Fluent', 'Proficient', 'Intermediate' and 'Beginner'.
+        /// The candidate's level for the language.
         /// </summary>
         [JsonPropertyName("level")]
         public string Level { get; set; }
@@ -60,7 +60,7 @@ namespace Mindee.Product.Resume
     }
 
     /// <summary>
-    /// The list of languages that a person is proficient in, as stated in their resume.
+    /// The list of languages that the candidate is proficient in.
     /// </summary>
     public class ResumeV1Languages : List<ResumeV1Language>
     {

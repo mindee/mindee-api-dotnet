@@ -19,13 +19,13 @@ namespace Mindee.Product.Resume
         public string Grade { get; set; }
 
         /// <summary>
-        /// The name of certifications obtained by the individual.
+        /// The name of certification.
         /// </summary>
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// The organization or institution that issued the certificates listed in the document.
+        /// The organization or institution that issued the certificate.
         /// </summary>
         [JsonPropertyName("provider")]
         public string Provider { get; set; }

@@ -8,36 +8,36 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Resume
 {
     /// <summary>
-    /// The list of values that represent the educational background of an individual.
+    /// The list of the candidate's educational background.
     /// </summary>
     public sealed class ResumeV1Education : LineItemField
     {
         /// <summary>
-        /// The area of study or specialization pursued by an individual in their educational background.
+        /// The area of study or specialization.
         /// </summary>
         [JsonPropertyName("degree_domain")]
         public string DegreeDomain { get; set; }
 
         /// <summary>
-        /// The type of degree obtained by the individual, such as Bachelor's, Master's, or Doctorate.
+        /// The type of degree obtained, such as Bachelor's, Master's, or Doctorate.
         /// </summary>
         [JsonPropertyName("degree_type")]
         public string DegreeType { get; set; }
 
         /// <summary>
-        /// The month when the education program or course was completed or is expected to be completed.
+        /// The month when the education program or course was completed.
         /// </summary>
         [JsonPropertyName("end_month")]
         public string EndMonth { get; set; }
 
         /// <summary>
-        /// The year when the education program or course was completed or is expected to be completed.
+        /// The year when the education program or course was completed.
         /// </summary>
         [JsonPropertyName("end_year")]
         public string EndYear { get; set; }
 
         /// <summary>
-        /// The name of the school the individual went to.
+        /// The name of the school.
         /// </summary>
         [JsonPropertyName("school")]
         public string School { get; set; }
@@ -115,7 +115,7 @@ namespace Mindee.Product.Resume
     }
 
     /// <summary>
-    /// The list of values that represent the educational background of an individual.
+    /// The list of the candidate's educational background.
     /// </summary>
     public class ResumeV1Educations : List<ResumeV1Education>
     {

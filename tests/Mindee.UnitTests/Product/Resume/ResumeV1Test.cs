@@ -12,7 +12,7 @@ namespace Mindee.UnitTests.Product.Resume
             var response = await GetPrediction("empty");
             var docPrediction = response.Document.Inference.Prediction;
             Assert.Null(docPrediction.DocumentLanguage.Value);
-            Assert.Null(docPrediction.DocumentType.Value);
+            Assert.NotNull(docPrediction.DocumentType.Value);
             Assert.Empty(docPrediction.GivenNames);
             Assert.Empty(docPrediction.Surnames);
             Assert.Null(docPrediction.Nationality.Value);

@@ -8,18 +8,18 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Resume
 {
     /// <summary>
-    /// The list of URLs for social network profiles of the person.
+    /// The list of social network profiles of the candidate.
     /// </summary>
     public sealed class ResumeV1SocialNetworksUrl : LineItemField
     {
         /// <summary>
-        /// The name of of the social media concerned.
+        /// The name of the social network.
         /// </summary>
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// The URL of the profile for this particular social network.
+        /// The URL of the social network.
         /// </summary>
         [JsonPropertyName("url")]
         public string Url { get; set; }
@@ -60,7 +60,7 @@ namespace Mindee.Product.Resume
     }
 
     /// <summary>
-    /// The list of URLs for social network profiles of the person.
+    /// The list of social network profiles of the candidate.
     /// </summary>
     public class ResumeV1SocialNetworksUrls : List<ResumeV1SocialNetworksUrl>
     {
