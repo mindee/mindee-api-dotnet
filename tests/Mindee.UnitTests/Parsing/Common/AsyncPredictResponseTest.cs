@@ -18,10 +18,7 @@ namespace Mindee.UnitTests.Parsing.Common
             Assert.NotNull(response);
             Assert.Equal("failure", response.ApiRequest.Status);
             Assert.Equal(403, response.ApiRequest.StatusCode);
-            Assert.Null(response.Job.Status);
-            Assert.Equal("2023-01-01T00:00:00", response.Job.IssuedAt.ToString(DateTimeFormat));
-            Assert.Null(response.Job.AvailableAt);
-            Assert.Null(response.Document);
+            Assert.Null(response.Job);
         }
 
         [Fact]
@@ -53,6 +50,23 @@ namespace Mindee.UnitTests.Parsing.Common
             Assert.Equal("2023-03-21T13:53:00", response.Job.AvailableAt?.ToString(DateTimeFormat));
             Assert.NotNull(response.Document);
             Assert.Equal(2, response.Document.NPages);
+        }
+
+        [Fact]
+        public async Task WhenAsyncGet_ReturnsFailedJob_MustBeDeserialized()
+        {
+            var response = await JsonSerializer.DeserializeAsync<AsyncPredictResponse<InvoiceSplitterV1>>(
+                new FileInfo("Resources/async/get_failed_job_error.json").OpenRead());
+
+            Assert.NotNull(response);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal(200, response.ApiRequest.StatusCode);
+            Assert.Equal("failed", response.Job.Status);
+            Assert.Equal("2024-02-20T10:31:06", response.Job.IssuedAt.ToString(DateTimeFormat));
+            Assert.Equal("2024-02-20T10:31:06", response.Job.AvailableAt?.ToString(DateTimeFormat));
+            Assert.NotNull(response.Job.Error);
+            Assert.Equal("ServerError", response.Job.Error.Code);
+            Assert.Null(response.Document);
         }
     }
 }
