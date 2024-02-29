@@ -160,6 +160,18 @@ namespace Mindee.UnitTests.Http
         }
 
         [Fact]
+        public async Task DocumentQueueGetAsync_WithJobFailed()
+        {
+            var mindeeApi = InitMockServer(
+                HttpStatusCode.OK,
+                fileToLoad: "Resources/async/get_failed_job_error.json");
+
+            await Assert.ThrowsAsync<Mindee500Exception>(
+                () => mindeeApi.DocumentQueueGetAsync<InvoiceV4>("d88406ed-47bd-4db0-b3f3-145c8667a343")
+            );
+        }
+
+        [Fact]
         public async Task DocumentQueueGetAsync_WithSuccess()
         {
             var mockHttp = new MockHttpMessageHandler();

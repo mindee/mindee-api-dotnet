@@ -136,7 +136,12 @@ namespace Mindee.Http
                 var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
                 return ResponseHandler<AsyncPredictResponse<TModel>>(docResponse);
             }
-            return ResponseHandler<AsyncPredictResponse<TModel>>(queueResponse);
+            var handledResponse = ResponseHandler<AsyncPredictResponse<TModel>>(queueResponse);
+            if (handledResponse.Job?.Error?.Code != null)
+            {
+                throw new Mindee500Exception(handledResponse.Job.Error.Message);
+            }
+            return handledResponse;
         }
 
         private static CustomEndpoint GetEndpoint<TModel>()

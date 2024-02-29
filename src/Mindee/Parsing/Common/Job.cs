@@ -33,5 +33,11 @@ namespace Mindee.Parsing.Common
         /// </summary>
         [JsonPropertyName("status")]
         public string Status { get; set; }
+
+        /// <summary>
+        /// An error encountered while processing the job.
+        /// </summary>
+        [JsonPropertyName("error")]
+        public Error Error { get; set; }
     }
 }
