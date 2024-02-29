@@ -27,8 +27,8 @@ namespace Mindee.UnitTests.Product.Fr.IdCard
             Assert.Null(docPrediction.IssueDate.Value);
             Assert.Null(docPrediction.Authority.Value);
             var pagePrediction = response.Document.Inference.Pages.First().Prediction;
-            Assert.NotNull(pagePrediction.DocumentType.Value);
-            Assert.NotNull(pagePrediction.DocumentSide.Value);
+            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(pagePrediction.DocumentType);
+            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(pagePrediction.DocumentSide);
         }
 
         [Fact]
@@ -38,7 +38,6 @@ namespace Mindee.UnitTests.Product.Fr.IdCard
             var expected = File.ReadAllText("Resources/products/idcard_fr/response_v2/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
-
         [Fact]
         public async Task Predict_CheckPage0()
         {

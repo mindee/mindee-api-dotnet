@@ -42,7 +42,6 @@ namespace Mindee.UnitTests.Product.Us.DriverLicense
             var expected = File.ReadAllText("Resources/products/us_driver_license/response_v1/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
-
         [Fact]
         public async Task Predict_CheckPage0()
         {
