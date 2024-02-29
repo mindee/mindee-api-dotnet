@@ -22,7 +22,7 @@ namespace Mindee.IntegrationTests
             Assert.Null(response.Document.Ocr);
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
-            Assert.Null(response.Document.Inference.Pages.First().Extras.Cropper);
+            Assert.Null(response.Document.Inference.Pages.First().Extras);
             Assert.Equal(2, response.Document.Inference.Pages.Count);
         }
 
@@ -40,7 +40,7 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
             Assert.Single(response.Document.Inference.Pages);
-            Assert.Null(response.Document.Inference.Pages.First().Extras.Cropper);
+            Assert.Null(response.Document.Inference.Pages.First().Extras);
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
             Assert.Single(response.Document.Inference.Pages);
-            Assert.Null(response.Document.Inference.Pages.First().Extras.Cropper);
+            Assert.Null(response.Document.Inference.Pages.First().Extras);
         }
 
         [Fact]
@@ -106,7 +106,7 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
             Assert.Single(response.Document.Inference.Pages);
-            Assert.Null(response.Document.Inference.Pages.First().Extras.Cropper);
+            Assert.Null(response.Document.Inference.Pages.First().Extras);
         }
 
         [Fact]

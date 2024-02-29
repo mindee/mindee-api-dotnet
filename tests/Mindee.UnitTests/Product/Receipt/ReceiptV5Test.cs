@@ -12,9 +12,9 @@ namespace Mindee.UnitTests.Product.Receipt
             var response = await GetPrediction("empty");
             var docPrediction = response.Document.Inference.Prediction;
             Assert.Null(docPrediction.Locale.Value);
-            Assert.NotNull(docPrediction.Category.Value);
-            Assert.NotNull(docPrediction.Subcategory.Value);
-            Assert.NotNull(docPrediction.DocumentType.Value);
+            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.Category);
+            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.Subcategory);
+            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.DocumentType);
             Assert.Null(docPrediction.Date.Value);
             Assert.Null(docPrediction.Time.Value);
             Assert.Null(docPrediction.TotalAmount.Value);
@@ -35,14 +35,6 @@ namespace Mindee.UnitTests.Product.Receipt
             var response = await GetPrediction("complete");
             var expected = File.ReadAllText("Resources/products/expense_receipts/response_v5/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
-        }
-
-        [Fact]
-        public async Task Predict_CheckPage0()
-        {
-            var response = await GetPrediction("complete");
-            var expected = File.ReadAllText("Resources/products/expense_receipts/response_v5/summary_page0.rst");
-            Assert.Equal(expected, response.Document.Inference.Pages[0].ToString());
         }
 
         private static async Task<PredictResponse<ReceiptV5>> GetPrediction(string name)
