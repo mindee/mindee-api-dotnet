@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v3.10.0 - 2024-03-06
+### Changes
+* :sparkles: add support for error in job processing
+* :sparkles: add resume v1
+* :sparkles: add EU driver license v1
+* :sparkles: add International ID v2
+* :sparkles: add FR Carte Grise v1
+
+
 ## v3.9.0 - 2024-01-30
 ### Changes
 * :sparkles: add RawValue to string fields
