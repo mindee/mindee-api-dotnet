@@ -20,10 +20,6 @@ namespace Mindee.Product.Custom
         {
         }
 
-        private CustomV1Page(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-
         /// <summary>
         /// A prettier reprensentation.
         /// </summary>
