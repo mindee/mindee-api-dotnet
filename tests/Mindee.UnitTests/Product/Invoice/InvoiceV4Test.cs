@@ -27,6 +27,8 @@ namespace Mindee.UnitTests.Product.Invoice
             Assert.Null(docPrediction.CustomerName.Value);
             Assert.Empty(docPrediction.CustomerCompanyRegistrations);
             Assert.Null(docPrediction.CustomerAddress.Value);
+            Assert.Null(docPrediction.ShippingAddress.Value);
+            Assert.Null(docPrediction.BillingAddress.Value);
             Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.DocumentType);
             Assert.Empty(docPrediction.LineItems);
         }
