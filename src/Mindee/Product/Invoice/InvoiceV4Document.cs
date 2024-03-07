@@ -13,6 +13,12 @@ namespace Mindee.Product.Invoice
     public class InvoiceV4Document : IPrediction
     {
         /// <summary>
+        /// The customer's address used for billing.
+        /// </summary>
+        [JsonPropertyName("billing_address")]
+        public StringField BillingAddress { get; set; }
+
+        /// <summary>
         /// The address of the customer.
         /// </summary>
         [JsonPropertyName("customer_address")]
@@ -72,6 +78,12 @@ namespace Mindee.Product.Invoice
         /// </summary>
         [JsonPropertyName("reference_numbers")]
         public IList<StringField> ReferenceNumbers { get; set; } = new List<StringField>();
+
+        /// <summary>
+        /// Customer's delivery address.
+        /// </summary>
+        [JsonPropertyName("shipping_address")]
+        public StringField ShippingAddress { get; set; }
 
         /// <summary>
         /// The address of the supplier or merchant.
@@ -156,6 +168,8 @@ namespace Mindee.Product.Invoice
             result.Append($":Customer Name: {CustomerName}\n");
             result.Append($":Customer Company Registrations: {customerCompanyRegistrations}\n");
             result.Append($":Customer Address: {CustomerAddress}\n");
+            result.Append($":Shipping Address: {ShippingAddress}\n");
+            result.Append($":Billing Address: {BillingAddress}\n");
             result.Append($":Document Type: {DocumentType}\n");
             result.Append($":Line Items:{LineItems}");
             return SummaryHelper.Clean(result.ToString());
