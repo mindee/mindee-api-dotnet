@@ -9,6 +9,7 @@ using Mindee.Input;
 using Mindee.Parsing.Common;
 using Mindee.Pdf;
 using Mindee.Product.Custom;
+using Mindee.Product.Generated;
 
 namespace Mindee
 {
@@ -130,6 +131,74 @@ namespace Mindee
                 predictOptions = new PredictOptions();
             }
             return await _mindeeApi.PredictPostAsync<CustomV1>(
+                endpoint,
+                new PredictParameter(
+                    localSource: null,
+                    urlSource: inputSource,
+                    allWords: predictOptions.AllWords,
+                    cropper: predictOptions.Cropper));
+        }
+
+        /// <summary>
+        /// Call Generated prediction API on a local input source and parse the results.
+        /// </summary>
+        /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="pageOptions"><see cref="PageOptions"/></param>
+        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <returns><see cref="PredictResponse{GeneratedV1}"/></returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<PredictResponse<GeneratedV1>> ParseAsync<TInferenceModel>(
+            LocalInputSource inputSource
+            , CustomEndpoint endpoint
+            , PredictOptions predictOptions = null
+            , PageOptions pageOptions = null)
+            where TInferenceModel : GeneratedV1, new()
+        {
+            _logger?.LogInformation(message: "Synchronous parsing of {} ...", nameof(TInferenceModel));
+
+            if (predictOptions == null)
+            {
+                predictOptions = new PredictOptions();
+            }
+            if (pageOptions != null && inputSource.IsPdf())
+            {
+                inputSource.FileBytes = _pdfOperation.Split(
+                    new SplitQuery(inputSource.FileBytes, pageOptions)).File;
+            }
+
+            return await _mindeeApi.PredictPostAsync<GeneratedV1>(
+                endpoint,
+                new PredictParameter(
+                    localSource: inputSource,
+                    urlSource: null,
+                    allWords: predictOptions.AllWords,
+                    cropper: predictOptions.Cropper));
+        }
+
+        /// <summary>
+        /// Call Generated prediction API on a local input source and parse the results.
+        /// </summary>
+        /// <param name="inputSource"><see cref="UrlInputSource"/></param>
+        /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
+        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
+        /// The response object will be instantiated based on this parameter.</typeparam>
+        /// <returns><see cref="PredictResponse{TInferenceModel}"/></returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<PredictResponse<TInferenceModel>> ParseAsync<TInferenceModel>(
+            UrlInputSource inputSource
+            , CustomEndpoint endpoint
+            , PredictOptions predictOptions = null)
+            where TInferenceModel : GeneratedV1, new()
+        {
+            _logger?.LogInformation(message: "Synchronous parsing of {} ...", typeof(TInferenceModel).Name);
+
+            if (predictOptions == null)
+            {
+                predictOptions = new PredictOptions();
+            }
+            return await _mindeeApi.PredictPostAsync<TInferenceModel>(
                 endpoint,
                 new PredictParameter(
                     localSource: null,

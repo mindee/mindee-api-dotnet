@@ -96,15 +96,7 @@ namespace Mindee.Geometry
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("[\n");
-            for (int i = 0; i < this.Count; i++)
-            {
-                result.Append($"  {this[i]}");
-                if (i >= this.Count - 1) result.Append('\n');
-                else result.Append(",\n");
-            }
-            result.Append(']');
-            return result.ToString();
+            return $"Polygon with {this.Count} points.";
         }
     }
 }

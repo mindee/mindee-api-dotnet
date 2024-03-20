@@ -58,15 +58,17 @@ namespace Mindee.Http
             _httpClient.AddDefaultHeaders(_defaultHeaders);
         }
 
-        public Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(PredictParameter predictParameter)
+        public Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(
+            PredictParameter predictParameter
+            )
             where TModel : class, new()
         {
-            return PredictAsyncPostAsync<TModel>(predictParameter, GetEndpoint<TModel>());
+            return PredictAsyncPostAsync<TModel>(GetEndpoint<TModel>(), predictParameter);
         }
 
-        private async Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(
-            PredictParameter predictParameter,
-            CustomEndpoint endpoint
+        public async Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(
+            CustomEndpoint endpoint,
+            PredictParameter predictParameter
             )
             where TModel : class, new()
         {
