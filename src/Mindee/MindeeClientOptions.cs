@@ -70,7 +70,7 @@ namespace Mindee
         /// <param name="initialDelaySec"><see cref="InitialDelaySec"/></param>
         /// <param name="intervalSec"><see cref="IntervalSec"/></param>
         /// <param name="maxRetries"><see cref="MaxRetries"/></param>
-        public AsyncPollingOptions(double initialDelaySec = 4.0, double intervalSec = 1.5, int maxRetries = 60)
+        public AsyncPollingOptions(double initialDelaySec = 4.0, double intervalSec = 2, int maxRetries = 30)
         {
             double minInitialDelaySec = 2.0;
             double minIntervalSec = 1.0;
