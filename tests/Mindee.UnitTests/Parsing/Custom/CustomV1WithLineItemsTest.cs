@@ -21,8 +21,8 @@ namespace Mindee.UnitTests.Parsing.Custom
             };
 
             var response = await mindeeAPi.PredictPostAsync<CustomV1>(
-                new CustomEndpoint("customProduct", "fakeOrg"),
-                UnitTestBase.GetFakePredictParameter());
+                UnitTestBase.GetFakePredictParameter(),
+                new CustomEndpoint("customProduct", "fakeOrg"));
 
             var lineItems = LineItemsGenerator.Generate(
                 new Anchor("beneficiary_name", 0.011d),
@@ -67,8 +67,8 @@ namespace Mindee.UnitTests.Parsing.Custom
             });
 
             var response = await mindeeAPi.PredictPostAsync<CustomV1>(
-                new CustomEndpoint("customProduct", "fakeOrg"),
-                UnitTestBase.GetFakePredictParameter());
+                UnitTestBase.GetFakePredictParameter()
+                , new CustomEndpoint("customProduct", "fakeOrg"));
 
             var earningsTable = LineItemsGenerator.Generate(
                 earningsAnchor,
@@ -115,8 +115,8 @@ namespace Mindee.UnitTests.Parsing.Custom
             });
 
             var response = await mindeeAPi.PredictPostAsync<CustomV1>(
-                new CustomEndpoint("customProduct", "fakeOrg"),
-                UnitTestBase.GetFakePredictParameter());
+                UnitTestBase.GetFakePredictParameter()
+                , new CustomEndpoint("customProduct", "fakeOrg"));
 
             var earningsTable = LineItemsGenerator.Generate(
                 earningsAnchor,

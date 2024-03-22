@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Mindee.Exceptions;
 using Mindee.Parsing.Standard;
 
@@ -82,6 +83,25 @@ namespace Mindee.Parsing.Generated
             if (this.IsList)
                 throw new MindeeException("Cannot convert a list feature into a ClassificationField.");
             return this.First().AsClassificationField();
+        }
+
+        /// <summary>
+        /// A prettier representation of the feature values.
+        /// </summary>
+        public override string ToString()
+        {
+            StringBuilder result = new StringBuilder();
+
+            if (IsList)
+                for (var i = 0; i < this.Count; i++)
+                    if (i == 0)
+                        result.Append($"\n  * {this[i]}\n");
+                    else
+                        result.Append($"\n{this[i].ToString(4)}\n");
+            else
+                result.Append($"\n{this.First().ToString(2)}");
+
+            return result.ToString();
         }
     }
 }

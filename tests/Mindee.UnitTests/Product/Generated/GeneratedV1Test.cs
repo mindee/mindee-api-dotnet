@@ -157,8 +157,8 @@ namespace Mindee.UnitTests.Product.Generated
             string fileName = $"Resources/products/generated/response_v1/{name}_international_id_v1.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictAsyncPostAsync<GeneratedV1>(
-                new CustomEndpoint("international_id", "mindee", "1"),
-                UnitTestBase.GetFakePredictParameter());
+                UnitTestBase.GetFakePredictParameter()
+                , new CustomEndpoint("international_id", "mindee", "2"));
         }
 
         private static Task<PredictResponse<GeneratedV1>> GetSyncPrediction(string name)
@@ -166,8 +166,8 @@ namespace Mindee.UnitTests.Product.Generated
             string fileName = $"Resources/products/generated/response_v1/{name}_invoice_v4.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return mindeeAPi.PredictPostAsync<GeneratedV1>(
-                new CustomEndpoint("invoice", "mindee", "4"),
-                UnitTestBase.GetFakePredictParameter());
+                UnitTestBase.GetFakePredictParameter()
+                , new CustomEndpoint("invoice", "mindee", "4"));
         }
     }
 }

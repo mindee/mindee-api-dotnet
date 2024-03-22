@@ -42,7 +42,8 @@ namespace Mindee.UnitTests.Http
                 fileToLoad: "Resources/errors/error_401_invalid_token.json");
 
             await Assert.ThrowsAsync<Mindee400Exception>(
-               () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(UnitTestBase.GetFakePredictParameter()));
+               () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(
+                   UnitTestBase.GetFakePredictParameter()));
         }
 
         [Fact]
@@ -51,7 +52,8 @@ namespace Mindee.UnitTests.Http
             var responsePath = "Resources/products/invoices/response_v4/complete.json";
             var mindeeApi = InitMockServer(HttpStatusCode.OK, responsePath);
 
-            var response = await mindeeApi.PredictPostAsync<InvoiceV4>(UnitTestBase.GetFakePredictParameter());
+            var response = await mindeeApi.PredictPostAsync<InvoiceV4>(
+                UnitTestBase.GetFakePredictParameter());
             var expectedParse = File.ReadAllText("Resources/products/invoices/response_v4/summary_full.rst");
             var expectedJson = File.ReadAllText(responsePath);
 
@@ -132,7 +134,8 @@ namespace Mindee.UnitTests.Http
                 HttpStatusCode.OK,
                 fileToLoad: "Resources/async/post_success.json");
 
-            var response = await mindeeApi.PredictAsyncPostAsync<InvoiceV4>(UnitTestBase.GetFakePredictParameter());
+            var response = await mindeeApi.PredictAsyncPostAsync<InvoiceV4>(
+                UnitTestBase.GetFakePredictParameter());
 
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);

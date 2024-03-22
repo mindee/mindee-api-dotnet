@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using System.Text.Json;
 using Mindee.Geometry;
 using Mindee.Parsing.Standard;
@@ -159,6 +160,28 @@ namespace Mindee.Parsing.Generated
                 points.Add(point);
             }
             return new Polygon(points);
+        }
+
+        /// <summary>
+        /// A prettier representation of the feature values.
+        /// </summary>
+        public override string ToString()
+        {
+            return ToString(0);
+        }
+
+        /// <summary>
+        /// A prettier representation of the feature values, with offset.
+        /// </summary>
+        public string ToString(int offset)
+        {
+            var padding = new string(' ', offset);
+            StringBuilder result = new StringBuilder();
+
+            foreach (KeyValuePair<string, JsonElement> field in this)
+                result.Append($"{padding}:{field.Key}: {field.Value}\n");
+
+            return result.ToString();
         }
     }
 }

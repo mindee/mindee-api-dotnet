@@ -114,8 +114,8 @@ namespace Mindee.UnitTests.Product.Custom
             string fileName = $"Resources/products/custom/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<CustomV1>(
-                new CustomEndpoint("customProduct", "fakeOrga"),
-                UnitTestBase.GetFakePredictParameter());
+                UnitTestBase.GetFakePredictParameter()
+                , new CustomEndpoint("customProduct", "fakeOrga"));
         }
     }
 }
