@@ -185,8 +185,9 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task ParseQueued_Standard_InvalidJob_MustFail()
         {
+            var jobId = RandomString(15);
             await Assert.ThrowsAsync<Mindee404Exception>(
-                () => _mindeeClient.ParseQueuedAsync<InvoiceSplitterV1>("bad-job-id"));
+                () => _mindeeClient.ParseQueuedAsync<InvoiceSplitterV1>(jobId));
         }
 
         [Fact]
@@ -223,9 +224,18 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task ParseQueued_Generated_InvalidJob_MustFail()
         {
+            var jobId = RandomString(15);
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
             await Assert.ThrowsAsync<Mindee404Exception>(
-                () => _mindeeClient.ParseQueuedAsync<GeneratedV1>(endpoint, "bad-job-id"));
+                () => _mindeeClient.ParseQueuedAsync<GeneratedV1>(endpoint, jobId));
+        }
+
+        private static string RandomString(int length)
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }
