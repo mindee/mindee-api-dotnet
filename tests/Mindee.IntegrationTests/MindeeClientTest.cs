@@ -1,5 +1,7 @@
 using Mindee.Exceptions;
+using Mindee.Http;
 using Mindee.Input;
+using Mindee.Product.Generated;
 using Mindee.Product.Invoice;
 using Mindee.Product.InvoiceSplitter;
 using Mindee.Product.Receipt;
@@ -9,13 +11,19 @@ namespace Mindee.IntegrationTests
     [Trait("Category", "Integration tests")]
     public class MindeeClientTest
     {
-        [Fact]
-        public async Task Parse_File_MultiplePages_MustSucceed()
+        private MindeeClient _mindeeClient;
+
+        public MindeeClientTest()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = new MindeeClient(apiKey);
+            _mindeeClient = new MindeeClient(apiKey);
+        }
+
+        [Fact]
+        public async Task Parse_File_Standard_MultiplePages_MustSucceed()
+        {
             var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
-            var response = await mindeeClient.ParseAsync<InvoiceV4>(inputSource);
+            var response = await _mindeeClient.ParseAsync<InvoiceV4>(inputSource);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
@@ -27,12 +35,10 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Parse_File_SinglePage_MustSucceed()
+        public async Task Parse_File_Standard_SinglePage_MustSucceed()
         {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/file_types/receipt.jpg");
-            var response = await mindeeClient.ParseAsync<ReceiptV5>(inputSource);
+            var response = await _mindeeClient.ParseAsync<ReceiptV5>(inputSource);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
@@ -44,12 +50,10 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Parse_Url_SinglePage_MustSucceed()
+        public async Task Parse_Url_Standard_SinglePage_MustSucceed()
         {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new UrlInputSource("https://raw.githubusercontent.com/mindee/client-lib-test-data/main/products/expense_receipts/default_sample.jpg");
-            var response = await mindeeClient.ParseAsync<ReceiptV5>(inputSource);
+            var response = await _mindeeClient.ParseAsync<ReceiptV5>(inputSource);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
@@ -61,23 +65,19 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Parse_Url_InvalidUrl_MustFail()
+        public async Task Parse_Url_Standard_InvalidUrl_MustFail()
         {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new UrlInputSource("https://bad-domain.test/invalid-file.ext");
             await Assert.ThrowsAsync<Mindee400Exception>(
-                () => mindeeClient.ParseAsync<ReceiptV5>(inputSource));
+                () => _mindeeClient.ParseAsync<ReceiptV5>(inputSource));
         }
 
         [Fact]
         public async Task Parse_File_Cropper_MustSucceed()
         {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/file_types/receipt.jpg");
             var predictOptions = new PredictOptions(cropper: true);
-            var response = await mindeeClient.ParseAsync<ReceiptV5>(inputSource, predictOptions);
+            var response = await _mindeeClient.ParseAsync<ReceiptV5>(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
@@ -90,13 +90,11 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Parse_File_AllWords_MustSucceed()
+        public async Task Parse_File_Standard_AllWords_MustSucceed()
         {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/file_types/receipt.jpg");
             var predictOptions = new PredictOptions(allWords: true);
-            var response = await mindeeClient.ParseAsync<InvoiceV4>(inputSource, predictOptions);
+            var response = await _mindeeClient.ParseAsync<InvoiceV4>(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
@@ -110,13 +108,11 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Parse_File_AllWords_And_Cropper_MustSucceed()
+        public async Task Parse_File_Standard_AllWords_And_Cropper_MustSucceed()
         {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/file_types/receipt.jpg");
             var predictOptions = new PredictOptions(allWords: true, cropper: true);
-            var response = await mindeeClient.ParseAsync<InvoiceV4>(
+            var response = await _mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
@@ -132,22 +128,18 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Enqueue_File_SyncOnly_Async_MustFail()
+        public async Task Enqueue_File_Standard_SyncOnly_Async_MustFail()
         {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/products/passport/default_sample.jpg");
             await Assert.ThrowsAsync<Mindee403Exception>(
-                () => mindeeClient.EnqueueAsync<InvoiceV4>(inputSource));
+                () => _mindeeClient.EnqueueAsync<InvoiceV4>(inputSource));
         }
 
         [Fact]
-        public async Task Enqueue_File_AsyncOnly_Async_MustSucceed()
+        public async Task Enqueue_File_Standard_AsyncOnly_Async_MustSucceed()
         {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
-            var response = await mindeeClient.EnqueueAsync<InvoiceSplitterV1>(inputSource);
+            var response = await _mindeeClient.EnqueueAsync<InvoiceSplitterV1>(inputSource);
 
             Assert.NotNull(response);
             Assert.NotNull(response.ApiRequest);
@@ -162,22 +154,18 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Enqueue_File_AsyncOnly_Sync_MustFail()
+        public async Task Enqueue_File_Standard_AsyncOnly_Sync_MustFail()
         {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
             await Assert.ThrowsAsync<Mindee403Exception>(
-                () => mindeeClient.ParseAsync<InvoiceSplitterV1>(inputSource));
+                () => _mindeeClient.ParseAsync<InvoiceSplitterV1>(inputSource));
         }
 
         [Fact]
-        public async Task EnqueueAndParse_File_AsyncOnly_Async_MustSucceed()
+        public async Task EnqueueAndParse_File_Standard_AsyncOnly_Async_MustSucceed()
         {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = new MindeeClient(apiKey);
             var inputSource = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
-            var response = await mindeeClient.EnqueueAndParseAsync<InvoiceSplitterV1>(inputSource);
+            var response = await _mindeeClient.EnqueueAndParseAsync<InvoiceSplitterV1>(inputSource);
 
             Assert.NotNull(response);
             Assert.NotNull(response.ApiRequest);
@@ -195,12 +183,49 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task ParseQueued_File_InvalidJob_MustFail()
+        public async Task ParseQueued_Standard_InvalidJob_MustFail()
         {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var mindeeClient = new MindeeClient(apiKey);
             await Assert.ThrowsAsync<Mindee404Exception>(
-                () => mindeeClient.ParseQueuedAsync<InvoiceSplitterV1>("bad-job-id"));
+                () => _mindeeClient.ParseQueuedAsync<InvoiceSplitterV1>("bad-job-id"));
+        }
+
+        [Fact]
+        public async Task Enqueue_File_Generated_AsyncOnly_Sync_MustFail()
+        {
+            var endpoint = new CustomEndpoint("international_id", "mindee", "2");
+            var inputSource = new LocalInputSource("Resources/products/international_id/default_sample.jpg");
+            await Assert.ThrowsAsync<Mindee403Exception>(
+                () => _mindeeClient.ParseAsync<GeneratedV1>(inputSource, endpoint));
+        }
+
+        [Fact]
+        public async Task EnqueueAndParse_File_Generated_AsyncOnly_Async_MustSucceed()
+        {
+            var endpoint = new CustomEndpoint("international_id", "mindee", "2");
+            var inputSource = new LocalInputSource("Resources/products/international_id/default_sample.jpg");
+            var response = await _mindeeClient.EnqueueAndParseAsync<GeneratedV1>(inputSource, endpoint);
+
+            Assert.NotNull(response);
+            Assert.NotNull(response.ApiRequest);
+            Assert.Contains("/v1/products/mindee/international_id/v2/documents/", response.ApiRequest.Url);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal(200, response.ApiRequest.StatusCode);
+
+            Assert.NotNull(response.Job);
+            Assert.Equal("completed", response.Job.Status);
+            Assert.NotNull(response.Job.IssuedAt.ToString("yyyy"));
+            Assert.NotNull(response.Job.AvailableAt?.ToString("yyyy"));
+
+            Assert.NotNull(response.Document);
+            Assert.NotNull(response.Document.Inference.Prediction.Fields);
+        }
+
+        [Fact]
+        public async Task ParseQueued_Generated_InvalidJob_MustFail()
+        {
+            var endpoint = new CustomEndpoint("international_id", "mindee", "2");
+            await Assert.ThrowsAsync<Mindee404Exception>(
+                () => _mindeeClient.ParseQueuedAsync<GeneratedV1>(endpoint, "bad-job-id"));
         }
     }
 }

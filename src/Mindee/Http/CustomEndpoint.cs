@@ -1,3 +1,5 @@
+using System;
+
 namespace Mindee.Http
 {
     /// <summary>
@@ -22,7 +24,7 @@ namespace Mindee.Http
         public string AccountName { get; }
 
         /// <summary>
-        ///
+        /// Default constructor.
         /// </summary>
         /// <param name="endpointName">The name of the product associated to the expected model.</param>
         /// <param name="accountName">The name of the account which owns the API. Useful when using custom builder.</param>
@@ -35,6 +37,40 @@ namespace Mindee.Http
             EndpointName = endpointName;
             AccountName = accountName;
             Version = version;
+        }
+
+        /// <summary>
+        /// Get the base URL for the endpoint.
+        /// </summary>
+        /// <returns></returns>
+        public string GetBaseUrl()
+        {
+            return $"{AccountName}/{EndpointName}/v{Version}";
+        }
+
+        /// <summary>
+        /// Get an endpoint for a given prediction model.
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="NotSupportedException"></exception>
+        public static CustomEndpoint GetEndpoint<TModel>()
+        {
+            if (!Attribute.IsDefined(typeof(TModel), typeof(EndpointAttribute)))
+            {
+                throw new NotSupportedException(
+                    $"The type {typeof(TModel)} is not supported as a prediction model. " +
+                    "The endpoint attribute is missing. " +
+                    "Please refer to the documentation or contact support.");
+            }
+
+            EndpointAttribute endpointAttribute = (EndpointAttribute)Attribute.GetCustomAttribute(
+                element: typeof(TModel), typeof(EndpointAttribute));
+
+            return new CustomEndpoint(
+                endpointAttribute.EndpointName,
+                endpointAttribute.AccountName,
+                endpointAttribute.Version);
         }
     }
 }

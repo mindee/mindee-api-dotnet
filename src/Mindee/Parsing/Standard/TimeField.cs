@@ -16,7 +16,7 @@ namespace Mindee.Parsing.Standard
         /// <param name="pageId"><see cref="BaseField.PageId"/></param>
         public TimeField(
             string value,
-            double confidence,
+            double? confidence,
             Polygon polygon,
             int? pageId = null) : base(value, null, confidence, polygon, pageId)
         {

@@ -1,7 +1,6 @@
 using Mindee;
 using Mindee.Input;
 using Mindee.Http;
-using Mindee.Parsing;
 using Mindee.Product.Generated;
 
 string apiKey = "my-api-key";
@@ -21,12 +20,12 @@ CustomEndpoint endpoint = new CustomEndpoint(
     version: "my-version"
 );
 
-// Call the API and parse the input
+// Call the product asynchronously with auto-polling
 var response = await mindeeClient
-    .ParseAsync<GeneratedV1>(inputSource, endpoint);
+    .EnqueueAndParseAsync<GeneratedV1>(inputSource, endpoint);
 
-// Print a summary of the predictions
+// Print a summary of all the predictions
 System.Console.WriteLine(response.Document.ToString());
 
-// Print the document-level predictions
+// Print only the document-level predictions
 // System.Console.WriteLine(response.Document.Inference.Prediction.ToString());

@@ -58,21 +58,18 @@ namespace Mindee.Http
             _httpClient.AddDefaultHeaders(_defaultHeaders);
         }
 
-        public Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(PredictParameter predictParameter)
-            where TModel : class, new()
-        {
-            return PredictAsyncPostAsync<TModel>(predictParameter, GetEndpoint<TModel>());
-        }
-
-        private async Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(
-            PredictParameter predictParameter,
-            CustomEndpoint endpoint
+        public async Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(
+            PredictParameter predictParameter
+            , CustomEndpoint endpoint = null
             )
             where TModel : class, new()
         {
-            var request = new RestRequest("v1/products/" +
-                $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
-                "predict_async", Method.Post);
+            if (endpoint is null)
+                endpoint = CustomEndpoint.GetEndpoint<TModel>();
+
+            var request = new RestRequest(
+                $"v1/products/{endpoint.GetBaseUrl()}/predict_async"
+                , Method.Post);
 
             AddPredictRequestParameters(predictParameter, request);
 
@@ -82,20 +79,17 @@ namespace Mindee.Http
             return ResponseHandler<AsyncPredictResponse<TModel>>(response);
         }
 
-        public Task<PredictResponse<TModel>> PredictPostAsync<TModel>(PredictParameter predictParameter)
-            where TModel : class, new()
-        {
-            return PredictPostAsync<TModel>(GetEndpoint<TModel>(), predictParameter);
-        }
-
         public async Task<PredictResponse<TModel>> PredictPostAsync<TModel>(
-                    CustomEndpoint endpoint,
-                    PredictParameter predictParameter)
+            PredictParameter predictParameter
+            , CustomEndpoint endpoint = null)
             where TModel : class, new()
         {
-            var request = new RestRequest("v1/products/" +
-                $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
-                "predict", Method.Post);
+            if (endpoint is null)
+                endpoint = CustomEndpoint.GetEndpoint<TModel>();
+
+            var request = new RestRequest(
+                $"v1/products/{endpoint.GetBaseUrl()}/predict"
+                , Method.Post);
 
             AddPredictRequestParameters(predictParameter, request);
 
@@ -105,20 +99,16 @@ namespace Mindee.Http
             return ResponseHandler<PredictResponse<TModel>>(response);
         }
 
-        public Task<AsyncPredictResponse<TModel>> DocumentQueueGetAsync<TModel>(string jobId)
+        public async Task<AsyncPredictResponse<TModel>> DocumentQueueGetAsync<TModel>(
+            string jobId
+            , CustomEndpoint endpoint = null)
             where TModel : class, new()
         {
-            return DocumentQueueGetAsync<TModel>(jobId, GetEndpoint<TModel>());
-        }
+            if (endpoint is null)
+                endpoint = CustomEndpoint.GetEndpoint<TModel>();
 
-        private async Task<AsyncPredictResponse<TModel>> DocumentQueueGetAsync<TModel>(
-            string jobId,
-            CustomEndpoint endpoint)
-            where TModel : class, new()
-        {
-            var queueRequest = new RestRequest($"v1/products/" +
-                $"{endpoint.AccountName}/{endpoint.EndpointName}/v{endpoint.Version}/" +
-                $"documents/queue/{jobId}");
+            var queueRequest = new RestRequest(
+                $"v1/products/{endpoint.GetBaseUrl()}/documents/queue/{jobId}");
 
             _logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource} ...");
 
@@ -142,21 +132,6 @@ namespace Mindee.Http
                 throw new Mindee500Exception(handledResponse.Job.Error.Message);
             }
             return handledResponse;
-        }
-
-        private static CustomEndpoint GetEndpoint<TModel>()
-        {
-            if (!Attribute.IsDefined(typeof(TModel), typeof(EndpointAttribute)))
-            {
-                throw new NotSupportedException($"The type {typeof(TModel)} is not supported as a prediction model. " +
-                    "The endpoint attribute is missing. " +
-                    "Please refer to the document or contact the support.");
-            }
-
-            EndpointAttribute endpointAttribute = (EndpointAttribute)Attribute.GetCustomAttribute(
-                element: typeof(TModel), typeof(EndpointAttribute));
-
-            return new CustomEndpoint(endpointAttribute.EndpointName, endpointAttribute.AccountName, endpointAttribute.Version);
         }
 
         private static void AddPredictRequestParameters(PredictParameter predictParameter, RestRequest request)

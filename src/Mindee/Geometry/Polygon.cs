@@ -20,9 +20,8 @@ namespace Mindee.Geometry
             foreach (var point in coordinates)
             {
                 if (point.Count != 2)
-                {
                     throw new InvalidOperationException("A point must have 2 coordinates.");
-                }
+
                 Add(new Point(point.First(), point.Last()));
             }
         }
@@ -96,15 +95,9 @@ namespace Mindee.Geometry
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder("[\n");
-            for (int i = 0; i < this.Count; i++)
-            {
-                result.Append($"  {this[i]}");
-                if (i >= this.Count - 1) result.Append('\n');
-                else result.Append(",\n");
-            }
-            result.Append(']');
-            return result.ToString();
+            if (this.Count > 0)
+                return $"Polygon with {this.Count} points.";
+            return "";
         }
     }
 }

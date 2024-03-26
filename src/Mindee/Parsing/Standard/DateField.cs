@@ -17,7 +17,7 @@ namespace Mindee.Parsing.Standard
         private readonly ILogger _logger;
 
         /// <summary>
-        ///
+        /// Default constructor.
         /// </summary>
         /// <param name="value"><see cref="StringField.Value"/></param>
         /// <param name="confidence"><see cref="BaseField.Confidence"/></param>
@@ -25,7 +25,7 @@ namespace Mindee.Parsing.Standard
         /// <param name="pageId"><see cref="BaseField.PageId"/></param>
         public DateField(
             string value,
-            double confidence,
+            double? confidence,
             Polygon polygon,
             int? pageId = null) : base(value, null, confidence, polygon, pageId)
         {

@@ -55,15 +55,25 @@ namespace Mindee
         public int MaxRetries { get; }
 
         /// <summary>
+        /// Wait this many milliseconds between each polling attempt.
+        /// </summary>
+        public int InitialDelayMilliSec { get; }
+
+        /// <summary>
+        /// Wait this many milliseconds before the first polling attempt.
+        /// </summary>
+        public int IntervalMilliSec { get; }
+
+        /// <summary>
         /// Options to pass for asynchronous parsing with polling.
         /// </summary>
         /// <param name="initialDelaySec"><see cref="InitialDelaySec"/></param>
         /// <param name="intervalSec"><see cref="IntervalSec"/></param>
         /// <param name="maxRetries"><see cref="MaxRetries"/></param>
-        public AsyncPollingOptions(double initialDelaySec = 4.0, double intervalSec = 2.0, int maxRetries = 30)
+        public AsyncPollingOptions(double initialDelaySec = 4.0, double intervalSec = 2, int maxRetries = 30)
         {
-            double minInitialDelaySec = 2;
-            double minIntervalSec = 1;
+            double minInitialDelaySec = 2.0;
+            double minIntervalSec = 1.0;
             int minRetries = 2;
             if (initialDelaySec < minInitialDelaySec)
             {
@@ -80,6 +90,8 @@ namespace Mindee
             InitialDelaySec = initialDelaySec;
             IntervalSec = intervalSec;
             MaxRetries = maxRetries;
+            InitialDelayMilliSec = (int)Math.Floor(InitialDelaySec * 1000);
+            IntervalMilliSec = (int)Math.Floor(IntervalSec * 1000);
         }
     }
 }

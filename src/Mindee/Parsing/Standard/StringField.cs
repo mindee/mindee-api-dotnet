@@ -32,7 +32,7 @@ namespace Mindee.Parsing.Standard
         public StringField(
             string value,
             string rawValue,
-            double confidence,
+            double? confidence,
             Polygon polygon,
             int? pageId = null) : base(confidence, polygon, pageId)
         {

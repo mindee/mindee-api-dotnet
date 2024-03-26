@@ -31,6 +31,13 @@ do
     sed -i "s/my-version/1/" $OUTPUT_FILE
   fi
 
+  if echo "${f}" | grep -q "default_async.txt"
+  then
+    sed -i "s/my-account/mindee/" $OUTPUT_FILE
+    sed -i "s/my-endpoint/invoice_splitter/" $OUTPUT_FILE
+    sed -i "s/my-version/1/" $OUTPUT_FILE
+  fi
+
   sed -i "s/my-api-key/$API_KEY/" $OUTPUT_FILE
   sed -i "s/\/path\/to\/the\/file.ext/tests\/resources\/file_types\/pdf\/blank_1.pdf/" $OUTPUT_FILE
 

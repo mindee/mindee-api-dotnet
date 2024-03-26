@@ -14,6 +14,15 @@ namespace Mindee.Parsing.Standard
         public string Value { get; set; }
 
         /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="value"></param>
+        public ClassificationField(string value)
+        {
+            Value = value;
+        }
+
+        /// <summary>
         /// A prettier representation.
         /// </summary>
         public override string ToString()
