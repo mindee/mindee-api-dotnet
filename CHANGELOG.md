@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v3.11.0 - 2024-03-26
+### Changes
+* :white_check_mark: compatibility with .NET 8.0
+* :sparkles: update Invoice to v4.5
+* :sparkles: add support for generated documents
+
+
 ## v3.10.0 - 2024-03-06
 ### Changes
 * :sparkles: add support for error in job processing
