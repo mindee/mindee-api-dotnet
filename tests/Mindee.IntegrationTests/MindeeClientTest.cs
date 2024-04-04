@@ -165,7 +165,9 @@ namespace Mindee.IntegrationTests
         public async Task EnqueueAndParse_File_Standard_AsyncOnly_Async_MustSucceed()
         {
             var inputSource = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
-            var response = await _mindeeClient.EnqueueAndParseAsync<InvoiceSplitterV1>(inputSource);
+            var pollingOptions = new AsyncPollingOptions(maxRetries: 40);
+            var response = await _mindeeClient.EnqueueAndParseAsync<InvoiceSplitterV1>(
+                inputSource, pollingOptions: pollingOptions);
 
             Assert.NotNull(response);
             Assert.NotNull(response.ApiRequest);
