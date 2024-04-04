@@ -101,51 +101,51 @@ static CommandLineBuilder BuildCommandLine()
     var root = new RootCommand();
     root.AddCommand(new PredictCustomCommand());
     root.AddCommand(new PredictInvoiceCommand(new CommandOptions(
-        name: "invoice", description: "Invoice V4",
+        name: "invoice", description: "Invoice",
         allWords: true, sync: true, async: false
         )));
     root.AddCommand(new PredictFinancialDocumentCommand(new CommandOptions(
-        name: "financial-document", description: "Financial Document V1",
+        name: "financial-document", description: "Financial Document",
         allWords: true, sync: true, async: false
         )));
     root.AddCommand(new PredictReceiptCommand(new CommandOptions(
-        name: "receipt", description: "Receipt V5",
+        name: "receipt", description: "Receipt",
         allWords: true, sync: true, async: false
         )));
     root.AddCommand(new PredictPassportCommand(new CommandOptions(
-        name: "passport", description: "Passport V1",
+        name: "passport", description: "Passport",
         allWords: false, sync: true, async: false
         )));
     root.AddCommand(new PredictInternationalIdCommand(new CommandOptions(
-        name: "international-id", description: "International ID V1",
+        name: "international-id", description: "International ID",
         allWords: false, sync: false, async: true
         )));
     root.AddCommand(new PredictProofOfAddressCommand(new CommandOptions(
-        name: "proof-of-address", description: "Proof Of Address V1",
+        name: "proof-of-address", description: "Proof Of Address",
         allWords: true, sync: true, async: false
         )));
     root.AddCommand(new PredictCropperCommand(new CommandOptions(
-        name: "cropper", description: "Cropper V1",
+        name: "cropper", description: "Cropper",
         allWords: false, sync: true, async: false
         )));
     root.AddCommand(new PredictInvoiceSplitterCommand(new CommandOptions(
-        name: "invoice-splitter", description: "Invoice Splitter V1",
+        name: "invoice-splitter", description: "Invoice Splitter",
         allWords: false, sync: false, async: true
         )));
     root.AddCommand(new PredictFrIdCardCommand(new CommandOptions(
-        name: "fr-id-card", description: "FR ID Card V1",
+        name: "fr-id-card", description: "FR ID Card",
         allWords: false, sync: true, async: false
         )));
     root.AddCommand(new PredictUsBankCheckCommand(new CommandOptions(
-        name: "us-bank-check", description: "US Bank Check V1",
+        name: "us-bank-check", description: "US Bank Check",
         allWords: false, sync: true, async: false
         )));
     root.AddCommand(new PredictUsBankCheckCommand(new CommandOptions(
-        name: "us-driver-license", description: "US Driver License V1",
+        name: "us-driver-license", description: "US Driver License",
         allWords: false, sync: true, async: false
         )));
     root.AddCommand(new PredictUsPayrollCheckRegisterCommand(new CommandOptions(
-        name: "us-payroll-check-register", description: "US Payroll Check Register V1",
+        name: "us-payroll-check-register", description: "US Payroll Check Register",
         allWords: false, sync: false, async: true
         )));
 

@@ -157,7 +157,9 @@ namespace Mindee.Cli
             {
                 var response = await _mindeeClient.EnqueueAndParseAsync<TInferenceModel>(
                     new LocalInputSource(options.Path),
-                    new PredictOptions(allWords: AllWords));
+                    new PredictOptions(allWords: AllWords),
+                    null,
+                    new AsyncPollingOptions(maxRetries: 60));
 
                 if (options.Output == OutputType.Summary)
                 {
