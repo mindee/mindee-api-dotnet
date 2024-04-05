@@ -28,7 +28,7 @@ namespace Mindee.Geometry
         /// </summary>
         public override void Write(Utf8JsonWriter writer, Polygon value, JsonSerializerOptions options)
         {
-            throw new NotSupportedException();
+            writer.WriteStringValue(value.ToJsonString());
         }
     }
 }

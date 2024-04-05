@@ -99,5 +99,14 @@ namespace Mindee.Geometry
                 return $"Polygon with {this.Count} points.";
             return "";
         }
+
+        /// <summary>
+        /// A string representation suitable for outputting to JSON.
+        /// </summary>
+        /// <returns></returns>
+        public string ToJsonString()
+        {
+            return "[" + String.Join(", ", this) + "]";
+        }
     }
 }
