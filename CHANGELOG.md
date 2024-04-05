@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v3.11.1 - 2024-04-05
+### Changes
+* :zap: increase max retries in CLI to 60
+
+### Fixes
+* :bug: fix for writing custom classes to JSON
+
 ## v3.11.0 - 2024-03-26
 ### Changes
 * :white_check_mark: compatibility with .NET 8.0
