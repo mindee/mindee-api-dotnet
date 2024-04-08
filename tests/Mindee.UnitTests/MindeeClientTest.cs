@@ -4,6 +4,7 @@ using Mindee.Parsing.Common;
 using Mindee.Pdf;
 using Mindee.Product.Custom;
 using Mindee.Product.Generated;
+using Mindee.Product.InternationalId;
 using Mindee.Product.Invoice;
 using Moq;
 
@@ -322,6 +323,38 @@ namespace Mindee.UnitTests
             predictable.Verify(p => p.DocumentQueueGetAsync<InvoiceV4>(
                     It.IsAny<string>(), null)
                 , Times.AtMostOnce());
+        }
+
+        [Fact]
+        public void GivenJsonInput_WhenSync_ShouldDeserializeCorrectly()
+        {
+            var predictable = new Mock<IHttpApi>();
+            var mindeeClient = MakeStandardMindeeClient(predictable);
+
+            var localresponse = new LocalResponse(
+                new FileInfo("Resources/products/invoices/response_v4/complete.json"));
+            var response = mindeeClient.LoadPrediction<InvoiceV4>(localresponse);
+
+            Assert.NotNull(response);
+            Assert.Equal(
+                response.Document.ToString(),
+                File.ReadAllText("Resources/products/invoices/response_v4/summary_full.rst"));
+        }
+
+        [Fact]
+        public void GivenJsonInput_WhenAsync_ShouldDeserializeCorrectly()
+        {
+            var predictable = new Mock<IHttpApi>();
+            var mindeeClient = MakeStandardMindeeClient(predictable);
+
+            var localresponse = new LocalResponse(
+                new FileInfo("Resources/products/international_id/response_v2/complete.json"));
+            var response = mindeeClient.LoadPrediction<InternationalIdV2>(localresponse);
+
+            Assert.NotNull(response);
+            Assert.Equal(
+                response.Document.ToString(),
+                File.ReadAllText("Resources/products/international_id/response_v2/summary_full.rst"));
         }
 
         private IPdfOperation GetDefaultPdfOperation() => Mock.Of<IPdfOperation>();

@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -562,6 +563,23 @@ namespace Mindee
                 retryCount++;
             }
             throw new MindeeException($"Could not complete after {retryCount} attempts.");
+        }
+
+        /// <summary>
+        /// Load a local prediction.
+        /// Typically used when wanting to load from a webhook callback.
+        /// However, any kind of Mindee response may be loaded.
+        /// </summary>
+        /// <typeparam name="TInferenceModel"></typeparam>
+        /// <returns></returns>
+        public AsyncPredictResponse<TInferenceModel> LoadPrediction<TInferenceModel>(
+            LocalResponse localResponse)
+            where TInferenceModel : class, new()
+        {
+            var model = JsonSerializer.Deserialize<AsyncPredictResponse<TInferenceModel>>(localResponse.FileBytes);
+            model.RawResponse = ToString();
+
+            return model;
         }
     }
 }
