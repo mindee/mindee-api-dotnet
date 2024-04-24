@@ -1,3 +1,5 @@
+using System;
+
 namespace Mindee.Input
 {
     /// <summary>
@@ -39,6 +41,16 @@ namespace Mindee.Input
             PageNumbers = pageNumbers;
             PageOptionsOperation = pageOptionsOperation;
             OnMinPages = onMinPages;
+        }
+
+        /// <summary>
+        /// Basic info on the options.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            string pageNumbers = String.Join(", ", PageNumbers);
+            return $"min: {OnMinPages}, operation: {PageOptionsOperation}, pages: ({pageNumbers})";
         }
     }
 }

@@ -16,7 +16,7 @@ jobs:
       max-parallel: 2
       matrix:
         os:
-          - "ubuntu-latest"
+          - "ubuntu-22.04"
         dotnet-version:
           - "net6.0"
           - "net7.0"
@@ -30,7 +30,9 @@ jobs:
     - name: Set up .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: "8.0.x"
+        dotnet-version: |
+          6.0.x
+          8.0.x
 
 #    - uses: actions/cache@v3
 #      with:
