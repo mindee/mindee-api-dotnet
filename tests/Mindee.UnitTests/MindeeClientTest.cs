@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Http;
 using Mindee.Input;
 using Mindee.Parsing.Common;
@@ -236,6 +237,23 @@ namespace Mindee.UnitTests
         }
 
         [Fact]
+        public async Task Parse_StandardProduct_WithFile_PageOptions()
+        {
+            var predictable = new Mock<IHttpApi>();
+            var mindeeClient = MakeStandardMindeeClient(predictable);
+
+            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/multipage.pdf"));
+            var pageOptions = new PageOptions(pageNumbers: new short[] { 1, 2, 3 });
+            var response = await mindeeClient.ParseAsync<InvoiceV4>(
+                inputSource, pageOptions: pageOptions);
+
+            Assert.NotNull(response);
+            predictable.Verify(p => p.PredictPostAsync<InvoiceV4>(
+                    It.IsAny<PredictParameter>(), null)
+                , Times.AtMostOnce());
+        }
+
+        [Fact]
         public async Task Parse_StandardProduct_WithByteArray_NoOptions()
         {
             var predictable = new Mock<IHttpApi>();
@@ -357,7 +375,7 @@ namespace Mindee.UnitTests
                 File.ReadAllText("Resources/products/international_id/response_v2/summary_full.rst"));
         }
 
-        private IPdfOperation GetDefaultPdfOperation() => Mock.Of<IPdfOperation>();
+        private IPdfOperation GetDefaultPdfOperation() => new DocNetApi(new NullLogger<DocNetApi>());
 
         private MindeeClient MakeCustomMindeeClient(Mock<IHttpApi> predictable)
         {

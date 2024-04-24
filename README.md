@@ -4,10 +4,10 @@
 Quickly and easily connect to Mindee's API services using .NET.
 
 ## Requirements
-The following .NET versions are tested and supported:
+The following .NET versions are tested and officially supported:
 * Standard 2.0
 * 4.7.2, 4.8 (Windows only)
-* 6.0, 7.0 (Linux, macOS, Windows)
+* 6.0, 7.0, 8.0 (Linux, macOS x64, Windows)
 
 ## Quick Start
 Here's the TL;DR of getting started.

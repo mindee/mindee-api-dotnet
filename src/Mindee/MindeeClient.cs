@@ -386,8 +386,8 @@ namespace Mindee
             }
             if (pageOptions != null && inputSource.IsPdf())
             {
-                inputSource.FileBytes = _pdfOperation.Split(
-                    new SplitQuery(inputSource.FileBytes, pageOptions)).File;
+                var splitPdf = _pdfOperation.Split(new SplitQuery(inputSource.FileBytes, pageOptions));
+                inputSource.FileBytes = splitPdf.File;
             }
             return await _mindeeApi.PredictPostAsync<TInferenceModel>(
                 new PredictParameter(

@@ -15,23 +15,23 @@ namespace Mindee.UnitTests.Domain.Pdf
         }
 
         [Fact]
-        [Trait("Category", "Pdf operations")]
+        [Trait("Category", "PDF operations")]
         public void Split_Wants1Page_MustGetOnly1Page()
         {
             var splitQuery = new SplitQuery(
                 File.ReadAllBytes("Resources/file_types/pdf/multipage.pdf"),
                 new PageOptions(new short[] { 2 }));
 
-            var splittedPdf = _pdfOperation.Split(splitQuery);
+            var splitPdf = _pdfOperation.Split(splitQuery);
 
-            Assert.NotNull(splittedPdf);
-            Assert.NotNull(splittedPdf.File);
-            Assert.Equal(1, splittedPdf.TotalPageNumber);
+            Assert.NotNull(splitPdf);
+            Assert.NotNull(splitPdf.File);
+            Assert.Equal(1, splitPdf.TotalPageNumber);
         }
 
         [Fact]
-        [Trait("Category", "Pdf operations")]
-        public void Split_Wants2Page_MustGet2Page()
+        [Trait("Category", "PDF operations")]
+        public void Split_Wants2Pages_MustGet2Pages()
         {
             var splitQuery = new SplitQuery(File.ReadAllBytes(
                 "Resources/file_types/pdf/multipage.pdf"),
@@ -45,7 +45,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         }
 
         [Fact]
-        [Trait("Category", "Pdf operations")]
+        [Trait("Category", "PDF operations")]
         public void Split_WantsTooManyPages_MustFail()
         {
             var splitQuery = new SplitQuery(File.ReadAllBytes(
@@ -56,7 +56,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         }
 
         [Fact]
-        [Trait("Category", "Pdf operations")]
+        [Trait("Category", "PDF operations")]
         public void Split_WantsStartPageTo0_MustFail()
         {
             var splitQuery = new SplitQuery(File.ReadAllBytes(
@@ -67,7 +67,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         }
 
         [Fact]
-        [Trait("Category", "Pdf operations")]
+        [Trait("Category", "PDF operations")]
         public void Split_OtherThanAPdf_MustFail()
         {
             var splitQuery = new SplitQuery(File.ReadAllBytes(
@@ -78,7 +78,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         }
 
         [Fact]
-        [Trait("Category", "Pdf operations")]
+        [Trait("Category", "PDF operations")]
         public void Split_ShouldCutTheFirstAndThe2LastPages_MustSuccess()
         {
             var splitQuery = new SplitQuery(File.ReadAllBytes(
@@ -93,7 +93,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         }
 
         [Fact]
-        [Trait("Category", "Pdf operations")]
+        [Trait("Category", "PDF operations")]
         public void Split_ShouldRemovePages_MustSuccess()
         {
             var splitQuery = new SplitQuery(
@@ -110,7 +110,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         }
 
         [Fact]
-        [Trait("Category", "Pdf operations")]
+        [Trait("Category", "PDF operations")]
         public void Split_ShouldNotRemovePagesBecauseMinPagesAreNotMet()
         {
             var splitQuery = new SplitQuery(

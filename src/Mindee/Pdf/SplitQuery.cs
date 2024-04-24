@@ -28,5 +28,14 @@ namespace Mindee.Pdf
             File = file;
             PageOptions = pageOptions;
         }
+
+        /// <summary>
+        /// Basic info on the query.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"{PageOptions} on {File.Length} bytes";
+        }
     }
 }

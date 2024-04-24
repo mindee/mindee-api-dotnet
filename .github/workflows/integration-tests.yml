@@ -19,8 +19,8 @@ jobs:
       max-parallel: 2
       matrix:
         os:
-          - "ubuntu-latest"
-          - "macos-latest"
+          - "ubuntu-22.04"
+          - "macos-13"
         dotnet-version:
           - "net6.0"
           - "net7.0"
@@ -34,7 +34,9 @@ jobs:
     - name: Set up .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: "8.0.x"
+        dotnet-version: |
+          6.0.x
+          8.0.x
 
     - uses: actions/cache@v4
       with:
@@ -63,7 +65,7 @@ jobs:
       max-parallel: 2
       matrix:
         os:
-          - "windows-latest"
+          - "windows-2022"
         dotnet-version:
           - "net472"
           - "net482"
