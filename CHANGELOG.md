@@ -1,8 +1,9 @@
 # CHANGELOG
 
-## v3.12.0 - 2024-04-08
+## v3.13.0 - 2024-04-30
 ### Changes
-* 
+* :sparkles: update invoice to 4.6 and financial doc to 1.6
+
 
 ## v3.12.0 - 2024-04-08
 ### Changes
