@@ -6,7 +6,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Eu.DriverLicense
 {
     /// <summary>
-    /// Page data for Driver License, API version 1.
+    /// Driver License API version 1.0 page data.
     /// </summary>
     public sealed class DriverLicenseV1Page : DriverLicenseV1Document
     {

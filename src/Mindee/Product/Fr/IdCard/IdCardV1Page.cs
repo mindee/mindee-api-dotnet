@@ -6,7 +6,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Fr.IdCard
 {
     /// <summary>
-    /// Page data for Carte Nationale d'Identité, API version 1.
+    /// Carte Nationale d'Identité API version 1.1 page data.
     /// </summary>
     public sealed class IdCardV1Page : IdCardV1Document
     {

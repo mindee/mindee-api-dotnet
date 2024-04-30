@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Eu.LicensePlate
 {
     /// <summary>
-    /// Document data for License Plate, API version 1.
+    /// License Plate API version 1.1 document data.
     /// </summary>
     public class LicensePlateV1Document : IPrediction
     {

@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Passport
 {
     /// <summary>
-    /// Document data for Passport, API version 1.
+    /// Passport API version 1.1 document data.
     /// </summary>
     public class PassportV1Document : IPrediction
     {

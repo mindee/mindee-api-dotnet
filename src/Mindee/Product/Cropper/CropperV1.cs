@@ -7,7 +7,7 @@ using Mindee.Parsing.Common;
 namespace Mindee.Product.Cropper
 {
     /// <summary>
-    /// The definition for Cropper, API version 1.
+    /// Cropper API version 1 inference prediction.
     /// </summary>
     [Endpoint("cropper", "1")]
     public sealed class CropperV1 : Inference<CropperV1Page, CropperV1Document>

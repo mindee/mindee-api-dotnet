@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.ProofOfAddress
 {
     /// <summary>
-    /// Document data for Proof of Address, API version 1.
+    /// Proof of Address API version 1.1 document data.
     /// </summary>
     public class ProofOfAddressV1Document : IPrediction
     {

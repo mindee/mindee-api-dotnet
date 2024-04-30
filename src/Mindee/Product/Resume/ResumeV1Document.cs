@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Resume
 {
     /// <summary>
-    /// Document data for Resume, API version 1.
+    /// Resume API version 1.0 document data.
     /// </summary>
     public class ResumeV1Document : IPrediction
     {

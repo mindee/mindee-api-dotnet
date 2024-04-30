@@ -6,7 +6,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Us.W9
 {
     /// <summary>
-    /// Document data for W9, API version 1.
+    /// W9 API version 1.0 document data.
     /// </summary>
     public class W9V1Document : IPrediction
     {

@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Us.BankCheck
 {
     /// <summary>
-    /// Document data for Bank Check, API version 1.
+    /// Bank Check API version 1.1 document data.
     /// </summary>
     public class BankCheckV1Document : IPrediction
     {

@@ -6,7 +6,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Cropper
 {
     /// <summary>
-    /// Document data for Cropper, API version 1.
+    /// Cropper API version 1.1 document data.
     /// </summary>
     public class CropperV1Document : IPrediction
     {

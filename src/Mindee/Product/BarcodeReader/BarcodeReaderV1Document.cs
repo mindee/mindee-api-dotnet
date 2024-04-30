@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.BarcodeReader
 {
     /// <summary>
-    /// Document data for Barcode Reader, API version 1.
+    /// Barcode Reader API version 1.0 document data.
     /// </summary>
     public class BarcodeReaderV1Document : IPrediction
     {

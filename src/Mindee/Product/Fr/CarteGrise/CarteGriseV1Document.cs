@@ -6,7 +6,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Fr.CarteGrise
 {
     /// <summary>
-    /// Document data for Carte Grise, API version 1.
+    /// Carte Grise API version 1.1 document data.
     /// </summary>
     public class CarteGriseV1Document : IPrediction
     {

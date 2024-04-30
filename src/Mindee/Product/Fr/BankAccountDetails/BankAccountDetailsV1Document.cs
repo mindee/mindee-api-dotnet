@@ -6,7 +6,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Fr.BankAccountDetails
 {
     /// <summary>
-    /// Document data for Bank Account Details, API version 1.
+    /// Bank Account Details API version 1.0 document data.
     /// </summary>
     public class BankAccountDetailsV1Document : IPrediction
     {

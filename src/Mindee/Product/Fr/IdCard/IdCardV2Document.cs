@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Fr.IdCard
 {
     /// <summary>
-    /// Document data for Carte Nationale d'Identité, API version 2.
+    /// Carte Nationale d'Identité API version 2.0 document data.
     /// </summary>
     public class IdCardV2Document : IPrediction
     {

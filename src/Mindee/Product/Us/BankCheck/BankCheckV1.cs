@@ -7,7 +7,7 @@ using Mindee.Parsing.Common;
 namespace Mindee.Product.Us.BankCheck
 {
     /// <summary>
-    /// The definition for Bank Check, API version 1.
+    /// Bank Check API version 1 inference prediction.
     /// </summary>
     [Endpoint("bank_check", "1")]
     public sealed class BankCheckV1 : Inference<BankCheckV1Page, BankCheckV1Document>

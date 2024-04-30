@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.InternationalId
 {
     /// <summary>
-    /// Document data for International ID, API version 2.
+    /// International ID API version 2.0 document data.
     /// </summary>
     public class InternationalIdV2Document : IPrediction
     {

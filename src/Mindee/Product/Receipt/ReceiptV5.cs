@@ -7,7 +7,7 @@ using Mindee.Parsing.Common;
 namespace Mindee.Product.Receipt
 {
     /// <summary>
-    /// The definition for Receipt, API version 5.
+    /// Receipt API version 5 inference prediction.
     /// </summary>
     [Endpoint("expense_receipts", "5")]
     public sealed class ReceiptV5 : Inference<ReceiptV5Document, ReceiptV5Document>
