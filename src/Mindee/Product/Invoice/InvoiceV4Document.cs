@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Invoice
 {
     /// <summary>
-    /// Document data for Invoice, API version 4.
+    /// Invoice API version 4.6 document data.
     /// </summary>
     public class InvoiceV4Document : IPrediction
     {
@@ -29,6 +29,12 @@ namespace Mindee.Product.Invoice
         /// </summary>
         [JsonPropertyName("customer_company_registrations")]
         public IList<CompanyRegistration> CustomerCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
+
+        /// <summary>
+        /// The customer account number or identifier from the supplier.
+        /// </summary>
+        [JsonPropertyName("customer_id")]
+        public StringField CustomerId { get; set; }
 
         /// <summary>
         /// The name of the customer or client.
@@ -98,6 +104,12 @@ namespace Mindee.Product.Invoice
         public IList<CompanyRegistration> SupplierCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
+        /// The email of the supplier or merchant.
+        /// </summary>
+        [JsonPropertyName("supplier_email")]
+        public StringField SupplierEmail { get; set; }
+
+        /// <summary>
         /// The name of the supplier or merchant.
         /// </summary>
         [JsonPropertyName("supplier_name")]
@@ -108,6 +120,18 @@ namespace Mindee.Product.Invoice
         /// </summary>
         [JsonPropertyName("supplier_payment_details")]
         public IList<PaymentDetail> SupplierPaymentDetails { get; set; } = new List<PaymentDetail>();
+
+        /// <summary>
+        /// The phone number of the supplier or merchant.
+        /// </summary>
+        [JsonPropertyName("supplier_phone_number")]
+        public StringField SupplierPhoneNumber { get; set; }
+
+        /// <summary>
+        /// The website URL of the supplier or merchant.
+        /// </summary>
+        [JsonPropertyName("supplier_website")]
+        public StringField SupplierWebsite { get; set; }
 
         /// <summary>
         /// List of tax line details.
@@ -165,9 +189,13 @@ namespace Mindee.Product.Invoice
             result.Append($":Supplier Name: {SupplierName}\n");
             result.Append($":Supplier Company Registrations: {supplierCompanyRegistrations}\n");
             result.Append($":Supplier Address: {SupplierAddress}\n");
+            result.Append($":Supplier Phone Number: {SupplierPhoneNumber}\n");
+            result.Append($":Supplier Website: {SupplierWebsite}\n");
+            result.Append($":Supplier Email: {SupplierEmail}\n");
             result.Append($":Customer Name: {CustomerName}\n");
             result.Append($":Customer Company Registrations: {customerCompanyRegistrations}\n");
             result.Append($":Customer Address: {CustomerAddress}\n");
+            result.Append($":Customer ID: {CustomerId}\n");
             result.Append($":Shipping Address: {ShippingAddress}\n");
             result.Append($":Billing Address: {BillingAddress}\n");
             result.Append($":Document Type: {DocumentType}\n");

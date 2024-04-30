@@ -8,10 +8,16 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.FinancialDocument
 {
     /// <summary>
-    /// Document data for Financial Document, API version 1.
+    /// Financial Document API version 1.6 document data.
     /// </summary>
     public class FinancialDocumentV1Document : IPrediction
     {
+        /// <summary>
+        /// The customer's address used for billing.
+        /// </summary>
+        [JsonPropertyName("billing_address")]
+        public StringField BillingAddress { get; set; }
+
         /// <summary>
         /// The purchase category among predefined classes.
         /// </summary>
@@ -29,6 +35,12 @@ namespace Mindee.Product.FinancialDocument
         /// </summary>
         [JsonPropertyName("customer_company_registrations")]
         public IList<CompanyRegistration> CustomerCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
+
+        /// <summary>
+        /// The customer account number or identifier from the supplier.
+        /// </summary>
+        [JsonPropertyName("customer_id")]
+        public StringField CustomerId { get; set; }
 
         /// <summary>
         /// The name of the customer.
@@ -80,6 +92,12 @@ namespace Mindee.Product.FinancialDocument
         public IList<StringField> ReferenceNumbers { get; set; } = new List<StringField>();
 
         /// <summary>
+        /// The customer's address used for shipping.
+        /// </summary>
+        [JsonPropertyName("shipping_address")]
+        public StringField ShippingAddress { get; set; }
+
+        /// <summary>
         /// The purchase subcategory among predefined classes for transport and food.
         /// </summary>
         [JsonPropertyName("subcategory")]
@@ -98,6 +116,12 @@ namespace Mindee.Product.FinancialDocument
         public IList<CompanyRegistration> SupplierCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
+        /// The email of the supplier or merchant.
+        /// </summary>
+        [JsonPropertyName("supplier_email")]
+        public StringField SupplierEmail { get; set; }
+
+        /// <summary>
         /// The name of the supplier or merchant.
         /// </summary>
         [JsonPropertyName("supplier_name")]
@@ -114,6 +138,12 @@ namespace Mindee.Product.FinancialDocument
         /// </summary>
         [JsonPropertyName("supplier_phone_number")]
         public StringField SupplierPhoneNumber { get; set; }
+
+        /// <summary>
+        /// The website URL of the supplier or merchant.
+        /// </summary>
+        [JsonPropertyName("supplier_website")]
+        public StringField SupplierWebsite { get; set; }
 
         /// <summary>
         /// List of tax lines information.
@@ -184,8 +214,13 @@ namespace Mindee.Product.FinancialDocument
             result.Append($":Supplier Address: {SupplierAddress}\n");
             result.Append($":Supplier Phone Number: {SupplierPhoneNumber}\n");
             result.Append($":Customer Name: {CustomerName}\n");
+            result.Append($":Supplier Website: {SupplierWebsite}\n");
+            result.Append($":Supplier Email: {SupplierEmail}\n");
             result.Append($":Customer Company Registrations: {customerCompanyRegistrations}\n");
             result.Append($":Customer Address: {CustomerAddress}\n");
+            result.Append($":Customer ID: {CustomerId}\n");
+            result.Append($":Shipping Address: {ShippingAddress}\n");
+            result.Append($":Billing Address: {BillingAddress}\n");
             result.Append($":Document Type: {DocumentType}\n");
             result.Append($":Purchase Subcategory: {Subcategory}\n");
             result.Append($":Purchase Category: {Category}\n");
