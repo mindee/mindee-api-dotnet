@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Receipt
 {
     /// <summary>
-    /// Receipt API version 5.1 document data.
+    /// Receipt API version 5.2 document data.
     /// </summary>
     public class ReceiptV5Document : IPrediction
     {
@@ -42,6 +42,12 @@ namespace Mindee.Product.Receipt
         /// </summary>
         [JsonPropertyName("locale")]
         public Locale Locale { get; set; }
+
+        /// <summary>
+        /// The receipt number or identifier.
+        /// </summary>
+        [JsonPropertyName("receipt_number")]
+        public StringField ReceiptNumber { get; set; }
 
         /// <summary>
         /// The purchase subcategory among predefined classes for transport and food.
@@ -134,6 +140,7 @@ namespace Mindee.Product.Receipt
             result.Append($":Supplier Company Registrations: {supplierCompanyRegistrations}\n");
             result.Append($":Supplier Address: {SupplierAddress}\n");
             result.Append($":Supplier Phone Number: {SupplierPhoneNumber}\n");
+            result.Append($":Receipt Number: {ReceiptNumber}\n");
             result.Append($":Line Items:{LineItems}");
             return SummaryHelper.Clean(result.ToString());
         }
