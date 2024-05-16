@@ -26,6 +26,7 @@ namespace Mindee.UnitTests.Product.Receipt
             Assert.Empty(docPrediction.SupplierCompanyRegistrations);
             Assert.Null(docPrediction.SupplierAddress.Value);
             Assert.Null(docPrediction.SupplierPhoneNumber.Value);
+            Assert.Null(docPrediction.ReceiptNumber.Value);
             Assert.Empty(docPrediction.LineItems);
         }
 

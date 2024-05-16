@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.FinancialDocument
 {
     /// <summary>
-    /// Financial Document API version 1.6 document data.
+    /// Financial Document API version 1.7 document data.
     /// </summary>
     public class FinancialDocumentV1Document : IPrediction
     {
@@ -55,6 +55,12 @@ namespace Mindee.Product.FinancialDocument
         public DateField Date { get; set; }
 
         /// <summary>
+        /// The document number or identifier.
+        /// </summary>
+        [JsonPropertyName("document_number")]
+        public StringField DocumentNumber { get; set; }
+
+        /// <summary>
         /// One of: 'INVOICE', 'CREDIT NOTE', 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
         /// </summary>
         [JsonPropertyName("document_type")]
@@ -67,7 +73,7 @@ namespace Mindee.Product.FinancialDocument
         public DateField DueDate { get; set; }
 
         /// <summary>
-        /// The invoice number or identifier.
+        /// The invoice number or identifier only if document is an invoice.
         /// </summary>
         [JsonPropertyName("invoice_number")]
         public StringField InvoiceNumber { get; set; }
@@ -84,6 +90,12 @@ namespace Mindee.Product.FinancialDocument
         /// </summary>
         [JsonPropertyName("locale")]
         public Locale Locale { get; set; }
+
+        /// <summary>
+        /// The receipt number or identifier only if document is a receipt.
+        /// </summary>
+        [JsonPropertyName("receipt_number")]
+        public StringField ReceiptNumber { get; set; }
 
         /// <summary>
         /// List of Reference numbers, including PO number.
@@ -202,6 +214,8 @@ namespace Mindee.Product.FinancialDocument
             StringBuilder result = new StringBuilder();
             result.Append($":Locale: {Locale}\n");
             result.Append($":Invoice Number: {InvoiceNumber}\n");
+            result.Append($":Receipt Number: {ReceiptNumber}\n");
+            result.Append($":Document Number: {DocumentNumber}\n");
             result.Append($":Reference Numbers: {referenceNumbers}\n");
             result.Append($":Purchase Date: {Date}\n");
             result.Append($":Due Date: {DueDate}\n");
