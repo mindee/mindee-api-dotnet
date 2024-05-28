@@ -29,7 +29,7 @@ namespace Mindee.Product.Us.UsMail
         /// The address of the sender.
         /// </summary>
         [JsonPropertyName("sender_address")]
-        public UsMailV2SenderAddres SenderAddress { get; set; }
+        public UsMailV2SenderAddress SenderAddress { get; set; }
 
         /// <summary>
         /// The name of the sender.
