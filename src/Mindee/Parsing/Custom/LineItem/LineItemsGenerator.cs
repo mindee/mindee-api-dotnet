@@ -11,7 +11,7 @@ namespace Mindee.Parsing.Custom.LineItem
     public static class LineItemsGenerator
     {
         /// <summary>
-        /// Prepare he line of a table.
+        /// Prepare the line of a table.
         /// </summary>
         /// <param name="fields">The list of fields that will be transform to line items.</param>
         /// <param name="anchor">

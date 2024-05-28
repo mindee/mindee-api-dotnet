@@ -29,6 +29,11 @@ namespace Mindee.Parsing
             return str ?? "";
         }
 
+        public static string FormatBool(bool? value)
+        {
+            return value.ToString();
+        }
+
         public static string FormatString(string str, int maxLength)
         {
             String strSummary = FormatString(str);
