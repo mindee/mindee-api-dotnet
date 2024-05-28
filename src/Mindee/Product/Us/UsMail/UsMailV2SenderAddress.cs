@@ -10,7 +10,7 @@ namespace Mindee.Product.Us.UsMail
     /// <summary>
     /// The address of the sender.
     /// </summary>
-    public sealed class UsMailV2SenderAddres
+    public sealed class UsMailV2SenderAddress
     {
         /// <summary>
         /// The city of the sender's address.
