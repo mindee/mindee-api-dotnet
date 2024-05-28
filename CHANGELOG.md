@@ -1,6 +1,13 @@
-# CHANGELOG
+# Mindee .NET API Library Changelog
+
+
+## v3.15.0 - 2024-05-28
+### Changes
+* :sparkles: add support for US Mail
+
 
 ## v3.14.0 - 2024-05-16
+### Changes
 * :sparkles: update receipt to 5.2 and financial document to 1.7
 
 
