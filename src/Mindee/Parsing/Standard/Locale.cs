@@ -4,12 +4,10 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.Standard
 {
     /// <summary>
-    /// The local of the page.
+    /// The locale of the page.
     /// </summary>
     public class Locale
     {
-        private string _language;
-
         /// <summary>
         /// The confidence about the zone of the value extracted.
         /// A value from 0 to 1.
@@ -26,22 +24,11 @@ namespace Mindee.Parsing.Standard
         public string Currency { get; set; }
 
         /// <summary>
-        /// The langage which has been detected.
+        /// The language which has been detected.
         /// </summary>
         /// <example>fr</example>
         [JsonPropertyName("language")]
-        public string Language
-        {
-            get
-            {
-                return _language;
-            }
-            set
-            {
-                _language = value;
-                Value = value;
-            }
-        }
+        public string Language { get; set; }
 
         /// <summary>
         /// The country which has been detected.
@@ -56,6 +43,27 @@ namespace Mindee.Parsing.Standard
         /// <example>en-GB</example>
         [JsonPropertyName("value")]
         public string Value { get; set; }
+
+        /// <summary>
+        /// The locale of the page.
+        /// </summary>
+        /// <param name="confidence"><see cref="Confidence"/></param>
+        /// <param name="currency"><see cref="Currency"/></param>
+        /// <param name="language"><see cref="Language"/></param>
+        /// <param name="country"><see cref="Country"/></param>
+        /// <param name="value"><see cref="Value"/></param>
+        [JsonConstructor]
+        public Locale(
+            double confidence,
+            string currency,
+            string language,
+            string country,
+            string value)
+        {
+            (Confidence, Currency, Country, Language, Value) = (confidence, currency, country, language, value);
+            if (string.IsNullOrWhiteSpace(value) && !string.IsNullOrWhiteSpace(language))
+                Value = language;
+        }
 
         /// <summary>
         ///
