@@ -22,6 +22,30 @@ namespace Mindee.Geometry
         }
 
         /// <summary>
+        /// Compare two polygons based on their Y coordinates.
+        /// Useful for sorting lists.
+        /// </summary>
+        public static int CompareOnY(Polygon polygon1, Polygon polygon2)
+        {
+            double sort = polygon1.GetMinY() - polygon2.GetMinY();
+            if (sort == 0)
+                return 0;
+            return sort < 0 ? -1 : 1;
+        }
+
+        /// <summary>
+        /// Compare two polygons based on their X coordinates.
+        /// Useful for sorting lists.
+        /// </summary>
+        public static int CompareOnX(Polygon polygon1, Polygon polygon2)
+        {
+            double sort = polygon1.GetMinX() - polygon2.GetMinX();
+            if (sort == 0)
+                return 0;
+            return sort < 0 ? -1 : 1;
+        }
+
+        /// <summary>
         /// Create from polygon.
         /// </summary>
         /// <param name="polygon"></param>

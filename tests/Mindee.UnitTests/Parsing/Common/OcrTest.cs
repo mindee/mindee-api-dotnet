@@ -7,17 +7,31 @@ namespace Mindee.UnitTests.Parsing.Common
     [Trait("Category", "OCR")]
     public class OcrTest
     {
-        [Fact]
-        public async Task Can_Load_Ocr()
+        private async Task<Ocr> LoadOcr()
         {
             var response = await JsonSerializer.DeserializeAsync<PredictResponse<ReceiptV4>>(
                 new FileInfo("Resources/extras/ocr/complete.json").OpenRead());
 
             Assert.NotNull(response);
             Assert.NotNull(response.Document.Ocr);
-            Assert.NotNull(response.Document.Ocr.MvisionV1);
-            Assert.Single(response.Document.Ocr.MvisionV1.Pages);
-            Assert.Equal(expected: 95, actual: response.Document.Ocr.MvisionV1.Pages[0].AllWords.Count);
+            return response.Document.Ocr;
+        }
+
+        [Fact]
+        public async void ShouldHaveCorrectWordCount()
+        {
+            var ocr = await LoadOcr();
+            Assert.NotNull(ocr.MvisionV1);
+            Assert.Single(ocr.MvisionV1.Pages);
+            Assert.Equal(expected: 95, actual: ocr.MvisionV1.Pages[0].AllWords.Count);
+        }
+
+        [Fact]
+        public async void StringShouldBeOrdered()
+        {
+            var ocr = await LoadOcr();
+            var expected = File.ReadAllText("Resources/extras/ocr/ocr.txt");
+            Assert.Equal(expected, ocr.ToString());
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using System.CommandLine.IO;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Mindee.Input;
@@ -8,13 +9,6 @@ using Mindee.Parsing.Common;
 
 namespace Mindee.Cli
 {
-    enum OutputType
-    {
-        Raw,
-        Summary,
-        Full,
-    }
-
     internal struct CommandOptions
     {
         public readonly string Name;
@@ -137,19 +131,7 @@ namespace Mindee.Cli
                     context.Console.Out.Write("null");
                     return 1;
                 }
-
-                if (options.Output == OutputType.Full)
-                {
-                    context.Console.Out.Write(response.Document.ToString());
-                }
-                else if (options.Output == OutputType.Summary)
-                {
-                    context.Console.Out.Write(response.Document.Inference.Prediction.ToString());
-                }
-                else
-                {
-                    context.Console.Out.Write(JsonSerializer.Serialize(response, _jsonSerializerOptions));
-                }
+                PrintToConsole(context.Console.Out, options, response);
                 return 0;
             }
 
@@ -161,15 +143,30 @@ namespace Mindee.Cli
                     null,
                     new AsyncPollingOptions(maxRetries: 60));
 
-                if (options.Output == OutputType.Summary)
-                {
-                    context.Console.Out.Write(response.Document.Inference.Prediction.ToString());
-                }
+                PrintToConsole(context.Console.Out, options, response);
+                return 0;
+            }
+
+            private void PrintToConsole(
+                IStandardStreamWriter console,
+                ParseOptions options,
+                PredictResponse<TInferenceModel> response)
+            {
+                if (options.Output == OutputType.Raw)
+                    console.Write(JsonSerializer.Serialize(response, _jsonSerializerOptions));
                 else
                 {
-                    context.Console.Out.Write(JsonSerializer.Serialize(response, _jsonSerializerOptions));
+                    if (options.AllWords && response.Document.Ocr != null)
+                    {
+                        console.Write("#############\nDocument Text\n#############\n::\n");
+                        string ocr = response.Document.Ocr.ToString().Replace("\n", "\n  ");
+                        console.Write("  " + ocr + "\n\n");
+                    }
+                    if (options.Output == OutputType.Full)
+                        console.Write(response.Document.ToString());
+                    else if (options.Output == OutputType.Summary)
+                        console.Write(response.Document.Inference.Prediction.ToString());
                 }
-                return 0;
             }
         }
     }
