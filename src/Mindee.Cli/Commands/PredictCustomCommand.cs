@@ -41,7 +41,7 @@ namespace Mindee.Cli.Commands
             public string Endpoint { get; set; } = null!;
             public string Account { get; set; } = null!;
             public string Version { get; set; } = "1";
-            public string Output { get; set; } = "summary";
+            public OutputType Output { get; set; } = OutputType.Summary;
 
             public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
             {
@@ -69,14 +69,10 @@ namespace Mindee.Cli.Commands
                     return 1;
                 }
 
-                if (Output == "summary")
-                {
+                if (Output == OutputType.Summary)
                     context.Console.Out.Write(response.Document.Inference.Prediction.ToString());
-                }
                 else
-                {
                     context.Console.Out.Write(response.Document.ToString());
-                }
 
                 return 0;
             }
