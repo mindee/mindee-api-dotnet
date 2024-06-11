@@ -151,7 +151,7 @@ namespace Mindee.Http
             }
             if (predictParameter.AllWords)
             {
-                request.AddParameter(name: "include_mvision", value: "true");
+                request.AddQueryParameter(name: "include_mvision", value: "true");
             }
             if (predictParameter.Cropper)
             {
