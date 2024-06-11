@@ -151,11 +151,11 @@ namespace Mindee.Http
             }
             if (predictParameter.AllWords)
             {
-                request.AddQueryParameter(name: "include_mvision", value: "true");
+                request.AddParameter(name: "include_mvision", value: "true");
             }
             if (predictParameter.Cropper)
             {
-                request.AddParameter(name: "cropper", value: "true");
+                request.AddQueryParameter(name: "cropper", value: "true");
             }
         }
 
