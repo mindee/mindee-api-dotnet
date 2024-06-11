@@ -1,5 +1,10 @@
 # Mindee .NET API Library Changelog
 
+## v3.16.0 - 2024-06-10
+### Changes
+* :sparkles: add support for getting the raw OCR as a string
+
+
 ## v3.15.0 - 2024-05-28
 ### Changes
 * :sparkles: add support for US Mail
