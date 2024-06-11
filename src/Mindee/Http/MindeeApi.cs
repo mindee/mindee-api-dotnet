@@ -155,7 +155,7 @@ namespace Mindee.Http
             }
             if (predictParameter.Cropper)
             {
-                request.AddQueryParameter(name: "cropper", value: "true");
+                request.AddParameter(name: "cropper", value: "true");
             }
         }
 
