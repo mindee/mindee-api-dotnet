@@ -3,37 +3,24 @@ using Mindee.Input;
 using Mindee.Parsing.Common;
 using Mindee.Product.BarcodeReader;
 using Mindee.Product.MultiReceiptsDetector;
-using Newtonsoft.Json;
 
 namespace Mindee.UnitTests.Extraction
 {
-    [Trait("Category", "Image Extractor Tests")]
-
+    [Trait("Category", "ImageExtractor")]
     public class ImageExtractorTest
     {
-        protected PredictResponse<MultiReceiptsDetectorV1>? GetMultiReceiptsPrediction(string name)
-        {
-            var json = File.ReadAllText($"Resources/products/multi_receipts_detector/response_v1/{name}.json");
-            return JsonConvert.DeserializeObject<PredictResponse<MultiReceiptsDetectorV1>>(json);
-        }
-
-        protected PredictResponse<BarcodeReaderV1>? GetBarcodeReaderPrediction(string name)
-        {
-            var json = File.ReadAllText($"Resources/products/barcode_reader/response_v1/{name}.json");
-            return JsonConvert.DeserializeObject<PredictResponse<BarcodeReaderV1>>(json);
-        }
-
         [Fact]
-        public void GivenAnImage_ShouldExtractPositionFields()
+        public async Task GivenAnImage_ShouldExtractPositionFields()
         {
             var image = new LocalInputSource("Resources/products/multi_receipts_detector/default_sample.jpg");
-            var response = GetMultiReceiptsPrediction("complete");
+            var response = await GetMultiReceiptsDetectorPrediction("complete");
             var inference = response?.Document.Inference;
 
             var extractor = new ImageExtractor(image);
             Assert.Equal(1, extractor.GetPageCount());
 
-            if (inference?.Pages != null)
+
+            if (inference != null)
             {
                 foreach (var page in inference.Pages)
                 {
@@ -55,10 +42,10 @@ namespace Mindee.UnitTests.Extraction
         }
 
         [Fact]
-        public void GivenAnImage_ShouldExtractValueFields()
+        public async Task GivenAnImage_ShouldExtractValueFields()
         {
-            string imagePath = "Resources/products/barcode_reader/default_sample.jpg";
-            var response = GetBarcodeReaderPrediction("complete");
+            const string imagePath = "Resources/products/barcode_reader/default_sample.jpg";
+            var response = await GetBarcodeReaderPrediction("complete");
             var inference = response?.Document.Inference;
 
             var extractor = new ImageExtractor(imagePath);
@@ -75,7 +62,7 @@ namespace Mindee.UnitTests.Extraction
                         Assert.NotNull(extractedImage.Image);
                         var source = extractedImage.AsInputSource();
                         Assert.Equal(
-                            $"barcodes_1D_page-001_{i + 1:D3}.png",
+                            $"barcodes_1D_page-001_{i + 1:D3}.jpg",
                             source.Filename
                         );
                         extractedImage.WriteToFile("Resources/output/");
@@ -92,11 +79,11 @@ namespace Mindee.UnitTests.Extraction
         }
 
         [Fact]
-        public void GivenAPdf_ShouldExtractPositionFields()
+        public async Task GivenAPdf_ShouldExtractPositionFields()
         {
             var image = new LocalInputSource(
                 "Resources/products/multi_receipts_detector/multipage_sample.pdf");
-            var response = GetMultiReceiptsPrediction("multipage_sample");
+            var response = await GetMultiReceiptsDetectorPrediction("multipage_sample");
             var inference = response?.Document.Inference;
 
             var extractor = new ImageExtractor(image);
@@ -122,6 +109,20 @@ namespace Mindee.UnitTests.Extraction
                     }
                 }
             }
+        }
+        private static async Task<PredictResponse<MultiReceiptsDetectorV1>> GetMultiReceiptsDetectorPrediction(string name)
+        {
+            string fileName = $"Resources/products/multi_receipts_detector/response_v1/{name}.json";
+            var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
+            return await mindeeAPi.PredictPostAsync<MultiReceiptsDetectorV1>(
+                UnitTestBase.GetFakePredictParameter());
+        }
+        private static async Task<PredictResponse<BarcodeReaderV1>> GetBarcodeReaderPrediction(string name)
+        {
+            string fileName = $"Resources/products/barcode_reader/response_v1/{name}.json";
+            var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
+            return await mindeeAPi.PredictPostAsync<BarcodeReaderV1>(
+                UnitTestBase.GetFakePredictParameter());
         }
     }
 }
