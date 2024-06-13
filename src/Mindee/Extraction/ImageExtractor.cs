@@ -38,7 +38,7 @@ namespace Mindee.Extraction
             {
                 this._pageImages.Add(SKBitmap.Decode(localInput.FileBytes));
                 var extension = Path.GetExtension(localInput.Filename);
-                this._saveFormat = extension == null ? ".jpg" : extension[1..];
+                this._saveFormat = extension == null ? ".jpg" : extension.Substring(1);
             }
         }
 
