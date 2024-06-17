@@ -42,40 +42,6 @@ namespace Mindee.Extraction
             }
         }
 
-        /// <summary>
-        /// Init from a path.
-        /// </summary>
-        /// <param name="filePath">Path to the file.</param>
-        public ImageExtractor(string filePath)
-        {
-            this._filename = filePath;
-            this._pageImages = new List<SKBitmap>();
-
-            if (IsPdf(filePath))
-            {
-                this._saveFormat = "jpg";
-                List<SKBitmap> pdfPageImages = PdfToImages(File.ReadAllBytes(filePath));
-                this._pageImages.AddRange(pdfPageImages);
-            }
-            else
-            {
-                string[] splitName = SplitNameStrict(filePath);
-                this._saveFormat = splitName[1].ToLower();
-
-                using FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                using SKManagedStream skStream = new SKManagedStream(fs);
-                this._pageImages.Add(SKBitmap.Decode(skStream));
-            }
-        }
-
-
-        /// <summary>
-        /// Checks if the file is a PDF.
-        /// </summary>
-        private static bool IsPdf(string filePath)
-        {
-            return Path.GetExtension(filePath).Equals(".pdf", StringComparison.CurrentCultureIgnoreCase);
-        }
 
         private static List<SKBitmap> PdfToImages(byte[] fileBytes)
         {
@@ -132,7 +98,7 @@ namespace Mindee.Extraction
         /// <returns>A list of extracted images.</returns>
         public IList<ExtractedImage> ExtractImagesFromPage(IList<PositionField> fields, int pageIndex)
         {
-            return ExtractFromPage(fields, pageIndex, this._filename);
+            return ExtractFromPage(fields, pageIndex, _filename);
         }
 
         /// <summary>

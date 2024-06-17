@@ -44,11 +44,11 @@ namespace Mindee.UnitTests.Extraction
         [Fact]
         public async Task GivenAnImage_ShouldExtractValueFields()
         {
-            const string imagePath = "Resources/products/barcode_reader/default_sample.jpg";
+            var image = new LocalInputSource("Resources/products/barcode_reader/default_sample.jpg");
             var response = await GetBarcodeReaderPrediction("complete");
             var inference = response?.Document.Inference;
 
-            var extractor = new ImageExtractor(imagePath);
+            var extractor = new ImageExtractor(image);
             Assert.Equal(1, extractor.GetPageCount());
 
             if (inference != null)

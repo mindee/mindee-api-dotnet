@@ -32,9 +32,9 @@ namespace Mindee.Extraction
         /// <param name="saveFormat">The format to save the image.</param>
         public ExtractedImage(SKBitmap image, string filename, string saveFormat)
         {
-            this.Image = image;
-            this.Filename = filename;
-            this._saveFormat = saveFormat;
+            Image = image;
+            Filename = filename;
+            _saveFormat = saveFormat;
         }
 
         /// <summary>
