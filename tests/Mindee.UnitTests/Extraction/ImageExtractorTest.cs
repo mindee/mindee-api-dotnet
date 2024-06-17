@@ -33,7 +33,7 @@ namespace Mindee.UnitTests.Extraction
 
                         var source = extractedImage.AsInputSource();
                         Assert.Equal(
-                            $"default_sample_page-001_{i + 1:D3}.jpg",
+                            $"default_sample_page-001_{i + 1:D3}.png",
                             source.Filename
                         );
                     }
@@ -62,7 +62,7 @@ namespace Mindee.UnitTests.Extraction
                         Assert.NotNull(extractedImage.Image);
                         var source = extractedImage.AsInputSource();
                         Assert.Equal(
-                            $"barcodes_1D_page-001_{i + 1:D3}.jpg",
+                            $"barcodes_1D_page-001_{i + 1:D3}.png",
                             source.Filename
                         );
                         extractedImage.WriteToFile("Resources/output/");
@@ -103,7 +103,7 @@ namespace Mindee.UnitTests.Extraction
 
                         var source = extractedImage.AsInputSource();
                         Assert.Equal(
-                            $"multipage_sample_page-{page.Id + 1:D3}_{i + 1:D3}.jpg",
+                            $"multipage_sample_page-{page.Id + 1:D3}_{i + 1:D3}.png",
                             source.Filename
                         );
                     }

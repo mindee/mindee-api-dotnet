@@ -44,10 +44,10 @@ namespace Mindee.Extraction
         /// <param name="outputPath">The output directory (must exist).</param>
         public void WriteToFile(string outputPath)
         {
-            string imagePath = Path.Combine(outputPath, this.Filename);
-            SKEncodedImageFormat format = GetEncodedImageFormat(this._saveFormat);
+            string imagePath = Path.Combine(outputPath, Filename);
+            SKEncodedImageFormat format = GetEncodedImageFormat(_saveFormat);
 
-            using (var image = SKImage.FromBitmap(this.Image))
+            using (var image = SKImage.FromBitmap(Image))
             using (var data = image.Encode(format, 100))
             using (var stream = File.OpenWrite(imagePath))
             {
@@ -61,12 +61,12 @@ namespace Mindee.Extraction
         /// <returns>An instance of <see cref="LocalInputSource"/>.</returns>
         public LocalInputSource AsInputSource()
         {
-            using (var image = SKImage.FromBitmap(this.Image))
-            using (var data = image.Encode(SKEncodedImageFormat.Jpeg, 100))
+            using (var image = SKImage.FromBitmap(Image))
+            using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
             using (MemoryStream output = new MemoryStream())
             {
                 data.SaveTo(output);
-                return new LocalInputSource(output.ToArray(), this.Filename);
+                return new LocalInputSource(output.ToArray(), Filename);
             }
         }
 
