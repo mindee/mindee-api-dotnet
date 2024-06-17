@@ -62,7 +62,7 @@ namespace Mindee.Extraction
         public LocalInputSource AsInputSource()
         {
             using (var image = SKImage.FromBitmap(Image))
-            using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
+            using (var data = image.Encode(GetEncodedImageFormat(_saveFormat), 100))
             using (MemoryStream output = new MemoryStream())
             {
                 data.SaveTo(output);
