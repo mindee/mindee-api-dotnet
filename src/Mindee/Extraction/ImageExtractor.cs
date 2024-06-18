@@ -29,12 +29,27 @@ namespace Mindee.Extraction
         /// </summary>
         /// <param name="localInput">Locally loaded resource.</param>
         /// <param name="saveFormat">Format to save the resulting images as.</param>
-        public ImageExtractor(LocalInputSource localInput, string saveFormat = "png")
+        public ImageExtractor(LocalInputSource localInput, string saveFormat = null)
         {
             _filename = localInput.Filename;
             _pageImages = new List<SKBitmap>();
             LocalInput = localInput;
-            _saveFormat = saveFormat;
+            if (saveFormat == null)
+            {
+                var extension = Path.GetExtension(localInput.Filename)?.Substring(1);
+                if (extension != null && !extension.Equals("pdf", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    _saveFormat = extension;
+                }
+                else
+                {
+                    _saveFormat = "jpg";
+                }
+            }
+            else
+            {
+                _saveFormat = saveFormat;
+            }
             if (localInput.IsPdf())
             {
                 List<SKBitmap> pdfPageImages = PdfToImages(localInput.FileBytes);
@@ -43,7 +58,6 @@ namespace Mindee.Extraction
             else
             {
                 _pageImages.Add(SKBitmap.Decode(localInput.FileBytes));
-                var extension = Path.GetExtension(localInput.Filename);
             }
         }
 
@@ -86,10 +100,11 @@ namespace Mindee.Extraction
         /// </summary>
         private static string[] SplitNameStrict(string filename)
         {
-            return new string[]
-            {
-                Path.GetFileNameWithoutExtension(filename), Path.GetExtension(filename).TrimStart('.')
-            };
+            return
+            [
+                Path.GetFileNameWithoutExtension(filename),
+                Path.GetExtension(filename).TrimStart('.')
+            ];
         }
 
         /// <summary>
@@ -215,7 +230,6 @@ namespace Mindee.Extraction
         public ExtractedImage ExtractImage(PositionField field, int pageIndex, int index, string filename)
         {
             string[] splitName = SplitNameStrict(filename);
-            string saveFormat = splitName[1].ToLower();
             Polygon boundingBox;
 
             if (field.Polygon is { Count: > 0 })
@@ -240,8 +254,8 @@ namespace Mindee.Extraction
             }
 
             Bbox bbox = Utils.BboxFromPolygon(boundingBox);
-            string fieldFilename = $"{splitName[0]}_{index:D3}.{saveFormat}";
-            return new ExtractedImage(ExtractImage(bbox, pageIndex), fieldFilename, saveFormat);
+            string fieldFilename = $"{splitName[0]}_{index:D3}.{_saveFormat}";
+            return new ExtractedImage(ExtractImage(bbox, pageIndex), fieldFilename, _saveFormat);
         }
 
         /// <summary>
@@ -255,7 +269,6 @@ namespace Mindee.Extraction
         public ExtractedImage ExtractImage(BaseField field, int pageIndex, int index, string filename)
         {
             string[] splitName = SplitNameStrict(filename);
-            string saveFormat = splitName[1].ToLower();
             Polygon boundingBox;
 
             if (field.Polygon.Count > 0)
@@ -268,8 +281,8 @@ namespace Mindee.Extraction
             }
 
             Bbox bbox = Utils.BboxFromPolygon(boundingBox);
-            string fieldFilename = $"{splitName[0]}_{index:D3}.{saveFormat}";
-            return new ExtractedImage(ExtractImage(bbox, pageIndex), fieldFilename, saveFormat);
+            string fieldFilename = $"{splitName[0]}_{index:D3}.{_saveFormat}";
+            return new ExtractedImage(ExtractImage(bbox, pageIndex), fieldFilename, _saveFormat);
         }
 
         private SKBitmap ExtractImage(Bbox bbox, int pageIndex)

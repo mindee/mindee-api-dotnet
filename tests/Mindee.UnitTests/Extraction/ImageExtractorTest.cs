@@ -31,7 +31,7 @@ namespace Mindee.UnitTests.Extraction
 
                     var source = extractedImage.AsInputSource();
                     Assert.Equal(
-                        $"default_sample_page-001_{i + 1:D3}.png",
+                        $"default_sample_page-001_{i + 1:D3}.jpg",
                         source.Filename
                     );
                 }
@@ -50,20 +50,20 @@ namespace Mindee.UnitTests.Extraction
 
             foreach (var page in inference.Pages)
             {
-                var codes1D = extractor.ExtractImagesFromPage(page.Prediction.Codes1D, page.Id, "barcodes_1D.png");
+                var codes1D = extractor.ExtractImagesFromPage(page.Prediction.Codes1D, page.Id, "barcodes_1D.jpg");
                 for (int i = 0; i < codes1D.Count; i++)
                 {
                     var extractedImage = codes1D[i];
                     Assert.NotNull(extractedImage.Image);
                     var source = extractedImage.AsInputSource();
                     Assert.Equal(
-                        $"barcodes_1D_page-001_{i + 1:D3}.png",
+                        $"barcodes_1D_page-001_{i + 1:D3}.jpg",
                         source.Filename
                     );
                     extractedImage.WriteToFile("Resources/output/");
                 }
 
-                var codes2D = extractor.ExtractImagesFromPage(page.Prediction.Codes2D, page.Id, "barcodes_2D.png");
+                var codes2D = extractor.ExtractImagesFromPage(page.Prediction.Codes2D, page.Id, "barcodes_2D.jpg");
                 foreach (var extractedImage in codes2D)
                 {
                     Assert.NotNull(extractedImage.Image);
@@ -95,7 +95,7 @@ namespace Mindee.UnitTests.Extraction
 
                     var source = extractedImage.AsInputSource();
                     Assert.Equal(
-                        $"multipage_sample_page-{page.Id + 1:D3}_{i + 1:D3}.png",
+                        $"multipage_sample_page-{page.Id + 1:D3}_{i + 1:D3}.jpg",
                         source.Filename
                     );
                 }
