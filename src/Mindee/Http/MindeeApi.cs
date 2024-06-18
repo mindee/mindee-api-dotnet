@@ -38,9 +38,7 @@ namespace Mindee.Http
             {
                 FollowRedirects = false,
                 Timeout = TimeSpan.FromSeconds(mindeeSettings.Value.RequestTimeoutSeconds),
-                UserAgent = $"mindee-api-dotnet@v{Assembly.GetExecutingAssembly().GetName().Version}"
-                + $" dotnet-v{Environment.Version}"
-                + $" {Environment.OSVersion}"
+                UserAgent = BuildUserAgent()
             };
             if (httpMessageHandler != null)
             {
@@ -157,6 +155,13 @@ namespace Mindee.Http
             {
                 request.AddQueryParameter(name: "cropper", value: "true");
             }
+        }
+
+        private static string BuildUserAgent()
+        {
+            return $"mindee-api-dotnet@v{Assembly.GetExecutingAssembly().GetName().Version}"
+                + $" dotnet-v{Environment.Version}"
+                + $" {Environment.OSVersion}";
         }
 
         private TModel ResponseHandler<TModel>(RestResponse restResponse)
