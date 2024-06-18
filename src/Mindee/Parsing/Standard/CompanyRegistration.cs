@@ -6,7 +6,7 @@ namespace Mindee.Parsing.Standard
     /// <summary>
     /// Represent a company registration.
     /// </summary>
-    public class CompanyRegistration : BaseField
+    public class CompanyRegistration : LineItemField
     {
         /// <summary>
         /// Type of the company registration number.
@@ -25,7 +25,7 @@ namespace Mindee.Parsing.Standard
         /// Print as a table line for RST display.
         /// </summary>
         /// <returns></returns>
-        public string ToTableLine()
+        public override string ToTableLine()
         {
             var printable = PrintableValues();
             return $"| {printable["type"],-15} | {printable["value"],-20} ";
