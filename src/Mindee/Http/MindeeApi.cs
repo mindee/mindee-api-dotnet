@@ -37,7 +37,7 @@ namespace Mindee.Http
             RestClientOptions clientOptions = new RestClientOptions(_baseUrl)
             {
                 FollowRedirects = false,
-                MaxTimeout = TimeSpan.FromSeconds(mindeeSettings.Value.RequestTimeoutSeconds).Milliseconds
+                Timeout = TimeSpan.FromSeconds(mindeeSettings.Value.RequestTimeoutSeconds)
             };
             if (httpMessageHandler != null)
             {
@@ -50,9 +50,6 @@ namespace Mindee.Http
             {
                 {
                     "Authorization", $"Token {mindeeSettings.Value.ApiKey}"
-                },
-                {
-                    "User-Agent", BuildUserAgent()
                 },
             };
             _httpClient.AddDefaultHeaders(_defaultHeaders);
