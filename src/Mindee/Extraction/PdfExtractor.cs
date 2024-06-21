@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Docnet.Core;
@@ -111,8 +112,9 @@ namespace Mindee.Extraction
             while (iterator.MoveNext())
             {
                 var pageIndex = iterator.Current;
-                var confidence = pageIndex.GetConfidence();
-                var pageList = pageIndex.GetPageIndexes();
+                Debug.Assert(pageIndex != null, nameof(pageIndex) + " != null");
+                double confidence = pageIndex.Confidence;
+                var pageList = pageIndex.PageIndexes;
 
                 if (confidence == 1.0 && previousConfidence == null)
                 {
