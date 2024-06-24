@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Docnet.Core;
 using Docnet.Core.Models;
@@ -10,7 +11,10 @@ namespace Mindee.Extraction
     /// </summary>
     public class ExtractedPdf
     {
-        private readonly byte[] PdfBytes;
+        /// <summary>
+        /// File object for an ExtractedPdf.
+        /// </summary>
+        public readonly byte[] PdfBytes;
         /// <summary>
         /// Name of the original file.
         /// </summary>
@@ -44,6 +48,10 @@ namespace Mindee.Extraction
         public void WriteToFile(string outputPath)
         {
             var pdfPath = Path.Combine(outputPath, this.Filename);
+            if (Path.GetFileName(outputPath) != String.Empty)
+            {
+                pdfPath = Path.GetFullPath(outputPath);
+            }
             File.WriteAllBytes(pdfPath, this.PdfBytes);
         }
 

@@ -39,7 +39,7 @@ namespace Mindee.Extraction
                 var memoryStream = new MemoryStream(localInput.FileBytes);
                 using SKDocument document = SKDocument.CreatePdf(memoryStream);
                 document.Close();
-                this.SourcePdf =memoryStream.ToArray();
+                this.SourcePdf = memoryStream.ToArray();
             }
         }
 
@@ -77,7 +77,7 @@ namespace Mindee.Extraction
 
                 var splitQuery = new SplitQuery(
                     SourcePdf,
-                    new PageOptions(pageIndexElement.ConvertAll(item => (short)(item+1)).ToArray()));
+                    new PageOptions(pageIndexElement.ConvertAll(item => (short)(item + 1)).ToArray()));
                 var pdfOperation = new DocNetApi(new NullLogger<DocNetApi>());
                 var mergedPdfBytes = pdfOperation.Split(splitQuery).File;
                 extractedPdfs.Add(new ExtractedPdf(mergedPdfBytes, fieldFilename));
