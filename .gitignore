@@ -361,3 +361,4 @@ dist
 
 # Tests
 _test.csx
+local_test/

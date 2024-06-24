@@ -6,9 +6,12 @@ using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Models;
 using Docnet.Core.Readers;
+using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Input;
+using Mindee.Pdf;
 using Mindee.Product.InvoiceSplitter;
 using SkiaSharp;
+
 namespace Mindee.Extraction
 {
     /// <summary>
@@ -16,7 +19,7 @@ namespace Mindee.Extraction
     /// </summary>
     public class PdfExtractor
     {
-        private readonly IDocReader SourcePdf;
+        private readonly byte[] SourcePdf;
         private readonly string Filename;
 
         /// <summary>
@@ -29,16 +32,14 @@ namespace Mindee.Extraction
 
             if (localInput.IsPdf())
             {
-                this.SourcePdf = DocLib.Instance.GetDocReader(localInput.FileBytes, new PageDimensions(1, 1));
+                this.SourcePdf = localInput.FileBytes;
             }
             else
             {
                 var memoryStream = new MemoryStream(localInput.FileBytes);
                 using SKDocument document = SKDocument.CreatePdf(memoryStream);
                 document.Close();
-                this.SourcePdf =
-                    DocLib.Instance.GetDocReader(memoryStream.ToArray(),
-                        new PageDimensions(1, 1));
+                this.SourcePdf =memoryStream.ToArray();
             }
         }
 
@@ -48,7 +49,8 @@ namespace Mindee.Extraction
         /// <returns>The number of pages in the file.</returns>
         public int GetPageCount()
         {
-            return this.SourcePdf.GetPageCount();
+            var docInstance = DocLib.Instance.GetDocReader(this.SourcePdf, new PageDimensions(1, 1));
+            return docInstance.GetPageCount();
         }
 
         /// <summary>
@@ -71,9 +73,13 @@ namespace Mindee.Extraction
                 var extension = Path.GetExtension(Filename);
                 var filenameWithoutExtension = Path.GetFileNameWithoutExtension(Filename);
                 var fieldFilename =
-                    $"{extension}_{pageIndexElement[0] + 1:D3}-{pageIndexElement[^1] + 1:D3}.{filenameWithoutExtension}";
+                    $"{filenameWithoutExtension}_{pageIndexElement[0] + 1:D3}-{pageIndexElement[^1] + 1:D3}{extension}";
 
-                var mergedPdfBytes = MergePdfPages(SourcePdf, pageIndexElement);
+                var splitQuery = new SplitQuery(
+                    SourcePdf,
+                    new PageOptions(pageIndexElement.ConvertAll(item => (short)(item+1)).ToArray()));
+                var pdfOperation = new DocNetApi(new NullLogger<DocNetApi>());
+                var mergedPdfBytes = pdfOperation.Split(splitQuery).File;
                 extractedPdfs.Add(new ExtractedPdf(mergedPdfBytes, fieldFilename));
             }
 
@@ -97,11 +103,11 @@ namespace Mindee.Extraction
         /// <param name="pageIndexes">List of sub-lists of pages to keep.</param>
         /// <param name="strict">Whether to trust confidence scores of 1.0 only or not.</param>
         /// <returns>A list of extracted invoices.</returns>
-        public List<ExtractedPdf> ExtractInvoices(List<InvoiceSplitterV1PageGroup> pageIndexes, bool strict)
+        public List<ExtractedPdf> ExtractInvoices(IList<InvoiceSplitterV1PageGroup> pageIndexes, bool strict)
         {
             if (!strict)
             {
-                return ExtractInvoices(pageIndexes);
+                return ExtractInvoices(pageIndexes.ToList());
             }
 
             var correctPageIndexes = new List<List<int>>();
@@ -116,11 +122,11 @@ namespace Mindee.Extraction
                 double confidence = pageIndex.Confidence;
                 var pageList = pageIndex.PageIndexes;
 
-                if (confidence == 1.0 && previousConfidence == null)
+                if (Math.Abs(confidence - 1.0) < 0.01 && previousConfidence == null)
                 {
                     currentList = new List<int>(pageList);
                 }
-                else if (confidence == 1.0)
+                else if (Math.Abs(confidence - 1.0) < 0.01)
                 {
                     correctPageIndexes.Add(currentList);
                     currentList = new List<int>(pageList);
@@ -133,7 +139,7 @@ namespace Mindee.Extraction
                 else
                 {
                     correctPageIndexes.Add(currentList);
-                    correctPageIndexes.Add(pageList);
+                    correctPageIndexes.Add(pageList.ToList());
                 }
 
                 previousConfidence = confidence;
@@ -148,6 +154,11 @@ namespace Mindee.Extraction
             throw new NotSupportedException("Merging Pdf pages is not directly supported by Docnet.");
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="byteArray"></param>
+        /// <returns></returns>
         public static SKImage ByteArrayToSkImage(byte[] byteArray)
         {
             using (var stream = new SKManagedStream(new MemoryStream(byteArray)))
@@ -156,3 +167,4 @@ namespace Mindee.Extraction
             }
         }
     }
+}

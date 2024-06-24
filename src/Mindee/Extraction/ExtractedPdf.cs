@@ -1,4 +1,6 @@
 using System.IO;
+using Docnet.Core;
+using Docnet.Core.Models;
 using Mindee.Input;
 
 namespace Mindee.Extraction
@@ -9,7 +11,10 @@ namespace Mindee.Extraction
     public class ExtractedPdf
     {
         private readonly byte[] PdfBytes;
-        private readonly string Filename;
+        /// <summary>
+        /// Name of the original file.
+        /// </summary>
+        public readonly string Filename;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtractedPdf"/> class.
@@ -20,6 +25,16 @@ namespace Mindee.Extraction
         {
             this.PdfBytes = pdfBytes;
             this.Filename = filename;
+        }
+
+        /// <summary>
+        /// Wrapper for pdf GetPageCount();
+        /// </summary>
+        /// <returns>The number of pages in the file.</returns>
+        public int GetPageCount()
+        {
+            var docInstance = DocLib.Instance.GetDocReader(this.PdfBytes, new PageDimensions(1, 1));
+            return docInstance.GetPageCount();
         }
 
         /// <summary>
