@@ -1,6 +1,6 @@
-using Mindee.IntegrationTests;
 using Mindee.Extraction;
 using Mindee.Input;
+using Mindee.IntegrationTests;
 using Mindee.Parsing.Common;
 using Mindee.Product.Invoice;
 using Mindee.Product.InvoiceSplitter;
