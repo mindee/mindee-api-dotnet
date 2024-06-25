@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Models;
-using Docnet.Core.Readers;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Input;
 using Mindee.Pdf;
@@ -63,21 +62,21 @@ namespace Mindee.Extraction
         {
             var extractedPdfs = new List<ExtractedPdf>();
 
-            foreach (var pageIndexElement in pageIndexes)
+            foreach (var pageIndexElem in pageIndexes)
             {
-                if (!pageIndexElement.Any())
+                if (!pageIndexElem.Any())
                 {
                     throw new ArgumentException("Empty indexes not allowed for extraction.");
                 }
 
                 var extension = Path.GetExtension(Filename);
-                var filenameWithoutExtension = Path.GetFileNameWithoutExtension(Filename);
+                var prefix = Path.GetFileNameWithoutExtension(Filename);
                 var fieldFilename =
-                    $"{filenameWithoutExtension}_{pageIndexElement[0] + 1:D3}-{pageIndexElement[^1] + 1:D3}{extension}";
+                    $"{prefix}_{pageIndexElem[0] + 1:D3}-{pageIndexElem[pageIndexElem.Count - 1] + 1:D3}{extension}";
 
                 var splitQuery = new SplitQuery(
                     SourcePdf,
-                    new PageOptions(pageIndexElement.ConvertAll(item => (short)(item + 1)).ToArray()));
+                    new PageOptions(pageIndexElem.ConvertAll(item => (short)(item + 1)).ToArray()));
                 var pdfOperation = new DocNetApi(new NullLogger<DocNetApi>());
                 var mergedPdfBytes = pdfOperation.Split(splitQuery).File;
                 extractedPdfs.Add(new ExtractedPdf(mergedPdfBytes, fieldFilename));
@@ -112,6 +111,7 @@ namespace Mindee.Extraction
 
             var correctPageIndexes = new List<List<int>>();
             var iterator = pageIndexes.GetEnumerator();
+            using var iterator1 = (IDisposable)iterator;
             var currentList = new List<int>();
             double? previousConfidence = null;
 
@@ -146,12 +146,6 @@ namespace Mindee.Extraction
             }
 
             return ExtractSubDocuments(correctPageIndexes);
-        }
-
-        private byte[] MergePdfPages(IDocReader sourcePdf, List<int> pageIndexes)
-        {
-            // Docnet does not support merging Pdfs directly, you might need another library for this operation.
-            throw new NotSupportedException("Merging Pdf pages is not directly supported by Docnet.");
         }
 
         /// <summary>
