@@ -1,4 +1,4 @@
-using DefaultNamespace;
+using Mindee.IntegrationTests;
 using Mindee.Extraction;
 using Mindee.Input;
 using Mindee.Parsing.Common;
