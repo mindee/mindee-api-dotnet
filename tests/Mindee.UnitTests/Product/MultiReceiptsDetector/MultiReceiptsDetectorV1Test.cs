@@ -18,7 +18,7 @@ namespace Mindee.UnitTests.Product.MultiReceiptsDetector
         public async Task Predict_CheckSummary()
         {
             var response = await GetPrediction("complete");
-            var expected = await File.ReadAllTextAsync("Resources/products/multi_receipts_detector/response_v1/summary_full.rst");
+            var expected = File.ReadAllText("Resources/products/multi_receipts_detector/response_v1/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
 
