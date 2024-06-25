@@ -13,7 +13,7 @@ jobs:
     name: Run tests
     timeout-minutes: 30
     strategy:
-      max-parallel: 2
+      max-parallel: 1
       matrix:
         os:
           - "ubuntu-22.04"
