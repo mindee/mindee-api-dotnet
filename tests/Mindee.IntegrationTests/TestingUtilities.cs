@@ -1,4 +1,4 @@
-namespace DefaultNamespace
+namespace Mindee.IntegrationTests
 {
     public class TestingUtilities
     {
