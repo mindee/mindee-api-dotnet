@@ -1,5 +1,17 @@
 # Mindee .NET API Library Changelog
 
+## v3.17.0 - 2024-06-26
+### Changes
+* :sparkles: add support for invoice splitter auto-extraction
+* :sparkles: add support for multi-receipts auto-extraction
+* :sparkles: add support for getting the raw OCR as a string in CLI
+
+### Fixes
+* :bug: fix pdf indexes being improperly flagged as invalid in some splitPdf configurations
+* :recycle: fix company registration display to include version
+* :recycle: update image/pdf handling & System.text.json dependencies
+
+
 ## v3.16.0 - 2024-06-10
 ### Changes
 * :sparkles: add support for getting the raw OCR as a string
