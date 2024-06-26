@@ -1,12 +1,12 @@
 using Mindee.Extraction;
 using Mindee.Input;
-using Mindee.IntegrationTests;
 using Mindee.Parsing.Common;
 using Mindee.Product.Invoice;
 using Mindee.Product.InvoiceSplitter;
 
 namespace Mindee.IntegrationTests.Extraction
 {
+    [Trait("Category", "Integration tests")]
     public class InvoiceSplitterAutoExtractionTest
     {
         private static MindeeClient? _client;
@@ -54,7 +54,7 @@ namespace Mindee.IntegrationTests.Extraction
         }
 
         [Fact]
-        public async Task GivenAPDF_ShouldExtractInvoicesStrict()
+        public async Task GivenAPDF_ShouldExtractInvoicesStrict_MustSucceed()
         {
             Document<InvoiceSplitterV1> document = await GetInvoiceSplitterPredictionAsync();
             InvoiceSplitterV1 inference = document.Inference;
