@@ -9,15 +9,10 @@ namespace Mindee.IntegrationTests.Extraction
     [Trait("Category", "Integration tests")]
     public class InvoiceSplitterAutoExtractionTest
     {
-        private static MindeeClient? _client;
+        private MindeeClient _client;
         private static LocalInputSource? _invoiceSplitterInputSource;
 
-        public InvoiceSplitterAutoExtractionTest()
-        {
-            ClientSetUp();
-        }
-
-        private static void ClientSetUp()
+        private InvoiceSplitterAutoExtractionTest()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             _client = new MindeeClient(apiKey);
@@ -32,7 +27,7 @@ namespace Mindee.IntegrationTests.Extraction
             Random r = new Random();
             Thread.Sleep(r.Next(1000, 3000));
             AsyncPredictResponse<InvoiceSplitterV1> response =
-                await _client!.EnqueueAndParseAsync<InvoiceSplitterV1>(_invoiceSplitterInputSource);
+                await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(_invoiceSplitterInputSource);
             return response.Document;
         }
 
