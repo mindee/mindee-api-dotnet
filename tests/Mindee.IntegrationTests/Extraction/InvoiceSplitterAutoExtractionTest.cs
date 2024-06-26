@@ -12,7 +12,7 @@ namespace Mindee.IntegrationTests.Extraction
         private MindeeClient _client;
         private static LocalInputSource? _invoiceSplitterInputSource;
 
-        private InvoiceSplitterAutoExtractionTest()
+        public InvoiceSplitterAutoExtractionTest()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             _client = new MindeeClient(apiKey);
