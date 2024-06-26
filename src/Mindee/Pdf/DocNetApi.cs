@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Exceptions;
@@ -53,9 +54,9 @@ namespace Mindee.Pdf
                 throw new ArgumentOutOfRangeException($"The total indexes of pages to cut is superior to the total page count of the file ({totalPages}).");
             }
 
-            if (targetedRange.Any(pn => pn >= totalPages || pn <= 0))
+            if (targetedRange.Any(pn => pn > totalPages || pn <= 0))
             {
-                throw new ArgumentOutOfRangeException($"Some indexes pages ({string.Join(",", splitQuery.PageOptions.PageNumbers)} are not existing in the file which have {totalPages} pages.");
+                throw new ArgumentOutOfRangeException($"Some indexes ({string.Join(",", splitQuery.PageOptions.PageNumbers)}) do not exist in the file ({totalPages} pages).");
             }
 
             string range;

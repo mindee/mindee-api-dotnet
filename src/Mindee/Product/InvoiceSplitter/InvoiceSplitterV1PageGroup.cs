@@ -14,6 +14,14 @@ namespace Mindee.Product.InvoiceSplitter
         public int[] PageIndexes { get; set; }
 
         /// <summary>
+        /// The confidence about the zone of the value extracted.
+        /// A value from 0 to 1.
+        /// </summary>
+        /// <example>0.9</example>
+        [JsonPropertyName("confidence")]
+        public double Confidence { get; set; }
+
+        /// <summary>
         /// A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
