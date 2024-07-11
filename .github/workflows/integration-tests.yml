@@ -31,11 +31,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Wait for unit tests to succeed
-      uses: lewagon/wait-on-check-action@v1.3.4
+      uses: lewagon/wait-on-check-action@master
       with:
         ref: ${{ github.ref }}
         check-name: 'Unit Tests'
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
         wait-interval: 10
     - uses: actions/checkout@v4
       with:
