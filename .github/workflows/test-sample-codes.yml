@@ -12,6 +12,8 @@ jobs:
   test:
     name: Run tests
     timeout-minutes: 30
+    concurrency:
+      group: calls-api
     strategy:
       max-parallel: 2
       matrix:
