@@ -35,6 +35,7 @@ jobs:
       with:
         ref: ${{ github.ref }}
         check-name: 'Unit Tests'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
         wait-interval: 10
     - uses: actions/checkout@v4
       with:
