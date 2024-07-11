@@ -16,7 +16,7 @@ env:
 
 jobs:
   test-nix:
-    name: Test on *NIX
+    name: Integration Test on *NIX
     timeout-minutes: 30
     strategy:
       max-parallel: 1
@@ -37,7 +37,7 @@ jobs:
       uses: lewagon/wait-on-check-action@master
       with:
         ref: ${{ github.event.pull_request.head.sha }}
-        check-name: Unit Tests
+        check-name: Test on Windows
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         wait-interval: 10
 
@@ -65,7 +65,7 @@ jobs:
 
 
   test-windows:
-    name: Test on Windows
+    name: Integration Test on Windows
     needs: test-nix
     timeout-minutes: 30
     strategy:
