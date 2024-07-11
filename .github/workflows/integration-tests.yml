@@ -36,7 +36,7 @@ jobs:
     - name: Wait for unit tests to succeed
       uses: lewagon/wait-on-check-action@master
       with:
-        ref: ${{ github.event.pull_request.head.sha }}
+        ref: ${{ github.event.pull_request.head.sha || github.sha }}
         check-name: Test on Windows
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         wait-interval: 10
