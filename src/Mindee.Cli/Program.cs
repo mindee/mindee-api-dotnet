@@ -22,9 +22,9 @@ using PredictFrIdCardCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Fr.IdCard.IdCardV1Document
 >;
 using PredictInternationalIdCommand = Mindee.Cli.PredictCommand<
-    Mindee.Product.InternationalId.InternationalIdV1,
-    Mindee.Product.InternationalId.InternationalIdV1Document,
-    Mindee.Product.InternationalId.InternationalIdV1Document
+    Mindee.Product.InternationalId.InternationalIdV2,
+    Mindee.Product.InternationalId.InternationalIdV2Document,
+    Mindee.Product.InternationalId.InternationalIdV2Document
 >;
 using PredictInvoiceCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Invoice.InvoiceV4,
@@ -56,6 +56,11 @@ using PredictUsBankCheckCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Us.BankCheck.BankCheckV1Page,
     Mindee.Product.Us.BankCheck.BankCheckV1Document
 >;
+using PredictUsMailCommand = Mindee.Cli.PredictCommand<
+    Mindee.Product.Us.UsMail.UsMailV2,
+    Mindee.Product.Us.UsMail.UsMailV2Document,
+    Mindee.Product.Us.UsMail.UsMailV2Document
+>;
 using PredictUsPayrollCheckRegisterCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Us.PayrollCheckRegister.PayrollCheckRegisterV1,
     Mindee.Product.Us.PayrollCheckRegister.PayrollCheckRegisterV1Document,
@@ -81,6 +86,7 @@ var runner = BuildCommandLine()
             .UseCommandHandler<PredictProofOfAddressCommand, PredictProofOfAddressCommand.Handler>()
             .UseCommandHandler<PredictUsBankCheckCommand, PredictUsBankCheckCommand.Handler>()
             .UseCommandHandler<PredictUsPayrollCheckRegisterCommand, PredictUsPayrollCheckRegisterCommand.Handler>()
+            .UseCommandHandler<PredictUsMailCommand, PredictUsMailCommand.Handler>()
             .UseCommandHandler<PredictInternationalIdCommand, PredictInternationalIdCommand.Handler>()
             ;
     })
@@ -148,6 +154,10 @@ static CommandLineBuilder BuildCommandLine()
         name: "us-payroll-check-register", description: "US Payroll Check Register",
         allWords: false, sync: false, async: true
         )));
+    root.AddCommand(new PredictUsMailCommand(new CommandOptions(
+        name: "us-mail", description: "US Mail",
+        allWords: false, sync: false, async: true
+    )));
 
     root.AddGlobalOption(new Option<bool>(name: "--silent", "Disables diagnostics output"));
     root.SetHandler(handle: () =>
