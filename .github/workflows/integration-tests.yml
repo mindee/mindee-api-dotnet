@@ -15,9 +15,27 @@ env:
   Mindee__ApiKey: ${{ secrets.MINDEE_API_KEY_SE_TESTS }}
 
 jobs:
+  wait-for-tests:
+    name: Waits for tests to be ran
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Wait for unit tests to succeed
+      uses: smartcontractkit/chainlink-github-actions/utils/wait-for-workflows@main
+      with:
+        max-timeout: "900"
+        polling-interval: "30"
+        ref: ${{ github.event.pull_request.head.sha || github.sha }}
+        check-name: false
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        wait-interval: 10
+
   test-nix:
     name: Integration Test on *NIX
     timeout-minutes: 30
+    needs: wait-for-tests
     strategy:
       max-parallel: 1
       matrix:
@@ -30,38 +48,30 @@ jobs:
           - "net8.0"
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-    - name: Wait for unit tests to succeed
-      uses: lewagon/wait-on-check-action@master
-      with:
-        ref: ${{ github.event.pull_request.head.sha || github.sha }}
-        check-name: false
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        wait-interval: 10
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
 
-    - name: Set up .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: |
-          6.0.x
-          8.0.x
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
-    - uses: actions/cache@v4
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
+      - name: Install dependencies
+        run: |
+          dotnet restore
 
-    - name: Install dependencies
-      run: |
-        dotnet restore
-
-    - name: Test
-      run: |
-        dotnet test -f ${{ matrix.dotnet-version }} --verbosity normal "tests\Mindee.IntegrationTests"
+      - name: Test
+        run: |
+          dotnet test -f ${{ matrix.dotnet-version }} --verbosity normal "tests\Mindee.IntegrationTests"
 
 
   test-windows:
