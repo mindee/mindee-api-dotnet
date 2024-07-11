@@ -23,8 +23,6 @@ namespace Mindee.IntegrationTests.Extraction
 
         private async Task<Document<InvoiceSplitterV1>> GetInvoiceSplitterPredictionAsync()
         {
-            // Generate a random artificial delay to avoid hitting 429 errors
-            Random r = new Random();
             AsyncPredictResponse<InvoiceSplitterV1> response =
                 await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(_invoiceSplitterInputSource);
             return response.Document;
