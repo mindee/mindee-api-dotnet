@@ -18,10 +18,8 @@ jobs:
   test-nix:
     name: Integration Test on *NIX
     timeout-minutes: 30
-    concurrency:
-      group: calls-api
     strategy:
-      max-parallel: 2
+      max-parallel: 1
       matrix:
         os:
           - "ubuntu-22.04"
@@ -66,11 +64,9 @@ jobs:
   test-windows:
     name: Integration Test on Windows
     needs: test-nix
-    concurrency:
-      group: calls-api
     timeout-minutes: 30
     strategy:
-      max-parallel: 2
+      max-parallel: 1
       matrix:
         os:
           - "windows-2022"
