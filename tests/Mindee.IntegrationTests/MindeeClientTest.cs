@@ -11,7 +11,7 @@ namespace Mindee.IntegrationTests
     [Trait("Category", "Integration tests")]
     public class MindeeClientTest
     {
-        private MindeeClient _mindeeClient;
+        private readonly MindeeClient _mindeeClient;
 
         public MindeeClientTest()
         {

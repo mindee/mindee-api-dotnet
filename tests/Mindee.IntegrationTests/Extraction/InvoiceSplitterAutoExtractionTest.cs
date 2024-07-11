@@ -9,8 +9,8 @@ namespace Mindee.IntegrationTests.Extraction
     [Trait("Category", "Integration tests")]
     public class InvoiceSplitterAutoExtractionTest
     {
-        private MindeeClient _client;
-        private static LocalInputSource? _invoiceSplitterInputSource;
+        private readonly MindeeClient _client;
+        private readonly LocalInputSource _invoiceSplitterInputSource;
 
         public InvoiceSplitterAutoExtractionTest()
         {
