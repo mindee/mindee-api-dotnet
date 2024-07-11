@@ -9,34 +9,15 @@ namespace Mindee.IntegrationTests.Extraction
     [Trait("Category", "Integration tests")]
     public class InvoiceSplitterAutoExtractionTest
     {
-        private MindeeClient _client;
-        private static LocalInputSource? _invoiceSplitterInputSource;
+        private readonly MindeeClient _client;
 
         public InvoiceSplitterAutoExtractionTest()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             _client = new MindeeClient(apiKey);
-            _invoiceSplitterInputSource = new LocalInputSource(
-                "Resources/products/invoice_splitter/default_sample.pdf"
-            );
         }
 
-        private async Task<Document<InvoiceSplitterV1>> GetInvoiceSplitterPredictionAsync()
-        {
-            // Generate a random artificial delay to avoid hitting 429 errors
-            Random r = new Random();
-            Thread.Sleep(r.Next(1000, 3000));
-            AsyncPredictResponse<InvoiceSplitterV1> response =
-                await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(_invoiceSplitterInputSource);
-            return response.Document;
-        }
-
-        private async Task<PredictResponse<InvoiceV4>> GetInvoicePredictionAsync(LocalInputSource invoicePDF)
-        {
-            return await _client!.ParseAsync<InvoiceV4>(invoicePDF);
-        }
-
-        private string PrepareInvoiceReturn(string rstFilePath, Document<InvoiceV4> invoicePrediction)
+        private static string PrepareInvoiceReturn(string rstFilePath, Document<InvoiceV4> invoicePrediction)
         {
             string rstRefLines = File.ReadAllText(rstFilePath);
             string parsingVersion = invoicePrediction.Inference.Product.Version;
@@ -49,27 +30,30 @@ namespace Mindee.IntegrationTests.Extraction
         }
 
         [Fact]
-        public async Task GivenAPDF_ShouldExtractInvoicesStrict_MustSucceed()
+        public async Task GivenAPdf_ShouldExtractInvoicesStrict_MustSucceed()
         {
-            Document<InvoiceSplitterV1> document = await GetInvoiceSplitterPredictionAsync();
-            InvoiceSplitterV1 inference = document.Inference;
+            var invoiceSplitterInputSource = new LocalInputSource(
+                "Resources/products/invoice_splitter/default_sample.pdf"
+            );
+            var response = await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource);
+            InvoiceSplitterV1 inference = response.Document.Inference;
 
-            PdfExtractor extractor = new PdfExtractor(_invoiceSplitterInputSource);
+            PdfExtractor extractor = new PdfExtractor(invoiceSplitterInputSource);
             Assert.Equal(2, extractor.GetPageCount());
-            List<ExtractedPdf> ExtractedPdfsStrict = extractor.ExtractInvoices(
+            List<ExtractedPdf> extractedPdfsStrict = extractor.ExtractInvoices(
                 inference.Prediction.PageGroups, false);
-            Assert.Equal(2, ExtractedPdfsStrict.Count);
-            Assert.Equal("default_sample_001-001.pdf", ExtractedPdfsStrict[0].Filename);
-            Assert.Equal("default_sample_002-002.pdf", ExtractedPdfsStrict[1].Filename);
+            Assert.Equal(2, extractedPdfsStrict.Count);
+            Assert.Equal("default_sample_001-001.pdf", extractedPdfsStrict[0].Filename);
+            Assert.Equal("default_sample_002-002.pdf", extractedPdfsStrict[1].Filename);
 
             PredictResponse<InvoiceV4> invoice0 =
-                await GetInvoicePredictionAsync(ExtractedPdfsStrict[0].AsInputSource());
+                await _client.ParseAsync<InvoiceV4>(extractedPdfsStrict[0].AsInputSource());
 
-            string testStringRSTInvoice0 = PrepareInvoiceReturn(
+            string testStringRstInvoice0 = PrepareInvoiceReturn(
                 "Resources/products/invoices/response_v4/summary_full_invoice_p1.rst",
                 invoice0.Document);
 
-            Assert.Equal(testStringRSTInvoice0, invoice0.Document.ToString());
+            Assert.Equal(testStringRstInvoice0, invoice0.Document.ToString());
         }
     }
 }

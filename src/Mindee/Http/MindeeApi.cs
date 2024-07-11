@@ -193,6 +193,7 @@ namespace Mindee.Http
                 }
             }
 
+            errorMessage += $"HTTP code {restResponse.StatusCode}: ";
             errorMessage += model?.ApiRequest.Error.ToString();
 
             _logger?.LogError(errorMessage);

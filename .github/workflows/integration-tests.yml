@@ -16,10 +16,10 @@ env:
 
 jobs:
   test-nix:
-    name: Test on *NIX
+    name: Integration Test on *NIX
     timeout-minutes: 30
     strategy:
-      max-parallel: 1
+      max-parallel: 3
       matrix:
         os:
           - "ubuntu-22.04"
@@ -62,11 +62,11 @@ jobs:
 
 
   test-windows:
-    name: Test on Windows
+    name: Integration Test on Windows
     needs: test-nix
     timeout-minutes: 30
     strategy:
-      max-parallel: 2
+      max-parallel: 3
       matrix:
         os:
           - "windows-2022"
