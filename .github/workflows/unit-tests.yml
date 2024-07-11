@@ -40,10 +40,6 @@ jobs:
       run: |
         dotnet restore
 
-    - name: Build
-      run: |
-        dotnet build -f ${{ matrix.dotnet-version }} --no-restore
-
     - name: Test
       run: |
         dotnet test -f ${{ matrix.dotnet-version }} --no-restore --verbosity normal "tests\Mindee.UnitTests"
