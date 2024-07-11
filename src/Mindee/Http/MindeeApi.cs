@@ -38,7 +38,8 @@ namespace Mindee.Http
             {
                 FollowRedirects = false,
                 Timeout = TimeSpan.FromSeconds(mindeeSettings.Value.RequestTimeoutSeconds),
-                UserAgent = BuildUserAgent()
+                UserAgent = BuildUserAgent(),
+                Expect100Continue = false,
             };
             if (httpMessageHandler != null)
             {
@@ -193,8 +194,18 @@ namespace Mindee.Http
                 }
             }
 
+            // Always add the status code, this REALLY should be made a property of our HTTP error classes.
             errorMessage += $"HTTP code {restResponse.StatusCode}: ";
-            errorMessage += model?.ApiRequest.Error.ToString();
+
+            // If the server JSON return is empty, try to dump the raw contents.
+            // If that STILL doesn't work, notify the user that the server response is empty.
+            var apiErrorMessage = model?.ApiRequest.Error.ToString();
+            if (!String.IsNullOrEmpty(apiErrorMessage))
+                errorMessage += apiErrorMessage;
+            else if (!String.IsNullOrEmpty(restResponse.Content))
+                errorMessage += restResponse.Content;
+            else
+                errorMessage += "Empty response from server.";
 
             _logger?.LogError(errorMessage);
 

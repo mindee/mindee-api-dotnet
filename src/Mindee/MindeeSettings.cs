@@ -16,7 +16,7 @@ namespace Mindee
         public string MindeeBaseUrl { get; set; } = string.Empty;
 
         /// <summary>
-        /// The request to Mindee API should time out about.
+        /// The maximum request duration in seconds.
         /// </summary>
         public int RequestTimeoutSeconds { get; set; } = 120;
     }
