@@ -35,8 +35,7 @@ namespace Mindee.IntegrationTests.Extraction
             var invoiceSplitterInputSource = new LocalInputSource(
                 "Resources/products/invoice_splitter/default_sample.pdf"
             );
-            var response = await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource, null, null,
-                new AsyncPollingOptions(maxRetries: 60));
+            var response = await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource);
             InvoiceSplitterV1 inference = response.Document.Inference;
 
             PdfExtractor extractor = new PdfExtractor(invoiceSplitterInputSource);
