@@ -25,7 +25,7 @@ namespace Mindee.IntegrationTests.Extraction
         public async Task GivenAPdf_ShouldExtractInvoicesStrict_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var client = new MindeeClient(new MindeeSettings() { ApiKey = apiKey });
+            var client = new MindeeClient(apiKey);
             var invoiceSplitterBytes = await File.ReadAllBytesAsync("Resources/products/invoice_splitter/default_sample.pdf");
             var invoiceSplitterInputSource = new LocalInputSource(invoiceSplitterBytes, "default_sample.pdf");
             var response = await client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource);
