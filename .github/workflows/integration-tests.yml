@@ -1,6 +1,7 @@
 name: Integration Tests
 
 on:
+  pull_request:
   workflow_run:
     workflows: [ "Test Code Samples" ]
     types: [ completed ]
