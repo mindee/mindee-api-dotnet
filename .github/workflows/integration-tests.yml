@@ -3,8 +3,8 @@ name: Integration Tests
 on:
   pull_request:
   workflow_run:
-    workflows: ["Test Code Samples"]
-    types: ["completed"]
+    workflows: [Test Code Samples]
+    types: [completedg]
   schedule:
     - cron:  '41 04 * * *'
 
