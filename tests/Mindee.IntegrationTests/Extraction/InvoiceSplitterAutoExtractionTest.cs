@@ -26,8 +26,8 @@ namespace Mindee.IntegrationTests.Extraction
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var client = new MindeeClient(new MindeeSettings() { ApiKey = apiKey, RequestTimeoutSeconds = 240 });
-            var invoiceSplitterFileInfo = new FileInfo("Resources/products/invoice_splitter/default_sample.pdf");
-            var invoiceSplitterInputSource = new LocalInputSource(invoiceSplitterFileInfo);
+            var invoiceSplitterBytes = await File.ReadAllBytesAsync("Resources/products/invoice_splitter/default_sample.pdf");
+            var invoiceSplitterInputSource = new LocalInputSource(invoiceSplitterBytes, "default_sample.pdf");
             var response = await client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource, null, null,
                 new AsyncPollingOptions(maxRetries: 60));
             InvoiceSplitterV1 inference = response.Document.Inference;
