@@ -44,6 +44,14 @@ namespace Mindee.UnitTests.Input
         }
 
         [Fact]
+        public void Can_Load_Using_MemoryStream()
+        {
+            var fileBytes = File.ReadAllBytes("Resources/file_types/receipt.jpg");
+            var memoryStream = new MemoryStream(fileBytes);
+            Assert.IsType<LocalInputSource>(new LocalInputSource(memoryStream, "receipt.jpg"));
+        }
+
+        [Fact]
         public void Can_Load_Using_FileBytes()
         {
             Assert.IsType<LocalInputSource>(new LocalInputSource(
