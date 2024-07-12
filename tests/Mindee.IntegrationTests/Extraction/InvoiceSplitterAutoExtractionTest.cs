@@ -9,14 +9,6 @@ namespace Mindee.IntegrationTests.Extraction
     [Trait("Category", "Integration tests")]
     public class InvoiceSplitterAutoExtractionTest
     {
-        private readonly MindeeClient _client;
-
-        public InvoiceSplitterAutoExtractionTest()
-        {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            _client = new MindeeClient(new MindeeSettings() { ApiKey = apiKey, RequestTimeoutSeconds = 240 });
-        }
-
         private static string PrepareInvoiceReturn(string rstFilePath, Document<InvoiceV4> invoicePrediction)
         {
             string rstRefLines = File.ReadAllText(rstFilePath);
@@ -32,9 +24,11 @@ namespace Mindee.IntegrationTests.Extraction
         [Fact]
         public async Task GivenAPdf_ShouldExtractInvoicesStrict_MustSucceed()
         {
+            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+            var client = new MindeeClient(new MindeeSettings() { ApiKey = apiKey, RequestTimeoutSeconds = 240 });
             var invoiceSplitterFileInfo = new FileInfo("Resources/products/invoice_splitter/default_sample.pdf");
             var invoiceSplitterInputSource = new LocalInputSource(invoiceSplitterFileInfo);
-            var response = await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource, null, null,
+            var response = await client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource, null, null,
                 new AsyncPollingOptions(maxRetries: 60));
             InvoiceSplitterV1 inference = response.Document.Inference;
 
@@ -47,7 +41,7 @@ namespace Mindee.IntegrationTests.Extraction
             Assert.Equal("default_sample_002-002.pdf", extractedPdfsStrict[1].Filename);
 
             PredictResponse<InvoiceV4> invoice0 =
-                await _client.ParseAsync<InvoiceV4>(extractedPdfsStrict[0].AsInputSource());
+                await client.ParseAsync<InvoiceV4>(extractedPdfsStrict[0].AsInputSource());
 
             string testStringRstInvoice0 = PrepareInvoiceReturn(
                 "Resources/products/invoices/response_v4/summary_full_invoice_p1.rst",
