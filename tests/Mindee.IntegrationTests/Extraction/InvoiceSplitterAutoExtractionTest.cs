@@ -32,9 +32,8 @@ namespace Mindee.IntegrationTests.Extraction
         [Fact]
         public async Task GivenAPdf_ShouldExtractInvoicesStrict_MustSucceed()
         {
-            var invoiceSplitterInputSource = new LocalInputSource(
-                "Resources/products/invoice_splitter/default_sample.pdf"
-            );
+            var invoiceSplitterFileInfo = new FileInfo("Resources/products/invoice_splitter/default_sample.pdf");
+            var invoiceSplitterInputSource = new LocalInputSource(invoiceSplitterFileInfo);
             var response = await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource);
             InvoiceSplitterV1 inference = response.Document.Inference;
 
