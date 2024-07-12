@@ -6,6 +6,7 @@ using Mindee.Product.InvoiceSplitter;
 
 namespace Mindee.IntegrationTests.Extraction
 {
+    [Trait("Category", "Integration tests")]
     public class InvoiceSplitterAutoExtractionTest
     {
         private static string PrepareInvoiceReturn(string rstFilePath, Document<InvoiceV4> invoicePrediction)
@@ -24,11 +25,10 @@ namespace Mindee.IntegrationTests.Extraction
         public async Task GivenAPdf_ShouldExtractInvoicesStrict_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var client = new MindeeClient(new MindeeSettings() { ApiKey = apiKey, RequestTimeoutSeconds = 240 });
+            var client = new MindeeClient(new MindeeSettings() { ApiKey = apiKey});
             var invoiceSplitterBytes = await File.ReadAllBytesAsync("Resources/products/invoice_splitter/default_sample.pdf");
             var invoiceSplitterInputSource = new LocalInputSource(invoiceSplitterBytes, "default_sample.pdf");
-            var response = await client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource, null, null,
-                new AsyncPollingOptions(maxRetries: 60));
+            var response = await client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource);
             InvoiceSplitterV1 inference = response.Document.Inference;
 
             PdfExtractor extractor = new PdfExtractor(invoiceSplitterInputSource);
