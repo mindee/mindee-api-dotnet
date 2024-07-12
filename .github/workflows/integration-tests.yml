@@ -2,7 +2,7 @@ name: Integration Tests
 
 on:
   workflow_run:
-    workflows: [Test Code Samples]
+    workflows: ["Test Code Samples"]
     types: [completed]
   schedule:
     - cron:  '41 04 * * *'
