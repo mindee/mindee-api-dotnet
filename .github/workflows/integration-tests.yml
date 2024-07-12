@@ -2,10 +2,6 @@ name: Integration Tests
 
 on:
   pull_request:
-  workflow_run:
-    workflows: [ "Test Code Samples" ]
-    types: [ completed ]
-    branches: [ ${ { github.head_ref } } ]
   schedule:
     - cron: '41 04 * * *'
 
