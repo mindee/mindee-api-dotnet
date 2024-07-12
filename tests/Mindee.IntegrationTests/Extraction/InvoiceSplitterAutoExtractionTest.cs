@@ -14,7 +14,7 @@ namespace Mindee.IntegrationTests.Extraction
         public InvoiceSplitterAutoExtractionTest()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            _client = new MindeeClient(apiKey);
+            _client = new MindeeClient(new MindeeSettings() { ApiKey = apiKey, RequestTimeoutSeconds = 240 });
         }
 
         private static string PrepareInvoiceReturn(string rstFilePath, Document<InvoiceV4> invoicePrediction)
@@ -34,7 +34,8 @@ namespace Mindee.IntegrationTests.Extraction
         {
             var invoiceSplitterFileInfo = new FileInfo("Resources/products/invoice_splitter/default_sample.pdf");
             var invoiceSplitterInputSource = new LocalInputSource(invoiceSplitterFileInfo);
-            var response = await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource);
+            var response = await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource, null, null,
+                new AsyncPollingOptions(maxRetries: 60));
             InvoiceSplitterV1 inference = response.Document.Inference;
 
             PdfExtractor extractor = new PdfExtractor(invoiceSplitterInputSource);
