@@ -6,7 +6,6 @@ using Mindee.Product.InvoiceSplitter;
 
 namespace Mindee.IntegrationTests.Extraction
 {
-    [Trait("Category", "Integration tests")]
     public class InvoiceSplitterAutoExtractionTest
     {
         private static string PrepareInvoiceReturn(string rstFilePath, Document<InvoiceV4> invoicePrediction)
