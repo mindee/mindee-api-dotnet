@@ -48,11 +48,9 @@ namespace Mindee.Http
 
             _httpClient = new RestClient(clientOptions);
 
-            // Note: disabling cache on requests prevents the enqueue_and_parse polling from crashing
-            // (see https://github.com/dotnet/runtime/issues/20013)
             _defaultHeaders = new Dictionary<string, string>
             {
-                { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" }, { "Cache-Control", "no-cache" }
+                { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" }, { "Cache-Control", "no-store" }
             };
             _httpClient.AddDefaultHeaders(_defaultHeaders);
         }
@@ -69,7 +67,6 @@ namespace Mindee.Http
             var request = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/predict_async"
                 , Method.Post);
-            // Note: Fixes broken connections in some versions (see: https://github.com/restsharp/RestSharp/issues/1392)
             request.AddHeader("Connection", "close");
 
             AddPredictRequestParameters(predictParameter, request);
@@ -91,7 +88,6 @@ namespace Mindee.Http
             var request = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/predict"
                 , Method.Post);
-            // Note: Fixes broken connections in some versions (see: https://github.com/restsharp/RestSharp/issues/1392)
             request.AddHeader("Connection", "close");
 
             AddPredictRequestParameters(predictParameter, request);
@@ -113,7 +109,6 @@ namespace Mindee.Http
             var queueRequest = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/documents/queue/{jobId}");
 
-            // Note: Fixes broken connections in some versions (see: https://github.com/restsharp/RestSharp/issues/1392)
             queueRequest.AddHeader("Connection", "close");
             _logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource} ...");
 
