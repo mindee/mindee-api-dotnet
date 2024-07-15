@@ -69,6 +69,8 @@ namespace Mindee.Http
             var request = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/predict_async"
                 , Method.Post);
+            // Note: Fixes broken connections in some versions (see: https://github.com/restsharp/RestSharp/issues/1392)
+            request.AddHeader("Connection", "close");
 
             AddPredictRequestParameters(predictParameter, request);
 
@@ -89,6 +91,8 @@ namespace Mindee.Http
             var request = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/predict"
                 , Method.Post);
+            // Note: Fixes broken connections in some versions (see: https://github.com/restsharp/RestSharp/issues/1392)
+            request.AddHeader("Connection", "close");
 
             AddPredictRequestParameters(predictParameter, request);
 
