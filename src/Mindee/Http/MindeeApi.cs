@@ -50,7 +50,7 @@ namespace Mindee.Http
 
             _defaultHeaders = new Dictionary<string, string>
             {
-                { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" }, { "Connection", "close" }
+                { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" }
             };
             _httpClient.AddDefaultHeaders(_defaultHeaders);
         }
@@ -67,6 +67,7 @@ namespace Mindee.Http
             var request = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/predict_async"
                 , Method.Post);
+            request.AddHeader("Connection", "close");
 
             AddPredictRequestParameters(predictParameter, request);
 
