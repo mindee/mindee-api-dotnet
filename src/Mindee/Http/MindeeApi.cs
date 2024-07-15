@@ -36,7 +36,7 @@ namespace Mindee.Http
 
             RestClientOptions clientOptions = new RestClientOptions(_baseUrl)
             {
-                FollowRedirects = false,
+                FollowRedirects = true,
                 Timeout = TimeSpan.FromSeconds(mindeeSettings.Value.RequestTimeoutSeconds),
                 UserAgent = BuildUserAgent(),
                 Expect100Continue = false,
