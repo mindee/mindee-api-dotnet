@@ -48,6 +48,8 @@ namespace Mindee.Http
 
             _httpClient = new RestClient(clientOptions);
 
+            // Note: disabling cache on requests prevents the enqueue_and_parse polling from crashing
+            // (see https://github.com/dotnet/runtime/issues/20013)
             _defaultHeaders = new Dictionary<string, string>
             {
                 { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" }, { "Cache-Control", "no-cache" }
@@ -67,7 +69,6 @@ namespace Mindee.Http
             var request = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/predict_async"
                 , Method.Post);
-            request.AddHeader("Connection", "close");
 
             AddPredictRequestParameters(predictParameter, request);
 
