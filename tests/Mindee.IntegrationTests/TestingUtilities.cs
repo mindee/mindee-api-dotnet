@@ -30,17 +30,20 @@ namespace Mindee.IntegrationTests
         }
 
         // Note: Custom implementation for older versions of .NET
-        public static async Task<byte[]> ReadAllBytesAsync(string path)
+        public static Task<byte[]> ReadAllBytesAsync(string path)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
 
-            byte[] buffer;
-            using FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
-            buffer = new byte[fs.Length];
-            await fs.ReadAsync(buffer, 0, (int)fs.Length);
+            return Task.Run(() =>
+            {
+                byte[] buffer;
+                using FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                buffer = new byte[fs.Length];
+                fs.Read(buffer, 0, (int)fs.Length);
 
-            return buffer;
+                return buffer;
+            });
         }
     }
 }
