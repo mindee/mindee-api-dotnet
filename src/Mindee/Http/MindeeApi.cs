@@ -89,6 +89,7 @@ namespace Mindee.Http
             var request = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/predict"
                 , Method.Post);
+            request.AddHeader("Cache-Control", "no-store");
 
             AddPredictRequestParameters(predictParameter, request);
 
