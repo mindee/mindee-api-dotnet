@@ -109,6 +109,8 @@ namespace Mindee.Http
             var queueRequest = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/documents/queue/{jobId}");
 
+            // Note: Fixes broken connections in some versions (see: https://github.com/restsharp/RestSharp/issues/1392)
+            queueRequest.AddHeader("Connection", "close");
             _logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource} ...");
 
             var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest);
