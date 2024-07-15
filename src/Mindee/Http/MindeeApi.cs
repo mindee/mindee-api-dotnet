@@ -25,7 +25,7 @@ namespace Mindee.Http
             IOptions<MindeeSettings> mindeeSettings
             , ILogger<MindeeApi> logger = null
             , HttpMessageHandler httpMessageHandler = null
-            )
+        )
         {
             _logger = logger;
 
@@ -50,9 +50,7 @@ namespace Mindee.Http
 
             _defaultHeaders = new Dictionary<string, string>
             {
-                {
-                    "Authorization", $"Token {mindeeSettings.Value.ApiKey}"
-                }
+                { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" }, { "Connection", "close" }
             };
             _httpClient.AddDefaultHeaders(_defaultHeaders);
         }
@@ -60,7 +58,7 @@ namespace Mindee.Http
         public async Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(
             PredictParameter predictParameter
             , CustomEndpoint endpoint = null
-            )
+        )
             where TModel : class, new()
         {
             if (endpoint is null)
@@ -125,11 +123,13 @@ namespace Mindee.Http
                 var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
                 return ResponseHandler<AsyncPredictResponse<TModel>>(docResponse);
             }
+
             var handledResponse = ResponseHandler<AsyncPredictResponse<TModel>>(queueResponse);
             if (handledResponse.Job?.Error?.Code != null)
             {
                 throw new Mindee500Exception(handledResponse.Job.Error.Message);
             }
+
             return handledResponse;
         }
 
@@ -148,10 +148,12 @@ namespace Mindee.Http
                     "document",
                     predictParameter.UrlSource.FileUrl.ToString());
             }
+
             if (predictParameter.AllWords)
             {
                 request.AddParameter(name: "include_mvision", value: "true");
             }
+
             if (predictParameter.Cropper)
             {
                 request.AddQueryParameter(name: "cropper", value: "true");
@@ -161,8 +163,8 @@ namespace Mindee.Http
         private static string BuildUserAgent()
         {
             return $"mindee-api-dotnet@v{Assembly.GetExecutingAssembly().GetName().Version}"
-                + $" dotnet-v{Environment.Version}"
-                + $" {Environment.OSVersion}";
+                   + $" dotnet-v{Environment.Version}"
+                   + $" {Environment.OSVersion}";
         }
 
         private TModel ResponseHandler<TModel>(RestResponse restResponse)
