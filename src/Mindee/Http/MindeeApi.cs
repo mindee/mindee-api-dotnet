@@ -50,7 +50,8 @@ namespace Mindee.Http
 
             _defaultHeaders = new Dictionary<string, string>
             {
-                { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" }, { "Cache-Control", "no-store" }
+                { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" },
+                { "Cache-Control", "no-store, no-cache, max-age=0, must-revalidate, proxy-revalidate" }
             };
             _httpClient.AddDefaultHeaders(_defaultHeaders);
         }
