@@ -8,6 +8,17 @@ namespace Mindee.UnitTests.Extraction
 {
     public class PdfExtractorTest
     {
+
+        [Fact]
+        public void GivenAnImage_ShouldExtractAPDF()
+        {
+            var jpg = "Resources/products/invoices/default_sample.jpg";
+            var localInput = new LocalInputSource(jpg);
+            Assert.False(localInput.IsPdf());
+            var extractor = new PdfExtractor(localInput);
+            Assert.Equal(1, extractor.GetPageCount());
+        }
+
         [Fact]
         public async Task GivenAPDF_ShouldExtractInvoicesNoStrict()
         {

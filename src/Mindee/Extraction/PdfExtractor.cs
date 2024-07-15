@@ -35,9 +35,15 @@ namespace Mindee.Extraction
             }
             else
             {
-                var memoryStream = new MemoryStream(localInput.FileBytes);
-                using SKDocument document = SKDocument.CreatePdf(memoryStream);
-                document.Close();
+                var memoryStream = new MemoryStream();
+                var image = SKImage.FromEncodedData(localInput.FileBytes);
+                var bmp = SKBitmap.FromImage(image);
+                var pageSize = new SKSize(bmp.Width, bmp.Height);
+                using (var document = SKDocument.CreatePdf(memoryStream))
+                {
+                    var canvas = document.BeginPage(pageSize.Width, pageSize.Height);
+                    canvas.DrawBitmap(bmp, SKPoint.Empty);
+                }
                 this.SourcePdf = memoryStream.ToArray();
             }
         }
