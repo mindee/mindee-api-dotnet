@@ -50,8 +50,7 @@ namespace Mindee.Http
 
             _defaultHeaders = new Dictionary<string, string>
             {
-                { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" },
-                { "Cache-Control", "no-store, no-cache, max-age=0, must-revalidate, proxy-revalidate" }
+                { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" }
             };
             _httpClient.AddDefaultHeaders(_defaultHeaders);
         }
@@ -69,6 +68,7 @@ namespace Mindee.Http
                 $"v1/products/{endpoint.GetBaseUrl()}/predict_async"
                 , Method.Post);
             request.AddHeader("Connection", "close");
+            request.AddHeader("Cache-Control", "no-store");
 
             AddPredictRequestParameters(predictParameter, request);
 
@@ -90,6 +90,7 @@ namespace Mindee.Http
                 $"v1/products/{endpoint.GetBaseUrl()}/predict"
                 , Method.Post);
             request.AddHeader("Connection", "close");
+            request.AddHeader("Cache-Control", "no-store");
 
             AddPredictRequestParameters(predictParameter, request);
 
@@ -111,6 +112,7 @@ namespace Mindee.Http
                 $"v1/products/{endpoint.GetBaseUrl()}/documents/queue/{jobId}");
 
             queueRequest.AddHeader("Connection", "close");
+            queueRequest.AddHeader("Cache-Control", "no-store");
             _logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource} ...");
 
             var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest);
