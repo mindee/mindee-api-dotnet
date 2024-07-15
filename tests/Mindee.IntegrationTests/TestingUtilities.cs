@@ -28,22 +28,5 @@ namespace Mindee.IntegrationTests
 
             return rstStr.Substring(idStartPos, idEndPos - idStartPos);
         }
-
-        // Note: Custom implementation for older versions of .NET
-        public static Task<byte[]> ReadAllBytesAsync(string path)
-        {
-            if (path == null)
-                throw new ArgumentNullException(nameof(path));
-
-            return Task.Run(() =>
-            {
-                byte[] buffer;
-                using FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-                buffer = new byte[fs.Length];
-                fs.Read(buffer, 0, (int)fs.Length);
-
-                return buffer;
-            });
-        }
     }
 }
