@@ -2,14 +2,13 @@ using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Mindee.DependencyInjection;
 using Mindee.Exceptions;
 using Mindee.Http;
 using Mindee.Input;
-using Mindee.Parsing;
 using Mindee.Parsing.Common;
-using Mindee.Parsing.Standard;
 using Mindee.Pdf;
 using Mindee.Product.Custom;
 using Mindee.Product.Generated;
@@ -32,17 +31,23 @@ namespace Mindee
         /// <param name="logger"></param>
         public MindeeClient(string apiKey, ILoggerFactory logger = null)
         {
-            var mindeeSettings = new MindeeSettings
-            {
-                ApiKey = apiKey
-            };
+            var serviceCollection = new ServiceCollection();
             _pdfOperation = new DocNetApi();
-            _mindeeApi = new MindeeApi(Options.Create(mindeeSettings));
+
+            serviceCollection.AddMindeeApi(options =>
+            {
+                options.ApiKey = apiKey;
+            });
+
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
             if (logger != null)
             {
-                MindeeLogger.Assign(logger);
-                _logger = MindeeLogger.GetLogger();
+                serviceCollection.AddSingleton(logger);
+                _logger = logger.CreateLogger<MindeeClient>();
             }
+
+            _mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
         }
 
         /// <summary>
@@ -52,13 +57,23 @@ namespace Mindee
         /// <param name="logger"></param>
         public MindeeClient(MindeeSettings mindeeSettings, ILoggerFactory logger = null)
         {
+            var serviceCollection = new ServiceCollection();
             _pdfOperation = new DocNetApi();
-            _mindeeApi = new MindeeApi(Options.Create(mindeeSettings));
+            serviceCollection.AddMindeeApi(options =>
+            {
+                options.ApiKey = mindeeSettings.ApiKey;
+                options.MindeeBaseUrl = mindeeSettings.MindeeBaseUrl;
+                options.RequestTimeoutSeconds = mindeeSettings.RequestTimeoutSeconds;
+            });
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
             if (logger != null)
             {
                 MindeeLogger.Assign(logger);
                 _logger = MindeeLogger.GetLogger();
             }
+
+            _mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
         }
 
         /// <summary>
@@ -99,6 +114,7 @@ namespace Mindee
             {
                 predictOptions = new PredictOptions();
             }
+
             if (pageOptions != null && inputSource.IsPdf())
             {
                 inputSource.FileBytes = _pdfOperation.Split(
@@ -133,6 +149,7 @@ namespace Mindee
             {
                 predictOptions = new PredictOptions();
             }
+
             return await _mindeeApi.PredictPostAsync<CustomV1>(
                 new PredictParameter(
                     localSource: null,
@@ -164,6 +181,7 @@ namespace Mindee
             {
                 predictOptions = new PredictOptions();
             }
+
             if (pageOptions != null && inputSource.IsPdf())
             {
                 inputSource.FileBytes = _pdfOperation.Split(
@@ -201,6 +219,7 @@ namespace Mindee
             {
                 predictOptions = new PredictOptions();
             }
+
             return await _mindeeApi.PredictPostAsync<TInferenceModel>(
                 new PredictParameter(
                     localSource: null,
@@ -234,11 +253,13 @@ namespace Mindee
             {
                 predictOptions = new PredictOptions();
             }
+
             if (pageOptions != null && inputSource.IsPdf())
             {
                 inputSource.FileBytes = _pdfOperation.Split(
                     new SplitQuery(inputSource.FileBytes, pageOptions)).File;
             }
+
             return await _mindeeApi.PredictAsyncPostAsync<TInferenceModel>(
                 new PredictParameter(
                     localSource: inputSource,
@@ -270,6 +291,7 @@ namespace Mindee
             {
                 predictOptions = new PredictOptions();
             }
+
             return await _mindeeApi.PredictAsyncPostAsync<TInferenceModel>(
                 new PredictParameter(
                     localSource: null,
@@ -298,6 +320,7 @@ namespace Mindee
             {
                 throw new ArgumentNullException(jobId);
             }
+
             return await _mindeeApi.DocumentQueueGetAsync<TInferenceModel>(jobId, endpoint);
         }
 
@@ -357,8 +380,10 @@ namespace Mindee
                 {
                     return response;
                 }
+
                 retryCount++;
             }
+
             throw new MindeeException($"Could not complete after {retryCount} attempts.");
         }
 
@@ -384,11 +409,13 @@ namespace Mindee
             {
                 predictOptions = new PredictOptions();
             }
+
             if (pageOptions != null && inputSource.IsPdf())
             {
                 var splitPdf = _pdfOperation.Split(new SplitQuery(inputSource.FileBytes, pageOptions));
                 inputSource.FileBytes = splitPdf.File;
             }
+
             return await _mindeeApi.PredictPostAsync<TInferenceModel>(
                 new PredictParameter(
                     localSource: inputSource,
@@ -417,6 +444,7 @@ namespace Mindee
             {
                 predictOptions = new PredictOptions();
             }
+
             return await _mindeeApi.PredictPostAsync<TInferenceModel>(
                 new PredictParameter(
                     localSource: null,
@@ -447,11 +475,13 @@ namespace Mindee
             {
                 predictOptions = new PredictOptions();
             }
+
             if (pageOptions != null && inputSource.IsPdf())
             {
                 inputSource.FileBytes = _pdfOperation.Split(
                     new SplitQuery(inputSource.FileBytes, pageOptions)).File;
             }
+
             return await _mindeeApi.PredictAsyncPostAsync<TInferenceModel>(
                 new PredictParameter(
                     localSource: inputSource,
@@ -480,6 +510,7 @@ namespace Mindee
             {
                 predictOptions = new PredictOptions();
             }
+
             return await _mindeeApi.PredictAsyncPostAsync<TInferenceModel>(
                 new PredictParameter(
                     localSource: null,
@@ -504,6 +535,7 @@ namespace Mindee
             {
                 throw new ArgumentNullException(jobId);
             }
+
             return await _mindeeApi.DocumentQueueGetAsync<TInferenceModel>(jobId);
         }
 
@@ -560,8 +592,10 @@ namespace Mindee
                 {
                     return response;
                 }
+
                 retryCount++;
             }
+
             throw new MindeeException($"Could not complete after {retryCount} attempts.");
         }
 
