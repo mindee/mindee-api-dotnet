@@ -49,8 +49,6 @@ namespace Mindee.Http
             var request = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/predict_async"
                 , Method.Post);
-            request.AddHeader("Cache-Control", "no-store");
-            request.AddHeader("Connection", "close");
 
             AddPredictRequestParameters(predictParameter, request);
 
@@ -71,7 +69,6 @@ namespace Mindee.Http
             var request = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/predict"
                 , Method.Post);
-            request.AddHeader("Connection", "close");
 
             AddPredictRequestParameters(predictParameter, request);
 
