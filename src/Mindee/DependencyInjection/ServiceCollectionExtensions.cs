@@ -22,7 +22,6 @@ namespace Mindee.DependencyInjection
         public static void AddMindeeApi(this IServiceCollection services,
             Action<MindeeSettings> configureOptions)
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; // Safety for .NET 4.7.2
             services.Configure(configureOptions);
 
             services.AddSingleton(provider =>
