@@ -1,5 +1,21 @@
 # Mindee .NET API Library Changelog
 
+## v3.18.0 - 2024-07-18
+### Changes
+* :sparkles: add support for US Healthcare card
+* :sparkles: add support for Us Mail V2
+* :sparkles: update financial document to v1.9
+* :sparkles: update invoice to v4.7
+
+### Fixes
+* :bug: fix restsharp dependency issue (#219)
+* :bug: fix uncommon bug where api calls would sometime stay opened for too long & cause timeouts
+* :bug: fix image not loading properly when using the PDF Extraction feature
+* :recycle: better notifications in case of hanging connections
+* :arrow_up: update System.Text.Json to cover vulnerability
+* :recycle: update many tests
+
+
 ## v3.17.0 - 2024-06-26
 ### Changes
 * :sparkles: add support for invoice splitter auto-extraction
