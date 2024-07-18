@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.MultiReceiptsDetector
 {
     /// <summary>
-    /// Multi Receipts Detector API version 1.0 document data.
+    /// Multi Receipts Detector API version 1.1 document data.
     /// </summary>
     public class MultiReceiptsDetectorV1Document : IPrediction
     {

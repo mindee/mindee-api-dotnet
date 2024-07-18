@@ -49,6 +49,12 @@ namespace Mindee.Product.FinancialDocument
         public double? TotalAmount { get; set; }
 
         /// <summary>
+        /// The item unit of measure.
+        /// </summary>
+        [JsonPropertyName("unit_measure")]
+        public string UnitMeasure { get; set; }
+
+        /// <summary>
         /// The item unit price.
         /// </summary>
         [JsonPropertyName("unit_price")]
@@ -73,6 +79,8 @@ namespace Mindee.Product.FinancialDocument
               + " | "
               + String.Format("{0,-12}", printable["TotalAmount"])
               + " | "
+              + String.Format("{0,-15}", printable["UnitMeasure"])
+              + " | "
               + String.Format("{0,-10}", printable["UnitPrice"])
               + " |";
         }
@@ -95,6 +103,8 @@ namespace Mindee.Product.FinancialDocument
               + printable["TaxRate"]
               + ", Total Amount: "
               + printable["TotalAmount"]
+              + ", Unit of measure: "
+              + printable["UnitMeasure"]
               + ", Unit Price: "
               + printable["UnitPrice"].Trim();
         }
@@ -109,6 +119,7 @@ namespace Mindee.Product.FinancialDocument
                 {"TaxAmount", SummaryHelper.FormatAmount(TaxAmount)},
                 {"TaxRate", SummaryHelper.FormatAmount(TaxRate)},
                 {"TotalAmount", SummaryHelper.FormatAmount(TotalAmount)},
+                {"UnitMeasure", SummaryHelper.FormatString(UnitMeasure)},
                 {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
             };
         }
@@ -128,7 +139,7 @@ namespace Mindee.Product.FinancialDocument
             {
                 return "\n";
             }
-            int[] columnSizes = { 38, 14, 10, 12, 14, 14, 12 };
+            int[] columnSizes = { 38, 14, 10, 12, 14, 14, 17, 12 };
             StringBuilder outStr = new StringBuilder("\n");
             outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '-') + "  ");
             outStr.Append("| Description                          ");
@@ -137,6 +148,7 @@ namespace Mindee.Product.FinancialDocument
             outStr.Append("| Tax Amount ");
             outStr.Append("| Tax Rate (%) ");
             outStr.Append("| Total Amount ");
+            outStr.Append("| Unit of measure ");
             outStr.Append("| Unit Price ");
             outStr.Append("|\n  " + SummaryHelper.LineSeparator(columnSizes, '='));
             outStr.Append(SummaryHelper.ArrayToString(this, columnSizes));

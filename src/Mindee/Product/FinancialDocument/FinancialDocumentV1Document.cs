@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.FinancialDocument
 {
     /// <summary>
-    /// Financial Document API version 1.7 document data.
+    /// Financial Document API version 1.9 document data.
     /// </summary>
     public class FinancialDocumentV1Document : IPrediction
     {
