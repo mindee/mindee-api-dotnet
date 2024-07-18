@@ -16,7 +16,7 @@ namespace Mindee.IntegrationTests
         public MindeeClientTest()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            _mindeeClient = new MindeeClient(apiKey);
+            _mindeeClient = TestingUtilities.GetOrGenerateMindeeClient(apiKey);
         }
 
         [Fact]

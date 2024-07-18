@@ -1,7 +1,8 @@
 namespace Mindee.IntegrationTests
 {
-    public class TestingUtilities
+    public static class TestingUtilities
     {
+        public static MindeeClient? mindeeClient;
         public static string GetVersion(string rstStr)
         {
             int versionLineStartPos = rstStr.IndexOf(":Product: ", StringComparison.Ordinal);
@@ -27,6 +28,16 @@ namespace Mindee.IntegrationTests
             int idEndPos = rstStr.IndexOf("\n\nInference", StringComparison.Ordinal);
 
             return rstStr.Substring(idStartPos, idEndPos - idStartPos);
+        }
+
+        public static MindeeClient GetOrGenerateMindeeClient(string? apiKey)
+        {
+            if (mindeeClient == null)
+            {
+                mindeeClient = new MindeeClient(apiKey);
+            }
+
+            return mindeeClient;
         }
     }
 }

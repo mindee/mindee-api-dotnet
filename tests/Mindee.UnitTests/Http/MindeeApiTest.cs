@@ -56,6 +56,7 @@ namespace Mindee.UnitTests.Http
 
             return services.BuildServiceProvider();
         }
+
         [Fact]
         public async Task Predict_WithWrongKey()
         {
