@@ -19,9 +19,10 @@ namespace Mindee.DependencyInjection
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configureOptions"></param>
+        /// <param name="throwOnError"></param>
         /// <returns></returns>
         public static void AddMindeeApi(this IServiceCollection services,
-            Action<MindeeSettings> configureOptions)
+            Action<MindeeSettings> configureOptions, bool throwOnError = false)
         {
             services.Configure(configureOptions);
 
@@ -42,7 +43,8 @@ namespace Mindee.DependencyInjection
                     Timeout = TimeSpan.FromSeconds(mindeeSettings.RequestTimeoutSeconds),
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
-                    CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true }
+                    CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true },
+                    ThrowOnAnyError = throwOnError
                 };
                 return new RestClient(clientOptions);
             });
