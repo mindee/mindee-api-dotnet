@@ -42,7 +42,7 @@ namespace Mindee.DependencyInjection
                     Timeout = TimeSpan.FromSeconds(mindeeSettings.RequestTimeoutSeconds),
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
-                    CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true}
+                    CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true }
                 };
                 return new RestClient(clientOptions);
             });
