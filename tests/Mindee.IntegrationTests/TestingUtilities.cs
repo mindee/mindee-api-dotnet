@@ -1,3 +1,6 @@
+using Microsoft.Extensions.DependencyInjection;
+using Mindee.DependencyInjection;
+
 namespace Mindee.IntegrationTests
 {
     public static class TestingUtilities
@@ -34,6 +37,11 @@ namespace Mindee.IntegrationTests
         {
             if (mindeeClient == null)
             {
+                var serviceCollection = new ServiceCollection();
+                serviceCollection.AddMindeeApi(options =>
+                {
+                    options.ApiKey = apiKey;
+                }, true);
                 mindeeClient = new MindeeClient(apiKey);
             }
 
