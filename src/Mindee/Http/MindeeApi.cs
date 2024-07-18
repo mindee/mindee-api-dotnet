@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -16,43 +14,25 @@ namespace Mindee.Http
 {
     internal sealed class MindeeApi : IHttpApi
     {
-        private readonly string _baseUrl = "https://api.mindee.net/";
+        private readonly string _baseUrl;
         private readonly Dictionary<string, string> _defaultHeaders;
         private readonly RestClient _httpClient;
         private readonly ILogger<MindeeApi> _logger;
 
-        public MindeeApi(
-            IOptions<MindeeSettings> mindeeSettings
-            , ILogger<MindeeApi> logger = null
-            , HttpMessageHandler httpMessageHandler = null
-            )
+        public MindeeApi(IOptions<MindeeSettings> mindeeSettings, RestClient httpClient,
+            ILogger<MindeeApi> logger = null)
         {
             _logger = logger;
+            _httpClient = httpClient;
 
             if (!string.IsNullOrWhiteSpace(mindeeSettings.Value.MindeeBaseUrl))
             {
                 _baseUrl = mindeeSettings.Value.MindeeBaseUrl;
             }
 
-            RestClientOptions clientOptions = new RestClientOptions(_baseUrl)
-            {
-                FollowRedirects = false,
-                Timeout = TimeSpan.FromSeconds(mindeeSettings.Value.RequestTimeoutSeconds),
-                UserAgent = BuildUserAgent(),
-                Expect100Continue = false,
-            };
-            if (httpMessageHandler != null)
-            {
-                clientOptions.ConfigureMessageHandler = _ => httpMessageHandler;
-            }
-
-            _httpClient = new RestClient(clientOptions);
-
             _defaultHeaders = new Dictionary<string, string>
             {
-                {
-                    "Authorization", $"Token {mindeeSettings.Value.ApiKey}"
-                }
+                { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" }, { "Connection", "close" }
             };
             _httpClient.AddDefaultHeaders(_defaultHeaders);
         }
@@ -60,7 +40,7 @@ namespace Mindee.Http
         public async Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(
             PredictParameter predictParameter
             , CustomEndpoint endpoint = null
-            )
+        )
             where TModel : class, new()
         {
             if (endpoint is null)
@@ -125,11 +105,13 @@ namespace Mindee.Http
                 var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
                 return ResponseHandler<AsyncPredictResponse<TModel>>(docResponse);
             }
+
             var handledResponse = ResponseHandler<AsyncPredictResponse<TModel>>(queueResponse);
             if (handledResponse.Job?.Error?.Code != null)
             {
                 throw new Mindee500Exception(handledResponse.Job.Error.Message);
             }
+
             return handledResponse;
         }
 
@@ -148,21 +130,16 @@ namespace Mindee.Http
                     "document",
                     predictParameter.UrlSource.FileUrl.ToString());
             }
+
             if (predictParameter.AllWords)
             {
                 request.AddParameter(name: "include_mvision", value: "true");
             }
+
             if (predictParameter.Cropper)
             {
                 request.AddQueryParameter(name: "cropper", value: "true");
             }
-        }
-
-        private static string BuildUserAgent()
-        {
-            return $"mindee-api-dotnet@v{Assembly.GetExecutingAssembly().GetName().Version}"
-                + $" dotnet-v{Environment.Version}"
-                + $" {Environment.OSVersion}";
         }
 
         private TModel ResponseHandler<TModel>(RestResponse restResponse)

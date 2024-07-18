@@ -1,33 +1,51 @@
+using Microsoft.Extensions.DependencyInjection;
+using Mindee.DependencyInjection;
+
 namespace Mindee.IntegrationTests
 {
-    public class TestingUtilities
+    public static class TestingUtilities
     {
-
+        public static MindeeClient? mindeeClient;
         public static string GetVersion(string rstStr)
         {
-            int versionLineStartPos = rstStr.IndexOf(":Product: ");
-            int versionEndPos = rstStr.IndexOf("\n", versionLineStartPos);
+            int versionLineStartPos = rstStr.IndexOf(":Product: ", StringComparison.Ordinal);
+            int versionEndPos = rstStr.IndexOf("\n", versionLineStartPos, StringComparison.Ordinal);
 
             string substring = rstStr.Substring(versionLineStartPos, versionEndPos - versionLineStartPos);
-            int versionStartPos = substring.LastIndexOf(" v");
+            int versionStartPos = substring.LastIndexOf(" v", StringComparison.Ordinal);
 
             return substring.Substring(versionStartPos + 2);
         }
 
         public static string GetId(string rstStr)
         {
-            int idStartPos = rstStr.IndexOf(":Mindee ID: ") + 12;
-            int idEndPos = rstStr.IndexOf("\n:Filename:");
+            int idStartPos = rstStr.IndexOf(":Mindee ID: ", StringComparison.Ordinal) + 12;
+            int idEndPos = rstStr.IndexOf("\n:Filename:", StringComparison.Ordinal);
 
             return rstStr.Substring(idStartPos, idEndPos - idStartPos);
         }
 
         public static string GetFileName(string rstStr)
         {
-            int idStartPos = rstStr.IndexOf(":Filename: ") + 11;
-            int idEndPos = rstStr.IndexOf("\n\nInference");
+            int idStartPos = rstStr.IndexOf(":Filename: ", StringComparison.Ordinal) + 11;
+            int idEndPos = rstStr.IndexOf("\n\nInference", StringComparison.Ordinal);
 
             return rstStr.Substring(idStartPos, idEndPos - idStartPos);
+        }
+
+        public static MindeeClient GetOrGenerateMindeeClient(string? apiKey)
+        {
+            if (mindeeClient == null)
+            {
+                var serviceCollection = new ServiceCollection();
+                serviceCollection.AddMindeeApi(options =>
+                {
+                    options.ApiKey = apiKey;
+                }, true);
+                mindeeClient = new MindeeClient(apiKey);
+            }
+
+            return mindeeClient;
         }
     }
 }

@@ -57,7 +57,7 @@ namespace Mindee.UnitTests.Extraction
             Assert.Equal("invoice_5p_002-005.pdf", extractedPDFStrict[1].Filename);
             Assert.Equal(4, extractedPDFStrict[1].GetPageCount());
         }
-        private static async Task<AsyncPredictResponse<InvoiceSplitterV1>> GetPrediction()
+        private async Task<AsyncPredictResponse<InvoiceSplitterV1>> GetPrediction()
         {
             const string fileName = "Resources/products/invoice_splitter/response_v1/complete.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);

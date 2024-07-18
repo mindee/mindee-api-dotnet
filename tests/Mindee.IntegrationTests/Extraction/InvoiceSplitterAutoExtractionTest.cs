@@ -9,14 +9,6 @@ namespace Mindee.IntegrationTests.Extraction
     [Trait("Category", "Integration tests")]
     public class InvoiceSplitterAutoExtractionTest
     {
-        private readonly MindeeClient _client;
-
-        public InvoiceSplitterAutoExtractionTest()
-        {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            _client = new MindeeClient(apiKey);
-        }
-
         private static string PrepareInvoiceReturn(string rstFilePath, Document<InvoiceV4> invoicePrediction)
         {
             string rstRefLines = File.ReadAllText(rstFilePath);
@@ -32,10 +24,11 @@ namespace Mindee.IntegrationTests.Extraction
         [Fact]
         public async Task GivenAPdf_ShouldExtractInvoicesStrict_MustSucceed()
         {
-            var invoiceSplitterInputSource = new LocalInputSource(
-                "Resources/products/invoice_splitter/default_sample.pdf"
-            );
-            var response = await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource);
+            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+            var client = TestingUtilities.GetOrGenerateMindeeClient(apiKey);
+            var invoiceSplitterBytes = File.ReadAllBytes("Resources/products/invoice_splitter/default_sample.pdf");
+            var invoiceSplitterInputSource = new LocalInputSource(invoiceSplitterBytes, "default_sample.pdf");
+            var response = await client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource);
             InvoiceSplitterV1 inference = response.Document.Inference;
 
             PdfExtractor extractor = new PdfExtractor(invoiceSplitterInputSource);
@@ -47,7 +40,7 @@ namespace Mindee.IntegrationTests.Extraction
             Assert.Equal("default_sample_002-002.pdf", extractedPdfsStrict[1].Filename);
 
             PredictResponse<InvoiceV4> invoice0 =
-                await _client.ParseAsync<InvoiceV4>(extractedPdfsStrict[0].AsInputSource());
+                await client.ParseAsync<InvoiceV4>(extractedPdfsStrict[0].AsInputSource());
 
             string testStringRstInvoice0 = PrepareInvoiceReturn(
                 "Resources/products/invoices/response_v4/summary_full_invoice_p1.rst",

@@ -1,61 +1,95 @@
 using System.Net;
-using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
+using System.Net.Http; // Necessary for .NET 4.7.2
+using Microsoft.Extensions.DependencyInjection;
+using Mindee.DependencyInjection;
 using Mindee.Exceptions;
 using Mindee.Http;
 using Mindee.Product.Invoice;
 using Mindee.Product.Receipt;
-using RichardSzalay.MockHttp;
+using Moq;
+using Moq.Protected;
+using RestSharp;
 
 namespace Mindee.UnitTests.Http
 {
     [Trait("Category", "Mindee Api")]
     public sealed class MindeeApiTest
     {
+
         private const string DateOutputFormat = "yyyy-MM-ddTHH:mm:ss.fffff";
 
-        private MindeeApi InitMockServer(HttpStatusCode statusCode, string fileToLoad)
+        private static ServiceProvider InitServiceProvider(HttpStatusCode statusCode, string fileContent)
         {
-            var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When("*")
-                .Respond(
-                    statusCode,
-                    "application/json",
-                    File.ReadAllText(fileToLoad)
-                    );
-            var mindeeApi = new MindeeApi(
-                Options.Create(new MindeeSettings()
+            var services = new ServiceCollection();
+            services.AddOptions();
+            services.Configure<MindeeSettings>(options =>
+            {
+                options.ApiKey = "MyKey";
+                options.MindeeBaseUrl = "https://api.mindee.net";
+                options.RequestTimeoutSeconds = 120;
+            });
+
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
                 {
-                    ApiKey = "MyKey"
-                }),
-                new NullLogger<MindeeApi>(),
-                mockHttp
-                );
-            return mindeeApi;
+                    StatusCode = statusCode,
+                    Content = new StringContent(fileContent, System.Text.Encoding.UTF8, "application/json")
+                });
+
+
+            services.AddMindeeApi(options =>
+            {
+                options.ApiKey = "MyKey";
+                options.MindeeBaseUrl = "https://api.mindee.net";
+                options.RequestTimeoutSeconds = 120;
+            });
+
+            services.AddSingleton(new RestClient(new RestClientOptions
+            {
+                BaseUrl = new Uri("https://api.mindee.net"),
+                ConfigureMessageHandler = _ => mockHttpMessageHandler.Object,
+            }));
+
+            return services.BuildServiceProvider();
         }
 
         [Fact]
         public async Task Predict_WithWrongKey()
         {
-            var mindeeApi = InitMockServer(
+            var serviceProvider = InitServiceProvider(
                 HttpStatusCode.BadRequest,
-                fileToLoad: "Resources/errors/error_401_invalid_token.json");
+                File.ReadAllText("Resources/errors/error_401_invalid_token.json")
+            );
+
+            var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
             await Assert.ThrowsAsync<Mindee400Exception>(
-               () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(
-                   UnitTestBase.GetFakePredictParameter()));
+                () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(
+                    UnitTestBase.GetFakePredictParameter()
+                )
+            );
         }
 
         [Fact]
         public async Task Predict_WithValidResponse()
         {
-            var responsePath = "Resources/products/invoices/response_v4/complete.json";
-            var mindeeApi = InitMockServer(HttpStatusCode.OK, responsePath);
+            var serviceProvider = InitServiceProvider(
+                HttpStatusCode.OK,
+                File.ReadAllText("Resources/products/invoices/response_v4/complete.json")
+            );
+
+            var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
             var response = await mindeeApi.PredictPostAsync<InvoiceV4>(
-                UnitTestBase.GetFakePredictParameter());
+                UnitTestBase.GetFakePredictParameter()
+            );
+
             var expectedParse = File.ReadAllText("Resources/products/invoices/response_v4/summary_full.rst");
-            var expectedJson = File.ReadAllText(responsePath);
+            var expectedJson = File.ReadAllText("Resources/products/invoices/response_v4/complete.json");
 
             Assert.NotNull(response);
             Assert.Equal(expectedParse, response.Document.ToString());
@@ -65,9 +99,11 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task Predict_WithErrorResponse()
         {
-            var mindeeApi = InitMockServer(
+            var serviceProvider = InitServiceProvider(
                 HttpStatusCode.BadRequest,
-                fileToLoad: "Resources/errors/error_400_with_object_in_detail.json");
+                File.ReadAllText("Resources/errors/error_400_with_object_in_detail.json")
+            );
+            var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
             await Assert.ThrowsAsync<Mindee400Exception>(
                            () => mindeeApi.PredictPostAsync<ReceiptV4>(
@@ -78,10 +114,11 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task Predict_500Error()
         {
-            var mindeeApi = InitMockServer(
+            var serviceProvider = InitServiceProvider(
                 HttpStatusCode.InternalServerError,
-                fileToLoad: "Resources/errors/error_500_inference_fail.json");
-
+                File.ReadAllText("Resources/errors/error_500_inference_fail.json")
+            );
+            var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
             await Assert.ThrowsAsync<Mindee500Exception>(
                            () => mindeeApi.PredictPostAsync<ReceiptV4>(
                                UnitTestBase.GetFakePredictParameter())
@@ -91,9 +128,11 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task Predict_429Error()
         {
-            var mindeeApi = InitMockServer(
+            var serviceProvider = InitServiceProvider(
                 (HttpStatusCode)429,
-                fileToLoad: "Resources/errors/error_429_too_many_requests.json");
+                File.ReadAllText("Resources/errors/error_429_too_many_requests.json")
+            );
+            var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
             await Assert.ThrowsAsync<Mindee429Exception>(
                () => mindeeApi.PredictPostAsync<ReceiptV4>(
@@ -104,9 +143,11 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task Predict_401Error()
         {
-            var mindeeApi = InitMockServer(
+            var serviceProvider = InitServiceProvider(
                 HttpStatusCode.Unauthorized,
-                fileToLoad: "Resources/errors/error_401_invalid_token.json");
+                File.ReadAllText("Resources/errors/error_401_invalid_token.json")
+            );
+            var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
             await Assert.ThrowsAsync<Mindee401Exception>(
                 () => mindeeApi.PredictPostAsync<ReceiptV4>(
@@ -117,9 +158,11 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task PredictAsyncPostAsync_WithFailForbidden()
         {
-            var mindeeApi = InitMockServer(
+            var serviceProvider = InitServiceProvider(
                 HttpStatusCode.Forbidden,
-                fileToLoad: "Resources/async/post_fail_forbidden.json");
+                File.ReadAllText("Resources/async/post_fail_forbidden.json")
+            );
+            var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
             await Assert.ThrowsAsync<Mindee403Exception>(
                 () => mindeeApi.PredictAsyncPostAsync<ReceiptV4>(
@@ -130,9 +173,11 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task PredictAsyncPostAsync_WithSuccess()
         {
-            var mindeeApi = InitMockServer(
+            var serviceProvider = InitServiceProvider(
                 HttpStatusCode.OK,
-                fileToLoad: "Resources/async/post_success.json");
+                File.ReadAllText("Resources/async/post_success.json")
+            );
+            var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
             var response = await mindeeApi.PredictAsyncPostAsync<InvoiceV4>(
                 UnitTestBase.GetFakePredictParameter());
@@ -148,9 +193,11 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task DocumentQueueGetAsync_WithJobProcessing()
         {
-            var mindeeApi = InitMockServer(
+            var serviceProvider = InitServiceProvider(
                 HttpStatusCode.OK,
-                fileToLoad: "Resources/async/get_processing.json");
+                File.ReadAllText("Resources/async/get_processing.json")
+            );
+            var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
             var response = await mindeeApi.DocumentQueueGetAsync<InvoiceV4>("76c90710-3a1b-4b91-8a39-31a6543e347c");
 
@@ -165,9 +212,11 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task DocumentQueueGetAsync_WithJobFailed()
         {
-            var mindeeApi = InitMockServer(
+            var serviceProvider = InitServiceProvider(
                 HttpStatusCode.OK,
-                fileToLoad: "Resources/async/get_failed_job_error.json");
+                File.ReadAllText("Resources/async/get_failed_job_error.json")
+            );
+            var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
             await Assert.ThrowsAsync<Mindee500Exception>(
                 () => mindeeApi.DocumentQueueGetAsync<InvoiceV4>("d88406ed-47bd-4db0-b3f3-145c8667a343")
@@ -177,26 +226,12 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task DocumentQueueGetAsync_WithSuccess()
         {
-            var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When("*/documents/queue/*")
-                .WithHeaders(
-                    "Location",
-                    @"/products/Mindee/invoice_splitter_beta/v1/documents/async/e66cfef5-8a31-4278-8ced-004fd8a345b2"
-                    )
-                .Respond(HttpStatusCode.Redirect);
+            var serviceProvider = InitServiceProvider(
+                HttpStatusCode.OK,
+                File.ReadAllText("Resources/async/get_completed.json")
+            );
 
-            mockHttp.When("*/documents/*")
-                .Respond(
-                    HttpStatusCode.OK,
-                    "application/json",
-                    File.ReadAllText("Resources/async/get_completed.json")
-                );
-
-            var mindeeApi = new MindeeApi(
-                Options.Create(new MindeeSettings() { ApiKey = "MyKey" }),
-                new NullLogger<MindeeApi>(),
-                mockHttp
-                );
+            var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
             var response = await mindeeApi.DocumentQueueGetAsync<InvoiceV4>("my-job-id");
 
