@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -26,6 +27,7 @@ namespace Mindee.DependencyInjection
 
             services.AddSingleton(provider =>
             {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; // Safety for .NET 4.7.2
                 var mindeeSettings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
                 if (string.IsNullOrEmpty(mindeeSettings.MindeeBaseUrl))
                     mindeeSettings.MindeeBaseUrl = "https://api.mindee.net";
@@ -40,6 +42,7 @@ namespace Mindee.DependencyInjection
                     Timeout = TimeSpan.FromSeconds(mindeeSettings.RequestTimeoutSeconds),
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
+                    CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true}
                 };
                 return new RestClient(clientOptions);
             });
