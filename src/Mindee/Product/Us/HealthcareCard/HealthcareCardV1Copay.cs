@@ -54,7 +54,6 @@ namespace Mindee.Product.Us.HealthcareCard
             return new Dictionary<string, string>()
             {
                 {"ServiceFees", SummaryHelper.FormatAmount(ServiceFees)},
-    
                 {"ServiceName", SummaryHelper.FormatString(ServiceName)},
             };
         }

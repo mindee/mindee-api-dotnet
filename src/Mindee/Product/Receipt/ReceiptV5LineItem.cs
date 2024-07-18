@@ -75,11 +75,8 @@ namespace Mindee.Product.Receipt
             {
                 {"Description", SummaryHelper.FormatString(Description, 36)},
                 {"Quantity", SummaryHelper.FormatAmount(Quantity)},
-    
                 {"TotalAmount", SummaryHelper.FormatAmount(TotalAmount)},
-    
                 {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
-    
             };
         }
     }

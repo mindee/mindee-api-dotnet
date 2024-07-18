@@ -116,16 +116,11 @@ namespace Mindee.Product.Invoice
                 {"Description", SummaryHelper.FormatString(Description, 36)},
                 {"ProductCode", SummaryHelper.FormatString(ProductCode)},
                 {"Quantity", SummaryHelper.FormatAmount(Quantity)},
-    
                 {"TaxAmount", SummaryHelper.FormatAmount(TaxAmount)},
-    
                 {"TaxRate", SummaryHelper.FormatAmount(TaxRate)},
-    
                 {"TotalAmount", SummaryHelper.FormatAmount(TotalAmount)},
-    
                 {"UnitMeasure", SummaryHelper.FormatString(UnitMeasure)},
                 {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
-    
             };
         }
     }
