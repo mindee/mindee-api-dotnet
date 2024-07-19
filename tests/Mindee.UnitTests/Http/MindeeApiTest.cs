@@ -1,8 +1,8 @@
 using System.Net;
 using System.Net.Http; // Necessary for .NET 4.7.2
 using Microsoft.Extensions.DependencyInjection;
-using Mindee.DependencyInjection;
 using Mindee.Exceptions;
+using Mindee.Extensions.DependencyInjection;
 using Mindee.Http;
 using Mindee.Product.Invoice;
 using Mindee.Product.Receipt;
