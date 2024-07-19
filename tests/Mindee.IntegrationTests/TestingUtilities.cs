@@ -35,15 +35,12 @@ namespace Mindee.IntegrationTests
 
         public static MindeeClient GetOrGenerateMindeeClient(string? apiKey)
         {
-            if (mindeeClient == null)
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddMindeeApi(options =>
             {
-                var serviceCollection = new ServiceCollection();
-                serviceCollection.AddMindeeApi(options =>
-                {
-                    options.ApiKey = apiKey;
-                }, true);
-                mindeeClient = new MindeeClient(apiKey);
-            }
+                options.ApiKey = apiKey;
+            }, true);
+            mindeeClient = new MindeeClient(apiKey);
 
             return mindeeClient;
         }
