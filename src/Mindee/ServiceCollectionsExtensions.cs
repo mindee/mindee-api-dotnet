@@ -79,12 +79,7 @@ namespace Mindee.Extensions.DependencyInjection
                 {
                     return !string.IsNullOrEmpty(settings.ApiKey);
                 }, "The Mindee api key is missing");
-            services.AddMindeeApi(options =>
-            {
-                options.ApiKey = "MyKey";
-                options.MindeeBaseUrl = "https://api.mindee.net";
-                options.RequestTimeoutSeconds = 120;
-            });
+            services.AddScoped<RestClient>();
 
             services.AddPdfOperation();
 
