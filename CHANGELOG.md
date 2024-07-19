@@ -1,5 +1,10 @@
 # Mindee .NET API Library Changelog
 
+## v3.18.1 - 2024-07-19
+### Fixes
+*  :bug: fix issue that prevented the API from working in workers without manually adding RestClient as a dependency.
+
+
 ## v3.18.0 - 2024-07-18
 ### Changes
 * :sparkles: add support for US Healthcare card
