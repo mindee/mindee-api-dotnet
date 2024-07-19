@@ -26,9 +26,9 @@ namespace Mindee.DependencyInjection
         {
             services.Configure(configureOptions);
 
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; // Safety for .NET 4.7.2
             services.AddSingleton(provider =>
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; // Safety for .NET 4.7.2
                 var mindeeSettings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
                 if (string.IsNullOrEmpty(mindeeSettings.MindeeBaseUrl))
                     mindeeSettings.MindeeBaseUrl = "https://api.mindee.net";
