@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Mindee.DependencyInjection;
+using Mindee.Extensions.DependencyInjection;
 
 namespace Mindee.IntegrationTests
 {
