@@ -4,8 +4,6 @@ using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
 using Mindee.Product.Invoice;
 
-// using RestSharp;
-
 namespace Mindee.IntegrationTests
 {
     [Trait("Category", "DI")]
