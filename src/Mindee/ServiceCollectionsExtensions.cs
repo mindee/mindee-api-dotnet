@@ -75,11 +75,8 @@ namespace Mindee.Extensions.DependencyInjection
             services.TryAddTransient<IHttpApi, MindeeApi>();
             services.AddOptions<MindeeSettings>()
                 .BindConfiguration(sectionName)
-                .Validate(settings =>
-                {
-                    return !string.IsNullOrEmpty(settings.ApiKey);
-                }, "The Mindee api key is missing");
-            services.AddScoped<RestClient>();
+                .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee api key is missing");
+            services.AddSingleton<RestClient>();
 
             services.AddPdfOperation();
 
