@@ -17,7 +17,7 @@ namespace Mindee.Extensions.DependencyInjection
     public static class ServiceCollectionsExtensions
     {
         /// <summary>
-        ///
+        /// Configure the Mindee API in the DI, mainly used for mocking/testing purposes.
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configureOptions"></param>
@@ -31,6 +31,11 @@ namespace Mindee.Extensions.DependencyInjection
 
             services.AddSingleton<MindeeApi>();
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; // Safety for .NET 4.7.2
+            RegisterRestSharpClient(services, throwOnError);
+        }
+
+        private static void RegisterRestSharpClient(IServiceCollection services, bool throwOnError)
+        {
             services.AddSingleton(provider =>
             {
                 var mindeeSettings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
@@ -71,12 +76,13 @@ namespace Mindee.Extensions.DependencyInjection
             this IServiceCollection services,
             string sectionName = "Mindee")
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; // Safety for .NET 4.7.2
             services.TryAddTransient<MindeeClient>();
             services.TryAddTransient<IHttpApi, MindeeApi>();
             services.AddOptions<MindeeSettings>()
                 .BindConfiguration(sectionName)
                 .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee api key is missing");
-            services.AddSingleton<RestClient>();
+            RegisterRestSharpClient(services, false);
 
             services.AddPdfOperation();
 
