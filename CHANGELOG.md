@@ -1,5 +1,11 @@
 # Mindee .NET API Library Changelog
 
+## v3.18.2 - 2024-07-22
+### Fixes
+*  :bug: fix RestSharp's restclient being given improper scope for use in workers
+
+
+
 ## v3.18.1 - 2024-07-19
 ### Fixes
 *  :bug: fix issue that prevented the API from working in workers without manually adding RestClient as a dependency.
