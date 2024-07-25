@@ -1,6 +1,7 @@
 using Mindee.Exceptions;
 using Mindee.Http;
 using Mindee.Input;
+using Mindee.Product.Cropper;
 using Mindee.Product.Generated;
 using Mindee.Product.Invoice;
 using Mindee.Product.InvoiceSplitter;
@@ -132,7 +133,7 @@ namespace Mindee.IntegrationTests
         {
             var inputSource = new LocalInputSource("Resources/products/passport/default_sample.jpg");
             await Assert.ThrowsAsync<Mindee403Exception>(
-                () => _mindeeClient.EnqueueAsync<InvoiceV4>(inputSource));
+                () => _mindeeClient.EnqueueAsync<CropperV1>(inputSource));
         }
 
         [Fact]
