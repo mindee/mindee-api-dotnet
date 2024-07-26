@@ -100,7 +100,7 @@ The following fields are extracted for Carte Vitale V1:
 **GivenNames** : The given name(s) of the card holder.
 
 ```cs
-foreach (GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
+foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 {
     System.Console.WriteLine(GivenNamesElem.Value);
 }

@@ -93,7 +93,7 @@ The following fields are extracted for Barcode Reader V1:
 **Codes1D** : List of decoded 1D barcodes.
 
 ```cs
-foreach (Codes1DElem in result.Document.Inference.Prediction.Codes1D)
+foreach (var Codes1DElem in result.Document.Inference.Prediction.Codes1D)
 {
     System.Console.WriteLine(Codes1DElem.Value);
 }
@@ -103,7 +103,7 @@ foreach (Codes1DElem in result.Document.Inference.Prediction.Codes1D)
 **Codes2D** : List of decoded 2D barcodes.
 
 ```cs
-foreach (Codes2DElem in result.Document.Inference.Prediction.Codes2D)
+foreach (var Codes2DElem in result.Document.Inference.Prediction.Codes2D)
 {
     System.Console.WriteLine(Codes2DElem.Value);
 }

@@ -145,7 +145,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.CheckNumber.Value)
 [📄](#page-level-fields "This field is only present on individual pages.")**CheckPosition** : The position of the check on the document.
 
 ```cs
-foreach(var CheckPositionElem in result.Document.CheckPosition)
+foreach (var CheckPositionElem in result.Document.CheckPosition)
 {
     System.Console.WriteLine(CheckPositionElem).Polygon;
 }
@@ -162,7 +162,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 **Payees** : List of the check's payees (recipients).
 
 ```cs
-foreach (PayeesElem in result.Document.Inference.Prediction.Payees)
+foreach (var PayeesElem in result.Document.Inference.Prediction.Payees)
 {
     System.Console.WriteLine(PayeesElem.Value);
 }

@@ -108,7 +108,7 @@ The following fields are extracted for W9 V1:
 [📄](#page-level-fields "This field is only present on individual pages.")**Address** : The street address (number, street, and apt. or suite no.) of the applicant.
 
 ```cs
-foreach(var AddressElem in result.Document.Address)
+foreach (var AddressElem in result.Document.Address)
 {
     System.Console.WriteLine(AddressElem)
       .Value;
@@ -119,7 +119,7 @@ foreach(var AddressElem in result.Document.Address)
 [📄](#page-level-fields "This field is only present on individual pages.")**BusinessName** : The business name or disregarded entity name, if different from Name.
 
 ```cs
-foreach(var BusinessNameElem in result.Document.BusinessName)
+foreach (var BusinessNameElem in result.Document.BusinessName)
 {
     System.Console.WriteLine(BusinessNameElem)
       .Value;
@@ -130,7 +130,7 @@ foreach(var BusinessNameElem in result.Document.BusinessName)
 [📄](#page-level-fields "This field is only present on individual pages.")**CityStateZip** : The city, state, and ZIP code of the applicant.
 
 ```cs
-foreach(var CityStateZipElem in result.Document.CityStateZip)
+foreach (var CityStateZipElem in result.Document.CityStateZip)
 {
     System.Console.WriteLine(CityStateZipElem)
       .Value;
@@ -141,7 +141,7 @@ foreach(var CityStateZipElem in result.Document.CityStateZip)
 [📄](#page-level-fields "This field is only present on individual pages.")**Ein** : The employer identification number.
 
 ```cs
-foreach(var EinElem in result.Document.Ein)
+foreach (var EinElem in result.Document.Ein)
 {
     System.Console.WriteLine(EinElem)
       .Value;
@@ -152,7 +152,7 @@ foreach(var EinElem in result.Document.Ein)
 [📄](#page-level-fields "This field is only present on individual pages.")**Name** : Name as shown on the applicant's income tax return.
 
 ```cs
-foreach(var NameElem in result.Document.Name)
+foreach (var NameElem in result.Document.Name)
 {
     System.Console.WriteLine(NameElem)
       .Value;
@@ -163,7 +163,7 @@ foreach(var NameElem in result.Document.Name)
 [📄](#page-level-fields "This field is only present on individual pages.")**SignatureDatePosition** : Position of the signature date on the document.
 
 ```cs
-foreach(var SignatureDatePositionElem in result.Document.SignatureDatePosition)
+foreach (var SignatureDatePositionElem in result.Document.SignatureDatePosition)
 {
     System.Console.WriteLine(SignatureDatePositionElem).Polygon;
 }
@@ -173,7 +173,7 @@ foreach(var SignatureDatePositionElem in result.Document.SignatureDatePosition)
 [📄](#page-level-fields "This field is only present on individual pages.")**SignaturePosition** : Position of the signature on the document.
 
 ```cs
-foreach(var SignaturePositionElem in result.Document.SignaturePosition)
+foreach (var SignaturePositionElem in result.Document.SignaturePosition)
 {
     System.Console.WriteLine(SignaturePositionElem).Polygon;
 }
@@ -183,7 +183,7 @@ foreach(var SignaturePositionElem in result.Document.SignaturePosition)
 [📄](#page-level-fields "This field is only present on individual pages.")**Ssn** : The applicant's social security number.
 
 ```cs
-foreach(var SsnElem in result.Document.Ssn)
+foreach (var SsnElem in result.Document.Ssn)
 {
     System.Console.WriteLine(SsnElem)
       .Value;
@@ -194,7 +194,7 @@ foreach(var SsnElem in result.Document.Ssn)
 [📄](#page-level-fields "This field is only present on individual pages.")**TaxClassification** : The federal tax classification, which can vary depending on the revision date.
 
 ```cs
-foreach(var TaxClassificationElem in result.Document.TaxClassification)
+foreach (var TaxClassificationElem in result.Document.TaxClassification)
 {
     System.Console.WriteLine(TaxClassificationElem)
       .Value;
@@ -205,7 +205,7 @@ foreach(var TaxClassificationElem in result.Document.TaxClassification)
 [📄](#page-level-fields "This field is only present on individual pages.")**TaxClassificationLlc** : Depending on revision year, among S, C, P or D for Limited Liability Company Classification.
 
 ```cs
-foreach(var TaxClassificationLlcElem in result.Document.TaxClassificationLlc)
+foreach (var TaxClassificationLlcElem in result.Document.TaxClassificationLlc)
 {
     System.Console.WriteLine(TaxClassificationLlcElem)
       .Value;
@@ -216,7 +216,7 @@ foreach(var TaxClassificationLlcElem in result.Document.TaxClassificationLlc)
 [📄](#page-level-fields "This field is only present on individual pages.")**TaxClassificationOtherDetails** : Tax Classification Other Details.
 
 ```cs
-foreach(var TaxClassificationOtherDetailsElem in result.Document.TaxClassificationOtherDetails)
+foreach (var TaxClassificationOtherDetailsElem in result.Document.TaxClassificationOtherDetails)
 {
     System.Console.WriteLine(TaxClassificationOtherDetailsElem)
       .Value;
@@ -227,7 +227,7 @@ foreach(var TaxClassificationOtherDetailsElem in result.Document.TaxClassificati
 [📄](#page-level-fields "This field is only present on individual pages.")**W9RevisionDate** : The Revision month and year of the W9 form.
 
 ```cs
-foreach(var W9RevisionDateElem in result.Document.W9RevisionDate)
+foreach (var W9RevisionDateElem in result.Document.W9RevisionDate)
 {
     System.Console.WriteLine(W9RevisionDateElem)
       .Value;

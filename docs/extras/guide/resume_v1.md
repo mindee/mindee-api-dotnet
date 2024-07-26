@@ -212,7 +212,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Address.Value);
 **Certificates** (List<[ResumeV1Certificate](#certificates-field)>): The list of certificates obtained by the candidate.
 
 ```cs
-foreach (CertificatesElem in result.Document.Inference.Prediction.Certificates)
+foreach (var CertificatesElem in result.Document.Inference.Prediction.Certificates)
 {
     System.Console.WriteLine(CertificatesElem.Value);
 }
@@ -236,7 +236,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value
 **Education** (List<[ResumeV1Education](#education-field)>): The list of the candidate's educational background.
 
 ```cs
-foreach (EducationElem in result.Document.Inference.Prediction.Education)
+foreach (var EducationElem in result.Document.Inference.Prediction.Education)
 {
     System.Console.WriteLine(EducationElem.Value);
 }
@@ -253,7 +253,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.EmailAddress.Value
 **GivenNames** : The candidate's first or given names.
 
 ```cs
-foreach (GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
+foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 {
     System.Console.WriteLine(GivenNamesElem.Value);
 }
@@ -263,7 +263,7 @@ foreach (GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 **HardSkills** : The list of the candidate's technical abilities and knowledge.
 
 ```cs
-foreach (HardSkillsElem in result.Document.Inference.Prediction.HardSkills)
+foreach (var HardSkillsElem in result.Document.Inference.Prediction.HardSkills)
 {
     System.Console.WriteLine(HardSkillsElem.Value);
 }
@@ -280,7 +280,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.JobApplied.Value);
 **Languages** (List<[ResumeV1Language](#languages-field)>): The list of languages that the candidate is proficient in.
 
 ```cs
-foreach (LanguagesElem in result.Document.Inference.Prediction.Languages)
+foreach (var LanguagesElem in result.Document.Inference.Prediction.Languages)
 {
     System.Console.WriteLine(LanguagesElem.Value);
 }
@@ -311,7 +311,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Profession.Value);
 **ProfessionalExperiences** (List<[ResumeV1ProfessionalExperience](#professional-experiences-field)>): The list of the candidate's professional experiences.
 
 ```cs
-foreach (ProfessionalExperiencesElem in result.Document.Inference.Prediction.ProfessionalExperiences)
+foreach (var ProfessionalExperiencesElem in result.Document.Inference.Prediction.ProfessionalExperiences)
 {
     System.Console.WriteLine(ProfessionalExperiencesElem.Value);
 }
@@ -321,7 +321,7 @@ foreach (ProfessionalExperiencesElem in result.Document.Inference.Prediction.Pro
 **SocialNetworksUrls** (List<[ResumeV1SocialNetworksUrl](#social-networks-field)>): The list of social network profiles of the candidate.
 
 ```cs
-foreach (SocialNetworksUrlsElem in result.Document.Inference.Prediction.SocialNetworksUrls)
+foreach (var SocialNetworksUrlsElem in result.Document.Inference.Prediction.SocialNetworksUrls)
 {
     System.Console.WriteLine(SocialNetworksUrlsElem.Value);
 }
@@ -331,7 +331,7 @@ foreach (SocialNetworksUrlsElem in result.Document.Inference.Prediction.SocialNe
 **SoftSkills** : The list of the candidate's interpersonal and communication abilities.
 
 ```cs
-foreach (SoftSkillsElem in result.Document.Inference.Prediction.SoftSkills)
+foreach (var SoftSkillsElem in result.Document.Inference.Prediction.SoftSkills)
 {
     System.Console.WriteLine(SoftSkillsElem.Value);
 }
@@ -341,7 +341,7 @@ foreach (SoftSkillsElem in result.Document.Inference.Prediction.SoftSkills)
 **Surnames** : The candidate's last names.
 
 ```cs
-foreach (SurnamesElem in result.Document.Inference.Prediction.Surnames)
+foreach (var SurnamesElem in result.Document.Inference.Prediction.Surnames)
 {
     System.Console.WriteLine(SurnamesElem.Value);
 }

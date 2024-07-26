@@ -103,7 +103,7 @@ The following fields are extracted for Multi Receipts Detector V1:
 **Receipts** : Positions of the receipts on the document.
 
 ```cs
-foreach (ReceiptsElem in result.Document.Inference.Prediction.Receipts)
+foreach (var ReceiptsElem in result.Document.Inference.Prediction.Receipts)
 {
     System.Console.WriteLine(ReceiptsElem.Polygon);
     System.Console.WriteLine(ReceiptsElem.Quadrangle);

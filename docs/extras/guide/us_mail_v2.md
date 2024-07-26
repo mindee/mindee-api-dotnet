@@ -110,7 +110,7 @@ The following fields are extracted for US Mail V2:
 **RecipientAddresses** (List<[UsMailV2RecipientAddress](#recipient-addresses-field)>): The addresses of the recipients.
 
 ```cs
-foreach (RecipientAddressesElem in result.Document.Inference.Prediction.RecipientAddresses)
+foreach (var RecipientAddressesElem in result.Document.Inference.Prediction.RecipientAddresses)
 {
     System.Console.WriteLine(RecipientAddressesElem.Value);
 }
@@ -120,7 +120,7 @@ foreach (RecipientAddressesElem in result.Document.Inference.Prediction.Recipien
 **RecipientNames** : The names of the recipients.
 
 ```cs
-foreach (RecipientNamesElem in result.Document.Inference.Prediction.RecipientNames)
+foreach (var RecipientNamesElem in result.Document.Inference.Prediction.RecipientNames)
 {
     System.Console.WriteLine(RecipientNamesElem.Value);
 }

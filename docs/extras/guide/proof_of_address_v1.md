@@ -154,7 +154,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 **Dates** : List of dates found on the document.
 
 ```cs
-foreach (DatesElem in result.Document.Inference.Prediction.Dates)
+foreach (var DatesElem in result.Document.Inference.Prediction.Dates)
 {
     System.Console.WriteLine(DatesElem.Value);
 }
@@ -171,7 +171,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.IssuerAddress.Valu
 **IssuerCompanyRegistration** : List of company registrations found for the issuer.
 
 ```cs
-foreach (IssuerCompanyRegistrationElem in result.Document.Inference.Prediction.IssuerCompanyRegistration)
+foreach (var IssuerCompanyRegistrationElem in result.Document.Inference.Prediction.IssuerCompanyRegistration)
 {
     System.Console.WriteLine(IssuerCompanyRegistrationElem.Value);
 }
@@ -202,7 +202,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.RecipientAddress.V
 **RecipientCompanyRegistration** : List of company registrations found for the recipient.
 
 ```cs
-foreach (RecipientCompanyRegistrationElem in result.Document.Inference.Prediction.RecipientCompanyRegistration)
+foreach (var RecipientCompanyRegistrationElem in result.Document.Inference.Prediction.RecipientCompanyRegistration)
 {
     System.Console.WriteLine(RecipientCompanyRegistrationElem.Value);
 }

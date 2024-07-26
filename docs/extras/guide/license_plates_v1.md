@@ -89,7 +89,7 @@ The following fields are extracted for License Plate V1:
 **LicensePlates** : List of all license plates found in the image.
 
 ```cs
-foreach (LicensePlatesElem in result.Document.Inference.Prediction.LicensePlates)
+foreach (var LicensePlatesElem in result.Document.Inference.Prediction.LicensePlates)
 {
     System.Console.WriteLine(LicensePlatesElem.Value);
 }

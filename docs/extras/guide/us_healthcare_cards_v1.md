@@ -130,7 +130,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.CompanyName.Value)
 **Copays** (List<[HealthcareCardV1Copay](#copays-field)>): Is a fixed amount for a covered service.
 
 ```cs
-foreach (CopaysElem in result.Document.Inference.Prediction.Copays)
+foreach (var CopaysElem in result.Document.Inference.Prediction.Copays)
 {
     System.Console.WriteLine(CopaysElem.Value);
 }
@@ -140,7 +140,7 @@ foreach (CopaysElem in result.Document.Inference.Prediction.Copays)
 **Dependents** : The list of dependents covered by the healthcare plan.
 
 ```cs
-foreach (DependentsElem in result.Document.Inference.Prediction.Dependents)
+foreach (var DependentsElem in result.Document.Inference.Prediction.Dependents)
 {
     System.Console.WriteLine(DependentsElem.Value);
 }

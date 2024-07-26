@@ -160,7 +160,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.ExpiryDate.Value);
 **GivenNames** : The list of the document holder's given names.
 
 ```cs
-foreach (GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
+foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 {
     System.Console.WriteLine(GivenNamesElem.Value);
 }
@@ -226,7 +226,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.StateOfIssue.Value
 **Surnames** : The list of the document holder's family names.
 
 ```cs
-foreach (SurnamesElem in result.Document.Inference.Prediction.Surnames)
+foreach (var SurnamesElem in result.Document.Inference.Prediction.Surnames)
 {
     System.Console.WriteLine(SurnamesElem.Value);
 }

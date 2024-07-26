@@ -178,7 +178,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.DocumentNumber.Val
 [📄](#page-level-fields "This field is only present on individual pages.")**DocumentSide** : The sides of the document which are visible.
 
 ```cs
-foreach(var DocumentSideElem in result.Document.DocumentSide)
+foreach (var DocumentSideElem in result.Document.DocumentSide)
 {
     System.Console.WriteLine(DocumentSideElem)
       .Value;
@@ -189,7 +189,7 @@ foreach(var DocumentSideElem in result.Document.DocumentSide)
 [📄](#page-level-fields "This field is only present on individual pages.")**DocumentType** : The document type or format.
 
 ```cs
-foreach(var DocumentTypeElem in result.Document.DocumentType)
+foreach (var DocumentTypeElem in result.Document.DocumentType)
 {
     System.Console.WriteLine(DocumentTypeElem)
       .Value;
@@ -214,7 +214,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Gender.Value);
 **GivenNames** : The given name(s) of the card holder.
 
 ```cs
-foreach (GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
+foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 {
     System.Console.WriteLine(GivenNamesElem.Value);
 }

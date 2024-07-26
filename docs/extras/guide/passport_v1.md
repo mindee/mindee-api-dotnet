@@ -149,7 +149,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Gender.Value);
 **GivenNames** : The given name(s) of the passport holder.
 
 ```cs
-foreach (GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
+foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 {
     System.Console.WriteLine(GivenNamesElem.Value);
 }

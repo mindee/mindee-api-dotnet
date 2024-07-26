@@ -222,7 +222,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value
 **LineItems** (List<[ReceiptV5LineItem](#line-items-field)>): List of line item details.
 
 ```cs
-foreach (LineItemsElem in result.Document.Inference.Prediction.LineItems)
+foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
 {
     System.Console.WriteLine(LineItemsElem.Value);
 }
@@ -260,7 +260,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.SupplierAddress.Va
 **SupplierCompanyRegistrations** : List of company registrations associated to the supplier.
 
 ```cs
-foreach (SupplierCompanyRegistrationsElem in result.Document.Inference.Prediction.SupplierCompanyRegistrations)
+foreach (var SupplierCompanyRegistrationsElem in result.Document.Inference.Prediction.SupplierCompanyRegistrations)
 {
     System.Console.WriteLine(SupplierCompanyRegistrationsElem.Value);
 }
@@ -284,7 +284,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.SupplierPhoneNumbe
 **Taxes** : List of tax lines information.
 
 ```cs
-foreach (TaxesElem in result.Document.Inference.Prediction.Taxes)
+foreach (var TaxesElem in result.Document.Inference.Prediction.Taxes)
 {
     System.Console.WriteLine(TaxesElem.Value);
 }

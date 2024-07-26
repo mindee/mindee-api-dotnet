@@ -207,7 +207,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Mrz.Value);
 [📄](#page-level-fields "This field is only present on individual pages.")**Photo** : Has a photo of the EU driver license holder
 
 ```cs
-foreach(var PhotoElem in result.Document.Photo)
+foreach (var PhotoElem in result.Document.Photo)
 {
     System.Console.WriteLine(PhotoElem).Polygon;
 }
@@ -224,7 +224,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.PlaceOfBirth.Value
 [📄](#page-level-fields "This field is only present on individual pages.")**Signature** : Has a signature of the EU driver license holder
 
 ```cs
-foreach(var SignatureElem in result.Document.Signature)
+foreach (var SignatureElem in result.Document.Signature)
 {
     System.Console.WriteLine(SignatureElem).Polygon;
 }

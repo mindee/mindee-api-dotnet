@@ -276,7 +276,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.CustomerAddress.Va
 **CustomerCompanyRegistrations** : List of company registrations associated to the customer.
 
 ```cs
-foreach (CustomerCompanyRegistrationsElem in result.Document.Inference.Prediction.CustomerCompanyRegistrations)
+foreach (var CustomerCompanyRegistrationsElem in result.Document.Inference.Prediction.CustomerCompanyRegistrations)
 {
     System.Console.WriteLine(CustomerCompanyRegistrationsElem.Value);
 }
@@ -328,7 +328,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.InvoiceNumber.Valu
 **LineItems** (List<[InvoiceV4LineItem](#line-items-field)>): List of line item details.
 
 ```cs
-foreach (LineItemsElem in result.Document.Inference.Prediction.LineItems)
+foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
 {
     System.Console.WriteLine(LineItemsElem.Value);
 }
@@ -345,7 +345,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Locale.Value);
 **ReferenceNumbers** : List of Reference numbers, including PO number.
 
 ```cs
-foreach (ReferenceNumbersElem in result.Document.Inference.Prediction.ReferenceNumbers)
+foreach (var ReferenceNumbersElem in result.Document.Inference.Prediction.ReferenceNumbers)
 {
     System.Console.WriteLine(ReferenceNumbersElem.Value);
 }
@@ -369,7 +369,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.SupplierAddress.Va
 **SupplierCompanyRegistrations** : List of company registrations associated to the supplier.
 
 ```cs
-foreach (SupplierCompanyRegistrationsElem in result.Document.Inference.Prediction.SupplierCompanyRegistrations)
+foreach (var SupplierCompanyRegistrationsElem in result.Document.Inference.Prediction.SupplierCompanyRegistrations)
 {
     System.Console.WriteLine(SupplierCompanyRegistrationsElem.Value);
 }
@@ -393,7 +393,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.SupplierName.Value
 **SupplierPaymentDetails** : List of payment details associated to the supplier.
 
 ```cs
-foreach (SupplierPaymentDetailsElem in result.Document.Inference.Prediction.SupplierPaymentDetails)
+foreach (var SupplierPaymentDetailsElem in result.Document.Inference.Prediction.SupplierPaymentDetails)
 {
     System.Console.WriteLine(SupplierPaymentDetailsElem.Value);
 }
@@ -417,7 +417,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.SupplierWebsite.Va
 **Taxes** : List of tax line details.
 
 ```cs
-foreach (TaxesElem in result.Document.Inference.Prediction.Taxes)
+foreach (var TaxesElem in result.Document.Inference.Prediction.Taxes)
 {
     System.Console.WriteLine(TaxesElem.Value);
 }
