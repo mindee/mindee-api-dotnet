@@ -6,7 +6,7 @@ namespace Mindee.Parsing.Common
     /// <summary>
     /// The orientation which was applied from the original page.
     /// </summary>
-    public class Orientation : BaseField
+    public class Orientation
     {
         /// <summary>
         /// Degrees of the rotation
