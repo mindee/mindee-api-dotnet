@@ -131,7 +131,7 @@ The position field `PositionField` implements:
 * **Quadrangle** (`Quadrangle`): a free polygon made up of four points.
 
 ## Page-Level Fields
-Some fields are constrained to the page level, and so will not be retrievable to through the document.
+Some fields are constrained to the page level, and so will not be retrievable at document level.
 
 # Attributes
 The following fields are extracted for Driver License V1:

@@ -127,7 +127,7 @@ The date field `DateField` extends `StringField`, but also implements:
 * **DateObject** (`DateTime?`): an accessible representation of the value as a C# object. Can be `null`.
 
 ## Page-Level Fields
-Some fields are constrained to the page level, and so will not be retrievable to through the document.
+Some fields are constrained to the page level, and so will not be retrievable at document level.
 
 # Attributes
 The following fields are extracted for Carte Nationale d'Identité V2:
