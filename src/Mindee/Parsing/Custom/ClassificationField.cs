@@ -1,20 +1,13 @@
 using System.Text.Json.Serialization;
+using Mindee.Parsing.Standard;
 
 namespace Mindee.Parsing.Custom
 {
     /// <summary>
     /// Define a classification field.
     /// </summary>
-    public class ClassificationField
+    public class ClassificationField : BaseField
     {
-        /// <summary>
-        /// The confidence about the zone of the value extracted.
-        /// A value from 0 to 1.
-        /// </summary>
-        /// <example>0.9</example>
-        [JsonPropertyName("confidence")]
-        public double Confidence { get; set; }
-
         /// <summary>
         /// The content of the value.
         /// </summary>

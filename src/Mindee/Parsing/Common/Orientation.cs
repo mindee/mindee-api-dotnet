@@ -1,11 +1,12 @@
 using System.Text.Json.Serialization;
+using Mindee.Parsing.Standard;
 
 namespace Mindee.Parsing.Common
 {
     /// <summary>
     /// The orientation which was applied from the original page.
     /// </summary>
-    public class Orientation
+    public class Orientation : BaseField
     {
         /// <summary>
         /// Degrees of the rotation
