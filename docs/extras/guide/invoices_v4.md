@@ -217,7 +217,7 @@ The locale field `Locale` extends `BaseField`, but also implements:
 * **Currency** (`string`): ISO 4217 code for currencies (e.g.: `USD` for "US Dollars"). Can be `null`.
 
 ### PaymentDetail
-The payment details field `PaymentDetail` extends `Basefield`, but it also implements:
+The payment details field `PaymentDetail` extends `BaseField`, but it also implements:
 
 * **AccountNumber** (`string`): number of an account, expressed as a string. Can be `null`.
 * **Iban** (`string`): International Bank Account Number. Can be `null`.
