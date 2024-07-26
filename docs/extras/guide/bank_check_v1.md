@@ -145,7 +145,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.CheckNumber.Value)
 [📄](#page-level-fields "This field is only present on individual pages.")**CheckPosition** : The position of the check on the document.
 
 ```cs
-foreach (var CheckPositionElem in result.Document.CheckPosition)
+foreach (var CheckPositionElem in result.Document.Inference.Prediction.CheckPosition)
 {
     System.Console.WriteLine(CheckPositionElem).Polygon;
 }
