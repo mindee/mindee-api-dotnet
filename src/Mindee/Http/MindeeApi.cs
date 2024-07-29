@@ -201,7 +201,7 @@ namespace Mindee.Http
                 case (HttpStatusCode)429:
                     throw new Mindee429Exception(errorMessage);
                 default:
-                    throw new MindeeException(errorMessage);
+                    throw new MindeeException(restResponse.RawBytes.ToString());
             }
         }
     }
