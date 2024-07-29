@@ -1,5 +1,8 @@
 ---
 title: FR Carte Vitale OCR .NET
+category: 622b805aaec68102ea7fcbc2
+slug: dotnet-fr-carte-vitale-ocr
+parentDoc: 6357abb22e33070016cbda4b
 ---
 The .NET OCR SDK supports the [Carte Vitale API](https://platform.mindee.com/mindee/carte_vitale).
 

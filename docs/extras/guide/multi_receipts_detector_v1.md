@@ -1,5 +1,8 @@
 ---
 title: Multi Receipts Detector OCR .NET
+category: 622b805aaec68102ea7fcbc2
+slug: dotnet-multi-receipts-detector-ocr
+parentDoc: 6357abb22e33070016cbda4b
 ---
 The .NET OCR SDK supports the [Multi Receipts Detector API](https://platform.mindee.com/mindee/multi_receipts_detector).
 

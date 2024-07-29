@@ -1,5 +1,8 @@
 ---
 title: EU Driver License OCR .NET
+category: 622b805aaec68102ea7fcbc2
+slug: dotnet-eu-driver-license-ocr
+parentDoc: 6357abb22e33070016cbda4b
 ---
 The .NET OCR SDK supports the [Driver License API](https://platform.mindee.com/mindee/eu_driver_license).
 

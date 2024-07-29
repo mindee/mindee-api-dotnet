@@ -1,5 +1,8 @@
 ---
 title: Proof of Address OCR .NET
+category: 622b805aaec68102ea7fcbc2
+slug: dotnet-proof-of-address-ocr
+parentDoc: 6357abb22e33070016cbda4b
 ---
 The .NET OCR SDK supports the [Proof of Address API](https://platform.mindee.com/mindee/proof_of_address).
 

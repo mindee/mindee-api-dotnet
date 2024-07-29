@@ -1,5 +1,8 @@
 ---
 title: Invoice OCR .NET
+category: 622b805aaec68102ea7fcbc2
+slug: dotnet-invoice-ocr
+parentDoc: 6357abb22e33070016cbda4b
 ---
 The .NET OCR SDK supports the [Invoice API](https://platform.mindee.com/mindee/invoices).
 

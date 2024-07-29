@@ -1,5 +1,8 @@
 ---
 title: Financial Document OCR .NET
+category: 622b805aaec68102ea7fcbc2
+slug: dotnet-financial-document-ocr
+parentDoc: 6357abb22e33070016cbda4b
 ---
 The .NET OCR SDK supports the [Financial Document API](https://platform.mindee.com/mindee/financial_document).
 

@@ -1,5 +1,8 @@
 ---
 title: Barcode Reader OCR .NET
+category: 622b805aaec68102ea7fcbc2
+slug: dotnet-barcode-reader-ocr
+parentDoc: 6357abb22e33070016cbda4b
 ---
 The .NET OCR SDK supports the [Barcode Reader API](https://platform.mindee.com/mindee/barcode_reader).
 

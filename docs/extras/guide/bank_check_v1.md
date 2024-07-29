@@ -1,5 +1,8 @@
 ---
 title: US Bank Check OCR .NET
+category: 622b805aaec68102ea7fcbc2
+slug: dotnet-us-bank-check-ocr
+parentDoc: 6357abb22e33070016cbda4b
 ---
 The .NET OCR SDK supports the [Bank Check API](https://platform.mindee.com/mindee/bank_check).
 

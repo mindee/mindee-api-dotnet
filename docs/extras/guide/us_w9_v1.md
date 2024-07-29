@@ -1,5 +1,8 @@
 ---
 title: US W9 OCR .NET
+category: 622b805aaec68102ea7fcbc2
+slug: dotnet-us-w9-ocr
+parentDoc: 6357abb22e33070016cbda4b
 ---
 The .NET OCR SDK supports the [W9 API](https://platform.mindee.com/mindee/us_w9).
 

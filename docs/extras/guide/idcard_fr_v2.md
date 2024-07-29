@@ -1,5 +1,8 @@
 ---
 title: FR Carte Nationale d'Identité OCR .NET
+category: 622b805aaec68102ea7fcbc2
+slug: dotnet-fr-carte-nationale-didentité-ocr
+parentDoc: 6357abb22e33070016cbda4b
 ---
 The .NET OCR SDK supports the [Carte Nationale d'Identité API](https://platform.mindee.com/mindee/idcard_fr).
 
