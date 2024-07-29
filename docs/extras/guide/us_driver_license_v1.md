@@ -104,7 +104,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -137,98 +137,98 @@ Some fields are constrained to the page level, and so will not be retrievable at
 The following fields are extracted for Driver License V1:
 
 ## Address
-**Address** : US driver license holders address
+**Address**: US driver license holders address
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Address.Value);
 ```
 
 ## Date Of Birth
-**DateOfBirth** : US driver license holders date of birth
+**DateOfBirth**: US driver license holders date of birth
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.DateOfBirth.Value);
 ```
 
 ## Document Discriminator
-**DdNumber** : Document Discriminator Number of the US Driver License
+**DdNumber**: Document Discriminator Number of the US Driver License
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.DdNumber.Value);
 ```
 
 ## Driver License Class
-**DlClass** : US driver license holders class
+**DlClass**: US driver license holders class
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.DlClass.Value);
 ```
 
 ## Driver License ID
-**DriverLicenseId** : ID number of the US Driver License.
+**DriverLicenseId**: ID number of the US Driver License.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.DriverLicenseId.Value);
 ```
 
 ## Endorsements
-**Endorsements** : US driver license holders endorsements
+**Endorsements**: US driver license holders endorsements
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Endorsements.Value);
 ```
 
 ## Expiry Date
-**ExpiryDate** : Date on which the documents expires.
+**ExpiryDate**: Date on which the documents expires.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.ExpiryDate.Value);
 ```
 
 ## Eye Color
-**EyeColor** : US driver license holders eye colour
+**EyeColor**: US driver license holders eye colour
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.EyeColor.Value);
 ```
 
 ## First Name
-**FirstName** : US driver license holders first name(s)
+**FirstName**: US driver license holders first name(s)
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.FirstName.Value);
 ```
 
 ## Hair Color
-**HairColor** : US driver license holders hair colour
+**HairColor**: US driver license holders hair colour
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.HairColor.Value);
 ```
 
 ## Height
-**Height** : US driver license holders hight
+**Height**: US driver license holders hight
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Height.Value);
 ```
 
 ## Date Of Issue
-**IssuedDate** : Date on which the documents was issued.
+**IssuedDate**: Date on which the documents was issued.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.IssuedDate.Value);
 ```
 
 ## Last Name
-**LastName** : US driver license holders last name
+**LastName**: US driver license holders last name
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.LastName.Value);
 ```
 
 ## Photo
-[📄](#page-level-fields "This field is only present on individual pages.")**Photo** : Has a photo of the US driver license holder
+[📄](#page-level-fields "This field is only present on individual pages.")**Photo**: Has a photo of the US driver license holder
 
 ```cs
 foreach (var PhotoElem in result.Document.Inference.Prediction.Photo)
@@ -238,21 +238,21 @@ foreach (var PhotoElem in result.Document.Inference.Prediction.Photo)
 ```
 
 ## Restrictions
-**Restrictions** : US driver license holders restrictions
+**Restrictions**: US driver license holders restrictions
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Restrictions.Value);
 ```
 
 ## Sex
-**Sex** : US driver license holders gender
+**Sex**: US driver license holders gender
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Sex.Value);
 ```
 
 ## Signature
-[📄](#page-level-fields "This field is only present on individual pages.")**Signature** : Has a signature of the US driver license holder
+[📄](#page-level-fields "This field is only present on individual pages.")**Signature**: Has a signature of the US driver license holder
 
 ```cs
 foreach (var SignatureElem in result.Document.Inference.Prediction.Signature)
@@ -262,14 +262,14 @@ foreach (var SignatureElem in result.Document.Inference.Prediction.Signature)
 ```
 
 ## State
-**State** : US State
+**State**: US State
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.State.Value);
 ```
 
 ## Weight
-**Weight** : US driver license holders weight
+**Weight**: US driver license holders weight
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Weight.Value);

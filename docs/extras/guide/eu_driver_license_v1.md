@@ -94,7 +94,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -127,84 +127,84 @@ Some fields are constrained to the page level, and so will not be retrievable at
 The following fields are extracted for Driver License V1:
 
 ## Address
-**Address** : EU driver license holders address
+**Address**: EU driver license holders address
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Address.Value);
 ```
 
 ## Driver License Category
-**Category** : EU driver license holders categories
+**Category**: EU driver license holders categories
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Category.Value);
 ```
 
 ## Country Code
-**CountryCode** : Country code extracted as a string.
+**CountryCode**: Country code extracted as a string.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.CountryCode.Value);
 ```
 
 ## Date Of Birth
-**DateOfBirth** : The date of birth of the document holder
+**DateOfBirth**: The date of birth of the document holder
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.DateOfBirth.Value);
 ```
 
 ## Document ID
-**DocumentId** : ID number of the Document.
+**DocumentId**: ID number of the Document.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentId.Value);
 ```
 
 ## Expiry Date
-**ExpiryDate** : Date the document expires
+**ExpiryDate**: Date the document expires
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.ExpiryDate.Value);
 ```
 
 ## First Name
-**FirstName** : First name(s) of the driver license holder
+**FirstName**: First name(s) of the driver license holder
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.FirstName.Value);
 ```
 
 ## Issue Authority
-**IssueAuthority** : Authority that issued the document
+**IssueAuthority**: Authority that issued the document
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.IssueAuthority.Value);
 ```
 
 ## Issue Date
-**IssueDate** : Date the document was issued
+**IssueDate**: Date the document was issued
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.IssueDate.Value);
 ```
 
 ## Last Name
-**LastName** : Last name of the driver license holder.
+**LastName**: Last name of the driver license holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.LastName.Value);
 ```
 
 ## MRZ
-**Mrz** : Machine-readable license number
+**Mrz**: Machine-readable license number
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz.Value);
 ```
 
 ## Photo
-[📄](#page-level-fields "This field is only present on individual pages.")**Photo** : Has a photo of the EU driver license holder
+[📄](#page-level-fields "This field is only present on individual pages.")**Photo**: Has a photo of the EU driver license holder
 
 ```cs
 foreach (var PhotoElem in result.Document.Inference.Prediction.Photo)
@@ -214,14 +214,14 @@ foreach (var PhotoElem in result.Document.Inference.Prediction.Photo)
 ```
 
 ## Place Of Birth
-**PlaceOfBirth** : Place where the driver license holder was born
+**PlaceOfBirth**: Place where the driver license holder was born
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.PlaceOfBirth.Value);
 ```
 
 ## Signature
-[📄](#page-level-fields "This field is only present on individual pages.")**Signature** : Has a signature of the EU driver license holder
+[📄](#page-level-fields "This field is only present on individual pages.")**Signature**: Has a signature of the EU driver license holder
 
 ```cs
 foreach (var SignatureElem in result.Document.Inference.Prediction.Signature)

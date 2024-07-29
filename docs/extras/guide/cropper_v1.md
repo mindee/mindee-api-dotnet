@@ -67,7 +67,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -90,7 +90,7 @@ Some fields are constrained to the page level, and so will not be retrievable at
 The following fields are extracted for Cropper V1:
 
 ## Document Cropper
-[📄](#page-level-fields "This field is only present on individual pages.")**Cropping** : List of documents found in the image.
+[📄](#page-level-fields "This field is only present on individual pages.")**Cropping**: List of documents found in the image.
 
 ```cs
 foreach (var page in result.Document.Inference.Pages)

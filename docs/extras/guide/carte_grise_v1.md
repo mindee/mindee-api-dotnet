@@ -150,7 +150,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -171,287 +171,287 @@ The date field `DateField` extends `StringField`, but also implements:
 The following fields are extracted for Carte Grise V1:
 
 ## a
-**A** : The vehicle's license plate number.
+**A**: The vehicle's license plate number.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.A.Value);
 ```
 
 ## b
-**B** : The vehicle's first release date.
+**B**: The vehicle's first release date.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.B.Value);
 ```
 
 ## c1
-**C1** : The vehicle owner's full name including maiden name.
+**C1**: The vehicle owner's full name including maiden name.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.C1.Value);
 ```
 
 ## c3
-**C3** : The vehicle owner's address.
+**C3**: The vehicle owner's address.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.C3.Value);
 ```
 
 ## c41
-**C41** : Number of owners of the license certificate.
+**C41**: Number of owners of the license certificate.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.C41.Value);
 ```
 
 ## c4a
-**C4A** : Mentions about the ownership of the vehicle.
+**C4A**: Mentions about the ownership of the vehicle.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.C4A.Value);
 ```
 
 ## d1
-**D1** : The vehicle's brand.
+**D1**: The vehicle's brand.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.D1.Value);
 ```
 
 ## d3
-**D3** : The vehicle's commercial name.
+**D3**: The vehicle's commercial name.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.D3.Value);
 ```
 
 ## e
-**E** : The Vehicle Identification Number (VIN).
+**E**: The Vehicle Identification Number (VIN).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.E.Value);
 ```
 
 ## f1
-**F1** : The vehicle's maximum admissible weight.
+**F1**: The vehicle's maximum admissible weight.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.F1.Value);
 ```
 
 ## f2
-**F2** : The vehicle's maximum admissible weight within the license's state.
+**F2**: The vehicle's maximum admissible weight within the license's state.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.F2.Value);
 ```
 
 ## f3
-**F3** : The vehicle's maximum authorized weight with coupling.
+**F3**: The vehicle's maximum authorized weight with coupling.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.F3.Value);
 ```
 
 ## Formula Number
-**FormulaNumber** : The document's formula number.
+**FormulaNumber**: The document's formula number.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.FormulaNumber.Value);
 ```
 
 ## g
-**G** : The vehicle's weight with coupling if tractor different than category M1.
+**G**: The vehicle's weight with coupling if tractor different than category M1.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.G.Value);
 ```
 
 ## g1
-**G1** : The vehicle's national empty weight.
+**G1**: The vehicle's national empty weight.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.G1.Value);
 ```
 
 ## i
-**I** : The car registration date of the given certificate.
+**I**: The car registration date of the given certificate.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.I.Value);
 ```
 
 ## j
-**J** : The vehicle's category.
+**J**: The vehicle's category.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.J.Value);
 ```
 
 ## j1
-**J1** : The vehicle's national type.
+**J1**: The vehicle's national type.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.J1.Value);
 ```
 
 ## j2
-**J2** : The vehicle's body type (CE).
+**J2**: The vehicle's body type (CE).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.J2.Value);
 ```
 
 ## j3
-**J3** : The vehicle's body type (National designation).
+**J3**: The vehicle's body type (National designation).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.J3.Value);
 ```
 
 ## MRZ Line 1
-**Mrz1** : Machine Readable Zone, first line.
+**Mrz1**: Machine Readable Zone, first line.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz1.Value);
 ```
 
 ## MRZ Line 2
-**Mrz2** : Machine Readable Zone, second line.
+**Mrz2**: Machine Readable Zone, second line.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz2.Value);
 ```
 
 ## Owner's First Name
-**OwnerFirstName** : The vehicle's owner first name.
+**OwnerFirstName**: The vehicle's owner first name.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.OwnerFirstName.Value);
 ```
 
 ## Owner's Surname
-**OwnerSurname** : The vehicle's owner surname.
+**OwnerSurname**: The vehicle's owner surname.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.OwnerSurname.Value);
 ```
 
 ## p1
-**P1** : The vehicle engine's displacement (cm3).
+**P1**: The vehicle engine's displacement (cm3).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.P1.Value);
 ```
 
 ## p2
-**P2** : The vehicle's maximum net power (kW).
+**P2**: The vehicle's maximum net power (kW).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.P2.Value);
 ```
 
 ## p3
-**P3** : The vehicle's fuel type or energy source.
+**P3**: The vehicle's fuel type or energy source.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.P3.Value);
 ```
 
 ## p6
-**P6** : The vehicle's administrative power (fiscal horsepower).
+**P6**: The vehicle's administrative power (fiscal horsepower).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.P6.Value);
 ```
 
 ## q
-**Q** : The vehicle's power to weight ratio.
+**Q**: The vehicle's power to weight ratio.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Q.Value);
 ```
 
 ## s1
-**S1** : The vehicle's number of seats.
+**S1**: The vehicle's number of seats.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.S1.Value);
 ```
 
 ## s2
-**S2** : The vehicle's number of standing rooms (person).
+**S2**: The vehicle's number of standing rooms (person).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.S2.Value);
 ```
 
 ## u1
-**U1** : The vehicle's sound level (dB).
+**U1**: The vehicle's sound level (dB).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.U1.Value);
 ```
 
 ## u2
-**U2** : The vehicle engine's rotation speed (RPM).
+**U2**: The vehicle engine's rotation speed (RPM).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.U2.Value);
 ```
 
 ## v7
-**V7** : The vehicle's CO2 emission (g/km).
+**V7**: The vehicle's CO2 emission (g/km).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.V7.Value);
 ```
 
 ## x1
-**X1** : Next technical control date.
+**X1**: Next technical control date.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.X1.Value);
 ```
 
 ## y1
-**Y1** : Amount of the regional proportional tax of the registration (in euros).
+**Y1**: Amount of the regional proportional tax of the registration (in euros).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Y1.Value);
 ```
 
 ## y2
-**Y2** : Amount of the additional parafiscal tax of the registration (in euros).
+**Y2**: Amount of the additional parafiscal tax of the registration (in euros).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Y2.Value);
 ```
 
 ## y3
-**Y3** : Amount of the additional CO2 tax of the registration (in euros).
+**Y3**: Amount of the additional CO2 tax of the registration (in euros).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Y3.Value);
 ```
 
 ## y4
-**Y4** : Amount of the fee for managing the registration (in euros).
+**Y4**: Amount of the fee for managing the registration (in euros).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Y4.Value);
 ```
 
 ## y5
-**Y5** : Amount of the fee for delivery of the registration certificate in euros.
+**Y5**: Amount of the fee for delivery of the registration certificate in euros.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Y5.Value);
 ```
 
 ## y6
-**Y6** : Total amount of registration fee to be paid in euros.
+**Y6**: Total amount of registration fee to be paid in euros.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Y6.Value);

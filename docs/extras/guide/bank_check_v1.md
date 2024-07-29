@@ -84,7 +84,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -121,28 +121,28 @@ Some fields are constrained to the page level, and so will not be retrievable at
 The following fields are extracted for Bank Check V1:
 
 ## Account Number
-**AccountNumber** : The check payer's account number.
+**AccountNumber**: The check payer's account number.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.AccountNumber.Value);
 ```
 
 ## Amount
-**Amount** : The amount of the check.
+**Amount**: The amount of the check.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Amount.Value);
 ```
 
 ## Check Number
-**CheckNumber** : The issuer's check number.
+**CheckNumber**: The issuer's check number.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.CheckNumber.Value);
 ```
 
 ## Check Position
-[📄](#page-level-fields "This field is only present on individual pages.")**CheckPosition** : The position of the check on the document.
+[📄](#page-level-fields "This field is only present on individual pages.")**CheckPosition**: The position of the check on the document.
 
 ```cs
 foreach (var CheckPositionElem in result.Document.Inference.Prediction.CheckPosition)
@@ -152,14 +152,14 @@ foreach (var CheckPositionElem in result.Document.Inference.Prediction.CheckPosi
 ```
 
 ## Check Issue Date
-**Date** : The date the check was issued.
+**Date**: The date the check was issued.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 ```
 
 ## Payees
-**Payees** : List of the check's payees (recipients).
+**Payees**: List of the check's payees (recipients).
 
 ```cs
 foreach (var PayeesElem in result.Document.Inference.Prediction.Payees)
@@ -169,14 +169,14 @@ foreach (var PayeesElem in result.Document.Inference.Prediction.Payees)
 ```
 
 ## Routing Number
-**RoutingNumber** : The check issuer's routing number.
+**RoutingNumber**: The check issuer's routing number.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.RoutingNumber.Value);
 ```
 
 ## Signature Positions
-[📄](#page-level-fields "This field is only present on individual pages.")**SignaturesPositions** : List of signature positions
+[📄](#page-level-fields "This field is only present on individual pages.")**SignaturesPositions**: List of signature positions
 
 ```cs
 foreach (var page in result.Document.Inference.Pages)

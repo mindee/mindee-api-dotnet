@@ -124,7 +124,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -198,28 +198,28 @@ A `ReceiptV5LineItem` implements the following attributes:
 The following fields are extracted for Receipt V5:
 
 ## Purchase Category
-**Category** : The purchase category among predefined classes.
+**Category**: The purchase category among predefined classes.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Category.Value);
 ```
 
 ## Purchase Date
-**Date** : The date the purchase was made.
+**Date**: The date the purchase was made.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 ```
 
 ## Document Type
-**DocumentType** : One of: 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
+**DocumentType**: One of: 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
 ```
 
 ## Line Items
-**LineItems** (List<[ReceiptV5LineItem](#line-items-field)>): List of line item details.
+**LineItems**(List<[ReceiptV5LineItem](#line-items-field)>): List of line item details.
 
 ```cs
 foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
@@ -229,35 +229,35 @@ foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
 ```
 
 ## Expense Locale
-**Locale** : The locale detected on the document.
+**Locale**: The locale detected on the document.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Locale.Value);
 ```
 
 ## Receipt Number
-**ReceiptNumber** : The receipt number or identifier.
+**ReceiptNumber**: The receipt number or identifier.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.ReceiptNumber.Value);
 ```
 
 ## Purchase Subcategory
-**Subcategory** : The purchase subcategory among predefined classes for transport and food.
+**Subcategory**: The purchase subcategory among predefined classes for transport and food.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Subcategory.Value);
 ```
 
 ## Supplier Address
-**SupplierAddress** : The address of the supplier or merchant.
+**SupplierAddress**: The address of the supplier or merchant.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.SupplierAddress.Value);
 ```
 
 ## Supplier Company Registrations
-**SupplierCompanyRegistrations** : List of company registrations associated to the supplier.
+**SupplierCompanyRegistrations**: List of company registrations associated to the supplier.
 
 ```cs
 foreach (var SupplierCompanyRegistrationsElem in result.Document.Inference.Prediction.SupplierCompanyRegistrations)
@@ -267,21 +267,21 @@ foreach (var SupplierCompanyRegistrationsElem in result.Document.Inference.Predi
 ```
 
 ## Supplier Name
-**SupplierName** : The name of the supplier or merchant.
+**SupplierName**: The name of the supplier or merchant.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.SupplierName.Value);
 ```
 
 ## Supplier Phone Number
-**SupplierPhoneNumber** : The phone number of the supplier or merchant.
+**SupplierPhoneNumber**: The phone number of the supplier or merchant.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.SupplierPhoneNumber.Value);
 ```
 
 ## Taxes
-**Taxes** : List of tax lines information.
+**Taxes**: List of tax lines information.
 
 ```cs
 foreach (var TaxesElem in result.Document.Inference.Prediction.Taxes)
@@ -291,35 +291,35 @@ foreach (var TaxesElem in result.Document.Inference.Prediction.Taxes)
 ```
 
 ## Purchase Time
-**Time** : The time the purchase was made.
+**Time**: The time the purchase was made.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Time.Value);
 ```
 
 ## Tip and Gratuity
-**Tip** : The total amount of tip and gratuity.
+**Tip**: The total amount of tip and gratuity.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Tip.Value);
 ```
 
 ## Total Amount
-**TotalAmount** : The total amount paid: includes taxes, discounts, fees, tips, and gratuity.
+**TotalAmount**: The total amount paid: includes taxes, discounts, fees, tips, and gratuity.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalAmount.Value);
 ```
 
 ## Total Net
-**TotalNet** : The net amount paid: does not include taxes, fees, and discounts.
+**TotalNet**: The net amount paid: does not include taxes, fees, and discounts.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalNet.Value);
 ```
 
 ## Total Tax
-**TotalTax** : The total amount of taxes.
+**TotalTax**: The total amount of taxes.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalTax.Value);

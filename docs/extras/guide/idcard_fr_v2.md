@@ -102,7 +102,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -133,49 +133,49 @@ Some fields are constrained to the page level, and so will not be retrievable at
 The following fields are extracted for Carte Nationale d'Identité V2:
 
 ## Alternate Name
-**AlternateName** : The alternate name of the card holder.
+**AlternateName**: The alternate name of the card holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.AlternateName.Value);
 ```
 
 ## Issuing Authority
-**Authority** : The name of the issuing authority.
+**Authority**: The name of the issuing authority.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Authority.Value);
 ```
 
 ## Date of Birth
-**BirthDate** : The date of birth of the card holder.
+**BirthDate**: The date of birth of the card holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.BirthDate.Value);
 ```
 
 ## Place of Birth
-**BirthPlace** : The place of birth of the card holder.
+**BirthPlace**: The place of birth of the card holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.BirthPlace.Value);
 ```
 
 ## Card Access Number
-**CardAccessNumber** : The card access number (CAN).
+**CardAccessNumber**: The card access number (CAN).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.CardAccessNumber.Value);
 ```
 
 ## Document Number
-**DocumentNumber** : The document number.
+**DocumentNumber**: The document number.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentNumber.Value);
 ```
 
 ## Document Sides
-[📄](#page-level-fields "This field is only present on individual pages.")**DocumentSide** : The sides of the document which are visible.
+[📄](#page-level-fields "This field is only present on individual pages.")**DocumentSide**: The sides of the document which are visible.
 
 ```cs
 foreach (var DocumentSideElem in result.Document.Inference.Prediction.DocumentSide)
@@ -186,7 +186,7 @@ foreach (var DocumentSideElem in result.Document.Inference.Prediction.DocumentSi
 ```
 
 ## Document Type
-[📄](#page-level-fields "This field is only present on individual pages.")**DocumentType** : The document type or format.
+[📄](#page-level-fields "This field is only present on individual pages.")**DocumentType**: The document type or format.
 
 ```cs
 foreach (var DocumentTypeElem in result.Document.Inference.Prediction.DocumentType)
@@ -197,21 +197,21 @@ foreach (var DocumentTypeElem in result.Document.Inference.Prediction.DocumentTy
 ```
 
 ## Expiry Date
-**ExpiryDate** : The expiry date of the identification card.
+**ExpiryDate**: The expiry date of the identification card.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.ExpiryDate.Value);
 ```
 
 ## Gender
-**Gender** : The gender of the card holder.
+**Gender**: The gender of the card holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Gender.Value);
 ```
 
 ## Given Name(s)
-**GivenNames** : The given name(s) of the card holder.
+**GivenNames**: The given name(s) of the card holder.
 
 ```cs
 foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
@@ -221,42 +221,42 @@ foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 ```
 
 ## Date of Issue
-**IssueDate** : The date of issue of the identification card.
+**IssueDate**: The date of issue of the identification card.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.IssueDate.Value);
 ```
 
 ## Mrz Line 1
-**Mrz1** : The Machine Readable Zone, first line.
+**Mrz1**: The Machine Readable Zone, first line.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz1.Value);
 ```
 
 ## Mrz Line 2
-**Mrz2** : The Machine Readable Zone, second line.
+**Mrz2**: The Machine Readable Zone, second line.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz2.Value);
 ```
 
 ## Mrz Line 3
-**Mrz3** : The Machine Readable Zone, third line.
+**Mrz3**: The Machine Readable Zone, third line.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz3.Value);
 ```
 
 ## Nationality
-**Nationality** : The nationality of the card holder.
+**Nationality**: The nationality of the card holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Nationality.Value);
 ```
 
 ## Surname
-**Surname** : The surname of the card holder.
+**Surname**: The surname of the card holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Surname.Value);

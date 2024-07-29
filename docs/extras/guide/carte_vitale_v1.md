@@ -76,7 +76,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -97,7 +97,7 @@ The date field `DateField` extends `StringField`, but also implements:
 The following fields are extracted for Carte Vitale V1:
 
 ## Given Name(s)
-**GivenNames** : The given name(s) of the card holder.
+**GivenNames**: The given name(s) of the card holder.
 
 ```cs
 foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
@@ -107,21 +107,21 @@ foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 ```
 
 ## Issuance Date
-**IssuanceDate** : The date the card was issued.
+**IssuanceDate**: The date the card was issued.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.IssuanceDate.Value);
 ```
 
 ## Social Security Number
-**SocialSecurity** : The Social Security Number (Numéro de Sécurité Sociale) of the card holder
+**SocialSecurity**: The Social Security Number (Numéro de Sécurité Sociale) of the card holder
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.SocialSecurity.Value);
 ```
 
 ## Surname
-**Surname** : The surname of the card holder.
+**Surname**: The surname of the card holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Surname.Value);

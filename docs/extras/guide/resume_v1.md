@@ -119,7 +119,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -202,14 +202,14 @@ A `ResumeV1SocialNetworksUrl` implements the following attributes:
 The following fields are extracted for Resume V1:
 
 ## Address
-**Address** : The location information of the candidate, including city, state, and country.
+**Address**: The location information of the candidate, including city, state, and country.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Address.Value);
 ```
 
 ## Certificates
-**Certificates** (List<[ResumeV1Certificate](#certificates-field)>): The list of certificates obtained by the candidate.
+**Certificates**(List<[ResumeV1Certificate](#certificates-field)>): The list of certificates obtained by the candidate.
 
 ```cs
 foreach (var CertificatesElem in result.Document.Inference.Prediction.Certificates)
@@ -219,21 +219,21 @@ foreach (var CertificatesElem in result.Document.Inference.Prediction.Certificat
 ```
 
 ## Document Language
-**DocumentLanguage** : The ISO 639 code of the language in which the document is written.
+**DocumentLanguage**: The ISO 639 code of the language in which the document is written.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentLanguage.Value);
 ```
 
 ## Document Type
-**DocumentType** : The type of the document sent.
+**DocumentType**: The type of the document sent.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
 ```
 
 ## Education
-**Education** (List<[ResumeV1Education](#education-field)>): The list of the candidate's educational background.
+**Education**(List<[ResumeV1Education](#education-field)>): The list of the candidate's educational background.
 
 ```cs
 foreach (var EducationElem in result.Document.Inference.Prediction.Education)
@@ -243,14 +243,14 @@ foreach (var EducationElem in result.Document.Inference.Prediction.Education)
 ```
 
 ## Email Address
-**EmailAddress** : The email address of the candidate.
+**EmailAddress**: The email address of the candidate.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.EmailAddress.Value);
 ```
 
 ## Given Names
-**GivenNames** : The candidate's first or given names.
+**GivenNames**: The candidate's first or given names.
 
 ```cs
 foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
@@ -260,7 +260,7 @@ foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 ```
 
 ## Hard Skills
-**HardSkills** : The list of the candidate's technical abilities and knowledge.
+**HardSkills**: The list of the candidate's technical abilities and knowledge.
 
 ```cs
 foreach (var HardSkillsElem in result.Document.Inference.Prediction.HardSkills)
@@ -270,14 +270,14 @@ foreach (var HardSkillsElem in result.Document.Inference.Prediction.HardSkills)
 ```
 
 ## Job Applied
-**JobApplied** : The position that the candidate is applying for.
+**JobApplied**: The position that the candidate is applying for.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.JobApplied.Value);
 ```
 
 ## Languages
-**Languages** (List<[ResumeV1Language](#languages-field)>): The list of languages that the candidate is proficient in.
+**Languages**(List<[ResumeV1Language](#languages-field)>): The list of languages that the candidate is proficient in.
 
 ```cs
 foreach (var LanguagesElem in result.Document.Inference.Prediction.Languages)
@@ -287,28 +287,28 @@ foreach (var LanguagesElem in result.Document.Inference.Prediction.Languages)
 ```
 
 ## Nationality
-**Nationality** : The ISO 3166 code for the country of citizenship of the candidate.
+**Nationality**: The ISO 3166 code for the country of citizenship of the candidate.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Nationality.Value);
 ```
 
 ## Phone Number
-**PhoneNumber** : The phone number of the candidate.
+**PhoneNumber**: The phone number of the candidate.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.PhoneNumber.Value);
 ```
 
 ## Profession
-**Profession** : The candidate's current profession.
+**Profession**: The candidate's current profession.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Profession.Value);
 ```
 
 ## Professional Experiences
-**ProfessionalExperiences** (List<[ResumeV1ProfessionalExperience](#professional-experiences-field)>): The list of the candidate's professional experiences.
+**ProfessionalExperiences**(List<[ResumeV1ProfessionalExperience](#professional-experiences-field)>): The list of the candidate's professional experiences.
 
 ```cs
 foreach (var ProfessionalExperiencesElem in result.Document.Inference.Prediction.ProfessionalExperiences)
@@ -318,7 +318,7 @@ foreach (var ProfessionalExperiencesElem in result.Document.Inference.Prediction
 ```
 
 ## Social Networks
-**SocialNetworksUrls** (List<[ResumeV1SocialNetworksUrl](#social-networks-field)>): The list of social network profiles of the candidate.
+**SocialNetworksUrls**(List<[ResumeV1SocialNetworksUrl](#social-networks-field)>): The list of social network profiles of the candidate.
 
 ```cs
 foreach (var SocialNetworksUrlsElem in result.Document.Inference.Prediction.SocialNetworksUrls)
@@ -328,7 +328,7 @@ foreach (var SocialNetworksUrlsElem in result.Document.Inference.Prediction.Soci
 ```
 
 ## Soft Skills
-**SoftSkills** : The list of the candidate's interpersonal and communication abilities.
+**SoftSkills**: The list of the candidate's interpersonal and communication abilities.
 
 ```cs
 foreach (var SoftSkillsElem in result.Document.Inference.Prediction.SoftSkills)
@@ -338,7 +338,7 @@ foreach (var SoftSkillsElem in result.Document.Inference.Prediction.SoftSkills)
 ```
 
 ## Surnames
-**Surnames** : The candidate's last names.
+**Surnames**: The candidate's last names.
 
 ```cs
 foreach (var SurnamesElem in result.Document.Inference.Prediction.Surnames)

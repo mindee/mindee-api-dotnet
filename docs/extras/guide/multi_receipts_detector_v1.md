@@ -80,7 +80,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -100,7 +100,7 @@ The position field `PositionField` implements:
 The following fields are extracted for Multi Receipts Detector V1:
 
 ## List of Receipts
-**Receipts** : Positions of the receipts on the document.
+**Receipts**: Positions of the receipts on the document.
 
 ```cs
 foreach (var ReceiptsElem in result.Document.Inference.Prediction.Receipts)

@@ -108,7 +108,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -144,14 +144,14 @@ The locale field `Locale` extends `BaseField`, but also implements:
 The following fields are extracted for Proof of Address V1:
 
 ## Date of Issue
-**Date** : The date the document was issued.
+**Date**: The date the document was issued.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 ```
 
 ## Dates
-**Dates** : List of dates found on the document.
+**Dates**: List of dates found on the document.
 
 ```cs
 foreach (var DatesElem in result.Document.Inference.Prediction.Dates)
@@ -161,14 +161,14 @@ foreach (var DatesElem in result.Document.Inference.Prediction.Dates)
 ```
 
 ## Issuer Address
-**IssuerAddress** : The address of the document's issuer.
+**IssuerAddress**: The address of the document's issuer.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.IssuerAddress.Value);
 ```
 
 ## Issuer Company Registrations
-**IssuerCompanyRegistration** : List of company registrations found for the issuer.
+**IssuerCompanyRegistration**: List of company registrations found for the issuer.
 
 ```cs
 foreach (var IssuerCompanyRegistrationElem in result.Document.Inference.Prediction.IssuerCompanyRegistration)
@@ -178,28 +178,28 @@ foreach (var IssuerCompanyRegistrationElem in result.Document.Inference.Predicti
 ```
 
 ## Issuer Name
-**IssuerName** : The name of the person or company issuing the document.
+**IssuerName**: The name of the person or company issuing the document.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.IssuerName.Value);
 ```
 
 ## Locale
-**Locale** : The locale detected on the document.
+**Locale**: The locale detected on the document.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Locale.Value);
 ```
 
 ## Recipient Address
-**RecipientAddress** : The address of the recipient.
+**RecipientAddress**: The address of the recipient.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.RecipientAddress.Value);
 ```
 
 ## Recipient Company Registrations
-**RecipientCompanyRegistration** : List of company registrations found for the recipient.
+**RecipientCompanyRegistration**: List of company registrations found for the recipient.
 
 ```cs
 foreach (var RecipientCompanyRegistrationElem in result.Document.Inference.Prediction.RecipientCompanyRegistration)
@@ -209,7 +209,7 @@ foreach (var RecipientCompanyRegistrationElem in result.Document.Inference.Predi
 ```
 
 ## Recipient Name
-**RecipientName** : The name of the person or company receiving the document.
+**RecipientName**: The name of the person or company receiving the document.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.RecipientName.Value);

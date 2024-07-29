@@ -84,7 +84,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -113,28 +113,28 @@ A `BankAccountDetailsV2Bban` implements the following attributes:
 The following fields are extracted for Bank Account Details V2:
 
 ## Account Holder's Names
-**AccountHoldersNames** : Full extraction of the account holders names.
+**AccountHoldersNames**: Full extraction of the account holders names.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.AccountHoldersNames.Value);
 ```
 
 ## Basic Bank Account Number
-**Bban** ([BankAccountDetailsV2Bban](#basic-bank-account-number-field)): Full extraction of BBAN, including: branch code, bank code, account and key.
+**Bban**([BankAccountDetailsV2Bban](#basic-bank-account-number-field)): Full extraction of BBAN, including: branch code, bank code, account and key.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Bban.Value);
 ```
 
 ## IBAN
-**Iban** : Full extraction of the IBAN number.
+**Iban**: Full extraction of the IBAN number.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Iban.Value);
 ```
 
 ## SWIFT Code
-**SwiftCode** : Full extraction of the SWIFT code.
+**SwiftCode**: Full extraction of the SWIFT code.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.SwiftCode.Value);

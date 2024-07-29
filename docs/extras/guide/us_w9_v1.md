@@ -77,7 +77,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -105,7 +105,7 @@ Some fields are constrained to the page level, and so will not be retrievable at
 The following fields are extracted for W9 V1:
 
 ## Address
-[📄](#page-level-fields "This field is only present on individual pages.")**Address** : The street address (number, street, and apt. or suite no.) of the applicant.
+[📄](#page-level-fields "This field is only present on individual pages.")**Address**: The street address (number, street, and apt. or suite no.) of the applicant.
 
 ```cs
 foreach (var AddressElem in result.Document.Inference.Prediction.Address)
@@ -116,7 +116,7 @@ foreach (var AddressElem in result.Document.Inference.Prediction.Address)
 ```
 
 ## Business Name
-[📄](#page-level-fields "This field is only present on individual pages.")**BusinessName** : The business name or disregarded entity name, if different from Name.
+[📄](#page-level-fields "This field is only present on individual pages.")**BusinessName**: The business name or disregarded entity name, if different from Name.
 
 ```cs
 foreach (var BusinessNameElem in result.Document.Inference.Prediction.BusinessName)
@@ -127,7 +127,7 @@ foreach (var BusinessNameElem in result.Document.Inference.Prediction.BusinessNa
 ```
 
 ## City State Zip
-[📄](#page-level-fields "This field is only present on individual pages.")**CityStateZip** : The city, state, and ZIP code of the applicant.
+[📄](#page-level-fields "This field is only present on individual pages.")**CityStateZip**: The city, state, and ZIP code of the applicant.
 
 ```cs
 foreach (var CityStateZipElem in result.Document.Inference.Prediction.CityStateZip)
@@ -138,7 +138,7 @@ foreach (var CityStateZipElem in result.Document.Inference.Prediction.CityStateZ
 ```
 
 ## EIN
-[📄](#page-level-fields "This field is only present on individual pages.")**Ein** : The employer identification number.
+[📄](#page-level-fields "This field is only present on individual pages.")**Ein**: The employer identification number.
 
 ```cs
 foreach (var EinElem in result.Document.Inference.Prediction.Ein)
@@ -149,7 +149,7 @@ foreach (var EinElem in result.Document.Inference.Prediction.Ein)
 ```
 
 ## Name
-[📄](#page-level-fields "This field is only present on individual pages.")**Name** : Name as shown on the applicant's income tax return.
+[📄](#page-level-fields "This field is only present on individual pages.")**Name**: Name as shown on the applicant's income tax return.
 
 ```cs
 foreach (var NameElem in result.Document.Inference.Prediction.Name)
@@ -160,7 +160,7 @@ foreach (var NameElem in result.Document.Inference.Prediction.Name)
 ```
 
 ## Signature Date Position
-[📄](#page-level-fields "This field is only present on individual pages.")**SignatureDatePosition** : Position of the signature date on the document.
+[📄](#page-level-fields "This field is only present on individual pages.")**SignatureDatePosition**: Position of the signature date on the document.
 
 ```cs
 foreach (var SignatureDatePositionElem in result.Document.Inference.Prediction.SignatureDatePosition)
@@ -170,7 +170,7 @@ foreach (var SignatureDatePositionElem in result.Document.Inference.Prediction.S
 ```
 
 ## Signature Position
-[📄](#page-level-fields "This field is only present on individual pages.")**SignaturePosition** : Position of the signature on the document.
+[📄](#page-level-fields "This field is only present on individual pages.")**SignaturePosition**: Position of the signature on the document.
 
 ```cs
 foreach (var SignaturePositionElem in result.Document.Inference.Prediction.SignaturePosition)
@@ -180,7 +180,7 @@ foreach (var SignaturePositionElem in result.Document.Inference.Prediction.Signa
 ```
 
 ## SSN
-[📄](#page-level-fields "This field is only present on individual pages.")**Ssn** : The applicant's social security number.
+[📄](#page-level-fields "This field is only present on individual pages.")**Ssn**: The applicant's social security number.
 
 ```cs
 foreach (var SsnElem in result.Document.Inference.Prediction.Ssn)
@@ -191,7 +191,7 @@ foreach (var SsnElem in result.Document.Inference.Prediction.Ssn)
 ```
 
 ## Tax Classification
-[📄](#page-level-fields "This field is only present on individual pages.")**TaxClassification** : The federal tax classification, which can vary depending on the revision date.
+[📄](#page-level-fields "This field is only present on individual pages.")**TaxClassification**: The federal tax classification, which can vary depending on the revision date.
 
 ```cs
 foreach (var TaxClassificationElem in result.Document.Inference.Prediction.TaxClassification)
@@ -202,7 +202,7 @@ foreach (var TaxClassificationElem in result.Document.Inference.Prediction.TaxCl
 ```
 
 ## Tax Classification LLC
-[📄](#page-level-fields "This field is only present on individual pages.")**TaxClassificationLlc** : Depending on revision year, among S, C, P or D for Limited Liability Company Classification.
+[📄](#page-level-fields "This field is only present on individual pages.")**TaxClassificationLlc**: Depending on revision year, among S, C, P or D for Limited Liability Company Classification.
 
 ```cs
 foreach (var TaxClassificationLlcElem in result.Document.Inference.Prediction.TaxClassificationLlc)
@@ -213,7 +213,7 @@ foreach (var TaxClassificationLlcElem in result.Document.Inference.Prediction.Ta
 ```
 
 ## Tax Classification Other Details
-[📄](#page-level-fields "This field is only present on individual pages.")**TaxClassificationOtherDetails** : Tax Classification Other Details.
+[📄](#page-level-fields "This field is only present on individual pages.")**TaxClassificationOtherDetails**: Tax Classification Other Details.
 
 ```cs
 foreach (var TaxClassificationOtherDetailsElem in result.Document.Inference.Prediction.TaxClassificationOtherDetails)
@@ -224,7 +224,7 @@ foreach (var TaxClassificationOtherDetailsElem in result.Document.Inference.Pred
 ```
 
 ## W9 Revision Date
-[📄](#page-level-fields "This field is only present on individual pages.")**W9RevisionDate** : The Revision month and year of the W9 form.
+[📄](#page-level-fields "This field is only present on individual pages.")**W9RevisionDate**: The Revision month and year of the W9 form.
 
 ```cs
 foreach (var W9RevisionDateElem in result.Document.Inference.Prediction.W9RevisionDate)

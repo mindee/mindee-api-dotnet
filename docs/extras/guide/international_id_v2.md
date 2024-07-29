@@ -80,7 +80,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -108,56 +108,56 @@ The date field `DateField` extends `StringField`, but also implements:
 The following fields are extracted for International ID V2:
 
 ## Address
-**Address** : The physical address of the document holder.
+**Address**: The physical address of the document holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Address.Value);
 ```
 
 ## Birth Date
-**BirthDate** : The date of birth of the document holder.
+**BirthDate**: The date of birth of the document holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.BirthDate.Value);
 ```
 
 ## Birth Place
-**BirthPlace** : The place of birth of the document holder.
+**BirthPlace**: The place of birth of the document holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.BirthPlace.Value);
 ```
 
 ## Country of Issue
-**CountryOfIssue** : The country where the document was issued.
+**CountryOfIssue**: The country where the document was issued.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.CountryOfIssue.Value);
 ```
 
 ## Document Number
-**DocumentNumber** : The unique identifier assigned to the document.
+**DocumentNumber**: The unique identifier assigned to the document.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentNumber.Value);
 ```
 
 ## Document Type
-**DocumentType** : The type of personal identification document.
+**DocumentType**: The type of personal identification document.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
 ```
 
 ## Expiration Date
-**ExpiryDate** : The date when the document becomes invalid.
+**ExpiryDate**: The date when the document becomes invalid.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.ExpiryDate.Value);
 ```
 
 ## Given Names
-**GivenNames** : The list of the document holder's given names.
+**GivenNames**: The list of the document holder's given names.
 
 ```cs
 foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
@@ -167,63 +167,63 @@ foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 ```
 
 ## Issue Date
-**IssueDate** : The date when the document was issued.
+**IssueDate**: The date when the document was issued.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.IssueDate.Value);
 ```
 
 ## MRZ Line 1
-**MrzLine1** : The Machine Readable Zone, first line.
+**MrzLine1**: The Machine Readable Zone, first line.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.MrzLine1.Value);
 ```
 
 ## MRZ Line 2
-**MrzLine2** : The Machine Readable Zone, second line.
+**MrzLine2**: The Machine Readable Zone, second line.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.MrzLine2.Value);
 ```
 
 ## MRZ Line 3
-**MrzLine3** : The Machine Readable Zone, third line.
+**MrzLine3**: The Machine Readable Zone, third line.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.MrzLine3.Value);
 ```
 
 ## Nationality
-**Nationality** : The country of citizenship of the document holder.
+**Nationality**: The country of citizenship of the document holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Nationality.Value);
 ```
 
 ## Personal Number
-**PersonalNumber** : The unique identifier assigned to the document holder.
+**PersonalNumber**: The unique identifier assigned to the document holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.PersonalNumber.Value);
 ```
 
 ## Sex
-**Sex** : The biological sex of the document holder.
+**Sex**: The biological sex of the document holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Sex.Value);
 ```
 
 ## State of Issue
-**StateOfIssue** : The state or territory where the document was issued.
+**StateOfIssue**: The state or territory where the document was issued.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.StateOfIssue.Value);
 ```
 
 ## Surnames
-**Surnames** : The list of the document holder's family names.
+**Surnames**: The list of the document holder's family names.
 
 ```cs
 foreach (var SurnamesElem in result.Document.Inference.Prediction.Surnames)

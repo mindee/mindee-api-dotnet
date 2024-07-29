@@ -90,7 +90,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -111,42 +111,42 @@ The date field `DateField` extends `StringField`, but also implements:
 The following fields are extracted for Passport V1:
 
 ## Date of Birth
-**BirthDate** : The date of birth of the passport holder.
+**BirthDate**: The date of birth of the passport holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.BirthDate.Value);
 ```
 
 ## Place of Birth
-**BirthPlace** : The place of birth of the passport holder.
+**BirthPlace**: The place of birth of the passport holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.BirthPlace.Value);
 ```
 
 ## Country Code
-**Country** : The country's 3 letter code (ISO 3166-1 alpha-3).
+**Country**: The country's 3 letter code (ISO 3166-1 alpha-3).
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Country.Value);
 ```
 
 ## Expiry Date
-**ExpiryDate** : The expiry date of the passport.
+**ExpiryDate**: The expiry date of the passport.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.ExpiryDate.Value);
 ```
 
 ## Gender
-**Gender** : The gender of the passport holder.
+**Gender**: The gender of the passport holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Gender.Value);
 ```
 
 ## Given Name(s)
-**GivenNames** : The given name(s) of the passport holder.
+**GivenNames**: The given name(s) of the passport holder.
 
 ```cs
 foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
@@ -156,35 +156,35 @@ foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 ```
 
 ## ID Number
-**IdNumber** : The passport's identification number.
+**IdNumber**: The passport's identification number.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.IdNumber.Value);
 ```
 
 ## Date of Issue
-**IssuanceDate** : The date the passport was issued.
+**IssuanceDate**: The date the passport was issued.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.IssuanceDate.Value);
 ```
 
 ## MRZ Line 1
-**Mrz1** : Machine Readable Zone, first line
+**Mrz1**: Machine Readable Zone, first line
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz1.Value);
 ```
 
 ## MRZ Line 2
-**Mrz2** : Machine Readable Zone, second line
+**Mrz2**: Machine Readable Zone, second line
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz2.Value);
 ```
 
 ## Surname
-**Surname** : The surname of the passport holder.
+**Surname**: The surname of the passport holder.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Surname.Value);

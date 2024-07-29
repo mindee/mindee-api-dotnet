@@ -63,7 +63,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -107,7 +107,7 @@ A `UsMailV2SenderAddress` implements the following attributes:
 The following fields are extracted for US Mail V2:
 
 ## Recipient Addresses
-**RecipientAddresses** (List<[UsMailV2RecipientAddress](#recipient-addresses-field)>): The addresses of the recipients.
+**RecipientAddresses**(List<[UsMailV2RecipientAddress](#recipient-addresses-field)>): The addresses of the recipients.
 
 ```cs
 foreach (var RecipientAddressesElem in result.Document.Inference.Prediction.RecipientAddresses)
@@ -117,7 +117,7 @@ foreach (var RecipientAddressesElem in result.Document.Inference.Prediction.Reci
 ```
 
 ## Recipient Names
-**RecipientNames** : The names of the recipients.
+**RecipientNames**: The names of the recipients.
 
 ```cs
 foreach (var RecipientNamesElem in result.Document.Inference.Prediction.RecipientNames)
@@ -127,14 +127,14 @@ foreach (var RecipientNamesElem in result.Document.Inference.Prediction.Recipien
 ```
 
 ## Sender Address
-**SenderAddress** ([UsMailV2SenderAddress](#sender-address-field)): The address of the sender.
+**SenderAddress**([UsMailV2SenderAddress](#sender-address-field)): The address of the sender.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.SenderAddress.Value);
 ```
 
 ## Sender Name
-**SenderName** : The name of the sender.
+**SenderName**: The name of the sender.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.SenderName.Value);

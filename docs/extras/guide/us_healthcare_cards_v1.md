@@ -88,7 +88,7 @@ A typical `BaseField` object will have the following attributes:
 * **Confidence** (`double?`): the confidence score of the field prediction.
 * **BoundingBox** (`BoundingBox`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **Polygon** (`Polygon`): contains the relative vertices coordinates (`Polygon` extends `List<Point>`) of a polygon containing the field in the image.
-* **PageId** (`int?`): the ID of the page, is `null` when at document-level.
+* **PageId** (`int?`): the ID of the page, always `null` when at document-level.
 
 > **Note:** A `Point` simply refers to a List of `double`.
 
@@ -120,14 +120,14 @@ A `HealthcareCardV1Copay` implements the following attributes:
 The following fields are extracted for Healthcare Card V1:
 
 ## Company Name
-**CompanyName** : The name of the company that provides the healthcare plan.
+**CompanyName**: The name of the company that provides the healthcare plan.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.CompanyName.Value);
 ```
 
 ## copays
-**Copays** (List<[HealthcareCardV1Copay](#copays-field)>): Is a fixed amount for a covered service.
+**Copays**(List<[HealthcareCardV1Copay](#copays-field)>): Is a fixed amount for a covered service.
 
 ```cs
 foreach (var CopaysElem in result.Document.Inference.Prediction.Copays)
@@ -137,7 +137,7 @@ foreach (var CopaysElem in result.Document.Inference.Prediction.Copays)
 ```
 
 ## Dependents
-**Dependents** : The list of dependents covered by the healthcare plan.
+**Dependents**: The list of dependents covered by the healthcare plan.
 
 ```cs
 foreach (var DependentsElem in result.Document.Inference.Prediction.Dependents)
@@ -147,63 +147,63 @@ foreach (var DependentsElem in result.Document.Inference.Prediction.Dependents)
 ```
 
 ## Enrollment Date
-**EnrollmentDate** : The date when the member enrolled in the healthcare plan.
+**EnrollmentDate**: The date when the member enrolled in the healthcare plan.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.EnrollmentDate.Value);
 ```
 
 ## Group Number
-**GroupNumber** : The group number associated with the healthcare plan.
+**GroupNumber**: The group number associated with the healthcare plan.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.GroupNumber.Value);
 ```
 
 ## Issuer 80840
-**Issuer80840** : The organization that issued the healthcare plan.
+**Issuer80840**: The organization that issued the healthcare plan.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.Issuer80840.Value);
 ```
 
 ## Member ID
-**MemberId** : The unique identifier for the member in the healthcare system.
+**MemberId**: The unique identifier for the member in the healthcare system.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.MemberId.Value);
 ```
 
 ## Member Name
-**MemberName** : The name of the member covered by the healthcare plan.
+**MemberName**: The name of the member covered by the healthcare plan.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.MemberName.Value);
 ```
 
 ## Payer ID
-**PayerId** : The unique identifier for the payer in the healthcare system.
+**PayerId**: The unique identifier for the payer in the healthcare system.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.PayerId.Value);
 ```
 
 ## RX BIN
-**RxBin** : The BIN number for prescription drug coverage.
+**RxBin**: The BIN number for prescription drug coverage.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.RxBin.Value);
 ```
 
 ## RX GRP
-**RxGrp** : The group number for prescription drug coverage.
+**RxGrp**: The group number for prescription drug coverage.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.RxGrp.Value);
 ```
 
 ## RX PCN
-**RxPcn** : The PCN number for prescription drug coverage.
+**RxPcn**: The PCN number for prescription drug coverage.
 
 ```cs
 System.Console.WriteLine(result.Document.Inference.Prediction.RxPcn.Value);
