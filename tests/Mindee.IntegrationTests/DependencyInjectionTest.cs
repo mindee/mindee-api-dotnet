@@ -20,17 +20,13 @@ namespace Mindee.IntegrationTests
 
             var host = builder.Build();
 
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+            using var scope = host.Services.CreateScope();
+            var services = scope.ServiceProvider;
 
-                var mindeeClient = services.GetRequiredService<MindeeClient>();
-                var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
-                var response = await mindeeClient.ParseAsync<InvoiceV4>(inputSource);
-                Assert.NotNull(response);
-            }
-
-
+            var mindeeClient = services.GetRequiredService<MindeeClient>();
+            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
+            var response = await mindeeClient.ParseAsync<InvoiceV4>(inputSource);
+            Assert.NotNull(response);
             await host.StopAsync();
         }
     }
