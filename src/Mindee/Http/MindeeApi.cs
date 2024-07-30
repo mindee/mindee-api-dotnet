@@ -18,6 +18,7 @@ namespace Mindee.Http
         private readonly Dictionary<string, string> _defaultHeaders;
         private readonly RestClient _httpClient;
         private readonly ILogger<MindeeApi> _logger;
+        private TimeSpan _timeOut;
 
         public MindeeApi(IOptions<MindeeSettings> mindeeSettings, RestClient httpClient,
             ILogger<MindeeApi> logger = null)
@@ -35,6 +36,9 @@ namespace Mindee.Http
                 { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" }, { "Connection", "close" }
             };
             _httpClient.AddDefaultHeaders(_defaultHeaders);
+            if (mindeeSettings.Value.RequestTimeoutSeconds <= 0)
+                mindeeSettings.Value.RequestTimeoutSeconds = 120;
+            _timeOut = TimeSpan.FromSeconds(mindeeSettings.Value.RequestTimeoutSeconds);
         }
 
         public async Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(
@@ -49,6 +53,7 @@ namespace Mindee.Http
             var request = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/predict_async"
                 , Method.Post);
+            request.Timeout = _timeOut;
 
             AddPredictRequestParameters(predictParameter, request);
 
@@ -69,6 +74,7 @@ namespace Mindee.Http
             var request = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/predict"
                 , Method.Post);
+            request.Timeout = _timeOut;
 
             AddPredictRequestParameters(predictParameter, request);
 
@@ -88,6 +94,7 @@ namespace Mindee.Http
 
             var queueRequest = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/documents/queue/{jobId}");
+            queueRequest.Timeout = _timeOut;
 
             _logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource} ...");
 
@@ -100,6 +107,7 @@ namespace Mindee.Http
                 var locationHeader = queueResponse.Headers.First(h => h.Name == "Location");
 
                 var docRequest = new RestRequest(locationHeader.Value?.ToString());
+                docRequest.Timeout = _timeOut;
 
                 _logger?.LogInformation($"HTTP GET to {_baseUrl + docRequest.Resource} ...");
                 var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
