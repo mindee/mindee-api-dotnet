@@ -4,7 +4,7 @@ category: 622b805aaec68102ea7fcbc2
 slug: dotnet-invoice-splitter-ocr
 parentDoc: 6357abb22e33070016cbda4b
 ---
-The Ruby OCR SDK supports the [Invoice Splitter API](https://platform.mindee.com/mindee/invoice_splitter).
+The .NET OCR SDK supports the [Invoice Splitter API](https://platform.mindee.com/mindee/invoice_splitter).
 
 Using [this sample](https://github.com/mindee/client-lib-test-data/blob/main/products/invoice_splitter/default_sample.pdf), we are going to illustrate how to detect the pages of multiple invoices within the same document.
 
