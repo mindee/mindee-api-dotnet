@@ -1,3 +1,9 @@
+---
+title: '.NET Library: Overview'
+category: 622b805aaec68102ea7fcbc2
+slug: dotnet-ocr-overview
+parentDoc: 6357abb22e33070016cbda4b
+---
 This guide will help you get the most out of the Mindee .NET OCR SDK to easily extract data from your documents.
 
 ## Installation

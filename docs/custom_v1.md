@@ -1,3 +1,9 @@
+---
+title: Generated OCR .NET
+category: 622b805aaec68102ea7fcbc2
+slug: dotnet-api-builder
+parentDoc: 6357abb22e33070016cbda4b
+---
 The .NET OCR SDK supports [custom-built API](https://developers.mindee.com/docs/build-your-first-document-parsing-api) from the API Builder.
 If your document isn't covered by one of Mindee's Off-the-Shelf APIs, you can create your own API using the [API Builder](https://developers.mindee.com/docs/overview).
 
