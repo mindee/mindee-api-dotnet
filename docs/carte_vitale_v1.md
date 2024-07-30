@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Carte Vitale sample](https://github.com/mindee/client-lib-test-data/blob/main/products/carte_vitale/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Fr.CarteVitale;
@@ -102,7 +102,7 @@ The following fields are extracted for Carte Vitale V1:
 ## Given Name(s)
 **GivenNames**: The given name(s) of the card holder.
 
-```cs
+```csharp
 foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 {
     System.Console.WriteLine(GivenNamesElem.Value);
@@ -112,21 +112,21 @@ foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 ## Issuance Date
 **IssuanceDate**: The date the card was issued.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.IssuanceDate.Value);
 ```
 
 ## Social Security Number
 **SocialSecurity**: The Social Security Number (Numéro de Sécurité Sociale) of the card holder
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SocialSecurity.Value);
 ```
 
 ## Surname
 **Surname**: The surname of the card holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Surname.Value);
 ```
 

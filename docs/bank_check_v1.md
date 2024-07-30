@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Bank Check sample](https://github.com/mindee/client-lib-test-data/blob/main/products/bank_check/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Us.BankCheck;
@@ -126,28 +126,28 @@ The following fields are extracted for Bank Check V1:
 ## Account Number
 **AccountNumber**: The check payer's account number.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.AccountNumber.Value);
 ```
 
 ## Amount
 **Amount**: The amount of the check.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Amount.Value);
 ```
 
 ## Check Number
 **CheckNumber**: The issuer's check number.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.CheckNumber.Value);
 ```
 
 ## Check Position
 [📄](#page-level-fields "This field is only present on individual pages.")**CheckPosition**: The position of the check on the document.
 
-```cs
+```csharp
 foreach (var CheckPositionElem in result.Document.Inference.Prediction.CheckPosition)
 {
     System.Console.WriteLine(CheckPositionElem).Polygon;
@@ -157,14 +157,14 @@ foreach (var CheckPositionElem in result.Document.Inference.Prediction.CheckPosi
 ## Check Issue Date
 **Date**: The date the check was issued.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 ```
 
 ## Payees
 **Payees**: List of the check's payees (recipients).
 
-```cs
+```csharp
 foreach (var PayeesElem in result.Document.Inference.Prediction.Payees)
 {
     System.Console.WriteLine(PayeesElem.Value);
@@ -174,14 +174,14 @@ foreach (var PayeesElem in result.Document.Inference.Prediction.Payees)
 ## Routing Number
 **RoutingNumber**: The check issuer's routing number.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.RoutingNumber.Value);
 ```
 
 ## Signature Positions
 [📄](#page-level-fields "This field is only present on individual pages.")**SignaturesPositions**: List of signature positions
 
-```cs
+```csharp
 foreach (var page in result.Document.Inference.Pages)
 {
     foreach (var SignaturesPositionsElem in page.Prediction.SignaturesPositions)

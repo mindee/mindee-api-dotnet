@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Bank Account Details sample](https://github.com/mindee/client-lib-test-data/blob/main/products/bank_account_details/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Fr.BankAccountDetails;
@@ -118,28 +118,28 @@ The following fields are extracted for Bank Account Details V2:
 ## Account Holder's Names
 **AccountHoldersNames**: Full extraction of the account holders names.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.AccountHoldersNames.Value);
 ```
 
 ## Basic Bank Account Number
 **Bban**([BankAccountDetailsV2Bban](#basic-bank-account-number-field)): Full extraction of BBAN, including: branch code, bank code, account and key.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Bban.Value);
 ```
 
 ## IBAN
 **Iban**: Full extraction of the IBAN number.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Iban.Value);
 ```
 
 ## SWIFT Code
 **SwiftCode**: Full extraction of the SWIFT code.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SwiftCode.Value);
 ```
 

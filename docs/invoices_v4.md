@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Invoice sample](https://github.com/mindee/client-lib-test-data/blob/main/products/invoices/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Invoice;
@@ -39,7 +39,7 @@ System.Console.WriteLine(response.Document.ToString());
 
 You can also call this product asynchronously:
 
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Invoice;
@@ -264,21 +264,21 @@ The following fields are extracted for Invoice V4:
 ## Billing Address
 **BillingAddress**: The customer's address used for billing.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.BillingAddress.Value);
 ```
 
 ## Customer Address
 **CustomerAddress**: The address of the customer.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.CustomerAddress.Value);
 ```
 
 ## Customer Company Registrations
 **CustomerCompanyRegistrations**: List of company registrations associated to the customer.
 
-```cs
+```csharp
 foreach (var CustomerCompanyRegistrationsElem in result.Document.Inference.Prediction.CustomerCompanyRegistrations)
 {
     System.Console.WriteLine(CustomerCompanyRegistrationsElem.Value);
@@ -288,49 +288,49 @@ foreach (var CustomerCompanyRegistrationsElem in result.Document.Inference.Predi
 ## Customer ID
 **CustomerId**: The customer account number or identifier from the supplier.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.CustomerId.Value);
 ```
 
 ## Customer Name
 **CustomerName**: The name of the customer or client.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.CustomerName.Value);
 ```
 
 ## Purchase Date
 **Date**: The date the purchase was made.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 ```
 
 ## Document Type
 **DocumentType**: One of: 'INVOICE', 'CREDIT NOTE'.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
 ```
 
 ## Due Date
 **DueDate**: The date on which the payment is due.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DueDate.Value);
 ```
 
 ## Invoice Number
 **InvoiceNumber**: The invoice number or identifier.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.InvoiceNumber.Value);
 ```
 
 ## Line Items
 **LineItems**(List<[InvoiceV4LineItem](#line-items-field)>): List of line item details.
 
-```cs
+```csharp
 foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
 {
     System.Console.WriteLine(LineItemsElem.Value);
@@ -340,14 +340,14 @@ foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
 ## Locale
 **Locale**: The locale detected on the document.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Locale.Value);
 ```
 
 ## Reference Numbers
 **ReferenceNumbers**: List of Reference numbers, including PO number.
 
-```cs
+```csharp
 foreach (var ReferenceNumbersElem in result.Document.Inference.Prediction.ReferenceNumbers)
 {
     System.Console.WriteLine(ReferenceNumbersElem.Value);
@@ -357,21 +357,21 @@ foreach (var ReferenceNumbersElem in result.Document.Inference.Prediction.Refere
 ## Shipping Address
 **ShippingAddress**: Customer's delivery address.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.ShippingAddress.Value);
 ```
 
 ## Supplier Address
 **SupplierAddress**: The address of the supplier or merchant.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SupplierAddress.Value);
 ```
 
 ## Supplier Company Registrations
 **SupplierCompanyRegistrations**: List of company registrations associated to the supplier.
 
-```cs
+```csharp
 foreach (var SupplierCompanyRegistrationsElem in result.Document.Inference.Prediction.SupplierCompanyRegistrations)
 {
     System.Console.WriteLine(SupplierCompanyRegistrationsElem.Value);
@@ -381,21 +381,21 @@ foreach (var SupplierCompanyRegistrationsElem in result.Document.Inference.Predi
 ## Supplier Email
 **SupplierEmail**: The email of the supplier or merchant.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SupplierEmail.Value);
 ```
 
 ## Supplier Name
 **SupplierName**: The name of the supplier or merchant.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SupplierName.Value);
 ```
 
 ## Supplier Payment Details
 **SupplierPaymentDetails**: List of payment details associated to the supplier.
 
-```cs
+```csharp
 foreach (var SupplierPaymentDetailsElem in result.Document.Inference.Prediction.SupplierPaymentDetails)
 {
     System.Console.WriteLine(SupplierPaymentDetailsElem.Value);
@@ -405,21 +405,21 @@ foreach (var SupplierPaymentDetailsElem in result.Document.Inference.Prediction.
 ## Supplier Phone Number
 **SupplierPhoneNumber**: The phone number of the supplier or merchant.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SupplierPhoneNumber.Value);
 ```
 
 ## Supplier Website
 **SupplierWebsite**: The website URL of the supplier or merchant.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SupplierWebsite.Value);
 ```
 
 ## Taxes
 **Taxes**: List of tax line details.
 
-```cs
+```csharp
 foreach (var TaxesElem in result.Document.Inference.Prediction.Taxes)
 {
     System.Console.WriteLine(TaxesElem.Value);
@@ -429,21 +429,21 @@ foreach (var TaxesElem in result.Document.Inference.Prediction.Taxes)
 ## Total Amount
 **TotalAmount**: The total amount paid: includes taxes, tips, fees, and other charges.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalAmount.Value);
 ```
 
 ## Total Net
 **TotalNet**: The net amount paid: does not include taxes, fees, and discounts.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalNet.Value);
 ```
 
 ## Total Tax
 **TotalTax**: The total tax: includes all the taxes paid for this invoice.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalTax.Value);
 ```
 

@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Cropper sample](https://github.com/mindee/client-lib-test-data/blob/main/products/cropper/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Cropper;
@@ -95,7 +95,7 @@ The following fields are extracted for Cropper V1:
 ## Document Cropper
 [📄](#page-level-fields "This field is only present on individual pages.")**Cropping**: List of documents found in the image.
 
-```cs
+```csharp
 foreach (var page in result.Document.Inference.Pages)
 {
     foreach (var CroppingElem in page.Prediction.Cropping)

@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Passport sample](https://github.com/mindee/client-lib-test-data/blob/main/products/passport/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Passport;
@@ -116,42 +116,42 @@ The following fields are extracted for Passport V1:
 ## Date of Birth
 **BirthDate**: The date of birth of the passport holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.BirthDate.Value);
 ```
 
 ## Place of Birth
 **BirthPlace**: The place of birth of the passport holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.BirthPlace.Value);
 ```
 
 ## Country Code
 **Country**: The country's 3 letter code (ISO 3166-1 alpha-3).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Country.Value);
 ```
 
 ## Expiry Date
 **ExpiryDate**: The expiry date of the passport.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.ExpiryDate.Value);
 ```
 
 ## Gender
 **Gender**: The gender of the passport holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Gender.Value);
 ```
 
 ## Given Name(s)
 **GivenNames**: The given name(s) of the passport holder.
 
-```cs
+```csharp
 foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 {
     System.Console.WriteLine(GivenNamesElem.Value);
@@ -161,35 +161,35 @@ foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 ## ID Number
 **IdNumber**: The passport's identification number.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.IdNumber.Value);
 ```
 
 ## Date of Issue
 **IssuanceDate**: The date the passport was issued.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.IssuanceDate.Value);
 ```
 
 ## MRZ Line 1
 **Mrz1**: Machine Readable Zone, first line
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz1.Value);
 ```
 
 ## MRZ Line 2
 **Mrz2**: Machine Readable Zone, second line
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz2.Value);
 ```
 
 ## Surname
 **Surname**: The surname of the passport holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Surname.Value);
 ```
 

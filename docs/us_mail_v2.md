@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![US Mail sample](https://github.com/mindee/client-lib-test-data/blob/main/products/us_mail/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Us.UsMail;
@@ -112,7 +112,7 @@ The following fields are extracted for US Mail V2:
 ## Recipient Addresses
 **RecipientAddresses**(List<[UsMailV2RecipientAddress](#recipient-addresses-field)>): The addresses of the recipients.
 
-```cs
+```csharp
 foreach (var RecipientAddressesElem in result.Document.Inference.Prediction.RecipientAddresses)
 {
     System.Console.WriteLine(RecipientAddressesElem.Value);
@@ -122,7 +122,7 @@ foreach (var RecipientAddressesElem in result.Document.Inference.Prediction.Reci
 ## Recipient Names
 **RecipientNames**: The names of the recipients.
 
-```cs
+```csharp
 foreach (var RecipientNamesElem in result.Document.Inference.Prediction.RecipientNames)
 {
     System.Console.WriteLine(RecipientNamesElem.Value);
@@ -132,14 +132,14 @@ foreach (var RecipientNamesElem in result.Document.Inference.Prediction.Recipien
 ## Sender Address
 **SenderAddress**([UsMailV2SenderAddress](#sender-address-field)): The address of the sender.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SenderAddress.Value);
 ```
 
 ## Sender Name
 **SenderName**: The name of the sender.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SenderName.Value);
 ```
 

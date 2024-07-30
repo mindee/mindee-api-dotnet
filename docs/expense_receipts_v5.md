@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Receipt sample](https://github.com/mindee/client-lib-test-data/blob/main/products/expense_receipts/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Receipt;
@@ -203,28 +203,28 @@ The following fields are extracted for Receipt V5:
 ## Purchase Category
 **Category**: The purchase category among predefined classes.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Category.Value);
 ```
 
 ## Purchase Date
 **Date**: The date the purchase was made.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 ```
 
 ## Document Type
 **DocumentType**: One of: 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
 ```
 
 ## Line Items
 **LineItems**(List<[ReceiptV5LineItem](#line-items-field)>): List of line item details.
 
-```cs
+```csharp
 foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
 {
     System.Console.WriteLine(LineItemsElem.Value);
@@ -234,35 +234,35 @@ foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
 ## Expense Locale
 **Locale**: The locale detected on the document.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Locale.Value);
 ```
 
 ## Receipt Number
 **ReceiptNumber**: The receipt number or identifier.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.ReceiptNumber.Value);
 ```
 
 ## Purchase Subcategory
 **Subcategory**: The purchase subcategory among predefined classes for transport and food.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Subcategory.Value);
 ```
 
 ## Supplier Address
 **SupplierAddress**: The address of the supplier or merchant.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SupplierAddress.Value);
 ```
 
 ## Supplier Company Registrations
 **SupplierCompanyRegistrations**: List of company registrations associated to the supplier.
 
-```cs
+```csharp
 foreach (var SupplierCompanyRegistrationsElem in result.Document.Inference.Prediction.SupplierCompanyRegistrations)
 {
     System.Console.WriteLine(SupplierCompanyRegistrationsElem.Value);
@@ -272,21 +272,21 @@ foreach (var SupplierCompanyRegistrationsElem in result.Document.Inference.Predi
 ## Supplier Name
 **SupplierName**: The name of the supplier or merchant.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SupplierName.Value);
 ```
 
 ## Supplier Phone Number
 **SupplierPhoneNumber**: The phone number of the supplier or merchant.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SupplierPhoneNumber.Value);
 ```
 
 ## Taxes
 **Taxes**: List of tax lines information.
 
-```cs
+```csharp
 foreach (var TaxesElem in result.Document.Inference.Prediction.Taxes)
 {
     System.Console.WriteLine(TaxesElem.Value);
@@ -296,35 +296,35 @@ foreach (var TaxesElem in result.Document.Inference.Prediction.Taxes)
 ## Purchase Time
 **Time**: The time the purchase was made.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Time.Value);
 ```
 
 ## Tip and Gratuity
 **Tip**: The total amount of tip and gratuity.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Tip.Value);
 ```
 
 ## Total Amount
 **TotalAmount**: The total amount paid: includes taxes, discounts, fees, tips, and gratuity.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalAmount.Value);
 ```
 
 ## Total Net
 **TotalNet**: The net amount paid: does not include taxes, fees, and discounts.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalNet.Value);
 ```
 
 ## Total Tax
 **TotalTax**: The total amount of taxes.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalTax.Value);
 ```
 

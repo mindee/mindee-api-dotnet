@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Proof of Address sample](https://github.com/mindee/client-lib-test-data/blob/main/products/proof_of_address/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.ProofOfAddress;
@@ -149,14 +149,14 @@ The following fields are extracted for Proof of Address V1:
 ## Date of Issue
 **Date**: The date the document was issued.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 ```
 
 ## Dates
 **Dates**: List of dates found on the document.
 
-```cs
+```csharp
 foreach (var DatesElem in result.Document.Inference.Prediction.Dates)
 {
     System.Console.WriteLine(DatesElem.Value);
@@ -166,14 +166,14 @@ foreach (var DatesElem in result.Document.Inference.Prediction.Dates)
 ## Issuer Address
 **IssuerAddress**: The address of the document's issuer.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.IssuerAddress.Value);
 ```
 
 ## Issuer Company Registrations
 **IssuerCompanyRegistration**: List of company registrations found for the issuer.
 
-```cs
+```csharp
 foreach (var IssuerCompanyRegistrationElem in result.Document.Inference.Prediction.IssuerCompanyRegistration)
 {
     System.Console.WriteLine(IssuerCompanyRegistrationElem.Value);
@@ -183,28 +183,28 @@ foreach (var IssuerCompanyRegistrationElem in result.Document.Inference.Predicti
 ## Issuer Name
 **IssuerName**: The name of the person or company issuing the document.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.IssuerName.Value);
 ```
 
 ## Locale
 **Locale**: The locale detected on the document.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Locale.Value);
 ```
 
 ## Recipient Address
 **RecipientAddress**: The address of the recipient.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.RecipientAddress.Value);
 ```
 
 ## Recipient Company Registrations
 **RecipientCompanyRegistration**: List of company registrations found for the recipient.
 
-```cs
+```csharp
 foreach (var RecipientCompanyRegistrationElem in result.Document.Inference.Prediction.RecipientCompanyRegistration)
 {
     System.Console.WriteLine(RecipientCompanyRegistrationElem.Value);
@@ -214,7 +214,7 @@ foreach (var RecipientCompanyRegistrationElem in result.Document.Inference.Predi
 ## Recipient Name
 **RecipientName**: The name of the person or company receiving the document.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.RecipientName.Value);
 ```
 

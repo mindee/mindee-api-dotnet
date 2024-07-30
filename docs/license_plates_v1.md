@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![License Plate sample](https://github.com/mindee/client-lib-test-data/blob/main/products/license_plates/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Eu.LicensePlate;
@@ -91,7 +91,7 @@ The following fields are extracted for License Plate V1:
 ## License Plates
 **LicensePlates**: List of all license plates found in the image.
 
-```cs
+```csharp
 foreach (var LicensePlatesElem in result.Document.Inference.Prediction.LicensePlates)
 {
     System.Console.WriteLine(LicensePlatesElem.Value);

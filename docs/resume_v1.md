@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Resume sample](https://github.com/mindee/client-lib-test-data/blob/main/products/resume/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Resume;
@@ -207,14 +207,14 @@ The following fields are extracted for Resume V1:
 ## Address
 **Address**: The location information of the candidate, including city, state, and country.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Address.Value);
 ```
 
 ## Certificates
 **Certificates**(List<[ResumeV1Certificate](#certificates-field)>): The list of certificates obtained by the candidate.
 
-```cs
+```csharp
 foreach (var CertificatesElem in result.Document.Inference.Prediction.Certificates)
 {
     System.Console.WriteLine(CertificatesElem.Value);
@@ -224,21 +224,21 @@ foreach (var CertificatesElem in result.Document.Inference.Prediction.Certificat
 ## Document Language
 **DocumentLanguage**: The ISO 639 code of the language in which the document is written.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentLanguage.Value);
 ```
 
 ## Document Type
 **DocumentType**: The type of the document sent.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
 ```
 
 ## Education
 **Education**(List<[ResumeV1Education](#education-field)>): The list of the candidate's educational background.
 
-```cs
+```csharp
 foreach (var EducationElem in result.Document.Inference.Prediction.Education)
 {
     System.Console.WriteLine(EducationElem.Value);
@@ -248,14 +248,14 @@ foreach (var EducationElem in result.Document.Inference.Prediction.Education)
 ## Email Address
 **EmailAddress**: The email address of the candidate.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.EmailAddress.Value);
 ```
 
 ## Given Names
 **GivenNames**: The candidate's first or given names.
 
-```cs
+```csharp
 foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 {
     System.Console.WriteLine(GivenNamesElem.Value);
@@ -265,7 +265,7 @@ foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 ## Hard Skills
 **HardSkills**: The list of the candidate's technical abilities and knowledge.
 
-```cs
+```csharp
 foreach (var HardSkillsElem in result.Document.Inference.Prediction.HardSkills)
 {
     System.Console.WriteLine(HardSkillsElem.Value);
@@ -275,14 +275,14 @@ foreach (var HardSkillsElem in result.Document.Inference.Prediction.HardSkills)
 ## Job Applied
 **JobApplied**: The position that the candidate is applying for.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.JobApplied.Value);
 ```
 
 ## Languages
 **Languages**(List<[ResumeV1Language](#languages-field)>): The list of languages that the candidate is proficient in.
 
-```cs
+```csharp
 foreach (var LanguagesElem in result.Document.Inference.Prediction.Languages)
 {
     System.Console.WriteLine(LanguagesElem.Value);
@@ -292,28 +292,28 @@ foreach (var LanguagesElem in result.Document.Inference.Prediction.Languages)
 ## Nationality
 **Nationality**: The ISO 3166 code for the country of citizenship of the candidate.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Nationality.Value);
 ```
 
 ## Phone Number
 **PhoneNumber**: The phone number of the candidate.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.PhoneNumber.Value);
 ```
 
 ## Profession
 **Profession**: The candidate's current profession.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Profession.Value);
 ```
 
 ## Professional Experiences
 **ProfessionalExperiences**(List<[ResumeV1ProfessionalExperience](#professional-experiences-field)>): The list of the candidate's professional experiences.
 
-```cs
+```csharp
 foreach (var ProfessionalExperiencesElem in result.Document.Inference.Prediction.ProfessionalExperiences)
 {
     System.Console.WriteLine(ProfessionalExperiencesElem.Value);
@@ -323,7 +323,7 @@ foreach (var ProfessionalExperiencesElem in result.Document.Inference.Prediction
 ## Social Networks
 **SocialNetworksUrls**(List<[ResumeV1SocialNetworksUrl](#social-networks-field)>): The list of social network profiles of the candidate.
 
-```cs
+```csharp
 foreach (var SocialNetworksUrlsElem in result.Document.Inference.Prediction.SocialNetworksUrls)
 {
     System.Console.WriteLine(SocialNetworksUrlsElem.Value);
@@ -333,7 +333,7 @@ foreach (var SocialNetworksUrlsElem in result.Document.Inference.Prediction.Soci
 ## Soft Skills
 **SoftSkills**: The list of the candidate's interpersonal and communication abilities.
 
-```cs
+```csharp
 foreach (var SoftSkillsElem in result.Document.Inference.Prediction.SoftSkills)
 {
     System.Console.WriteLine(SoftSkillsElem.Value);
@@ -343,7 +343,7 @@ foreach (var SoftSkillsElem in result.Document.Inference.Prediction.SoftSkills)
 ## Surnames
 **Surnames**: The candidate's last names.
 
-```cs
+```csharp
 foreach (var SurnamesElem in result.Document.Inference.Prediction.Surnames)
 {
     System.Console.WriteLine(SurnamesElem.Value);

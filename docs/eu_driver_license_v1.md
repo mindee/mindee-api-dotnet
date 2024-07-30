@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Driver License sample](https://github.com/mindee/client-lib-test-data/blob/main/products/eu_driver_license/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Eu.DriverLicense;
@@ -132,84 +132,84 @@ The following fields are extracted for Driver License V1:
 ## Address
 **Address**: EU driver license holders address
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Address.Value);
 ```
 
 ## Driver License Category
 **Category**: EU driver license holders categories
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Category.Value);
 ```
 
 ## Country Code
 **CountryCode**: Country code extracted as a string.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.CountryCode.Value);
 ```
 
 ## Date Of Birth
 **DateOfBirth**: The date of birth of the document holder
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DateOfBirth.Value);
 ```
 
 ## Document ID
 **DocumentId**: ID number of the Document.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentId.Value);
 ```
 
 ## Expiry Date
 **ExpiryDate**: Date the document expires
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.ExpiryDate.Value);
 ```
 
 ## First Name
 **FirstName**: First name(s) of the driver license holder
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.FirstName.Value);
 ```
 
 ## Issue Authority
 **IssueAuthority**: Authority that issued the document
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.IssueAuthority.Value);
 ```
 
 ## Issue Date
 **IssueDate**: Date the document was issued
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.IssueDate.Value);
 ```
 
 ## Last Name
 **LastName**: Last name of the driver license holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.LastName.Value);
 ```
 
 ## MRZ
 **Mrz**: Machine-readable license number
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz.Value);
 ```
 
 ## Photo
 [📄](#page-level-fields "This field is only present on individual pages.")**Photo**: Has a photo of the EU driver license holder
 
-```cs
+```csharp
 foreach (var PhotoElem in result.Document.Inference.Prediction.Photo)
 {
     System.Console.WriteLine(PhotoElem).Polygon;
@@ -219,14 +219,14 @@ foreach (var PhotoElem in result.Document.Inference.Prediction.Photo)
 ## Place Of Birth
 **PlaceOfBirth**: Place where the driver license holder was born
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.PlaceOfBirth.Value);
 ```
 
 ## Signature
 [📄](#page-level-fields "This field is only present on individual pages.")**Signature**: Has a signature of the EU driver license holder
 
-```cs
+```csharp
 foreach (var SignatureElem in result.Document.Inference.Prediction.Signature)
 {
     System.Console.WriteLine(SignatureElem).Polygon;

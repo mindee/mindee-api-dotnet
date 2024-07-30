@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Healthcare Card sample](https://github.com/mindee/client-lib-test-data/blob/main/products/us_healthcare_cards/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Us.HealthcareCard;
@@ -125,14 +125,14 @@ The following fields are extracted for Healthcare Card V1:
 ## Company Name
 **CompanyName**: The name of the company that provides the healthcare plan.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.CompanyName.Value);
 ```
 
 ## copays
 **Copays**(List<[HealthcareCardV1Copay](#copays-field)>): Is a fixed amount for a covered service.
 
-```cs
+```csharp
 foreach (var CopaysElem in result.Document.Inference.Prediction.Copays)
 {
     System.Console.WriteLine(CopaysElem.Value);
@@ -142,7 +142,7 @@ foreach (var CopaysElem in result.Document.Inference.Prediction.Copays)
 ## Dependents
 **Dependents**: The list of dependents covered by the healthcare plan.
 
-```cs
+```csharp
 foreach (var DependentsElem in result.Document.Inference.Prediction.Dependents)
 {
     System.Console.WriteLine(DependentsElem.Value);
@@ -152,63 +152,63 @@ foreach (var DependentsElem in result.Document.Inference.Prediction.Dependents)
 ## Enrollment Date
 **EnrollmentDate**: The date when the member enrolled in the healthcare plan.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.EnrollmentDate.Value);
 ```
 
 ## Group Number
 **GroupNumber**: The group number associated with the healthcare plan.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.GroupNumber.Value);
 ```
 
 ## Issuer 80840
 **Issuer80840**: The organization that issued the healthcare plan.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Issuer80840.Value);
 ```
 
 ## Member ID
 **MemberId**: The unique identifier for the member in the healthcare system.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.MemberId.Value);
 ```
 
 ## Member Name
 **MemberName**: The name of the member covered by the healthcare plan.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.MemberName.Value);
 ```
 
 ## Payer ID
 **PayerId**: The unique identifier for the payer in the healthcare system.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.PayerId.Value);
 ```
 
 ## RX BIN
 **RxBin**: The BIN number for prescription drug coverage.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.RxBin.Value);
 ```
 
 ## RX GRP
 **RxGrp**: The group number for prescription drug coverage.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.RxGrp.Value);
 ```
 
 ## RX PCN
 **RxPcn**: The PCN number for prescription drug coverage.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.RxPcn.Value);
 ```
 

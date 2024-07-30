@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Carte Grise sample](https://github.com/mindee/client-lib-test-data/blob/main/products/carte_grise/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Fr.CarteGrise;
@@ -176,287 +176,287 @@ The following fields are extracted for Carte Grise V1:
 ## a
 **A**: The vehicle's license plate number.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.A.Value);
 ```
 
 ## b
 **B**: The vehicle's first release date.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.B.Value);
 ```
 
 ## c1
 **C1**: The vehicle owner's full name including maiden name.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.C1.Value);
 ```
 
 ## c3
 **C3**: The vehicle owner's address.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.C3.Value);
 ```
 
 ## c41
 **C41**: Number of owners of the license certificate.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.C41.Value);
 ```
 
 ## c4a
 **C4A**: Mentions about the ownership of the vehicle.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.C4A.Value);
 ```
 
 ## d1
 **D1**: The vehicle's brand.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.D1.Value);
 ```
 
 ## d3
 **D3**: The vehicle's commercial name.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.D3.Value);
 ```
 
 ## e
 **E**: The Vehicle Identification Number (VIN).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.E.Value);
 ```
 
 ## f1
 **F1**: The vehicle's maximum admissible weight.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.F1.Value);
 ```
 
 ## f2
 **F2**: The vehicle's maximum admissible weight within the license's state.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.F2.Value);
 ```
 
 ## f3
 **F3**: The vehicle's maximum authorized weight with coupling.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.F3.Value);
 ```
 
 ## Formula Number
 **FormulaNumber**: The document's formula number.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.FormulaNumber.Value);
 ```
 
 ## g
 **G**: The vehicle's weight with coupling if tractor different than category M1.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.G.Value);
 ```
 
 ## g1
 **G1**: The vehicle's national empty weight.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.G1.Value);
 ```
 
 ## i
 **I**: The car registration date of the given certificate.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.I.Value);
 ```
 
 ## j
 **J**: The vehicle's category.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.J.Value);
 ```
 
 ## j1
 **J1**: The vehicle's national type.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.J1.Value);
 ```
 
 ## j2
 **J2**: The vehicle's body type (CE).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.J2.Value);
 ```
 
 ## j3
 **J3**: The vehicle's body type (National designation).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.J3.Value);
 ```
 
 ## MRZ Line 1
 **Mrz1**: Machine Readable Zone, first line.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz1.Value);
 ```
 
 ## MRZ Line 2
 **Mrz2**: Machine Readable Zone, second line.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz2.Value);
 ```
 
 ## Owner's First Name
 **OwnerFirstName**: The vehicle's owner first name.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.OwnerFirstName.Value);
 ```
 
 ## Owner's Surname
 **OwnerSurname**: The vehicle's owner surname.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.OwnerSurname.Value);
 ```
 
 ## p1
 **P1**: The vehicle engine's displacement (cm3).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.P1.Value);
 ```
 
 ## p2
 **P2**: The vehicle's maximum net power (kW).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.P2.Value);
 ```
 
 ## p3
 **P3**: The vehicle's fuel type or energy source.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.P3.Value);
 ```
 
 ## p6
 **P6**: The vehicle's administrative power (fiscal horsepower).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.P6.Value);
 ```
 
 ## q
 **Q**: The vehicle's power to weight ratio.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Q.Value);
 ```
 
 ## s1
 **S1**: The vehicle's number of seats.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.S1.Value);
 ```
 
 ## s2
 **S2**: The vehicle's number of standing rooms (person).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.S2.Value);
 ```
 
 ## u1
 **U1**: The vehicle's sound level (dB).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.U1.Value);
 ```
 
 ## u2
 **U2**: The vehicle engine's rotation speed (RPM).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.U2.Value);
 ```
 
 ## v7
 **V7**: The vehicle's CO2 emission (g/km).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.V7.Value);
 ```
 
 ## x1
 **X1**: Next technical control date.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.X1.Value);
 ```
 
 ## y1
 **Y1**: Amount of the regional proportional tax of the registration (in euros).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Y1.Value);
 ```
 
 ## y2
 **Y2**: Amount of the additional parafiscal tax of the registration (in euros).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Y2.Value);
 ```
 
 ## y3
 **Y3**: Amount of the additional CO2 tax of the registration (in euros).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Y3.Value);
 ```
 
 ## y4
 **Y4**: Amount of the fee for managing the registration (in euros).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Y4.Value);
 ```
 
 ## y5
 **Y5**: Amount of the fee for delivery of the registration certificate in euros.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Y5.Value);
 ```
 
 ## y6
 **Y6**: Total amount of registration fee to be paid in euros.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Y6.Value);
 ```
 

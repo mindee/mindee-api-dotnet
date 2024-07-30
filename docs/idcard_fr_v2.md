@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Carte Nationale d'Identité sample](https://github.com/mindee/client-lib-test-data/blob/main/products/idcard_fr/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.Fr.IdCard;
@@ -138,49 +138,49 @@ The following fields are extracted for Carte Nationale d'Identité V2:
 ## Alternate Name
 **AlternateName**: The alternate name of the card holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.AlternateName.Value);
 ```
 
 ## Issuing Authority
 **Authority**: The name of the issuing authority.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Authority.Value);
 ```
 
 ## Date of Birth
 **BirthDate**: The date of birth of the card holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.BirthDate.Value);
 ```
 
 ## Place of Birth
 **BirthPlace**: The place of birth of the card holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.BirthPlace.Value);
 ```
 
 ## Card Access Number
 **CardAccessNumber**: The card access number (CAN).
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.CardAccessNumber.Value);
 ```
 
 ## Document Number
 **DocumentNumber**: The document number.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentNumber.Value);
 ```
 
 ## Document Sides
 [📄](#page-level-fields "This field is only present on individual pages.")**DocumentSide**: The sides of the document which are visible.
 
-```cs
+```csharp
 foreach (var DocumentSideElem in result.Document.Inference.Prediction.DocumentSide)
 {
     System.Console.WriteLine(DocumentSideElem)
@@ -191,7 +191,7 @@ foreach (var DocumentSideElem in result.Document.Inference.Prediction.DocumentSi
 ## Document Type
 [📄](#page-level-fields "This field is only present on individual pages.")**DocumentType**: The document type or format.
 
-```cs
+```csharp
 foreach (var DocumentTypeElem in result.Document.Inference.Prediction.DocumentType)
 {
     System.Console.WriteLine(DocumentTypeElem)
@@ -202,21 +202,21 @@ foreach (var DocumentTypeElem in result.Document.Inference.Prediction.DocumentTy
 ## Expiry Date
 **ExpiryDate**: The expiry date of the identification card.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.ExpiryDate.Value);
 ```
 
 ## Gender
 **Gender**: The gender of the card holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Gender.Value);
 ```
 
 ## Given Name(s)
 **GivenNames**: The given name(s) of the card holder.
 
-```cs
+```csharp
 foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 {
     System.Console.WriteLine(GivenNamesElem.Value);
@@ -226,42 +226,42 @@ foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 ## Date of Issue
 **IssueDate**: The date of issue of the identification card.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.IssueDate.Value);
 ```
 
 ## Mrz Line 1
 **Mrz1**: The Machine Readable Zone, first line.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz1.Value);
 ```
 
 ## Mrz Line 2
 **Mrz2**: The Machine Readable Zone, second line.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz2.Value);
 ```
 
 ## Mrz Line 3
 **Mrz3**: The Machine Readable Zone, third line.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Mrz3.Value);
 ```
 
 ## Nationality
 **Nationality**: The nationality of the card holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Nationality.Value);
 ```
 
 ## Surname
 **Surname**: The surname of the card holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Surname.Value);
 ```
 

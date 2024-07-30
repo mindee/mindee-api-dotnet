@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Barcode Reader sample](https://github.com/mindee/client-lib-test-data/blob/main/products/barcode_reader/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.BarcodeReader;
@@ -95,7 +95,7 @@ The following fields are extracted for Barcode Reader V1:
 ## Barcodes 1D
 **Codes1D**: List of decoded 1D barcodes.
 
-```cs
+```csharp
 foreach (var Codes1DElem in result.Document.Inference.Prediction.Codes1D)
 {
     System.Console.WriteLine(Codes1DElem.Value);
@@ -105,7 +105,7 @@ foreach (var Codes1DElem in result.Document.Inference.Prediction.Codes1D)
 ## Barcodes 2D
 **Codes2D**: List of decoded 2D barcodes.
 
-```cs
+```csharp
 foreach (var Codes2DElem in result.Document.Inference.Prediction.Codes2D)
 {
     System.Console.WriteLine(Codes2DElem.Value);

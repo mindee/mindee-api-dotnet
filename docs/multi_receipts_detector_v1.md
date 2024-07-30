@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![Multi Receipts Detector sample](https://github.com/mindee/client-lib-test-data/blob/main/products/multi_receipts_detector/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.MultiReceiptsDetector;
@@ -105,7 +105,7 @@ The following fields are extracted for Multi Receipts Detector V1:
 ## List of Receipts
 **Receipts**: Positions of the receipts on the document.
 
-```cs
+```csharp
 foreach (var ReceiptsElem in result.Document.Inference.Prediction.Receipts)
 {
     System.Console.WriteLine(ReceiptsElem.Polygon);

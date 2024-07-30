@@ -10,7 +10,7 @@ Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/mai
 ![International ID sample](https://github.com/mindee/client-lib-test-data/blob/main/products/international_id/default_sample.jpg?raw=true)
 
 # Quick-Start
-```cs
+```csharp
 using Mindee;
 using Mindee.Input;
 using Mindee.Product.InternationalId;
@@ -113,56 +113,56 @@ The following fields are extracted for International ID V2:
 ## Address
 **Address**: The physical address of the document holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Address.Value);
 ```
 
 ## Birth Date
 **BirthDate**: The date of birth of the document holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.BirthDate.Value);
 ```
 
 ## Birth Place
 **BirthPlace**: The place of birth of the document holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.BirthPlace.Value);
 ```
 
 ## Country of Issue
 **CountryOfIssue**: The country where the document was issued.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.CountryOfIssue.Value);
 ```
 
 ## Document Number
 **DocumentNumber**: The unique identifier assigned to the document.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentNumber.Value);
 ```
 
 ## Document Type
 **DocumentType**: The type of personal identification document.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
 ```
 
 ## Expiration Date
 **ExpiryDate**: The date when the document becomes invalid.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.ExpiryDate.Value);
 ```
 
 ## Given Names
 **GivenNames**: The list of the document holder's given names.
 
-```cs
+```csharp
 foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 {
     System.Console.WriteLine(GivenNamesElem.Value);
@@ -172,63 +172,63 @@ foreach (var GivenNamesElem in result.Document.Inference.Prediction.GivenNames)
 ## Issue Date
 **IssueDate**: The date when the document was issued.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.IssueDate.Value);
 ```
 
 ## MRZ Line 1
 **MrzLine1**: The Machine Readable Zone, first line.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.MrzLine1.Value);
 ```
 
 ## MRZ Line 2
 **MrzLine2**: The Machine Readable Zone, second line.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.MrzLine2.Value);
 ```
 
 ## MRZ Line 3
 **MrzLine3**: The Machine Readable Zone, third line.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.MrzLine3.Value);
 ```
 
 ## Nationality
 **Nationality**: The country of citizenship of the document holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Nationality.Value);
 ```
 
 ## Personal Number
 **PersonalNumber**: The unique identifier assigned to the document holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.PersonalNumber.Value);
 ```
 
 ## Sex
 **Sex**: The biological sex of the document holder.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Sex.Value);
 ```
 
 ## State of Issue
 **StateOfIssue**: The state or territory where the document was issued.
 
-```cs
+```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.StateOfIssue.Value);
 ```
 
 ## Surnames
 **Surnames**: The list of the document holder's family names.
 
-```cs
+```csharp
 foreach (var SurnamesElem in result.Document.Inference.Prediction.Surnames)
 {
     System.Console.WriteLine(SurnamesElem.Value);
