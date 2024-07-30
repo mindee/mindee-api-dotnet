@@ -48,6 +48,7 @@ namespace Mindee.Extensions.DependencyInjection
                 var clientOptions = new RestClientOptions(mindeeSettings.MindeeBaseUrl)
                 {
                     FollowRedirects = false,
+                    Timeout = TimeSpan.FromSeconds(mindeeSettings.RequestTimeoutSeconds),
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
                     CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true },
