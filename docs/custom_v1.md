@@ -1,5 +1,5 @@
 ---
-title: Custom OCR .NET
+title: Custom OCR .NET (Deprecated)
 category: 622b805aaec68102ea7fcbc2
 slug: dotnet-api-builder
 parentDoc: 6357abb22e33070016cbda4b
