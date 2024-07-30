@@ -6,6 +6,7 @@ namespace Mindee.IntegrationTests
     public static class TestingUtilities
     {
         public static MindeeClient? mindeeClient;
+
         public static string GetVersion(string rstStr)
         {
             int versionLineStartPos = rstStr.IndexOf(":Product: ", StringComparison.Ordinal);
@@ -35,14 +36,14 @@ namespace Mindee.IntegrationTests
 
         public static MindeeClient GetOrGenerateMindeeClient(string? apiKey)
         {
+            if (mindeeClient != null)
+                return mindeeClient;
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddMindeeApi(options =>
             {
                 options.ApiKey = apiKey;
             }, true);
-            mindeeClient = new MindeeClient(apiKey);
-
-            return mindeeClient;
+            return mindeeClient ??= new MindeeClient(apiKey);
         }
     }
 }
