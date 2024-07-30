@@ -56,7 +56,7 @@ jobs:
     needs: test-nix
     timeout-minutes: 30
     strategy:
-      max-parallel: 2
+      max-parallel: 4
       matrix:
         os:
           - "windows-2022"
