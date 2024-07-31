@@ -151,15 +151,31 @@ System.Console.WriteLine(response.Document.ToString());
 ## Further Reading
 Complete details on the working of the library are available in the following guides:
 
-* [Overview](https://developers.mindee.com/docs/dotnet-ocr-overview)
-* [Custom APIs](https://developers.mindee.com/docs/dotnet-api-builder)
-* [Invoices](https://developers.mindee.com/docs/dotnet-invoice-ocr)
-* [Receipts](https://developers.mindee.com/docs/dotnet-receipt-ocr)
-* [Passports](https://developers.mindee.com/docs/dotnet-passport-ocr)
-* [US bank Checks](https://developers.mindee.com/docs/dotnet-us-bank-check-ocr)
-* [Licenses Plates](https://developers.mindee.com/docs/dotnet-licence-plates-ocr)
+* [Getting started](https://developers.mindee.com/docs/dotnet-ocr-overview)
+* [.NET Generated APIs](https://developers.mindee.com/docs/dotnet-generated-ocr)
+* [.NET Custom APIs (API Builder - Deprecated)](https://developers.mindee.com/docs/dotnet-api-builder)
+* [.NET Invoice OCR](https://developers.mindee.com/docs/dotnet-invoice-ocr)
+* [.NET Receipt OCR](https://developers.mindee.com/docs/dotnet-receipt-ocr)
+* [.NET Financial Document OCR](https://developers.mindee.com/docs/dotnet-financial-document-ocr)
+* [.NET Passport OCR](https://developers.mindee.com/docs/dotnet-passport-ocr)
+* [.NET Resume OCR](https://developers.mindee.com/docs/dotnet-resume-ocr)
+* [.NET Proof of Address OCR](https://developers.mindee.com/docs/dotnet-proof-of-address-ocr)
+* [.NET International Id OCR](https://developers.mindee.com/docs/dotnet-international-id-ocr)
+* [.NET EU License Plate OCR](https://developers.mindee.com/docs/dotnet-eu-license-plate-ocr)
+* [.NET EU Driver License OCR](https://developers.mindee.com/docs/dotnet-eu-driver-license-ocr)
+* [.NET FR Bank Account Detail OCR](https://developers.mindee.com/docs/dotnet-fr-bank-account-details-ocr)
+* [.NET FR Carte Grise OCR](https://developers.mindee.com/docs/dotnet-fr-carte-grise-ocr)
+* [.NET FR Carte Vitale OCR](https://developers.mindee.com/docs/dotnet-fr-carte-vitale-ocr)
+* [.NET FR ID Card OCR](https://developers.mindee.com/docs/dotnet-fr-carte-nationale-didentite-ocr)
+* [.NET US Bank Check OCR](https://developers.mindee.com/docs/dotnet-us-bank-checks-ocr)
+* [.NET US W9 OCR](https://developers.mindee.com/docs/dotnet-us-w9-ocr)
+* [.NET US Driver License OCR](https://developers.mindee.com/docs/dotnet-us-driver-license-ocr)
+* [.NET Barcode Reader API](https://developers.mindee.com/docs/dotnet-barcode-reader-ocr)
+* [.NET Cropper API](https://developers.mindee.com/docs/dotnet-cropper-ocr)
+* [.NET Invoice Splitter API](https://developers.mindee.com/docs/dotnet-invoice-splitter-ocr)
+* [.NET Multi Receipts Detector API](https://developers.mindee.com/docs/dotnet-multi-receipts-detector-ocr)
 
-You can view the source code on [GitHub](https://github.com/mindee/mindee-api-nodejs).
+You can view the source code on [GitHub](https://github.com/mindee/mindee-api-dotnet).
 
 You can also take a look at the
 **[Reference Documentation](https://mindee.github.io/mindee-api-dotnet/)**.
