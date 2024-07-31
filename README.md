@@ -175,7 +175,7 @@ Complete details on the working of the library are available in the following gu
 * [.NET Invoice Splitter API](https://developers.mindee.com/docs/dotnet-invoice-splitter-ocr)
 * [.NET Multi Receipts Detector API](https://developers.mindee.com/docs/dotnet-multi-receipts-detector-ocr)
 
-You can view the source code on [GitHub](https://github.com/mindee/mindee-api-nodejs).
+You can view the source code on [GitHub](https://github.com/mindee/mindee-api-dotnet).
 
 You can also take a look at the
 **[Reference Documentation](https://mindee.github.io/mindee-api-dotnet/)**.
