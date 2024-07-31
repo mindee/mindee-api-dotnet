@@ -30,7 +30,6 @@ namespace Mindee.Extensions.DependencyInjection
 
 
             services.AddSingleton<MindeeApi>();
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; // Safety for .NET 4.7.2
             RegisterRestSharpClient(services, throwOnError);
         }
 
@@ -53,7 +52,7 @@ namespace Mindee.Extensions.DependencyInjection
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
                     CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true },
-                    ThrowOnAnyError = throwOnError
+                    ThrowOnAnyError = throwOnError,
                 };
                 return new RestClient(clientOptions);
             });
@@ -76,7 +75,6 @@ namespace Mindee.Extensions.DependencyInjection
             this IServiceCollection services,
             string sectionName = "Mindee")
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; // Safety for .NET 4.7.2
             services.TryAddTransient<MindeeClient>();
             services.TryAddTransient<IHttpApi, MindeeApi>();
             services.AddOptions<MindeeSettings>()

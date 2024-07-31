@@ -30,6 +30,13 @@ namespace Mindee.Parsing.Standard
         public int? PageId { get; set; }
 
         /// <summary>
+        /// Straight rectangle.
+        /// </summary>
+        [JsonPropertyName("bounding_box")]
+        [JsonConverter(typeof(PolygonJsonConverter))]
+        public Polygon BoundingBox { get; set; }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="confidence"><see cref="Confidence"/></param>
