@@ -153,7 +153,7 @@ Complete details on the working of the library are available in the following gu
 
 * [Getting started](https://developers.mindee.com/docs/dotnet-ocr-overview)
 * [.NET Generated APIs](https://developers.mindee.com/docs/dotnet-generated-ocr)
-* [.NET Custom APIs (API Builder - Deprecated)](https://developers.mindee.cgom/docs/dotnet-api-builder)
+* [.NET Custom APIs (API Builder - Deprecated)](https://developers.mindee.com/docs/dotnet-api-builder)
 * [.NET Invoice OCR](https://developers.mindee.com/docs/dotnet-invoice-ocr)
 * [.NET Receipt OCR](https://developers.mindee.com/docs/dotnet-receipt-ocr)
 * [.NET Financial Document OCR](https://developers.mindee.com/docs/dotnet-financial-document-ocr)
