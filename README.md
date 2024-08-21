@@ -167,7 +167,7 @@ Complete details on the working of the library are available in the following gu
 * [.NET FR Carte Grise OCR](https://developers.mindee.com/docs/dotnet-fr-carte-grise-ocr)
 * [.NET FR Carte Vitale OCR](https://developers.mindee.com/docs/dotnet-fr-carte-vitale-ocr)
 * [.NET FR ID Card OCR](https://developers.mindee.com/docs/dotnet-fr-carte-nationale-didentite-ocr)
-* [.NET US Bank Check OCR](https://developers.mindee.com/docs/dotnet-us-bank-checks-ocr)
+* [.NET US Bank Check OCR](https://developers.mindee.com/docs/dotnet-us-bank-check-ocr)
 * [.NET US W9 OCR](https://developers.mindee.com/docs/dotnet-us-w9-ocr)
 * [.NET US Driver License OCR](https://developers.mindee.com/docs/dotnet-us-driver-license-ocr)
 * [.NET Barcode Reader API](https://developers.mindee.com/docs/dotnet-barcode-reader-ocr)
