@@ -2,7 +2,6 @@ using Mindee.Extraction;
 using Mindee.Input;
 using Mindee.Parsing.Common;
 using Mindee.Product.InvoiceSplitter;
-using Xunit.Abstractions;
 
 namespace Mindee.UnitTests.Extraction
 {
