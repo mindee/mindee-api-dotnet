@@ -1,5 +1,11 @@
 # Mindee .NET API Library Changelog
 
+## v3.18.4 - 2024-08-30
+### Changes
+* :arrow_up: update Restsharp dependency to cover vulnerability
+* :recycle: remove unused code
+
+
 ## v3.18.3 - 2024-07-23
 ### Fixes
 * :bug: fix broken reference on worker service initialization
