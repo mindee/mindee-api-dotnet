@@ -24,7 +24,7 @@ namespace Mindee.Extraction
         /// <summary>
         /// Initializes a new instance of the <see cref="PdfExtractor"/> class.
         /// </summary>
-        /// <param name="localInput">Path of the local file.</param>
+        /// <param name="localInput">Instance of a LocalInputSource, provided by the user.</param>
         public PdfExtractor(LocalInputSource localInput)
         {
             this.Filename = localInput.Filename;
@@ -152,19 +152,6 @@ namespace Mindee.Extraction
             }
 
             return ExtractSubDocuments(correctPageIndexes);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="byteArray"></param>
-        /// <returns></returns>
-        public static SKImage ByteArrayToSkImage(byte[] byteArray)
-        {
-            using (var stream = new SKManagedStream(new MemoryStream(byteArray)))
-            {
-                return SKImage.FromEncodedData(stream);
-            }
         }
     }
 }
