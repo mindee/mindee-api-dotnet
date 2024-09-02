@@ -283,6 +283,16 @@ System.Console.WriteLine(result.Document.Inference.Prediction.BillingAddress.Val
 ## Purchase Category
 **Category**: The purchase category among predefined classes.
 
+> Possible values include:
+> - toll
+> - food
+> - parking
+> - transport
+> - accommodation
+> - gasoline
+> - telecom
+> - miscellaneous
+
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Category.Value);
 ```
@@ -334,6 +344,12 @@ System.Console.WriteLine(result.Document.Inference.Prediction.DocumentNumber.Val
 
 ## Document Type
 **DocumentType**: One of: 'INVOICE', 'CREDIT NOTE', 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
+
+> Possible values include:
+> - INVOICE
+> - CREDIT NOTE
+> - CREDIT CARD RECEIPT
+> - EXPENSE RECEIPT
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
@@ -396,6 +412,13 @@ System.Console.WriteLine(result.Document.Inference.Prediction.ShippingAddress.Va
 
 ## Purchase Subcategory
 **Subcategory**: The purchase subcategory among predefined classes for transport and food.
+
+> Possible values include:
+> - plane
+> - taxi
+> - train
+> - restaurant
+> - shopping
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Subcategory.Value);

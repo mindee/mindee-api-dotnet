@@ -176,6 +176,13 @@ A `ResumeV1Language` implements the following attributes:
 
 * **Language** (`string`): The language's ISO 639 code.
 * **Level** (`string`): The candidate's level for the language.
+
+> Possible values include:
+> - Fluent
+> - Proficient
+> - Intermediate
+> - Beginner
+
 Fields which are specific to this product; they are not used in any other product.
 
 ### Professional Experiences Field
@@ -184,6 +191,13 @@ The list of the candidate's professional experiences.
 A `ResumeV1ProfessionalExperience` implements the following attributes:
 
 * **ContractType** (`string`): The type of contract for the professional experience.
+
+> Possible values include:
+> - Full-Time
+> - Part-Time
+> - Internship
+> - Freelance
+
 * **Department** (`string`): The specific department or division within the company.
 * **Employer** (`string`): The name of the company or organization.
 * **EndMonth** (`string`): The month when the professional experience ended.
@@ -230,6 +244,11 @@ System.Console.WriteLine(result.Document.Inference.Prediction.DocumentLanguage.V
 
 ## Document Type
 **DocumentType**: The type of the document sent.
+
+> Possible values include:
+> - RESUME
+> - MOTIVATION_LETTER
+> - RECOMMENDATION_LETTER
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);

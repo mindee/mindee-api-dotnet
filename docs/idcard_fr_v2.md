@@ -180,6 +180,11 @@ System.Console.WriteLine(result.Document.Inference.Prediction.DocumentNumber.Val
 ## Document Sides
 [📄](#page-level-fields "This field is only present on individual pages.")**DocumentSide**: The sides of the document which are visible.
 
+> Possible values include:
+> - RECTO
+> - VERSO
+> - RECTO & VERSO
+
 ```csharp
 foreach (var DocumentSideElem in result.Document.Inference.Prediction.DocumentSide)
 {
@@ -190,6 +195,10 @@ foreach (var DocumentSideElem in result.Document.Inference.Prediction.DocumentSi
 
 ## Document Type
 [📄](#page-level-fields "This field is only present on individual pages.")**DocumentType**: The document type or format.
+
+> Possible values include:
+> - NEW
+> - OLD
 
 ```csharp
 foreach (var DocumentTypeElem in result.Document.Inference.Prediction.DocumentType)

@@ -309,6 +309,10 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 ## Document Type
 **DocumentType**: One of: 'INVOICE', 'CREDIT NOTE'.
 
+> Possible values include:
+> - INVOICE
+> - CREDIT NOTE
+
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
 ```
