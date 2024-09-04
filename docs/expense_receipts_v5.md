@@ -203,15 +203,15 @@ The following fields are extracted for Receipt V5:
 ## Purchase Category
 **Category**: The purchase category among predefined classes.
 
-> Possible values include:
-> - toll
-> - food
-> - parking
-> - transport
-> - accommodation
-> - gasoline
-> - telecom
-> - miscellaneous
+#### Possible values include:
+ - toll
+ - food
+ - parking
+ - transport
+ - accommodation
+ - gasoline
+ - telecom
+ - miscellaneous
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Category.Value);
@@ -227,9 +227,9 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 ## Document Type
 **DocumentType**: One of: 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
 
-> Possible values include:
-> - expense_receipt
-> - credit_card_receipt
+#### Possible values include:
+ - expense_receipt
+ - credit_card_receipt
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
@@ -262,12 +262,12 @@ System.Console.WriteLine(result.Document.Inference.Prediction.ReceiptNumber.Valu
 ## Purchase Subcategory
 **Subcategory**: The purchase subcategory among predefined classes for transport and food.
 
-> Possible values include:
-> - plane
-> - taxi
-> - train
-> - restaurant
-> - shopping
+#### Possible values include:
+ - plane
+ - taxi
+ - train
+ - restaurant
+ - shopping
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Subcategory.Value);
