@@ -20,7 +20,8 @@ namespace Mindee.UnitTests
                     filename: "titicaca.pdf"),
                 urlSource: null,
                 cropper: false,
-                allWords: false);
+                allWords: false,
+                fullText: false);
         }
 
         private static ServiceProvider InitServiceProvider(HttpStatusCode statusCode, string fileContent)

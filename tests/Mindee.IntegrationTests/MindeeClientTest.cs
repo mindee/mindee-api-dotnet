@@ -3,6 +3,7 @@ using Mindee.Http;
 using Mindee.Input;
 using Mindee.Product.Cropper;
 using Mindee.Product.Generated;
+using Mindee.Product.InternationalId;
 using Mindee.Product.Invoice;
 using Mindee.Product.InvoiceSplitter;
 using Mindee.Product.Receipt;
@@ -53,7 +54,9 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task Parse_Url_Standard_SinglePage_MustSucceed()
         {
-            var inputSource = new UrlInputSource("https://raw.githubusercontent.com/mindee/client-lib-test-data/main/products/expense_receipts/default_sample.jpg");
+            var inputSource =
+                new UrlInputSource(
+                    "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/products/expense_receipts/default_sample.jpg");
             var response = await _mindeeClient.ParseAsync<ReceiptV5>(inputSource);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
@@ -109,6 +112,23 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
+        public async Task Parse_File_Standard_FullText_MustSucceed()
+        {
+            var inputSource = new LocalInputSource("Resources/products/international_id/default_sample.jpg");
+            string refText = File.ReadAllText("Resources/extras/full_text_ocr/full_text_ocr.txt");
+            var predictOptions = new PredictOptions(fullText: true);
+            var response = await _mindeeClient.EnqueueAndParseAsync<InternationalIdV2>(inputSource, predictOptions);
+            Assert.NotNull(response);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal(200, response.ApiRequest.StatusCode);
+            Assert.NotNull(response.Document.Inference.Pages.First().Extras.FullTextOcr);
+            Assert.NotNull(response.Document.Inference.Extras.FullTextOcr);
+            Assert.Equal(response.Document.Inference.Pages.First().Extras.FullTextOcr.Content,
+                response.Document.Inference.Extras.FullTextOcr);
+            Assert.True(response.Document.Inference.Extras.FullTextOcr.Replace(" ", "").Length > 100);
+        }
+
+        [Fact]
         public async Task Parse_File_Standard_AllWords_And_Cropper_MustSucceed()
         {
             var inputSource = new LocalInputSource("Resources/file_types/receipt.jpg");
@@ -144,7 +164,8 @@ namespace Mindee.IntegrationTests
 
             Assert.NotNull(response);
             Assert.NotNull(response.ApiRequest);
-            Assert.Equal("https://api.mindee.net/v1/products/mindee/invoice_splitter/v1/predict_async", response.ApiRequest.Url);
+            Assert.Equal("https://api.mindee.net/v1/products/mindee/invoice_splitter/v1/predict_async",
+                response.ApiRequest.Url);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(202, response.ApiRequest.StatusCode);
 

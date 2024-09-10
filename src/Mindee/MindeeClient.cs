@@ -126,6 +126,7 @@ namespace Mindee
                     localSource: inputSource,
                     urlSource: null,
                     allWords: predictOptions.AllWords,
+                    fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper)
                 , endpoint);
         }
@@ -155,6 +156,7 @@ namespace Mindee
                     localSource: null,
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
+                    fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper)
                 , endpoint);
         }
@@ -193,6 +195,7 @@ namespace Mindee
                     localSource: inputSource,
                     urlSource: null,
                     allWords: predictOptions.AllWords,
+                    fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper)
                 , endpoint);
         }
@@ -225,6 +228,7 @@ namespace Mindee
                     localSource: null,
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
+                    fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper)
                 , endpoint);
         }
@@ -265,6 +269,7 @@ namespace Mindee
                     localSource: inputSource,
                     urlSource: null,
                     allWords: predictOptions.AllWords,
+                    fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper)
                 , endpoint);
         }
@@ -297,6 +302,7 @@ namespace Mindee
                     localSource: null,
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
+                    fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper)
                 , endpoint);
         }
@@ -421,6 +427,7 @@ namespace Mindee
                     localSource: inputSource,
                     urlSource: null,
                     allWords: predictOptions.AllWords,
+                    fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper));
         }
 
@@ -450,6 +457,7 @@ namespace Mindee
                     localSource: null,
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
+                    fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper));
         }
 
@@ -487,6 +495,7 @@ namespace Mindee
                     localSource: inputSource,
                     urlSource: null,
                     allWords: predictOptions.AllWords,
+                    fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper));
         }
 
@@ -516,6 +525,7 @@ namespace Mindee
                     localSource: null,
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
+                    fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper));
         }
 

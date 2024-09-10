@@ -1,3 +1,6 @@
+using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -30,6 +33,32 @@ namespace Mindee.Parsing.Common
         [JsonPropertyName("pages")]
         public virtual Pages<TPagePrediction> Pages { get; set; }
 
+        private InferenceExtras _extras;
+
+        /// <summary>
+        /// Optional information.
+        /// </summary>
+        [JsonPropertyName("extras")]
+        public InferenceExtras Extras
+        {
+            get
+            {
+                if (this.Pages.Count > 0 && (this._extras?.FullTextOcr == null))
+                {
+                    this._extras ??= new InferenceExtras();
+                    if (this.Pages.First().Extras is { FullTextOcr: not null })
+                    {
+                        this._extras.FullTextOcr = string.Join("\n",
+                            this.Pages.Select(page => page.Extras.FullTextOcr.Content));
+                    }
+                }
+
+                return this._extras;
+            }
+            set => _extras = value;
+        }
+
+
         /// <summary>
         /// The prediction model values.
         /// </summary>
@@ -45,7 +74,8 @@ namespace Mindee.Parsing.Common
             result.Append("\nInference\n");
             result.Append("#########\n");
             result.Append($":Product: {Product.Name} v{Product.Version}\n");
-            result.Append($":Rotation applied: {(IsRotationApplied.HasValue && IsRotationApplied.Value ? "Yes" : "No")}\n");
+            result.Append(
+                $":Rotation applied: {(IsRotationApplied.HasValue && IsRotationApplied.Value ? "Yes" : "No")}\n");
             result.Append("\nPrediction\n");
             result.Append("==========\n");
             result.Append(Prediction.ToString());
@@ -55,6 +85,7 @@ namespace Mindee.Parsing.Common
                 result.Append("================\n\n");
                 result.Append(Pages);
             }
+
             return SummaryHelper.Clean(result.ToString());
         }
     }
