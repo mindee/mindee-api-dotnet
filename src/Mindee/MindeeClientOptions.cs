@@ -16,6 +16,12 @@ namespace Mindee
         public bool AllWords { get; }
 
         /// <summary>
+        /// Whether to include the full text data for async APIs.
+        /// This performs a full OCR operation on the server and will increase response time and payload size.
+        /// </summary>
+        public bool FullText { get; }
+
+        /// <summary>
         /// Whether to include cropper results for each page.
         /// This performs a cropping operation on the server and will increase response time.
         /// </summary>
@@ -27,10 +33,12 @@ namespace Mindee
         /// </summary>
         /// <param name="allWords"><see cref="AllWords"/></param>
         /// <param name="cropper"><see cref="Cropper"/></param>
-        public PredictOptions(bool allWords = false, bool cropper = false)
+        /// <param name="fullText"><see cref="FullText"/></param>
+        public PredictOptions(bool allWords = false, bool fullText = false, bool cropper = false)
         {
             AllWords = allWords;
             Cropper = cropper;
+            FullText = fullText;
         }
     }
 

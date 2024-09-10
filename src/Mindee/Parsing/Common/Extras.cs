@@ -12,5 +12,11 @@ namespace Mindee.Parsing.Common
         /// </summary>
         [JsonPropertyName("cropper")]
         public Cropper Cropper { get; set; }
+
+        /// <summary>
+        /// Full text extraction of the ocr result.
+        /// </summary>
+        [JsonPropertyName("full_text_ocr")]
+        public FullTextOcr FullTextOcr { get; set; }
     }
 }

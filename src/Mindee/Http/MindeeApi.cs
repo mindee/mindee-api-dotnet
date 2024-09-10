@@ -136,6 +136,11 @@ namespace Mindee.Http
                 request.AddParameter(name: "include_mvision", value: "true");
             }
 
+            if (predictParameter.FullText)
+            {
+                request.AddQueryParameter(name: "full_text_ocr", value: "true");
+            }
+
             if (predictParameter.Cropper)
             {
                 request.AddQueryParameter(name: "cropper", value: "true");
