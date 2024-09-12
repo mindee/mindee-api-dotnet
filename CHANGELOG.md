@@ -1,5 +1,10 @@
 # Mindee .NET API Library Changelog
 
+## v3.19.0 - 2024-09-12
+### Changes
+* :sparkles: add support for full text ocr extra on compatible APIs
+
+
 ## v3.18.4 - 2024-08-30
 ### Changes
 * :arrow_up: update Restsharp dependency to cover vulnerability
