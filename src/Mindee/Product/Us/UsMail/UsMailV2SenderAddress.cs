@@ -78,11 +78,11 @@ namespace Mindee.Product.Us.UsMail
         {
             return new Dictionary<string, string>()
             {
-                {"City", SummaryHelper.FormatString(City, 15)},
-                {"Complete", SummaryHelper.FormatString(Complete, 35)},
+                {"City", SummaryHelper.FormatString(City)},
+                {"Complete", SummaryHelper.FormatString(Complete)},
                 {"PostalCode", SummaryHelper.FormatString(PostalCode)},
                 {"State", SummaryHelper.FormatString(State)},
-                {"Street", SummaryHelper.FormatString(Street, 25)},
+                {"Street", SummaryHelper.FormatString(Street)},
             };
         }
     }

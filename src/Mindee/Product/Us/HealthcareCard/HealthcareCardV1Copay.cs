@@ -24,12 +24,21 @@ namespace Mindee.Product.Us.HealthcareCard
         [JsonPropertyName("service_name")]
         public string ServiceName { get; set; }
 
+        private Dictionary<string, string> TablePrintableValues()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"ServiceFees", SummaryHelper.FormatAmount(ServiceFees)},
+                {"ServiceName", SummaryHelper.FormatString(ServiceName)},
+            };
+        }
+
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
               + String.Format("{0,-12}", printable["ServiceFees"])
               + " | "

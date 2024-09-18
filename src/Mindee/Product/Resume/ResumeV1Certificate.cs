@@ -36,12 +36,23 @@ namespace Mindee.Product.Resume
         [JsonPropertyName("year")]
         public string Year { get; set; }
 
+        private Dictionary<string, string> TablePrintableValues()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"Grade", SummaryHelper.FormatString(Grade, 10)},
+                {"Name", SummaryHelper.FormatString(Name, 30)},
+                {"Provider", SummaryHelper.FormatString(Provider, 25)},
+                {"Year", SummaryHelper.FormatString(Year)},
+            };
+        }
+
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
               + String.Format("{0,-10}", printable["Grade"])
               + " | "
@@ -73,9 +84,9 @@ namespace Mindee.Product.Resume
         {
             return new Dictionary<string, string>()
             {
-                {"Grade", SummaryHelper.FormatString(Grade, 10)},
-                {"Name", SummaryHelper.FormatString(Name, 30)},
-                {"Provider", SummaryHelper.FormatString(Provider, 25)},
+                {"Grade", SummaryHelper.FormatString(Grade)},
+                {"Name", SummaryHelper.FormatString(Name)},
+                {"Provider", SummaryHelper.FormatString(Provider)},
                 {"Year", SummaryHelper.FormatString(Year)},
             };
         }

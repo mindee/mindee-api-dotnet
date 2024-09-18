@@ -48,12 +48,25 @@ namespace Mindee.Product.BillOfLading
         [JsonPropertyName("weight_unit")]
         public string WeightUnit { get; set; }
 
+        private Dictionary<string, string> TablePrintableValues()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"Description", SummaryHelper.FormatString(Description, 36)},
+                {"GrossWeight", SummaryHelper.FormatAmount(GrossWeight)},
+                {"Measurement", SummaryHelper.FormatAmount(Measurement)},
+                {"MeasurementUnit", SummaryHelper.FormatString(MeasurementUnit)},
+                {"Quantity", SummaryHelper.FormatAmount(Quantity)},
+                {"WeightUnit", SummaryHelper.FormatString(WeightUnit)},
+            };
+        }
+
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
               + String.Format("{0,-36}", printable["Description"])
               + " | "
@@ -93,7 +106,7 @@ namespace Mindee.Product.BillOfLading
         {
             return new Dictionary<string, string>()
             {
-                {"Description", SummaryHelper.FormatString(Description, 36)},
+                {"Description", SummaryHelper.FormatString(Description)},
                 {"GrossWeight", SummaryHelper.FormatAmount(GrossWeight)},
                 {"Measurement", SummaryHelper.FormatAmount(Measurement)},
                 {"MeasurementUnit", SummaryHelper.FormatString(MeasurementUnit)},

@@ -36,12 +36,23 @@ namespace Mindee.Product.Fr.Payslip
         [JsonPropertyName("rate")]
         public double? Rate { get; set; }
 
+        private Dictionary<string, string> TablePrintableValues()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"Amount", SummaryHelper.FormatAmount(Amount)},
+                {"Base", SummaryHelper.FormatAmount(Base)},
+                {"Description", SummaryHelper.FormatString(Description, 36)},
+                {"Rate", SummaryHelper.FormatAmount(Rate)},
+            };
+        }
+
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
               + String.Format("{0,-12}", printable["Amount"])
               + " | "
@@ -75,7 +86,7 @@ namespace Mindee.Product.Fr.Payslip
             {
                 {"Amount", SummaryHelper.FormatAmount(Amount)},
                 {"Base", SummaryHelper.FormatAmount(Base)},
-                {"Description", SummaryHelper.FormatString(Description, 36)},
+                {"Description", SummaryHelper.FormatString(Description)},
                 {"Rate", SummaryHelper.FormatAmount(Rate)},
             };
         }

@@ -24,12 +24,21 @@ namespace Mindee.Product.Resume
         [JsonPropertyName("url")]
         public string Url { get; set; }
 
+        private Dictionary<string, string> TablePrintableValues()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"Name", SummaryHelper.FormatString(Name, 20)},
+                {"Url", SummaryHelper.FormatString(Url, 50)},
+            };
+        }
+
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
               + String.Format("{0,-20}", printable["Name"])
               + " | "
@@ -53,8 +62,8 @@ namespace Mindee.Product.Resume
         {
             return new Dictionary<string, string>()
             {
-                {"Name", SummaryHelper.FormatString(Name, 20)},
-                {"Url", SummaryHelper.FormatString(Url, 50)},
+                {"Name", SummaryHelper.FormatString(Name)},
+                {"Url", SummaryHelper.FormatString(Url)},
             };
         }
     }

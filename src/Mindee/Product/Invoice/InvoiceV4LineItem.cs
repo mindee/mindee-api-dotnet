@@ -60,12 +60,27 @@ namespace Mindee.Product.Invoice
         [JsonPropertyName("unit_price")]
         public double? UnitPrice { get; set; }
 
+        private Dictionary<string, string> TablePrintableValues()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"Description", SummaryHelper.FormatString(Description, 36)},
+                {"ProductCode", SummaryHelper.FormatString(ProductCode)},
+                {"Quantity", SummaryHelper.FormatAmount(Quantity)},
+                {"TaxAmount", SummaryHelper.FormatAmount(TaxAmount)},
+                {"TaxRate", SummaryHelper.FormatAmount(TaxRate)},
+                {"TotalAmount", SummaryHelper.FormatAmount(TotalAmount)},
+                {"UnitMeasure", SummaryHelper.FormatString(UnitMeasure)},
+                {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
+            };
+        }
+
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
               + String.Format("{0,-36}", printable["Description"])
               + " | "
@@ -113,7 +128,7 @@ namespace Mindee.Product.Invoice
         {
             return new Dictionary<string, string>()
             {
-                {"Description", SummaryHelper.FormatString(Description, 36)},
+                {"Description", SummaryHelper.FormatString(Description)},
                 {"ProductCode", SummaryHelper.FormatString(ProductCode)},
                 {"Quantity", SummaryHelper.FormatAmount(Quantity)},
                 {"TaxAmount", SummaryHelper.FormatAmount(TaxAmount)},

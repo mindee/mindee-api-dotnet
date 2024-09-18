@@ -26,7 +26,7 @@ namespace Mindee.Parsing
 
         public static string FormatString(string str)
         {
-            return str ?? "";
+            return (str ?? "").Replace("\n", "\\n").Replace("\t", "\\t").Replace("\r", "\\r");
         }
 
         public static string FormatBool(bool? value)

@@ -48,12 +48,25 @@ namespace Mindee.Product.Fr.EnergyBill
         [JsonPropertyName("unit_price")]
         public double? UnitPrice { get; set; }
 
+        private Dictionary<string, string> TablePrintableValues()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"Description", SummaryHelper.FormatString(Description, 36)},
+                {"EndDate", SummaryHelper.FormatString(EndDate, 10)},
+                {"StartDate", SummaryHelper.FormatString(StartDate)},
+                {"TaxRate", SummaryHelper.FormatAmount(TaxRate)},
+                {"Total", SummaryHelper.FormatAmount(Total)},
+                {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
+            };
+        }
+
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
               + String.Format("{0,-36}", printable["Description"])
               + " | "
@@ -93,8 +106,8 @@ namespace Mindee.Product.Fr.EnergyBill
         {
             return new Dictionary<string, string>()
             {
-                {"Description", SummaryHelper.FormatString(Description, 36)},
-                {"EndDate", SummaryHelper.FormatString(EndDate, 10)},
+                {"Description", SummaryHelper.FormatString(Description)},
+                {"EndDate", SummaryHelper.FormatString(EndDate)},
                 {"StartDate", SummaryHelper.FormatString(StartDate)},
                 {"TaxRate", SummaryHelper.FormatAmount(TaxRate)},
                 {"Total", SummaryHelper.FormatAmount(Total)},

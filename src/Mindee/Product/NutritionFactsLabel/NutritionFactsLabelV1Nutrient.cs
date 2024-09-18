@@ -42,12 +42,24 @@ namespace Mindee.Product.NutritionFactsLabel
         [JsonPropertyName("unit")]
         public string Unit { get; set; }
 
+        private Dictionary<string, string> TablePrintableValues()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"DailyValue", SummaryHelper.FormatAmount(DailyValue)},
+                {"Name", SummaryHelper.FormatString(Name, 20)},
+                {"Per100G", SummaryHelper.FormatAmount(Per100G)},
+                {"PerServing", SummaryHelper.FormatAmount(PerServing)},
+                {"Unit", SummaryHelper.FormatString(Unit)},
+            };
+        }
+
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
               + String.Format("{0,-11}", printable["DailyValue"])
               + " | "
@@ -84,7 +96,7 @@ namespace Mindee.Product.NutritionFactsLabel
             return new Dictionary<string, string>()
             {
                 {"DailyValue", SummaryHelper.FormatAmount(DailyValue)},
-                {"Name", SummaryHelper.FormatString(Name, 20)},
+                {"Name", SummaryHelper.FormatString(Name)},
                 {"Per100G", SummaryHelper.FormatAmount(Per100G)},
                 {"PerServing", SummaryHelper.FormatAmount(PerServing)},
                 {"Unit", SummaryHelper.FormatString(Unit)},
