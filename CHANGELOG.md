@@ -1,5 +1,20 @@
 # Mindee .NET API Library Changelog
 
+## v3.19.0 - 2024-09-18
+### Changes
+* :sparkles: add support for BillOfLadingV1
+* :sparkles: add support for (US) UsMailV2
+* :sparkles: add support for (FR) EnergyBillV1
+* :sparkles: add support for (FR) PayslipV1
+* :sparkles: add support for NutritionFactsLabelV1
+* :sparkles: add support for full text OCR response
+
+### Fixes
+* :bug: fixed a bug that prevented longer decimals from appearing in the string representation of some objects
+* :bug: fixed a bug that caused non-table elements to unexpectedly appear truncated when printed to the console
+* :memo: add classification detail to guide documentation
+
+
 ## v3.18.4 - 2024-08-30
 ### Changes
 * :arrow_up: update Restsharp dependency to cover vulnerability
