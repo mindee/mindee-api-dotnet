@@ -24,12 +24,21 @@ namespace Mindee.Product.Resume
         [JsonPropertyName("level")]
         public string Level { get; set; }
 
+        private Dictionary<string, string> TablePrintableValues()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"Language", SummaryHelper.FormatString(Language)},
+                {"Level", SummaryHelper.FormatString(Level, 20)},
+            };
+        }
+
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
               + String.Format("{0,-8}", printable["Language"])
               + " | "
@@ -54,7 +63,7 @@ namespace Mindee.Product.Resume
             return new Dictionary<string, string>()
             {
                 {"Language", SummaryHelper.FormatString(Language)},
-                {"Level", SummaryHelper.FormatString(Level, 20)},
+                {"Level", SummaryHelper.FormatString(Level)},
             };
         }
     }

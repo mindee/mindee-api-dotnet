@@ -54,12 +54,26 @@ namespace Mindee.Product.Resume
         [JsonPropertyName("start_year")]
         public string StartYear { get; set; }
 
+        private Dictionary<string, string> TablePrintableValues()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"DegreeDomain", SummaryHelper.FormatString(DegreeDomain, 15)},
+                {"DegreeType", SummaryHelper.FormatString(DegreeType, 25)},
+                {"EndMonth", SummaryHelper.FormatString(EndMonth)},
+                {"EndYear", SummaryHelper.FormatString(EndYear)},
+                {"School", SummaryHelper.FormatString(School, 25)},
+                {"StartMonth", SummaryHelper.FormatString(StartMonth)},
+                {"StartYear", SummaryHelper.FormatString(StartYear)},
+            };
+        }
+
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
               + String.Format("{0,-15}", printable["DegreeDomain"])
               + " | "
@@ -103,11 +117,11 @@ namespace Mindee.Product.Resume
         {
             return new Dictionary<string, string>()
             {
-                {"DegreeDomain", SummaryHelper.FormatString(DegreeDomain, 15)},
-                {"DegreeType", SummaryHelper.FormatString(DegreeType, 25)},
+                {"DegreeDomain", SummaryHelper.FormatString(DegreeDomain)},
+                {"DegreeType", SummaryHelper.FormatString(DegreeType)},
                 {"EndMonth", SummaryHelper.FormatString(EndMonth)},
                 {"EndYear", SummaryHelper.FormatString(EndYear)},
-                {"School", SummaryHelper.FormatString(School, 25)},
+                {"School", SummaryHelper.FormatString(School)},
                 {"StartMonth", SummaryHelper.FormatString(StartMonth)},
                 {"StartYear", SummaryHelper.FormatString(StartYear)},
             };

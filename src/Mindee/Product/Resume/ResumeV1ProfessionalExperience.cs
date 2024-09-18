@@ -60,12 +60,27 @@ namespace Mindee.Product.Resume
         [JsonPropertyName("start_year")]
         public string StartYear { get; set; }
 
+        private Dictionary<string, string> TablePrintableValues()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"ContractType", SummaryHelper.FormatString(ContractType, 15)},
+                {"Department", SummaryHelper.FormatString(Department, 10)},
+                {"Employer", SummaryHelper.FormatString(Employer, 25)},
+                {"EndMonth", SummaryHelper.FormatString(EndMonth)},
+                {"EndYear", SummaryHelper.FormatString(EndYear)},
+                {"Role", SummaryHelper.FormatString(Role, 20)},
+                {"StartMonth", SummaryHelper.FormatString(StartMonth)},
+                {"StartYear", SummaryHelper.FormatString(StartYear)},
+            };
+        }
+
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
               + String.Format("{0,-15}", printable["ContractType"])
               + " | "
@@ -113,12 +128,12 @@ namespace Mindee.Product.Resume
         {
             return new Dictionary<string, string>()
             {
-                {"ContractType", SummaryHelper.FormatString(ContractType, 15)},
-                {"Department", SummaryHelper.FormatString(Department, 10)},
-                {"Employer", SummaryHelper.FormatString(Employer, 25)},
+                {"ContractType", SummaryHelper.FormatString(ContractType)},
+                {"Department", SummaryHelper.FormatString(Department)},
+                {"Employer", SummaryHelper.FormatString(Employer)},
                 {"EndMonth", SummaryHelper.FormatString(EndMonth)},
                 {"EndYear", SummaryHelper.FormatString(EndYear)},
-                {"Role", SummaryHelper.FormatString(Role, 20)},
+                {"Role", SummaryHelper.FormatString(Role)},
                 {"StartMonth", SummaryHelper.FormatString(StartMonth)},
                 {"StartYear", SummaryHelper.FormatString(StartYear)},
             };

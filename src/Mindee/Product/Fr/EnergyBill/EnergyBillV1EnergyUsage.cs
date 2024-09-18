@@ -5,33 +5,45 @@ using System.Text.Json.Serialization;
 using Mindee.Parsing;
 using Mindee.Parsing.Standard;
 
-namespace Mindee.Product.Receipt
+namespace Mindee.Product.Fr.EnergyBill
 {
     /// <summary>
-    /// List of line item details.
+    /// Details of energy consumption.
     /// </summary>
-    public sealed class ReceiptV5LineItem : LineItemField
+    public sealed class EnergyBillV1EnergyUsage : LineItemField
     {
         /// <summary>
-        /// The item description.
+        /// Description or details of the energy usage.
         /// </summary>
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// The item quantity.
+        /// The end date of the energy usage.
         /// </summary>
-        [JsonPropertyName("quantity")]
-        public double? Quantity { get; set; }
+        [JsonPropertyName("end_date")]
+        public string EndDate { get; set; }
 
         /// <summary>
-        /// The item total amount.
+        /// The start date of the energy usage.
         /// </summary>
-        [JsonPropertyName("total_amount")]
-        public double? TotalAmount { get; set; }
+        [JsonPropertyName("start_date")]
+        public string StartDate { get; set; }
 
         /// <summary>
-        /// The item unit price.
+        /// The rate of tax applied to the total cost.
+        /// </summary>
+        [JsonPropertyName("tax_rate")]
+        public double? TaxRate { get; set; }
+
+        /// <summary>
+        /// The total cost of energy consumed.
+        /// </summary>
+        [JsonPropertyName("total")]
+        public double? Total { get; set; }
+
+        /// <summary>
+        /// The price per unit of energy consumed.
         /// </summary>
         [JsonPropertyName("unit_price")]
         public double? UnitPrice { get; set; }
@@ -41,8 +53,10 @@ namespace Mindee.Product.Receipt
             return new Dictionary<string, string>()
             {
                 {"Description", SummaryHelper.FormatString(Description, 36)},
-                {"Quantity", SummaryHelper.FormatAmount(Quantity)},
-                {"TotalAmount", SummaryHelper.FormatAmount(TotalAmount)},
+                {"EndDate", SummaryHelper.FormatString(EndDate, 10)},
+                {"StartDate", SummaryHelper.FormatString(StartDate)},
+                {"TaxRate", SummaryHelper.FormatAmount(TaxRate)},
+                {"Total", SummaryHelper.FormatAmount(Total)},
                 {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
             };
         }
@@ -56,9 +70,13 @@ namespace Mindee.Product.Receipt
             return "| "
               + String.Format("{0,-36}", printable["Description"])
               + " | "
-              + String.Format("{0,-8}", printable["Quantity"])
+              + String.Format("{0,-10}", printable["EndDate"])
               + " | "
-              + String.Format("{0,-12}", printable["TotalAmount"])
+              + String.Format("{0,-10}", printable["StartDate"])
+              + " | "
+              + String.Format("{0,-8}", printable["TaxRate"])
+              + " | "
+              + String.Format("{0,-9}", printable["Total"])
               + " | "
               + String.Format("{0,-10}", printable["UnitPrice"])
               + " |";
@@ -72,10 +90,14 @@ namespace Mindee.Product.Receipt
             Dictionary<string, string> printable = PrintableValues();
             return "Description: "
               + printable["Description"]
-              + ", Quantity: "
-              + printable["Quantity"]
-              + ", Total Amount: "
-              + printable["TotalAmount"]
+              + ", End Date: "
+              + printable["EndDate"]
+              + ", Start Date: "
+              + printable["StartDate"]
+              + ", Tax Rate: "
+              + printable["TaxRate"]
+              + ", Total: "
+              + printable["Total"]
               + ", Unit Price: "
               + printable["UnitPrice"].Trim();
         }
@@ -85,17 +107,19 @@ namespace Mindee.Product.Receipt
             return new Dictionary<string, string>()
             {
                 {"Description", SummaryHelper.FormatString(Description)},
-                {"Quantity", SummaryHelper.FormatAmount(Quantity)},
-                {"TotalAmount", SummaryHelper.FormatAmount(TotalAmount)},
+                {"EndDate", SummaryHelper.FormatString(EndDate)},
+                {"StartDate", SummaryHelper.FormatString(StartDate)},
+                {"TaxRate", SummaryHelper.FormatAmount(TaxRate)},
+                {"Total", SummaryHelper.FormatAmount(Total)},
                 {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
             };
         }
     }
 
     /// <summary>
-    /// List of line item details.
+    /// Details of energy consumption.
     /// </summary>
-    public class ReceiptV5LineItems : List<ReceiptV5LineItem>
+    public class EnergyBillV1EnergyUsages : List<EnergyBillV1EnergyUsage>
     {
         /// <summary>
         /// Default string representation.
@@ -106,12 +130,14 @@ namespace Mindee.Product.Receipt
             {
                 return "\n";
             }
-            int[] columnSizes = { 38, 10, 14, 12 };
+            int[] columnSizes = { 38, 12, 12, 10, 11, 12 };
             StringBuilder outStr = new StringBuilder("\n");
             outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '-') + "  ");
             outStr.Append("| Description                          ");
-            outStr.Append("| Quantity ");
-            outStr.Append("| Total Amount ");
+            outStr.Append("| End Date   ");
+            outStr.Append("| Start Date ");
+            outStr.Append("| Tax Rate ");
+            outStr.Append("| Total     ");
             outStr.Append("| Unit Price ");
             outStr.Append("|\n  " + SummaryHelper.LineSeparator(columnSizes, '='));
             outStr.Append(SummaryHelper.ArrayToString(this, columnSizes));

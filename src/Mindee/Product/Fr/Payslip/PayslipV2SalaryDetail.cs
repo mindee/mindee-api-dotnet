@@ -5,45 +5,45 @@ using System.Text.Json.Serialization;
 using Mindee.Parsing;
 using Mindee.Parsing.Standard;
 
-namespace Mindee.Product.Receipt
+namespace Mindee.Product.Fr.Payslip
 {
     /// <summary>
-    /// List of line item details.
+    /// Detailed information about the earnings.
     /// </summary>
-    public sealed class ReceiptV5LineItem : LineItemField
+    public sealed class PayslipV2SalaryDetail : LineItemField
     {
         /// <summary>
-        /// The item description.
+        /// The amount of the earnings.
+        /// </summary>
+        [JsonPropertyName("amount")]
+        public double? Amount { get; set; }
+
+        /// <summary>
+        /// The base value of the earnings.
+        /// </summary>
+        [JsonPropertyName("base")]
+        public double? Base { get; set; }
+
+        /// <summary>
+        /// The description of the earnings.
         /// </summary>
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// The item quantity.
+        /// The rate of the earnings.
         /// </summary>
-        [JsonPropertyName("quantity")]
-        public double? Quantity { get; set; }
-
-        /// <summary>
-        /// The item total amount.
-        /// </summary>
-        [JsonPropertyName("total_amount")]
-        public double? TotalAmount { get; set; }
-
-        /// <summary>
-        /// The item unit price.
-        /// </summary>
-        [JsonPropertyName("unit_price")]
-        public double? UnitPrice { get; set; }
+        [JsonPropertyName("rate")]
+        public double? Rate { get; set; }
 
         private Dictionary<string, string> TablePrintableValues()
         {
             return new Dictionary<string, string>()
             {
+                {"Amount", SummaryHelper.FormatAmount(Amount)},
+                {"Base", SummaryHelper.FormatAmount(Base)},
                 {"Description", SummaryHelper.FormatString(Description, 36)},
-                {"Quantity", SummaryHelper.FormatAmount(Quantity)},
-                {"TotalAmount", SummaryHelper.FormatAmount(TotalAmount)},
-                {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
+                {"Rate", SummaryHelper.FormatAmount(Rate)},
             };
         }
 
@@ -54,13 +54,13 @@ namespace Mindee.Product.Receipt
         {
             Dictionary<string, string> printable = TablePrintableValues();
             return "| "
+              + String.Format("{0,-12}", printable["Amount"])
+              + " | "
+              + String.Format("{0,-9}", printable["Base"])
+              + " | "
               + String.Format("{0,-36}", printable["Description"])
               + " | "
-              + String.Format("{0,-8}", printable["Quantity"])
-              + " | "
-              + String.Format("{0,-12}", printable["TotalAmount"])
-              + " | "
-              + String.Format("{0,-10}", printable["UnitPrice"])
+              + String.Format("{0,-9}", printable["Rate"])
               + " |";
         }
 
@@ -70,32 +70,32 @@ namespace Mindee.Product.Receipt
         public override string ToString()
         {
             Dictionary<string, string> printable = PrintableValues();
-            return "Description: "
+            return "Amount: "
+              + printable["Amount"]
+              + ", Base: "
+              + printable["Base"]
+              + ", Description: "
               + printable["Description"]
-              + ", Quantity: "
-              + printable["Quantity"]
-              + ", Total Amount: "
-              + printable["TotalAmount"]
-              + ", Unit Price: "
-              + printable["UnitPrice"].Trim();
+              + ", Rate: "
+              + printable["Rate"].Trim();
         }
 
         private Dictionary<string, string> PrintableValues()
         {
             return new Dictionary<string, string>()
             {
+                {"Amount", SummaryHelper.FormatAmount(Amount)},
+                {"Base", SummaryHelper.FormatAmount(Base)},
                 {"Description", SummaryHelper.FormatString(Description)},
-                {"Quantity", SummaryHelper.FormatAmount(Quantity)},
-                {"TotalAmount", SummaryHelper.FormatAmount(TotalAmount)},
-                {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
+                {"Rate", SummaryHelper.FormatAmount(Rate)},
             };
         }
     }
 
     /// <summary>
-    /// List of line item details.
+    /// Detailed information about the earnings.
     /// </summary>
-    public class ReceiptV5LineItems : List<ReceiptV5LineItem>
+    public class PayslipV2SalaryDetails : List<PayslipV2SalaryDetail>
     {
         /// <summary>
         /// Default string representation.
@@ -106,13 +106,13 @@ namespace Mindee.Product.Receipt
             {
                 return "\n";
             }
-            int[] columnSizes = { 38, 10, 14, 12 };
+            int[] columnSizes = { 14, 11, 38, 11 };
             StringBuilder outStr = new StringBuilder("\n");
             outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '-') + "  ");
+            outStr.Append("| Amount       ");
+            outStr.Append("| Base      ");
             outStr.Append("| Description                          ");
-            outStr.Append("| Quantity ");
-            outStr.Append("| Total Amount ");
-            outStr.Append("| Unit Price ");
+            outStr.Append("| Rate      ");
             outStr.Append("|\n  " + SummaryHelper.LineSeparator(columnSizes, '='));
             outStr.Append(SummaryHelper.ArrayToString(this, columnSizes));
             return outStr.ToString();

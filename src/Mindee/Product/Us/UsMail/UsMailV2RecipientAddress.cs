@@ -54,12 +54,26 @@ namespace Mindee.Product.Us.UsMail
         [JsonPropertyName("street")]
         public string Street { get; set; }
 
+        private Dictionary<string, string> TablePrintableValues()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"City", SummaryHelper.FormatString(City, 15)},
+                {"Complete", SummaryHelper.FormatString(Complete, 35)},
+                {"IsAddressChange", SummaryHelper.FormatBool(IsAddressChange)},
+                {"PostalCode", SummaryHelper.FormatString(PostalCode)},
+                {"PrivateMailboxNumber", SummaryHelper.FormatString(PrivateMailboxNumber)},
+                {"State", SummaryHelper.FormatString(State)},
+                {"Street", SummaryHelper.FormatString(Street, 25)},
+            };
+        }
+
         /// <summary>
         /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
               + String.Format("{0,-15}", printable["City"])
               + " | "
@@ -103,13 +117,13 @@ namespace Mindee.Product.Us.UsMail
         {
             return new Dictionary<string, string>()
             {
-                {"City", SummaryHelper.FormatString(City, 15)},
-                {"Complete", SummaryHelper.FormatString(Complete, 35)},
+                {"City", SummaryHelper.FormatString(City)},
+                {"Complete", SummaryHelper.FormatString(Complete)},
                 {"IsAddressChange", SummaryHelper.FormatBool(IsAddressChange)},
                 {"PostalCode", SummaryHelper.FormatString(PostalCode)},
                 {"PrivateMailboxNumber", SummaryHelper.FormatString(PrivateMailboxNumber)},
                 {"State", SummaryHelper.FormatString(State)},
-                {"Street", SummaryHelper.FormatString(Street, 25)},
+                {"Street", SummaryHelper.FormatString(Street)},
             };
         }
     }
