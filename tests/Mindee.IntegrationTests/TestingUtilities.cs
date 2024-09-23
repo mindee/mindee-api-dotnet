@@ -95,15 +95,15 @@ namespace Mindee.IntegrationTests
                 distanceMatrix[0, j] = j;
 
             for (int j = 1; j <= targetLength; j++)
-            for (int i = 1; i <= refLength; i++)
-                if (refString[i - 1] == targetString[j - 1])
-                    distanceMatrix[i, j] = distanceMatrix[i - 1, j - 1];
-                else
-                    distanceMatrix[i, j] = Math.Min(Math.Min(
-                            distanceMatrix[i - 1, j] + 1,
-                            distanceMatrix[i, j - 1] + 1),
-                        distanceMatrix[i - 1, j - 1] + 1
-                    );
+                for (int i = 1; i <= refLength; i++)
+                    if (refString[i - 1] == targetString[j - 1])
+                        distanceMatrix[i, j] = distanceMatrix[i - 1, j - 1];
+                    else
+                        distanceMatrix[i, j] = Math.Min(Math.Min(
+                                distanceMatrix[i - 1, j] + 1,
+                                distanceMatrix[i, j - 1] + 1),
+                            distanceMatrix[i - 1, j - 1] + 1
+                        );
             return distanceMatrix[refLength, targetLength];
         }
 
