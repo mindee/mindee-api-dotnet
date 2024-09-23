@@ -6,7 +6,7 @@ using Mindee.Product.Receipt;
 
 var apiKey = "my-api-key";
 var mindeeClient = new MindeeClient(apiKey);
-var myFilePath = "/home/sebastian/work/mindee/client-lib-test-data/products/multi_receipts_detector/default_sample.jpg";
+var myFilePath = "path/to/my/file.ext";
 
 var inputSource = new LocalInputSource(myFilePath);
 var resutlSplit = await mindeeClient.ParseAsync<MultiReceiptsDetectorV1>(inputSource);
