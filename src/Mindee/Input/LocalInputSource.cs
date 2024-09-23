@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using Docnet.Core;
+using Docnet.Core.Models;
 using Mindee.Exceptions;
 
 namespace Mindee.Input
@@ -27,15 +29,7 @@ namespace Mindee.Input
 
         private static readonly string[] _authorizedFileExtensions =
         {
-            ".pdf",
-            ".webp",
-            ".jpg",
-            ".jpga",
-            ".jpeg",
-            ".png",
-            ".heic",
-            ".tiff",
-            ".tif",
+            ".pdf", ".webp", ".jpg", ".jpga", ".jpeg", ".png", ".heic", ".tiff", ".tif",
         };
 
         /// <summary>
@@ -61,6 +55,7 @@ namespace Mindee.Input
             {
                 throw new ArgumentNullException(filePath);
             }
+
             var fileInfo = new FileInfo(filePath);
             FileBytes = File.ReadAllBytes(fileInfo.FullName);
             SetFileName(fileInfo.Name);
@@ -79,6 +74,7 @@ namespace Mindee.Input
                 fileStream.CopyTo(memoryStream);
                 FileBytes = memoryStream.ToArray();
             }
+
             SetFileName(filename);
         }
 
@@ -101,6 +97,7 @@ namespace Mindee.Input
             {
                 throw new MindeeInputException($"The filename '{filename}' requires an extension");
             }
+
             Filename = filename;
             Extension = Path.GetExtension(Filename);
             if (!IsExtensionValid())
@@ -116,7 +113,7 @@ namespace Mindee.Input
         {
             return _authorizedFileExtensions.Any(
                 f => f.Equals(Extension, StringComparison.InvariantCultureIgnoreCase)
-                );
+            );
         }
 
         /// <summary>
@@ -125,6 +122,20 @@ namespace Mindee.Input
         public bool IsPdf()
         {
             return Extension.Equals(".pdf", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
+        /// Returns the page count for PDF files, or '1' otherwise.
+        /// </summary>
+        /// <returns>The page count, as an integer.</returns>
+        public int GetPageCount()
+        {
+            if (!IsPdf())
+            {
+                return 1;
+            }
+            var docInstance = DocLib.Instance.GetDocReader(this.FileBytes, new PageDimensions(1, 1));
+            return docInstance.GetPageCount();
         }
     }
 }
