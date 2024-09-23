@@ -27,13 +27,13 @@ async Task InvoiceSplitterAutoExtraction(string filePath)
     }
 }
 
-async Task ParseSinglePage(InputSource inputSource)
+async Task ParseSinglePage(LocalInputSource inputSource)
 {
     var invoiceResult = await mindeeClient.ParseAsync<InvoiceV4>(inputSource);
     Console.WriteLine(invoiceResult.Document);
 }
 
-async Task ParseMultiPage(InputSource inputSource)
+async Task ParseMultiPage(LocalInputSource inputSource)
 {
     PdfExtractor extractor = new PdfExtractor(inputSource);
     var invoiceSplitterResponse = await mindeeClient.EnqueueAndParseAsync<InvoiceSplitterV1>(inputSource);
