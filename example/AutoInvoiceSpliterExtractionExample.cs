@@ -19,21 +19,21 @@ async Task InvoiceSplitterAutoExtraction(string filePath)
 
     if (inputSource.IsPdf() && inputSource.GetPageCount() > 1)
     {
-        await ParseMultiPagePdf(inputSource);
+        await ParseMultiPage(inputSource);
     }
     else
     {
-        await ParseSinglePageOrNonPdf(inputSource);
+        await ParseSinglePage(inputSource);
     }
 }
 
-async Task ParseSinglePageOrNonPdf(InputSource inputSource)
+async Task ParseSinglePage(InputSource inputSource)
 {
     var invoiceResult = await mindeeClient.ParseAsync<InvoiceV4>(inputSource);
     Console.WriteLine(invoiceResult.Document);
 }
 
-async Task ParseMultiPagePdf(InputSource inputSource)
+async Task ParseMultiPage(InputSource inputSource)
 {
     PdfExtractor extractor = new PdfExtractor(inputSource);
     var invoiceSplitterResponse = await mindeeClient.EnqueueAndParseAsync<InvoiceSplitterV1>(inputSource);
