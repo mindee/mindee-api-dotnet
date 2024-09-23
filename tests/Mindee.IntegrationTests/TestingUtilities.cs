@@ -117,13 +117,12 @@ namespace Mindee.IntegrationTests
         {
             int refLength = refString.Length;
             int targetLength = targetString.Length;
-            int maxLength = int.Max(refLength, targetLength);
+            int maxLength = Math.Max(refLength, targetLength);
             if (refLength == 0 && targetLength == 0)
             {
                 return 1.0;
             }
-
-            return LevenshteinDistance(refString, targetString) / (double) maxLength;
+            return 1.0 - LevenshteinDistance(refString, targetString) / (double)maxLength;
         }
     }
 }
