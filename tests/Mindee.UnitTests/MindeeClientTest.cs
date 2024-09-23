@@ -194,6 +194,7 @@ namespace Mindee.UnitTests
             var mindeeClient = MakeStandardMindeeClient(predictable);
 
             var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
+            Assert.Equal(1, inputSource.GetPageCount());
             var document = await mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource);
 
@@ -243,6 +244,7 @@ namespace Mindee.UnitTests
             var mindeeClient = MakeStandardMindeeClient(predictable);
 
             var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/multipage.pdf"));
+            Assert.Equal(12, inputSource.GetPageCount());
             var pageOptions = new PageOptions(pageNumbers: new short[] { 1, 2, 3 });
             var response = await mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource, pageOptions: pageOptions);

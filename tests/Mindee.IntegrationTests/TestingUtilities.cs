@@ -5,8 +5,13 @@ namespace Mindee.IntegrationTests
 {
     public static class TestingUtilities
     {
-        public static MindeeClient? mindeeClient;
+        private static MindeeClient? _mindeeClient;
 
+        /// <summary>g
+        /// Gets the API version from an RST output
+        /// </summary>
+        /// <param name="rstStr">The RST output of a prediction.</param>
+        /// <returns>The filename.</returns>
         public static string GetVersion(string rstStr)
         {
             int versionLineStartPos = rstStr.IndexOf(":Product: ", StringComparison.Ordinal);
@@ -18,6 +23,11 @@ namespace Mindee.IntegrationTests
             return substring.Substring(versionStartPos + 2);
         }
 
+        /// <summary>
+        /// Gets the prediction ID name from an RST output
+        /// </summary>
+        /// <param name="rstStr">The RST output of a prediction.</param>
+        /// <returns>The filename.</returns>
         public static string GetId(string rstStr)
         {
             int idStartPos = rstStr.IndexOf(":Mindee ID: ", StringComparison.Ordinal) + 12;
@@ -26,6 +36,11 @@ namespace Mindee.IntegrationTests
             return rstStr.Substring(idStartPos, idEndPos - idStartPos);
         }
 
+        /// <summary>
+        /// Gets the file name from an RST output
+        /// </summary>
+        /// <param name="rstStr">The RST output of a prediction.</param>
+        /// <returns>The filename.</returns>
         public static string GetFileName(string rstStr)
         {
             int idStartPos = rstStr.IndexOf(":Filename: ", StringComparison.Ordinal) + 11;
@@ -34,16 +49,80 @@ namespace Mindee.IntegrationTests
             return rstStr.Substring(idStartPos, idEndPos - idStartPos);
         }
 
+        /// <summary>
+        /// Gets or generates a Mindee client instance.
+        /// </summary>
+        /// <param name="apiKey">The API key for mindee.</param>
+        /// <returns>A valid Mindee client instance.</returns>
         public static MindeeClient GetOrGenerateMindeeClient(string? apiKey)
         {
-            if (mindeeClient != null)
-                return mindeeClient;
+            if (_mindeeClient != null)
+                return _mindeeClient;
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddMindeeApi(options =>
             {
                 options.ApiKey = apiKey;
             }, true);
-            return mindeeClient ??= new MindeeClient(apiKey);
+            return _mindeeClient ??= new MindeeClient(apiKey);
+        }
+
+        /// <summary>
+        /// Compute the Levenshtein distance between two strings.
+        /// Taken from: https://rosettacode.org/wiki/Levenshtein_distance#C#
+        /// </summary>
+        /// <param name="refString">First string.</param>
+        /// <param name="targetString">Second string.</param>
+        /// <returns>The distance between the two strings.</returns>
+        private static int LevenshteinDistance(string refString, string targetString)
+        {
+            int refLength = refString.Length;
+            int targetLength = targetString.Length;
+            int[,] distanceMatrix = new int[refLength + 1, targetLength + 1];
+
+            if (refLength == 0)
+            {
+                return targetLength;
+            }
+
+            if (targetLength == 0)
+            {
+                return refLength;
+            }
+
+            for (int i = 0; i <= refLength; i++)
+                distanceMatrix[i, 0] = i;
+            for (int j = 0; j <= targetLength; j++)
+                distanceMatrix[0, j] = j;
+
+            for (int j = 1; j <= targetLength; j++)
+                for (int i = 1; i <= refLength; i++)
+                    if (refString[i - 1] == targetString[j - 1])
+                        distanceMatrix[i, j] = distanceMatrix[i - 1, j - 1];
+                    else
+                        distanceMatrix[i, j] = Math.Min(Math.Min(
+                                distanceMatrix[i - 1, j] + 1,
+                                distanceMatrix[i, j - 1] + 1),
+                            distanceMatrix[i - 1, j - 1] + 1
+                        );
+            return distanceMatrix[refLength, targetLength];
+        }
+
+        /// <summary>
+        /// Computes the Levenshtein ratio between two given strings.
+        /// </summary>
+        /// <param name="refString">First string.</param>
+        /// <param name="targetString">Second string.</param>
+        /// <returns>The ratio of differences between the two strings.</returns>
+        public static double LevenshteinRatio(string refString, string targetString)
+        {
+            int refLength = refString.Length;
+            int targetLength = targetString.Length;
+            int maxLength = Math.Max(refLength, targetLength);
+            if (refLength == 0 && targetLength == 0)
+            {
+                return 1.0;
+            }
+            return 1.0 - LevenshteinDistance(refString, targetString) / (double)maxLength;
         }
     }
 }
