@@ -18,7 +18,7 @@ namespace Mindee.UnitTests.Parsing.Common
         }
 
         [Fact]
-        public async void ShouldHaveCorrectWordCount()
+        public async Task ShouldHaveCorrectWordCount()
         {
             var ocr = await LoadOcr();
             Assert.NotNull(ocr.MvisionV1);
@@ -27,7 +27,7 @@ namespace Mindee.UnitTests.Parsing.Common
         }
 
         [Fact]
-        public async void StringShouldBeOrdered()
+        public async Task StringShouldBeOrdered()
         {
             var ocr = await LoadOcr();
             var expected = File.ReadAllText("Resources/extras/ocr/ocr.txt");
