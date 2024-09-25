@@ -11,8 +11,6 @@ var apiKey = "my-api-key";
 var mindeeClient = new MindeeClient(apiKey);
 var myFilePath = "path/to/your/file.ext";
 
-await InvoiceSplitterAutoExtraction(myFilePath);
-
 async Task InvoiceSplitterAutoExtraction(string filePath)
 {
     var inputSource = new LocalInputSource(filePath);
@@ -51,3 +49,5 @@ async Task ParseMultiPage(LocalInputSource inputSource)
         Console.WriteLine(invoiceResult.Document);
     }
 }
+
+await InvoiceSplitterAutoExtraction(myFilePath);
