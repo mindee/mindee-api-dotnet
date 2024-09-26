@@ -3,7 +3,9 @@ using System.IO;
 using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Models;
+using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
+using Mindee.Http;
 
 namespace Mindee.Input
 {
@@ -12,6 +14,8 @@ namespace Mindee.Input
     /// </summary>
     public sealed class LocalInputSource
     {
+        private ILogger _logger;
+
         /// <summary>
         /// The file as a stream.
         /// </summary>
@@ -136,6 +140,29 @@ namespace Mindee.Input
             }
             var docInstance = DocLib.Instance.GetDocReader(this.FileBytes, new PageDimensions(1, 1));
             return docInstance.GetPageCount();
+        }
+
+        /// <summary>
+        /// Compresses the file, according to the provided info.
+        /// </summary>
+        /// <param name="quality"></param>
+        /// <param name="maxWidth"></param>
+        /// <param name="maxHeight"></param>
+        public void Compress(int quality = 85, int? maxWidth = null, int? maxHeight = null)
+        {
+            if (IsPdf())
+            {
+                if (maxWidth != null || maxHeight != null)
+                {
+                    _logger = MindeeLogger.GetLogger();
+                    _logger?.LogWarning("PDF compression does not support dimension changes at the moment.");
+                }
+                this.FileBytes = Compressor.CompressPdf(this.FileBytes, quality);
+            }
+            else
+            {
+                this.FileBytes = Compressor.CompressImage(this.FileBytes, quality, maxWidth, maxHeight);
+            }
         }
     }
 }
