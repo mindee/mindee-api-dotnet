@@ -5,7 +5,6 @@ using Docnet.Core;
 using Docnet.Core.Models;
 using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
-using Mindee.Http;
 
 namespace Mindee.Input
 {
@@ -152,12 +151,12 @@ namespace Mindee.Input
         {
             if (IsPdf())
             {
+                _logger = MindeeLogger.GetLogger();
                 if (maxWidth != null || maxHeight != null)
                 {
-                    _logger = MindeeLogger.GetLogger();
                     _logger?.LogWarning("PDF compression does not support dimension changes at the moment.");
                 }
-                this.FileBytes = Compressor.CompressPdf(this.FileBytes, quality);
+                this.FileBytes = Compressor.CompressPdf(this.FileBytes, quality, _logger);
             }
             else
             {

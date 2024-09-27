@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using Docnet.Core;
 using Docnet.Core.Models;
 using Mindee.Exceptions;
