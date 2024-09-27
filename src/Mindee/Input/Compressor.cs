@@ -57,41 +57,67 @@ namespace Mindee.Input
         /// </summary>
         /// <param name="pdfData">Byte sequence representing the content of the PDF file.</param>
         /// <param name="imageQuality">Quality of the final file.</param>
+        /// <param name="keepSourceText">Whether to keep the source text in the file.</param>
         /// <param name="logger">Debug logger.</param>
         /// <returns></returns>
-        public static byte[] CompressPdf(byte[] pdfData, int imageQuality = 85, ILogger logger = null)
+        public static byte[] CompressPdf(byte[] pdfData, int imageQuality = 85, bool keepSourceText = true,
+            ILogger logger = null)
         {
             using var library = DocLib.Instance;
             using var docReader = library.GetDocReader(pdfData, new PageDimensions(1));
             bool hasWarned = false;
             var outputStream = new MemoryStream();
+
             using (var document = SKDocument.CreatePdf(outputStream))
             {
-                for (int i = 0; i < docReader.GetPageCount(); i++)
-                {
-                    using var pageReader = docReader.GetPageReader(i);
-                    var width = pageReader.GetPageWidth();
-                    var height = pageReader.GetPageHeight();
-
-                    using var resizedBitmap = GenerateResizedBitmap(imageQuality, pageReader, width, height);
-
-
-                    var canvas = document.BeginPage(width, height);
-                    canvas.DrawBitmap(resizedBitmap, SKPoint.Empty);
-
-                    var characters = CheckCharacters(logger, pageReader.GetCharacters(), ref hasWarned);
-
-                    foreach (var character in characters)
-                    {
-                        WriteTextToCanvas(resizedBitmap, character, canvas);
-                    }
-
-                    document.EndPage();
-                }
+                ProcessPages(docReader, document, imageQuality, keepSourceText, logger, ref hasWarned);
             }
 
             return outputStream.ToArray();
         }
+
+        private static void ProcessPages(IDocReader docReader, SKDocument document, int imageQuality,
+            bool keepSourceText, ILogger logger,
+            ref bool hasWarned)
+        {
+            for (int i = 0; i < docReader.GetPageCount(); i++)
+            {
+                ProcessSinglePage(docReader, document, i, imageQuality, keepSourceText, logger, ref hasWarned);
+            }
+        }
+
+        private static void ProcessSinglePage(IDocReader docReader, SKDocument document, int pageIndex,
+            int imageQuality, bool keepSourceText, ILogger logger, ref bool hasWarned)
+        {
+            using var pageReader = docReader.GetPageReader(pageIndex);
+            var width = pageReader.GetPageWidth();
+            var height = pageReader.GetPageHeight();
+
+            using var resizedBitmap = GenerateResizedBitmap(imageQuality, pageReader, width, height);
+
+            var canvas = document.BeginPage(width, height);
+            DrawPageContent(canvas, resizedBitmap, pageReader, logger, keepSourceText, ref hasWarned);
+            document.EndPage();
+        }
+
+        private static void DrawPageContent(SKCanvas canvas, SKBitmap resizedBitmap, IPageReader pageReader,
+            ILogger logger, bool keepSourceText, ref bool hasWarned)
+        {
+            canvas.DrawBitmap(resizedBitmap, SKPoint.Empty);
+
+            if (!keepSourceText)
+            {
+                return;
+            }
+
+            var characters = CheckCharacters(logger, pageReader.GetCharacters(), ref hasWarned);
+
+            foreach (var character in characters)
+            {
+                WriteTextToCanvas(resizedBitmap, character, canvas);
+            }
+        }
+
 
         /// <summary>
         /// Generates a resized bitmap of the current read page. This operation rasterizes the contents.
@@ -107,7 +133,8 @@ namespace Mindee.Input
             try
             {
                 var rawBytes = pageReader.GetImage();
-                var initialBitmap = MindeeInputUtils.ArrayToImage(MindeeInputUtils.ConvertTo3DArray(rawBytes, width, height));
+                var initialBitmap =
+                    MindeeInputUtils.ArrayToImage(MindeeInputUtils.ConvertTo3DArray(rawBytes, width, height));
                 var compressedImage = CompressImage(initialBitmap, imageQuality, width, height);
 
                 using var compressedBitmap = SKBitmap.Decode(compressedImage);
@@ -123,6 +150,9 @@ namespace Mindee.Input
 
         /// <summary>
         /// Writes the source text of a page to the newly-created canvas (on top of images).
+        /// Does not extract font-family due to Skiasharp limitations.
+        /// Also approximates the positioning of letters since vertical anchor is not extracted from the text and
+        /// SkiaSharp places letters from bounding boxes.
         /// </summary>
         /// <param name="bitmap">The input bitmap.</param>
         /// <param name="character">The currently read character.</param>
@@ -140,16 +170,26 @@ namespace Mindee.Input
                 // Arial & Liberation Sans are the fallbacks for Windows & macOS, as well as Linux, respectively.
                 string[] preferredFonts = ["Lucida Grande", "Arial", "Liberation Sans"];
 
-                string fontName = preferredFonts.FirstOrDefault(font =>
-                    fontManager.MatchFamily(font) != null &&
-                    string.Equals(fontManager.MatchFamily(font).FamilyName, font, StringComparison.OrdinalIgnoreCase)
-                ) ?? "Liberation Sans";
 
+                string fontName = preferredFonts.FirstOrDefault(tmpFontName =>
+                    fontManager.MatchFamily(tmpFontName) != null &&
+                    string.Equals(fontManager.MatchFamily(tmpFontName).FamilyName, tmpFontName,
+                        StringComparison.OrdinalIgnoreCase)
+                ) ?? "Liberation Sans";
                 paint.Typeface = SKTypeface.FromFamilyName(fontName);
 
-                canvas.DrawText(character.Char.ToString(),
-                    (character.Box.Left + character.Box.Right) / 2.0f - paint.TextSize / 4f,
-                    (character.Box.Top + character.Box.Bottom) / 2.0f + paint.TextSize / 4f, paint);
+                paint.TextAlign = SKTextAlign.Left;
+                paint.TextSize = (float)character.FontSize * (72f / 96f);
+
+                SKRect charBounds = new SKRect();
+                paint.MeasureText(character.Char.ToString(), ref charBounds);
+
+                float boxCenterX = (character.Box.Left + character.Box.Right) / 2f;
+                float boxBottom = character.Box.Bottom;
+                float x = boxCenterX - (charBounds.Width / 2f);
+
+                float y = boxBottom - charBounds.Bottom;
+                canvas.DrawText(character.Char.ToString(), x, y, paint);
             }
         }
 
@@ -160,7 +200,8 @@ namespace Mindee.Input
         /// <param name="textItems">Text items retrieved from the page.</param>
         /// <param name="warnedSize">Whether the warning has been raised already.</param>
         /// <returns></returns>
-        private static Character[] CheckCharacters(ILogger logger, IEnumerable<Character> textItems, ref bool warnedSize)
+        private static Character[] CheckCharacters(ILogger logger, IEnumerable<Character> textItems,
+            ref bool warnedSize)
         {
             var characters = textItems as Character[] ?? textItems.ToArray();
             if (!characters.Any() || warnedSize)

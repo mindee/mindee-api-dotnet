@@ -137,6 +137,7 @@ namespace Mindee.Input
             {
                 return 1;
             }
+
             var docInstance = DocLib.Instance.GetDocReader(this.FileBytes, new PageDimensions(1, 1));
             return docInstance.GetPageCount();
         }
@@ -144,10 +145,13 @@ namespace Mindee.Input
         /// <summary>
         /// Compresses the file, according to the provided info.
         /// </summary>
-        /// <param name="quality"></param>
-        /// <param name="maxWidth"></param>
-        /// <param name="maxHeight"></param>
-        public void Compress(int quality = 85, int? maxWidth = null, int? maxHeight = null)
+        /// <param name="quality">Quality of the output file.</param>
+        /// <param name="maxWidth">Maximum width (Ignored for PDFs)</param>
+        /// <param name="maxHeight">Maximum height (Ignored for PDFs)</param>
+        /// <param name="keepSourceText">Whether to re-embed the source text into the final file (PDFs only)</param>
+        public void Compress(int quality = 85, int? maxWidth = null, int? maxHeight = null,
+            bool keepSourceText = true)
+
         {
             if (IsPdf())
             {
@@ -156,12 +160,38 @@ namespace Mindee.Input
                 {
                     _logger?.LogWarning("PDF compression does not support dimension changes at the moment.");
                 }
-                this.FileBytes = Compressor.CompressPdf(this.FileBytes, quality, _logger);
+
+                this.FileBytes = Compressor.CompressPdf(this.FileBytes, quality, keepSourceText, _logger);
             }
             else
             {
                 this.FileBytes = Compressor.CompressImage(this.FileBytes, quality, maxWidth, maxHeight);
             }
+        }
+
+        /// <summary>
+        /// Returns true if the source PDF has source text inside. Returns false for images.
+        /// </summary>
+        /// <returns>True if at least one character exists in one page.</returns>
+        public bool HasSourceText()
+        {
+            if (!IsPdf())
+            {
+                return false;
+            }
+
+            using var library = DocLib.Instance;
+            using var docReader = library.GetDocReader(FileBytes, new PageDimensions(1));
+            for (int i = 0; i < docReader.GetPageCount(); i++)
+            {
+                using var pageReader = docReader.GetPageReader(i);
+                if (pageReader.GetText().Length > 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
