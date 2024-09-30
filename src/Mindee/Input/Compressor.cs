@@ -56,17 +56,19 @@ namespace Mindee.Input
         public static byte[] CompressPdf(byte[] pdfData, int imageQuality = 85, bool keepSourceText = true,
             ILogger logger = null)
         {
-            using var library = DocLib.Instance;
-            using var docReader = library.GetDocReader(pdfData, new PageDimensions(1));
-            bool hasWarned = false;
-            var outputStream = new MemoryStream();
-
-            using (var document = SKDocument.CreatePdf(outputStream))
+            lock (DocLib.Instance)
             {
-                ProcessPages(docReader, document, imageQuality, keepSourceText, logger, ref hasWarned);
-            }
+                using var docReader = DocLib.Instance.GetDocReader(pdfData, new PageDimensions(1));
+                bool hasWarned = false;
+                var outputStream = new MemoryStream();
 
-            return outputStream.ToArray();
+                using (var document = SKDocument.CreatePdf(outputStream))
+                {
+                    ProcessPages(docReader, document, imageQuality, keepSourceText, logger, ref hasWarned);
+                }
+
+                return outputStream.ToArray();
+            }
         }
 
         private static void ProcessPages(IDocReader docReader, SKDocument document, int imageQuality,

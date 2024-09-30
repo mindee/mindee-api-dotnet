@@ -136,8 +136,11 @@ namespace Mindee.Input
                 return 1;
             }
 
-            var docInstance = DocLib.Instance.GetDocReader(this.FileBytes, new PageDimensions(1, 1));
-            return docInstance.GetPageCount();
+            lock (DocLib.Instance)
+            {
+                var docInstance = DocLib.Instance.GetDocReader(this.FileBytes, new PageDimensions(1, 1));
+                return docInstance.GetPageCount();
+            }
         }
 
         /// <summary>
@@ -172,14 +175,17 @@ namespace Mindee.Input
                 return false;
             }
 
-            using var library = DocLib.Instance;
-            using var docReader = library.GetDocReader(FileBytes, new PageDimensions(1));
-            for (int i = 0; i < docReader.GetPageCount(); i++)
+            lock
+                (DocLib.Instance) // XUnit is a bit too fast for the singleton to properly dispose of the current handle, leading to resource leaks in Unit tests.
             {
-                using var pageReader = docReader.GetPageReader(i);
-                if (pageReader.GetText().Length > 0)
+                using var docReader = DocLib.Instance.GetDocReader(FileBytes, new PageDimensions(1));
+                for (int i = 0; i < docReader.GetPageCount(); i++)
                 {
-                    return true;
+                    using var pageReader = docReader.GetPageReader(i);
+                    if (pageReader.GetText().Length > 0)
+                    {
+                        return true;
+                    }
                 }
             }
 

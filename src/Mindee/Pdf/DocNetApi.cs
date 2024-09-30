@@ -12,7 +12,6 @@ namespace Mindee.Pdf
     internal sealed class DocNetApi
         : IPdfOperation
     {
-        private readonly DocLib _docLib = DocLib.Instance;
         private readonly ILogger _logger;
 
         public DocNetApi(ILogger logger = null)
@@ -51,12 +50,14 @@ namespace Mindee.Pdf
 
             if (targetedRange.Count() > totalPages)
             {
-                throw new ArgumentOutOfRangeException($"The total indexes of pages to cut is superior to the total page count of the file ({totalPages}).");
+                throw new ArgumentOutOfRangeException(
+                    $"The total indexes of pages to cut is superior to the total page count of the file ({totalPages}).");
             }
 
             if (targetedRange.Any(pn => pn > totalPages || pn <= 0))
             {
-                throw new ArgumentOutOfRangeException($"Some indexes ({string.Join(",", splitQuery.PageOptions.PageNumbers)}) do not exist in the file ({totalPages} pages).");
+                throw new ArgumentOutOfRangeException(
+                    $"Some indexes ({string.Join(",", splitQuery.PageOptions.PageNumbers)}) do not exist in the file ({totalPages} pages).");
             }
 
             string range;
@@ -71,20 +72,25 @@ namespace Mindee.Pdf
             }
             else
             {
-                throw new InvalidOperationException($"This operation is not available ({splitQuery.PageOptions.PageOptionsOperation}).");
+                throw new InvalidOperationException(
+                    $"This operation is not available ({splitQuery.PageOptions.PageOptionsOperation}).");
             }
 
-            var splittedFile = _docLib.Split(splitQuery.File, range);
+            lock (DocLib.Instance)
+            {
+                var splittedFile = DocLib.Instance.Split(splitQuery.File, range);
 
-            return new SplitPdf(splittedFile, GetTotalPagesNumber(splittedFile));
+                return new SplitPdf(splittedFile, GetTotalPagesNumber(splittedFile));
+            }
         }
 
         private bool CanBeOpen(byte[] file)
         {
             try
             {
-                using (var docReader = _docLib.GetDocReader(file, new Docnet.Core.Models.PageDimensions()))
+                lock (DocLib.Instance)
                 {
+                    using var docReader = DocLib.Instance.GetDocReader(file, new Docnet.Core.Models.PageDimensions());
                     return true;
                 }
             }
@@ -99,8 +105,9 @@ namespace Mindee.Pdf
         {
             try
             {
-                using (var docReader = _docLib.GetDocReader(file, new Docnet.Core.Models.PageDimensions()))
+                lock (DocLib.Instance)
                 {
+                    using var docReader = DocLib.Instance.GetDocReader(file, new Docnet.Core.Models.PageDimensions());
                     return (ushort)docReader.GetPageCount();
                 }
             }

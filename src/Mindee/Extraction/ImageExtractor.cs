@@ -79,20 +79,21 @@ namespace Mindee.Extraction
         public static List<SKBitmap> PdfToImages(byte[] fileBytes)
         {
             List<SKBitmap> images = new List<SKBitmap>();
-
-            using var library = DocLib.Instance;
-            using var docReader = library.GetDocReader(fileBytes, new PageDimensions(1));
-            for (int i = 0; i < docReader.GetPageCount(); i++)
+            lock (DocLib.Instance)
             {
-                using var pageReader = docReader.GetPageReader(i);
-                var width = pageReader.GetPageWidth();
-                var height = pageReader.GetPageHeight();
-                var bytes = pageReader.GetImage();
-                var bmp = MindeeInputUtils.ArrayToImage(MindeeInputUtils.ConvertTo3DArray(bytes, width, height));
-                images.Add(bmp);
-            }
+                using var docReader = DocLib.Instance.GetDocReader(fileBytes, new PageDimensions(1));
+                for (int i = 0; i < docReader.GetPageCount(); i++)
+                {
+                    using var pageReader = docReader.GetPageReader(i);
+                    var width = pageReader.GetPageWidth();
+                    var height = pageReader.GetPageHeight();
+                    var bytes = pageReader.GetImage();
+                    var bmp = MindeeInputUtils.ArrayToImage(MindeeInputUtils.ConvertTo3DArray(bytes, width, height));
+                    images.Add(bmp);
+                }
 
-            return images;
+                return images;
+            }
         }
 
         /// <summary>
