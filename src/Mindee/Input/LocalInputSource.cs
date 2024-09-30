@@ -13,8 +13,6 @@ namespace Mindee.Input
     /// </summary>
     public sealed class LocalInputSource
     {
-        private ILogger _logger;
-
         /// <summary>
         /// The file as a stream.
         /// </summary>
@@ -155,17 +153,11 @@ namespace Mindee.Input
         {
             if (IsPdf())
             {
-                _logger = MindeeLogger.GetLogger();
-                if (maxWidth != null || maxHeight != null)
-                {
-                    _logger?.LogWarning("PDF compression does not support resize operations.");
-                }
-
-                this.FileBytes = Compressor.CompressPdf(this.FileBytes, quality, keepSourceText, _logger);
+                this.FileBytes = Compressor.CompressPdf(this.FileBytes, quality, keepSourceText);
             }
             else
             {
-                this.FileBytes = Compressor.CompressImage(this.FileBytes, quality, maxWidth, maxHeight, _logger);
+                this.FileBytes = Compressor.CompressImage(this.FileBytes, quality, maxWidth, maxHeight);
             }
         }
 

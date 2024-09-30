@@ -1,6 +1,9 @@
 using Mindee.Exceptions;
 using Mindee.Input;
+using SkiaSharp;
+using Xunit.Abstractions;
 
+// [assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace Mindee.UnitTests.Input
 {
     [Trait("Category", "File loading")]
@@ -71,14 +74,103 @@ namespace Mindee.UnitTests.Input
         }
 
         [Fact]
-        public void Image_Compresses()
+        public void Image_Quality_Compress_From_Input_Source()
         {
             var receiptInput = new LocalInputSource("Resources/file_types/receipt.jpg");
-            receiptInput.Compress(90);
-            File.WriteAllBytes("Resources/compress90.jpg", receiptInput.FileBytes);
-            var initialFile = new FileInfo("Resources/file_types/receipt.jpg");
-            var renderedFile = new FileInfo("Resources/compress90.jpg");
-            Assert.True(renderedFile.Length < initialFile.Length);
+            receiptInput.Compress(40);
+            File.WriteAllBytes("Resources/output/compress_indirect.jpg", receiptInput.FileBytes);
+            var initialFileInfo = new FileInfo("Resources/file_types/receipt.jpg");
+            var renderedFileInfo = new FileInfo("Resources/output/compress_indirect.jpg");
+            Assert.True(renderedFileInfo.Length < initialFileInfo.Length);
+        }
+
+        [Fact]
+        public void Image_Quality_Compresses_From_Compressor()
+        {
+            // Note: input image has a quality of ~85, but Skiasharp messes with headers, which results in a different
+            // total byte size, which means we can't just compare quality 75 to quality 75.
+            var receiptInput = new LocalInputSource("Resources/file_types/receipt.jpg");
+            var compresses = new List<byte[]>
+            {
+                Compressor.CompressImage(receiptInput.FileBytes, 100),
+                Compressor.CompressImage(receiptInput.FileBytes),
+                Compressor.CompressImage(receiptInput.FileBytes, 50),
+                Compressor.CompressImage(receiptInput.FileBytes, 10),
+                Compressor.CompressImage(receiptInput.FileBytes, 1)
+            };
+            File.WriteAllBytes("Resources/output/compress100.jpg", compresses[0]);
+            File.WriteAllBytes("Resources/output/compress75.jpg", compresses[1]);
+            File.WriteAllBytes("Resources/output/compress50.jpg", compresses[2]);
+            File.WriteAllBytes("Resources/output/compress10.jpg", compresses[3]);
+            File.WriteAllBytes("Resources/output/compress1.jpg", compresses[4]);
+            var initialFileInfo = new FileInfo("Resources/file_types/receipt.jpg");
+            var renderedFileInfos = new List<FileInfo>
+            {
+                new("Resources/output/compress100.jpg"),
+                new ("Resources/output/compress75.jpg"),
+                new ("Resources/output/compress50.jpg"),
+                new ("Resources/output/compress10.jpg"),
+                new ("Resources/output/compress1.jpg")
+            };
+            Assert.True(initialFileInfo.Length < renderedFileInfos[0].Length);
+            Assert.True(initialFileInfo.Length < renderedFileInfos[1].Length);
+            Assert.True(renderedFileInfos[1].Length > renderedFileInfos[2].Length);
+            Assert.True(renderedFileInfos[2].Length > renderedFileInfos[3].Length);
+            Assert.True(renderedFileInfos[3].Length > renderedFileInfos[4].Length);
+        }
+
+        [Fact]
+        public void Image_Resize_From_InputSource()
+        {
+            var receiptInput = new LocalInputSource("Resources/file_types/receipt.jpg");
+            receiptInput.Compress(75, 250, 1000);
+            File.WriteAllBytes("Resources/output/resize_indirect.jpg", receiptInput.FileBytes);
+            var initialFileInfo = new FileInfo("Resources/file_types/receipt.jpg");
+            var renderedFileInfo = new FileInfo("Resources/output/resize_indirect.jpg");
+            Assert.True(renderedFileInfo.Length < initialFileInfo.Length);
+
+            using var original = SKBitmap.Decode(receiptInput.FileBytes);
+            Assert.Equal(250, original.Width);
+            Assert.Equal(333, original.Height);
+        }
+        private readonly ITestOutputHelper _output;
+
+        public LocalInputSourceTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
+        [Fact]
+        public void Image_Resize_Compresses_From_Compressor()
+        {
+            _output.WriteLine("TEST STARTS");
+            var receiptInput = new LocalInputSource("Resources/file_types/receipt.jpg");
+            _output.WriteLine("Pre resize");
+            var resizes = new List<byte[]>
+            {
+                Compressor.CompressImage(receiptInput.FileBytes, 75, 500),
+                Compressor.CompressImage(receiptInput.FileBytes, 75, 250, 500),
+                Compressor.CompressImage(receiptInput.FileBytes, 75, 500, 250),
+                Compressor.CompressImage(receiptInput.FileBytes, 75, null, 250)
+            };
+            _output.WriteLine("Post resize");
+            File.WriteAllBytes("Resources/output/resize500xnull.jpg", resizes[0]);
+            File.WriteAllBytes("Resources/output/resize250x500.jpg", resizes[1]);
+            File.WriteAllBytes("Resources/output/resize500x250.jpg", resizes[2]);
+            File.WriteAllBytes("Resources/output/resizenullx250.jpg", resizes[3]);
+            _output.WriteLine("Pre init file");
+            var initialFileInfo = new FileInfo("Resources/file_types/receipt.jpg");
+            var renderedFileInfos = new List<FileInfo>
+            {
+                new("Resources/output/resize500xnull.jpg"),
+                new ("Resources/output/resize250x500.jpg"),
+                new ("Resources/output/resize500x250.jpg"),
+                new ("Resources/output/resizenullx250.jpg"),
+            };
+            Assert.True(initialFileInfo.Length > renderedFileInfos[0].Length);
+            Assert.True(renderedFileInfos[0].Length > renderedFileInfos[1].Length);
+            Assert.True(renderedFileInfos[1].Length > renderedFileInfos[2].Length);
+            Assert.Equal(renderedFileInfos[2].Length, renderedFileInfos[3].Length);
         }
     }
 }
