@@ -158,14 +158,14 @@ namespace Mindee.Input
                 _logger = MindeeLogger.GetLogger();
                 if (maxWidth != null || maxHeight != null)
                 {
-                    _logger?.LogWarning("PDF compression does not support dimension changes at the moment.");
+                    _logger?.LogWarning("PDF compression does not support resize operations.");
                 }
 
                 this.FileBytes = Compressor.CompressPdf(this.FileBytes, quality, keepSourceText, _logger);
             }
             else
             {
-                this.FileBytes = Compressor.CompressImage(this.FileBytes, quality, maxWidth, maxHeight);
+                this.FileBytes = Compressor.CompressImage(this.FileBytes, quality, maxWidth, maxHeight, _logger);
             }
         }
 

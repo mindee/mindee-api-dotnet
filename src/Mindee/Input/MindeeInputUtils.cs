@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using Docnet.Core.Models;
+using Mindee.Exceptions;
 using SkiaSharp;
 
 namespace Mindee.Input
@@ -61,7 +62,7 @@ namespace Mindee.Input
                     byte red = pixelArray[y, x, 0];
                     byte green = pixelArray[y, x, 1];
                     byte blue = pixelArray[y, x, 2];
-                    uint pixelValue = (uint)red + (uint)(green << 8) + (uint)(blue << 16) + (uint)(alpha << 24);
+                    uint pixelValue = red + (uint)(green << 8) + (uint)(blue << 16) + (uint)(alpha << 24);
                     pixelValues[y * width + x] = pixelValue;
                 }
             }
@@ -77,21 +78,17 @@ namespace Mindee.Input
             return bitmap;
         }
 
-        private static SKColor AdjustColor(SKColor originalColor, double brightness)
+        private static SKColor AdjustColor(SKColor originalColor)
         {
-            // Convert RGB to HSL
-            float hue, saturation, lightness;
-            ColorToHSL(originalColor, out hue, out saturation, out lightness);
+            ColorToHsl(originalColor, out var hue, out var saturation, out var lightness);
 
-            // Light background: increase saturation
             saturation = Math.Min(1.0f, saturation * 1.5f);
             lightness = (float)(1.1 - 0.8 / (1 + Math.Exp(-10 * (lightness - 0.5))));
 
-            // Convert back to RGB
-            return HSLToColor(hue, saturation, lightness);
+            return HslToColor(hue, saturation, lightness);
         }
 
-        private static void ColorToHSL(SKColor color, out float hue, out float saturation, out float lightness)
+        private static void ColorToHsl(SKColor color, out float hue, out float saturation, out float lightness)
         {
             float r = color.Red / 255f;
             float g = color.Green / 255f;
@@ -102,18 +99,19 @@ namespace Mindee.Input
 
             lightness = (max + min) / 2;
 
-            if (max == min)
+            const float tolerance = 0.01f;
+            if (Math.Abs(max - min) < tolerance)
             {
-                hue = saturation = 0; // achromatic
+                hue = saturation = 0;
             }
             else
             {
                 float d = max - min;
                 saturation = lightness > 0.5 ? d / (2 - max - min) : d / (max + min);
 
-                if (max == r)
+                if (Math.Abs(max - r) < tolerance)
                     hue = (g - b) / d + (g < b ? 6 : 0);
-                else if (max == g)
+                else if (Math.Abs(max - g) < tolerance)
                     hue = (b - r) / d + 2;
                 else
                     hue = (r - g) / d + 4;
@@ -122,32 +120,35 @@ namespace Mindee.Input
             }
         }
 
-        private static SKColor HSLToColor(float h, float s, float l)
+        private static SKColor HslToColor(float h, float s, float l)
         {
             float r, g, b;
 
             if (s == 0)
             {
-                r = g = b = l; // achromatic
+                r = g = b = l;
             }
             else
             {
-                Func<float, float, float, float> hue2rgb = (p, q, t) =>
+                float Hue2Rgb(float p, float q, float t)
                 {
                     if (t < 0) t += 1;
                     if (t > 1) t -= 1;
-                    if (t < 1 / 6f) return p + (q - p) * 6 * t;
-                    if (t < 1 / 2f) return q;
-                    if (t < 2 / 3f) return p + (q - p) * (2 / 3f - t) * 6;
-                    return p;
-                };
+                    return t switch
+                    {
+                        < 1 / 6f => p + (q - p) * 6 * t,
+                        < 1 / 2f => q,
+                        < 2 / 3f => p + (q - p) * (2 / 3f - t) * 6,
+                        _ => p
+                    };
+                }
 
                 float q = l < 0.5 ? l * (1 + s) : l + s - l * s;
                 float p = 2 * l - q;
 
-                r = hue2rgb(p, q, h + 1 / 3f);
-                g = hue2rgb(p, q, h);
-                b = hue2rgb(p, q, h - 1 / 3f);
+                r = Hue2Rgb(p, q, h + 1 / 3f);
+                g = Hue2Rgb(p, q, h);
+                b = Hue2Rgb(p, q, h - 1 / 3f);
             }
 
             return new SKColor((byte)(r * 255), (byte)(g * 255), (byte)(b * 255));
@@ -162,10 +163,10 @@ namespace Mindee.Input
         /// <returns></returns>
         public static SKColor InferTextColor(SKBitmap bitmap, BoundBox box)
         {
-            int left = (int)Math.Max(0, box.Left);
-            int top = (int)Math.Max(0, box.Top);
-            int right = (int)Math.Min(bitmap.Width - 1, box.Right);
-            int bottom = (int)Math.Min(bitmap.Height - 1, box.Bottom);
+            int left = Math.Max(0, box.Left);
+            int top = Math.Max(0, box.Top);
+            int right = Math.Min(bitmap.Width - 1, box.Right);
+            int bottom = Math.Min(bitmap.Height - 1, box.Bottom);
 
             long totalR = 0, totalG = 0, totalB = 0;
             int pixelCount = 0;
@@ -182,21 +183,46 @@ namespace Mindee.Input
                 }
             }
 
-            if (pixelCount > 0)
+            if (pixelCount <= 0)
             {
-                byte avgR = (byte)(totalR / pixelCount);
-                byte avgG = (byte)(totalG / pixelCount);
-                byte avgB = (byte)(totalB / pixelCount);
-
-                // Determine brightness
-                double brightness = (0.299 * avgR + 0.587 * avgG + 0.114 * avgB) / 255;
-
-                // Adjust color to maintain saturation and contrast
-                return AdjustColor(new SKColor(avgR, avgG, avgB), brightness);
+                return SKColors.Black;
             }
 
+            byte avgR = (byte)(totalR / pixelCount);
+            byte avgG = (byte)(totalG / pixelCount);
+            byte avgB = (byte)(totalB / pixelCount);
+
+            return AdjustColor(new SKColor(avgR, avgG, avgB));
+
             // Default to black if we couldn't determine the color
-            return SKColors.Black;
         }
+
+        /// <summary>
+        /// Computes the new dimensions for a given SKBitmap, and returns a scaled down version of it relative to the provided bounds.
+        /// </summary>
+        /// <param name="original">Input SKBitmap.</param>
+        /// <param name="maxWidth">Optional max width.</param>
+        /// <param name="maxHeight">Optional max height.</param>
+        /// <returns>The scaled down dimensions for the SKBitmap.</returns>
+        /// <exception cref="MindeeInputException">Throws if the bitmap is null.</exception>
+        public static (int newWidth, int newHeight) CalculateNewDimensions(SKBitmap original, int? maxWidth = null, int? maxHeight = null)
+        {
+            if (original == null)
+                throw new MindeeInputException("Generated bitmap could not be processed for resizing.");
+
+            if (!maxWidth.HasValue && !maxHeight.HasValue)
+                return (original.Width, original.Height);
+
+            double widthRatio = maxWidth.HasValue ? (double)maxWidth.Value / original.Width : double.PositiveInfinity;
+            double heightRatio = maxHeight.HasValue ? (double)maxHeight.Value / original.Height : double.PositiveInfinity;
+
+            double scaleFactor = Math.Min(widthRatio, heightRatio);
+
+            int newWidth = (int)(original.Width * scaleFactor);
+            int newHeight = (int)(original.Height * scaleFactor);
+
+            return (newWidth, newHeight);
+        }
+
     }
 }

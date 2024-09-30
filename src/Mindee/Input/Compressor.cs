@@ -16,20 +16,37 @@ namespace Mindee.Input
     /// </summary>
     public static class Compressor
     {
+        private static int EstimateImageQuality(SKCodec codec, long fileSize)
+        {
+            double bitsPerPixel = codec.Info.BitsPerPixel;
+            long pixelCount = (long)codec.Info.Width * codec.Info.Height;
+            double compressionRatio = (pixelCount * bitsPerPixel / 8) / fileSize;
+
+            return compressionRatio switch
+            {
+                < 0.5 => 100,
+                < 1 => 90,
+                < 2 => 80,
+                < 4 => 70,
+                < 8 => 60,
+                < 16 => 50,
+                _ => 40
+            };
+        }
+
         private static byte[] CompressImage(SKBitmap original, int quality, int finalWidth, int finalHeight)
         {
             using var image = SKImage.FromBitmap(original);
-            using var compressedData = image.Encode(SKEncodedImageFormat.Jpeg, quality);
 
-            using var compressedBitmap = SKBitmap.Decode(compressedData);
-            if (compressedBitmap.Width != finalWidth || compressedBitmap.Height != finalHeight)
+            using var compressedBitmap = SKBitmap.FromImage(image);
+            if (compressedBitmap.Width == finalWidth && compressedBitmap.Height == finalHeight)
             {
-                using var finalImage =
-                    compressedBitmap.Resize(new SKImageInfo(finalWidth, finalHeight), SKFilterQuality.High);
-                return finalImage.Encode(SKEncodedImageFormat.Jpeg, quality).ToArray();
+                return image.Encode(SKEncodedImageFormat.Jpeg, quality).ToArray();
             }
 
-            return image.Encode(SKEncodedImageFormat.Jpeg, quality).ToArray();
+            using var finalImage =
+                compressedBitmap.Resize(new SKImageInfo(finalWidth, finalHeight), SKFilterQuality.High);
+            return finalImage.Encode(SKEncodedImageFormat.Jpeg, quality).ToArray();
         }
 
 
@@ -40,16 +57,22 @@ namespace Mindee.Input
         /// <param name="quality">Quality of the final file.</param>
         /// <param name="maxWidth">Maximum width. If not specified, the horizontal ratio will remain the same.</param>
         /// <param name="maxHeight">Maximum height. If not specified, the vertical ratio will remain the same</param>
+        /// <param name="logger">Debug logger.</param>
         /// <returns></returns>
         public static byte[] CompressImage(byte[] imageData, int quality = 85, int? maxWidth = null,
-            int? maxHeight = null)
+            int? maxHeight = null,
+            ILogger logger = null)
         {
             using var inputStream = new SKMemoryStream(imageData);
-            using var original = SKBitmap.Decode(inputStream);
-            int newWidth = maxWidth ?? original.Width;
-            int newHeight = maxHeight ?? original.Height;
+            using var codec = SKCodec.Create(inputStream);
 
-            return CompressImage(original, quality, newWidth, newHeight);
+            int estimatedQuality = EstimateImageQuality(codec, imageData.Length);
+            using var original = SKBitmap.Decode(imageData);
+            var (newWidth, newHeight) = MindeeInputUtils.CalculateNewDimensions(original, maxWidth, maxHeight);
+
+            int revisedQuality = (int)((quality / 100.0) * estimatedQuality);
+            logger?.LogDebug($"Compressing image to target quality of {revisedQuality} due to original file quality being {estimatedQuality}.");
+            return CompressImage(original, revisedQuality, newWidth, newHeight);
         }
 
         /// <summary>
