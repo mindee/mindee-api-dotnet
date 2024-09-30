@@ -3,7 +3,6 @@ using Docnet.Core.Models;
 using Mindee.Exceptions;
 using Mindee.Input;
 using SkiaSharp;
-using Xunit.Abstractions;
 
 namespace Mindee.UnitTests.Input
 {

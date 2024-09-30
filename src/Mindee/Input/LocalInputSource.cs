@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Models;
-using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 
 namespace Mindee.Input
