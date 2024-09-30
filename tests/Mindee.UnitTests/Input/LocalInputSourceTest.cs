@@ -3,7 +3,6 @@ using Mindee.Input;
 using SkiaSharp;
 using Xunit.Abstractions;
 
-// [assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace Mindee.UnitTests.Input
 {
     [Trait("Category", "File loading")]
@@ -133,19 +132,11 @@ namespace Mindee.UnitTests.Input
             Assert.Equal(250, original.Width);
             Assert.Equal(333, original.Height);
         }
-        private readonly ITestOutputHelper _output;
-
-        public LocalInputSourceTest(ITestOutputHelper output)
-        {
-            _output = output;
-        }
 
         [Fact]
         public void Image_Resize_Compresses_From_Compressor()
         {
-            _output.WriteLine("TEST STARTS");
             var receiptInput = new LocalInputSource("Resources/file_types/receipt.jpg");
-            _output.WriteLine("Pre resize");
             var resizes = new List<byte[]>
             {
                 Compressor.CompressImage(receiptInput.FileBytes, 75, 500),
@@ -153,12 +144,10 @@ namespace Mindee.UnitTests.Input
                 Compressor.CompressImage(receiptInput.FileBytes, 75, 500, 250),
                 Compressor.CompressImage(receiptInput.FileBytes, 75, null, 250)
             };
-            _output.WriteLine("Post resize");
             File.WriteAllBytes("Resources/output/resize500xnull.jpg", resizes[0]);
             File.WriteAllBytes("Resources/output/resize250x500.jpg", resizes[1]);
             File.WriteAllBytes("Resources/output/resize500x250.jpg", resizes[2]);
             File.WriteAllBytes("Resources/output/resizenullx250.jpg", resizes[3]);
-            _output.WriteLine("Pre init file");
             var initialFileInfo = new FileInfo("Resources/file_types/receipt.jpg");
             var renderedFileInfos = new List<FileInfo>
             {
