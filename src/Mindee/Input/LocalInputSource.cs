@@ -176,7 +176,7 @@ namespace Mindee.Input
             }
 
             lock
-                (DocLib.Instance) // XUnit is a bit too fast for the singleton to properly dispose of the current handle, leading to resource leaks in Unit tests.
+                (DocLib.Instance)
             {
                 using var docReader = DocLib.Instance.GetDocReader(FileBytes, new PageDimensions(1));
                 for (int i = 0; i < docReader.GetPageCount(); i++)

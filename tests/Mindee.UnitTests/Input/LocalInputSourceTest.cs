@@ -1,3 +1,5 @@
+using Docnet.Core;
+using Docnet.Core.Models;
 using Mindee.Exceptions;
 using Mindee.Input;
 using SkiaSharp;
@@ -108,10 +110,10 @@ namespace Mindee.UnitTests.Input
             var renderedFileInfos = new List<FileInfo>
             {
                 new("Resources/output/compress100.jpg"),
-                new ("Resources/output/compress75.jpg"),
-                new ("Resources/output/compress50.jpg"),
-                new ("Resources/output/compress10.jpg"),
-                new ("Resources/output/compress1.jpg")
+                new("Resources/output/compress75.jpg"),
+                new("Resources/output/compress50.jpg"),
+                new("Resources/output/compress10.jpg"),
+                new("Resources/output/compress1.jpg")
             };
             Assert.True(initialFileInfo.Length < renderedFileInfos[0].Length);
             Assert.True(initialFileInfo.Length < renderedFileInfos[1].Length);
@@ -123,14 +125,14 @@ namespace Mindee.UnitTests.Input
         [Fact]
         public void Image_Resize_From_InputSource()
         {
-            var receiptInput = new LocalInputSource("Resources/file_types/receipt.jpg");
-            receiptInput.Compress(75, 250, 1000);
-            File.WriteAllBytes("Resources/output/resize_indirect.jpg", receiptInput.FileBytes);
+            var imageResizeInput = new LocalInputSource("Resources/file_types/receipt.jpg");
+            imageResizeInput.Compress(75, 250, 1000);
+            File.WriteAllBytes("Resources/output/resize_indirect.jpg", imageResizeInput.FileBytes);
             var initialFileInfo = new FileInfo("Resources/file_types/receipt.jpg");
             var renderedFileInfo = new FileInfo("Resources/output/resize_indirect.jpg");
             Assert.True(renderedFileInfo.Length < initialFileInfo.Length);
 
-            using var original = SKBitmap.Decode(receiptInput.FileBytes);
+            using var original = SKBitmap.Decode(imageResizeInput.FileBytes);
             Assert.Equal(250, original.Width);
             Assert.Equal(333, original.Height);
         }
@@ -138,13 +140,13 @@ namespace Mindee.UnitTests.Input
         [Fact]
         public void Image_Resize_From_Compressor()
         {
-            var receiptInput = new LocalInputSource("Resources/file_types/receipt.jpg");
+            var imageResizeInput = new LocalInputSource("Resources/file_types/receipt.jpg");
             var resizes = new List<byte[]>
             {
-                Compressor.CompressImage(receiptInput.FileBytes, 75, 500),
-                Compressor.CompressImage(receiptInput.FileBytes, 75, 250, 500),
-                Compressor.CompressImage(receiptInput.FileBytes, 75, 500, 250),
-                Compressor.CompressImage(receiptInput.FileBytes, 75, null, 250)
+                Compressor.CompressImage(imageResizeInput.FileBytes, 75, 500),
+                Compressor.CompressImage(imageResizeInput.FileBytes, 75, 250, 500),
+                Compressor.CompressImage(imageResizeInput.FileBytes, 75, 500, 250),
+                Compressor.CompressImage(imageResizeInput.FileBytes, 75, null, 250)
             };
             File.WriteAllBytes("Resources/output/resize500xnull.jpg", resizes[0]);
             File.WriteAllBytes("Resources/output/resize250x500.jpg", resizes[1]);
@@ -154,9 +156,9 @@ namespace Mindee.UnitTests.Input
             var renderedFileInfos = new List<FileInfo>
             {
                 new("Resources/output/resize500xnull.jpg"),
-                new ("Resources/output/resize250x500.jpg"),
-                new ("Resources/output/resize500x250.jpg"),
-                new ("Resources/output/resizenullx250.jpg"),
+                new("Resources/output/resize250x500.jpg"),
+                new("Resources/output/resize500x250.jpg"),
+                new("Resources/output/resizenullx250.jpg"),
             };
             Assert.True(initialFileInfo.Length > renderedFileInfos[0].Length);
             Assert.True(renderedFileInfos[0].Length > renderedFileInfos[1].Length);
@@ -167,24 +169,24 @@ namespace Mindee.UnitTests.Input
         [Fact]
         public void Pdf_Resize_From_InputSource()
         {
-            var pdfInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
-            pdfInput.Compress(75);
-            File.WriteAllBytes("Resources/output/resize_indirect.pdf", pdfInput.FileBytes);
+            var pdfResizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
+            pdfResizeInput.Compress(75);
+            File.WriteAllBytes("Resources/output/resize_indirect.pdf", pdfResizeInput.FileBytes);
             var initialFileInfo = new FileInfo("Resources/products/invoice_splitter/default_sample.pdf");
             var renderedFileInfo = new FileInfo("Resources/output/resize_indirect.pdf");
             Assert.True(renderedFileInfo.Length < initialFileInfo.Length);
         }
 
         [Fact]
-        public void Pdf_From_Compressor()
+        public void Pdf_Resize_From_Compressor()
         {
-            var receiptInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
+            var pdfRersizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
             var resizes = new List<byte[]>
             {
-                Compressor.CompressPdf(receiptInput.FileBytes),
-                Compressor.CompressPdf(receiptInput.FileBytes, 75),
-                Compressor.CompressPdf(receiptInput.FileBytes, 50),
-                Compressor.CompressPdf(receiptInput.FileBytes, 10)
+                Compressor.CompressPdf(pdfRersizeInput.FileBytes),
+                Compressor.CompressPdf(pdfRersizeInput.FileBytes, 75),
+                Compressor.CompressPdf(pdfRersizeInput.FileBytes, 50),
+                Compressor.CompressPdf(pdfRersizeInput.FileBytes, 10)
             };
             File.WriteAllBytes("Resources/output/compress85.pdf", resizes[0]);
             File.WriteAllBytes("Resources/output/compress75.pdf", resizes[1]);
@@ -194,14 +196,32 @@ namespace Mindee.UnitTests.Input
             var renderedFileInfos = new List<FileInfo>
             {
                 new("Resources/output/compress85.pdf"),
-                new ("Resources/output/compress75.pdf"),
-                new ("Resources/output/compress50.pdf"),
-                new ("Resources/output/compress10.pdf"),
+                new("Resources/output/compress75.pdf"),
+                new("Resources/output/compress50.pdf"),
+                new("Resources/output/compress10.pdf"),
             };
             Assert.True(initialFileInfo.Length > renderedFileInfos[0].Length);
             Assert.True(renderedFileInfos[0].Length > renderedFileInfos[1].Length);
             Assert.True(renderedFileInfos[1].Length > renderedFileInfos[2].Length);
             Assert.True(renderedFileInfos[2].Length > renderedFileInfos[3].Length);
+        }
+
+        [Fact]
+        public void Pdf_Resize_With_Text_Keeps_Text()
+        {
+            lock (DocLib.Instance)
+            {
+                var initialWithtext = new LocalInputSource("Resources/file_types/pdf/multipage.pdf");
+                var compressedWithText = Compressor.CompressPdf(initialWithtext.FileBytes, 100);
+                using var originalReader = DocLib.Instance.GetDocReader(initialWithtext.FileBytes, new PageDimensions(1));
+                using var compressedReader = DocLib.Instance.GetDocReader(compressedWithText, new PageDimensions(1));
+                Assert.Equal(originalReader.GetPageCount(), compressedReader.GetPageCount());
+
+                for (var i = 0; i < originalReader.GetPageCount(); i++)
+                {
+                    Assert.Equal(originalReader.GetPageReader(i).GetText(), compressedReader.GetPageReader(i).GetText());
+                }
+            }
         }
     }
 }

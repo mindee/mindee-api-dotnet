@@ -131,7 +131,6 @@ namespace Mindee.Input
 
                 var compressedImage = CompressImage(initialBitmap, imageQuality, width, height);
 
-                // Use a more efficient encoding method
                 var colorType = SKColorType.Argb4444;
                 using var compressedBitmap = SKBitmap.Decode(compressedImage);
                 if (imageQuality > 85)
@@ -171,10 +170,7 @@ namespace Mindee.Input
             paint.Color = textColor;
 
             var fontManager = SKFontManager.Default;
-            // A bit obscure, but Lucida Grande is the most average font, apparently: https://ben-tanen.com/projects/2019/06/23/most-font.html
-            // Arial & Liberation Sans are the fallbacks for Windows & macOS, as well as Linux, respectively.
             string[] preferredFonts = ["Lucida Grande", "Arial", "Liberation Sans"];
-
 
             string fontName = preferredFonts.FirstOrDefault(tmpFontName =>
                 fontManager.MatchFamily(tmpFontName) != null &&
@@ -184,18 +180,43 @@ namespace Mindee.Input
             paint.Typeface = SKTypeface.FromFamilyName(fontName);
 
             paint.TextAlign = SKTextAlign.Left;
-            paint.TextSize = (float)character.FontSize * (72f / 96f);
 
-            SKRect charBounds = new SKRect();
-            paint.MeasureText(character.Char.ToString(), ref charBounds);
+            string text = character.Char.ToString();
+            string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
 
+            float lineHeight = paint.FontSpacing;
             float boxCenterX = (character.Box.Left + character.Box.Right) / 2f;
             float boxBottom = character.Box.Bottom;
-            float x = boxCenterX - (charBounds.Width / 2f);
 
-            float y = boxBottom - charBounds.Bottom;
-            canvas.DrawText(character.Char.ToString(), x, y, paint);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string line = lines[i];
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
+
+                SKRect lineBounds = new SKRect();
+                paint.MeasureText(line, ref lineBounds);
+
+                float x = boxCenterX - (lineBounds.Width / 2f);
+                float y = boxBottom - ((lines.Length - i) * lineHeight);
+
+                foreach (char c in line)
+                {
+                    if (char.IsControl(c))
+                    {
+                        // Necessary, otherwise it prints a ￾ at line returns (not quite sure why it tries to print it).
+                        continue;
+                    }
+
+                    string charString = c.ToString();
+                    canvas.DrawText(charString, x, y, paint);
+                    x += paint.MeasureText(charString);
+                }
+            }
         }
+
 
         /// <summary>
         /// Checks whether the provided PDF file's content has any text items insides.

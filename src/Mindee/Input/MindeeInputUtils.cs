@@ -193,8 +193,6 @@ namespace Mindee.Input
             byte avgB = (byte)(totalB / pixelCount);
 
             return AdjustColor(new SKColor(avgR, avgG, avgB));
-
-            // Default to black if we couldn't determine the color
         }
 
         /// <summary>
