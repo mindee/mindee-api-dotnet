@@ -19,11 +19,9 @@ namespace Mindee.Input
         private static byte[] CompressImage(SKBitmap original, int quality, int finalWidth, int finalHeight)
         {
             using var image = SKImage.FromBitmap(original);
-
             using var compressedBitmap = SKBitmap.FromImage(image);
-
             using var finalImage =
-                compressedBitmap.Resize(new SKImageInfo(finalWidth, finalHeight), SKFilterQuality.High);
+                compressedBitmap.Resize(new SKImageInfo(finalWidth, finalHeight), SKFilterQuality.Low);
             return finalImage.Encode(SKEncodedImageFormat.Jpeg, quality).ToArray();
         }
 
@@ -88,7 +86,7 @@ namespace Mindee.Input
             var width = pageReader.GetPageWidth();
             var height = pageReader.GetPageHeight();
 
-            using var resizedBitmap = GenerateResizedBitmap(imageQuality, pageReader, width, height);
+            using var resizedBitmap = GeneratePageBitmap(imageQuality, pageReader, width, height);
 
             var canvas = document.BeginPage(width, height);
             DrawPageContent(canvas, resizedBitmap, pageReader, logger, keepSourceText, ref hasWarned);
@@ -115,14 +113,14 @@ namespace Mindee.Input
 
 
         /// <summary>
-        /// Generates a resized bitmap of the current read page. This operation rasterizes the contents.
+        /// Generates a bitmap of the current read page. This operation rasterizes the contents.
         /// </summary>
         /// <param name="imageQuality">Target quality for the contents of the page.</param>
         /// <param name="pageReader">Page reader instance for the currently read page.</param>
         /// <param name="width">Width of the page.</param>
         /// <param name="height">Height of the page.</param>
         /// <returns>A resized bitmap of the contents of the rasterized page.</returns>
-        private static SKBitmap GenerateResizedBitmap(int imageQuality, IPageReader pageReader, int width, int height)
+        private static SKBitmap GeneratePageBitmap(int imageQuality, IPageReader pageReader, int width, int height)
         {
             SKBitmap resizedBitmap = null;
             try
@@ -130,10 +128,22 @@ namespace Mindee.Input
                 var rawBytes = pageReader.GetImage();
                 var initialBitmap =
                     MindeeInputUtils.ArrayToImage(MindeeInputUtils.ConvertTo3DArray(rawBytes, width, height));
+
                 var compressedImage = CompressImage(initialBitmap, imageQuality, width, height);
 
+                // Use a more efficient encoding method
+                var colorType = SKColorType.Argb4444;
                 using var compressedBitmap = SKBitmap.Decode(compressedImage);
-                resizedBitmap = compressedBitmap.Resize(new SKImageInfo(width, height), SKFilterQuality.High);
+                if (imageQuality > 85)
+                {
+                    colorType = SKColorType.Rgb565;
+                }
+
+                using var surface = SKSurface.Create(new SKImageInfo(width, height, colorType));
+
+                surface.Canvas.DrawBitmap(compressedBitmap, 0, 0);
+                resizedBitmap = SKBitmap.FromImage(surface.Snapshot());
+
                 return resizedBitmap;
             }
             catch
@@ -142,6 +152,7 @@ namespace Mindee.Input
                 throw new MindeeInputException("The extracted bitmap from the given object could not be resized.");
             }
         }
+
 
         /// <summary>
         /// Writes the source text of a page to the newly-created canvas (on top of images).
@@ -154,38 +165,36 @@ namespace Mindee.Input
         /// <param name="canvas">The canvas of the page to insert the bitmap into.</param>
         private static void WriteTextToCanvas(SKBitmap bitmap, Character character, SKCanvas canvas)
         {
-            using (var paint = new SKPaint())
-            {
-                SKColor textColor = MindeeInputUtils.InferTextColor(bitmap, character.Box);
-                paint.TextSize = (float)character.FontSize * (72f / 96f);
-                paint.Color = textColor;
+            using var paint = new SKPaint();
+            SKColor textColor = MindeeInputUtils.InferTextColor(bitmap, character.Box);
+            paint.TextSize = (float)character.FontSize * (72f / 96f);
+            paint.Color = textColor;
 
-                var fontManager = SKFontManager.Default;
-                // A bit obscure, but Lucida Grande is the most average font, apparently: https://ben-tanen.com/projects/2019/06/23/most-font.html
-                // Arial & Liberation Sans are the fallbacks for Windows & macOS, as well as Linux, respectively.
-                string[] preferredFonts = ["Lucida Grande", "Arial", "Liberation Sans"];
+            var fontManager = SKFontManager.Default;
+            // A bit obscure, but Lucida Grande is the most average font, apparently: https://ben-tanen.com/projects/2019/06/23/most-font.html
+            // Arial & Liberation Sans are the fallbacks for Windows & macOS, as well as Linux, respectively.
+            string[] preferredFonts = ["Lucida Grande", "Arial", "Liberation Sans"];
 
 
-                string fontName = preferredFonts.FirstOrDefault(tmpFontName =>
-                    fontManager.MatchFamily(tmpFontName) != null &&
-                    string.Equals(fontManager.MatchFamily(tmpFontName).FamilyName, tmpFontName,
-                        StringComparison.OrdinalIgnoreCase)
-                ) ?? "Liberation Sans";
-                paint.Typeface = SKTypeface.FromFamilyName(fontName);
+            string fontName = preferredFonts.FirstOrDefault(tmpFontName =>
+                fontManager.MatchFamily(tmpFontName) != null &&
+                string.Equals(fontManager.MatchFamily(tmpFontName).FamilyName, tmpFontName,
+                    StringComparison.OrdinalIgnoreCase)
+            ) ?? "Liberation Sans";
+            paint.Typeface = SKTypeface.FromFamilyName(fontName);
 
-                paint.TextAlign = SKTextAlign.Left;
-                paint.TextSize = (float)character.FontSize * (72f / 96f);
+            paint.TextAlign = SKTextAlign.Left;
+            paint.TextSize = (float)character.FontSize * (72f / 96f);
 
-                SKRect charBounds = new SKRect();
-                paint.MeasureText(character.Char.ToString(), ref charBounds);
+            SKRect charBounds = new SKRect();
+            paint.MeasureText(character.Char.ToString(), ref charBounds);
 
-                float boxCenterX = (character.Box.Left + character.Box.Right) / 2f;
-                float boxBottom = character.Box.Bottom;
-                float x = boxCenterX - (charBounds.Width / 2f);
+            float boxCenterX = (character.Box.Left + character.Box.Right) / 2f;
+            float boxBottom = character.Box.Bottom;
+            float x = boxCenterX - (charBounds.Width / 2f);
 
-                float y = boxBottom - charBounds.Bottom;
-                canvas.DrawText(character.Char.ToString(), x, y, paint);
-            }
+            float y = boxBottom - charBounds.Bottom;
+            canvas.DrawText(character.Char.ToString(), x, y, paint);
         }
 
         /// <summary>
@@ -206,7 +215,7 @@ namespace Mindee.Input
 
             logger?.LogWarning(
                 "Found text inside of the provided PDF file. This tool will rewrite the found text in the new document, but it will not match the original.");
-            // Note: bypassing the logger as well since this is **heavily** discouraged.
+            // Note: bypassing the logger since this is **heavily** discouraged.
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(
                 "MINDEE WARNING: Found text inside of the provided PDF file. This tool will rewrite the found text in the new document, but it will not match the original.");
