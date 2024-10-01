@@ -148,14 +148,17 @@ namespace Mindee.Input
         /// <param name="quality">Quality of the output file.</param>
         /// <param name="maxWidth">Maximum width (Ignored for PDFs)</param>
         /// <param name="maxHeight">Maximum height (Ignored for PDFs)</param>
-        /// <param name="keepSourceText">Whether to re-embed the source text into the final file (PDFs only)</param>
+        /// <param name="forceSourceText">Whether to force the operation on PDFs with source text. This will attempt to
+        /// re-render PDF text over the rasterized original. If disabled, ignored the operation.
+        /// WARNING: this operation is strongly discouraged.</param>
         public void Compress(int quality = 85, int? maxWidth = null, int? maxHeight = null,
-            bool keepSourceText = true)
+            bool forceSourceText = false)
 
         {
             if (IsPdf())
             {
-                this.FileBytes = Compressor.CompressPdf(this.FileBytes, quality, keepSourceText);
+                this.FileBytes = Compressor.CompressPdf(this.FileBytes, quality, forceSourceText);
+
             }
             else
             {
@@ -173,22 +176,7 @@ namespace Mindee.Input
             {
                 return false;
             }
-
-            lock
-                (DocLib.Instance)
-            {
-                using var docReader = DocLib.Instance.GetDocReader(FileBytes, new PageDimensions(1));
-                for (int i = 0; i < docReader.GetPageCount(); i++)
-                {
-                    using var pageReader = docReader.GetPageReader(i);
-                    if (pageReader.GetText().Length > 0)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+            return Compressor.HasSourceText(FileBytes);
         }
     }
 }

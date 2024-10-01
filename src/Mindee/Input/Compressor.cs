@@ -5,7 +5,6 @@ using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Models;
 using Docnet.Core.Readers;
-using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 using SkiaSharp;
 
@@ -27,18 +26,18 @@ namespace Mindee.Input
 
 
         /// <summary>
-        /// Resize and/or compress an image using SkiaSharp.
+        /// Resize and/or compress an image using SkiaSharp. This maintains the provided ratio.
         /// </summary>
-        /// <param name="imageData">Byte sequence representing the content of the image.</param>
+        /// <param name="imageData">Byte array representing the content of the image.</param>
         /// <param name="quality">Quality of the final file.</param>
         /// <param name="maxWidth">Maximum width. If not specified, the horizontal ratio will remain the same.</param>
         /// <param name="maxHeight">Maximum height. If not specified, the vertical ratio will remain the same</param>
-        /// <returns></returns>
+        /// <returns>A byte array holding a compressed image.</returns>
         public static byte[] CompressImage(byte[] imageData, int quality = 85, int? maxWidth = null,
             int? maxHeight = null)
         {
             using var original = SKBitmap.Decode(imageData);
-            var (newWidth, newHeight) = MindeeInputUtils.CalculateNewDimensions(original, maxWidth, maxHeight);
+            var (newWidth, newHeight) = MindeeImageUtils.CalculateNewDimensions(original, maxWidth, maxHeight);
 
             return CompressImage(original, quality, newWidth, newHeight);
         }
@@ -46,14 +45,21 @@ namespace Mindee.Input
         /// <summary>
         /// Compresses a PDF file using DocLib.
         /// </summary>
-        /// <param name="pdfData">Byte sequence representing the content of the PDF file.</param>
+        /// <param name="pdfData">Byte array representing the content of the PDF file.</param>
         /// <param name="imageQuality">Quality of the final file.</param>
-        /// <param name="keepSourceText">Whether to keep the source text in the file.</param>
-        /// <param name="logger">Debug logger.</param>
-        /// <returns></returns>
-        public static byte[] CompressPdf(byte[] pdfData, int imageQuality = 85, bool keepSourceText = true,
-            ILogger logger = null)
+        /// <param name="forceSourceText"></param>
+        /// <returns>A byte array containing a compressed PDF.</returns>
+        public static byte[] CompressPdf(byte[] pdfData, int imageQuality = 85, bool forceSourceText = false)
         {
+            if (!forceSourceText && HasSourceText(pdfData))
+            {
+                // Note: bypassing the logger since this is **heavily** discouraged.
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(
+                    "MINDEE WARNING: Found text inside of the provided PDF file. Compression operation aborted.");
+                Console.ResetColor();
+            }
+
             lock (DocLib.Instance)
             {
                 using var docReader = DocLib.Instance.GetDocReader(pdfData, new PageDimensions(1));
@@ -62,7 +68,7 @@ namespace Mindee.Input
 
                 using (var document = SKDocument.CreatePdf(outputStream))
                 {
-                    ProcessPages(docReader, document, imageQuality, keepSourceText, logger, ref hasWarned);
+                    ProcessPages(docReader, document, imageQuality, ref hasWarned);
                 }
 
                 return outputStream.ToArray();
@@ -70,17 +76,16 @@ namespace Mindee.Input
         }
 
         private static void ProcessPages(IDocReader docReader, SKDocument document, int imageQuality,
-            bool keepSourceText, ILogger logger,
             ref bool hasWarned)
         {
             for (int i = 0; i < docReader.GetPageCount(); i++)
             {
-                ProcessSinglePage(docReader, document, i, imageQuality, keepSourceText, logger, ref hasWarned);
+                ProcessSinglePage(docReader, document, i, imageQuality, ref hasWarned);
             }
         }
 
         private static void ProcessSinglePage(IDocReader docReader, SKDocument document, int pageIndex,
-            int imageQuality, bool keepSourceText, ILogger logger, ref bool hasWarned)
+            int imageQuality, ref bool hasWarned)
         {
             using var pageReader = docReader.GetPageReader(pageIndex);
             var width = pageReader.GetPageWidth();
@@ -89,21 +94,16 @@ namespace Mindee.Input
             using var resizedBitmap = GeneratePageBitmap(imageQuality, pageReader, width, height);
 
             var canvas = document.BeginPage(width, height);
-            DrawPageContent(canvas, resizedBitmap, pageReader, logger, keepSourceText, ref hasWarned);
+            DrawPageContent(canvas, resizedBitmap, pageReader, ref hasWarned);
             document.EndPage();
         }
 
         private static void DrawPageContent(SKCanvas canvas, SKBitmap resizedBitmap, IPageReader pageReader,
-            ILogger logger, bool keepSourceText, ref bool hasWarned)
+            ref bool hasWarned)
         {
             canvas.DrawBitmap(resizedBitmap, SKPoint.Empty);
 
-            if (!keepSourceText)
-            {
-                return;
-            }
-
-            var characters = CheckCharacters(logger, pageReader.GetCharacters(), ref hasWarned);
+            var characters = CheckCharacters(pageReader.GetCharacters(), ref hasWarned);
 
             foreach (var character in characters)
             {
@@ -127,7 +127,7 @@ namespace Mindee.Input
             {
                 var rawBytes = pageReader.GetImage();
                 var initialBitmap =
-                    MindeeInputUtils.ArrayToImage(MindeeInputUtils.ConvertTo3DArray(rawBytes, width, height));
+                    MindeeImageUtils.ArrayToImage(MindeeImageUtils.ConvertTo3DArray(rawBytes, width, height));
 
                 var compressedImage = CompressImage(initialBitmap, imageQuality, width, height);
 
@@ -165,7 +165,7 @@ namespace Mindee.Input
         private static void WriteTextToCanvas(SKBitmap bitmap, Character character, SKCanvas canvas)
         {
             using var paint = new SKPaint();
-            SKColor textColor = MindeeInputUtils.InferTextColor(bitmap, character.Box);
+            SKColor textColor = MindeeImageUtils.InferTextColor(bitmap, character.Box);
             paint.TextSize = (float)character.FontSize * (72f / 96f);
             paint.Color = textColor;
 
@@ -206,7 +206,7 @@ namespace Mindee.Input
                 {
                     if (char.IsControl(c))
                     {
-                        // Necessary, otherwise it prints a ￾ at line returns (not quite sure why it tries to print it).
+                        // Necessary, otherwise it prints a ￾ at line returns (not quite sure why).
                         continue;
                     }
 
@@ -221,11 +221,10 @@ namespace Mindee.Input
         /// <summary>
         /// Checks whether the provided PDF file's content has any text items insides.
         /// </summary>
-        /// <param name="logger">Current logger</param>
         /// <param name="textItems">Text items retrieved from the page.</param>
         /// <param name="warnedSize">Whether the warning has been raised already.</param>
-        /// <returns></returns>
-        private static Character[] CheckCharacters(ILogger logger, IEnumerable<Character> textItems,
+        /// <returns>An array of characters.</returns>
+        private static Character[] CheckCharacters(IEnumerable<Character> textItems,
             ref bool warnedSize)
         {
             var characters = textItems as Character[] ?? textItems.ToArray();
@@ -234,16 +233,50 @@ namespace Mindee.Input
                 return characters;
             }
 
-            logger?.LogWarning(
-                "Found text inside of the provided PDF file. This tool will rewrite the found text in the new document, but it will not match the original.");
-            // Note: bypassing the logger since this is **heavily** discouraged.
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(
-                "MINDEE WARNING: Found text inside of the provided PDF file. This tool will rewrite the found text in the new document, but it will not match the original.");
-            Console.ResetColor();
             warnedSize = true;
 
             return characters;
+        }
+
+
+        /// <summary>
+        /// Returns true if the source PDF has source text inside. Returns false for images.
+        /// </summary>
+        /// <param name="fileBytes">A byte array representing a PDF.</param>
+        /// <returns>True if at least one character exists in one page.</returns>
+        public static bool HasSourceText(byte[] fileBytes)
+        {
+            try
+            {
+                lock
+                    (DocLib.Instance)
+                {
+                    using var docReader = DocLib.Instance.GetDocReader(fileBytes, new PageDimensions(1));
+                    for (int i = 0; i < docReader.GetPageCount(); i++)
+                    {
+                        using var pageReader = docReader.GetPageReader(i);
+                        if (pageReader.GetText().Length > 0)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    // Files will result in a failure to read from PDF, but can still be valid, so we try from Skiasharp.
+                    using var original = SKBitmap.Decode(fileBytes);
+                    return false;
+                }
+                catch (Exception exc)
+                {
+                    throw new MindeeInputException("The file could not be read.", exc);
+                }
+            }
+
+            return false;
         }
     }
 }

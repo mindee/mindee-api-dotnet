@@ -9,7 +9,7 @@ namespace Mindee.Input
     /// <summary>
     /// Utility class.
     /// </summary>
-    public static class MindeeInputUtils
+    public static class MindeeImageUtils
     {
         /// <summary>
         /// Converts a raw sequence of bytes representing an image into a 3D pixel array.
