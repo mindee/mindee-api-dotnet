@@ -216,9 +216,11 @@ namespace Mindee.UnitTests.Input
                 using var compressedReader = DocLib.Instance.GetDocReader(compressedWithText, new PageDimensions(1));
                 Assert.Equal(originalReader.GetPageCount(), compressedReader.GetPageCount());
 
+                Assert.NotEqual(originalReader.GetHashCode(), compressedReader.GetHashCode());
                 for (var i = 0; i < originalReader.GetPageCount(); i++)
                 {
                     Assert.Equal(originalReader.GetPageReader(i).GetText(), compressedReader.GetPageReader(i).GetText());
+                    Assert.NotEqual(originalReader.GetPageReader(i).GetHashCode(), compressedReader.GetPageReader(i).GetHashCode());
                 }
             }
         }
