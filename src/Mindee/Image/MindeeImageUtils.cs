@@ -4,7 +4,7 @@ using Docnet.Core.Models;
 using Mindee.Exceptions;
 using SkiaSharp;
 
-namespace Mindee.Input
+namespace Mindee.Image
 {
     /// <summary>
     /// Utility class.

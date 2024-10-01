@@ -5,6 +5,7 @@ using Docnet.Core;
 using Docnet.Core.Models;
 using Mindee.Exceptions;
 using Mindee.Geometry;
+using Mindee.Image;
 using Mindee.Input;
 using Mindee.Parsing.Standard;
 using SkiaSharp;

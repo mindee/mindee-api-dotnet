@@ -6,6 +6,7 @@ using Docnet.Core;
 using Docnet.Core.Models;
 using Docnet.Core.Readers;
 using Mindee.Exceptions;
+using Mindee.Image;
 using SkiaSharp;
 
 namespace Mindee.Input
