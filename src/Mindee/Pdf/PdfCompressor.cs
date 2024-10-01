@@ -21,11 +21,13 @@ namespace Mindee.Pdf
         /// </summary>
         /// <param name="pdfData">Byte array representing the content of the PDF file.</param>
         /// <param name="imageQuality">Quality of the final file.</param>
-        /// <param name="forceSourceText"></param>
+        /// <param name="forceSourceTextCompression">Whether to force the rendering of source pdf. If enabled, will attempt to re-write the detected text.</param>
+        /// <param name="disableSourceText">If the PDF has source text, whether to re-apply it to the original or not.</param>
         /// <returns>A byte array containing a compressed PDF.</returns>
-        public static byte[] CompressPdf(byte[] pdfData, int imageQuality = 85, bool forceSourceText = false)
+        public static byte[] CompressPdf(byte[] pdfData, int imageQuality = 85, bool forceSourceTextCompression = false,
+            bool disableSourceText = true)
         {
-            if (!forceSourceText && HasSourceText(pdfData))
+            if (!forceSourceTextCompression && HasSourceText(pdfData))
             {
                 // Note: bypassing the logger since this is **heavily** discouraged.
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -37,29 +39,27 @@ namespace Mindee.Pdf
             lock (DocLib.Instance)
             {
                 using var docReader = DocLib.Instance.GetDocReader(pdfData, new PageDimensions(1));
-                bool hasWarned = false;
                 var outputStream = new MemoryStream();
 
                 using (var document = SKDocument.CreatePdf(outputStream))
                 {
-                    ProcessPages(docReader, document, imageQuality, ref hasWarned);
+                    ProcessPages(docReader, document, imageQuality, disableSourceText);
                 }
 
                 return outputStream.ToArray();
             }
         }
 
-        private static void ProcessPages(IDocReader docReader, SKDocument document, int imageQuality,
-            ref bool hasWarned)
+        private static void ProcessPages(IDocReader docReader, SKDocument document, int imageQuality, bool disableSourceText)
         {
             for (int i = 0; i < docReader.GetPageCount(); i++)
             {
-                ProcessSinglePage(docReader, document, i, imageQuality, ref hasWarned);
+                ProcessSinglePage(docReader, document, i, imageQuality, disableSourceText);
             }
         }
 
         private static void ProcessSinglePage(IDocReader docReader, SKDocument document, int pageIndex,
-            int imageQuality, ref bool hasWarned)
+            int imageQuality, bool disableSourceText)
         {
             using var pageReader = docReader.GetPageReader(pageIndex);
             var width = pageReader.GetPageWidth();
@@ -68,16 +68,19 @@ namespace Mindee.Pdf
             using var resizedBitmap = GeneratePageBitmap(imageQuality, pageReader, width, height);
 
             var canvas = document.BeginPage(width, height);
-            DrawPageContent(canvas, resizedBitmap, pageReader, ref hasWarned);
+            DrawPageContent(canvas, resizedBitmap, pageReader, disableSourceText);
             document.EndPage();
         }
 
-        private static void DrawPageContent(SKCanvas canvas, SKBitmap resizedBitmap, IPageReader pageReader,
-            ref bool hasWarned)
+        private static void DrawPageContent(SKCanvas canvas, SKBitmap resizedBitmap, IPageReader pageReader, bool disableSourceText)
         {
             canvas.DrawBitmap(resizedBitmap, SKPoint.Empty);
+            if (disableSourceText)
+            {
+                return;
+            }
 
-            var characters = CheckCharacters(pageReader.GetCharacters(), ref hasWarned);
+            var characters = pageReader.GetCharacters();
 
             foreach (var character in characters)
             {
@@ -187,26 +190,6 @@ namespace Mindee.Pdf
                     x += paint.MeasureText(charString);
                 }
             }
-        }
-
-        /// <summary>
-        /// Checks whether the provided PDF file's content has any text items insides.
-        /// </summary>
-        /// <param name="textItems">Text items retrieved from the page.</param>
-        /// <param name="warnedSize">Whether the warning has been raised already.</param>
-        /// <returns>An array of characters.</returns>
-        private static Character[] CheckCharacters(IEnumerable<Character> textItems,
-            ref bool warnedSize)
-        {
-            var characters = textItems as Character[] ?? textItems.ToArray();
-            if (!characters.Any() || warnedSize)
-            {
-                return characters;
-            }
-
-            warnedSize = true;
-
-            return characters;
         }
 
         /// <summary>
