@@ -61,7 +61,6 @@ jobs:
         os:
           - "windows-2022"
         dotnet-version:
-          - "net472"
           - "net482"
           - "net6.0"
           - "net7.0"
