@@ -1,7 +1,9 @@
 using Docnet.Core;
 using Docnet.Core.Models;
 using Mindee.Exceptions;
+using Mindee.Image;
 using Mindee.Input;
+using Mindee.Pdf;
 using SkiaSharp;
 
 namespace Mindee.UnitTests.Input
@@ -93,11 +95,11 @@ namespace Mindee.UnitTests.Input
             var receiptInput = new LocalInputSource("Resources/file_types/receipt.jpg");
             var compresses = new List<byte[]>
             {
-                Compressor.CompressImage(receiptInput.FileBytes, 100),
-                Compressor.CompressImage(receiptInput.FileBytes),
-                Compressor.CompressImage(receiptInput.FileBytes, 50),
-                Compressor.CompressImage(receiptInput.FileBytes, 10),
-                Compressor.CompressImage(receiptInput.FileBytes, 1)
+                ImageCompressor.CompressImage(receiptInput.FileBytes, 100),
+                ImageCompressor.CompressImage(receiptInput.FileBytes),
+                ImageCompressor.CompressImage(receiptInput.FileBytes, 50),
+                ImageCompressor.CompressImage(receiptInput.FileBytes, 10),
+                ImageCompressor.CompressImage(receiptInput.FileBytes, 1)
             };
             File.WriteAllBytes("Resources/output/compress100.jpg", compresses[0]);
             File.WriteAllBytes("Resources/output/compress75.jpg", compresses[1]);
@@ -142,10 +144,10 @@ namespace Mindee.UnitTests.Input
             var imageResizeInput = new LocalInputSource("Resources/file_types/receipt.jpg");
             var resizes = new List<byte[]>
             {
-                Compressor.CompressImage(imageResizeInput.FileBytes, 75, 500),
-                Compressor.CompressImage(imageResizeInput.FileBytes, 75, 250, 500),
-                Compressor.CompressImage(imageResizeInput.FileBytes, 75, 500, 250),
-                Compressor.CompressImage(imageResizeInput.FileBytes, 75, null, 250)
+                ImageCompressor.CompressImage(imageResizeInput.FileBytes, 75, 500),
+                ImageCompressor.CompressImage(imageResizeInput.FileBytes, 75, 250, 500),
+                ImageCompressor.CompressImage(imageResizeInput.FileBytes, 75, 500, 250),
+                ImageCompressor.CompressImage(imageResizeInput.FileBytes, 75, null, 250)
             };
             File.WriteAllBytes("Resources/output/resize500xnull.jpg", resizes[0]);
             File.WriteAllBytes("Resources/output/resize250x500.jpg", resizes[1]);
@@ -182,10 +184,10 @@ namespace Mindee.UnitTests.Input
             var pdfRersizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
             var resizes = new List<byte[]>
             {
-                Compressor.CompressPdf(pdfRersizeInput.FileBytes),
-                Compressor.CompressPdf(pdfRersizeInput.FileBytes, 75),
-                Compressor.CompressPdf(pdfRersizeInput.FileBytes, 50),
-                Compressor.CompressPdf(pdfRersizeInput.FileBytes, 10)
+                PdfCompressor.CompressPdf(pdfRersizeInput.FileBytes),
+                PdfCompressor.CompressPdf(pdfRersizeInput.FileBytes, 75),
+                PdfCompressor.CompressPdf(pdfRersizeInput.FileBytes, 50),
+                PdfCompressor.CompressPdf(pdfRersizeInput.FileBytes, 10)
             };
             File.WriteAllBytes("Resources/output/compress85.pdf", resizes[0]);
             File.WriteAllBytes("Resources/output/compress75.pdf", resizes[1]);
@@ -211,7 +213,7 @@ namespace Mindee.UnitTests.Input
             lock (DocLib.Instance)
             {
                 var initialWithtext = new LocalInputSource("Resources/file_types/pdf/multipage.pdf");
-                var compressedWithText = Compressor.CompressPdf(initialWithtext.FileBytes, 100, true);
+                var compressedWithText = PdfCompressor.CompressPdf(initialWithtext.FileBytes, 100, true);
                 using var originalReader = DocLib.Instance.GetDocReader(initialWithtext.FileBytes, new PageDimensions(1));
                 using var compressedReader = DocLib.Instance.GetDocReader(compressedWithText, new PageDimensions(1));
                 Assert.Equal(originalReader.GetPageCount(), compressedReader.GetPageCount());

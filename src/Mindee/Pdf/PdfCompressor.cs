@@ -9,40 +9,13 @@ using Mindee.Exceptions;
 using Mindee.Image;
 using SkiaSharp;
 
-namespace Mindee.Input
+namespace Mindee.Pdf
 {
     /// <summary>
-    /// Compressor static class to handle image and PDF compression.
+    /// Image compressor static class to handle PDF compression.
     /// </summary>
-    public static class Compressor
+    public static partial class PdfCompressor
     {
-        private static byte[] CompressImage(SKBitmap original, int quality, int finalWidth, int finalHeight)
-        {
-            using var image = SKImage.FromBitmap(original);
-            using var compressedBitmap = SKBitmap.FromImage(image);
-            using var finalImage =
-                compressedBitmap.Resize(new SKImageInfo(finalWidth, finalHeight), SKFilterQuality.Low);
-            return finalImage.Encode(SKEncodedImageFormat.Jpeg, quality).ToArray();
-        }
-
-
-        /// <summary>
-        /// Resize and/or compress an image using SkiaSharp. This maintains the provided ratio.
-        /// </summary>
-        /// <param name="imageData">Byte array representing the content of the image.</param>
-        /// <param name="quality">Quality of the final file.</param>
-        /// <param name="maxWidth">Maximum width. If not specified, the horizontal ratio will remain the same.</param>
-        /// <param name="maxHeight">Maximum height. If not specified, the vertical ratio will remain the same</param>
-        /// <returns>A byte array holding a compressed image.</returns>
-        public static byte[] CompressImage(byte[] imageData, int quality = 85, int? maxWidth = null,
-            int? maxHeight = null)
-        {
-            using var original = SKBitmap.Decode(imageData);
-            var (newWidth, newHeight) = MindeeImageUtils.CalculateNewDimensions(original, maxWidth, maxHeight);
-
-            return CompressImage(original, quality, newWidth, newHeight);
-        }
-
         /// <summary>
         /// Compresses a PDF file using DocLib.
         /// </summary>
@@ -112,7 +85,6 @@ namespace Mindee.Input
             }
         }
 
-
         /// <summary>
         /// Generates a bitmap of the current read page. This operation rasterizes the contents.
         /// </summary>
@@ -130,7 +102,7 @@ namespace Mindee.Input
                 var initialBitmap =
                     MindeeImageUtils.ArrayToImage(MindeeImageUtils.ConvertTo3DArray(rawBytes, width, height));
 
-                var compressedImage = CompressImage(initialBitmap, imageQuality, width, height);
+                var compressedImage = ImageCompressor.CompressImage(initialBitmap, imageQuality, width, height);
 
                 var colorType = SKColorType.Argb4444;
                 using var compressedBitmap = SKBitmap.Decode(compressedImage);
@@ -152,7 +124,6 @@ namespace Mindee.Input
                 throw new MindeeInputException("The extracted bitmap from the given object could not be resized.");
             }
         }
-
 
         /// <summary>
         /// Writes the source text of a page to the newly-created canvas (on top of images).
@@ -218,7 +189,6 @@ namespace Mindee.Input
             }
         }
 
-
         /// <summary>
         /// Checks whether the provided PDF file's content has any text items insides.
         /// </summary>
@@ -238,7 +208,6 @@ namespace Mindee.Input
 
             return characters;
         }
-
 
         /// <summary>
         /// Returns true if the source PDF has source text inside. Returns false for images.

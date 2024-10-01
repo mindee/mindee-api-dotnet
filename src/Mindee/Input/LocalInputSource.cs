@@ -4,6 +4,8 @@ using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Models;
 using Mindee.Exceptions;
+using Mindee.Image;
+using Mindee.Pdf;
 
 namespace Mindee.Input
 {
@@ -157,12 +159,12 @@ namespace Mindee.Input
         {
             if (IsPdf())
             {
-                this.FileBytes = Compressor.CompressPdf(this.FileBytes, quality, forceSourceText);
+                this.FileBytes = PdfCompressor.CompressPdf(this.FileBytes, quality, forceSourceText);
 
             }
             else
             {
-                this.FileBytes = Compressor.CompressImage(this.FileBytes, quality, maxWidth, maxHeight);
+                this.FileBytes = ImageCompressor.CompressImage(this.FileBytes, quality, maxWidth, maxHeight);
             }
         }
 
@@ -176,7 +178,7 @@ namespace Mindee.Input
             {
                 return false;
             }
-            return Compressor.HasSourceText(FileBytes);
+            return PdfCompressor.HasSourceText(FileBytes);
         }
     }
 }
