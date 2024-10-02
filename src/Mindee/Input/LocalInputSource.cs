@@ -4,6 +4,8 @@ using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Models;
 using Mindee.Exceptions;
+using Mindee.Image;
+using Mindee.Pdf;
 
 namespace Mindee.Input
 {
@@ -134,8 +136,49 @@ namespace Mindee.Input
             {
                 return 1;
             }
-            var docInstance = DocLib.Instance.GetDocReader(this.FileBytes, new PageDimensions(1, 1));
-            return docInstance.GetPageCount();
+
+            lock (DocLib.Instance)
+            {
+                var docInstance = DocLib.Instance.GetDocReader(this.FileBytes, new PageDimensions(1, 1));
+                return docInstance.GetPageCount();
+            }
+        }
+
+        /// <summary>
+        /// Compresses the file, according to the provided info.
+        /// </summary>
+        /// <param name="quality">Quality of the output file.</param>
+        /// <param name="maxWidth">Maximum width (Ignored for PDFs)</param>
+        /// <param name="maxHeight">Maximum height (Ignored for PDFs)</param>
+        /// <param name="forceSourceText">Whether to force the operation on PDFs with source text. This will attempt to
+        /// re-render PDF text over the rasterized original. If disabled, ignored the operation.
+        /// WARNING: this operation is strongly discouraged.</param>
+        public void Compress(int quality = 85, int? maxWidth = null, int? maxHeight = null,
+            bool forceSourceText = false)
+
+        {
+            if (IsPdf())
+            {
+                this.FileBytes = PdfCompressor.CompressPdf(this.FileBytes, quality, forceSourceText);
+
+            }
+            else
+            {
+                this.FileBytes = ImageCompressor.CompressImage(this.FileBytes, quality, maxWidth, maxHeight);
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the source PDF has source text inside. Returns false for images.
+        /// </summary>
+        /// <returns>True if at least one character exists in one page.</returns>
+        public bool HasSourceText()
+        {
+            if (!IsPdf())
+            {
+                return false;
+            }
+            return PdfCompressor.HasSourceText(FileBytes);
         }
     }
 }

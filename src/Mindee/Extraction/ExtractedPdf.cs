@@ -37,8 +37,11 @@ namespace Mindee.Extraction
         /// <returns>The number of pages in the file.</returns>
         public int GetPageCount()
         {
-            var docInstance = DocLib.Instance.GetDocReader(this.PdfBytes, new PageDimensions(1, 1));
-            return docInstance.GetPageCount();
+            lock (DocLib.Instance)
+            {
+                using var docInstance = DocLib.Instance.GetDocReader(this.PdfBytes, new PageDimensions(1, 1));
+                return docInstance.GetPageCount();
+            }
         }
 
         /// <summary>
