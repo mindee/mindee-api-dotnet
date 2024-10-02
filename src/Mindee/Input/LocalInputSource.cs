@@ -153,13 +153,14 @@ namespace Mindee.Input
         /// <param name="forceSourceText">Whether to force the operation on PDFs with source text. This will attempt to
         /// re-render PDF text over the rasterized original. If disabled, ignored the operation.
         /// WARNING: this operation is strongly discouraged.</param>
+        /// <param name="disableSourceText">If the PDF has source text, whether to re-apply it to the original or not.</param>
         public void Compress(int quality = 85, int? maxWidth = null, int? maxHeight = null,
-            bool forceSourceText = false)
+            bool forceSourceText = false, bool disableSourceText = true)
 
         {
             if (IsPdf())
             {
-                this.FileBytes = PdfCompressor.CompressPdf(this.FileBytes, quality, forceSourceText);
+                this.FileBytes = PdfCompressor.CompressPdf(this.FileBytes, quality, forceSourceText, disableSourceText);
 
             }
             else
