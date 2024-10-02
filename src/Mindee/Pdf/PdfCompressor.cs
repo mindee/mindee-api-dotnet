@@ -14,7 +14,7 @@ namespace Mindee.Pdf
     /// <summary>
     /// Image compressor static class to handle PDF compression.
     /// </summary>
-    public static partial class PdfCompressor
+    public static class PdfCompressor
     {
         /// <summary>
         /// Compresses a PDF file using DocLib.
@@ -219,7 +219,7 @@ namespace Mindee.Pdf
             {
                 try
                 {
-                    // Files will result in a failure to read from PDF, but can still be valid, so we try from Skiasharp.
+                    // Image files will result in a failure to read from PDF, but can still be valid, so we try from Skiasharp.
                     using var original = SKBitmap.Decode(fileBytes);
                     return false;
                 }
