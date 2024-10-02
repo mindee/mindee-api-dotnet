@@ -212,9 +212,9 @@ namespace Mindee.UnitTests.Input
         {
             lock (DocLib.Instance)
             {
-                var initialWithtext = new LocalInputSource("Resources/file_types/pdf/multipage.pdf");
-                var compressedWithText = PdfCompressor.CompressPdf(initialWithtext.FileBytes, 100, true, false);
-                using var originalReader = DocLib.Instance.GetDocReader(initialWithtext.FileBytes, new PageDimensions(1));
+                var initialWithText = new LocalInputSource("Resources/file_types/pdf/multipage.pdf");
+                var compressedWithText = PdfCompressor.CompressPdf(initialWithText.FileBytes, 100, true, false);
+                using var originalReader = DocLib.Instance.GetDocReader(initialWithText.FileBytes, new PageDimensions(1));
                 using var compressedReader = DocLib.Instance.GetDocReader(compressedWithText, new PageDimensions(1));
                 Assert.Equal(originalReader.GetPageCount(), compressedReader.GetPageCount());
 
