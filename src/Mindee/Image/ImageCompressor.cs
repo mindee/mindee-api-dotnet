@@ -37,7 +37,7 @@ namespace Mindee.Image
             int? maxHeight = null)
         {
             using var original = SKBitmap.Decode(imageData);
-            var (newWidth, newHeight) = MindeeImageUtils.CalculateNewDimensions(original, maxWidth, maxHeight);
+            var (newWidth, newHeight) = ImageUtils.CalculateNewDimensions(original, maxWidth, maxHeight);
 
             return CompressImage(original, quality, newWidth, newHeight);
         }

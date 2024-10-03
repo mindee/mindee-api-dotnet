@@ -103,7 +103,7 @@ namespace Mindee.Pdf
             {
                 var rawBytes = pageReader.GetImage();
                 var initialBitmap =
-                    MindeeImageUtils.ArrayToImage(MindeeImageUtils.ConvertTo3DArray(rawBytes, width, height));
+                    ImageUtils.ArrayToImage(ImageUtils.ConvertTo3DArray(rawBytes, width, height));
 
                 var compressedImage = ImageCompressor.CompressImage(initialBitmap, imageQuality, width, height);
 
@@ -140,7 +140,7 @@ namespace Mindee.Pdf
         private static void WriteTextToCanvas(SKBitmap bitmap, Character character, SKCanvas canvas)
         {
             using var paint = new SKPaint();
-            SKColor textColor = MindeeImageUtils.InferTextColor(bitmap, character.Box);
+            SKColor textColor = ImageUtils.InferTextColor(bitmap, character.Box);
             paint.TextSize = (float)character.FontSize * (72f / 96f);
             paint.Color = textColor;
 

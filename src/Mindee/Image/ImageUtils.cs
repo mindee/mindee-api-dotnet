@@ -9,7 +9,7 @@ namespace Mindee.Image
     /// <summary>
     /// Utility class.
     /// </summary>
-    public static class MindeeImageUtils
+    public static class ImageUtils
     {
         /// <summary>
         /// Converts a raw sequence of bytes representing an image into a 3D pixel array.

@@ -89,7 +89,7 @@ namespace Mindee.Extraction
                     var width = pageReader.GetPageWidth();
                     var height = pageReader.GetPageHeight();
                     var bytes = pageReader.GetImage();
-                    var bmp = MindeeImageUtils.ArrayToImage(MindeeImageUtils.ConvertTo3DArray(bytes, width, height));
+                    var bmp = ImageUtils.ArrayToImage(ImageUtils.ConvertTo3DArray(bytes, width, height));
                     images.Add(bmp);
                 }
 
