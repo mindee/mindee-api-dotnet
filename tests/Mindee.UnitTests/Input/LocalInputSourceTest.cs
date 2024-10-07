@@ -231,7 +231,7 @@ namespace Mindee.UnitTests.Input
             lock (DocLib.Instance)
             {
                 var initialWithText = new LocalInputSource("Resources/file_types/pdf/multipage.pdf");
-                var compressedWithText = PdfCompressor.CompressPdf(initialWithText.FileBytes, 100);
+                var compressedWithText = PdfCompressor.CompressPdf(initialWithText.FileBytes, 50);
                 Assert.Equal(compressedWithText, initialWithText.FileBytes);
             }
         }
