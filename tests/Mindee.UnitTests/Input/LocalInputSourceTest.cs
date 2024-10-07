@@ -181,13 +181,13 @@ namespace Mindee.UnitTests.Input
         [Fact]
         public void Pdf_Resize_From_Compressor()
         {
-            var pdfRersizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
+            var pdfResizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
             var resizes = new List<byte[]>
             {
-                PdfCompressor.CompressPdf(pdfRersizeInput.FileBytes),
-                PdfCompressor.CompressPdf(pdfRersizeInput.FileBytes, 75),
-                PdfCompressor.CompressPdf(pdfRersizeInput.FileBytes, 50),
-                PdfCompressor.CompressPdf(pdfRersizeInput.FileBytes, 10)
+                PdfCompressor.CompressPdf(pdfResizeInput.FileBytes),
+                PdfCompressor.CompressPdf(pdfResizeInput.FileBytes, 75),
+                PdfCompressor.CompressPdf(pdfResizeInput.FileBytes, 50),
+                PdfCompressor.CompressPdf(pdfResizeInput.FileBytes, 10)
             };
             File.WriteAllBytes("Resources/output/compress85.pdf", resizes[0]);
             File.WriteAllBytes("Resources/output/compress75.pdf", resizes[1]);
