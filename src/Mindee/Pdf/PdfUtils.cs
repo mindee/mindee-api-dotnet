@@ -90,7 +90,7 @@ namespace Mindee.Pdf
         /// <param name="bitmap">The input bitmap.</param>
         /// <param name="character">The currently read character.</param>
         /// <param name="canvas">The canvas of the page to insert the bitmap into.</param>
-        public static void WriteTextToCanvas(SKBitmap bitmap, Character character, SKCanvas canvas)
+        private static void WriteTextToCanvas(SKBitmap bitmap, Character character, SKCanvas canvas)
         {
             using var paint = new SKPaint();
             SKColor textColor = ImageUtils.InferTextColor(bitmap, character.Box);
