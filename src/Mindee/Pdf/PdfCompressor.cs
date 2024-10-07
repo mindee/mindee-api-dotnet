@@ -28,7 +28,7 @@ namespace Mindee.Pdf
                 // Note: bypassing the logger since this is **heavily** discouraged.
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(
-                    "MINDEE WARNING: Found text inside of the provided PDF file. Compression operation aborted.");
+                    "MINDEE WARNING: Found text inside of the provided PDF file. Compression operation aborted since disableSourceText is set to 'true'.");
                 Console.ResetColor();
                 return pdfData;
             }
@@ -47,7 +47,8 @@ namespace Mindee.Pdf
             }
         }
 
-        private static void ProcessPages(IDocReader docReader, SKDocument document, int imageQuality, bool disableSourceText)
+        private static void ProcessPages(IDocReader docReader, SKDocument document, int imageQuality,
+            bool disableSourceText)
         {
             for (int i = 0; i < docReader.GetPageCount(); i++)
             {
@@ -68,6 +69,5 @@ namespace Mindee.Pdf
             PdfUtils.DrawPageContent(canvas, resizedBitmap, pageReader, disableSourceText);
             document.EndPage();
         }
-
     }
 }
