@@ -30,6 +30,7 @@ namespace Mindee.Pdf
                 Console.WriteLine(
                     "MINDEE WARNING: Found text inside of the provided PDF file. Compression operation aborted.");
                 Console.ResetColor();
+                return pdfData;
             }
 
             lock (DocLib.Instance)
