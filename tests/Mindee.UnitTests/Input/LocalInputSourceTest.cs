@@ -168,9 +168,9 @@ namespace Mindee.UnitTests.Input
         }
 
         [Fact]
-        public void Pdf_Resize_From_InputSource()
+        public void Pdf_Compress_From_InputSource()
         {
-            var pdfResizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
+                var pdfResizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
             pdfResizeInput.Compress(75);
             File.WriteAllBytes("Resources/output/resize_indirect.pdf", pdfResizeInput.FileBytes);
             var initialFileInfo = new FileInfo("Resources/products/invoice_splitter/default_sample.pdf");
@@ -179,7 +179,7 @@ namespace Mindee.UnitTests.Input
         }
 
         [Fact]
-        public void Pdf_Resize_From_Compressor()
+        public void Pdf_Compress_From_Compressor()
         {
             var pdfResizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
             var resizes = new List<byte[]>
