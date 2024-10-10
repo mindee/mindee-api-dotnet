@@ -168,7 +168,7 @@ namespace Mindee.UnitTests.Input
         }
 
         [Fact]
-        public void Pdf_Resize_From_InputSource()
+        public void Pdf_Compress_From_InputSource()
         {
             var pdfResizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
             pdfResizeInput.Compress(75);
@@ -179,15 +179,15 @@ namespace Mindee.UnitTests.Input
         }
 
         [Fact]
-        public void Pdf_Resize_From_Compressor()
+        public void Pdf_Compress_From_Compressor()
         {
-            var pdfRersizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
+            var pdfResizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
             var resizes = new List<byte[]>
             {
-                PdfCompressor.CompressPdf(pdfRersizeInput.FileBytes),
-                PdfCompressor.CompressPdf(pdfRersizeInput.FileBytes, 75),
-                PdfCompressor.CompressPdf(pdfRersizeInput.FileBytes, 50),
-                PdfCompressor.CompressPdf(pdfRersizeInput.FileBytes, 10)
+                PdfCompressor.CompressPdf(pdfResizeInput.FileBytes),
+                PdfCompressor.CompressPdf(pdfResizeInput.FileBytes, 75),
+                PdfCompressor.CompressPdf(pdfResizeInput.FileBytes, 50),
+                PdfCompressor.CompressPdf(pdfResizeInput.FileBytes, 10)
             };
             File.WriteAllBytes("Resources/output/compress85.pdf", resizes[0]);
             File.WriteAllBytes("Resources/output/compress75.pdf", resizes[1]);
@@ -208,7 +208,7 @@ namespace Mindee.UnitTests.Input
         }
 
         [Fact]
-        public void Pdf_Resize_With_Text_Keeps_Text()
+        public void Pdf_Compress_With_Text_Keeps_Text()
         {
             lock (DocLib.Instance)
             {
@@ -218,12 +218,21 @@ namespace Mindee.UnitTests.Input
                 using var compressedReader = DocLib.Instance.GetDocReader(compressedWithText, new PageDimensions(1));
                 Assert.Equal(originalReader.GetPageCount(), compressedReader.GetPageCount());
 
-                Assert.NotEqual(originalReader.GetHashCode(), compressedReader.GetHashCode());
                 for (var i = 0; i < originalReader.GetPageCount(); i++)
                 {
                     Assert.Equal(originalReader.GetPageReader(i).GetText(), compressedReader.GetPageReader(i).GetText());
-                    Assert.NotEqual(originalReader.GetPageReader(i).GetHashCode(), compressedReader.GetPageReader(i).GetHashCode());
                 }
+            }
+        }
+
+        [Fact]
+        public void Pdf_Compress_With_Text_Does_Not_Compress()
+        {
+            lock (DocLib.Instance)
+            {
+                var initialWithText = new LocalInputSource("Resources/file_types/pdf/multipage.pdf");
+                var compressedWithText = PdfCompressor.CompressPdf(initialWithText.FileBytes, 50);
+                Assert.Equal(compressedWithText, initialWithText.FileBytes);
             }
         }
     }

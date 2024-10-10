@@ -179,7 +179,7 @@ namespace Mindee.Input
             {
                 return false;
             }
-            return PdfCompressor.HasSourceText(FileBytes);
+            return PdfUtils.HasSourceText(FileBytes);
         }
     }
 }
