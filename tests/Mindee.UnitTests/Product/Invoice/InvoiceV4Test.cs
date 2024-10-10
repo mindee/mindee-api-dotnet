@@ -13,9 +13,11 @@ namespace Mindee.UnitTests.Product.Invoice
             var docPrediction = response.Document.Inference.Prediction;
             Assert.Null(docPrediction.Locale.Value);
             Assert.Null(docPrediction.InvoiceNumber.Value);
+            Assert.Null(docPrediction.PoNumber.Value);
             Assert.Empty(docPrediction.ReferenceNumbers);
             Assert.Null(docPrediction.Date.Value);
             Assert.Null(docPrediction.DueDate.Value);
+            Assert.Null(docPrediction.PaymentDate.Value);
             Assert.Null(docPrediction.TotalNet.Value);
             Assert.Null(docPrediction.TotalAmount.Value);
             Assert.Null(docPrediction.TotalTax.Value);

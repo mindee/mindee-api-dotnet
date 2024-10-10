@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Invoice
 {
     /// <summary>
-    /// Invoice API version 4.7 document data.
+    /// Invoice API version 4.8 document data.
     /// </summary>
     public class InvoiceV4Document : IPrediction
     {
@@ -78,6 +78,18 @@ namespace Mindee.Product.Invoice
         /// </summary>
         [JsonPropertyName("locale")]
         public Locale Locale { get; set; }
+
+        /// <summary>
+        /// The date on which the payment is due/ was full-filled.
+        /// </summary>
+        [JsonPropertyName("payment_date")]
+        public DateField PaymentDate { get; set; }
+
+        /// <summary>
+        /// The purchase order number.
+        /// </summary>
+        [JsonPropertyName("po_number")]
+        public StringField PoNumber { get; set; }
 
         /// <summary>
         /// List of Reference numbers, including PO number.
@@ -178,9 +190,11 @@ namespace Mindee.Product.Invoice
             StringBuilder result = new StringBuilder();
             result.Append($":Locale: {Locale}\n");
             result.Append($":Invoice Number: {InvoiceNumber}\n");
+            result.Append($":Purchase Order Number: {PoNumber}\n");
             result.Append($":Reference Numbers: {referenceNumbers}\n");
             result.Append($":Purchase Date: {Date}\n");
             result.Append($":Due Date: {DueDate}\n");
+            result.Append($":Payment Date: {PaymentDate}\n");
             result.Append($":Total Net: {TotalNet}\n");
             result.Append($":Total Amount: {TotalAmount}\n");
             result.Append($":Total Tax: {TotalTax}\n");

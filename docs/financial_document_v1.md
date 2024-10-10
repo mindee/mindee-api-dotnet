@@ -386,6 +386,20 @@ foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
 System.Console.WriteLine(result.Document.Inference.Prediction.Locale.Value);
 ```
 
+## Payment Date
+**PaymentDate**: The date on which the payment is due / fullfilled.
+
+```csharp
+System.Console.WriteLine(result.Document.Inference.Prediction.PaymentDate.Value);
+```
+
+## Purchase Order Number
+**PoNumber**: The purchase order number.
+
+```csharp
+System.Console.WriteLine(result.Document.Inference.Prediction.PoNumber.Value);
+```
+
 ## Receipt Number
 **ReceiptNumber**: The receipt number or identifier only if document is a receipt.
 
