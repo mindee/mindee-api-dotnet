@@ -1,5 +1,15 @@
 # Mindee .NET API Library Changelog
 
+## v3.20.0 - 2024-10-11
+### Changes
+* :sparkles: add support for Financial Document v1.10
+* :sparkles: add support for Invoice v4.8
+* :sparkles: add support for image compression & resize
+* :sparkles: add support for PDF compression
+### Fixes
+* :arrow_up: bump dependencies
+
+
 ## v3.19.0 - 2024-09-18
 ### Changes
 * :sparkles: add support for BillOfLadingV1
