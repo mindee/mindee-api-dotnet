@@ -14,6 +14,11 @@ namespace Mindee.Parsing.Standard
         /// </summary>
         public DateTime? DateObject { get; set; }
 
+        /// <summary>
+        /// Whether the field was computed or retrieved directly from the document.
+        /// </summary>
+        public Boolean? IsComputed { get; set; }
+
         private readonly ILogger _logger;
 
         /// <summary>
@@ -23,13 +28,17 @@ namespace Mindee.Parsing.Standard
         /// <param name="confidence"><see cref="BaseField.Confidence"/></param>
         /// <param name="polygon"><see cref="BaseField.Polygon"/></param>
         /// <param name="pageId"><see cref="BaseField.PageId"/></param>
+        /// <param name="isComputed"><see cref="BaseField.PageId"/></param>
         public DateField(
             string value,
             double? confidence,
             Polygon polygon,
-            int? pageId = null) : base(value, null, confidence, polygon, pageId)
+            int? pageId = null,
+            Boolean? isComputed = null
+        ) : base(value, null, confidence, polygon, pageId)
         {
             _logger = MindeeLogger.GetLogger();
+            this.IsComputed = isComputed;
 
             if (!String.IsNullOrEmpty(Value))
             {

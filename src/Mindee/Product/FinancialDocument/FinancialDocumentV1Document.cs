@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.FinancialDocument
 {
     /// <summary>
-    /// Financial Document API version 1.9 document data.
+    /// Financial Document API version 1.10 document data.
     /// </summary>
     public class FinancialDocumentV1Document : IPrediction
     {
@@ -90,6 +90,18 @@ namespace Mindee.Product.FinancialDocument
         /// </summary>
         [JsonPropertyName("locale")]
         public Locale Locale { get; set; }
+
+        /// <summary>
+        /// The date on which the payment is due / fullfilled.
+        /// </summary>
+        [JsonPropertyName("payment_date")]
+        public DateField PaymentDate { get; set; }
+
+        /// <summary>
+        /// The purchase order number.
+        /// </summary>
+        [JsonPropertyName("po_number")]
+        public StringField PoNumber { get; set; }
 
         /// <summary>
         /// The receipt number or identifier only if document is a receipt.
@@ -214,11 +226,13 @@ namespace Mindee.Product.FinancialDocument
             StringBuilder result = new StringBuilder();
             result.Append($":Locale: {Locale}\n");
             result.Append($":Invoice Number: {InvoiceNumber}\n");
+            result.Append($":Purchase Order Number: {PoNumber}\n");
             result.Append($":Receipt Number: {ReceiptNumber}\n");
             result.Append($":Document Number: {DocumentNumber}\n");
             result.Append($":Reference Numbers: {referenceNumbers}\n");
             result.Append($":Purchase Date: {Date}\n");
             result.Append($":Due Date: {DueDate}\n");
+            result.Append($":Payment Date: {PaymentDate}\n");
             result.Append($":Total Net: {TotalNet}\n");
             result.Append($":Total Amount: {TotalAmount}\n");
             result.Append($":Taxes:{Taxes}");
