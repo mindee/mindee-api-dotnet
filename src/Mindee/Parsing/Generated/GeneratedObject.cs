@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
@@ -62,7 +63,8 @@ namespace Mindee.Parsing.Generated
                 this["value"].GetString(),
                 this.Confidence(),
                 this.Polygon(),
-                this.PageId());
+                this.PageId(),
+                this.IsComputed());
         }
 
         /// <summary>
@@ -111,6 +113,18 @@ namespace Mindee.Parsing.Generated
         }
 
         /// <summary>
+        /// Attempts to represent the specified key as a boolean.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>The value as a boolean or null if the key doesn't exist.</returns>
+        public bool? TryGetBool(string key)
+        {
+            if (this.ContainsKey(key))
+                return this[key].GetBoolean();
+            return null;
+        }
+
+        /// <summary>
         /// Get the page ID, if present.
         /// </summary>
         /// <returns>The page ID as an int, or null.</returns>
@@ -126,6 +140,15 @@ namespace Mindee.Parsing.Generated
         public double? Confidence()
         {
             return this.TryGetDouble("confidence");
+        }
+
+        /// <summary>
+        /// Get the 'is_computed' key, if present.
+        /// </summary>
+        /// <returns>True if the field was computed, false if it was present, null otherwise.</returns>
+        public bool? IsComputed()
+        {
+            return this.TryGetBool("is_computed");
         }
 
         /// <summary>
