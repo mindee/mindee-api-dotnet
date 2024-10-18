@@ -75,8 +75,8 @@ namespace Mindee.Extensions.DependencyInjection
             this IServiceCollection services,
             string sectionName = "Mindee")
         {
-            services.TryAddTransient<MindeeClient>();
-            services.TryAddTransient<IHttpApi, MindeeApi>();
+            services.AddSingleton<MindeeClient>();
+            services.AddSingleton<IHttpApi, MindeeApi>();
             services.AddOptions<MindeeSettings>()
                 .BindConfiguration(sectionName)
                 .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee api key is missing");
@@ -96,7 +96,7 @@ namespace Mindee.Extensions.DependencyInjection
             this IServiceCollection services)
             where TPdfOperationImplementation : class, IPdfOperation, new()
         {
-            services.TryAddTransient<MindeeClient>();
+            services.AddSingleton<MindeeClient>();
             services.AddSingleton<IPdfOperation, TPdfOperationImplementation>();
 
             return services;
