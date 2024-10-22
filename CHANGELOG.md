@@ -1,5 +1,10 @@
 # Mindee .NET API Library Changelog
 
+## v3.20.1 - 2024-10-21
+### Fixes
+:bug: fix worker services losing API settings & API key after an HTTP call
+
+
 ## v3.20.0 - 2024-10-11
 ### Changes
 * :sparkles: add support for Financial Document v1.10
