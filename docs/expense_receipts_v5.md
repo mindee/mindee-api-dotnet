@@ -37,6 +37,35 @@ System.Console.WriteLine(response.Document.ToString());
 
 ```
 
+You can also call this product asynchronously:
+
+```csharp
+using Mindee;
+using Mindee.Input;
+using Mindee.Product.Receipt;
+
+string apiKey = "my-api-key";
+string filePath = "/path/to/the/file.ext";
+
+// Construct a new client
+MindeeClient mindeeClient = new MindeeClient(apiKey);
+
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
+var inputSource = new LocalInputSource(filePath);
+
+// Call the product asynchronously with auto-polling
+var response = await mindeeClient
+    .EnqueueAndParseAsync<ReceiptV5>(inputSource);
+
+// Print a summary of all the predictions
+System.Console.WriteLine(response.Document.ToString());
+
+// Print only the document-level predictions
+// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
+
+```
+
 **Output (RST):**
 ```rst
 ########
@@ -54,7 +83,7 @@ Prediction
 ==========
 :Expense Locale: en-GB; en; GB; GBP;
 :Purchase Category: food
-:Purchase Subcategory:
+:Purchase Subcategory: restaurant
 :Document Type: EXPENSE RECEIPT
 :Purchase Date: 2016-02-26
 :Purchase Time: 15:20
@@ -88,7 +117,7 @@ Page 0
 ------
 :Expense Locale: en-GB; en; GB; GBP;
 :Purchase Category: food
-:Purchase Subcategory:
+:Purchase Subcategory: restaurant
 :Document Type: EXPENSE RECEIPT
 :Purchase Date: 2016-02-26
 :Purchase Time: 15:20
