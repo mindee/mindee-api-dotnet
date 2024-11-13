@@ -9,7 +9,7 @@ namespace Mindee.UnitTests
         public void InvalidPollingOptions_MustFail()
         {
             Assert.Throws<MindeeException>(
-                () => _ = new AsyncPollingOptions(initialDelaySec: 1)
+                () => _ = new AsyncPollingOptions(initialDelaySec: 0.5)
                 );
             Assert.Throws<MindeeException>(
                 () => _ = new AsyncPollingOptions(intervalSec: 0.5)
