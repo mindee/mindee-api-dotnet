@@ -25,6 +25,12 @@ namespace Mindee.Product.Resume
         public string Department { get; set; }
 
         /// <summary>
+        /// The description of the professional experience as written in the document.
+        /// </summary>
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
+        /// <summary>
         /// The name of the company or organization.
         /// </summary>
         [JsonPropertyName("employer")]
@@ -66,6 +72,7 @@ namespace Mindee.Product.Resume
             {
                 {"ContractType", SummaryHelper.FormatString(ContractType, 15)},
                 {"Department", SummaryHelper.FormatString(Department, 10)},
+                {"Description", SummaryHelper.FormatString(Description, 36)},
                 {"Employer", SummaryHelper.FormatString(Employer, 25)},
                 {"EndMonth", SummaryHelper.FormatString(EndMonth)},
                 {"EndYear", SummaryHelper.FormatString(EndYear)},
@@ -85,6 +92,8 @@ namespace Mindee.Product.Resume
               + String.Format("{0,-15}", printable["ContractType"])
               + " | "
               + String.Format("{0,-10}", printable["Department"])
+              + " | "
+              + String.Format("{0,-36}", printable["Description"])
               + " | "
               + String.Format("{0,-25}", printable["Employer"])
               + " | "
@@ -110,6 +119,8 @@ namespace Mindee.Product.Resume
               + printable["ContractType"]
               + ", Department: "
               + printable["Department"]
+              + ", Description: "
+              + printable["Description"]
               + ", Employer: "
               + printable["Employer"]
               + ", End Month: "
@@ -130,6 +141,7 @@ namespace Mindee.Product.Resume
             {
                 {"ContractType", SummaryHelper.FormatString(ContractType)},
                 {"Department", SummaryHelper.FormatString(Department)},
+                {"Description", SummaryHelper.FormatString(Description)},
                 {"Employer", SummaryHelper.FormatString(Employer)},
                 {"EndMonth", SummaryHelper.FormatString(EndMonth)},
                 {"EndYear", SummaryHelper.FormatString(EndYear)},
@@ -154,11 +166,12 @@ namespace Mindee.Product.Resume
             {
                 return "\n";
             }
-            int[] columnSizes = { 17, 12, 27, 11, 10, 22, 13, 12 };
+            int[] columnSizes = { 17, 12, 38, 27, 11, 10, 22, 13, 12 };
             StringBuilder outStr = new StringBuilder("\n");
             outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '-') + "  ");
             outStr.Append("| Contract Type   ");
             outStr.Append("| Department ");
+            outStr.Append("| Description                          ");
             outStr.Append("| Employer                  ");
             outStr.Append("| End Month ");
             outStr.Append("| End Year ");
