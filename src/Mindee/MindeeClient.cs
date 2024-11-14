@@ -650,6 +650,38 @@ namespace Mindee
         }
 
         /// <summary>
+        /// Send a remote file to a workflow execution.
+        /// </summary>
+        /// <param name="workflowId">The workflow id.</param>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
+        /// The response object will be instantiated based on this parameter.</typeparam>
+        /// <returns><see cref="WorkflowResponse{TInferenceModel}"/></returns>
+        public async Task<WorkflowResponse<TInferenceModel>> ExecuteWorkflowAsync<TInferenceModel>(
+            string workflowId,
+            UrlInputSource inputSource
+            , PredictOptions predictOptions = null)
+            where TInferenceModel : class, new()
+        {
+            _logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
+
+            if (predictOptions == null)
+            {
+                predictOptions = new PredictOptions();
+            }
+
+            return await _mindeeApi.ExecutionQueuePost<TInferenceModel>(
+                workflowId,
+                new PredictParameter(
+                    localSource: null,
+                    urlSource: inputSource,
+                    allWords: predictOptions.AllWords,
+                    fullText: predictOptions.FullText,
+                    cropper: predictOptions.Cropper));
+        }
+
+        /// <summary>
         /// Load a local prediction.
         /// Typically used when wanting to load from a webhook callback.
         /// However, any kind of Mindee response may be loaded.
