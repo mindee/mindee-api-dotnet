@@ -1,5 +1,15 @@
 # Mindee .NET API Library Changelog
 
+## v3.21.0 - 2024-11-14
+### Changes
+* :sparkles: add support for business cards V1
+* :sparkles: add support for delivery note V1.1
+* :sparkles: add support for indian passport V1
+* :sparkles: add support for resume V1.1
+### Fixes
+* :recycle: adjust default values for async delays
+
+
 ## v3.20.1 - 2024-10-21
 ### Fixes
 :bug: fix worker services losing API settings & API key after an HTTP call
