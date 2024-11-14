@@ -1,0 +1,23 @@
+using Mindee;
+using Mindee.Input;
+using Mindee.Product.Generated;
+
+string apiKey = "my-api-key";
+string filePath = "/path/to/the/file.ext";
+string workflowId = "workflow-id";
+
+// Construct a new client
+MindeeClient mindeeClient = new MindeeClient(apiKey);
+
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
+var inputSource = new LocalInputSource(filePath);
+
+// Call the API and parse the input
+var response = await mindeeClient.ExecuteWorkflowAsync<GeneratedV1>(workflowId, inputSource);
+
+// Print the execution ID to make sure it worked.
+System.Console.WriteLine(response.Execution.Id);
+
+// Print the inference result.
+// System.Console.WriteLine(response.Execution.Inference);
