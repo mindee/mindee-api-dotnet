@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Invoice
 {
     /// <summary>
-    /// Invoice API version 4.8 document data.
+    /// Invoice API version 4.9 document data.
     /// </summary>
     public class InvoiceV4Document : IPrediction
     {
