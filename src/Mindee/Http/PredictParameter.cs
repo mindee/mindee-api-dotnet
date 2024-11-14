@@ -38,13 +38,13 @@ namespace Mindee.Http
         public bool Cropper { get; }
 
         /// <summary>
-        ///
+        /// Prediction parameters for requests.
         /// </summary>
-        /// <param name="localSource"><see cref="LocalSource"/></param>
-        /// <param name="urlSource"><see cref="UrlSource"/></param>
-        /// <param name="allWords"><see cref="AllWords"/></param>
-        /// <param name="fullText"><see cref="FullText"/></param>
-        /// <param name="cropper"><see cref="Cropper"/></param>
+        /// <param name="localSource">Local input source containing the file.<see cref="LocalSource"/></param>
+        /// <param name="urlSource">Source URL to use.<see cref="UrlSource"/></param>
+        /// <param name="allWords">Whether to include the full OCR response in the payload (compatible APIs only).<see cref="AllWords"/></param>
+        /// <param name="fullText">Whether to include the full text in the payload (compatible APIs only)<see cref="FullText"/></param>
+        /// <param name="cropper">Whether to crop the document before enqueuing on the API.<see cref="Cropper"/></param>
         public PredictParameter(
             LocalInputSource localSource,
             UrlInputSource urlSource,

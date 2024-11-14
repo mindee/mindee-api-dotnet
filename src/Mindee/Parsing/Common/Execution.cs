@@ -19,7 +19,8 @@ namespace Mindee.Parsing.Common
         /// The time at which the execution started.
         /// </summary>
         [JsonPropertyName("created_at")]
-        public DateTime CreatedAt { get; set; }
+        [JsonConverter(typeof(DateTimeJsonConverter))]
+        public DateTime? CreatedAt { get; set; }
 
         /// <summary>
         /// File representation within a workflow execution.
@@ -49,13 +50,15 @@ namespace Mindee.Parsing.Common
         /// The time at which the file was tagged as reviewed.
         /// </summary>
         [JsonPropertyName("reviewed_at")]
-        public DateTime ReviewedAt { get; set; }
+        [JsonConverter(typeof(DateTimeJsonConverter))]
+        public DateTime? ReviewedAt { get; set; }
 
         /// <summary>
         /// The time at which the file was uploaded to a workflow.
         /// </summary>
         [JsonPropertyName("available_at")]
-        public DateTime AvailableAt { get; set; }
+        [JsonConverter(typeof(DateTimeJsonConverter))]
+        public DateTime? AvailableAt { get; set; }
 
         /// <summary>
         /// Reviewed fields and values.
@@ -79,7 +82,8 @@ namespace Mindee.Parsing.Common
         /// The time at which the file was uploaded to a workflow.
         /// </summary>
         [JsonPropertyName("uploaded_at")]
-        public DateTime UploadedAt { get; set; }
+        [JsonConverter(typeof(DateTimeJsonConverter))]
+        public DateTime? UploadedAt { get; set; }
 
         /// <summary>
         /// Identifier for the workflow.

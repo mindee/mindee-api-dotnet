@@ -43,5 +43,16 @@ namespace Mindee.Http
             string jobId
             , CustomEndpoint endpoint = null)
             where TModel : class, new();
+
+        /// <summary>
+        /// Send a document to a workflow.
+        /// </summary>
+        /// <param name="workflowId">The ID of the workflow.</param>
+        /// <param name="predictParameter"><see cref="PredictParameter"/></param>
+        /// <typeparam name="TModel">Document type.</typeparam>
+        Task<WorkflowResponse<TModel>> ExecutionQueuePost<TModel>(
+            string workflowId,
+            PredictParameter predictParameter)
+            where TModel : class, new();
     }
 }

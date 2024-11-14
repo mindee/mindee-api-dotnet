@@ -115,6 +115,23 @@ namespace Mindee.Http
             return handledResponse;
         }
 
+        public async Task<WorkflowResponse<TModel>> ExecutionQueuePost<TModel>(
+            string workflowId,
+            PredictParameter predictParameter)
+            where TModel : class, new()
+        {
+            var request = new RestRequest(
+                $"v1/workflows/{workflowId}/executions"
+                , Method.Post);
+
+            AddPredictRequestParameters(predictParameter, request);
+
+            _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
+
+            var response = await _httpClient.ExecutePostAsync(request);
+            return ResponseHandler<WorkflowResponse<TModel>>(response);
+        }
+
         private static void AddPredictRequestParameters(PredictParameter predictParameter, RestRequest request)
         {
             if (predictParameter.LocalSource != null)

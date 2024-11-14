@@ -610,6 +610,46 @@ namespace Mindee
         }
 
         /// <summary>
+        /// Send a local file to a workflow execution.
+        /// </summary>
+        /// <param name="workflowId">The workflow id.</param>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <param name="pageOptions"><see cref="PageOptions"/></param>
+        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
+        /// The response object will be instantiated based on this parameter.</typeparam>
+        /// <returns><see cref="WorkflowResponse{TInferenceModel}"/></returns>
+        public async Task<WorkflowResponse<TInferenceModel>> ExecuteWorkflowAsync<TInferenceModel>(
+            string workflowId,
+            LocalInputSource inputSource
+            , PredictOptions predictOptions = null
+            , PageOptions pageOptions = null)
+            where TInferenceModel : class, new()
+        {
+            _logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
+
+            if (pageOptions != null && inputSource.IsPdf())
+            {
+                inputSource.FileBytes = _pdfOperation.Split(
+                    new SplitQuery(inputSource.FileBytes, pageOptions)).File;
+            }
+
+            if (predictOptions == null)
+            {
+                predictOptions = new PredictOptions();
+            }
+
+            return await _mindeeApi.ExecutionQueuePost<TInferenceModel>(
+                workflowId,
+                new PredictParameter(
+                    localSource: inputSource,
+                    urlSource: null,
+                    allWords: predictOptions.AllWords,
+                    fullText: predictOptions.FullText,
+                    cropper: predictOptions.Cropper));
+        }
+
+        /// <summary>
         /// Load a local prediction.
         /// Typically used when wanting to load from a webhook callback.
         /// However, any kind of Mindee response may be loaded.
