@@ -639,7 +639,7 @@ namespace Mindee
                 predictOptions = new PredictOptions();
             }
 
-            return await _mindeeApi.ExecutionQueuePost<TInferenceModel>(
+            return await _mindeeApi.PostWorkflowExecution<TInferenceModel>(
                 workflowId,
                 new PredictParameter(
                     localSource: inputSource,
@@ -671,7 +671,7 @@ namespace Mindee
                 predictOptions = new PredictOptions();
             }
 
-            return await _mindeeApi.ExecutionQueuePost<TInferenceModel>(
+            return await _mindeeApi.PostWorkflowExecution<TInferenceModel>(
                 workflowId,
                 new PredictParameter(
                     localSource: null,

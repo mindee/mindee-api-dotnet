@@ -30,7 +30,7 @@ namespace Mindee.UnitTests.Workflow
             var file = new FileInfo("src/test/resources/file_types/pdf/blank_1.pdf");
             var workflowResponse = new WorkflowResponse<GeneratedV1> { Execution = new Execution<GeneratedV1>(), ApiRequest = null };
 
-            mindeeApi.Setup(api => api.ExecutionQueuePost<GeneratedV1>(
+            mindeeApi.Setup(api => api.PostWorkflowExecution<GeneratedV1>(
                     It.IsAny<string>(),
                     It.IsAny<PredictParameter>()))
                 .ReturnsAsync(workflowResponse);
@@ -42,7 +42,7 @@ namespace Mindee.UnitTests.Workflow
 
             // Assert
             Assert.NotNull(execution);
-            mindeeApi.Verify(api => api.ExecutionQueuePost<GeneratedV1>(
+            mindeeApi.Verify(api => api.PostWorkflowExecution<GeneratedV1>(
                 It.IsAny<string>(),
                 It.IsAny<PredictParameter>()), Times.Once);
         }

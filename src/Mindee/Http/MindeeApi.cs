@@ -115,7 +115,7 @@ namespace Mindee.Http
             return handledResponse;
         }
 
-        public async Task<WorkflowResponse<TModel>> ExecutionQueuePost<TModel>(
+        public async Task<WorkflowResponse<TModel>> PostWorkflowExecution<TModel>(
             string workflowId,
             PredictParameter predictParameter)
             where TModel : class, new()
