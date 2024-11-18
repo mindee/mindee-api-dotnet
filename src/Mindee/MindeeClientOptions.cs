@@ -102,4 +102,42 @@ namespace Mindee
             IntervalMilliSec = (int)Math.Floor(IntervalSec * 1000);
         }
     }
+
+    /// <summary>
+    /// Options for workflow executions.
+    /// </summary>
+    public sealed class WorkflowOptions
+    {
+
+        /// <summary>
+        /// Alias to give to the file.
+        /// </summary>
+        public string Alias { get; }
+
+
+        /// <summary>
+        /// Priority to give to the execution.
+        /// </summary>
+        public string Priority { get; }
+
+
+        /// <summary>
+        /// Whether to include the full text data for async APIs.
+        /// This performs a full OCR operation on the server and will increase response time and payload size.
+        /// </summary>
+        public bool FullText { get; }
+
+        /// <summary>
+        /// Options for workflow executions.
+        /// </summary>
+        /// <param name="alias"></param>
+        /// <param name="priority"></param>
+        /// <param name="fullText"></param>
+        public WorkflowOptions(string alias = null, string priority = null, bool fullText = false)
+        {
+            Alias = alias;
+            Priority = priority;
+            FullText = fullText;
+        }
+    }
 }

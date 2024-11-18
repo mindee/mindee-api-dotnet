@@ -48,11 +48,11 @@ namespace Mindee.Http
         /// Send a document to a workflow.
         /// </summary>
         /// <param name="workflowId">The ID of the workflow.</param>
-        /// <param name="predictParameter"><see cref="PredictParameter"/></param>
+        /// <param name="workflowParameter"><see cref="PredictParameter"/></param>
         /// <typeparam name="TModel">Document type.</typeparam>
         Task<WorkflowResponse<TModel>> PostWorkflowExecution<TModel>(
             string workflowId,
-            PredictParameter predictParameter)
+            WorkflowParameter workflowParameter)
             where TModel : class, new();
     }
 }

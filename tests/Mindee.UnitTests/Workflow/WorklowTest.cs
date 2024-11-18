@@ -32,11 +32,11 @@ namespace Mindee.UnitTests.Workflow
 
             mindeeApi.Setup(api => api.PostWorkflowExecution<GeneratedV1>(
                     It.IsAny<string>(),
-                    It.IsAny<PredictParameter>()))
+                    It.IsAny<WorkflowParameter>()))
                 .ReturnsAsync(workflowResponse);
 
             // Act
-            var execution = await client.ExecuteWorkflowAsync<GeneratedV1>(
+            var execution = await client.ExecuteWorkflowAsync(
                 "",
                 new LocalInputSource(file));
 
@@ -44,7 +44,7 @@ namespace Mindee.UnitTests.Workflow
             Assert.NotNull(execution);
             mindeeApi.Verify(api => api.PostWorkflowExecution<GeneratedV1>(
                 It.IsAny<string>(),
-                It.IsAny<PredictParameter>()), Times.Once);
+                It.IsAny<WorkflowParameter>()), Times.Once);
         }
 
         [Fact]
@@ -54,10 +54,10 @@ namespace Mindee.UnitTests.Workflow
             var jsonFile = File.ReadAllText("src/test/resources/workflows/success.json");
             var mockResponse = JsonSerializer.Deserialize<WorkflowResponse<GeneratedV1>>(jsonFile);
 
-            mockedClient.Setup(mindeeClient => mindeeClient.ExecuteWorkflowAsync<GeneratedV1>(
+            mockedClient.Setup(mindeeClient => mindeeClient.ExecuteWorkflowAsync(
                     It.IsAny<string>(),
                     It.IsAny<LocalInputSource>(),
-                    It.IsAny<PredictOptions>(),
+                    It.IsAny<WorkflowOptions>(),
                     It.IsAny<PageOptions>()))
                 .ReturnsAsync(mockResponse);
 
@@ -66,7 +66,7 @@ namespace Mindee.UnitTests.Workflow
             var inputSource = new LocalInputSource(filePath);
 
             // Act
-            var response = await mockedClient.Object.ExecuteWorkflowAsync<GeneratedV1>(workflowId, inputSource);
+            var response = await mockedClient.Object.ExecuteWorkflowAsync(workflowId, inputSource);
 
             // Assert
             Assert.NotNull(response);
@@ -86,10 +86,10 @@ namespace Mindee.UnitTests.Workflow
                 response.Execution.UploadedAt?.ToString("yyyy-MM-ddTHH:mm:ss.ffffff"));
             Assert.Equal(workflowId, response.Execution.WorkflowId);
 
-            mockedClient.Verify(mindeeClient => mindeeClient.ExecuteWorkflowAsync<GeneratedV1>(
+            mockedClient.Verify(mindeeClient => mindeeClient.ExecuteWorkflowAsync(
                 workflowId,
                 It.Is<LocalInputSource>(source => source.Filename == inputSource.Filename),
-                It.IsAny<PredictOptions>(),
+                It.IsAny<WorkflowOptions>(),
                 It.IsAny<PageOptions>()), Times.Once);
         }
 
@@ -100,10 +100,10 @@ namespace Mindee.UnitTests.Workflow
             var jsonFile = File.ReadAllText("src/test/resources/workflows/success_low_priority.json");
             var mockResponse = JsonSerializer.Deserialize<WorkflowResponse<GeneratedV1>>(jsonFile);
 
-            mockedClient.Setup(mindeeClient => mindeeClient.ExecuteWorkflowAsync<GeneratedV1>(
+            mockedClient.Setup(mindeeClient => mindeeClient.ExecuteWorkflowAsync(
                     It.IsAny<string>(),
                     It.IsAny<LocalInputSource>(),
-                    It.IsAny<PredictOptions>(),
+                    It.IsAny<WorkflowOptions>(),
                     It.IsAny<PageOptions>()))
                 .ReturnsAsync(mockResponse);
 
@@ -112,7 +112,7 @@ namespace Mindee.UnitTests.Workflow
             var inputSource = new LocalInputSource(filePath);
 
             // Act
-            var response = await mockedClient.Object.ExecuteWorkflowAsync<GeneratedV1>(workflowId, inputSource);
+            var response = await mockedClient.Object.ExecuteWorkflowAsync(workflowId, inputSource);
 
             // Assert
             Assert.NotNull(response);
@@ -132,10 +132,10 @@ namespace Mindee.UnitTests.Workflow
                 response.Execution.UploadedAt?.ToString("yyyy-MM-ddTHH:mm:ss.ffffff"));
             Assert.Equal(workflowId, response.Execution.WorkflowId);
 
-            mockedClient.Verify(mindeeClient => mindeeClient.ExecuteWorkflowAsync<GeneratedV1>(
+            mockedClient.Verify(mindeeClient => mindeeClient.ExecuteWorkflowAsync(
                 workflowId,
                 It.Is<LocalInputSource>(source => source.Filename == inputSource.Filename),
-                It.IsAny<PredictOptions>(),
+                It.IsAny<WorkflowOptions>(),
                 It.IsAny<PageOptions>()), Times.Once);
         }
     }

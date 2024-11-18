@@ -614,19 +614,16 @@ namespace Mindee
         /// </summary>
         /// <param name="workflowId">The workflow id.</param>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <param name="workflowOptions"><see cref="PageOptions"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
-        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
-        /// The response object will be instantiated based on this parameter.</typeparam>
         /// <returns><see cref="WorkflowResponse{TInferenceModel}"/></returns>
-        public async Task<WorkflowResponse<TInferenceModel>> ExecuteWorkflowAsync<TInferenceModel>(
+        public async Task<WorkflowResponse<GeneratedV1>> ExecuteWorkflowAsync(
             string workflowId,
-            LocalInputSource inputSource
-            , PredictOptions predictOptions = null
-            , PageOptions pageOptions = null)
-            where TInferenceModel : class, new()
+            LocalInputSource inputSource,
+            WorkflowOptions workflowOptions = null,
+            PageOptions pageOptions = null)
         {
-            _logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
+            _logger?.LogInformation("Workflow enqueing {} ...", inputSource.Filename);
 
             if (pageOptions != null && inputSource.IsPdf())
             {
@@ -634,19 +631,20 @@ namespace Mindee
                     new SplitQuery(inputSource.FileBytes, pageOptions)).File;
             }
 
-            if (predictOptions == null)
+            if (workflowOptions == null)
             {
-                predictOptions = new PredictOptions();
+                workflowOptions = new WorkflowOptions();
             }
 
-            return await _mindeeApi.PostWorkflowExecution<TInferenceModel>(
+            return await _mindeeApi.PostWorkflowExecution<GeneratedV1>(
                 workflowId,
-                new PredictParameter(
+                new WorkflowParameter(
                     localSource: inputSource,
                     urlSource: null,
-                    allWords: predictOptions.AllWords,
-                    fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper));
+                    alias: workflowOptions.Alias,
+                    priority: workflowOptions.Priority,
+                    fullText: workflowOptions.FullText
+                ));
         }
 
         /// <summary>
@@ -654,31 +652,29 @@ namespace Mindee
         /// </summary>
         /// <param name="workflowId">The workflow id.</param>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="predictOptions"><see cref="PageOptions"/></param>
-        /// <typeparam name="TInferenceModel">Set the prediction model used to parse the document.
-        /// The response object will be instantiated based on this parameter.</typeparam>
+        /// <param name="workflowOptions"><see cref="PageOptions"/></param>
         /// <returns><see cref="WorkflowResponse{TInferenceModel}"/></returns>
-        public async Task<WorkflowResponse<TInferenceModel>> ExecuteWorkflowAsync<TInferenceModel>(
+        public async Task<WorkflowResponse<GeneratedV1>> ExecuteWorkflowAsync(
             string workflowId,
-            UrlInputSource inputSource
-            , PredictOptions predictOptions = null)
-            where TInferenceModel : class, new()
+            UrlInputSource inputSource,
+            WorkflowOptions workflowOptions = null)
         {
-            _logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
+            _logger?.LogInformation("Asynchronous parsing of {} ...", inputSource.FileUrl);
 
-            if (predictOptions == null)
+            if (workflowOptions == null)
             {
-                predictOptions = new PredictOptions();
+                workflowOptions = new WorkflowOptions();
             }
 
-            return await _mindeeApi.PostWorkflowExecution<TInferenceModel>(
+            return await _mindeeApi.PostWorkflowExecution<GeneratedV1>(
                 workflowId,
-                new PredictParameter(
+                new WorkflowParameter(
                     localSource: null,
                     urlSource: inputSource,
-                    allWords: predictOptions.AllWords,
-                    fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper));
+                    alias: workflowOptions.Alias,
+                    priority: workflowOptions.Priority,
+                    fullText: workflowOptions.FullText
+                ));
         }
 
         /// <summary>
