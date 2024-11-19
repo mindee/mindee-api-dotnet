@@ -1,3 +1,4 @@
+using System;
 using Mindee.Input;
 
 namespace Mindee.Http
@@ -16,7 +17,7 @@ namespace Mindee.Http
         /// <summary>
         /// Priority to give to the execution.
         /// </summary>
-        public string Priority { get; }
+        public ExecutionPriority? Priority { get; }
 
         /// <summary>
         /// Workflow parameters.
@@ -29,7 +30,7 @@ namespace Mindee.Http
         public WorkflowParameter(
             LocalInputSource localSource,
             UrlInputSource urlSource, bool fullText,
-            string alias, string priority) : base(localSource, urlSource,
+            string alias, ExecutionPriority? priority) : base(localSource, urlSource,
             fullText)
         {
             Alias = alias;

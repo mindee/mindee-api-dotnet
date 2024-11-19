@@ -77,7 +77,7 @@ namespace Mindee.UnitTests.Workflow
             Assert.Equal("default_sample.jpg", response.Execution.File.Name);
             Assert.Equal("8c75c035-e083-4e77-ba3b-7c3598bd1d8a", response.Execution.Id);
             Assert.Null(response.Execution.Inference);
-            Assert.Equal("medium", response.Execution.Priority);
+            Assert.Equal(ExecutionPriority.Medium, response.Execution.Priority);
             Assert.Null(response.Execution.ReviewedAt);
             Assert.Null(response.Execution.ReviewedPrediction);
             Assert.Equal("processing", response.Execution.Status);
@@ -123,7 +123,7 @@ namespace Mindee.UnitTests.Workflow
             Assert.Equal("default_sample.jpg", response.Execution.File.Name);
             Assert.Equal("b743e123-e18c-4b62-8a07-811a4f72afd3", response.Execution.Id);
             Assert.Null(response.Execution.Inference);
-            Assert.Equal("low", response.Execution.Priority);
+            Assert.Equal(ExecutionPriority.Low, response.Execution.Priority);
             Assert.Null(response.Execution.ReviewedAt);
             Assert.Null(response.Execution.ReviewedPrediction);
             Assert.Equal("processing", response.Execution.Status);

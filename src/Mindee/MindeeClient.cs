@@ -623,7 +623,7 @@ namespace Mindee
             WorkflowOptions workflowOptions = null,
             PageOptions pageOptions = null)
         {
-            _logger?.LogInformation("Workflow enqueing {} ...", inputSource.Filename);
+            _logger?.LogInformation("Sending '{}' to workflow '{}'...", inputSource.Filename, workflowId);
 
             if (pageOptions != null && inputSource.IsPdf())
             {
@@ -631,10 +631,7 @@ namespace Mindee
                     new SplitQuery(inputSource.FileBytes, pageOptions)).File;
             }
 
-            if (workflowOptions == null)
-            {
-                workflowOptions = new WorkflowOptions();
-            }
+            workflowOptions ??= new WorkflowOptions();
 
             return await _mindeeApi.PostWorkflowExecution<GeneratedV1>(
                 workflowId,

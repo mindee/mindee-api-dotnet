@@ -1,5 +1,6 @@
 using System;
 using Mindee.Exceptions;
+using Mindee.Input;
 
 namespace Mindee
 {
@@ -118,7 +119,7 @@ namespace Mindee
         /// <summary>
         /// Priority to give to the execution.
         /// </summary>
-        public string Priority { get; }
+        public ExecutionPriority? Priority { get; }
 
 
         /// <summary>
@@ -133,7 +134,7 @@ namespace Mindee
         /// <param name="alias"></param>
         /// <param name="priority"></param>
         /// <param name="fullText"></param>
-        public WorkflowOptions(string alias = null, string priority = null, bool fullText = false)
+        public WorkflowOptions(string alias = null, ExecutionPriority? priority = null, bool fullText = false)
         {
             Alias = alias;
             Priority = priority;

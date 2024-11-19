@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json.Serialization;
+using Mindee.Input;
 using Mindee.Product.Generated;
 
 namespace Mindee.Parsing.Common
@@ -44,7 +45,8 @@ namespace Mindee.Parsing.Common
         /// Priority of the execution.
         /// </summary>
         [JsonPropertyName("priority")]
-        public string Priority { get; set; }
+        [JsonConverter(typeof(StringEnumConverter<ExecutionPriority>))]
+        public ExecutionPriority Priority { get; set; }
 
         /// <summary>
         /// The time at which the file was tagged as reviewed.
