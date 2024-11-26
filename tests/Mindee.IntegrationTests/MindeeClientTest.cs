@@ -115,7 +115,6 @@ namespace Mindee.IntegrationTests
         public async Task Parse_File_Standard_FullText_MustSucceed()
         {
             var inputSource = new LocalInputSource("Resources/products/international_id/default_sample.jpg");
-            string refText = File.ReadAllText("Resources/extras/full_text_ocr/full_text_ocr.txt");
             var predictOptions = new PredictOptions(fullText: true);
             var response = await _mindeeClient.EnqueueAndParseAsync<InternationalIdV2>(inputSource, predictOptions);
             Assert.NotNull(response);
