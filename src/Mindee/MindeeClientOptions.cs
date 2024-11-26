@@ -1,5 +1,6 @@
 using System;
 using Mindee.Exceptions;
+using Mindee.Input;
 
 namespace Mindee
 {
@@ -85,21 +86,75 @@ namespace Mindee
             int minRetries = 2;
             if (initialDelaySec < minInitialDelaySec)
             {
-                throw new MindeeException($"Cannot set initial polling delay to less than {Math.Floor(minInitialDelaySec)} second(s).");
+                throw new MindeeException(
+                    $"Cannot set initial polling delay to less than {Math.Floor(minInitialDelaySec)} second(s).");
             }
+
             if (intervalSec < minIntervalSec)
             {
-                throw new MindeeException($"Cannot set polling interval to less than {Math.Floor(minIntervalSec)} second(s).");
+                throw new MindeeException(
+                    $"Cannot set polling interval to less than {Math.Floor(minIntervalSec)} second(s).");
             }
+
             if (maxRetries < minRetries)
             {
                 throw new MindeeException($"Cannot set async retry to less than {minRetries} attempts.");
             }
+
             InitialDelaySec = initialDelaySec;
             IntervalSec = intervalSec;
             MaxRetries = maxRetries;
             InitialDelayMilliSec = (int)Math.Floor(InitialDelaySec * 1000);
             IntervalMilliSec = (int)Math.Floor(IntervalSec * 1000);
+        }
+    }
+
+    /// <summary>
+    /// Options for workflow executions.
+    /// </summary>
+    public sealed class WorkflowOptions
+    {
+        /// <summary>
+        /// Alias to give to the file.
+        /// </summary>
+        public string Alias { get; }
+
+
+        /// <summary>
+        /// Priority to give to the execution.
+        /// </summary>
+        public ExecutionPriority? Priority { get; }
+
+
+        /// <summary>
+        /// Whether to include the full text data for async APIs.
+        /// This performs a full OCR operation on the server and will increase response time and payload size.
+        /// </summary>
+        public bool FullText { get; }
+
+        /// <summary>
+        /// A unique, encrypted URL for accessing the document validation interface without requiring authentication.
+        /// </summary>
+        public string PublicUrl { get; }
+
+        /// <summary>
+        /// Options for workflow executions.
+        /// </summary>
+        /// <param name="alias"></param>
+        /// <param name="priority"></param>
+        /// <param name="fullText"></param>
+        /// <param name="publicUrl"></param>
+        public WorkflowOptions(
+            string alias = null,
+            ExecutionPriority? priority = null,
+            bool fullText = false,
+            string publicUrl = null
+        )
+        {
+            Alias = alias;
+            Priority = priority;
+            FullText = fullText;
+            PublicUrl = publicUrl;
         }
     }
 }

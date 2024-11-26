@@ -610,6 +610,73 @@ namespace Mindee
         }
 
         /// <summary>
+        /// Send a local file to a workflow execution.
+        /// </summary>
+        /// <param name="workflowId">The workflow id.</param>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="workflowOptions"><see cref="PageOptions"/></param>
+        /// <param name="pageOptions"><see cref="PageOptions"/></param>
+        /// <returns><see cref="WorkflowResponse{TInferenceModel}"/></returns>
+        public async Task<WorkflowResponse<GeneratedV1>> ExecuteWorkflowAsync(
+            string workflowId,
+            LocalInputSource inputSource,
+            WorkflowOptions workflowOptions = null,
+            PageOptions pageOptions = null)
+        {
+            _logger?.LogInformation("Sending '{}' to workflow '{}'...", inputSource.Filename, workflowId);
+
+            if (pageOptions != null && inputSource.IsPdf())
+            {
+                inputSource.FileBytes = _pdfOperation.Split(
+                    new SplitQuery(inputSource.FileBytes, pageOptions)).File;
+            }
+
+            workflowOptions ??= new WorkflowOptions();
+
+            return await _mindeeApi.PostWorkflowExecution<GeneratedV1>(
+                workflowId,
+                new WorkflowParameter(
+                    localSource: inputSource,
+                    urlSource: null,
+                    fullText: workflowOptions.FullText,
+                    alias: workflowOptions.Alias,
+                    priority: workflowOptions.Priority,
+                    publicUrl: workflowOptions.PublicUrl
+                ));
+        }
+
+        /// <summary>
+        /// Send a remote file to a workflow execution.
+        /// </summary>
+        /// <param name="workflowId">The workflow id.</param>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="workflowOptions"><see cref="PageOptions"/></param>
+        /// <returns><see cref="WorkflowResponse{TInferenceModel}"/></returns>
+        public async Task<WorkflowResponse<GeneratedV1>> ExecuteWorkflowAsync(
+            string workflowId,
+            UrlInputSource inputSource,
+            WorkflowOptions workflowOptions = null)
+        {
+            _logger?.LogInformation("Asynchronous parsing of {} ...", inputSource.FileUrl);
+
+            if (workflowOptions == null)
+            {
+                workflowOptions = new WorkflowOptions();
+            }
+
+            return await _mindeeApi.PostWorkflowExecution<GeneratedV1>(
+                workflowId,
+                new WorkflowParameter(
+                    localSource: null,
+                    urlSource: inputSource,
+                    fullText: workflowOptions.FullText,
+                    alias: workflowOptions.Alias,
+                    priority: workflowOptions.Priority,
+                    publicUrl: workflowOptions.PublicUrl
+                ));
+        }
+
+        /// <summary>
         /// Load a local prediction.
         /// Typically used when wanting to load from a webhook callback.
         /// However, any kind of Mindee response may be loaded.

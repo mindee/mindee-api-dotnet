@@ -10,6 +10,7 @@ on:
 
 env:
   Mindee__ApiKey: ${{ secrets.MINDEE_API_KEY_SE_TESTS }}
+  Workflow__ID: ${{ secrets.WORKFLOW_ID_SE_TESTS }}
 
 jobs:
   test-nix:

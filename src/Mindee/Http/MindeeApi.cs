@@ -115,6 +115,63 @@ namespace Mindee.Http
             return handledResponse;
         }
 
+        public async Task<WorkflowResponse<TModel>> PostWorkflowExecution<TModel>(
+            string workflowId,
+            WorkflowParameter workflowParameter)
+            where TModel : class, new()
+        {
+            var request = new RestRequest(
+                $"v1/workflows/{workflowId}/executions"
+                , Method.Post);
+
+            AddWorkflowRequestParameters(workflowParameter, request);
+
+            _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
+
+            var response = await _httpClient.ExecutePostAsync(request);
+            return ResponseHandler<WorkflowResponse<TModel>>(response);
+        }
+
+        private static void AddWorkflowRequestParameters(WorkflowParameter workflowParameter, RestRequest request)
+        {
+            if (workflowParameter.LocalSource != null)
+            {
+                request.AddFile(
+                    "document",
+                    workflowParameter.LocalSource.FileBytes,
+                    workflowParameter.LocalSource.Filename);
+            }
+            else if (workflowParameter.UrlSource != null)
+            {
+                request.AddParameter(
+                    "document",
+                    workflowParameter.UrlSource.FileUrl.ToString());
+            }
+            if (workflowParameter.FullText)
+            {
+                request.AddQueryParameter(name: "full_text_ocr", value: "true");
+            }
+
+            if (workflowParameter.Alias != null)
+            {
+                request.AddParameter(name: "alias", value: workflowParameter.Alias);
+            }
+
+            if (workflowParameter.PublicUrl != null)
+            {
+                request.AddParameter(name: "public_url", value: workflowParameter.PublicUrl);
+            }
+
+            if (workflowParameter.Priority != null)
+            {
+                request.AddParameter(
+                    name: "priority",
+                    value: workflowParameter.Priority != null ?
+                        workflowParameter.Priority.ToString()?.ToLower() : null);
+            }
+
+        }
+
         private static void AddPredictRequestParameters(PredictParameter predictParameter, RestRequest request)
         {
             if (predictParameter.LocalSource != null)
