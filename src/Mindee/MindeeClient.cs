@@ -638,9 +638,10 @@ namespace Mindee
                 new WorkflowParameter(
                     localSource: inputSource,
                     urlSource: null,
+                    fullText: workflowOptions.FullText,
                     alias: workflowOptions.Alias,
                     priority: workflowOptions.Priority,
-                    fullText: workflowOptions.FullText
+                    publicUrl: workflowOptions.PublicUrl
                 ));
         }
 
@@ -668,9 +669,10 @@ namespace Mindee
                 new WorkflowParameter(
                     localSource: null,
                     urlSource: inputSource,
+                    fullText: workflowOptions.FullText,
                     alias: workflowOptions.Alias,
                     priority: workflowOptions.Priority,
-                    fullText: workflowOptions.FullText
+                    publicUrl: workflowOptions.PublicUrl
                 ));
         }
 

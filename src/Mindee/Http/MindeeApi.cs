@@ -157,6 +157,11 @@ namespace Mindee.Http
                 request.AddParameter(name: "alias", value: workflowParameter.Alias);
             }
 
+            if (workflowParameter.PublicUrl != null)
+            {
+                request.AddParameter(name: "public_url", value: workflowParameter.PublicUrl);
+            }
+
             if (workflowParameter.Priority != null)
             {
                 request.AddParameter(

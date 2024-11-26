@@ -86,16 +86,21 @@ namespace Mindee
             int minRetries = 2;
             if (initialDelaySec < minInitialDelaySec)
             {
-                throw new MindeeException($"Cannot set initial polling delay to less than {Math.Floor(minInitialDelaySec)} second(s).");
+                throw new MindeeException(
+                    $"Cannot set initial polling delay to less than {Math.Floor(minInitialDelaySec)} second(s).");
             }
+
             if (intervalSec < minIntervalSec)
             {
-                throw new MindeeException($"Cannot set polling interval to less than {Math.Floor(minIntervalSec)} second(s).");
+                throw new MindeeException(
+                    $"Cannot set polling interval to less than {Math.Floor(minIntervalSec)} second(s).");
             }
+
             if (maxRetries < minRetries)
             {
                 throw new MindeeException($"Cannot set async retry to less than {minRetries} attempts.");
             }
+
             InitialDelaySec = initialDelaySec;
             IntervalSec = intervalSec;
             MaxRetries = maxRetries;
@@ -109,7 +114,6 @@ namespace Mindee
     /// </summary>
     public sealed class WorkflowOptions
     {
-
         /// <summary>
         /// Alias to give to the file.
         /// </summary>
@@ -129,16 +133,28 @@ namespace Mindee
         public bool FullText { get; }
 
         /// <summary>
+        /// A unique, encrypted URL for accessing the document validation interface without requiring authentication.
+        /// </summary>
+        public string PublicUrl { get; }
+
+        /// <summary>
         /// Options for workflow executions.
         /// </summary>
         /// <param name="alias"></param>
         /// <param name="priority"></param>
         /// <param name="fullText"></param>
-        public WorkflowOptions(string alias = null, ExecutionPriority? priority = null, bool fullText = false)
+        /// <param name="publicUrl"></param>
+        public WorkflowOptions(
+            string alias = null,
+            ExecutionPriority? priority = null,
+            bool fullText = false,
+            string publicUrl = null
+        )
         {
             Alias = alias;
             Priority = priority;
             FullText = fullText;
+            PublicUrl = publicUrl;
         }
     }
 }
