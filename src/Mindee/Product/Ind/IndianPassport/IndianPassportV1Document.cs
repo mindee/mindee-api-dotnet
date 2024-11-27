@@ -6,7 +6,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Ind.IndianPassport
 {
     /// <summary>
-    /// Passport - India API version 1.0 document data.
+    /// Passport - India API version 1.1 document data.
     /// </summary>
     public class IndianPassportV1Document : IPrediction
     {

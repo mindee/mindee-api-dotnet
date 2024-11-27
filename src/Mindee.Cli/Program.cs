@@ -11,15 +11,20 @@ using PredictCropperCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Cropper.CropperV1Page,
     Mindee.Product.Cropper.CropperV1Document
 >;
+using PredictDriverLicenseCommand = Mindee.Cli.PredictCommand<
+    Mindee.Product.DriverLicense.DriverLicenseV1,
+    Mindee.Product.DriverLicense.DriverLicenseV1Document,
+    Mindee.Product.DriverLicense.DriverLicenseV1Document
+>;
 using PredictFinancialDocumentCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.FinancialDocument.FinancialDocumentV1,
     Mindee.Product.FinancialDocument.FinancialDocumentV1Document,
     Mindee.Product.FinancialDocument.FinancialDocumentV1Document
 >;
 using PredictFrIdCardCommand = Mindee.Cli.PredictCommand<
-    Mindee.Product.Fr.IdCard.IdCardV1,
-    Mindee.Product.Fr.IdCard.IdCardV1Page,
-    Mindee.Product.Fr.IdCard.IdCardV1Document
+    Mindee.Product.Fr.IdCard.IdCardV2,
+    Mindee.Product.Fr.IdCard.IdCardV2Page,
+    Mindee.Product.Fr.IdCard.IdCardV2Document
 >;
 using PredictInternationalIdCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.InternationalId.InternationalIdV2,
@@ -40,11 +45,6 @@ using PredictPassportCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Passport.PassportV1,
     Mindee.Product.Passport.PassportV1Document,
     Mindee.Product.Passport.PassportV1Document
->;
-using PredictProofOfAddressCommand = Mindee.Cli.PredictCommand<
-    Mindee.Product.ProofOfAddress.ProofOfAddressV1,
-    Mindee.Product.ProofOfAddress.ProofOfAddressV1Document,
-    Mindee.Product.ProofOfAddress.ProofOfAddressV1Document
 >;
 using PredictReceiptCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Receipt.ReceiptV5,
@@ -77,13 +77,13 @@ var runner = BuildCommandLine()
             })
             .UseCommandHandler<PredictInvoiceCommand, PredictInvoiceCommand.Handler>()
             .UseCommandHandler<PredictFinancialDocumentCommand, PredictFinancialDocumentCommand.Handler>()
+            .UseCommandHandler<PredictDriverLicenseCommand, PredictDriverLicenseCommand.Handler>()
             .UseCommandHandler<PredictReceiptCommand, PredictReceiptCommand.Handler>()
             .UseCommandHandler<PredictPassportCommand, PredictPassportCommand.Handler>()
             .UseCommandHandler<PredictCropperCommand, PredictCropperCommand.Handler>()
             .UseCommandHandler<PredictCustomCommand, PredictCustomCommand.Handler>()
             .UseCommandHandler<PredictInvoiceSplitterCommand, PredictInvoiceSplitterCommand.Handler>()
             .UseCommandHandler<PredictFrIdCardCommand, PredictFrIdCardCommand.Handler>()
-            .UseCommandHandler<PredictProofOfAddressCommand, PredictProofOfAddressCommand.Handler>()
             .UseCommandHandler<PredictUsBankCheckCommand, PredictUsBankCheckCommand.Handler>()
             .UseCommandHandler<PredictUsPayrollCheckRegisterCommand, PredictUsPayrollCheckRegisterCommand.Handler>()
             .UseCommandHandler<PredictUsMailCommand, PredictUsMailCommand.Handler>()
@@ -126,10 +126,6 @@ static CommandLineBuilder BuildCommandLine()
         name: "international-id", description: "International ID",
         allWords: false, fullText: true, sync: false, async: true
         )));
-    root.AddCommand(new PredictProofOfAddressCommand(new CommandOptions(
-        name: "proof-of-address", description: "Proof Of Address",
-        allWords: true, fullText: false, sync: true, async: false
-        )));
     root.AddCommand(new PredictCropperCommand(new CommandOptions(
         name: "cropper", description: "Cropper",
         allWords: false, fullText: false, sync: true, async: false
@@ -146,9 +142,9 @@ static CommandLineBuilder BuildCommandLine()
         name: "us-bank-check", description: "US Bank Check",
         allWords: false, fullText: false, sync: true, async: false
         )));
-    root.AddCommand(new PredictUsBankCheckCommand(new CommandOptions(
-        name: "us-driver-license", description: "US Driver License",
-        allWords: false, fullText: false, sync: true, async: false
+    root.AddCommand(new PredictDriverLicenseCommand(new CommandOptions(
+        name: "driver-license", description: "Driver License",
+        allWords: false, fullText: false, sync: false, async: true
         )));
     root.AddCommand(new PredictUsPayrollCheckRegisterCommand(new CommandOptions(
         name: "us-payroll-check-register", description: "US Payroll Check Register",
