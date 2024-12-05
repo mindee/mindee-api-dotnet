@@ -111,6 +111,7 @@ namespace Mindee.UnitTests.Input
             var result = await urlInputSource.AsLocalInputSource(username: "user", password: "pass", restClient: _mockRestClient.Object);
 
             Assert.IsType<LocalInputSource>(result);
+            Assert.Equal("file.pdf", result.Filename);
         }
 
         [Fact]
