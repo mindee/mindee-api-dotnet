@@ -61,8 +61,8 @@ namespace Mindee.Input
         /// <summary>
         /// Downloads the file from the url, and returns a LocalInputSource wrapper object for it.
         /// </summary>
-        /// <returns></returns>
-        /// <exception cref="MindeeInputException"></exception>
+        /// <returns>A LocalInputSource.</returns>
+        /// <exception cref="MindeeInputException">Throws if the file can't be accessed or downloaded.</exception>
         public async Task<LocalInputSource> AsLocalInputSource(
             string filename = null,
             string username = null,

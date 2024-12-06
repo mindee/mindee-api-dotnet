@@ -116,6 +116,7 @@ There are a few different ways of loading a document file, depending on your use
 * [Path](#path)
 * [File Object](#stream-object)
 * [Bytes](#bytes)
+* [Remote File](#remote-file)
 
 ### Path
 Load from a file directly from disk. Requires an absolute path, as a string.
@@ -153,6 +154,21 @@ Load file contents from a byte array.
 byte[] myFileInBytes = new byte[] { byte.MinValue };
 string fileName = "myfile.pdf";
 var inputSource = new LocalInputSource(myFileInBytes, fileName);
+```
+
+### Remote File
+
+You can pass a URL to the server through the UrlInputSource class:
+
+```csharp
+var remoteInput = new UrlInputSource("https://www.example.com/some/file.ext");
+```
+
+If your file is hidden behind a redirection, you can load your file locally instead:
+
+```csharp
+var remoteInput = new UrlInputSource("https://www.example.com/some/file.ext");
+var localInput = remoteInput.AsLocalInputSource();
 ```
 
 ## Parsing a file
