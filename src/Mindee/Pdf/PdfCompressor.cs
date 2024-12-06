@@ -30,6 +30,7 @@ namespace Mindee.Pdf
                 Console.WriteLine(
                     "MINDEE WARNING: Found text inside of the provided PDF file. Compression operation aborted since disableSourceText is set to 'true'.");
                 Console.ResetColor();
+                Console.Write(""); // Flush buffer color from stdout. Come on .NET... I shouldn't have to do this.
                 return pdfData;
             }
 

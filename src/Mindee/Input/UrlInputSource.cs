@@ -1,7 +1,9 @@
 using System;
 using System.IO;
-using System.Linq;
+using System.Threading.Tasks;
 using Mindee.Exceptions;
+using RestSharp;
+using RestSharp.Authenticators;
 
 namespace Mindee.Input
 {
@@ -44,14 +46,58 @@ namespace Mindee.Input
             {
                 throw new MindeeInputException("Local files are not supported, use `LocalInputSource` instead.");
             }
+
             if (!FileUrl.IsAbsoluteUri)
             {
                 throw new MindeeInputException("The URI must be absolute.");
             }
+
             if (FileUrl.Scheme != "https")
             {
                 throw new MindeeInputException("Only the HTTPS scheme is supported.");
             }
+        }
+
+        /// <summary>
+        /// Downloads the file from the url, and returns a LocalInputSource wrapper object for it.
+        /// </summary>
+        /// <returns>A LocalInputSource.</returns>
+        /// <exception cref="MindeeInputException">Throws if the file can't be accessed or downloaded.</exception>
+        public async Task<LocalInputSource> AsLocalInputSource(
+            string filename = null,
+            string username = null,
+            string password = null,
+            string token = null,
+            int maxRedirects = 3,
+            IRestClient restClient = null)
+        {
+            filename ??= Path.GetFileName(FileUrl.LocalPath);
+            if (filename == "" || !Path.HasExtension(filename))
+            {
+                throw new MindeeInputException("Filename must end with an extension.");
+            }
+
+            var options = new RestClientOptions(FileUrl) { FollowRedirects = true, MaxRedirects = maxRedirects };
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                options.Authenticator = new JwtAuthenticator(token);
+            }
+            else if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            {
+                options.Authenticator = new HttpBasicAuthenticator(username, password);
+            }
+
+            restClient ??= new RestClient(options);
+            var request = new RestRequest(FileUrl);
+            var response = await restClient.ExecuteAsync(request);
+
+            // Note: response.IsSuccessful can't be mocked as easily, so this is a better solution at the moment.
+            if (response.IsSuccessStatusCode)
+            {
+                return new LocalInputSource(fileBytes: response.RawBytes, filename: filename);
+            }
+            throw new MindeeInputException($"Failed to download file: {response.ErrorMessage}");
         }
     }
 }
