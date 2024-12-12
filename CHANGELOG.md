@@ -1,5 +1,11 @@
 # Mindee .NET API Library Changelog
 
+## v3.23.0 - 2024-12-12
+### Changes
+* :sparkles: allow local downloading of remote sources
+* :coffin: remove support for (FR) Carte Vitale V1 in favor of French Health Card V1
+
+
 ## v3.22.0 - 2024-11-28
 ### Changes
 * :sparkles: add support for workflows
