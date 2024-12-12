@@ -193,7 +193,7 @@ var response = await mindeeClient
     .ParseAsync<InvoiceV4>(inputSource);
 ```
 
-### Custom Documents
+### Custom Documents (DocTI & Custom APIs)
 In this case, you will have two ways to handle them.
 
 The first one enables the possibility to use a class object which represents a kind of dictionary where,
@@ -210,7 +210,7 @@ CustomEndpoint myEndpoint = new CustomEndpoint(
 );
 
 // Call the API and parse the input
-var response = await mindeeClient.ParseAsync(
+var response = await mindeeClient.EnqueueAndParseAsync<GeneratedV1>(
     inputSource, myEndpoint);
 ```
 
