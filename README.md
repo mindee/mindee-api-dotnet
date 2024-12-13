@@ -110,7 +110,7 @@ System.Console.WriteLine(response.Document.ToString());
 // System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
 ```
 
-#### Custom Document (API Builder)
+#### Custom Documents (docTI & Custom APIs)
 
 ```csharp
 using Mindee;
@@ -135,7 +135,7 @@ CustomEndpoint myEndpoint = new CustomEndpoint(
 );
 
 // Call the API and parse the input
-var response = await mindeeClient.ParseAsync(
+var response = await mindeeClient.EnqueueAndParseAsync(
     inputSource, myEndpoint);
 
 // Print a summary of all the predictions
@@ -165,7 +165,7 @@ Complete details on the working of the library are available in the following gu
 * [.NET EU Driver License OCR](https://developers.mindee.com/docs/dotnet-eu-driver-license-ocr)
 * [.NET FR Bank Account Detail OCR](https://developers.mindee.com/docs/dotnet-fr-bank-account-details-ocr)
 * [.NET FR Carte Grise OCR](https://developers.mindee.com/docs/dotnet-fr-carte-grise-ocr)
-* [.NET FR Carte Vitale OCR](https://developers.mindee.com/docs/dotnet-fr-carte-vitale-ocr)
+* [.NET FR Health Card OCR](https://developers.mindee.com/docs/dotnet-fr-health-card-ocr)
 * [.NET FR ID Card OCR](https://developers.mindee.com/docs/dotnet-fr-carte-nationale-didentite-ocr)
 * [.NET US Bank Check OCR](https://developers.mindee.com/docs/dotnet-us-bank-check-ocr)
 * [.NET US W9 OCR](https://developers.mindee.com/docs/dotnet-us-w9-ocr)
