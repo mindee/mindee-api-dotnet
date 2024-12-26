@@ -57,9 +57,9 @@ using PredictUsBankCheckCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Us.BankCheck.BankCheckV1Document
 >;
 using PredictUsMailCommand = Mindee.Cli.PredictCommand<
-    Mindee.Product.Us.UsMail.UsMailV2,
-    Mindee.Product.Us.UsMail.UsMailV2Document,
-    Mindee.Product.Us.UsMail.UsMailV2Document
+    Mindee.Product.Us.UsMail.UsMailV3,
+    Mindee.Product.Us.UsMail.UsMailV3Document,
+    Mindee.Product.Us.UsMail.UsMailV3Document
 >;
 using PredictUsPayrollCheckRegisterCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Us.PayrollCheckRegister.PayrollCheckRegisterV1,
