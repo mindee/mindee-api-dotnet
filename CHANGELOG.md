@@ -1,5 +1,10 @@
 # Mindee .NET API Library Changelog
 
+## v3.24.0 - 2024-12-26
+### Changes
+* :sparkles: add support for us mail v3
+
+
 ## v3.23.0 - 2024-12-12
 ### Changes
 * :sparkles: allow local downloading of remote sources
