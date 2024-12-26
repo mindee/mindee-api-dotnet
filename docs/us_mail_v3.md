@@ -27,7 +27,7 @@ var inputSource = new LocalInputSource(filePath);
 
 // Call the product asynchronously with auto-polling
 var response = await mindeeClient
-    .EnqueueAndParseAsync<UsMailV2>(inputSource);
+    .EnqueueAndParseAsync<UsMailV3>(inputSource);
 
 // Print a summary of all the predictions
 System.Console.WriteLine(response.Document.ToString());
@@ -39,7 +39,20 @@ System.Console.WriteLine(response.Document.ToString());
 
 **Output (RST):**
 ```rst
-:Sender Name: zed
+########
+Document
+########
+:Mindee ID: f9c36f59-977d-4ddc-9f2d-31c294c456ac
+:Filename: default_sample.jpg
+
+Inference
+#########
+:Product: mindee/us_mail v3.0
+:Rotation applied: Yes
+
+Prediction
+==========
+:Sender Name: company zed
 :Sender Address:
   :City: Dallas
   :Complete Address: 54321 Elm Street, Dallas, Texas 54321
@@ -48,11 +61,12 @@ System.Console.WriteLine(response.Document.ToString());
   :Street: 54321 Elm Street
 :Recipient Names: Jane Doe
 :Recipient Addresses:
-  +-----------------+-------------------------------------+-------------------+-------------+------------------------+-------+---------------------------+
-  | City            | Complete Address                    | Is Address Change | Postal Code | Private Mailbox Number | State | Street                    |
-  +=================+=====================================+===================+=============+========================+=======+===========================+
-  | Detroit         | 1234 Market Street PMB 4321, Det... |                   | 12345       | 4321                   | MI    | 1234 Market Street        |
-  +-----------------+-------------------------------------+-------------------+-------------+------------------------+-------+---------------------------+
+  +-----------------+-------------------------------------+-------------------+-------------+------------------------+-------+---------------------------+-----------------+
+  | City            | Complete Address                    | Is Address Change | Postal Code | Private Mailbox Number | State | Street                    | Unit            |
+  +=================+=====================================+===================+=============+========================+=======+===========================+=================+
+  | Detroit         | 1234 Market Street PMB 4321, Det... | False             | 12345       | 4321                   | MI    | 1234 Market Street        |                 |
+  +-----------------+-------------------------------------+-------------------+-------------+------------------------+-------+---------------------------+-----------------+
+:Return to Sender: False
 ```
 
 # Field Types
@@ -78,13 +92,17 @@ The text field `StringField` extends `BaseField`, but also implements:
 * **Value** (`string`): corresponds to the field value.
 * **RawValue** (`string`): corresponds to the raw value as it appears on the document.
 
+### BooleanField
+The boolean field `BooleanField` extends BaseField, but also implements:
+* **Value** (`bool?`): corresponds to the value of the field.
+
 ## Specific Fields
 Fields which are specific to this product; they are not used in any other product.
 
 ### Recipient Addresses Field
 The addresses of the recipients.
 
-A `UsMailV2RecipientAddress` implements the following attributes:
+A `UsMailV3RecipientAddress` implements the following attributes:
 
 * **City** (`string`): The city of the recipient's address.
 * **Complete** (`string`): The complete address of the recipient.
@@ -93,12 +111,13 @@ A `UsMailV2RecipientAddress` implements the following attributes:
 * **PrivateMailboxNumber** (`string`): The private mailbox number of the recipient's address.
 * **State** (`string`): Second part of the ISO 3166-2 code, consisting of two letters indicating the US State.
 * **Street** (`string`): The street of the recipient's address.
+* **Unit** (`string`): The unit number of the recipient's address.
 Fields which are specific to this product; they are not used in any other product.
 
 ### Sender Address Field
 The address of the sender.
 
-A `UsMailV2SenderAddress` implements the following attributes:
+A `UsMailV3SenderAddress` implements the following attributes:
 
 * **City** (`string`): The city of the sender's address.
 * **Complete** (`string`): The complete address of the sender.
@@ -107,10 +126,17 @@ A `UsMailV2SenderAddress` implements the following attributes:
 * **Street** (`string`): The street of the sender's address.
 
 # Attributes
-The following fields are extracted for US Mail V2:
+The following fields are extracted for US Mail V3:
+
+## Return to Sender
+**IsReturnToSender**: Whether the mailing is marked as return to sender.
+
+```csharp
+System.Console.WriteLine(result.Document.Inference.Prediction.IsReturnToSender.Value);
+```
 
 ## Recipient Addresses
-**RecipientAddresses**(List<[UsMailV2RecipientAddress](#recipient-addresses-field)>): The addresses of the recipients.
+**RecipientAddresses**(List<[UsMailV3RecipientAddress](#recipient-addresses-field)>): The addresses of the recipients.
 
 ```csharp
 foreach (var RecipientAddressesElem in result.Document.Inference.Prediction.RecipientAddresses)
@@ -130,7 +156,7 @@ foreach (var RecipientNamesElem in result.Document.Inference.Prediction.Recipien
 ```
 
 ## Sender Address
-**SenderAddress**([UsMailV2SenderAddress](#sender-address-field)): The address of the sender.
+**SenderAddress**([UsMailV3SenderAddress](#sender-address-field)): The address of the sender.
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SenderAddress.Value);
