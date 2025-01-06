@@ -152,6 +152,23 @@ namespace Mindee.UnitTests.Product.Generated
             Assert.Null(firstLineItem["product_code"].GetString());
         }
 
+        [Fact]
+        public async Task UsMailPredict_WhenComplete_MustHaveValidBooleanField()
+        {
+            var response = await GetUsMailPrediction();
+            var features = response.Document.Inference.Prediction.Fields;
+            Assert.False(features["is_return_to_sender"].AsBooleanField().Value);
+        }
+
+        private static async Task<AsyncPredictResponse<GeneratedV1>> GetUsMailPrediction()
+        {
+            string fileName = $"Resources/products/us_mail/response_v3/complete.json";
+            var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
+            return await mindeeAPi.PredictAsyncPostAsync<GeneratedV1>(
+                UnitTestBase.GetFakePredictParameter()
+                , new CustomEndpoint("us_mail", "mindee", "3"));
+        }
+
         private static async Task<AsyncPredictResponse<GeneratedV1>> GetAsyncPrediction(string name)
         {
             string fileName = $"Resources/products/generated/response_v1/{name}_international_id_v1.json";

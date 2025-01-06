@@ -86,6 +86,18 @@ namespace Mindee.Parsing.Generated
         }
 
         /// <summary>
+        /// Represent the feature as a standard <see cref="BooleanField"/> object.
+        /// </summary>
+        /// <returns>A <see cref="BooleanField"/> object.</returns>
+        /// <exception cref="MindeeException"></exception>
+        public BooleanField AsBooleanField()
+        {
+            if (this.IsList)
+                throw new MindeeException("Cannot convert a list feature into a BooleanField.");
+            return this.First().AsBooleanField();
+        }
+
+        /// <summary>
         /// A prettier representation of the feature values.
         /// </summary>
         public override string ToString()
