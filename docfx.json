@@ -46,8 +46,8 @@
       "_appName": "mindee",
       "_appTitle": "Mindee API .NET",
       "_enableSearch": true,
-      "_appLogoPath": "images/logo.png",
-      "_appFaviconPath": "images/favicon.png",
+      "_appLogoPath": "docs/images/logo.png",
+      "_appFaviconPath": "docs/images/favicon.png",
       "pdf": true
     }
   }
