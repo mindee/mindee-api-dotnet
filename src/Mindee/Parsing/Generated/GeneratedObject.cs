@@ -54,6 +54,19 @@ namespace Mindee.Parsing.Generated
         }
 
         /// <summary>
+        /// Represent the object as a standard <see cref="BooleanField"/> object.
+        /// </summary>
+        /// <returns>A <see cref="BooleanField"/> object.</returns>
+        public BooleanField AsBooleanField()
+        {
+            return new BooleanField(
+                this["value"].GetBoolean(),
+                this.Confidence(),
+                this.Polygon(),
+                this.PageId());
+        }
+
+        /// <summary>
         /// Represent the object as a standard <see cref="DateField"/> object.
         /// </summary>
         /// <returns>A <see cref="DateField"/> object.</returns>

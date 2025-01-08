@@ -152,6 +152,42 @@ namespace Mindee.UnitTests.Product.Generated
             Assert.Null(firstLineItem["product_code"].GetString());
         }
 
+        // Edge cases: booleans & int amounts.
+
+        [Fact]
+        public async Task ReceiptsItemsClassifierPredict_WhenComplete_MustHaveValidIntField()
+        {
+            var response = await GetReceiptsItemsClassifierPrediction();
+            var features = response.Document.Inference.Prediction.Fields;
+            Assert.Equal(1.0, features["line_items"].First()["quantity"].GetDouble());
+        }
+
+        [Fact]
+        public async Task UsMailPredict_WhenComplete_MustHaveValidBooleanField()
+        {
+            var response = await GetUsMailPrediction();
+            var features = response.Document.Inference.Prediction.Fields;
+            Assert.False(features["is_return_to_sender"].AsBooleanField().Value);
+        }
+
+        private static async Task<AsyncPredictResponse<GeneratedV1>> GetReceiptsItemsClassifierPrediction()
+        {
+            string fileName = $"Resources/products/receipts_items_classifier/response_v1/complete.json";
+            var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
+            return await mindeeAPi.PredictAsyncPostAsync<GeneratedV1>(
+                UnitTestBase.GetFakePredictParameter()
+                , new CustomEndpoint("receipts_items_classifier", "mindee", "1"));
+        }
+
+        private static async Task<AsyncPredictResponse<GeneratedV1>> GetUsMailPrediction()
+        {
+            string fileName = $"Resources/products/us_mail/response_v3/complete.json";
+            var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
+            return await mindeeAPi.PredictAsyncPostAsync<GeneratedV1>(
+                UnitTestBase.GetFakePredictParameter()
+                , new CustomEndpoint("us_mail", "mindee", "3"));
+        }
+
         private static async Task<AsyncPredictResponse<GeneratedV1>> GetAsyncPrediction(string name)
         {
             string fileName = $"Resources/products/generated/response_v1/{name}_international_id_v1.json";
