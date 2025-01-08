@@ -1,5 +1,12 @@
 # Mindee .NET API Library Changelog
 
+## v3.24.1 - 2025-01-08
+### Changes
+* :memo: update reference documentation
+### Fixes
+* :bug: fix missing boolean accessor for generated object
+
+
 ## v3.24.0 - 2024-12-26
 ### Changes
 * :sparkles: add support for us mail v3
