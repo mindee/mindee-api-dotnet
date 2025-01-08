@@ -362,3 +362,6 @@ dist
 # Tests
 _test.csx
 local_test/
+
+# DocFX files
+_site
