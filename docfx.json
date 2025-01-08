@@ -25,6 +25,9 @@
         ],
         "src": "docs/api_reference",
         "dest": "api"
+      },
+      {
+        "files": ["index.md"]
       }
     ],
     "resource": [

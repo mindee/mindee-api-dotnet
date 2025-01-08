@@ -13,9 +13,6 @@
 *.cfg   text eol=lf whitespace=blank-at-eol
 *.toml  text eol=lf whitespace=blank-at-eol,space-before-tab,tab-in-indent,tabwidth=2
 
-# Docfx breaks links containing an LF
-index.md eol=crlf
-
 # Exclude non-essential files from dist
 .gitattributes  export-ignore
 .gitignore      export-ignore
