@@ -1,5 +1,12 @@
 # Mindee .NET API Library Changelog
 
+## v3.24.2 - 2025-01-09
+### Changes
+* :recycle: increase async retry timers
+### Fixes
+* :bug: fix classifications not having a confidence score
+
+
 ## v3.24.1 - 2025-01-08
 ### Changes
 * :memo: update reference documentation
