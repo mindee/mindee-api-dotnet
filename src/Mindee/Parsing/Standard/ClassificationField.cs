@@ -14,6 +14,14 @@ namespace Mindee.Parsing.Standard
         public string Value { get; set; }
 
         /// <summary>
+        /// The confidence about the selected classification.
+        /// A value from 0 to 1.
+        /// </summary>
+        /// <example>0.9</example>
+        [JsonPropertyName("confidence")]
+        public double Confidence { get; set; }
+
+        /// <summary>
         /// Default constructor.
         /// </summary>
         /// <param name="value"></param>
