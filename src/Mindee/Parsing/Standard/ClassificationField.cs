@@ -14,7 +14,7 @@ namespace Mindee.Parsing.Standard
         public string Value { get; set; }
 
         /// <summary>
-        /// The confidence about the zone of the value extracted.
+        /// The confidence about the selected classification.
         /// A value from 0 to 1.
         /// </summary>
         /// <example>0.9</example>
