@@ -146,7 +146,7 @@ namespace Mindee.Cli
                     new LocalInputSource(options.Path),
                     new PredictOptions(allWords: AllWords, fullText: FullText),
                     null,
-                    new AsyncPollingOptions(maxRetries: 60));
+                    new AsyncPollingOptions(maxRetries: 80));
 
                 PrintToConsole(context.Console.Out, options, response);
                 return 0;
