@@ -12,7 +12,7 @@ jobs:
         os:
           - "ubuntu-22.04"
           - "macos-13"
-        dotnet-version:
+        dotnet:
           - "net6.0"
           - "net7.0"
           - "net8.0"
@@ -24,53 +24,13 @@ jobs:
 
     - name: Set up .NET
       uses: actions/setup-dotnet@v4
+      id: setup-step
       with:
         dotnet-version: |
           6.0.x
+          7.0.x
           8.0.x
-
-    - uses: actions/cache@v4
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
-
-    - name: Install dependencies
-      run: |
-        dotnet restore
-
-    - name: Build
-      run: |
-        dotnet build -f ${{ matrix.dotnet-version }} --no-restore
-
-    - name: Test
-      run: |
-        dotnet test -f ${{ matrix.dotnet-version }} --no-restore --verbosity normal "tests\Mindee.UnitTests"
-
-  test-windows:
-    name: Test on Windows
-    timeout-minutes: 30
-    strategy:
-      matrix:
-        dotnet-version:
-          - "net472"
-          - "net482"
-          - "net6.0"
-          - "net7.0"
-          - "net8.0"
-    runs-on: "windows-2022"
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Set up .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: |
-          6.0.x
-          8.0.x
+          9.0.x
 
     - uses: actions/cache@v4
       with:
@@ -85,4 +45,46 @@ jobs:
 
     - name: Build and test
       run: |
-        dotnet test -f ${{ matrix.dotnet-version }} --no-restore --verbosity normal "tests\Mindee.UnitTests"
+        dotnet test -f ${{ matrix.dotnet }} --no-restore --verbosity normal "tests\Mindee.UnitTests"
+
+  test-windows:
+    name: Test on Windows
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        dotnet:
+          - "net472"
+          - "net482"
+          - "net6.0"
+          - "net7.0"
+          - "net8.0"
+    runs-on: "windows-2022"
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v4
+      id: setup-step
+      with:
+        dotnet-version: |
+          6.0.x
+          7.0.x
+          8.0.x
+          9.0.x
+
+    - uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Install dependencies
+      run: |
+        dotnet restore
+
+    - name: Build and test
+      run: |
+        dotnet test -f ${{ matrix.dotnet }} --no-restore --verbosity normal "tests\Mindee.UnitTests"
