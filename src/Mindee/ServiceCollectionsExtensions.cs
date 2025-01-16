@@ -1,9 +1,8 @@
 using System;
-using System.Net;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Mindee.Http;
 using Mindee.Pdf;
@@ -60,9 +59,18 @@ namespace Mindee.Extensions.DependencyInjection
 
         private static string BuildUserAgent()
         {
+            string platform;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                platform = "windows";
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                platform = "linux";
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                platform = "macos";
+            else
+                platform = "other";
             return $"mindee-api-dotnet@v{Assembly.GetExecutingAssembly().GetName().Version}"
                    + $" dotnet-v{Environment.Version}"
-                   + $" {Environment.OSVersion}";
+                   + $" {platform}";
         }
 
         /// <summary>
