@@ -1,5 +1,10 @@
 # Mindee .NET API Library Changelog
 
+## v3.24.3 - 2025-02-13
+### Changes
+* :recycle: harmonise platform names with other client libs
+* :arrow_up: add official support for .NET 9.0
+
 ## v3.24.2 - 2025-01-09
 ### Changes
 * :recycle: increase async retry timers
