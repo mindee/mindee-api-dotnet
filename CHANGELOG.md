@@ -5,6 +5,7 @@
 * :recycle: harmonise platform names with other client libs
 * :arrow_up: add official support for .NET 9.0
 
+
 ## v3.24.2 - 2025-01-09
 ### Changes
 * :recycle: increase async retry timers
