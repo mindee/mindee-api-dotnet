@@ -7,3 +7,4 @@ on:
 jobs:
   sync:
     uses: mindee/client-lib-actions/.github/workflows/publish-guide.yml@main
+    secrets: inherit
