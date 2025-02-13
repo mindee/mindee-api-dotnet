@@ -1,7 +1,7 @@
 name: Unit Tests
 
 on:
-  push:
+  workflow_call:
 
 jobs:
   test-nix:
@@ -16,6 +16,7 @@ jobs:
           - "net6.0"
           - "net7.0"
           - "net8.0"
+          - "net9.0"
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -58,6 +59,7 @@ jobs:
           - "net6.0"
           - "net7.0"
           - "net8.0"
+          - "net9.0"
     runs-on: "windows-2022"
     steps:
     - uses: actions/checkout@v4
