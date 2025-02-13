@@ -1,13 +1,7 @@
-#
-# Publish releases to Nuget
-#
-name: Publish Release
+name: Publish to Nuget
 
 on:
-  release:
-    types: [ published ]
-
-  # Allows to run this workflow manually from the Actions tab
+  workflow_call:
   workflow_dispatch:
 
 jobs:
