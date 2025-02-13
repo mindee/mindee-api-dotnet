@@ -23,4 +23,4 @@ jobs:
       - name: Pack
         run: dotnet pack "src/Mindee" -c Release -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
       - name: Publish NuGet packages to NuGet
-        run: dotnet nuget push nuget/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source "nuget.org"
+        run: dotnet nuget push nuget/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source "nuget.org" --skip-duplicate
