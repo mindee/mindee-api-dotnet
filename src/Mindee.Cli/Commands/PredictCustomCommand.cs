@@ -1,8 +1,12 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using System.CommandLine.IO;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Mindee.Http;
 using Mindee.Input;
+using Mindee.Parsing.Common;
+using Mindee.Product.Generated;
 
 namespace Mindee.Cli.Commands
 {
@@ -27,6 +31,12 @@ namespace Mindee.Cli.Commands
                     "-v", "--version"
                 },
                 description: "Version of the custom API, default 1"));
+            AddOption(new Option<bool>(
+                aliases: new string[]
+                {
+                    "--sync"
+                },
+                description: "Whether to use synchronous mode"));
             AddArgument(new Argument<string>(name: "account", description: "The path of the file to parse"));
             AddArgument(new Argument<string>(name: "endpoint", description: "The path of the file to parse"));
             AddArgument(new Argument<string>(name: "path", description: "The path of the file to parse"));
@@ -36,17 +46,20 @@ namespace Mindee.Cli.Commands
         {
             private readonly ILogger<Handler> _logger;
             private readonly MindeeClient _mindeeClient;
+            private readonly JsonSerializerOptions _jsonSerializerOptions;
 
             public string Path { get; set; } = null!;
             public string Endpoint { get; set; } = null!;
             public string Account { get; set; } = null!;
             public string Version { get; set; } = "1";
+            public bool Sync { get; set; } = false;
             public OutputType Output { get; set; } = OutputType.Summary;
 
             public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
             {
                 _logger = logger;
                 _mindeeClient = mindeeClient;
+                _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
             }
 
             public int Invoke(InvocationContext context)
@@ -56,7 +69,14 @@ namespace Mindee.Cli.Commands
 
             public async Task<int> InvokeAsync(InvocationContext context)
             {
-                var response = await _mindeeClient.ParseAsync(
+                if (Sync)
+                    return await ParseAsync(context);
+                return await EnqueueAndParseAsync(context);
+            }
+
+            private async Task<int> ParseAsync(InvocationContext context)
+            {
+                var response = await _mindeeClient.ParseAsync<GeneratedV1>(
                     new LocalInputSource(Path),
                     new CustomEndpoint(
                         Endpoint,
@@ -69,12 +89,42 @@ namespace Mindee.Cli.Commands
                     return 1;
                 }
 
-                if (Output == OutputType.Summary)
-                    context.Console.Out.Write(response.Document.Inference.Prediction.ToString());
-                else
-                    context.Console.Out.Write(response.Document.ToString());
-
+                PrintToConsole(context.Console.Out, response);
                 return 0;
+            }
+
+            private async Task<int> EnqueueAndParseAsync(InvocationContext context)
+            {
+                var response = await _mindeeClient.EnqueueAndParseAsync<GeneratedV1>(
+                    new LocalInputSource(Path),
+                    new CustomEndpoint(
+                        Endpoint,
+                        Account,
+                        Version),
+                    null,
+                    null,
+                    new AsyncPollingOptions());
+
+                if (response == null)
+                {
+                    context.Console.Out.Write("null");
+                    return 1;
+                }
+
+                PrintToConsole(context.Console.Out, response);
+                return 0;
+            }
+
+            private void PrintToConsole(
+                IStandardStreamWriter console,
+                PredictResponse<GeneratedV1> response)
+            {
+                if (Output == OutputType.Raw)
+                    console.Write(response.RawResponse + "\n");
+                else if (Output == OutputType.Summary)
+                    console.Write(response.Document.Inference.Prediction.ToString());
+                else
+                    console.Write(response.Document.ToString());
             }
         }
     }
