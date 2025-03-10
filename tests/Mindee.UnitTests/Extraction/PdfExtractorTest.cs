@@ -28,7 +28,7 @@ namespace Mindee.UnitTests.Extraction
             var extractor = new PdfExtractor(pdf);
             Assert.Equal(5, extractor.GetPageCount());
 
-            var extractedPDFSNoStrict = extractor.ExtractInvoices(inference.Prediction.PageGroups, false);
+            var extractedPDFSNoStrict = extractor.ExtractInvoices(inference.Prediction.InvoicePageGroups, false);
             Assert.Equal(3, extractedPDFSNoStrict.Count);
             Assert.Equal("invoice_5p_001-001.pdf", extractedPDFSNoStrict[0].Filename);
             Assert.Equal(1, extractedPDFSNoStrict[0].GetPageCount());
@@ -49,7 +49,7 @@ namespace Mindee.UnitTests.Extraction
             var extractor = new PdfExtractor(pdf);
             Assert.Equal(5, extractor.GetPageCount());
 
-            var extractedPDFStrict = extractor.ExtractInvoices(inference.Prediction.PageGroups, true);
+            var extractedPDFStrict = extractor.ExtractInvoices(inference.Prediction.InvoicePageGroups, true);
             Assert.Equal(2, extractedPDFStrict.Count);
             Assert.Equal("invoice_5p_001-001.pdf", extractedPDFStrict[0].Filename);
             Assert.Equal(1, extractedPDFStrict[0].GetPageCount());

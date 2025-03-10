@@ -3,32 +3,29 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.InvoiceSplitter
 {
     /// <summary>
-    /// Document data for Invoice Splitter, API version 1.
+    /// Invoice Splitter API version 1.2 document data.
     /// </summary>
-    public sealed class InvoiceSplitterV1Document : IPrediction
+    public class InvoiceSplitterV1Document : IPrediction
     {
         /// <summary>
-        /// List of page group.
+        /// List of page groups. Each group represents a single invoice within a multi-invoice document.
         /// </summary>
         [JsonPropertyName("invoice_page_groups")]
-        public IList<InvoiceSplitterV1PageGroup> PageGroups { get; set; } = new List<InvoiceSplitterV1PageGroup>();
+        [JsonConverter(typeof(ObjectListJsonConverter<InvoiceSplitterV1InvoicePageGroups, InvoiceSplitterV1InvoicePageGroup>))]
+        public InvoiceSplitterV1InvoicePageGroups InvoicePageGroups { get; set; }
 
         /// <summary>
         /// A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
         {
-            if (PageGroups.Count < 1)
-            {
-                return ":Invoice Page Groups:\n";
-            }
             StringBuilder result = new StringBuilder();
-            result.Append($":Invoice Page Groups:\n  {string.Join("\n  ", PageGroups.Select(pg => pg.ToString()))}\n");
-
+            result.Append($":Invoice Page Groups:{InvoicePageGroups}");
             return SummaryHelper.Clean(result.ToString());
         }
     }

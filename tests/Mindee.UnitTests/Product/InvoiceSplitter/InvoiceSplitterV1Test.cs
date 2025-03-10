@@ -3,24 +3,31 @@ using Mindee.Product.InvoiceSplitter;
 
 namespace Mindee.UnitTests.Product.InvoiceSplitter
 {
-    [Trait("Category", "Invoice Splitter V1")]
+    [Trait("Category", "InvoiceSplitterV1")]
     public class InvoiceSplitterV1Test
     {
         [Fact]
-        public async Task Predict_CheckSummary()
+        public async Task Predict_CheckEmpty()
         {
-            var response = await GetPrediction();
-            var expected = File.ReadAllText("Resources/products/invoice_splitter/response_v1/summary_full.rst");
-            Assert.Equal(
-                expected,
-                response.Document.ToString());
+            var response = await GetPrediction("empty");
+            var docPrediction = response.Document.Inference.Prediction;
+            Assert.Empty(docPrediction.InvoicePageGroups);
         }
 
-        private static async Task<AsyncPredictResponse<InvoiceSplitterV1>> GetPrediction()
+        [Fact]
+        public async Task Predict_CheckSummary()
         {
-            const string fileName = "Resources/products/invoice_splitter/response_v1/complete.json";
+            var response = await GetPrediction("complete");
+            var expected = File.ReadAllText("Resources/products/invoice_splitter/response_v1/summary_full.rst");
+            Assert.Equal(expected, response.Document.ToString());
+        }
+
+        private static async Task<PredictResponse<InvoiceSplitterV1>> GetPrediction(string name)
+        {
+            string fileName = $"Resources/products/invoice_splitter/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.DocumentQueueGetAsync<InvoiceSplitterV1>("hello");
+            return await mindeeAPi.PredictPostAsync<InvoiceSplitterV1>(
+                UnitTestBase.GetFakePredictParameter());
         }
     }
 }

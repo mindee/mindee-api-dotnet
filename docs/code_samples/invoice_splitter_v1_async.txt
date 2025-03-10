@@ -8,10 +8,11 @@ string filePath = "/path/to/the/file.ext";
 // Construct a new client
 MindeeClient mindeeClient = new MindeeClient(apiKey);
 
-// load an input source
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
 var inputSource = new LocalInputSource(filePath);
 
-// call the product asynchronously with auto-polling
+// Call the product asynchronously with auto-polling
 var response = await mindeeClient
     .EnqueueAndParseAsync<InvoiceSplitterV1>(inputSource);
 
