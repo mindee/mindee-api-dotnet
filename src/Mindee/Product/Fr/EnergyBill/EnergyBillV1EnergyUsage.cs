@@ -13,6 +13,12 @@ namespace Mindee.Product.Fr.EnergyBill
     public sealed class EnergyBillV1EnergyUsage : LineItemField
     {
         /// <summary>
+        /// The price per unit of energy consumed.
+        /// </summary>
+        [JsonPropertyName("consumption")]
+        public double? Consumption { get; set; }
+
+        /// <summary>
         /// Description or details of the energy usage.
         /// </summary>
         [JsonPropertyName("description")]
@@ -43,6 +49,12 @@ namespace Mindee.Product.Fr.EnergyBill
         public double? Total { get; set; }
 
         /// <summary>
+        /// The unit of measurement for energy consumption.
+        /// </summary>
+        [JsonPropertyName("unit")]
+        public string Unit { get; set; }
+
+        /// <summary>
         /// The price per unit of energy consumed.
         /// </summary>
         [JsonPropertyName("unit_price")]
@@ -52,11 +64,13 @@ namespace Mindee.Product.Fr.EnergyBill
         {
             return new Dictionary<string, string>()
             {
+                {"Consumption", SummaryHelper.FormatAmount(Consumption)},
                 {"Description", SummaryHelper.FormatString(Description, 36)},
                 {"EndDate", SummaryHelper.FormatString(EndDate, 10)},
                 {"StartDate", SummaryHelper.FormatString(StartDate)},
                 {"TaxRate", SummaryHelper.FormatAmount(TaxRate)},
                 {"Total", SummaryHelper.FormatAmount(Total)},
+                {"Unit", SummaryHelper.FormatString(Unit)},
                 {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
             };
         }
@@ -68,6 +82,8 @@ namespace Mindee.Product.Fr.EnergyBill
         {
             Dictionary<string, string> printable = TablePrintableValues();
             return "| "
+              + String.Format("{0,-11}", printable["Consumption"])
+              + " | "
               + String.Format("{0,-36}", printable["Description"])
               + " | "
               + String.Format("{0,-10}", printable["EndDate"])
@@ -77,6 +93,8 @@ namespace Mindee.Product.Fr.EnergyBill
               + String.Format("{0,-8}", printable["TaxRate"])
               + " | "
               + String.Format("{0,-9}", printable["Total"])
+              + " | "
+              + String.Format("{0,-15}", printable["Unit"])
               + " | "
               + String.Format("{0,-10}", printable["UnitPrice"])
               + " |";
@@ -88,7 +106,9 @@ namespace Mindee.Product.Fr.EnergyBill
         public override string ToString()
         {
             Dictionary<string, string> printable = PrintableValues();
-            return "Description: "
+            return "Consumption: "
+              + printable["Consumption"]
+              + ", Description: "
               + printable["Description"]
               + ", End Date: "
               + printable["EndDate"]
@@ -98,6 +118,8 @@ namespace Mindee.Product.Fr.EnergyBill
               + printable["TaxRate"]
               + ", Total: "
               + printable["Total"]
+              + ", Unit of Measure: "
+              + printable["Unit"]
               + ", Unit Price: "
               + printable["UnitPrice"].Trim();
         }
@@ -106,11 +128,13 @@ namespace Mindee.Product.Fr.EnergyBill
         {
             return new Dictionary<string, string>()
             {
+                {"Consumption", SummaryHelper.FormatAmount(Consumption)},
                 {"Description", SummaryHelper.FormatString(Description)},
                 {"EndDate", SummaryHelper.FormatString(EndDate)},
                 {"StartDate", SummaryHelper.FormatString(StartDate)},
                 {"TaxRate", SummaryHelper.FormatAmount(TaxRate)},
                 {"Total", SummaryHelper.FormatAmount(Total)},
+                {"Unit", SummaryHelper.FormatString(Unit)},
                 {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
             };
         }
@@ -130,14 +154,16 @@ namespace Mindee.Product.Fr.EnergyBill
             {
                 return "\n";
             }
-            int[] columnSizes = { 38, 12, 12, 10, 11, 12 };
+            int[] columnSizes = { 13, 38, 12, 12, 10, 11, 17, 12 };
             StringBuilder outStr = new StringBuilder("\n");
             outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '-') + "  ");
+            outStr.Append("| Consumption ");
             outStr.Append("| Description                          ");
             outStr.Append("| End Date   ");
             outStr.Append("| Start Date ");
             outStr.Append("| Tax Rate ");
             outStr.Append("| Total     ");
+            outStr.Append("| Unit of Measure ");
             outStr.Append("| Unit Price ");
             outStr.Append("|\n  " + SummaryHelper.LineSeparator(columnSizes, '='));
             outStr.Append(SummaryHelper.ArrayToString(this, columnSizes));

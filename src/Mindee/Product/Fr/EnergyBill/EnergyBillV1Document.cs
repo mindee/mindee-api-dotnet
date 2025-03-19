@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Fr.EnergyBill
 {
     /// <summary>
-    /// Energy Bill API version 1.0 document data.
+    /// Energy Bill API version 1.2 document data.
     /// </summary>
     public class EnergyBillV1Document : IPrediction
     {
