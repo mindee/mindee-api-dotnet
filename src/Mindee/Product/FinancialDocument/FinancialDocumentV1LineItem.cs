@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.FinancialDocument
 {
     /// <summary>
-    /// List of line item details.
+    /// List of line item present on the document.
     /// </summary>
     public sealed class FinancialDocumentV1LineItem : LineItemField
     {
@@ -141,7 +141,7 @@ namespace Mindee.Product.FinancialDocument
     }
 
     /// <summary>
-    /// List of line item details.
+    /// List of line item present on the document.
     /// </summary>
     public class FinancialDocumentV1LineItems : List<FinancialDocumentV1LineItem>
     {

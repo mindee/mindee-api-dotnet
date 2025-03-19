@@ -249,12 +249,12 @@ The `Taxes` field represents a List of `Tax` objects. As it is the representatio
 Fields which are specific to this product; they are not used in any other product.
 
 ### Line Items Field
-List of line item details.
+List of all the line items present on the invoice.
 
 A `InvoiceV4LineItem` implements the following attributes:
 
 * **Description** (`string`): The item description.
-* **ProductCode** (`string`): The product code referring to the item.
+* **ProductCode** (`string`): The product code of the item.
 * **Quantity** (`double`): The item quantity
 * **TaxAmount** (`double`): The item tax amount.
 * **TaxRate** (`double`): The item tax rate in percentage.
@@ -266,7 +266,7 @@ A `InvoiceV4LineItem` implements the following attributes:
 The following fields are extracted for Invoice V4:
 
 ## Billing Address
-**BillingAddress**: The customer's address used for billing.
+**BillingAddress**: The customer billing address.
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.BillingAddress.Value);
@@ -280,7 +280,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.CustomerAddress.Va
 ```
 
 ## Customer Company Registrations
-**CustomerCompanyRegistrations**: List of company registrations associated to the customer.
+**CustomerCompanyRegistrations**: List of company registration numbers associated to the customer.
 
 ```csharp
 foreach (var CustomerCompanyRegistrationsElem in result.Document.Inference.Prediction.CustomerCompanyRegistrations)
@@ -311,11 +311,11 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 ```
 
 ## Document Type
-**DocumentType**: One of: 'INVOICE', 'CREDIT NOTE'.
+**DocumentType**: Document type: INVOICE or CREDIT NOTE.
 
 #### Possible values include:
- - INVOICE
- - CREDIT NOTE
+ - 'INVOICE'
+ - 'CREDIT NOTE'
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
@@ -336,7 +336,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.InvoiceNumber.Valu
 ```
 
 ## Line Items
-**LineItems**(List<[InvoiceV4LineItem](#line-items-field)>): List of line item details.
+**LineItems**(List<[InvoiceV4LineItem](#line-items-field)>): List of all the line items present on the invoice.
 
 ```csharp
 foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
@@ -346,14 +346,14 @@ foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
 ```
 
 ## Locale
-**Locale**: The locale detected on the document.
+**Locale**: The locale of the document.
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Locale.Value);
 ```
 
 ## Payment Date
-**PaymentDate**: The date on which the payment is due/ was full-filled.
+**PaymentDate**: The date on which the payment is due / was full-filled.
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.PaymentDate.Value);
@@ -367,7 +367,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.PoNumber.Value);
 ```
 
 ## Reference Numbers
-**ReferenceNumbers**: List of Reference numbers, including PO number.
+**ReferenceNumbers**: List of all reference numbers on the invoice, including the purchase order number.
 
 ```csharp
 foreach (var ReferenceNumbersElem in result.Document.Inference.Prediction.ReferenceNumbers)
@@ -391,7 +391,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.SupplierAddress.Va
 ```
 
 ## Supplier Company Registrations
-**SupplierCompanyRegistrations**: List of company registrations associated to the supplier.
+**SupplierCompanyRegistrations**: List of company registration numbers associated to the supplier.
 
 ```csharp
 foreach (var SupplierCompanyRegistrationsElem in result.Document.Inference.Prediction.SupplierCompanyRegistrations)
@@ -401,7 +401,7 @@ foreach (var SupplierCompanyRegistrationsElem in result.Document.Inference.Predi
 ```
 
 ## Supplier Email
-**SupplierEmail**: The email of the supplier or merchant.
+**SupplierEmail**: The email address of the supplier or merchant.
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.SupplierEmail.Value);
@@ -415,7 +415,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.SupplierName.Value
 ```
 
 ## Supplier Payment Details
-**SupplierPaymentDetails**: List of payment details associated to the supplier.
+**SupplierPaymentDetails**: List of payment details associated to the supplier of the invoice.
 
 ```csharp
 foreach (var SupplierPaymentDetailsElem in result.Document.Inference.Prediction.SupplierPaymentDetails)
@@ -439,7 +439,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.SupplierWebsite.Va
 ```
 
 ## Taxes
-**Taxes**: List of tax line details.
+**Taxes**: List of taxes. Each item contains the detail of the tax.
 
 ```csharp
 foreach (var TaxesElem in result.Document.Inference.Prediction.Taxes)
@@ -449,21 +449,21 @@ foreach (var TaxesElem in result.Document.Inference.Prediction.Taxes)
 ```
 
 ## Total Amount
-**TotalAmount**: The total amount paid: includes taxes, tips, fees, and other charges.
+**TotalAmount**: The total amount of the invoice: includes taxes, tips, fees, and other charges.
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalAmount.Value);
 ```
 
 ## Total Net
-**TotalNet**: The net amount paid: does not include taxes, fees, and discounts.
+**TotalNet**: The net amount of the invoice: does not include taxes, fees, and discounts.
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalNet.Value);
 ```
 
 ## Total Tax
-**TotalTax**: The total tax: includes all the taxes paid for this invoice.
+**TotalTax**: The total tax: the sum of all the taxes for this invoice.
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalTax.Value);

@@ -217,7 +217,7 @@ The `Taxes` field represents a List of `Tax` objects. As it is the representatio
 Fields which are specific to this product; they are not used in any other product.
 
 ### Line Items Field
-List of line item details.
+List of all line items on the receipt.
 
 A `ReceiptV5LineItem` implements the following attributes:
 
@@ -230,17 +230,17 @@ A `ReceiptV5LineItem` implements the following attributes:
 The following fields are extracted for Receipt V5:
 
 ## Purchase Category
-**Category**: The purchase category among predefined classes.
+**Category**: The purchase category of the receipt.
 
 #### Possible values include:
- - toll
- - food
- - parking
- - transport
- - accommodation
- - gasoline
- - telecom
- - miscellaneous
+ - 'toll'
+ - 'food'
+ - 'parking'
+ - 'transport'
+ - 'accommodation'
+ - 'gasoline'
+ - 'telecom'
+ - 'miscellaneous'
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Category.Value);
@@ -254,18 +254,18 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 ```
 
 ## Document Type
-**DocumentType**: One of: 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
+**DocumentType**: The type of receipt: EXPENSE RECEIPT or CREDIT CARD RECEIPT.
 
 #### Possible values include:
- - expense_receipt
- - credit_card_receipt
+ - 'EXPENSE RECEIPT'
+ - 'CREDIT CARD RECEIPT'
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
 ```
 
 ## Line Items
-**LineItems**(List<[ReceiptV5LineItem](#line-items-field)>): List of line item details.
+**LineItems**(List<[ReceiptV5LineItem](#line-items-field)>): List of all line items on the receipt.
 
 ```csharp
 foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
@@ -275,7 +275,7 @@ foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
 ```
 
 ## Expense Locale
-**Locale**: The locale detected on the document.
+**Locale**: The locale of the document.
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Locale.Value);
@@ -289,14 +289,15 @@ System.Console.WriteLine(result.Document.Inference.Prediction.ReceiptNumber.Valu
 ```
 
 ## Purchase Subcategory
-**Subcategory**: The purchase subcategory among predefined classes for transport and food.
+**Subcategory**: The purchase subcategory of the receipt for transport and food.
 
 #### Possible values include:
- - plane
- - taxi
- - train
- - restaurant
- - shopping
+ - 'plane'
+ - 'taxi'
+ - 'train'
+ - 'restaurant'
+ - 'shopping'
+ - null
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Subcategory.Value);
@@ -310,7 +311,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.SupplierAddress.Va
 ```
 
 ## Supplier Company Registrations
-**SupplierCompanyRegistrations**: List of company registrations associated to the supplier.
+**SupplierCompanyRegistrations**: List of company registration numbers associated to the supplier.
 
 ```csharp
 foreach (var SupplierCompanyRegistrationsElem in result.Document.Inference.Prediction.SupplierCompanyRegistrations)
@@ -334,7 +335,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.SupplierPhoneNumbe
 ```
 
 ## Taxes
-**Taxes**: List of tax lines information.
+**Taxes**: The list of taxes present on the receipt.
 
 ```csharp
 foreach (var TaxesElem in result.Document.Inference.Prediction.Taxes)
@@ -372,7 +373,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.TotalNet.Value);
 ```
 
 ## Total Tax
-**TotalTax**: The total amount of taxes.
+**TotalTax**: The sum of all taxes.
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalTax.Value);

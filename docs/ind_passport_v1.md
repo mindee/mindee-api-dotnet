@@ -175,8 +175,8 @@ System.Console.WriteLine(result.Document.Inference.Prediction.FileNumber.Value);
 **Gender**: The gender of the passport holder.
 
 #### Possible values include:
- - M
- - F
+ - 'M'
+ - 'F'
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Gender.Value);
@@ -270,8 +270,8 @@ System.Console.WriteLine(result.Document.Inference.Prediction.OldPassportPlaceOf
 **PageNumber**: The page number of the passport document.
 
 #### Possible values include:
- - 1
- - 2
+ - '1'
+ - '2'
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.PageNumber.Value);

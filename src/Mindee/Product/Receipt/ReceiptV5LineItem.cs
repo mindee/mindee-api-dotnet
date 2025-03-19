@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Receipt
 {
     /// <summary>
-    /// List of line item details.
+    /// List of all line items on the receipt.
     /// </summary>
     public sealed class ReceiptV5LineItem : LineItemField
     {
@@ -93,7 +93,7 @@ namespace Mindee.Product.Receipt
     }
 
     /// <summary>
-    /// List of line item details.
+    /// List of all line items on the receipt.
     /// </summary>
     public class ReceiptV5LineItems : List<ReceiptV5LineItem>
     {

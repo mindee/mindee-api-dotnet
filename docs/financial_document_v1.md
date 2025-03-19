@@ -261,7 +261,7 @@ The `Taxes` field represents a List of `Tax` objects. As it is the representatio
 Fields which are specific to this product; they are not used in any other product.
 
 ### Line Items Field
-List of line item details.
+List of line item present on the document.
 
 A `FinancialDocumentV1LineItem` implements the following attributes:
 
@@ -285,17 +285,17 @@ System.Console.WriteLine(result.Document.Inference.Prediction.BillingAddress.Val
 ```
 
 ## Purchase Category
-**Category**: The purchase category among predefined classes.
+**Category**: The purchase category, only for receipts.
 
 #### Possible values include:
- - toll
- - food
- - parking
- - transport
- - accommodation
- - gasoline
- - telecom
- - miscellaneous
+ - 'toll'
+ - 'food'
+ - 'parking'
+ - 'transport'
+ - 'accommodation'
+ - 'gasoline'
+ - 'telecom'
+ - 'miscellaneous'
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Category.Value);
@@ -309,7 +309,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.CustomerAddress.Va
 ```
 
 ## Customer Company Registrations
-**CustomerCompanyRegistrations**: List of company registrations associated to the customer.
+**CustomerCompanyRegistrations**: List of company registration numbers associated to the customer.
 
 ```csharp
 foreach (var CustomerCompanyRegistrationsElem in result.Document.Inference.Prediction.CustomerCompanyRegistrations)
@@ -340,20 +340,20 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 ```
 
 ## Document Number
-**DocumentNumber**: The document number or identifier.
+**DocumentNumber**: The document number or identifier (invoice number or receipt number).
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentNumber.Value);
 ```
 
 ## Document Type
-**DocumentType**: One of: 'INVOICE', 'CREDIT NOTE', 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
+**DocumentType**: The type of the document: INVOICE or CREDIT NOTE if it is an invoice, CREDIT CARD RECEIPT or EXPENSE RECEIPT if it is a receipt.
 
 #### Possible values include:
- - INVOICE
- - CREDIT NOTE
- - CREDIT CARD RECEIPT
- - EXPENSE RECEIPT
+ - 'INVOICE'
+ - 'CREDIT NOTE'
+ - 'CREDIT CARD RECEIPT'
+ - 'EXPENSE RECEIPT'
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
@@ -374,7 +374,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.InvoiceNumber.Valu
 ```
 
 ## Line Items
-**LineItems**(List<[FinancialDocumentV1LineItem](#line-items-field)>): List of line item details.
+**LineItems**(List<[FinancialDocumentV1LineItem](#line-items-field)>): List of line item present on the document.
 
 ```csharp
 foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
@@ -384,7 +384,7 @@ foreach (var LineItemsElem in result.Document.Inference.Prediction.LineItems)
 ```
 
 ## Locale
-**Locale**: The locale detected on the document.
+**Locale**: The locale of the document.
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Locale.Value);
@@ -398,7 +398,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.PaymentDate.Value)
 ```
 
 ## Purchase Order Number
-**PoNumber**: The purchase order number.
+**PoNumber**: The purchase order number, only if the document is an invoice.
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.PoNumber.Value);
@@ -412,7 +412,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.ReceiptNumber.Valu
 ```
 
 ## Reference Numbers
-**ReferenceNumbers**: List of Reference numbers, including PO number.
+**ReferenceNumbers**: List of Reference numbers, including PO number, only if the document is an invoice.
 
 ```csharp
 foreach (var ReferenceNumbersElem in result.Document.Inference.Prediction.ReferenceNumbers)
@@ -429,14 +429,15 @@ System.Console.WriteLine(result.Document.Inference.Prediction.ShippingAddress.Va
 ```
 
 ## Purchase Subcategory
-**Subcategory**: The purchase subcategory among predefined classes for transport and food.
+**Subcategory**: The purchase subcategory for transport and food, only for receipts.
 
 #### Possible values include:
- - plane
- - taxi
- - train
- - restaurant
- - shopping
+ - 'plane'
+ - 'taxi'
+ - 'train'
+ - 'restaurant'
+ - 'shopping'
+ - null
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Subcategory.Value);
@@ -450,7 +451,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.SupplierAddress.Va
 ```
 
 ## Supplier Company Registrations
-**SupplierCompanyRegistrations**: List of company registrations associated to the supplier.
+**SupplierCompanyRegistrations**: List of company registration numbers associated to the supplier.
 
 ```csharp
 foreach (var SupplierCompanyRegistrationsElem in result.Document.Inference.Prediction.SupplierCompanyRegistrations)
@@ -474,7 +475,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.SupplierName.Value
 ```
 
 ## Supplier Payment Details
-**SupplierPaymentDetails**: List of payment details associated to the supplier.
+**SupplierPaymentDetails**: List of payment details associated to the supplier (only for invoices).
 
 ```csharp
 foreach (var SupplierPaymentDetailsElem in result.Document.Inference.Prediction.SupplierPaymentDetails)
@@ -498,7 +499,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.SupplierWebsite.Va
 ```
 
 ## Taxes
-**Taxes**: List of tax lines information.
+**Taxes**: List of all taxes on the document.
 
 ```csharp
 foreach (var TaxesElem in result.Document.Inference.Prediction.Taxes)
@@ -508,7 +509,7 @@ foreach (var TaxesElem in result.Document.Inference.Prediction.Taxes)
 ```
 
 ## Purchase Time
-**Time**: The time the purchase was made.
+**Time**: The time the purchase was made (only for receipts).
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Time.Value);
@@ -536,7 +537,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.TotalNet.Value);
 ```
 
 ## Total Tax
-**TotalTax**: The total amount of taxes.
+**TotalTax**: The sum of all taxes present on the document.
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.TotalTax.Value);

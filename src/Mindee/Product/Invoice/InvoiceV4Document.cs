@@ -13,7 +13,7 @@ namespace Mindee.Product.Invoice
     public class InvoiceV4Document : IPrediction
     {
         /// <summary>
-        /// The customer's address used for billing.
+        /// The customer billing address.
         /// </summary>
         [JsonPropertyName("billing_address")]
         public StringField BillingAddress { get; set; }
@@ -25,7 +25,7 @@ namespace Mindee.Product.Invoice
         public StringField CustomerAddress { get; set; }
 
         /// <summary>
-        /// List of company registrations associated to the customer.
+        /// List of company registration numbers associated to the customer.
         /// </summary>
         [JsonPropertyName("customer_company_registrations")]
         public IList<CompanyRegistration> CustomerCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
@@ -49,7 +49,7 @@ namespace Mindee.Product.Invoice
         public DateField Date { get; set; }
 
         /// <summary>
-        /// One of: 'INVOICE', 'CREDIT NOTE'.
+        /// Document type: INVOICE or CREDIT NOTE.
         /// </summary>
         [JsonPropertyName("document_type")]
         public ClassificationField DocumentType { get; set; }
@@ -67,20 +67,20 @@ namespace Mindee.Product.Invoice
         public StringField InvoiceNumber { get; set; }
 
         /// <summary>
-        /// List of line item details.
+        /// List of all the line items present on the invoice.
         /// </summary>
         [JsonPropertyName("line_items")]
         [JsonConverter(typeof(ObjectListJsonConverter<InvoiceV4LineItems, InvoiceV4LineItem>))]
         public InvoiceV4LineItems LineItems { get; set; }
 
         /// <summary>
-        /// The locale detected on the document.
+        /// The locale of the document.
         /// </summary>
         [JsonPropertyName("locale")]
         public Locale Locale { get; set; }
 
         /// <summary>
-        /// The date on which the payment is due/ was full-filled.
+        /// The date on which the payment is due / was full-filled.
         /// </summary>
         [JsonPropertyName("payment_date")]
         public DateField PaymentDate { get; set; }
@@ -92,7 +92,7 @@ namespace Mindee.Product.Invoice
         public StringField PoNumber { get; set; }
 
         /// <summary>
-        /// List of Reference numbers, including PO number.
+        /// List of all reference numbers on the invoice, including the purchase order number.
         /// </summary>
         [JsonPropertyName("reference_numbers")]
         public IList<StringField> ReferenceNumbers { get; set; } = new List<StringField>();
@@ -110,13 +110,13 @@ namespace Mindee.Product.Invoice
         public StringField SupplierAddress { get; set; }
 
         /// <summary>
-        /// List of company registrations associated to the supplier.
+        /// List of company registration numbers associated to the supplier.
         /// </summary>
         [JsonPropertyName("supplier_company_registrations")]
         public IList<CompanyRegistration> SupplierCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
-        /// The email of the supplier or merchant.
+        /// The email address of the supplier or merchant.
         /// </summary>
         [JsonPropertyName("supplier_email")]
         public StringField SupplierEmail { get; set; }
@@ -128,7 +128,7 @@ namespace Mindee.Product.Invoice
         public StringField SupplierName { get; set; }
 
         /// <summary>
-        /// List of payment details associated to the supplier.
+        /// List of payment details associated to the supplier of the invoice.
         /// </summary>
         [JsonPropertyName("supplier_payment_details")]
         public IList<PaymentDetail> SupplierPaymentDetails { get; set; } = new List<PaymentDetail>();
@@ -146,26 +146,26 @@ namespace Mindee.Product.Invoice
         public StringField SupplierWebsite { get; set; }
 
         /// <summary>
-        /// List of tax line details.
+        /// List of taxes. Each item contains the detail of the tax.
         /// </summary>
         [JsonPropertyName("taxes")]
         [JsonConverter(typeof(ObjectListJsonConverter<Taxes, Tax>))]
         public Taxes Taxes { get; set; }
 
         /// <summary>
-        /// The total amount paid: includes taxes, tips, fees, and other charges.
+        /// The total amount of the invoice: includes taxes, tips, fees, and other charges.
         /// </summary>
         [JsonPropertyName("total_amount")]
         public AmountField TotalAmount { get; set; }
 
         /// <summary>
-        /// The net amount paid: does not include taxes, fees, and discounts.
+        /// The net amount of the invoice: does not include taxes, fees, and discounts.
         /// </summary>
         [JsonPropertyName("total_net")]
         public AmountField TotalNet { get; set; }
 
         /// <summary>
-        /// The total tax: includes all the taxes paid for this invoice.
+        /// The total tax: the sum of all the taxes for this invoice.
         /// </summary>
         [JsonPropertyName("total_tax")]
         public AmountField TotalTax { get; set; }

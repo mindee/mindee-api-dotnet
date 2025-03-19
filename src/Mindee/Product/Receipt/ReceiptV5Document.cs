@@ -13,7 +13,7 @@ namespace Mindee.Product.Receipt
     public class ReceiptV5Document : IPrediction
     {
         /// <summary>
-        /// The purchase category among predefined classes.
+        /// The purchase category of the receipt.
         /// </summary>
         [JsonPropertyName("category")]
         public ClassificationField Category { get; set; }
@@ -25,20 +25,20 @@ namespace Mindee.Product.Receipt
         public DateField Date { get; set; }
 
         /// <summary>
-        /// One of: 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
+        /// The type of receipt: EXPENSE RECEIPT or CREDIT CARD RECEIPT.
         /// </summary>
         [JsonPropertyName("document_type")]
         public ClassificationField DocumentType { get; set; }
 
         /// <summary>
-        /// List of line item details.
+        /// List of all line items on the receipt.
         /// </summary>
         [JsonPropertyName("line_items")]
         [JsonConverter(typeof(ObjectListJsonConverter<ReceiptV5LineItems, ReceiptV5LineItem>))]
         public ReceiptV5LineItems LineItems { get; set; }
 
         /// <summary>
-        /// The locale detected on the document.
+        /// The locale of the document.
         /// </summary>
         [JsonPropertyName("locale")]
         public Locale Locale { get; set; }
@@ -50,7 +50,7 @@ namespace Mindee.Product.Receipt
         public StringField ReceiptNumber { get; set; }
 
         /// <summary>
-        /// The purchase subcategory among predefined classes for transport and food.
+        /// The purchase subcategory of the receipt for transport and food.
         /// </summary>
         [JsonPropertyName("subcategory")]
         public ClassificationField Subcategory { get; set; }
@@ -62,7 +62,7 @@ namespace Mindee.Product.Receipt
         public StringField SupplierAddress { get; set; }
 
         /// <summary>
-        /// List of company registrations associated to the supplier.
+        /// List of company registration numbers associated to the supplier.
         /// </summary>
         [JsonPropertyName("supplier_company_registrations")]
         public IList<CompanyRegistration> SupplierCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
@@ -80,7 +80,7 @@ namespace Mindee.Product.Receipt
         public StringField SupplierPhoneNumber { get; set; }
 
         /// <summary>
-        /// List of tax lines information.
+        /// The list of taxes present on the receipt.
         /// </summary>
         [JsonPropertyName("taxes")]
         [JsonConverter(typeof(ObjectListJsonConverter<Taxes, Tax>))]
@@ -111,7 +111,7 @@ namespace Mindee.Product.Receipt
         public AmountField TotalNet { get; set; }
 
         /// <summary>
-        /// The total amount of taxes.
+        /// The sum of all taxes.
         /// </summary>
         [JsonPropertyName("total_tax")]
         public AmountField TotalTax { get; set; }

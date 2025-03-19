@@ -149,12 +149,12 @@ System.Console.WriteLine(result.Document.Inference.Prediction.DocumentNumber.Val
 **DocumentType**: The type of personal identification document.
 
 #### Possible values include:
- - IDENTIFICATION_CARD
- - PASSPORT
- - DRIVER_LICENSE
- - VISA
- - RESIDENCY_CARD
- - VOTER_REGISTRATION
+ - 'IDENTIFICATION_CARD'
+ - 'PASSPORT'
+ - 'DRIVER_LICENSE'
+ - 'VISA'
+ - 'RESIDENCY_CARD'
+ - 'VOTER_REGISTRATION'
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
