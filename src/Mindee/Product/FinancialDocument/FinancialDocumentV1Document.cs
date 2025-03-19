@@ -19,7 +19,7 @@ namespace Mindee.Product.FinancialDocument
         public StringField BillingAddress { get; set; }
 
         /// <summary>
-        /// The purchase category among predefined classes.
+        /// The purchase category, only for receipts.
         /// </summary>
         [JsonPropertyName("category")]
         public ClassificationField Category { get; set; }
@@ -31,7 +31,7 @@ namespace Mindee.Product.FinancialDocument
         public StringField CustomerAddress { get; set; }
 
         /// <summary>
-        /// List of company registrations associated to the customer.
+        /// List of company registration numbers associated to the customer.
         /// </summary>
         [JsonPropertyName("customer_company_registrations")]
         public IList<CompanyRegistration> CustomerCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
@@ -55,13 +55,13 @@ namespace Mindee.Product.FinancialDocument
         public DateField Date { get; set; }
 
         /// <summary>
-        /// The document number or identifier.
+        /// The document number or identifier (invoice number or receipt number).
         /// </summary>
         [JsonPropertyName("document_number")]
         public StringField DocumentNumber { get; set; }
 
         /// <summary>
-        /// One of: 'INVOICE', 'CREDIT NOTE', 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
+        /// The type of the document: INVOICE or CREDIT NOTE if it is an invoice, CREDIT CARD RECEIPT or EXPENSE RECEIPT if it is a receipt.
         /// </summary>
         [JsonPropertyName("document_type")]
         public ClassificationField DocumentType { get; set; }
@@ -79,14 +79,14 @@ namespace Mindee.Product.FinancialDocument
         public StringField InvoiceNumber { get; set; }
 
         /// <summary>
-        /// List of line item details.
+        /// List of line item present on the document.
         /// </summary>
         [JsonPropertyName("line_items")]
         [JsonConverter(typeof(ObjectListJsonConverter<FinancialDocumentV1LineItems, FinancialDocumentV1LineItem>))]
         public FinancialDocumentV1LineItems LineItems { get; set; }
 
         /// <summary>
-        /// The locale detected on the document.
+        /// The locale of the document.
         /// </summary>
         [JsonPropertyName("locale")]
         public Locale Locale { get; set; }
@@ -98,7 +98,7 @@ namespace Mindee.Product.FinancialDocument
         public DateField PaymentDate { get; set; }
 
         /// <summary>
-        /// The purchase order number.
+        /// The purchase order number, only if the document is an invoice.
         /// </summary>
         [JsonPropertyName("po_number")]
         public StringField PoNumber { get; set; }
@@ -110,7 +110,7 @@ namespace Mindee.Product.FinancialDocument
         public StringField ReceiptNumber { get; set; }
 
         /// <summary>
-        /// List of Reference numbers, including PO number.
+        /// List of Reference numbers, including PO number, only if the document is an invoice.
         /// </summary>
         [JsonPropertyName("reference_numbers")]
         public IList<StringField> ReferenceNumbers { get; set; } = new List<StringField>();
@@ -122,7 +122,7 @@ namespace Mindee.Product.FinancialDocument
         public StringField ShippingAddress { get; set; }
 
         /// <summary>
-        /// The purchase subcategory among predefined classes for transport and food.
+        /// The purchase subcategory for transport and food, only for receipts.
         /// </summary>
         [JsonPropertyName("subcategory")]
         public ClassificationField Subcategory { get; set; }
@@ -134,7 +134,7 @@ namespace Mindee.Product.FinancialDocument
         public StringField SupplierAddress { get; set; }
 
         /// <summary>
-        /// List of company registrations associated to the supplier.
+        /// List of company registration numbers associated to the supplier.
         /// </summary>
         [JsonPropertyName("supplier_company_registrations")]
         public IList<CompanyRegistration> SupplierCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
@@ -152,7 +152,7 @@ namespace Mindee.Product.FinancialDocument
         public StringField SupplierName { get; set; }
 
         /// <summary>
-        /// List of payment details associated to the supplier.
+        /// List of payment details associated to the supplier (only for invoices).
         /// </summary>
         [JsonPropertyName("supplier_payment_details")]
         public IList<PaymentDetail> SupplierPaymentDetails { get; set; } = new List<PaymentDetail>();
@@ -170,14 +170,14 @@ namespace Mindee.Product.FinancialDocument
         public StringField SupplierWebsite { get; set; }
 
         /// <summary>
-        /// List of tax lines information.
+        /// List of all taxes on the document.
         /// </summary>
         [JsonPropertyName("taxes")]
         [JsonConverter(typeof(ObjectListJsonConverter<Taxes, Tax>))]
         public Taxes Taxes { get; set; }
 
         /// <summary>
-        /// The time the purchase was made.
+        /// The time the purchase was made (only for receipts).
         /// </summary>
         [JsonPropertyName("time")]
         public StringField Time { get; set; }
@@ -201,7 +201,7 @@ namespace Mindee.Product.FinancialDocument
         public AmountField TotalNet { get; set; }
 
         /// <summary>
-        /// The total amount of taxes.
+        /// The sum of all taxes present on the document.
         /// </summary>
         [JsonPropertyName("total_tax")]
         public AmountField TotalTax { get; set; }

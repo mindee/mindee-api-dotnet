@@ -6,7 +6,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.DeliveryNote
 {
     /// <summary>
-    /// Delivery note API version 1.1 document data.
+    /// Delivery note API version 1.2 document data.
     /// </summary>
     public class DeliveryNoteV1Document : IPrediction
     {

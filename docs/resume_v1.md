@@ -247,9 +247,9 @@ System.Console.WriteLine(result.Document.Inference.Prediction.DocumentLanguage.V
 **DocumentType**: The type of the document sent.
 
 #### Possible values include:
- - RESUME
- - MOTIVATION_LETTER
- - RECOMMENDATION_LETTER
+ - 'RESUME'
+ - 'MOTIVATION_LETTER'
+ - 'RECOMMENDATION_LETTER'
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);

@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Invoice
 {
     /// <summary>
-    /// List of line item details.
+    /// List of all the line items present on the invoice.
     /// </summary>
     public sealed class InvoiceV4LineItem : LineItemField
     {
@@ -19,7 +19,7 @@ namespace Mindee.Product.Invoice
         public string Description { get; set; }
 
         /// <summary>
-        /// The product code referring to the item.
+        /// The product code of the item.
         /// </summary>
         [JsonPropertyName("product_code")]
         public string ProductCode { get; set; }
@@ -141,7 +141,7 @@ namespace Mindee.Product.Invoice
     }
 
     /// <summary>
-    /// List of line item details.
+    /// List of all the line items present on the invoice.
     /// </summary>
     public class InvoiceV4LineItems : List<InvoiceV4LineItem>
     {
