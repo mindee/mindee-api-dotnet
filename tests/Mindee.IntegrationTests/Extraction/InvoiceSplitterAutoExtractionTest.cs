@@ -34,7 +34,7 @@ namespace Mindee.IntegrationTests.Extraction
             PdfExtractor extractor = new PdfExtractor(invoiceSplitterInputSource);
             Assert.Equal(2, extractor.GetPageCount());
             List<ExtractedPdf> extractedPdfsStrict = extractor.ExtractInvoices(
-                inference.Prediction.PageGroups, false);
+                inference.Prediction.InvoicePageGroups, false);
             Assert.Equal(2, extractedPdfsStrict.Count);
             Assert.Equal("default_sample_001-001.pdf", extractedPdfsStrict[0].Filename);
             Assert.Equal("default_sample_002-002.pdf", extractedPdfsStrict[1].Filename);

@@ -96,7 +96,7 @@ namespace Mindee.Extraction
         /// </summary>
         /// <param name="pageIndexes">List of sub-lists of pages to keep.</param>
         /// <returns>A list of extracted invoices.</returns>
-        public List<ExtractedPdf> ExtractInvoices(List<InvoiceSplitterV1PageGroup> pageIndexes)
+        public List<ExtractedPdf> ExtractInvoices(List<InvoiceSplitterV1InvoicePageGroup> pageIndexes)
         {
             List<List<int>> indexes = pageIndexes.Select(pi => pi.PageIndexes.ToList()).ToList();
             return ExtractSubDocuments(indexes.ToList());
@@ -108,7 +108,7 @@ namespace Mindee.Extraction
         /// <param name="pageIndexes">List of sub-lists of pages to keep.</param>
         /// <param name="strict">Whether to trust confidence scores of 1.0 only or not.</param>
         /// <returns>A list of extracted invoices.</returns>
-        public List<ExtractedPdf> ExtractInvoices(IList<InvoiceSplitterV1PageGroup> pageIndexes, bool strict)
+        public List<ExtractedPdf> ExtractInvoices(IList<InvoiceSplitterV1InvoicePageGroup> pageIndexes, bool strict)
         {
             if (!strict)
             {
@@ -125,7 +125,7 @@ namespace Mindee.Extraction
             {
                 var pageIndex = iterator.Current;
                 Debug.Assert(pageIndex != null, nameof(pageIndex) + " != null");
-                double confidence = pageIndex.Confidence;
+                double confidence = pageIndex.Confidence ?? 0.0;
                 var pageList = pageIndex.PageIndexes;
 
                 if (Math.Abs(confidence - 1.0) < 0.01 && previousConfidence == null)

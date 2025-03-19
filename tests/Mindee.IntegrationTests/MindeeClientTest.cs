@@ -202,7 +202,7 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response.Job.AvailableAt?.ToString("yyyy"));
 
             Assert.NotNull(response.Document);
-            Assert.NotNull(response.Document.Inference.Prediction.PageGroups);
+            Assert.NotNull(response.Document.Inference.Prediction.InvoicePageGroups);
         }
 
         [Fact]
