@@ -25,7 +25,7 @@ namespace Mindee.Product.Fr.EnergyBill
         public string MeterType { get; set; }
 
         /// <summary>
-        /// The unit of measurement for energy consumption, which can be kW, m³, or L.
+        /// The unit of power for energy consumption.
         /// </summary>
         [JsonPropertyName("unit")]
         public string Unit { get; set; }
@@ -39,7 +39,7 @@ namespace Mindee.Product.Fr.EnergyBill
             return "\n"
                 + $"  :Meter Number: {printable["MeterNumber"]}\n"
                 + $"  :Meter Type: {printable["MeterType"]}\n"
-                + $"  :Unit of Measure: {printable["Unit"]}\n";
+                + $"  :Unit of Power: {printable["Unit"]}\n";
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Mindee.Product.Fr.EnergyBill
               + printable["MeterNumber"]
               + ", Meter Type: "
               + printable["MeterType"]
-              + ", Unit of Measure: "
+              + ", Unit of Power: "
               + printable["Unit"].Trim();
         }
 

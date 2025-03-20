@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Us.HealthcareCard
 {
     /// <summary>
-    /// Healthcare Card API version 1.0 document data.
+    /// Healthcare Card API version 1.1 document data.
     /// </summary>
     public class HealthcareCardV1Document : IPrediction
     {
