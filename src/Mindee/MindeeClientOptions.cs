@@ -138,23 +138,31 @@ namespace Mindee
         public string PublicUrl { get; }
 
         /// <summary>
+        /// Whether to enable Retrieval-Augmented Generation.
+        /// </summary>
+        public bool Rag { get; }
+
+        /// <summary>
         /// Options for workflow executions.
         /// </summary>
         /// <param name="alias"></param>
         /// <param name="priority"></param>
         /// <param name="fullText"></param>
         /// <param name="publicUrl"></param>
+        /// <param name="rag"></param>
         public WorkflowOptions(
             string alias = null,
             ExecutionPriority? priority = null,
             bool fullText = false,
-            string publicUrl = null
+            string publicUrl = null,
+            bool rag = false
         )
         {
             Alias = alias;
             Priority = priority;
             FullText = fullText;
             PublicUrl = publicUrl;
+            Rag = rag;
         }
     }
 }

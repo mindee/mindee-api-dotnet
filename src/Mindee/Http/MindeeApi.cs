@@ -170,6 +170,10 @@ namespace Mindee.Http
                         workflowParameter.Priority.ToString()?.ToLower() : null);
             }
 
+            if (workflowParameter.Rag)
+            {
+                request.AddQueryParameter("rag", "true");
+            }
         }
 
         private static void AddPredictRequestParameters(PredictParameter predictParameter, RestRequest request)
