@@ -38,7 +38,6 @@ namespace Mindee.UnitTests.Parsing.Common
         [Fact]
         public void Should_GetFullTextOcrResult()
         {
-            // Arrange
             var expectedText = File.ReadAllLines("Resources/extras/full_text_ocr/full_text_ocr.txt");
             var pages = LoadPages();
             var inference = LoadInference();
