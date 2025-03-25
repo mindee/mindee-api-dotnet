@@ -14,7 +14,7 @@ namespace Mindee.IntegrationTests.Workflow
 
             string currentDateTime = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
             var alias = "dotnet-" + currentDateTime;
-            WorkflowOptions options = new WorkflowOptions(alias, ExecutionPriority.Low);
+            WorkflowOptions options = new WorkflowOptions(alias, ExecutionPriority.Low, rag: true);
             var response = await client.ExecuteWorkflowAsync(Environment.GetEnvironmentVariable("Workflow__ID"), inputSource, options);
 
             Assert.Equal(ExecutionPriority.Low, response.Execution.Priority);

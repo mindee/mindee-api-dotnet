@@ -641,7 +641,8 @@ namespace Mindee
                     fullText: workflowOptions.FullText,
                     alias: workflowOptions.Alias,
                     priority: workflowOptions.Priority,
-                    publicUrl: workflowOptions.PublicUrl
+                    publicUrl: workflowOptions.PublicUrl,
+                    rag: workflowOptions.Rag
                 ));
         }
 
@@ -672,7 +673,8 @@ namespace Mindee
                     fullText: workflowOptions.FullText,
                     alias: workflowOptions.Alias,
                     priority: workflowOptions.Priority,
-                    publicUrl: workflowOptions.PublicUrl
+                    publicUrl: workflowOptions.PublicUrl,
+                    rag: workflowOptions.Rag
                 ));
         }
 

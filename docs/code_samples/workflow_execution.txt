@@ -15,8 +15,8 @@ var inputSource = new LocalInputSource(filePath);
 // Send the document to a workflow execution
 var response = await mindeeClient.ExecuteWorkflowAsync(workflowId, inputSource);
 
-// Alternatively, give it an alias:
-// var response = await mindeeClient.ExecuteWorkflowAsync(workflowId, inputSource, new WorkflowOptions(alias: "my-alias"));
+// Alternatively, you can give it an alias, a priority or enable Retrieval-Augmented Generation:
+// var response = await mindeeClient.ExecuteWorkflowAsync(workflowId, inputSource, new WorkflowOptions(alias: "my-alias", priority: ExecutionPriority.Low, rag: true));
 
 // Print the execution ID to make sure it worked.
 System.Console.WriteLine(response.Execution.Id);
