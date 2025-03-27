@@ -131,11 +131,6 @@ using PredictUsMailCommand = Mindee.Cli.PredictCommand<
     Mindee.Product.Us.UsMail.UsMailV3Document,
     Mindee.Product.Us.UsMail.UsMailV3Document
 >;
-using PredictW9Command = Mindee.Cli.PredictCommand<
-    Mindee.Product.Us.W9.W9V1,
-    Mindee.Product.Us.W9.W9V1Page,
-    Mindee.Product.Us.W9.W9V1Document
->;
 
 var runner = BuildCommandLine()
     .UseHost(_ => Host.CreateDefaultBuilder(args), (builder) =>
@@ -170,7 +165,6 @@ var runner = BuildCommandLine()
             .UseCommandHandler<PredictBankCheckCommand, PredictBankCheckCommand.Handler>()
             .UseCommandHandler<PredictHealthcareCardCommand, PredictHealthcareCardCommand.Handler>()
             .UseCommandHandler<PredictUsMailCommand, PredictUsMailCommand.Handler>()
-            .UseCommandHandler<PredictW9Command, PredictW9Command.Handler>()
             ;
     })
     .UseHelp()
@@ -264,9 +258,6 @@ static CommandLineBuilder BuildCommandLine()
     root.AddCommand(new PredictUsMailCommand(new CommandOptions(
         name: "us-us-mail", description: "US US Mail",
         allWords: false, fullText: true, sync: false, async: true)));
-    root.AddCommand(new PredictW9Command(new CommandOptions(
-        name: "us-w9", description: "US W9",
-        allWords: false, fullText: false, sync: true, async: false)));
 
     root.AddGlobalOption(new Option<bool>(name: "--silent", "Disables diagnostics output"));
     root.SetHandler(handle: () =>
