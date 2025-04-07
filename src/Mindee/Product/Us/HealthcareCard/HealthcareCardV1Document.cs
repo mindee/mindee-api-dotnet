@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Us.HealthcareCard
 {
     /// <summary>
-    /// Healthcare Card API version 1.1 document data.
+    /// Healthcare Card API version 1.2 document data.
     /// </summary>
     public class HealthcareCardV1Document : IPrediction
     {
@@ -80,6 +80,12 @@ namespace Mindee.Product.Us.HealthcareCard
         public StringField RxGrp { get; set; }
 
         /// <summary>
+        /// The ID number for prescription drug coverage.
+        /// </summary>
+        [JsonPropertyName("rx_id")]
+        public StringField RxId { get; set; }
+
+        /// <summary>
         /// The PCN number for prescription drug coverage.
         /// </summary>
         [JsonPropertyName("rx_pcn")]
@@ -102,6 +108,7 @@ namespace Mindee.Product.Us.HealthcareCard
             result.Append($":Group Number: {GroupNumber}\n");
             result.Append($":Payer ID: {PayerId}\n");
             result.Append($":RX BIN: {RxBin}\n");
+            result.Append($":RX ID: {RxId}\n");
             result.Append($":RX GRP: {RxGrp}\n");
             result.Append($":RX PCN: {RxPcn}\n");
             result.Append($":copays:{Copays}");

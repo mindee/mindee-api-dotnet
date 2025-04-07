@@ -119,6 +119,15 @@ A `HealthcareCardV1Copay` implements the following attributes:
 * **ServiceFees** (`double`): The price of service.
 * **ServiceName** (`string`): The name of service of the copay.
 
+#### Possible values include:
+ - primary_care
+ - emergency_room
+ - urgent_care
+ - specialist
+ - office_visit
+ - prescription
+
+
 # Attributes
 The following fields are extracted for Healthcare Card V1:
 
@@ -203,6 +212,13 @@ System.Console.WriteLine(result.Document.Inference.Prediction.RxBin.Value);
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.RxGrp.Value);
+```
+
+## RX ID
+**RxId**: The ID number for prescription drug coverage.
+
+```csharp
+System.Console.WriteLine(result.Document.Inference.Prediction.RxId.Value);
 ```
 
 ## RX PCN

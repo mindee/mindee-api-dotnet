@@ -36,6 +36,7 @@ namespace Mindee.UnitTests.Product.Invoice
             Assert.Null(docPrediction.ShippingAddress.Value);
             Assert.Null(docPrediction.BillingAddress.Value);
             Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.DocumentType);
+            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.DocumentTypeExtended);
             Assert.Empty(docPrediction.LineItems);
         }
 

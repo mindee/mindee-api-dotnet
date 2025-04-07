@@ -19,6 +19,7 @@ namespace Mindee.UnitTests.Product.Us.HealthcareCard
             Assert.Null(docPrediction.GroupNumber.Value);
             Assert.Null(docPrediction.PayerId.Value);
             Assert.Null(docPrediction.RxBin.Value);
+            Assert.Null(docPrediction.RxId.Value);
             Assert.Null(docPrediction.RxGrp.Value);
             Assert.Null(docPrediction.RxPcn.Value);
             Assert.Empty(docPrediction.Copays);
