@@ -13,9 +13,13 @@ namespace Mindee.UnitTests.Product.FinancialDocument
             Assert.Null(response.Document.Inference.Prediction.Locale.Value);
             Assert.Null(response.Document.Inference.Prediction.InvoiceNumber.Value);
             Assert.Empty(response.Document.Inference.Prediction.ReferenceNumbers);
-            Assert.Equal(0.6, response.Document.Inference.Prediction.Category.Confidence);
+            Assert.Equal(1, response.Document.Inference.Prediction.Category.Confidence);
             Assert.Null(response.Document.Inference.Prediction.Date.Value);
             Assert.Null(response.Document.Inference.Prediction.DueDate.Value);
+            Assert.Null(response.Document.Inference.Prediction.BillingAddress.Value);
+            Assert.Equal("EXPENSE RECEIPT", response.Document.Inference.Prediction.DocumentType.Value);
+            Assert.Equal("EXPENSE RECEIPT", response.Document.Inference.Prediction.DocumentTypeExtended.Value);
+            Assert.Null(response.Document.Inference.Prediction.DocumentNumber.Value);
             Assert.Null(response.Document.Inference.Prediction.TotalNet.Value);
             Assert.Null(response.Document.Inference.Prediction.TotalAmount.Value);
             Assert.Empty(response.Document.Inference.Prediction.Taxes);
@@ -25,6 +29,7 @@ namespace Mindee.UnitTests.Product.FinancialDocument
             Assert.Null(response.Document.Inference.Prediction.SupplierAddress.Value);
             Assert.Null(response.Document.Inference.Prediction.SupplierPhoneNumber.Value);
             Assert.Null(response.Document.Inference.Prediction.CustomerName.Value);
+            Assert.Null(response.Document.Inference.Prediction.CustomerId.Value);
             Assert.Empty(response.Document.Inference.Prediction.CustomerCompanyRegistrations);
             Assert.Null(response.Document.Inference.Prediction.CustomerAddress.Value);
             Assert.Null(response.Document.Inference.Prediction.TotalTax.Value);

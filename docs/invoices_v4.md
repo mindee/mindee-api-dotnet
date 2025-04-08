@@ -71,7 +71,7 @@ System.Console.WriteLine(response.Document.ToString());
 ########
 Document
 ########
-:Mindee ID: 86b1833f-138b-4a01-8387-860204b0e631
+:Mindee ID: b55db8f9-ae3b-4f05-b2f1-ec0ced5e5b70
 :Filename: default_sample.jpg
 
 Inference
@@ -95,7 +95,7 @@ Prediction
   +---------------+--------+----------+---------------+
   | Base          | Code   | Rate (%) | Amount        |
   +===============+========+==========+===============+
-  |               |        | 8.00     | 193.20        |
+  | 2145.00       |        | 8.00     | 193.20        |
   +---------------+--------+----------+---------------+
 :Supplier Payment Details:
 :Supplier Name: TURNPIKE DESIGNS
@@ -141,7 +141,7 @@ Page 0
   +---------------+--------+----------+---------------+
   | Base          | Code   | Rate (%) | Amount        |
   +===============+========+==========+===============+
-  |               |        | 8.00     | 193.20        |
+  | 2145.00       |        | 8.00     | 193.20        |
   +---------------+--------+----------+---------------+
 :Supplier Payment Details:
 :Supplier Name: TURNPIKE DESIGNS
@@ -319,6 +319,24 @@ System.Console.WriteLine(result.Document.Inference.Prediction.Date.Value);
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.DocumentType.Value);
+```
+
+## Document Type Extended
+**DocumentTypeExtended**: Document type extended.
+
+#### Possible values include:
+ - 'CREDIT NOTE'
+ - 'INVOICE'
+ - 'OTHER'
+ - 'OTHER_FINANCIAL'
+ - 'PAYSLIP'
+ - 'PURCHASE ORDER'
+ - 'QUOTE'
+ - 'RECEIPT'
+ - 'STATEMENT'
+
+```csharp
+System.Console.WriteLine(result.Document.Inference.Prediction.DocumentTypeExtended.Value);
 ```
 
 ## Due Date

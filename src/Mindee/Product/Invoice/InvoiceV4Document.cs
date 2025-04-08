@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Invoice
 {
     /// <summary>
-    /// Invoice API version 4.9 document data.
+    /// Invoice API version 4.10 document data.
     /// </summary>
     public class InvoiceV4Document : IPrediction
     {
@@ -53,6 +53,12 @@ namespace Mindee.Product.Invoice
         /// </summary>
         [JsonPropertyName("document_type")]
         public ClassificationField DocumentType { get; set; }
+
+        /// <summary>
+        /// Document type extended.
+        /// </summary>
+        [JsonPropertyName("document_type_extended")]
+        public ClassificationField DocumentTypeExtended { get; set; }
 
         /// <summary>
         /// The date on which the payment is due.
@@ -213,6 +219,7 @@ namespace Mindee.Product.Invoice
             result.Append($":Shipping Address: {ShippingAddress}\n");
             result.Append($":Billing Address: {BillingAddress}\n");
             result.Append($":Document Type: {DocumentType}\n");
+            result.Append($":Document Type Extended: {DocumentTypeExtended}\n");
             result.Append($":Line Items:{LineItems}");
             return SummaryHelper.Clean(result.ToString());
         }

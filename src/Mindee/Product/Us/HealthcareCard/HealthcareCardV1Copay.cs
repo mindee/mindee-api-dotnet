@@ -29,7 +29,7 @@ namespace Mindee.Product.Us.HealthcareCard
             return new Dictionary<string, string>()
             {
                 {"ServiceFees", SummaryHelper.FormatAmount(ServiceFees)},
-                {"ServiceName", SummaryHelper.FormatString(ServiceName)},
+                {"ServiceName", SummaryHelper.FormatString(ServiceName, 20)},
             };
         }
 
@@ -42,7 +42,7 @@ namespace Mindee.Product.Us.HealthcareCard
             return "| "
               + String.Format("{0,-12}", printable["ServiceFees"])
               + " | "
-              + String.Format("{0,-12}", printable["ServiceName"])
+              + String.Format("{0,-20}", printable["ServiceName"])
               + " |";
         }
 
@@ -82,11 +82,11 @@ namespace Mindee.Product.Us.HealthcareCard
             {
                 return "\n";
             }
-            int[] columnSizes = { 14, 14 };
+            int[] columnSizes = { 14, 22 };
             StringBuilder outStr = new StringBuilder("\n");
             outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '-') + "  ");
             outStr.Append("| Service Fees ");
-            outStr.Append("| Service Name ");
+            outStr.Append("| Service Name         ");
             outStr.Append("|\n  " + SummaryHelper.LineSeparator(columnSizes, '='));
             outStr.Append(SummaryHelper.ArrayToString(this, columnSizes));
             return outStr.ToString();
