@@ -1,5 +1,22 @@
 # Mindee .NET API Library Changelog
 
+## v4.3.0 - 2025-04-08
+### Changes
+* :sparkles: add support for Financial Document V1.12
+* :sparkles: add support for Invoices V4.10
+* :sparkles: add support for US Healthcare Cards V1.2
+* :sparkles: add support for FR EnergyBill V1.2
+* :sparkles: allow asynchronous custom products in CLI
+* :coffin: deprecate EU License Plate
+* :coffin: deprecate EU Driver License
+* :coffin: deprecate Proof of Address
+* :coffin: deprecate US W9
+* :coffin: deprecate US Driver License
+### Fixes
+* :recycle: upgrade descriptions, documentation & CLI products
+* :recycle: update data structure for Invoice Splitter
+
+
 ## v3.24.3 - 2025-02-13
 ### Changes
 * :recycle: harmonise platform names with other client libs
