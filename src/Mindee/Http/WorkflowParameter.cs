@@ -24,6 +24,11 @@ namespace Mindee.Http
         public string PublicUrl { get; }
 
         /// <summary>
+        /// Whether to enable Retrieval-Augmented Generation.
+        /// </summary>
+        public bool Rag { get; }
+
+        /// <summary>
         /// Workflow parameters.
         /// </summary>
         /// <param name="localSource">Local input source containing the file.<see cref="GenericParameter.LocalSource"/></param>
@@ -32,18 +37,21 @@ namespace Mindee.Http
         /// <param name="alias">Alias to give to the document.<see cref="Alias"/></param>
         /// <param name="priority">Priority to give to the document.<see cref="Priority"/></param>
         /// <param name="publicUrl">A one-time use unique encrypted URL to sign in with without using credentials.<see cref="PublicUrl"/></param>
+        /// <param name="rag">Whether to enable Retrieval-Augmented Generation.<see cref="PublicUrl"/></param>
         public WorkflowParameter(
             LocalInputSource localSource,
             UrlInputSource urlSource,
             bool fullText,
             string alias,
             ExecutionPriority? priority,
-            string publicUrl) : base(localSource, urlSource,
+            string publicUrl,
+            bool rag) : base(localSource, urlSource,
             fullText)
         {
             Alias = alias;
             Priority = priority;
             PublicUrl = publicUrl;
+            Rag = rag;
         }
     }
 }
