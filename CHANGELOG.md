@@ -1,5 +1,10 @@
 # Mindee .NET API Library Changelog
 
+## v3.26.0 - 2025-04-16
+### Changes
+* :sparkles: add support for execution RAG enabling (#299)
+
+
 ## v3.25.0 - 2025-04-08
 ### Changes
 * :sparkles: add support for Financial Document V1.12
