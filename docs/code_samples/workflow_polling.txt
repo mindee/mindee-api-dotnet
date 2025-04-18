@@ -1,6 +1,6 @@
 using Mindee;
 using Mindee.Input;
-using Mindee.Product.FinancialDocument;
+using Mindee.Product.Generated;
 
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
@@ -16,8 +16,15 @@ var inputSource = new LocalInputSource(filePath);
 // Set up the workflow ID
 PredictOptions options = new PredictOptions(workflowId: workflowId);
 // Call the product asynchronously with auto-polling
+
+CustomEndpoint myEndpoint = new CustomEndpoint(
+    endpointName: "my-endpoint",
+    accountName: "my-account"
+    // optionally, lock the version
+    //, version: "1.1"
+);
 var response = await mindeeClient
-    .EnqueueAndParseAsync<FinancialDocumentV1>(inputSource, predictOptions);
+    .EnqueueAndParseAsync<GeneratedV1>(endpoint, inputSource, predictOptions);
 
 // Print a summary of all the predictions
 System.Console.WriteLine(response.Document.ToString());

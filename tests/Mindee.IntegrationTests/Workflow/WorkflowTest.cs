@@ -1,5 +1,6 @@
+using Mindee.Http;
 using Mindee.Input;
-using Mindee.Product.FinancialDocument;
+using Mindee.Product.Generated;
 
 namespace Mindee.IntegrationTests.Workflow
 {
@@ -32,9 +33,12 @@ namespace Mindee.IntegrationTests.Workflow
         [Fact]
         public async Task Given_AWorkflowIdShouldPoll()
         {
+            // Note: equivalent to just calling FinancialDocumentV1, but might as well test custom docs.
+            CustomEndpoint endpoint = new CustomEndpoint("financial_document", "mindee");
             PredictOptions options = new PredictOptions(workflowId: Environment.GetEnvironmentVariable("Workflow__ID"));
-            var response = await client.EnqueueAndParseAsync<FinancialDocumentV1>(
+            var response = await client.EnqueueAndParseAsync<GeneratedV1>(
                 inputSource,
+                endpoint,
                 options
             );
             Assert.NotEmpty(response.Document.ToString());
