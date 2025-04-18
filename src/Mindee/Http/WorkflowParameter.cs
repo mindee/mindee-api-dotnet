@@ -46,7 +46,7 @@ namespace Mindee.Http
             ExecutionPriority? priority,
             string publicUrl,
             bool rag) : base(localSource, urlSource,
-            fullText)
+            fullText, null)
         {
             Alias = alias;
             Priority = priority;

@@ -127,7 +127,8 @@ namespace Mindee
                     urlSource: null,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper)
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId)
                 , endpoint);
         }
 
@@ -157,7 +158,8 @@ namespace Mindee
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper)
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId)
                 , endpoint);
         }
 
@@ -196,7 +198,8 @@ namespace Mindee
                     urlSource: null,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper)
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId)
                 , endpoint);
         }
 
@@ -229,7 +232,8 @@ namespace Mindee
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper)
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId)
                 , endpoint);
         }
 
@@ -270,7 +274,9 @@ namespace Mindee
                     urlSource: null,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper)
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId
+                    )
                 , endpoint);
         }
 
@@ -303,7 +309,8 @@ namespace Mindee
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper)
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId)
                 , endpoint);
         }
 
@@ -428,7 +435,8 @@ namespace Mindee
                     urlSource: null,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper));
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId));
         }
 
         /// <summary>
@@ -458,7 +466,8 @@ namespace Mindee
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper));
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId));
         }
 
         /// <summary>
@@ -496,7 +505,8 @@ namespace Mindee
                     urlSource: null,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper));
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId));
         }
 
         /// <summary>
@@ -526,7 +536,8 @@ namespace Mindee
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper));
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId));
         }
 
         /// <summary>
