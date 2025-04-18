@@ -6,13 +6,19 @@ namespace Mindee.IntegrationTests.Workflow
     [Trait("Category", "Integration tests")]
     public class WorkflowTest
     {
+        private readonly MindeeClient client;
+        private readonly LocalInputSource inputSource;
+
+        public WorkflowTest()
+        {
+            var apiKey1 = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+            client = TestingUtilities.GetOrGenerateMindeeClient(apiKey1);
+            inputSource = new LocalInputSource("Resources/products/financial_document/default_sample.jpg");
+        }
+
         [Fact]
         public async Task Given_AWorkflowIDShouldReturnACorrectWorkflowObject()
         {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var client = TestingUtilities.GetOrGenerateMindeeClient(apiKey);
-            var inputSource = new LocalInputSource("Resources/products/financial_document/default_sample.jpg");
-
             string currentDateTime = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
             var alias = "dotnet-" + currentDateTime;
             WorkflowOptions options = new WorkflowOptions(alias, ExecutionPriority.Low, rag: true);
@@ -26,9 +32,6 @@ namespace Mindee.IntegrationTests.Workflow
         [Fact]
         public async Task Given_AWorkflowIdShouldPoll()
         {
-            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var client = TestingUtilities.GetOrGenerateMindeeClient(apiKey);
-            var inputSource = new LocalInputSource("Resources/products/financial_document/default_sample.jpg");
             PredictOptions options = new PredictOptions(workflowId: Environment.GetEnvironmentVariable("Workflow__ID"));
             var response = await client.EnqueueAndParseAsync<FinancialDocumentV1>(
                 inputSource,
