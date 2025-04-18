@@ -24,6 +24,12 @@ do
     sed -i "s/my-endpoint/$ENDPOINT/g" $OUTPUT_FILE
   fi
 
+  if echo "${f}" | grep -q "workflow_polling.txt"
+  then
+    sed -i "s/my-account/$ACCOUNT/g" $OUTPUT_FILE
+    sed -i "s/my-endpoint/$ENDPOINT/g" $OUTPUT_FILE
+  fi
+
   if echo "${f}" | grep -q "default.txt"
   then
     sed -i "s/my-endpoint/bank_account_details/" $OUTPUT_FILE
