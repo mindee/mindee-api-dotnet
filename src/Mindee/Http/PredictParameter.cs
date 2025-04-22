@@ -1,3 +1,4 @@
+using System;
 using Mindee.Input;
 
 namespace Mindee.Http
@@ -19,6 +20,7 @@ namespace Mindee.Http
         /// <remarks>It is not available in API builder.</remarks>
         public bool Cropper { get; }
 
+
         /// <summary>
         /// Prediction parameters for requests.
         /// </summary>
@@ -27,12 +29,15 @@ namespace Mindee.Http
         /// <param name="allWords">Whether to include the full OCR response in the payload (compatible APIs only).<see cref="AllWords"/></param>
         /// <param name="fullText">Whether to include the full text in the payload (compatible APIs only)<see cref="GenericParameter.FullText"/></param>
         /// <param name="cropper">Whether to crop the document before enqueuing on the API.<see cref="Cropper"/></param>
+        /// <param name="workflowId">If set, will enqueue to the workflows queue.<see cref="GenericParameter.WorkflowId"/></param>
+        /// <param name="rag">If set, will enqueue to the workflows queue.<see cref="GenericParameter.Rag"/></param>
         public PredictParameter(
             LocalInputSource localSource,
             UrlInputSource urlSource,
             bool allWords,
             bool fullText,
-            bool cropper) : base(localSource, urlSource, fullText)
+            bool cropper, string workflowId,
+            bool rag) : base(localSource, urlSource, fullText, workflowId, rag)
         {
             AllWords = allWords;
             Cropper = cropper;

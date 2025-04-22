@@ -1,0 +1,34 @@
+using Mindee;
+using Mindee.Http;
+using Mindee.Input;
+using Mindee.Product.Generated;
+
+string apiKey = "my-api-key";
+string filePath = "/path/to/the/file.ext";
+string workflowId = "workflow-id";
+
+// Construct a new client
+MindeeClient mindeeClient = new MindeeClient(apiKey);
+
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
+var inputSource = new LocalInputSource(filePath);
+
+// Set up the workflow ID
+PredictOptions options = new PredictOptions(workflowId: workflowId, rag: true);
+// Call the product asynchronously with auto-polling
+
+CustomEndpoint myEndpoint = new CustomEndpoint(
+    endpointName: "my-endpoint",
+    accountName: "my-account"
+    // optionally, lock the version
+    //, version: "1.1"
+);
+var response = await mindeeClient
+    .EnqueueAndParseAsync<GeneratedV1>(endpoint, inputSource, predictOptions);
+
+// Print a summary of all the predictions
+System.Console.WriteLine(response.Document.ToString());
+
+// Print only the document-level predictions
+// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());

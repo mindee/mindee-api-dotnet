@@ -24,11 +24,6 @@ namespace Mindee.Http
         public string PublicUrl { get; }
 
         /// <summary>
-        /// Whether to enable Retrieval-Augmented Generation.
-        /// </summary>
-        public bool Rag { get; }
-
-        /// <summary>
         /// Workflow parameters.
         /// </summary>
         /// <param name="localSource">Local input source containing the file.<see cref="GenericParameter.LocalSource"/></param>
@@ -46,12 +41,11 @@ namespace Mindee.Http
             ExecutionPriority? priority,
             string publicUrl,
             bool rag) : base(localSource, urlSource,
-            fullText)
+            fullText, null, rag)
         {
             Alias = alias;
             Priority = priority;
             PublicUrl = publicUrl;
-            Rag = rag;
         }
     }
 }

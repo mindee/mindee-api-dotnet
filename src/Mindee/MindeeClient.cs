@@ -127,7 +127,9 @@ namespace Mindee
                     urlSource: null,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper)
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag)
                 , endpoint);
         }
 
@@ -157,7 +159,9 @@ namespace Mindee
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper)
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag)
                 , endpoint);
         }
 
@@ -196,7 +200,9 @@ namespace Mindee
                     urlSource: null,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper)
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag)
                 , endpoint);
         }
 
@@ -229,7 +235,9 @@ namespace Mindee
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper)
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag)
                 , endpoint);
         }
 
@@ -270,7 +278,10 @@ namespace Mindee
                     urlSource: null,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper)
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag
+                    )
                 , endpoint);
         }
 
@@ -303,7 +314,9 @@ namespace Mindee
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper)
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag)
                 , endpoint);
         }
 
@@ -428,7 +441,9 @@ namespace Mindee
                     urlSource: null,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper));
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag));
         }
 
         /// <summary>
@@ -458,7 +473,9 @@ namespace Mindee
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper));
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag));
         }
 
         /// <summary>
@@ -496,7 +513,9 @@ namespace Mindee
                     urlSource: null,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper));
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag));
         }
 
         /// <summary>
@@ -526,7 +545,9 @@ namespace Mindee
                     urlSource: inputSource,
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper));
+                    cropper: predictOptions.Cropper,
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag));
         }
 
         /// <summary>

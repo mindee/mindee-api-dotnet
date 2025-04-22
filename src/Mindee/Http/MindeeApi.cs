@@ -45,10 +45,24 @@ namespace Mindee.Http
         {
             if (endpoint is null)
                 endpoint = CustomEndpoint.GetEndpoint<TModel>();
+            String url;
+            if (predictParameter.WorkflowId != null)
+            {
+                url = $"v1/workflows/{predictParameter.WorkflowId}/predict_async";
+            }
+            else
+            {
+                url = $"v1/products/{endpoint.GetBaseUrl()}/predict_async";
+            }
 
             var request = new RestRequest(
-                $"v1/products/{endpoint.GetBaseUrl()}/predict_async"
+                url
                 , Method.Post);
+
+            if (predictParameter.Rag)
+            {
+                request.AddQueryParameter("rag", "true");
+            }
 
             AddPredictRequestParameters(predictParameter, request);
 

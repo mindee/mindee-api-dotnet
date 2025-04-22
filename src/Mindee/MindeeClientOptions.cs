@@ -30,16 +30,38 @@ namespace Mindee
         public bool Cropper { get; }
 
         /// <summary>
+        /// If set, will enqueue to a workflow queue instead of a product's endpoint.
+        /// </summary>
+        public string WorkflowId { get; }
+
+
+        /// <summary>
+        /// If set, will enable Retrieval-Augmented Generation.
+        /// </summary>
+        public bool Rag { get; }
+
+
+        /// <summary>
         /// Options to pass when calling methods using the predict API.
         /// </summary>
         /// <param name="allWords"><see cref="AllWords"/></param>
         /// <param name="cropper"><see cref="Cropper"/></param>
         /// <param name="fullText"><see cref="FullText"/></param>
-        public PredictOptions(bool allWords = false, bool fullText = false, bool cropper = false)
+        /// <param name="workflowId"><see cref="WorkflowId"/></param>
+        /// <param name="rag"><see cref="Rag"/></param>
+        public PredictOptions(
+            bool allWords = false,
+            bool fullText = false,
+            bool cropper = false,
+            string workflowId = null,
+            bool rag = false
+        )
         {
             AllWords = allWords;
             Cropper = cropper;
             FullText = fullText;
+            WorkflowId = workflowId;
+            Rag = rag;
         }
     }
 
