@@ -11,5 +11,11 @@ namespace Mindee.Parsing.Common
         /// Full text extraction of the ocr result.
         /// </summary>
         public string FullTextOcr { get; set; }
+
+        /// <summary>
+        /// Retrieval-Augmented Generation results object.
+        /// </summary>
+        [JsonPropertyName("rag")]
+        public Rag Rag { get; set; }
     }
 }

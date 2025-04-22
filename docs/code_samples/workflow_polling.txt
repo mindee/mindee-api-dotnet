@@ -15,7 +15,7 @@ MindeeClient mindeeClient = new MindeeClient(apiKey);
 var inputSource = new LocalInputSource(filePath);
 
 // Set up the workflow ID
-PredictOptions options = new PredictOptions(workflowId: workflowId);
+PredictOptions options = new PredictOptions(workflowId: workflowId, rag: true);
 // Call the product asynchronously with auto-polling
 
 CustomEndpoint myEndpoint = new CustomEndpoint(

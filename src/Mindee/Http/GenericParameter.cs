@@ -1,4 +1,3 @@
-using System;
 using Mindee.Exceptions;
 using Mindee.Input;
 
@@ -32,18 +31,25 @@ namespace Mindee.Http
         public string WorkflowId { get; }
 
         /// <summary>
+        /// If set, will enable Retrieval-Augmented Generation.
+        /// </summary>
+        public bool Rag { get; }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="localSource"></param>
         /// <param name="urlSource"></param>
         /// <param name="fullText"></param>
         /// <param name="workflowId"></param>
+        /// <param name="rag"></param>
         /// <exception cref="MindeeException"></exception>
         public GenericParameter(
             LocalInputSource localSource,
             UrlInputSource urlSource,
             bool fullText,
-            string workflowId
+            string workflowId,
+            bool rag
         )
         {
             if (localSource != null && urlSource != null)
@@ -60,6 +66,7 @@ namespace Mindee.Http
             UrlSource = urlSource;
             FullText = fullText;
             WorkflowId = workflowId;
+            Rag = rag;
         }
     }
 }

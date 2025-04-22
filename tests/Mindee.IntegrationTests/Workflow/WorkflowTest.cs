@@ -1,6 +1,7 @@
 using Mindee.Http;
 using Mindee.Input;
 using Mindee.Product.Generated;
+using Newtonsoft.Json;
 
 namespace Mindee.IntegrationTests.Workflow
 {
@@ -31,9 +32,26 @@ namespace Mindee.IntegrationTests.Workflow
         }
 
         [Fact]
-        public async Task Given_AWorkflowIdShouldPoll()
+        public async Task Given_AWorkflowIdShouldPollWithRag()
         {
             // Note: equivalent to just calling FinancialDocumentV1, but might as well test custom docs.
+            CustomEndpoint endpoint = new CustomEndpoint("financial_document", "mindee");
+            PredictOptions options = new PredictOptions(
+                workflowId: Environment.GetEnvironmentVariable("Workflow__ID"),
+                rag: true
+            );
+            var response = await client.EnqueueAndParseAsync<GeneratedV1>(
+                inputSource,
+                endpoint,
+                options
+            );
+            Assert.NotEmpty(response.Document.ToString());
+            Assert.NotEmpty(response.Document.Inference.Extras.Rag.MatchingDocumentId);
+        }
+
+        [Fact]
+        public async Task Given_AWorkflowIdShouldPollWithoutRag()
+        {
             CustomEndpoint endpoint = new CustomEndpoint("financial_document", "mindee");
             PredictOptions options = new PredictOptions(workflowId: Environment.GetEnvironmentVariable("Workflow__ID"));
             var response = await client.EnqueueAndParseAsync<GeneratedV1>(
@@ -42,6 +60,7 @@ namespace Mindee.IntegrationTests.Workflow
                 options
             );
             Assert.NotEmpty(response.Document.ToString());
+            Assert.Null(response.Document.Inference.Extras.Rag);
         }
     }
 }

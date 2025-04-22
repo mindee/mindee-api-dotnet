@@ -54,9 +54,15 @@ namespace Mindee.Http
             {
                 url = $"v1/products/{endpoint.GetBaseUrl()}/predict_async";
             }
+
             var request = new RestRequest(
                 url
                 , Method.Post);
+
+            if (predictParameter.Rag)
+            {
+                request.AddQueryParameter("rag", "true");
+            }
 
             AddPredictRequestParameters(predictParameter, request);
 

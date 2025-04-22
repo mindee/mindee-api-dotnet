@@ -128,7 +128,8 @@ namespace Mindee
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
-                    workflowId: predictOptions.WorkflowId)
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag)
                 , endpoint);
         }
 
@@ -159,7 +160,8 @@ namespace Mindee
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
-                    workflowId: predictOptions.WorkflowId)
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag)
                 , endpoint);
         }
 
@@ -199,7 +201,8 @@ namespace Mindee
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
-                    workflowId: predictOptions.WorkflowId)
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag)
                 , endpoint);
         }
 
@@ -233,7 +236,8 @@ namespace Mindee
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
-                    workflowId: predictOptions.WorkflowId)
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag)
                 , endpoint);
         }
 
@@ -275,7 +279,8 @@ namespace Mindee
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
-                    workflowId: predictOptions.WorkflowId
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag
                     )
                 , endpoint);
         }
@@ -310,7 +315,8 @@ namespace Mindee
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
-                    workflowId: predictOptions.WorkflowId)
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag)
                 , endpoint);
         }
 
@@ -436,7 +442,8 @@ namespace Mindee
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
-                    workflowId: predictOptions.WorkflowId));
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag));
         }
 
         /// <summary>
@@ -467,7 +474,8 @@ namespace Mindee
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
-                    workflowId: predictOptions.WorkflowId));
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag));
         }
 
         /// <summary>
@@ -506,7 +514,8 @@ namespace Mindee
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
-                    workflowId: predictOptions.WorkflowId));
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag));
         }
 
         /// <summary>
@@ -537,7 +546,8 @@ namespace Mindee
                     allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
-                    workflowId: predictOptions.WorkflowId));
+                    workflowId: predictOptions.WorkflowId,
+                    rag: predictOptions.Rag));
         }
 
         /// <summary>

@@ -22,7 +22,8 @@ namespace Mindee.UnitTests
                 cropper: false,
                 allWords: false,
                 fullText: false,
-                workflowId: null);
+                workflowId: null,
+                rag: false);
         }
 
         private static ServiceProvider InitServiceProvider(HttpStatusCode statusCode, string fileContent)
