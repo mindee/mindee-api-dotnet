@@ -1,5 +1,12 @@
 # Mindee .NET API Library Changelog
 
+## v3.27.0 - 2025-04-22
+### Changes
+* :sparkles: add support for workflow polling (#304)
+### Fixes
+* Fix improper deserialization of date formats in workflow execution.
+
+
 ## v3.26.0 - 2025-04-16
 ### Changes
 * :sparkles: add support for RAG parameter in workflow executions (#299)
