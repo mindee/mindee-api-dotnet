@@ -31,7 +31,7 @@ namespace Mindee.Http
         public string WorkflowId { get; }
 
         /// <summary>
-        /// If set, will enable Retrieval-Augmented Generation.
+        /// If set, will enable Retrieval-Augmented Generation (only works if a valid WorkflowId is set).
         /// </summary>
         public bool Rag { get; }
 

@@ -1,7 +1,6 @@
 using Mindee.Http;
 using Mindee.Input;
 using Mindee.Product.Generated;
-using Newtonsoft.Json;
 
 namespace Mindee.IntegrationTests.Workflow
 {
