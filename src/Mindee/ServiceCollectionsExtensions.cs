@@ -26,8 +26,6 @@ namespace Mindee.Extensions.DependencyInjection
             Action<MindeeSettings> configureOptions, bool throwOnError = false)
         {
             services.Configure(configureOptions);
-
-
             services.AddSingleton<MindeeApi>();
             RegisterRestSharpClient(services, throwOnError);
         }

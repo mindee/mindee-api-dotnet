@@ -16,8 +16,8 @@ var inputSource = new LocalInputSource(filePath);
 
 // Set up the workflow ID
 PredictOptions options = new PredictOptions(workflowId: workflowId, rag: true);
-// Call the product asynchronously with auto-polling
 
+// Call the product asynchronously with auto-polling
 CustomEndpoint myEndpoint = new CustomEndpoint(
     endpointName: "my-endpoint",
     accountName: "my-account"
