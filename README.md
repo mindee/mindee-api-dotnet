@@ -1,4 +1,4 @@
-[![License: MIT](https://img.shields.io/github/license/mindee/mindee-api-dotnet)](https://opensource.org/licenses/MIT) [![GitHub Workflow Status](https://github.com/mindee/mindee-api-dotnet/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml) [![NuGet](https://img.shields.io/nuget/v/mindee)](https://www.nuget.org/packages/Mindee) [![NuGet](https://img.shields.io/nuget/dt/Mindee)](https://www.nuget.org/packages/Mindee)
+[![License: MIT](https://img.shields.io/github/license/mindee/mindee-api-dotnet)](https://opensource.org/licenses/MIT) [![GitHub Workflow Status](https://github.com/mindee/mindee-api-dotnet/actions/workflows/cron.yml/badge.svg)](https://github.com/mindee/mindee-api-dotnet/actions/workflows/dotnet.yml) [![NuGet](https://img.shields.io/nuget/v/mindee)](https://www.nuget.org/packages/Mindee) [![NuGet](https://img.shields.io/nuget/dt/Mindee)](https://www.nuget.org/packages/Mindee)
 
 # Mindee API Helper Library for .NET
 Quickly and easily connect to Mindee's API services using .NET.

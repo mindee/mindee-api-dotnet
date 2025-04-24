@@ -1,4 +1,4 @@
-name: Crontab
+name: Automated Tests
 
 on:
   schedule:
