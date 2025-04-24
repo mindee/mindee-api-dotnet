@@ -1,5 +1,6 @@
 using Mindee.Http;
 using Mindee.Input;
+using Mindee.Product.FinancialDocument;
 using Mindee.Product.Generated;
 
 namespace Mindee.IntegrationTests.Workflow
@@ -18,7 +19,7 @@ namespace Mindee.IntegrationTests.Workflow
         }
 
         [Fact]
-        public async Task Given_AWorkflowIDShouldReturnACorrectWorkflowObject()
+        public async Task Given_AWorkflowIdUpload_ShouldReturnACorrectWorkflowObject()
         {
             string currentDateTime = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
             var alias = "dotnet-" + currentDateTime;
@@ -31,9 +32,8 @@ namespace Mindee.IntegrationTests.Workflow
         }
 
         [Fact]
-        public async Task Given_AWorkflowIdShouldPollWithRag()
+        public async Task Given_AWorkflowIdPredictCustom_ShouldPollWithRag()
         {
-            // Note: equivalent to just calling FinancialDocumentV1, but might as well test custom docs.
             CustomEndpoint endpoint = new CustomEndpoint("financial_document", "mindee");
             PredictOptions options = new PredictOptions(
                 workflowId: Environment.GetEnvironmentVariable("Mindee__WorkflowID"),
@@ -49,10 +49,26 @@ namespace Mindee.IntegrationTests.Workflow
         }
 
         [Fact]
-        public async Task Given_AWorkflowIdShouldPollWithoutRag()
+        public async Task Given_AWorkflowIdPredictOTS_ShouldPollWithRag()
+        {
+            PredictOptions options = new PredictOptions(
+                workflowId: Environment.GetEnvironmentVariable("Mindee__WorkflowID"),
+                rag: true
+            );
+            var response = await client.EnqueueAndParseAsync<FinancialDocumentV1>(
+                inputSource,
+                options
+            );
+            Assert.NotEmpty(response.Document.ToString());
+            Assert.NotEmpty(response.Document.Inference.Extras.Rag.MatchingDocumentId);
+        }
+
+        [Fact]
+        public async Task Given_AWorkflowIdPredictCustom_ShouldPollWithoutRag()
         {
             CustomEndpoint endpoint = new CustomEndpoint("financial_document", "mindee");
-            PredictOptions options = new PredictOptions(workflowId: Environment.GetEnvironmentVariable("Mindee__WorkflowID"));
+            PredictOptions options = new PredictOptions(
+                workflowId: Environment.GetEnvironmentVariable("Mindee__WorkflowID"));
             var response = await client.EnqueueAndParseAsync<GeneratedV1>(
                 inputSource,
                 endpoint,
