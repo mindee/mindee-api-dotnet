@@ -23,7 +23,7 @@ namespace Mindee.IntegrationTests.Workflow
             string currentDateTime = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
             var alias = "dotnet-" + currentDateTime;
             WorkflowOptions options = new WorkflowOptions(alias, ExecutionPriority.Low, rag: true);
-            var response = await client.ExecuteWorkflowAsync(Environment.GetEnvironmentVariable("Workflow__ID"),
+            var response = await client.ExecuteWorkflowAsync(Environment.GetEnvironmentVariable("Mindee__WorkflowID"),
                 inputSource, options);
 
             Assert.Equal(ExecutionPriority.Low, response.Execution.Priority);
@@ -36,7 +36,7 @@ namespace Mindee.IntegrationTests.Workflow
             // Note: equivalent to just calling FinancialDocumentV1, but might as well test custom docs.
             CustomEndpoint endpoint = new CustomEndpoint("financial_document", "mindee");
             PredictOptions options = new PredictOptions(
-                workflowId: Environment.GetEnvironmentVariable("Workflow__ID"),
+                workflowId: Environment.GetEnvironmentVariable("Mindee__WorkflowID"),
                 rag: true
             );
             var response = await client.EnqueueAndParseAsync<GeneratedV1>(
@@ -52,7 +52,7 @@ namespace Mindee.IntegrationTests.Workflow
         public async Task Given_AWorkflowIdShouldPollWithoutRag()
         {
             CustomEndpoint endpoint = new CustomEndpoint("financial_document", "mindee");
-            PredictOptions options = new PredictOptions(workflowId: Environment.GetEnvironmentVariable("Workflow__ID"));
+            PredictOptions options = new PredictOptions(workflowId: Environment.GetEnvironmentVariable("Mindee__WorkflowID"));
             var response = await client.EnqueueAndParseAsync<GeneratedV1>(
                 inputSource,
                 endpoint,
