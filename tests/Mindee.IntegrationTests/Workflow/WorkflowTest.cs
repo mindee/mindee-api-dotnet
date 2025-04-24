@@ -8,14 +8,18 @@ namespace Mindee.IntegrationTests.Workflow
     [Trait("Category", "Integration tests")]
     public class WorkflowTest
     {
-        private readonly MindeeClient client;
-        private readonly LocalInputSource inputSource;
+        private readonly MindeeClient _client;
+        private readonly LocalInputSource _ragMatchInputSource;
+        private readonly LocalInputSource _ragNoMatchInputSource;
 
         public WorkflowTest()
         {
             var apiKey1 = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            client = TestingUtilities.GetOrGenerateMindeeClient(apiKey1);
-            inputSource = new LocalInputSource("Resources/products/financial_document/default_sample.jpg");
+            _client = TestingUtilities.GetOrGenerateMindeeClient(apiKey1);
+            _ragMatchInputSource = new LocalInputSource(
+                "Resources/products/financial_document/default_sample.jpg");
+            _ragNoMatchInputSource = new LocalInputSource(
+                "Resources/products/invoices/default_sample.jpg");
         }
 
         [Fact]
@@ -24,23 +28,23 @@ namespace Mindee.IntegrationTests.Workflow
             string currentDateTime = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
             var alias = "dotnet-" + currentDateTime;
             WorkflowOptions options = new WorkflowOptions(alias, ExecutionPriority.Low, rag: true);
-            var response = await client.ExecuteWorkflowAsync(Environment.GetEnvironmentVariable("Mindee__WorkflowID"),
-                inputSource, options);
+            var response = await _client.ExecuteWorkflowAsync(Environment.GetEnvironmentVariable("Workflow__ID"),
+                _ragMatchInputSource, options);
 
             Assert.Equal(ExecutionPriority.Low, response.Execution.Priority);
             Assert.Equal(alias, response.Execution.File.Alias);
         }
 
         [Fact]
-        public async Task Given_AWorkflowIdPredictCustom_ShouldPollWithRag()
+        public async Task Given_AWorkflowIdPredictCustom_ShouldPollAndMatchRag()
         {
             CustomEndpoint endpoint = new CustomEndpoint("financial_document", "mindee");
             PredictOptions options = new PredictOptions(
-                workflowId: Environment.GetEnvironmentVariable("Mindee__WorkflowID"),
+                workflowId: Environment.GetEnvironmentVariable("Workflow__ID"),
                 rag: true
             );
-            var response = await client.EnqueueAndParseAsync<GeneratedV1>(
-                inputSource,
+            var response = await _client.EnqueueAndParseAsync<GeneratedV1>(
+                _ragMatchInputSource,
                 endpoint,
                 options
             );
@@ -49,18 +53,33 @@ namespace Mindee.IntegrationTests.Workflow
         }
 
         [Fact]
-        public async Task Given_AWorkflowIdPredictOTS_ShouldPollWithRag()
+        public async Task Given_AWorkflowIdPredictOTS_ShouldPollAndMatchRag()
         {
             PredictOptions options = new PredictOptions(
-                workflowId: Environment.GetEnvironmentVariable("Mindee__WorkflowID"),
+                workflowId: Environment.GetEnvironmentVariable("Workflow__ID"),
                 rag: true
             );
-            var response = await client.EnqueueAndParseAsync<FinancialDocumentV1>(
-                inputSource,
+            var response = await _client.EnqueueAndParseAsync<FinancialDocumentV1>(
+                _ragMatchInputSource,
                 options
             );
             Assert.NotEmpty(response.Document.ToString());
             Assert.NotEmpty(response.Document.Inference.Extras.Rag.MatchingDocumentId);
+        }
+
+        [Fact]
+        public async Task Given_AWorkflowIdPredictOTS_ShouldPollAndNotMatchRag()
+        {
+            PredictOptions options = new PredictOptions(
+                workflowId: Environment.GetEnvironmentVariable("Workflow__ID"),
+                rag: true
+            );
+            var response = await _client.EnqueueAndParseAsync<FinancialDocumentV1>(
+                _ragNoMatchInputSource,
+                options
+            );
+            Assert.NotEmpty(response.Document.ToString());
+            Assert.Null(response.Document.Inference.Extras.Rag.MatchingDocumentId);
         }
 
         [Fact]
@@ -68,10 +87,25 @@ namespace Mindee.IntegrationTests.Workflow
         {
             CustomEndpoint endpoint = new CustomEndpoint("financial_document", "mindee");
             PredictOptions options = new PredictOptions(
-                workflowId: Environment.GetEnvironmentVariable("Mindee__WorkflowID"));
-            var response = await client.EnqueueAndParseAsync<GeneratedV1>(
-                inputSource,
+                workflowId: Environment.GetEnvironmentVariable("Workflow__ID")
+            );
+            var response = await _client.EnqueueAndParseAsync<GeneratedV1>(
+                _ragMatchInputSource,
                 endpoint,
+                options
+            );
+            Assert.NotEmpty(response.Document.ToString());
+            Assert.Null(response.Document.Inference.Extras.Rag);
+        }
+
+        [Fact]
+        public async Task Given_AWorkflowIdPredictOTS_ShouldPollWithoutRag()
+        {
+            PredictOptions options = new PredictOptions(
+                workflowId: Environment.GetEnvironmentVariable("Workflow__ID")
+            );
+            var response = await _client.EnqueueAndParseAsync<FinancialDocumentV1>(
+                _ragMatchInputSource,
                 options
             );
             Assert.NotEmpty(response.Document.ToString());
