@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.FinancialDocument
 {
     /// <summary>
-    /// Financial Document API version 1.12 document data.
+    /// Financial Document API version 1.14 document data.
     /// </summary>
     public class FinancialDocumentV1Document : IPrediction
     {
@@ -16,10 +16,10 @@ namespace Mindee.Product.FinancialDocument
         /// The customer's address used for billing.
         /// </summary>
         [JsonPropertyName("billing_address")]
-        public StringField BillingAddress { get; set; }
+        public AddressField BillingAddress { get; set; }
 
         /// <summary>
-        /// The purchase category, only for receipts.
+        /// The purchase category.
         /// </summary>
         [JsonPropertyName("category")]
         public ClassificationField Category { get; set; }
@@ -28,7 +28,7 @@ namespace Mindee.Product.FinancialDocument
         /// The address of the customer.
         /// </summary>
         [JsonPropertyName("customer_address")]
-        public StringField CustomerAddress { get; set; }
+        public AddressField CustomerAddress { get; set; }
 
         /// <summary>
         /// List of company registration numbers associated to the customer.
@@ -125,10 +125,10 @@ namespace Mindee.Product.FinancialDocument
         /// The customer's address used for shipping.
         /// </summary>
         [JsonPropertyName("shipping_address")]
-        public StringField ShippingAddress { get; set; }
+        public AddressField ShippingAddress { get; set; }
 
         /// <summary>
-        /// The purchase subcategory for transport and food, only for receipts.
+        /// The purchase subcategory for transport, food and shooping.
         /// </summary>
         [JsonPropertyName("subcategory")]
         public ClassificationField Subcategory { get; set; }
@@ -137,7 +137,7 @@ namespace Mindee.Product.FinancialDocument
         /// The address of the supplier or merchant.
         /// </summary>
         [JsonPropertyName("supplier_address")]
-        public StringField SupplierAddress { get; set; }
+        public AddressField SupplierAddress { get; set; }
 
         /// <summary>
         /// List of company registration numbers associated to the supplier.

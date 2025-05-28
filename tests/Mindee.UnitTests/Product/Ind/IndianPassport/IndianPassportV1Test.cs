@@ -29,10 +29,10 @@ namespace Mindee.UnitTests.Product.Ind.IndianPassport
             Assert.Null(docPrediction.NameOfMother.Value);
             Assert.Null(docPrediction.OldPassportDateOfIssue.Value);
             Assert.Null(docPrediction.OldPassportNumber.Value);
+            Assert.Null(docPrediction.OldPassportPlaceOfIssue.Value);
             Assert.Null(docPrediction.Address1.Value);
             Assert.Null(docPrediction.Address2.Value);
             Assert.Null(docPrediction.Address3.Value);
-            Assert.Null(docPrediction.OldPassportPlaceOfIssue.Value);
             Assert.Null(docPrediction.FileNumber.Value);
         }
 

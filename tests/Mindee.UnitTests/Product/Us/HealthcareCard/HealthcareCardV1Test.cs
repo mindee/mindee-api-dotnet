@@ -12,6 +12,7 @@ namespace Mindee.UnitTests.Product.Us.HealthcareCard
             var response = await GetPrediction("empty");
             var docPrediction = response.Document.Inference.Prediction;
             Assert.Null(docPrediction.CompanyName.Value);
+            Assert.Null(docPrediction.PlanName.Value);
             Assert.Null(docPrediction.MemberName.Value);
             Assert.Null(docPrediction.MemberId.Value);
             Assert.Null(docPrediction.Issuer80840.Value);

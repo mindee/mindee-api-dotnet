@@ -71,12 +71,12 @@ System.Console.WriteLine(response.Document.ToString());
 ########
 Document
 ########
-:Mindee ID: a80ac0ee-26f6-4e2e-988a-960b240d5ba7
+:Mindee ID: 6dd26385-719b-4527-bf6f-87d9da619de5
 :Filename: default_sample.jpg
 
 Inference
 #########
-:Product: mindee/financial_document v1.11
+:Product: mindee/financial_document v1.14
 :Rotation applied: Yes
 
 Prediction
@@ -112,6 +112,7 @@ Prediction
 :Shipping Address: 2019 Redbud Drive New York, NY 10011
 :Billing Address: 4312 Wood Road New York, NY 10031
 :Document Type: INVOICE
+:Document Type Extended: INVOICE
 :Purchase Subcategory:
 :Purchase Category: miscellaneous
 :Total Tax: 9.75
@@ -164,6 +165,7 @@ Page 0
 :Shipping Address: 2019 Redbud Drive New York, NY 10011
 :Billing Address: 4312 Wood Road New York, NY 10031
 :Document Type: INVOICE
+:Document Type Extended: INVOICE
 :Purchase Subcategory:
 :Purchase Category: miscellaneous
 :Total Tax: 9.75
@@ -198,6 +200,21 @@ A typical `BaseField` object will have the following attributes:
 
 
 Aside from the previous attributes, all basic fields have access to a custom `ToString` method that can be used to print their value as a string.
+
+
+### AddressField
+Aside from the basic `BaseField` attributes, the address field `AddressField` also implements the following:
+
+* **StreetNumber** (`str`): String representation of the string number. Can be `null`.
+* **StreetName** (`str`): Name of the street. Can be `null`.
+* **PoBox** (`str`): String representation of the PO Box number. Can be `null`.
+* **AddressComplement** (`str`): Address complement. Can be `null`.
+* **City** (`str`): City name. Can be `null`.
+* **Postalcode** (`str`): String representation of the postal code. Can be `null`.
+* **State** (`str`): State name. Can be `null`.
+* **Country** (`str`): Country name. Can be `null`.
+
+Note: The `Value` field of an AddressField should be a concatenation of the rest of the values.
 
 ### AmountField
 An amount field `AmountField` extends `BaseField`, but also implements:
@@ -285,7 +302,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.BillingAddress.Val
 ```
 
 ## Purchase Category
-**Category**: The purchase category, only for receipts.
+**Category**: The purchase category.
 
 #### Possible values include:
  - 'toll'
@@ -296,6 +313,9 @@ System.Console.WriteLine(result.Document.Inference.Prediction.BillingAddress.Val
  - 'gasoline'
  - 'telecom'
  - 'miscellaneous'
+ - 'software'
+ - 'shopping'
+ - 'energy'
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Category.Value);
@@ -447,7 +467,7 @@ System.Console.WriteLine(result.Document.Inference.Prediction.ShippingAddress.Va
 ```
 
 ## Purchase Subcategory
-**Subcategory**: The purchase subcategory for transport and food, only for receipts.
+**Subcategory**: The purchase subcategory for transport, food and shooping.
 
 #### Possible values include:
  - 'plane'
@@ -455,6 +475,15 @@ System.Console.WriteLine(result.Document.Inference.Prediction.ShippingAddress.Va
  - 'train'
  - 'restaurant'
  - 'shopping'
+ - 'other'
+ - 'groceries'
+ - 'cultural'
+ - 'electronics'
+ - 'office_supplies'
+ - 'micromobility'
+ - 'car_rental'
+ - 'public'
+ - 'delivery'
  - null
 
 ```csharp
