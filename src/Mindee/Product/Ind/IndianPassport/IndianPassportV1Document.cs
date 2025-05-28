@@ -172,10 +172,10 @@ namespace Mindee.Product.Ind.IndianPassport
             result.Append($":Name of Mother: {NameOfMother}\n");
             result.Append($":Old Passport Date of Issue: {OldPassportDateOfIssue}\n");
             result.Append($":Old Passport Number: {OldPassportNumber}\n");
+            result.Append($":Old Passport Place of Issue: {OldPassportPlaceOfIssue}\n");
             result.Append($":Address Line 1: {Address1}\n");
             result.Append($":Address Line 2: {Address2}\n");
             result.Append($":Address Line 3: {Address3}\n");
-            result.Append($":Old Passport Place of Issue: {OldPassportPlaceOfIssue}\n");
             result.Append($":File Number: {FileNumber}\n");
             return SummaryHelper.Clean(result.ToString());
         }

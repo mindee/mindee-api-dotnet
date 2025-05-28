@@ -8,18 +8,18 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Us.HealthcareCard
 {
     /// <summary>
-    /// Is a fixed amount for a covered service.
+    /// Copayments for covered services.
     /// </summary>
     public sealed class HealthcareCardV1Copay : LineItemField
     {
         /// <summary>
-        /// The price of service.
+        /// The price of the service.
         /// </summary>
         [JsonPropertyName("service_fees")]
         public double? ServiceFees { get; set; }
 
         /// <summary>
-        /// The name of service of the copay.
+        /// The name of the service.
         /// </summary>
         [JsonPropertyName("service_name")]
         public string ServiceName { get; set; }
@@ -69,7 +69,7 @@ namespace Mindee.Product.Us.HealthcareCard
     }
 
     /// <summary>
-    /// Is a fixed amount for a covered service.
+    /// Copayments for covered services.
     /// </summary>
     public class HealthcareCardV1Copays : List<HealthcareCardV1Copay>
     {

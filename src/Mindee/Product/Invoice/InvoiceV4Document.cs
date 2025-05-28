@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Invoice
 {
     /// <summary>
-    /// Invoice API version 4.10 document data.
+    /// Invoice API version 4.11 document data.
     /// </summary>
     public class InvoiceV4Document : IPrediction
     {
@@ -16,13 +16,19 @@ namespace Mindee.Product.Invoice
         /// The customer billing address.
         /// </summary>
         [JsonPropertyName("billing_address")]
-        public StringField BillingAddress { get; set; }
+        public AddressField BillingAddress { get; set; }
+
+        /// <summary>
+        /// The purchase category.
+        /// </summary>
+        [JsonPropertyName("category")]
+        public ClassificationField Category { get; set; }
 
         /// <summary>
         /// The address of the customer.
         /// </summary>
         [JsonPropertyName("customer_address")]
-        public StringField CustomerAddress { get; set; }
+        public AddressField CustomerAddress { get; set; }
 
         /// <summary>
         /// List of company registration numbers associated to the customer.
@@ -107,13 +113,19 @@ namespace Mindee.Product.Invoice
         /// Customer's delivery address.
         /// </summary>
         [JsonPropertyName("shipping_address")]
-        public StringField ShippingAddress { get; set; }
+        public AddressField ShippingAddress { get; set; }
+
+        /// <summary>
+        /// The purchase subcategory for transport, food and shopping.
+        /// </summary>
+        [JsonPropertyName("subcategory")]
+        public ClassificationField Subcategory { get; set; }
 
         /// <summary>
         /// The address of the supplier or merchant.
         /// </summary>
         [JsonPropertyName("supplier_address")]
-        public StringField SupplierAddress { get; set; }
+        public AddressField SupplierAddress { get; set; }
 
         /// <summary>
         /// List of company registration numbers associated to the supplier.
@@ -220,6 +232,8 @@ namespace Mindee.Product.Invoice
             result.Append($":Billing Address: {BillingAddress}\n");
             result.Append($":Document Type: {DocumentType}\n");
             result.Append($":Document Type Extended: {DocumentTypeExtended}\n");
+            result.Append($":Purchase Subcategory: {Subcategory}\n");
+            result.Append($":Purchase Category: {Category}\n");
             result.Append($":Line Items:{LineItems}");
             return SummaryHelper.Clean(result.ToString());
         }
