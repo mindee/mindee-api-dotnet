@@ -90,14 +90,14 @@ namespace Mindee.Parsing.Standard
             int? pageId = null
         ) : base(value, rawValue, confidence, polygon, pageId)
         {
-            StreetNumber      = string.IsNullOrEmpty(streetNumber)      ? null : streetNumber;
-            StreetName        = string.IsNullOrEmpty(streetName)        ? null : streetName;
-            PoBox             = string.IsNullOrEmpty(poBox)             ? null : poBox;
+            StreetNumber = string.IsNullOrEmpty(streetNumber) ? null : streetNumber;
+            StreetName = string.IsNullOrEmpty(streetName) ? null : streetName;
+            PoBox = string.IsNullOrEmpty(poBox) ? null : poBox;
             AddressComplement = string.IsNullOrEmpty(addressComplement) ? null : addressComplement;
-            City              = string.IsNullOrEmpty(city)              ? null : city;
-            PostalCode        = string.IsNullOrEmpty(postalCode)        ? null : postalCode;
-            State             = string.IsNullOrEmpty(state)             ? null : state;
-            Country           = string.IsNullOrEmpty(country)           ? null : country;
+            City = string.IsNullOrEmpty(city) ? null : city;
+            PostalCode = string.IsNullOrEmpty(postalCode) ? null : postalCode;
+            State = string.IsNullOrEmpty(state) ? null : state;
+            Country = string.IsNullOrEmpty(country) ? null : country;
         }
 
         /// <summary>
