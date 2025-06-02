@@ -13,7 +13,7 @@ namespace Mindee.UnitTests.Product.FinancialDocument
             Assert.Null(response.Document.Inference.Prediction.Locale.Value);
             Assert.Null(response.Document.Inference.Prediction.InvoiceNumber.Value);
             Assert.Empty(response.Document.Inference.Prediction.ReferenceNumbers);
-            Assert.Equal(0.51, response.Document.Inference.Prediction.Category.Confidence);
+            Assert.Equal(0.5, response.Document.Inference.Prediction.Category.Confidence);
             Assert.Null(response.Document.Inference.Prediction.Date.Value);
             Assert.Null(response.Document.Inference.Prediction.DueDate.Value);
             Assert.Null(response.Document.Inference.Prediction.BillingAddress.Value);
