@@ -43,8 +43,7 @@ namespace Mindee.IntegrationTests.Extraction
                 await client.ParseAsync<InvoiceV4>(extractedPdfsStrict[0].AsInputSource());
 
             string testStringRstInvoice0 = PrepareInvoiceReturn(
-                "Resources/products/invoices/response_v4/summary_full_invoice_p1.rst",
-                invoice0.Document);g
+                "Resources/products/invoices/response_v4/summary_full_invoice_p1.rst", invoice0.Document);
 
             Assert.True(TestingUtilities.LevenshteinRatio(testStringRstInvoice0, invoice0.Document.ToString()) >= 0.97);
         }
