@@ -44,7 +44,7 @@ namespace Mindee.IntegrationTests.Extraction
 
             string testStringRstInvoice0 = PrepareInvoiceReturn(
                 "Resources/products/invoices/response_v4/summary_full_invoice_p1.rst",
-                invoice0.Document);
+                invoice0.Document);g
 
             Assert.True(TestingUtilities.LevenshteinRatio(testStringRstInvoice0, invoice0.Document.ToString()) >= 0.97);
         }

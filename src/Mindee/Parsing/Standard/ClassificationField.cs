@@ -19,7 +19,7 @@ namespace Mindee.Parsing.Standard
         /// </summary>
         /// <example>0.9</example>
         [JsonPropertyName("confidence")]
-        public double Confidence { get; set; }
+        public double? Confidence { get; set; }
 
         /// <summary>
         /// Default constructor.

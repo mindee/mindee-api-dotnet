@@ -42,17 +42,18 @@ System.Console.WriteLine(response.Document.ToString());
 ########
 Document
 ########
-:Mindee ID: 0ced9f49-00c0-4a1d-8221-4a1538813a95
+:Mindee ID: 5e917fc8-5c13-42b2-967f-954f4eed9959
 :Filename: default_sample.jpg
 
 Inference
 #########
-:Product: mindee/us_healthcare_cards v1.0
-:Rotation applied: No
+:Product: mindee/us_healthcare_cards v1.3
+:Rotation applied: Yes
 
 Prediction
 ==========
 :Company Name: UnitedHealthcare
+:Plan Name: Choice Plus
 :Member Name: SUBSCRIBER SMITH
 :Member ID: 123456789
 :Issuer 80840:
@@ -63,21 +64,22 @@ Prediction
 :Group Number: 98765
 :Payer ID: 87726
 :RX BIN: 610279
+:RX ID:
 :RX GRP: UHEALTH
 :RX PCN: 9999
-:copays:
-  +--------------+--------------+
-  | Service Fees | Service Name |
-  +==============+==============+
-  | 20.00        | office visit |
-  +--------------+--------------+
-  | 300.00       | emergency    |
-  +--------------+--------------+
-  | 75.00        | urgent care  |
-  +--------------+--------------+
-  | 30.00        | specialist   |
-  +--------------+--------------+
-:Enrollment Date: 2023-09-13
+:Copays:
+  +--------------+----------------------+
+  | Service Fees | Service Name         |
+  +==============+======================+
+  | 20.00        | office_visit         |
+  +--------------+----------------------+
+  | 300.00       | emergency_room       |
+  +--------------+----------------------+
+  | 75.00        | urgent_care          |
+  +--------------+----------------------+
+  | 30.00        | specialist           |
+  +--------------+----------------------+
+:Enrollment Date:
 ```
 
 # Field Types
@@ -111,13 +113,13 @@ The date field `DateField` extends `StringField`, but also implements:
 ## Specific Fields
 Fields which are specific to this product; they are not used in any other product.
 
-### copays Field
-Is a fixed amount for a covered service.
+### Copays Field
+Copayments for covered services.
 
 A `HealthcareCardV1Copay` implements the following attributes:
 
-* **ServiceFees** (`double`): The price of service.
-* **ServiceName** (`string`): The name of service of the copay.
+* **ServiceFees** (`double`): The price of the service.
+* **ServiceName** (`string`): The name of the service.
 
 #### Possible values include:
  - primary_care
@@ -138,8 +140,8 @@ The following fields are extracted for Healthcare Card V1:
 System.Console.WriteLine(result.Document.Inference.Prediction.CompanyName.Value);
 ```
 
-## copays
-**Copays**(List<[HealthcareCardV1Copay](#copays-field)>): Is a fixed amount for a covered service.
+## Copays
+**Copays**(List<[HealthcareCardV1Copay](#copays-field)>): Copayments for covered services.
 
 ```csharp
 foreach (var CopaysElem in result.Document.Inference.Prediction.Copays)
@@ -198,6 +200,13 @@ System.Console.WriteLine(result.Document.Inference.Prediction.MemberName.Value);
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.PayerId.Value);
+```
+
+## Plan Name
+**PlanName**: The name of the healthcare plan.
+
+```csharp
+System.Console.WriteLine(result.Document.Inference.Prediction.PlanName.Value);
 ```
 
 ## RX BIN

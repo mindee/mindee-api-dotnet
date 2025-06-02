@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Invoice
 {
     /// <summary>
-    /// Invoice API version 4.10 document data.
+    /// Invoice API version 4.11 document data.
     /// </summary>
     public class InvoiceV4Document : IPrediction
     {
@@ -17,6 +17,12 @@ namespace Mindee.Product.Invoice
         /// </summary>
         [JsonPropertyName("billing_address")]
         public StringField BillingAddress { get; set; }
+
+        /// <summary>
+        /// The purchase category.
+        /// </summary>
+        [JsonPropertyName("category")]
+        public ClassificationField Category { get; set; }
 
         /// <summary>
         /// The address of the customer.
@@ -108,6 +114,12 @@ namespace Mindee.Product.Invoice
         /// </summary>
         [JsonPropertyName("shipping_address")]
         public StringField ShippingAddress { get; set; }
+
+        /// <summary>
+        /// The purchase subcategory for transport, food and shopping.
+        /// </summary>
+        [JsonPropertyName("subcategory")]
+        public ClassificationField Subcategory { get; set; }
 
         /// <summary>
         /// The address of the supplier or merchant.
@@ -220,6 +232,8 @@ namespace Mindee.Product.Invoice
             result.Append($":Billing Address: {BillingAddress}\n");
             result.Append($":Document Type: {DocumentType}\n");
             result.Append($":Document Type Extended: {DocumentTypeExtended}\n");
+            result.Append($":Purchase Subcategory: {Subcategory}\n");
+            result.Append($":Purchase Category: {Category}\n");
             result.Append($":Line Items:{LineItems}");
             return SummaryHelper.Clean(result.ToString());
         }

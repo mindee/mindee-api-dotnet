@@ -15,7 +15,7 @@ namespace Mindee.Parsing.Custom
         /// </summary>
         /// <example>0.9</example>
         [JsonPropertyName("confidence")]
-        public double Confidence { get; set; }
+        public double? Confidence { get; set; }
 
         /// <summary>
         /// <see cref="ListFieldValue"/>
@@ -47,7 +47,7 @@ namespace Mindee.Parsing.Custom
         /// </summary>
         /// <param name="confidence"><see cref="Confidence"/></param>
         /// <param name="values"><see cref="Values"/></param>
-        public ListField(double confidence, List<ListFieldValue> values)
+        public ListField(double? confidence, List<ListFieldValue> values)
         {
             Confidence = confidence;
             Values = values;
