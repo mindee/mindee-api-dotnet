@@ -14,7 +14,7 @@ namespace Mindee.Parsing.Standard
         /// </summary>
         /// <example>0.9</example>
         [JsonPropertyName("confidence")]
-        public double Confidence { get; set; }
+        public double? Confidence { get; set; }
 
         /// <summary>
         /// The currency which has been detected.
@@ -54,7 +54,7 @@ namespace Mindee.Parsing.Standard
         /// <param name="value"><see cref="Value"/></param>
         [JsonConstructor]
         public Locale(
-            double confidence,
+            double? confidence,
             string currency,
             string language,
             string country,

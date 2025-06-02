@@ -8,7 +8,7 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Us.HealthcareCard
 {
     /// <summary>
-    /// Healthcare Card API version 1.2 document data.
+    /// Healthcare Card API version 1.3 document data.
     /// </summary>
     public class HealthcareCardV1Document : IPrediction
     {
@@ -19,7 +19,7 @@ namespace Mindee.Product.Us.HealthcareCard
         public StringField CompanyName { get; set; }
 
         /// <summary>
-        /// Is a fixed amount for a covered service.
+        /// Copayments for covered services.
         /// </summary>
         [JsonPropertyName("copays")]
         [JsonConverter(typeof(ObjectListJsonConverter<HealthcareCardV1Copays, HealthcareCardV1Copay>))]
@@ -68,6 +68,12 @@ namespace Mindee.Product.Us.HealthcareCard
         public StringField PayerId { get; set; }
 
         /// <summary>
+        /// The name of the healthcare plan.
+        /// </summary>
+        [JsonPropertyName("plan_name")]
+        public StringField PlanName { get; set; }
+
+        /// <summary>
         /// The BIN number for prescription drug coverage.
         /// </summary>
         [JsonPropertyName("rx_bin")]
@@ -101,6 +107,7 @@ namespace Mindee.Product.Us.HealthcareCard
                 Dependents.Select(item => item));
             StringBuilder result = new StringBuilder();
             result.Append($":Company Name: {CompanyName}\n");
+            result.Append($":Plan Name: {PlanName}\n");
             result.Append($":Member Name: {MemberName}\n");
             result.Append($":Member ID: {MemberId}\n");
             result.Append($":Issuer 80840: {Issuer80840}\n");
@@ -111,7 +118,7 @@ namespace Mindee.Product.Us.HealthcareCard
             result.Append($":RX ID: {RxId}\n");
             result.Append($":RX GRP: {RxGrp}\n");
             result.Append($":RX PCN: {RxPcn}\n");
-            result.Append($":copays:{Copays}");
+            result.Append($":Copays:{Copays}");
             result.Append($":Enrollment Date: {EnrollmentDate}\n");
             return SummaryHelper.Clean(result.ToString());
         }

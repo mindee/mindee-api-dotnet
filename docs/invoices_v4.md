@@ -71,12 +71,12 @@ System.Console.WriteLine(response.Document.ToString());
 ########
 Document
 ########
-:Mindee ID: b55db8f9-ae3b-4f05-b2f1-ec0ced5e5b70
+:Mindee ID: 744748d5-9051-461c-b70c-bbf81f5ff943
 :Filename: default_sample.jpg
 
 Inference
 #########
-:Product: mindee/invoices v4.9
+:Product: mindee/invoices v4.11
 :Rotation applied: Yes
 
 Prediction
@@ -111,6 +111,9 @@ Prediction
 :Shipping Address:
 :Billing Address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
 :Document Type: INVOICE
+:Document Type Extended: INVOICE
+:Purchase Subcategory:
+:Purchase Category: miscellaneous
 :Line Items:
   +--------------------------------------+--------------+----------+------------+--------------+--------------+-----------------+------------+
   | Description                          | Product code | Quantity | Tax Amount | Tax Rate (%) | Total Amount | Unit of measure | Unit Price |
@@ -157,6 +160,9 @@ Page 0
 :Shipping Address:
 :Billing Address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
 :Document Type: INVOICE
+:Document Type Extended: INVOICE
+:Purchase Subcategory:
+:Purchase Category: miscellaneous
 :Line Items:
   +--------------------------------------+--------------+----------+------------+--------------+--------------+-----------------+------------+
   | Description                          | Product code | Quantity | Tax Amount | Tax Rate (%) | Total Amount | Unit of measure | Unit Price |
@@ -270,6 +276,25 @@ The following fields are extracted for Invoice V4:
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.BillingAddress.Value);
+```
+
+## Purchase Category
+**Category**: The purchase category.
+
+#### Possible values include:
+ - 'toll'
+ - 'food'
+ - 'parking'
+ - 'transport'
+ - 'accommodation'
+ - 'telecom'
+ - 'miscellaneous'
+ - 'software'
+ - 'shopping'
+ - 'energy'
+
+```csharp
+System.Console.WriteLine(result.Document.Inference.Prediction.Category.Value);
 ```
 
 ## Customer Address
@@ -399,6 +424,30 @@ foreach (var ReferenceNumbersElem in result.Document.Inference.Prediction.Refere
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.ShippingAddress.Value);
+```
+
+## Purchase Subcategory
+**Subcategory**: The purchase subcategory for transport, food and shopping.
+
+#### Possible values include:
+ - 'plane'
+ - 'taxi'
+ - 'train'
+ - 'restaurant'
+ - 'shopping'
+ - 'other'
+ - 'groceries'
+ - 'cultural'
+ - 'electronics'
+ - 'office_supplies'
+ - 'micromobility'
+ - 'car_rental'
+ - 'public'
+ - 'delivery'
+ - null
+
+```csharp
+System.Console.WriteLine(result.Document.Inference.Prediction.Subcategory.Value);
 ```
 
 ## Supplier Address

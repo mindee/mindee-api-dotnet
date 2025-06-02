@@ -241,6 +241,9 @@ The following fields are extracted for Receipt V5:
  - 'gasoline'
  - 'telecom'
  - 'miscellaneous'
+ - 'software'
+ - 'shopping'
+ - 'energy'
 
 ```csharp
 System.Console.WriteLine(result.Document.Inference.Prediction.Category.Value);
@@ -297,6 +300,15 @@ System.Console.WriteLine(result.Document.Inference.Prediction.ReceiptNumber.Valu
  - 'train'
  - 'restaurant'
  - 'shopping'
+ - 'other'
+ - 'groceries'
+ - 'cultural'
+ - 'electronics'
+ - 'office_supplies'
+ - 'micromobility'
+ - 'car_rental'
+ - 'public'
+ - 'delivery'
  - null
 
 ```csharp

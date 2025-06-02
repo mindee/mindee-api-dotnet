@@ -14,7 +14,7 @@ namespace Mindee.Parsing.Custom
         /// </summary>
         /// <example>0.9</example>
         [JsonPropertyName("confidence")]
-        public double Confidence { get; set; }
+        public double? Confidence { get; set; }
 
         /// <summary>
         /// Define the coordinates of the zone in the page where the values has been found.
@@ -42,7 +42,7 @@ namespace Mindee.Parsing.Custom
         /// <param name="polygon"><see cref="Polygon"/></param>
         /// <param name="content"><see cref="Content"/></param>
         /// <param name="pageId"><see cref="PageId"/></param>
-        public ListFieldValue(string content, double confidence, Polygon polygon, int? pageId)
+        public ListFieldValue(string content, double? confidence, Polygon polygon, int? pageId)
         {
             Confidence = confidence;
             Polygon = polygon;

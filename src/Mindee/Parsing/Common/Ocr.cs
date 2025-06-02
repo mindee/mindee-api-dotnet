@@ -164,7 +164,7 @@ namespace Mindee.Parsing.Common
         /// </summary>
         /// <example>0.9</example>
         [JsonPropertyName("confidence")]
-        public double Confidence { get; set; }
+        public double? Confidence { get; set; }
 
         /// <summary>
         /// Define the coordinates of the zone in the page where the values has been found.
