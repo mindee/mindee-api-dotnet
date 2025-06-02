@@ -197,7 +197,7 @@ Aside from the previous attributes, all basic fields have access to a custom `To
 ### AddressField
 Aside from the basic `BaseField` attributes, the address field `AddressField` also implements the following:
 
-* **StreetNumber** (`string`): String representation of the string number. Can be `null`.
+* **StreetNumber** (`string`): String representation of the street number. Can be `null`.
 * **StreetName** (`string`): Name of the street. Can be `null`.
 * **PoBox** (`string`): String representation of the PO Box number. Can be `null`.
 * **AddressComplement** (`string`): Address complement. Can be `null`.

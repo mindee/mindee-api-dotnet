@@ -25,12 +25,6 @@ namespace Mindee.Product.Invoice
         public ClassificationField Category { get; set; }
 
         /// <summary>
-        /// The purchase category.
-        /// </summary>
-        [JsonPropertyName("category")]
-        public ClassificationField Category { get; set; }
-
-        /// <summary>
         /// The address of the customer.
         /// </summary>
         [JsonPropertyName("customer_address")]
@@ -120,12 +114,6 @@ namespace Mindee.Product.Invoice
         /// </summary>
         [JsonPropertyName("shipping_address")]
         public AddressField ShippingAddress { get; set; }
-
-        /// <summary>
-        /// The purchase subcategory for transport, food and shopping.
-        /// </summary>
-        [JsonPropertyName("subcategory")]
-        public ClassificationField Subcategory { get; set; }
 
         /// <summary>
         /// The purchase subcategory for transport, food and shopping.
