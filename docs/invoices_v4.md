@@ -193,6 +193,21 @@ A typical `BaseField` object will have the following attributes:
 
 Aside from the previous attributes, all basic fields have access to a custom `ToString` method that can be used to print their value as a string.
 
+
+### AddressField
+Aside from the basic `BaseField` attributes, the address field `AddressField` also implements the following:
+
+* **StreetNumber** (`string`): String representation of the street number. Can be `null`.
+* **StreetName** (`string`): Name of the street. Can be `null`.
+* **PoBox** (`string`): String representation of the PO Box number. Can be `null`.
+* **AddressComplement** (`string`): Address complement. Can be `null`.
+* **City** (`string`): City name. Can be `null`.
+* **Postalcode** (`string`): String representation of the postal code. Can be `null`.
+* **State** (`string`): State name. Can be `null`.
+* **Country** (`string`): Country name. Can be `null`.
+
+Note: The `Value` field of an AddressField should be a concatenation of the rest of the values.
+
 ### AmountField
 An amount field `AmountField` extends `BaseField`, but also implements:
 * **Value** (`double?`): corresponds to the field value. Can be `null` if no value was extracted.
