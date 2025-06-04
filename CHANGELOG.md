@@ -1,5 +1,14 @@
 # Mindee .NET API Library Changelog
 
+## v3.28.0 - 2025-06-03
+### Changes
+* :sparkles: add support for address fields
+* :sparkles: add support for Financial Document V1.12
+* :sparkles: add support for Invoices V4.10
+* :sparkles: add support for US Healthcare Cards V1.2
+* :recycle: add support for nullable confidence scores
+
+
 ## v3.27.0 - 2025-04-22
 ### Changes
 * :sparkles: add support for workflow polling (#304)
