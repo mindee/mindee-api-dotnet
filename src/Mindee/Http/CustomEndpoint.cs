@@ -3,7 +3,7 @@ using System;
 namespace Mindee.Http
 {
     /// <summary>
-    /// Define a Mindee API endpoint.
+    /// Define a Mindee V1 API endpoint.
     /// </summary>
     public sealed class CustomEndpoint
     {
@@ -68,9 +68,9 @@ namespace Mindee.Http
                 element: typeof(TModel), typeof(EndpointAttribute));
 
             return new CustomEndpoint(
-                endpointAttribute.EndpointName,
+                endpointAttribute.ModelName,
                 endpointAttribute.AccountName,
-                endpointAttribute.Version);
+                endpointAttribute.ModelVersion);
         }
     }
 }
