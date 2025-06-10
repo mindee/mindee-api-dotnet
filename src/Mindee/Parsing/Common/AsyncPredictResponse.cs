@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.Common
 {
     /// <summary>
-    /// Represent an enqueued predict response from Mindee API.
+    /// Represent an enqueued predict response from Mindee V1 API.
     /// </summary>
     public class AsyncPredictResponse<TModel> : PredictResponse<TModel>
         where TModel : class, new()
