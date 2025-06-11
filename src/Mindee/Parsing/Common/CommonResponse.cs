@@ -11,7 +11,7 @@ namespace Mindee.Parsing.Common
         /// <see cref="Common.ApiRequest"/>
         /// </summary>
         [JsonPropertyName("api_request")]
-        public ApiRequest ApiRequest { get; set; }
+        public virtual ApiRequest ApiRequest { get; set; }
 
         /// <summary>
         /// The raw server response.

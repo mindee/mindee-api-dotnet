@@ -156,35 +156,8 @@ namespace Mindee.Http
                 }
             }
 
-            // If the server JSON return is empty, try to dump the raw contents.
-            // If that STILL doesn't work, notify the user that the server response is empty.
-            var apiErrorMessage = model?.ApiRequest.Error.ToString();
-            if (!String.IsNullOrEmpty(apiErrorMessage))
-                errorMessage += apiErrorMessage;
-            else if (!String.IsNullOrEmpty(restResponse.Content))
-                errorMessage += restResponse.Content;
-            else
-                errorMessage += "Empty response from server.";
+            throw new MindeeHttpException(model?.ApiRequest.Error);
 
-            _logger?.LogError(errorMessage);
-
-            switch (restResponse.StatusCode)
-            {
-                case HttpStatusCode.InternalServerError:
-                    throw new Mindee500Exception(errorMessage);
-                case HttpStatusCode.BadRequest:
-                    throw new Mindee400Exception(errorMessage);
-                case HttpStatusCode.Unauthorized:
-                    throw new Mindee401Exception(errorMessage);
-                case HttpStatusCode.Forbidden:
-                    throw new Mindee403Exception(errorMessage);
-                case HttpStatusCode.NotFound:
-                    throw new Mindee404Exception(errorMessage);
-                case (HttpStatusCode)429:
-                    throw new Mindee429Exception(errorMessage);
-                default:
-                    throw new MindeeException(restResponse.ErrorMessage);
-            }
         }
     }
 }
