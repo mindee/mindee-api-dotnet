@@ -27,21 +27,19 @@ namespace Mindee.IntegrationTests
             Assert.Equal(2, response.Document.Inference.Pages.Count);
         }
 
-        // TODO: fix enqueue and parse for url input source
-        // [Fact(Skip = "V2 is not live yet.")]
-        // public async Task Parse_Url_Standard_SinglePage_MustSucceed()
-        // {
-        //     var inputSource =
-        //         new UrlInputSource(
-        //             "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/products/expense_receipts/default_sample.jpg");
-        //     var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, "VALID-MODEL-UUID");
-        //     Assert.NotNull(response);
-        //     Assert.Equal("success", response.ApiRequest.Status);
-        //     Assert.Equal(201, response.ApiRequest.StatusCode);
-        //     Assert.NotNull(response.Document.Inference);
-        //     Assert.NotNull(response.Document.Inference.Prediction);
-        //     Assert.Single(response.Document.Inference.Pages);
-        //     Assert.Null(response.Document.Inference.Pages.First().Extras);
-        // }
+        [Fact(Skip = "V2 is not live yet.")]
+        public async Task Parse_Url_Standard_SinglePage_MustSucceed()
+        {
+            var inputSource =
+                new UrlInputSource(
+                    "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/products/expense_receipts/default_sample.jpg");
+            var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, "VALID-MODEL-UUID");
+            Assert.NotNull(response);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal(201, response.ApiRequest.StatusCode);
+            Assert.NotNull(response.Document.Inference);
+            Assert.NotNull(response.Document.Inference.Prediction);
+            Assert.Single(response.Document.Inference.Pages);
+        }
     }
 }
