@@ -4,23 +4,21 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.Common
 {
     /// <summary>
-    /// Define the parsed document with the legacy format.
+    /// Define the parsed document with the API V2 format.
     /// </summary>
-    /// <typeparam name="TInferenceModel">The model which defines the type of document.</typeparam>
-    public class Document<TInferenceModel>
-        where TInferenceModel : class, new()
+    public class DocumentV2
     {
+        /// <summary>
+        /// The original file name of the parsed document.
+        /// </summary>
+        [JsonPropertyName("model")]
+        public Model Model { get; set; }
+
         /// <summary>
         /// The model which defines the type of document.
         /// </summary>
         [JsonPropertyName("inference")]
-        public TInferenceModel Inference { get; set; }
-
-        /// <summary>
-        /// <see cref="Ocr"/>
-        /// </summary>
-        [JsonPropertyName("ocr")]
-        public Ocr Ocr { get; set; }
+        public InferenceV2 Inference { get; set; }
 
         /// <summary>
         /// The original file name of the parsed document.
@@ -29,7 +27,7 @@ namespace Mindee.Parsing.Common
         public string Filename { get; set; }
 
         /// <summary>
-        /// The Mindee Id of the current document.
+        /// The Mindee ID of the current document.
         /// </summary>
         [JsonPropertyName("id")]
         public string Id { get; set; }

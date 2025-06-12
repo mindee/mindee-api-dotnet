@@ -11,13 +11,13 @@ namespace Mindee.Http
         /// <summary>
         ///
         /// </summary>
-        /// <param name="endpointName">The name of the product associated to the expected model.</param>
+        /// <param name="modelName">The name of the product associated to the expected model.</param>
         /// <param name="accountName">The name of the account wich hold the API. Usefull when using custom builder.</param>
-        /// <param name="version">The version number of the API. Without the v (for example for the v1.2: 1.2). By default set to 1.0</param>
+        /// <param name="modelVersion">The version number of the API. Without the v (for example for the v1.2: 1.2). By default set to 1.0</param>
         public CustomEndpointAttribute(
-            string endpointName
+            string modelName
             , string accountName
-            , string version = "1") : base(endpointName, version, accountName)
+            , string modelVersion = "1") : base(modelName, modelVersion, accountName)
         {
         }
     }
