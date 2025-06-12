@@ -15,20 +15,18 @@ namespace Mindee.Http
         /// <summary>
         /// Do a prediction according parameters for custom model defined in the Studio.
         /// </summary>
-        /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
+        /// <param name="modelId"></param>
         /// <param name="predictParameter"><see cref="PredictParameter"/></param>
         Task<AsyncPredictResponseV2> EnqueuePostAsync(
             PredictParameter predictParameter
-            , CustomEndpointV2 endpoint);
+            , string modelId);
 
 
         /// <summary>
         /// Get a document which was predicted.
         /// </summary>
         /// <param name="jobId">The job ID as returned by the predict_async route.</param>
-        /// <param name="endpoint"><see cref="CustomEndpoint"/></param>
         Task<AsyncPredictResponseV2> DocumentQueueGetAsync(
-            string jobId
-            , CustomEndpointV2 endpoint);
+            string jobId);
     }
 }

@@ -39,7 +39,7 @@ namespace Mindee.Http
 
         public async Task<AsyncPredictResponseV2> EnqueuePostAsync(
             PredictParameter predictParameter
-            , CustomEndpointV2 endpoint
+            , string modelId
         )
         {
 
@@ -54,6 +54,7 @@ namespace Mindee.Http
                 request.AddQueryParameter("rag", "true");
             }
 
+            request.AddQueryParameter("model_id", modelId);
             AddPredictRequestParameters(predictParameter, request);
 
             _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
@@ -62,13 +63,11 @@ namespace Mindee.Http
             return ResponseHandler(response);
         }
 
-        public async Task<AsyncPredictResponseV2> DocumentQueueGetAsync(
-            string jobId
-            , CustomEndpointV2 endpoint)
+        public async Task<AsyncPredictResponseV2> DocumentQueueGetAsync(string jobId)
         {
 
             var queueRequest = new RestRequest(
-                $"v2/inferences/{endpoint.ModelName}");
+                $"v2/inferences/{jobId}");
 
             _logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource} ...");
 
@@ -80,7 +79,7 @@ namespace Mindee.Http
             {
                 var locationHeader = queueResponse.Headers.First(h => h.Name == "Location");
 
-                var docRequest = new RestRequest(locationHeader.Value?.ToString());
+                var docRequest = new RestRequest(locationHeader.Value);
 
                 _logger?.LogInformation($"HTTP GET to {_baseUrl + docRequest.Resource} ...");
                 var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
