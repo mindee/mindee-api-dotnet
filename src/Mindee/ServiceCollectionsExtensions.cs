@@ -30,6 +30,21 @@ namespace Mindee.Extensions.DependencyInjection
             RegisterRestSharpClient(services, throwOnError);
         }
 
+        /// <summary>
+        /// Configure the Mindee API in the DI, mainly used for mocking/testing purposes.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configureOptions"></param>
+        /// <param name="throwOnError"></param>
+        /// <returns></returns>
+        public static void AddMindeeApiV2(this IServiceCollection services,
+            Action<MindeeSettings> configureOptions, bool throwOnError = false)
+        {
+            services.Configure(configureOptions);
+            services.AddSingleton<MindeeApiV2>();
+            RegisterRestSharpClient(services, throwOnError);
+        }
+
         private static void RegisterRestSharpClient(IServiceCollection services, bool throwOnError)
         {
             services.AddSingleton(provider =>

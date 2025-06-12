@@ -98,14 +98,14 @@ namespace Mindee
         /// Add a local input source to a Generated async queue.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="endpoint"><see cref="CustomEndpointV2"/></param>
+        /// <param name="modelId"></param>
         /// <param name="predictOptions"><see cref="PageOptions"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncPredictResponseV2> EnqueueAsync(
             LocalInputSource inputSource
-            , CustomEndpointV2 endpoint
+            , string modelId
             , PredictOptions predictOptions = null
             , PageOptions pageOptions = null)
         {
@@ -132,20 +132,20 @@ namespace Mindee
                     workflowId: predictOptions.WorkflowId,
                     rag: predictOptions.Rag
                     )
-                , endpoint);
+                , modelId);
         }
 
         /// <summary>
         /// Add a URL input source to an async queue.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="endpoint"><see cref="CustomEndpointV2"/></param>
+        /// <param name="modelId"></param>
         /// <param name="predictOptions"><see cref="PageOptions"/></param>
         /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncPredictResponseV2> EnqueueAsync(
             UrlInputSource inputSource
-            , CustomEndpointV2 endpoint
+            , string modelId
             , PredictOptions predictOptions = null)
         {
             _logger?.LogInformation(message: "Enqueuing...");
@@ -164,18 +164,15 @@ namespace Mindee
                     cropper: predictOptions.Cropper,
                     workflowId: predictOptions.WorkflowId,
                     rag: predictOptions.Rag)
-                , endpoint);
+                , modelId);
         }
 
         /// <summary>
         /// Parse a document from a Generated async queue.
         /// </summary>
-        /// <param name="endpoint"><see cref="CustomEndpointV2"/></param>
         /// <param name="jobId">The job id.</param>
-        /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
-        public async Task<AsyncPredictResponseV2> ParseQueuedAsync(
-            CustomEndpointV2 endpoint
-            , string jobId)
+        /// <returns><see cref="AsyncPredictResponseV2"/></returns>
+        public async Task<AsyncPredictResponseV2> ParseQueuedAsync(string jobId)
         {
             _logger?.LogInformation(message: "Parse from queue...");
 
@@ -184,14 +181,15 @@ namespace Mindee
                 throw new ArgumentNullException(jobId);
             }
 
-            return await _mindeeApi.DocumentQueueGetAsync(jobId, endpoint);
+            return await _mindeeApi.DocumentQueueGetAsync(jobId);
         }
+
 
         /// <summary>
         /// Add the document to an async queue, poll, and parse when complete.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="endpoint"><see cref="CustomEndpointV2"/></param>
+        /// <param name="modelId"><see cref="string"/></param>
         /// <param name="predictOptions"><see cref="PageOptions"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
@@ -199,7 +197,7 @@ namespace Mindee
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncPredictResponseV2> EnqueueAndParseAsync(
             LocalInputSource inputSource
-            , CustomEndpointV2 endpoint
+            , string modelId
             , PredictOptions predictOptions = null
             , PageOptions pageOptions = null
             , AsyncPollingOptions pollingOptions = null)
@@ -213,7 +211,7 @@ namespace Mindee
 
             var enqueueResponse = await EnqueueAsync(
                 inputSource,
-                endpoint,
+                modelId,
                 predictOptions,
                 pageOptions);
 
@@ -235,7 +233,7 @@ namespace Mindee
                 Thread.Sleep(pollingOptions.IntervalMilliSec);
                 _logger?.LogInformation("Attempting to retrieve: {} of {}", retryCount, maxRetries);
 
-                response = await ParseQueuedAsync(endpoint, jobId);
+                response = await ParseQueuedAsync(jobId);
                 if (response.Document != null)
                 {
                     return response;
