@@ -205,6 +205,59 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response.Document.Inference.Prediction.InvoicePageGroups);
         }
 
+
+        [Fact]
+        public async Task EnqueueAndParse_File_Standard_AsyncOnly_Async_UrlSource_MustSucceed()
+        {
+            var inputSource =
+                new UrlInputSource(
+                    "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/products/invoice_splitter/default_sample.pdf");
+            var pollingOptions = new AsyncPollingOptions();
+            var response = await _mindeeClient.EnqueueAndParseAsync<InvoiceSplitterV1>(
+                inputSource, pollingOptions: pollingOptions);
+
+            Assert.NotNull(response);
+            Assert.NotNull(response.ApiRequest);
+            Assert.Contains("/v1/products/mindee/invoice_splitter/v1/documents/", response.ApiRequest.Url);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal(200, response.ApiRequest.StatusCode);
+
+            Assert.NotNull(response.Job);
+            Assert.Equal("completed", response.Job.Status);
+            Assert.NotNull(response.Job.IssuedAt.ToString("yyyy"));
+            Assert.NotNull(response.Job.AvailableAt?.ToString("yyyy"));
+
+            Assert.NotNull(response.Document);
+            Assert.NotNull(response.Document.Inference.Prediction.InvoicePageGroups);
+        }
+
+        [Fact]
+        public async Task EnqueueAndParse_File_Standard_AsyncOnly_Async_UrlSource_CustomEndpoint_MustSucceed()
+        {
+            var inputSource =
+                new UrlInputSource(
+                    "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/products/international_id/default_sample.jpg");
+            var pollingOptions = new AsyncPollingOptions();
+            var endpoint = new CustomEndpoint("international_id", "mindee", "2");
+            var response = await _mindeeClient.EnqueueAndParseAsync<GeneratedV1>(
+                inputSource, endpoint, pollingOptions: pollingOptions);
+
+            Assert.NotNull(response);
+            Assert.NotNull(response.ApiRequest);
+            Assert.Contains("/v1/products/mindee/international_id/v2/documents/", response.ApiRequest.Url);
+            Assert.Equal("success", response.ApiRequest.Status);
+            Assert.Equal(200, response.ApiRequest.StatusCode);
+
+            Assert.NotNull(response.Job);
+            Assert.Equal("completed", response.Job.Status);
+            Assert.NotNull(response.Job.IssuedAt.ToString("yyyy"));
+            Assert.NotNull(response.Job.AvailableAt?.ToString("yyyy"));
+
+            Assert.NotNull(response.Document);
+            Assert.NotNull(response.Document.Inference.Prediction);
+        }
+
+
         [Fact]
         public async Task ParseQueued_Standard_InvalidJob_MustFail()
         {
