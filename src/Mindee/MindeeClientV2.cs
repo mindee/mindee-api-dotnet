@@ -106,14 +106,14 @@ namespace Mindee
         public async Task<AsyncPredictResponseV2> EnqueueAsync(
             LocalInputSource inputSource
             , string modelId
-            , PredictOptions predictOptions = null
+            , PredictOptionsV2 predictOptions = null
             , PageOptions pageOptions = null)
         {
             _logger?.LogInformation(message: "Enqueuing...");
 
             if (predictOptions == null)
             {
-                predictOptions = new PredictOptions();
+                predictOptions = new PredictOptionsV2();
             }
 
             if (pageOptions != null && inputSource.IsPdf())
@@ -123,13 +123,13 @@ namespace Mindee
             }
 
             return await _mindeeApi.EnqueuePostAsync(
-                new PredictParameter(
+                new PredictParameterV2(
                     localSource: inputSource,
                     urlSource: null,
-                    allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
-                    workflowId: predictOptions.WorkflowId,
+                    alias: predictOptions.Alias,
+                    webhookIds: predictOptions.WebhookIds,
                     rag: predictOptions.Rag
                     )
                 , modelId);
@@ -146,24 +146,25 @@ namespace Mindee
         public async Task<AsyncPredictResponseV2> EnqueueAsync(
             UrlInputSource inputSource
             , string modelId
-            , PredictOptions predictOptions = null)
+            , PredictOptionsV2 predictOptions = null)
         {
             _logger?.LogInformation(message: "Enqueuing...");
 
             if (predictOptions == null)
             {
-                predictOptions = new PredictOptions();
+                predictOptions = new PredictOptionsV2();
             }
 
             return await _mindeeApi.EnqueuePostAsync(
-                new PredictParameter(
+                new PredictParameterV2(
                     localSource: null,
                     urlSource: inputSource,
-                    allWords: predictOptions.AllWords,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
-                    workflowId: predictOptions.WorkflowId,
-                    rag: predictOptions.Rag)
+                    rag: predictOptions.Rag,
+                    alias: predictOptions.Alias,
+                    webhookIds: predictOptions.WebhookIds
+                    )
                 , modelId);
         }
 
@@ -198,7 +199,7 @@ namespace Mindee
         public async Task<AsyncPredictResponseV2> EnqueueAndParseAsync(
             LocalInputSource inputSource
             , string modelId
-            , PredictOptions predictOptions = null
+            , PredictOptionsV2 predictOptions = null
             , PageOptions pageOptions = null
             , AsyncPollingOptions pollingOptions = null)
         {
@@ -232,7 +233,7 @@ namespace Mindee
         public async Task<AsyncPredictResponseV2> EnqueueAndParseAsync(
             UrlInputSource inputSource
             , string modelId
-            , PredictOptions predictOptions = null
+            , PredictOptionsV2 predictOptions = null
             , AsyncPollingOptions pollingOptions = null)
         {
             _logger?.LogInformation("Asynchronous parsing ...");

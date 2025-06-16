@@ -38,16 +38,11 @@ namespace Mindee.Http
         }
 
         public async Task<AsyncPredictResponseV2> EnqueuePostAsync(
-            PredictParameter predictParameter
+            PredictParameterV2 predictParameter
             , string modelId
         )
         {
-
-            String url;
-
-            url = "v2/inferences/enqueue";
-
-            var request = new RestRequest(url, Method.Post);
+            var request = new RestRequest("v2/inferences/enqueue", Method.Post);
 
             if (predictParameter.Rag)
             {
@@ -95,7 +90,7 @@ namespace Mindee.Http
             return handledResponse;
         }
 
-        private static void AddPredictRequestParameters(PredictParameter predictParameter, RestRequest request)
+        private static void AddPredictRequestParameters(PredictParameterV2 predictParameter, RestRequest request)
         {
             if (predictParameter.LocalSource != null)
             {

@@ -1,23 +1,24 @@
-using System;
+using System.Collections.Generic;
 using Mindee.Input;
+using Mindee.Parsing.Common;
 
 namespace Mindee.Http
 {
     /// <summary>
-    /// Parameter required to use the predict feature.
+    /// Parameter required to use the predict feature on the API V2.
     /// </summary>
-    public class PredictParameter : GenericParameter
+    public sealed class PredictParameterV2 : PredictParameter
     {
         /// <summary>
-        /// Whether to retrieve the full text OCR on OTS products.
+        /// Optional alias for the file.
         /// </summary>
-        /// <remarks>It is not available on all APIs.</remarks>
-        public bool AllWords { get; }
+        public string Alias { get; }
 
         /// <summary>
-        /// Whether to include a cropping operation to the file.
+        /// IDs of webhooks to propagate the API response to.
         /// </summary>
-        public bool Cropper { get; }
+        /// <remarks>It is not available on all API.</remarks>
+        public List<string> WebhookIds { get; }
 
 
         /// <summary>
@@ -25,21 +26,22 @@ namespace Mindee.Http
         /// </summary>
         /// <param name="localSource">Local input source containing the file.<see cref="GenericParameter.LocalSource"/></param>
         /// <param name="urlSource">Source URL to use.<see cref="GenericParameter.UrlSource"/></param>
-        /// <param name="allWords">Whether to include the full OCR response in the payload (compatible APIs only).<see cref="AllWords"/></param>
         /// <param name="fullText">Whether to include the full text in the payload (compatible APIs only)<see cref="GenericParameter.FullText"/></param>
         /// <param name="cropper">Whether to crop the document before enqueuing on the API.<see cref="Cropper"/></param>
-        /// <param name="workflowId">If set, will enqueue to the workflows queue.<see cref="GenericParameter.WorkflowId"/></param>
         /// <param name="rag">If set, will enqueue to the workflows queue.<see cref="GenericParameter.Rag"/></param>
-        public PredictParameter(
+        /// <param name="alias">Optional alias for the filename.<see cref="Alias"/></param>
+        /// <param name="webhookIds">List of webhook IDs to propagate the response to.<see cref="WebhookIds"/></param>
+        public PredictParameterV2(
             LocalInputSource localSource,
             UrlInputSource urlSource,
-            bool allWords,
             bool fullText,
-            bool cropper, string workflowId,
-            bool rag) : base(localSource, urlSource, fullText, workflowId, rag)
+            bool cropper,
+            bool rag,
+            string alias,
+            List<string> webhookIds) : base(localSource, urlSource, false, fullText, cropper, null, rag)
         {
-            AllWords = allWords;
-            Cropper = cropper;
+            Alias = alias;
+            WebhookIds = webhookIds;
         }
     }
 }
