@@ -41,7 +41,7 @@ namespace Mindee.Http
             List<string> webhookIds) : base(localSource, urlSource, false, fullText, cropper, null, rag)
         {
             Alias = alias;
-            WebhookIds = webhookIds;
+            WebhookIds = webhookIds ?? [];
         }
     }
 }

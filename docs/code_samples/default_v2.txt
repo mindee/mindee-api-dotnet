@@ -8,7 +8,7 @@ string filePath = "/path/to/the/file.ext";
 string modelId = "my-model-id";
 
 // Construct a new client
-MindeeClient mindeeClient = new MindeeClientV2(apiKey);
+MindeeClientV2 mindeeClient = new MindeeClientV2(apiKey);
 
 // Load an input source as a path string
 // Other input types can be used, as mentioned in the docs

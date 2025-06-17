@@ -57,7 +57,7 @@ namespace Mindee
             Cropper = cropper;
             FullText = fullText;
             Alias = alias;
-            WebhookIds = webhookIds;
+            WebhookIds = webhookIds ?? [];
             Rag = rag;
         }
     }

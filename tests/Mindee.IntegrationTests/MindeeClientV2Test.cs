@@ -23,7 +23,7 @@ namespace Mindee.IntegrationTests
             Assert.Equal(201, response.ApiRequest.StatusCode);
             Assert.NotNull(response.Inference);
             Assert.NotNull(response.Inference.Result);
-            Assert.Null(response.Inference.Pages.First().Extras);
+            Assert.Null(response.Inference.Pages.First().Options);
             Assert.Equal(2, response.Inference.Pages.Count);
         }
 

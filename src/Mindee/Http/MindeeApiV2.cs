@@ -121,7 +121,7 @@ namespace Mindee.Http
                 request.AddQueryParameter("rag", "true");
             }
 
-            if (predictParameter.WebhookIds.Count > 0)
+            if (predictParameter.WebhookIds is { Count: > 0 })
             {
                 request.AddParameter(name: "webhook_ids", value: string.Join(",", predictParameter.WebhookIds));
             }

@@ -36,18 +36,18 @@ namespace Mindee.Parsing.Common
         /// <summary>
         /// Optional information.
         /// </summary>
-        [JsonPropertyName("extras")]
-        public InferenceExtras Extras
+        [JsonPropertyName("options")]
+        public InferenceExtras Options
         {
             get
             {
                 if (this.Pages.Count > 0 && (this._extras?.FullTextOcr == null))
                 {
                     this._extras ??= new InferenceExtras();
-                    if (this.Pages.First().Extras is { FullTextOcr: not null })
+                    if (this.Pages.First().Options is { FullTextOcr: not null })
                     {
                         this._extras.FullTextOcr = string.Join("\n",
-                            this.Pages.Select(page => page.Extras.FullTextOcr.Content));
+                            this.Pages.Select(page => page.Options.FullTextOcr.Content));
                     }
                 }
 

@@ -24,14 +24,14 @@ namespace Mindee.Parsing.Common
         /// <summary>
         /// The prediction model type.
         /// </summary>
-        [JsonPropertyName("prediction")]
-        public GeneratedV2 Prediction { get; set; }
+        [JsonPropertyName("fields")]
+        public GeneratedV2 Fields { get; set; }
 
         /// <summary>
         /// <see cref="Common.Extras"/>
         /// </summary>
-        [JsonPropertyName("extras")]
-        public Extras Extras { get; set; }
+        [JsonPropertyName("options")]
+        public Extras Options { get; set; }
 
         /// <summary>
         /// A prettier representation.
@@ -41,7 +41,7 @@ namespace Mindee.Parsing.Common
             var result = new StringBuilder();
             result.Append($"Page {Id}\n");
             result.Append("------\n");
-            result.Append(Prediction.ToString());
+            result.Append(Fields.ToString());
 
             return result.ToString();
         }
