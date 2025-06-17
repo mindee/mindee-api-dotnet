@@ -21,10 +21,10 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
-            Assert.NotNull(response.Document.Inference);
-            Assert.NotNull(response.Document.Inference.Result);
-            Assert.Null(response.Document.Inference.Pages.First().Extras);
-            Assert.Equal(2, response.Document.Inference.Pages.Count);
+            Assert.NotNull(response.Inference);
+            Assert.NotNull(response.Inference.Result);
+            Assert.Null(response.Inference.Pages.First().Extras);
+            Assert.Equal(2, response.Inference.Pages.Count);
         }
 
         [Fact(Skip = "V2 is not live yet.")]
@@ -37,9 +37,9 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
-            Assert.NotNull(response.Document.Inference);
-            Assert.NotNull(response.Document.Inference.Result);
-            Assert.Single(response.Document.Inference.Pages);
+            Assert.NotNull(response.Inference);
+            Assert.NotNull(response.Inference.Result.Fields);
+            Assert.Single(response.Inference.Pages);
         }
     }
 }

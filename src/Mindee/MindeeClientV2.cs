@@ -276,7 +276,7 @@ namespace Mindee
                 Thread.Sleep(pollingOptions.IntervalMilliSec);
                 _logger?.LogInformation("Attempting to retrieve: {} of {}", retryCount, maxRetries);
                 response = await ParseQueuedAsync(jobId);
-                if (response.Document != null)
+                if (response.Inference != null)
                 {
                     return response;
                 }

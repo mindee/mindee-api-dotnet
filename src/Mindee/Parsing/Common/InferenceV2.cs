@@ -6,7 +6,7 @@ using Mindee.Product.Generated;
 namespace Mindee.Parsing.Common
 {
     /// <summary>
-    /// Define the inference model of values.
+    /// Inference object for the V2 API.
     /// </summary>
     public class InferenceV2
     {
@@ -68,8 +68,9 @@ namespace Mindee.Parsing.Common
         /// </summary>
         public override string ToString()
         {
-            var result = new StringBuilder();
-            result.Append("\nInference\n");
+            var result = new StringBuilder("########\n");
+            result.Append("Inference\n");
+            result.Append("########\n");
             result.Append("#########\n");
             result.Append($":Product: {Product.Name} v{Product.Version}\n");
             result.Append(

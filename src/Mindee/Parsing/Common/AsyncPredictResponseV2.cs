@@ -17,8 +17,8 @@ namespace Mindee.Parsing.Common
         /// Set the prediction model used to parse the document.
         /// The response object will be instantiated based on this parameter.
         /// </summary>
-        [JsonPropertyName("document")]
-        public DocumentV2 Document { get; set; }
+        [JsonPropertyName("inference")]
+        public InferenceV2 Inference { get; set; }
 
         /// <summary>
         /// <see cref="Common.Job"/>
