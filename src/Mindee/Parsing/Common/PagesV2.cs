@@ -22,7 +22,7 @@ namespace Mindee.Parsing.Common
         /// <returns></returns>
         public bool HasPredictions()
         {
-            return (this.Count > 0 && this.First().Prediction != null);
+            return (this.Count > 0 && this.First().Fields != null);
         }
     }
 }
