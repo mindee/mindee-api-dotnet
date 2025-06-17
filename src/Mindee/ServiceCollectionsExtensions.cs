@@ -28,6 +28,7 @@ namespace Mindee.Extensions.DependencyInjection
             services.Configure(configureOptions);
             services.AddSingleton<MindeeApi>();
             RegisterRestSharpClient(services, throwOnError);
+            RegisterRestSharpClientV2(services, throwOnError);
         }
 
         /// <summary>
@@ -43,6 +44,7 @@ namespace Mindee.Extensions.DependencyInjection
             services.Configure(configureOptions);
             services.AddSingleton<MindeeApiV2>();
             RegisterRestSharpClient(services, throwOnError);
+            RegisterRestSharpClientV2(services, throwOnError);
         }
 
         private static void RegisterRestSharpClient(IServiceCollection services, bool throwOnError)
@@ -50,6 +52,7 @@ namespace Mindee.Extensions.DependencyInjection
             services.AddSingleton(provider =>
             {
                 var mindeeSettings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
+                mindeeSettings.MindeeBaseUrl = Environment.GetEnvironmentVariable("Mindee__BaseUrl");
                 if (string.IsNullOrEmpty(mindeeSettings.MindeeBaseUrl))
                     mindeeSettings.MindeeBaseUrl = "https://api.mindee.net";
                 if (mindeeSettings.RequestTimeoutSeconds <= 0)
@@ -61,6 +64,32 @@ namespace Mindee.Extensions.DependencyInjection
                 {
                     FollowRedirects = false,
                     Timeout = TimeSpan.FromSeconds(mindeeSettings.RequestTimeoutSeconds),
+                    UserAgent = BuildUserAgent(),
+                    Expect100Continue = false,
+                    CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true },
+                    ThrowOnAnyError = throwOnError,
+                };
+                return new RestClient(clientOptions);
+            });
+        }
+
+        private static void RegisterRestSharpClientV2(IServiceCollection services, bool throwOnError)
+        {
+            services.AddSingleton(provider =>
+            {
+                var mindeeSettingsV2 = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
+                mindeeSettingsV2.MindeeBaseUrl = Environment.GetEnvironmentVariable("Mindee__BaseUrl__V2");
+                if (string.IsNullOrEmpty(mindeeSettingsV2.MindeeBaseUrl))
+                    mindeeSettingsV2.MindeeBaseUrl = "https://api.mindee.net";
+                if (mindeeSettingsV2.RequestTimeoutSeconds <= 0)
+                    mindeeSettingsV2.RequestTimeoutSeconds = 120;
+                if (string.IsNullOrEmpty(mindeeSettingsV2.ApiKey))
+                    mindeeSettingsV2.ApiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey__V2");
+
+                var clientOptions = new RestClientOptions(mindeeSettingsV2.MindeeBaseUrl)
+                {
+                    FollowRedirects = false,
+                    Timeout = TimeSpan.FromSeconds(mindeeSettingsV2.RequestTimeoutSeconds),
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
                     CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true },
@@ -102,6 +131,7 @@ namespace Mindee.Extensions.DependencyInjection
                 .BindConfiguration(sectionName)
                 .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee api key is missing");
             RegisterRestSharpClient(services, false);
+            RegisterRestSharpClientV2(services, false);
 
             services.AddPdfOperation();
 

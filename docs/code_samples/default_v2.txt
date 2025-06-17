@@ -1,0 +1,25 @@
+using Mindee;
+using Mindee.Input;
+using Mindee.Http;
+using Mindee.Product.Generated;
+
+string apiKey = "my-api-key";
+string filePath = "/path/to/the/file.ext";
+string modelId = "my-model-id";
+
+// Construct a new client
+MindeeClient mindeeClient = new MindeeClientV2(apiKey);
+
+// Load an input source as a path string
+// Other input types can be used, as mentioned in the docs
+var inputSource = new LocalInputSource(filePath);
+
+// Call the product asynchronously with auto-polling
+var response = await mindeeClient
+    .EnqueueAndParseAsync(inputSource, modelId);
+
+// Print a summary of all the predictions
+System.Console.WriteLine(response.Inference.ToString());
+
+// Print only the document-level predictions
+// System.Console.WriteLine(response.Inference.Prediction.ToString());

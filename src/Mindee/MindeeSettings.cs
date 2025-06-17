@@ -3,7 +3,7 @@ namespace Mindee
     /// <summary>
     /// Mindee settings.
     /// </summary>
-    public sealed class MindeeSettings
+    public class MindeeSettings
     {
         /// <summary>
         /// The API key.
