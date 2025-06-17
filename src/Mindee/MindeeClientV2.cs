@@ -32,7 +32,7 @@ namespace Mindee
             var serviceCollection = new ServiceCollection();
             _pdfOperation = new DocNetApi();
 
-            serviceCollection.AddMindeeApi(options =>
+            serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = apiKey;
             });
@@ -57,7 +57,7 @@ namespace Mindee
         {
             var serviceCollection = new ServiceCollection();
             _pdfOperation = new DocNetApi();
-            serviceCollection.AddMindeeApi(options =>
+            serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = mindeeSettings.ApiKey;
                 options.MindeeBaseUrl = mindeeSettings.MindeeBaseUrl;
