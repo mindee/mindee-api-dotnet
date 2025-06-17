@@ -10,8 +10,6 @@ using Mindee.Http;
 using Mindee.Input;
 using Mindee.Parsing.Common;
 using Mindee.Pdf;
-using Mindee.Product.Custom;
-using Mindee.Product.Generated;
 
 namespace Mindee
 {

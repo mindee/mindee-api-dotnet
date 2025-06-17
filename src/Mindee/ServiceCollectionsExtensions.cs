@@ -28,7 +28,6 @@ namespace Mindee.Extensions.DependencyInjection
             services.Configure(configureOptions);
             services.AddSingleton<MindeeApi>();
             RegisterRestSharpClient(services, throwOnError);
-            RegisterRestSharpClientV2(services, throwOnError);
         }
 
         /// <summary>
@@ -43,7 +42,6 @@ namespace Mindee.Extensions.DependencyInjection
         {
             services.Configure(configureOptions);
             services.AddSingleton<MindeeApiV2>();
-            RegisterRestSharpClient(services, throwOnError);
             RegisterRestSharpClientV2(services, throwOnError);
         }
 
@@ -131,6 +129,27 @@ namespace Mindee.Extensions.DependencyInjection
                 .BindConfiguration(sectionName)
                 .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee api key is missing");
             RegisterRestSharpClient(services, false);
+
+            services.AddPdfOperation();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Configure the Mindee client V2 in the DI.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceCollection"/></param>
+        /// <param name="sectionName">The name of the section to bind from the configuration.</param>
+        /// <remarks>The <see cref="MindeeClient"/> instance is registered as a transient.</remarks>
+        public static IServiceCollection AddMindeeClientV2(
+            this IServiceCollection services,
+            string sectionName = "Mindee")
+        {
+            services.AddSingleton<MindeeClientV2>();
+            services.AddSingleton<IHttpApiV2, MindeeApiV2>();
+            services.AddOptions<MindeeSettings>()
+                .BindConfiguration(sectionName)
+                .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee api key is missing");
             RegisterRestSharpClientV2(services, false);
 
             services.AddPdfOperation();
@@ -148,6 +167,21 @@ namespace Mindee.Extensions.DependencyInjection
             where TPdfOperationImplementation : class, IPdfOperation, new()
         {
             services.AddSingleton<MindeeClient>();
+            services.AddSingleton<IPdfOperation, TPdfOperationImplementation>();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Configure the Mindee client V2 in the DI with your own custom pdf implementation.
+        /// </summary>
+        /// <typeparam name="TPdfOperationImplementation">Will be registered as a singleton.</typeparam>
+        /// <remarks>The <see cref="MindeeClient"/> instance is registered as a transient.</remarks>
+        public static IServiceCollection AddMindeeClientV2WithCustomPdfImplementation<TPdfOperationImplementation>(
+            this IServiceCollection services)
+            where TPdfOperationImplementation : class, IPdfOperation, new()
+        {
+            services.AddSingleton<MindeeClientV2>();
             services.AddSingleton<IPdfOperation, TPdfOperationImplementation>();
 
             return services;
