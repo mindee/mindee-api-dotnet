@@ -78,13 +78,13 @@ namespace Mindee.Extensions.DependencyInjection
             services.AddSingleton(provider =>
             {
                 var mindeeSettingsV2 = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
-                mindeeSettingsV2.MindeeBaseUrl = Environment.GetEnvironmentVariable("Mindee__V2__BaseUrl");
+                mindeeSettingsV2.MindeeBaseUrl = Environment.GetEnvironmentVariable("MindeeV2__BaseUrl");
                 if (string.IsNullOrEmpty(mindeeSettingsV2.MindeeBaseUrl))
                     mindeeSettingsV2.MindeeBaseUrl = "https://api.mindee.net";
                 if (mindeeSettingsV2.RequestTimeoutSeconds <= 0)
                     mindeeSettingsV2.RequestTimeoutSeconds = 120;
                 if (string.IsNullOrEmpty(mindeeSettingsV2.ApiKey))
-                    mindeeSettingsV2.ApiKey = Environment.GetEnvironmentVariable("Mindee__V2__ApiKey");
+                    mindeeSettingsV2.ApiKey = Environment.GetEnvironmentVariable("MindeeV2__ApiKey");
 
                 var clientOptions = new RestClientOptions(mindeeSettingsV2.MindeeBaseUrl)
                 {
