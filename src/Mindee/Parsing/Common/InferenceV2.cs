@@ -58,10 +58,10 @@ namespace Mindee.Parsing.Common
 
 
         /// <summary>
-        /// The prediction model values.
+        /// The model result values.
         /// </summary>
-        [JsonPropertyName("prediction")]
-        public GeneratedV2 Prediction { get; set; }
+        [JsonPropertyName("result")]
+        public Result Result { get; set; }
 
         /// <summary>
         /// A prettier representation.
@@ -74,9 +74,9 @@ namespace Mindee.Parsing.Common
             result.Append($":Product: {Product.Name} v{Product.Version}\n");
             result.Append(
                 $":Rotation applied: {(IsRotationApplied.HasValue && IsRotationApplied.Value ? "Yes" : "No")}\n");
-            result.Append("\nPrediction\n");
+            result.Append("\nResult\n");
             result.Append("==========\n");
-            result.Append(Prediction.ToString());
+            result.Append(Result.ToString());
             if (Pages.HasPredictions())
             {
                 result.Append("\nPage Predictions\n");

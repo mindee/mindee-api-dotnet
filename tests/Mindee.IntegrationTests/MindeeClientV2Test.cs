@@ -22,7 +22,7 @@ namespace Mindee.IntegrationTests
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
             Assert.NotNull(response.Document.Inference);
-            Assert.NotNull(response.Document.Inference.Prediction);
+            Assert.NotNull(response.Document.Inference.Result);
             Assert.Null(response.Document.Inference.Pages.First().Extras);
             Assert.Equal(2, response.Document.Inference.Pages.Count);
         }
@@ -38,7 +38,7 @@ namespace Mindee.IntegrationTests
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
             Assert.NotNull(response.Document.Inference);
-            Assert.NotNull(response.Document.Inference.Prediction);
+            Assert.NotNull(response.Document.Inference.Result);
             Assert.Single(response.Document.Inference.Pages);
         }
     }

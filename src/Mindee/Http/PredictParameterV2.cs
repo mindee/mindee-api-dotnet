@@ -22,7 +22,7 @@ namespace Mindee.Http
 
 
         /// <summary>
-        /// Prediction parameters for requests.
+        /// Result parameters for requests.
         /// </summary>
         /// <param name="localSource">Local input source containing the file.<see cref="GenericParameter.LocalSource"/></param>
         /// <param name="urlSource">Source URL to use.<see cref="GenericParameter.UrlSource"/></param>

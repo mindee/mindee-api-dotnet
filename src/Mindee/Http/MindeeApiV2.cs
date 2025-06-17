@@ -44,11 +44,6 @@ namespace Mindee.Http
         {
             var request = new RestRequest("v2/inferences/enqueue", Method.Post);
 
-            if (predictParameter.Rag)
-            {
-                request.AddQueryParameter("rag", "true");
-            }
-
             request.AddQueryParameter("model_id", modelId);
             AddPredictRequestParameters(predictParameter, request);
 
@@ -106,11 +101,6 @@ namespace Mindee.Http
                     predictParameter.UrlSource.FileUrl.ToString());
             }
 
-            if (predictParameter.AllWords)
-            {
-                request.AddParameter(name: "include_mvision", value: "true");
-            }
-
             if (predictParameter.FullText)
             {
                 request.AddQueryParameter(name: "full_text_ocr", value: "true");
@@ -119,6 +109,21 @@ namespace Mindee.Http
             if (predictParameter.Cropper)
             {
                 request.AddQueryParameter(name: "cropper", value: "true");
+            }
+
+            if (!string.IsNullOrWhiteSpace(predictParameter.Alias))
+            {
+                request.AddParameter(name: "alias", value: predictParameter.Alias);
+            }
+
+            if (predictParameter.Rag)
+            {
+                request.AddQueryParameter("rag", "true");
+            }
+
+            if (predictParameter.WebhookIds.Count > 0)
+            {
+                request.AddParameter(name: "webhook_ids", value: string.Join(",", predictParameter.WebhookIds));
             }
         }
 
