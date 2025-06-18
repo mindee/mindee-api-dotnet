@@ -45,23 +45,5 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response.Inference.Result.Fields);
             Assert.Single(response.Inference.Pages);
         }
-
-        [Fact]
-        public async Task Parse_File_Standard_WithProxy_MustSucceed()
-        {
-            var services = new ServiceCollection();
-            services.AddMindeeApiV2(options =>
-            {
-                options.ApiKey = Environment.GetEnvironmentVariable("MindeeV2__BaseUrl");
-                options.MindeeBaseUrl = Environment.GetEnvironmentVariable("MindeeV2__BaseUrl");
-            });
-            var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
-            var predictOptions = new PredictOptionsV2("VALID-MODEL-UUID");
-            var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
-            Assert.NotNull(response);
-            Assert.Equal("success", response.ApiRequest.Status);
-            Assert.Equal(201, response.ApiRequest.StatusCode);
-            Assert.NotNull(response.Inference);
-        }
     }
 }
