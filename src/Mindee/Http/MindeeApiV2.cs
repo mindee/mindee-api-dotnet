@@ -39,12 +39,11 @@ namespace Mindee.Http
 
         public async Task<AsyncPredictResponseV2> EnqueuePostAsync(
             PredictParameterV2 predictParameter
-            , string modelId
         )
         {
             var request = new RestRequest("v2/inferences/enqueue", Method.Post);
 
-            request.AddQueryParameter("model_id", modelId);
+            request.AddQueryParameter("model_id", predictParameter.ModelId);
             AddPredictRequestParameters(predictParameter, request);
 
             _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");

@@ -96,23 +96,16 @@ namespace Mindee
         /// Add a local input source to a Generated async queue.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="modelId"></param>
-        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <param name="predictOptions"><see cref="PredictOptionsV2"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncPredictResponseV2> EnqueueAsync(
             LocalInputSource inputSource
-            , string modelId
-            , PredictOptionsV2 predictOptions = null
+            , PredictOptionsV2 predictOptions
             , PageOptions pageOptions = null)
         {
             _logger?.LogInformation(message: "Enqueuing...");
-
-            if (predictOptions == null)
-            {
-                predictOptions = new PredictOptionsV2();
-            }
 
             if (pageOptions != null && inputSource.IsPdf())
             {
@@ -124,46 +117,39 @@ namespace Mindee
                 new PredictParameterV2(
                     localSource: inputSource,
                     urlSource: null,
+                    modelId: predictOptions.ModelId,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
                     alias: predictOptions.Alias,
                     webhookIds: predictOptions.WebhookIds,
                     rag: predictOptions.Rag
-                    )
-                , modelId);
+                    ));
         }
 
         /// <summary>
         /// Add a URL input source to an async queue.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="modelId"></param>
-        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <param name="predictOptions"><see cref="PredictOptionsV2"/></param>
         /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncPredictResponseV2> EnqueueAsync(
             UrlInputSource inputSource
-            , string modelId
-            , PredictOptionsV2 predictOptions = null)
+            , PredictOptionsV2 predictOptions)
         {
             _logger?.LogInformation(message: "Enqueuing...");
-
-            if (predictOptions == null)
-            {
-                predictOptions = new PredictOptionsV2();
-            }
 
             return await _mindeeApi.EnqueuePostAsync(
                 new PredictParameterV2(
                     localSource: null,
                     urlSource: inputSource,
+                    modelId: predictOptions.ModelId,
                     fullText: predictOptions.FullText,
                     cropper: predictOptions.Cropper,
                     rag: predictOptions.Rag,
                     alias: predictOptions.Alias,
                     webhookIds: predictOptions.WebhookIds
-                    )
-                , modelId);
+                    ));
         }
 
         /// <summary>
@@ -188,16 +174,14 @@ namespace Mindee
         /// Add the document to an async queue, poll, and parse when complete.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="modelId"><see cref="string"/></param>
-        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <param name="predictOptions"><see cref="PredictOptionsV2"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
         /// <returns><see cref="AsyncPredictResponseV2"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncPredictResponseV2> EnqueueAndParseAsync(
             LocalInputSource inputSource
-            , string modelId
-            , PredictOptionsV2 predictOptions = null
+            , PredictOptionsV2 predictOptions
             , PageOptions pageOptions = null
             , AsyncPollingOptions pollingOptions = null)
         {
@@ -210,28 +194,23 @@ namespace Mindee
 
             var enqueueResponse = await EnqueueAsync(
                 inputSource,
-                modelId,
                 predictOptions,
                 pageOptions);
 
             return await PollForResultsAsync(enqueueResponse, pollingOptions);
         }
 
-
-
         /// <summary>
         /// Add the document to an async queue, poll, and parse when complete.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="modelId"><see cref="string"/></param>
-        /// <param name="predictOptions"><see cref="PageOptions"/></param>
+        /// <param name="predictOptions"><see cref="PredictOptionsV2"/></param>
         /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
         /// <returns><see cref="AsyncPredictResponseV2"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncPredictResponseV2> EnqueueAndParseAsync(
             UrlInputSource inputSource
-            , string modelId
-            , PredictOptionsV2 predictOptions = null
+            , PredictOptionsV2 predictOptions
             , AsyncPollingOptions pollingOptions = null)
         {
             _logger?.LogInformation("Asynchronous parsing ...");
@@ -243,8 +222,34 @@ namespace Mindee
 
             var enqueueResponse = await EnqueueAsync(
                 inputSource,
-                modelId,
                 predictOptions);
+
+            return await PollForResultsAsync(enqueueResponse, pollingOptions);
+        }
+
+        /// <summary>
+        /// Add the document to a workflow async queue, poll, and parse when complete.
+        /// </summary>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="workflowOptions"><see cref="WorkflowOptionsV2"/></param>
+        /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
+        /// <returns><see cref="AsyncPredictResponseV2"/></returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<AsyncPredictResponseV2> ExecuteWorkflowAsync(
+            UrlInputSource inputSource
+            , WorkflowOptionsV2 workflowOptions
+            , AsyncPollingOptions pollingOptions = null)
+        {
+            _logger?.LogInformation("Asynchronous parsing ...");
+
+            if (pollingOptions == null)
+            {
+                pollingOptions = new AsyncPollingOptions();
+            }
+
+            var enqueueResponse = await EnqueueAsync(
+                inputSource,
+                workflowOptions);
 
             return await PollForResultsAsync(enqueueResponse, pollingOptions);
         }

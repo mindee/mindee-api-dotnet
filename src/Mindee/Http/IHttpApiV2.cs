@@ -15,11 +15,9 @@ namespace Mindee.Http
         /// <summary>
         /// Do a prediction according parameters for custom model defined in the Studio.
         /// </summary>
-        /// <param name="modelId"></param>
         /// <param name="predictParameter"><see cref="PredictParameterV2"/></param>
         Task<AsyncPredictResponseV2> EnqueuePostAsync(
-            PredictParameterV2 predictParameter
-            , string modelId);
+            PredictParameterV2 predictParameter);
 
 
         /// <summary>

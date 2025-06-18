@@ -5,8 +5,13 @@ namespace Mindee
     /// <summary>
     /// Options to pass when calling methods using the predict API V2.
     /// </summary>
-    public sealed class PredictOptionsV2
+    public class PredictOptionsV2
     {
+        /// <summary>
+        /// ID of the model.
+        /// </summary>
+        public string ModelId { get; }
+
         /// <summary>
         /// Whether to include the full text data for async APIs.
         /// This performs a full OCR operation on the server and will increase response time and payload size.
@@ -41,12 +46,14 @@ namespace Mindee
         /// <summary>
         /// Options to pass when calling methods using the predict API.
         /// </summary>
+        /// <param name="modelId"><see cref="ModelId"/></param>
         /// <param name="cropper"><see cref="Cropper"/></param>
         /// <param name="fullText"><see cref="FullText"/></param>
         /// <param name="alias"><see cref="Alias"/></param>
         /// <param name="webhookIds"><see cref="WebhookIds"/></param>
         /// <param name="rag"><see cref="Rag"/></param>
         public PredictOptionsV2(
+            string modelId,
             bool fullText = false,
             bool cropper = false,
             string alias = null,
@@ -54,6 +61,7 @@ namespace Mindee
             bool rag = false
         )
         {
+            ModelId = modelId;
             Cropper = cropper;
             FullText = fullText;
             Alias = alias;

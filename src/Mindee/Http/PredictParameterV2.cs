@@ -15,6 +15,11 @@ namespace Mindee.Http
         public string Alias { get; }
 
         /// <summary>
+        /// ID of the model.
+        /// </summary>
+        public string ModelId { get; }
+
+        /// <summary>
         /// IDs of webhooks to propagate the API response to.
         /// </summary>
         /// <remarks>It is not available on all API.</remarks>
@@ -26,6 +31,7 @@ namespace Mindee.Http
         /// </summary>
         /// <param name="localSource">Local input source containing the file.<see cref="GenericParameter.LocalSource"/></param>
         /// <param name="urlSource">Source URL to use.<see cref="GenericParameter.UrlSource"/></param>
+        /// <param name="modelId">ID of the model<see cref="ModelId"/></param>
         /// <param name="fullText">Whether to include the full text in the payload (compatible APIs only)<see cref="GenericParameter.FullText"/></param>
         /// <param name="cropper">Whether to crop the document before enqueuing on the API.<see cref="Cropper"/></param>
         /// <param name="rag">If set, will enqueue to the workflows queue.<see cref="GenericParameter.Rag"/></param>
@@ -34,12 +40,14 @@ namespace Mindee.Http
         public PredictParameterV2(
             LocalInputSource localSource,
             UrlInputSource urlSource,
+            string modelId,
             bool fullText,
             bool cropper,
             bool rag,
             string alias,
             List<string> webhookIds) : base(localSource, urlSource, false, fullText, cropper, null, rag)
         {
+            ModelId = modelId;
             Alias = alias;
             WebhookIds = webhookIds ?? [];
         }
