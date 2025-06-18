@@ -11,7 +11,7 @@ namespace Mindee.Product.Generated
     /// Document data for Generated Documents, API version 2.
     /// </summary>
     [Serializable]
-    [JsonConverter(typeof(GeneratedV1DocumentJsonConverter))]
+    [JsonConverter(typeof(GeneratedV2DocumentJsonConverter))]
     public class GeneratedV2Document : IPrediction
     {
         /// <summary>
