@@ -228,33 +228,6 @@ namespace Mindee
         }
 
         /// <summary>
-        /// Add the document to a workflow async queue, poll, and parse when complete.
-        /// </summary>
-        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="workflowOptions"><see cref="WorkflowOptionsV2"/></param>
-        /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
-        /// <returns><see cref="AsyncPredictResponseV2"/></returns>
-        /// <exception cref="MindeeException"></exception>
-        public async Task<AsyncPredictResponseV2> ExecuteWorkflowAsync(
-            UrlInputSource inputSource
-            , WorkflowOptionsV2 workflowOptions
-            , AsyncPollingOptions pollingOptions = null)
-        {
-            _logger?.LogInformation("Asynchronous parsing ...");
-
-            if (pollingOptions == null)
-            {
-                pollingOptions = new AsyncPollingOptions();
-            }
-
-            var enqueueResponse = await EnqueueAsync(
-                inputSource,
-                workflowOptions);
-
-            return await PollForResultsAsync(enqueueResponse, pollingOptions);
-        }
-
-        /// <summary>
         /// Poll for results until the prediction is retrieved or the max amount of attempts is reached.
         /// </summary>
         /// <param name="enqueueResponse"><see cref="AsyncPredictResponse{TInferenceModel}"/></param>
