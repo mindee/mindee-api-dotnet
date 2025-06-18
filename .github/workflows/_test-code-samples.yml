@@ -42,14 +42,9 @@ jobs:
       run: |
         dotnet tool install -g dotnet-script
 
-    - name: Create local NuGet source
-      run: |
-        mkdir "${{ github.workspace }}/nuget_local"
-        dotnet nuget add source "${{ github.workspace }}/nuget_local" -n "NugetLocal"
-
     - name: Publish Locally
       run: |
-        ./tests/test_code_samples.sh ${{ matrix.dotnet }}
+        ./tests/test_code_samples.sh ${{ matrix.dotnet }} ${{ github.workspace }}
 
     - name: Tests sample code
       run: |
