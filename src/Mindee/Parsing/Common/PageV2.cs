@@ -28,10 +28,10 @@ namespace Mindee.Parsing.Common
         public GeneratedV2 Fields { get; set; }
 
         /// <summary>
-        /// <see cref="Common.Extras"/>
+        /// <see cref="Common.OptionsV2"/>
         /// </summary>
         [JsonPropertyName("options")]
-        public Extras Options { get; set; }
+        public OptionsV2 Options { get; set; }
 
         /// <summary>
         /// A prettier representation.

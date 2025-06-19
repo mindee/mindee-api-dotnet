@@ -29,39 +29,10 @@ namespace Mindee.Parsing.Common
         public PagesV2 Pages { get; set; }
 
         /// <summary>
-        /// Potential extras present in the inference.
-        /// </summary>
-        private InferenceExtras _extras;
-
-        /// <summary>
-        /// Optional information.
-        /// </summary>
-        [JsonPropertyName("options")]
-        public InferenceExtras Options
-        {
-            get
-            {
-                if (this.Pages.Count > 0 && (this._extras?.FullTextOcr == null))
-                {
-                    this._extras ??= new InferenceExtras();
-                    if (this.Pages.First().Options is { FullTextOcr: not null })
-                    {
-                        this._extras.FullTextOcr = string.Join("\n",
-                            this.Pages.Select(page => page.Options.FullTextOcr.Content));
-                    }
-                }
-
-                return this._extras;
-            }
-            set => _extras = value;
-        }
-
-
-        /// <summary>
         /// The model result values.
         /// </summary>
         [JsonPropertyName("result")]
-        public Result Result { get; set; }
+        public ResultV2 Result { get; set; }
 
         /// <summary>
         /// A prettier representation.
