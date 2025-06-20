@@ -196,7 +196,6 @@ namespace Mindee
                 inputSource,
                 predictOptions,
                 pageOptions);
-
             return await PollForResultsAsync(enqueueResponse, pollingOptions);
         }
 

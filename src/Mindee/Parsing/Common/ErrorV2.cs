@@ -13,14 +13,14 @@ namespace Mindee.Parsing.Common
         /// <summary>
         /// Detail relevant to the error.
         /// </summary>
-        [JsonPropertyName("details")]
+        [JsonPropertyName("detail")]
         public string Detail { get; set; }
 
         /// <summary>
         /// Http error code.
         /// </summary>
-        [JsonPropertyName("status_code")]
-        public int StatusCode { get; set; }
+        [JsonPropertyName("status")]
+        public int Status { get; set; }
 
         /// <summary>
         /// Error title.
@@ -48,7 +48,7 @@ namespace Mindee.Parsing.Common
             var builder = new StringBuilder();
             if (Code != null)
             {
-                builder.Append($"{StatusCode}: ");
+                builder.Append($"{Status}: ");
             }
             else
             {

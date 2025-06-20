@@ -1,7 +1,5 @@
-using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
-using Mindee.Product.Generated;
 
 namespace Mindee.Parsing.Common
 {
@@ -17,10 +15,16 @@ namespace Mindee.Parsing.Common
         public bool? IsRotationApplied { get; set; }
 
         /// <summary>
-        /// Type of product.
+        /// Model info.
         /// </summary>
-        [JsonPropertyName("product")]
-        public Product Product { get; set; }
+        [JsonPropertyName("model")]
+        public ModelV2 Model { get; set; }
+
+        /// <summary>
+        /// File info.
+        /// </summary>
+        [JsonPropertyName("file")]
+        public FileV2 File { get; set; }
 
         /// <summary>
         /// The pages and the associated values which was detected on the document.
@@ -43,13 +47,19 @@ namespace Mindee.Parsing.Common
             result.Append("Inference\n");
             result.Append("########\n");
             result.Append("#########\n");
-            result.Append($":Product: {Product.Name} v{Product.Version}\n");
+            result.Append($":Model: {Model.Id}\n");
+            result.Append(":File:\n");
+            result.Append($"  :Name:{File.Name}\n");
+            if (File.Alias != null)
+            {
+                result.Append($"  :Alias:{File.Alias}\n");
+            }
             result.Append(
                 $":Rotation applied: {(IsRotationApplied.HasValue && IsRotationApplied.Value ? "Yes" : "No")}\n");
             result.Append("\nResult\n");
             result.Append("==========\n");
-            result.Append(Result.ToString());
-            if (Pages.HasPredictions())
+            result.Append(Result);
+            if (Pages != null && Pages.HasPredictions())
             {
                 result.Append("\nPage Predictions\n");
                 result.Append("================\n\n");

@@ -32,7 +32,7 @@ namespace Mindee.Http
 
             _defaultHeaders = new Dictionary<string, string>
             {
-                { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" }, { "Connection", "close" }
+                { "Authorization", $"{mindeeSettings.Value.ApiKey}" }, { "Connection", "close" }
             };
             _httpClient.AddDefaultHeaders(_defaultHeaders);
         }
@@ -43,7 +43,7 @@ namespace Mindee.Http
         {
             var request = new RestRequest("v2/inferences/enqueue", Method.Post);
 
-            request.AddQueryParameter("model_id", predictParameter.ModelId);
+            request.AddParameter("model_id", predictParameter.ModelId);
             AddPredictRequestParameters(predictParameter, request);
 
             _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
@@ -89,14 +89,14 @@ namespace Mindee.Http
             if (predictParameter.LocalSource != null)
             {
                 request.AddFile(
-                    "document",
+                    "file",
                     predictParameter.LocalSource.FileBytes,
                     predictParameter.LocalSource.Filename);
             }
             else if (predictParameter.UrlSource != null)
             {
                 request.AddParameter(
-                    "document",
+                    "file",
                     predictParameter.UrlSource.FileUrl.ToString());
             }
 
@@ -154,8 +154,37 @@ namespace Mindee.Http
                 }
             }
 
-            throw new MindeeHttpException(model?.ApiRequest.Error);
 
+            // -----------------------------------------------------------------
+            // [TEMP] Fallback for placeholder error format:
+            // {
+            //    "status": 400,
+            //    "details": "Some explanation"
+            // }
+            // -----------------------------------------------------------------
+            try
+            {
+                using var doc = JsonDocument.Parse(restResponse.Content ?? "{}");
+                if (doc.RootElement.TryGetProperty("status", out var statusProp) &&
+                    doc.RootElement.TryGetProperty("detail", out var detailsProp))
+                {
+                    var fallbackError = new ErrorV2
+                    {
+                        Status = statusProp.GetInt32(),
+                        Detail = detailsProp.GetString()
+                    };
+
+                    throw new MindeeHttpExceptionV2(fallbackError);
+                }
+
+                var error = new ErrorV2 { Detail = "Unknown error", Code = "Unknown error" };
+                throw new MindeeHttpExceptionV2(error);
+            }
+            catch (JsonException)
+            {
+                var error = new ErrorV2 { Detail = "Unknown error", Code = "Unknown error" };
+                throw new MindeeHttpExceptionV2(error);
+            }
         }
     }
 }

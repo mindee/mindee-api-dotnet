@@ -8,12 +8,6 @@ namespace Mindee.Parsing.Common
     public class AsyncPredictResponseV2 : CommonResponse
     {
         /// <summary>
-        /// <see cref="Common.ApiRequest"/>
-        /// </summary>
-        [JsonPropertyName("api_request")]
-        public new ApiRequestV2 ApiRequest { get; set; }
-
-        /// <summary>
         /// Set the prediction model used to parse the document.
         /// The response object will be instantiated based on this parameter.
         /// </summary>
