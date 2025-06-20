@@ -4,7 +4,8 @@ using Mindee.Input;
 
 namespace Mindee.IntegrationTests
 {
-    [Trait("Category", "Integration tests V2")]
+    [Trait("Category", "Integration")]
+    [Trait("Category", "V2")]
     public class MindeeClientV2Test
     {
         private readonly MindeeClientV2 _mindeeClientV2;

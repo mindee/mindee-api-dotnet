@@ -9,12 +9,6 @@ namespace Mindee.Parsing.Common
     public class InferenceV2
     {
         /// <summary>
-        /// Was a rotation applied to parse the document ?
-        /// </summary>
-        [JsonPropertyName("is_rotation_applied")]
-        public bool? IsRotationApplied { get; set; }
-
-        /// <summary>
         /// Model info.
         /// </summary>
         [JsonPropertyName("model")]
@@ -25,12 +19,6 @@ namespace Mindee.Parsing.Common
         /// </summary>
         [JsonPropertyName("file")]
         public FileV2 File { get; set; }
-
-        /// <summary>
-        /// The pages and the associated values which was detected on the document.
-        /// </summary>
-        [JsonPropertyName("pages")]
-        public PagesV2 Pages { get; set; }
 
         /// <summary>
         /// The model result values.
@@ -54,17 +42,9 @@ namespace Mindee.Parsing.Common
             {
                 result.Append($"  :Alias:{File.Alias}\n");
             }
-            result.Append(
-                $":Rotation applied: {(IsRotationApplied.HasValue && IsRotationApplied.Value ? "Yes" : "No")}\n");
             result.Append("\nResult\n");
             result.Append("==========\n");
             result.Append(Result);
-            if (Pages != null && Pages.HasPredictions())
-            {
-                result.Append("\nPage Predictions\n");
-                result.Append("================\n\n");
-                result.Append(Pages);
-            }
 
             return SummaryHelper.Clean(result.ToString());
         }
