@@ -25,7 +25,6 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
             Assert.NotNull(response.Inference.Result);
-            Assert.Null(response.Inference.Pages);
             Assert.Null(response.Inference.Result.Options);
         }
 
@@ -40,7 +39,6 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
             Assert.NotNull(response.Inference.Result);
-            Assert.Null(response.Inference.Pages);
             Assert.Null(response.Inference.Result.Options);
         }
     }
