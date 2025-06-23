@@ -1,12 +1,35 @@
-using Mindee.Parsing.Common;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.Json.Serialization;
+using Mindee.Parsing;
+using Mindee.Parsing.Generated;
 
 namespace Mindee.Product.Generated
 {
     /// <summary>
-    /// The definition for Generated Documents, API version 2.
+    /// Document data for Generated Documents, API version 2.
     /// </summary>
-    public class GeneratedV2 : Inference<GeneratedV2Document, GeneratedV2Document>
+    [Serializable]
+    [JsonConverter(typeof(GeneratedV2JsonConverter))]
+    public class GeneratedV2 : IPrediction
     {
+        /// <summary>
+        /// Dictionary containing the fields of the document.
+        /// </summary>
+        public Dictionary<string, GeneratedFeature> Fields { get; set; }
 
+        /// <summary>
+        /// A prettier representation of the current model values.
+        /// </summary>
+        public override string ToString()
+        {
+            StringBuilder result = new StringBuilder();
+            foreach (KeyValuePair<string, GeneratedFeature> feature in Fields)
+            {
+                result.Append($":{feature.Key}: {feature.Value}\n");
+            }
+            return result.ToString();
+        }
     }
 }

@@ -19,5 +19,13 @@ namespace Mindee.Parsing.Common
         /// </summary>
         [JsonPropertyName("options")]
         public OptionsV2 Options { get; set; }
+
+        /// <summary>
+        /// A prettier representation.
+        /// </summary>
+        public override string ToString()
+        {
+            return Fields.ToString();
+        }
     }
 }

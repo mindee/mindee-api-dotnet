@@ -8,16 +8,16 @@ using Mindee.Parsing.Generated;
 namespace Mindee.Product.Generated
 {
     /// <summary>
-    /// Custm deserializer for <see cref="GeneratedV2Document"/>
+    /// Custm deserializer for <see cref="GeneratedV2"/>
     /// </summary>
     [Serializable]
-    [JsonConverter(typeof(GeneratedV2DocumentJsonConverter))]
-    public class GeneratedV2DocumentJsonConverter : JsonConverter<GeneratedV2Document>
+    [JsonConverter(typeof(GeneratedV2JsonConverter))]
+    public class GeneratedV2JsonConverter : JsonConverter<GeneratedV2>
     {
         /// <summary>
         /// <see cref="Read(ref Utf8JsonReader, Type, JsonSerializerOptions)"/>
         /// </summary>
-        public override GeneratedV2Document Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override GeneratedV2 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var fields = new Dictionary<string, GeneratedFeature>();
 
@@ -48,16 +48,16 @@ namespace Mindee.Product.Generated
                 }
             }
 
-            return new GeneratedV2Document()
+            return new GeneratedV2()
             {
                 Fields = fields
             };
         }
 
         /// <summary>
-        /// <see cref="Write(Utf8JsonWriter, GeneratedV2Document, JsonSerializerOptions)"/>
+        /// <see cref="Write(Utf8JsonWriter, GeneratedV2, JsonSerializerOptions)"/>
         /// </summary>
-        public override void Write(Utf8JsonWriter writer, GeneratedV2Document value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, GeneratedV2 value, JsonSerializerOptions options)
         {
             throw new NotSupportedException();
         }
