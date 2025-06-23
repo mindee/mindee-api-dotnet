@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
 
@@ -38,6 +39,16 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
             Assert.Null(response.Inference.Result.Options);
+        }
+
+        [Fact]
+        public async Task Invalid_UUID_MustThrowError422()
+        {
+            var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
+            var predictOptions = new PredictOptionsV2("INVALID MODEL ID");
+            var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
+                () => _mindeeClientV2.EnqueueAsync(inputSource, predictOptions));
+            Assert.Equal(422, ex.Status);
         }
     }
 }
