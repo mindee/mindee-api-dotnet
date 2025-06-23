@@ -15,7 +15,6 @@ namespace Mindee.Http
     internal sealed class MindeeApiV2 : IHttpApiV2
     {
         private readonly string _baseUrl;
-        private readonly Dictionary<string, string> _defaultHeaders;
         private readonly RestClient _httpClient;
         private readonly ILogger<MindeeApiV2> _logger;
 
@@ -30,14 +29,14 @@ namespace Mindee.Http
                 _baseUrl = mindeeSettings.Value.MindeeBaseUrl;
             }
 
-            _defaultHeaders = new Dictionary<string, string>
+            var defaultHeaders = new Dictionary<string, string>
             {
                 { "Authorization", $"{mindeeSettings.Value.ApiKey}" }, { "Connection", "close" }
             };
-            _httpClient.AddDefaultHeaders(_defaultHeaders);
+            _httpClient.AddDefaultHeaders(defaultHeaders);
         }
 
-        public async Task<AsyncPredictResponseV2> EnqueuePostAsync(
+        public async Task<AsyncPollingResponseV2> EnqueuePostAsync(
             PredictParameterV2 predictParameter
         )
         {
@@ -49,12 +48,11 @@ namespace Mindee.Http
             _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
 
             var response = await _httpClient.ExecutePostAsync(request);
-            return ResponseHandler(response);
+            return ResponseHandler<AsyncPollingResponseV2>(response);
         }
 
         public async Task<AsyncPredictResponseV2> DocumentQueueGetAsync(string jobId)
         {
-
             var queueRequest = new RestRequest(
                 $"v2/inferences/{jobId}");
 
@@ -72,14 +70,10 @@ namespace Mindee.Http
 
                 _logger?.LogInformation($"HTTP GET to {_baseUrl + docRequest.Resource} ...");
                 var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
-                return ResponseHandler(docResponse);
+                return ResponseHandler<AsyncPredictResponseV2>(docResponse);
             }
 
-            var handledResponse = ResponseHandler(queueResponse);
-            if (handledResponse.Job?.Error?.Code != null)
-            {
-                throw new Mindee500Exception(handledResponse.Job.Error.Message);
-            }
+            var handledResponse = ResponseHandler<AsyncPredictResponseV2>(queueResponse);
 
             return handledResponse;
         }
@@ -126,31 +120,46 @@ namespace Mindee.Http
             }
         }
 
-        private AsyncPredictResponseV2 ResponseHandler(RestResponse restResponse)
+        private TResponse ResponseHandler<TResponse>(RestResponse restResponse)
+            where TResponse : CommonResponseV2, new()
         {
             _logger?.LogDebug($"HTTP response: {restResponse.Content}");
 
             string errorMessage = "Mindee API client: ";
-            AsyncPredictResponseV2 model = null;
 
             if (!string.IsNullOrWhiteSpace(restResponse.Content))
             {
                 _logger?.LogInformation($"Parsing response ...");
                 try
                 {
-                    model = JsonSerializer.Deserialize<AsyncPredictResponseV2>(restResponse.Content);
+                    var model = JsonSerializer.Deserialize<TResponse>(restResponse.Content);
                     model.RawResponse = restResponse.Content;
+
+                    if (restResponse.IsSuccessful)
+                    {
+                        return model;
+                    }
                 }
                 catch (Exception ex)
                 {
+                    try
+                    {
+                        var pollingErrorResponse =
+                            JsonSerializer.Deserialize<AsyncPollingResponseV2>(restResponse.Content);
+                        if (pollingErrorResponse.Job?.Error?.Code != null)
+                        {
+                            throw new Mindee500Exception(pollingErrorResponse.Job.Error.Message);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw new MindeeException(
+                            "Couldn't deserialize response either as a polling error or a valid model response.");
+                    }
+
                     errorMessage += ex.Message;
                     _logger?.LogCritical(errorMessage);
                     throw new MindeeException(errorMessage);
-                }
-
-                if (restResponse.IsSuccessful)
-                {
-                    return model;
                 }
             }
 

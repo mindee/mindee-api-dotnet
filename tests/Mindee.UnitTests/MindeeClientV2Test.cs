@@ -17,7 +17,7 @@ namespace Mindee.UnitTests
             predictable.Setup(x => x.EnqueuePostAsync(
                     It.IsAny<PredictParameterV2>()
                 ))
-                .ReturnsAsync(new AsyncPredictResponseV2());
+                .ReturnsAsync(new AsyncPollingResponseV2());
             predictable.Setup(x => x.DocumentQueueGetAsync(
                 It.IsAny<string>()
             )).ReturnsAsync(new AsyncPredictResponseV2());

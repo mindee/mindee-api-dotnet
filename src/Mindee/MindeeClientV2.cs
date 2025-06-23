@@ -100,7 +100,7 @@ namespace Mindee
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<AsyncPredictResponseV2> EnqueueAsync(
+        public async Task<AsyncPollingResponseV2> EnqueueAsync(
             LocalInputSource inputSource
             , PredictOptionsV2 predictOptions
             , PageOptions pageOptions = null)
@@ -133,7 +133,7 @@ namespace Mindee
         /// <param name="predictOptions"><see cref="PredictOptionsV2"/></param>
         /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<AsyncPredictResponseV2> EnqueueAsync(
+        public async Task<AsyncPollingResponseV2> EnqueueAsync(
             UrlInputSource inputSource
             , PredictOptionsV2 predictOptions)
         {
@@ -234,7 +234,7 @@ namespace Mindee
         /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
         private async Task<AsyncPredictResponseV2> PollForResultsAsync(
-            AsyncPredictResponseV2 enqueueResponse,
+            AsyncPollingResponseV2 enqueueResponse,
             AsyncPollingOptions pollingOptions)
         {
             int maxRetries = pollingOptions.MaxRetries + 1;

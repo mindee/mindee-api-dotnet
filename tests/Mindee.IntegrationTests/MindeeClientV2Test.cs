@@ -24,7 +24,6 @@ namespace Mindee.IntegrationTests
             var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
-            Assert.NotNull(response.Inference.Result);
             Assert.Null(response.Inference.Result.Options);
         }
 
@@ -38,7 +37,6 @@ namespace Mindee.IntegrationTests
             var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
-            Assert.NotNull(response.Inference.Result);
             Assert.Null(response.Inference.Result.Options);
         }
     }
