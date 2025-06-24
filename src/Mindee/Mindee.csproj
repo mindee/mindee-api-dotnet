@@ -36,4 +36,10 @@
     <None Include="..\..\CHANGELOG.md" Pack="true" Visible="false" PackagePath="" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Logging">
+      <HintPath>..\..\..\..\..\.nuget\packages\microsoft.extensions.logging\6.0.0\lib\net461\Microsoft.Extensions.Logging.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

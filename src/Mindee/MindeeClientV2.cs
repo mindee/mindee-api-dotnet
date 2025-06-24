@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Http;
@@ -21,29 +22,30 @@ namespace Mindee
         private readonly IPdfOperation _pdfOperation;
         private readonly IHttpApiV2 _mindeeApi;
         private readonly ILogger _logger;
+        private readonly ILoggerFactory _loggerFactory;
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="apiKey">The required API key to use the Mindee V2 API.</param>
-        /// <param name="logger"></param>
-        public MindeeClientV2(string apiKey, ILoggerFactory logger = null)
+        /// <param name="loggerFactory">Factory for the logger.</param>
+        public MindeeClientV2(string apiKey, ILoggerFactory loggerFactory = null)
         {
             var serviceCollection = new ServiceCollection();
-            _pdfOperation = new DocNetApi();
+            _loggerFactory = loggerFactory ?? LoggerFactory.Create(builder =>
+            {
+                builder.SetMinimumLevel(LogLevel.Debug);
+            });
+            _logger = _loggerFactory.CreateLogger<MindeeClientV2>();
 
+            _pdfOperation = new DocNetApi();
+            serviceCollection.AddSingleton(_pdfOperation);
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = apiKey;
-            });
+            }, _loggerFactory);
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
-
-            if (logger != null)
-            {
-                serviceCollection.AddSingleton(logger);
-                _logger = logger.CreateLogger<MindeeClientV2>();
-            }
 
             _mindeeApi = serviceProvider.GetRequiredService<MindeeApiV2>();
         }
@@ -55,6 +57,7 @@ namespace Mindee
         /// <param name="logger"></param>
         public MindeeClientV2(MindeeSettings mindeeSettings, ILoggerFactory logger = null)
         {
+            _loggerFactory = logger ?? NullLoggerFactory.Instance;
             var serviceCollection = new ServiceCollection();
             _pdfOperation = new DocNetApi();
             serviceCollection.AddMindeeApiV2(options =>
@@ -62,7 +65,7 @@ namespace Mindee
                 options.ApiKey = mindeeSettings.ApiKey;
                 options.MindeeBaseUrl = mindeeSettings.MindeeBaseUrl;
                 options.RequestTimeoutSeconds = mindeeSettings.RequestTimeoutSeconds;
-            });
+            }, _loggerFactory);
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
             if (logger != null)
@@ -84,11 +87,8 @@ namespace Mindee
         {
             _pdfOperation = pdfOperation;
             _mindeeApi = httpApi;
-            if (logger != null)
-            {
-                MindeeLogger.Assign(logger);
-                _logger = MindeeLogger.GetLogger();
-            }
+            _loggerFactory = logger ?? NullLoggerFactory.Instance;
+            _logger = _loggerFactory.CreateLogger<MindeeClientV2>();
         }
 
 
@@ -96,13 +96,13 @@ namespace Mindee
         /// Add a local input source to a Generated async queue.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="predictOptions"><see cref="PredictOptionsV2"/></param>
+        /// <param name="inferenceOptions"><see cref="InferenceOptionsV2"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncPollingResponseV2> EnqueueAsync(
             LocalInputSource inputSource
-            , PredictOptionsV2 predictOptions
+            , InferenceOptionsV2 inferenceOptions
             , PageOptions pageOptions = null)
         {
             _logger?.LogInformation(message: "Enqueuing...");
@@ -117,25 +117,25 @@ namespace Mindee
                 new PredictParameterV2(
                     localSource: inputSource,
                     urlSource: null,
-                    modelId: predictOptions.ModelId,
-                    fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper,
-                    alias: predictOptions.Alias,
-                    webhookIds: predictOptions.WebhookIds,
-                    rag: predictOptions.Rag
-                    ));
+                    modelId: inferenceOptions.ModelId,
+                    fullText: inferenceOptions.FullText,
+                    cropper: inferenceOptions.Cropper,
+                    alias: inferenceOptions.Alias,
+                    webhookIds: inferenceOptions.WebhookIds,
+                    rag: inferenceOptions.Rag
+                ));
         }
 
         /// <summary>
         /// Add a URL input source to an async queue.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="predictOptions"><see cref="PredictOptionsV2"/></param>
+        /// <param name="inferenceOptions"><see cref="InferenceOptionsV2"/></param>
         /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncPollingResponseV2> EnqueueAsync(
             UrlInputSource inputSource
-            , PredictOptionsV2 predictOptions)
+            , InferenceOptionsV2 inferenceOptions)
         {
             _logger?.LogInformation(message: "Enqueuing...");
 
@@ -143,13 +143,13 @@ namespace Mindee
                 new PredictParameterV2(
                     localSource: null,
                     urlSource: inputSource,
-                    modelId: predictOptions.ModelId,
-                    fullText: predictOptions.FullText,
-                    cropper: predictOptions.Cropper,
-                    rag: predictOptions.Rag,
-                    alias: predictOptions.Alias,
-                    webhookIds: predictOptions.WebhookIds
-                    ));
+                    modelId: inferenceOptions.ModelId,
+                    fullText: inferenceOptions.FullText,
+                    cropper: inferenceOptions.Cropper,
+                    rag: inferenceOptions.Rag,
+                    alias: inferenceOptions.Alias,
+                    webhookIds: inferenceOptions.WebhookIds
+                ));
         }
 
         /// <summary>
@@ -174,14 +174,14 @@ namespace Mindee
         /// Add the document to an async queue, poll, and parse when complete.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="predictOptions"><see cref="PredictOptionsV2"/></param>
+        /// <param name="inferenceOptions"><see cref="InferenceOptionsV2"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
         /// <returns><see cref="AsyncPredictResponseV2"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncPredictResponseV2> EnqueueAndParseAsync(
             LocalInputSource inputSource
-            , PredictOptionsV2 predictOptions
+            , InferenceOptionsV2 inferenceOptions
             , PageOptions pageOptions = null
             , AsyncPollingOptions pollingOptions = null)
         {
@@ -194,7 +194,7 @@ namespace Mindee
 
             var enqueueResponse = await EnqueueAsync(
                 inputSource,
-                predictOptions,
+                inferenceOptions,
                 pageOptions);
             return await PollForResultsAsync(enqueueResponse, pollingOptions);
         }
@@ -203,13 +203,13 @@ namespace Mindee
         /// Add the document to an async queue, poll, and parse when complete.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="predictOptions"><see cref="PredictOptionsV2"/></param>
+        /// <param name="inferenceOptions"><see cref="InferenceOptionsV2"/></param>
         /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
         /// <returns><see cref="AsyncPredictResponseV2"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncPredictResponseV2> EnqueueAndParseAsync(
             UrlInputSource inputSource
-            , PredictOptionsV2 predictOptions
+            , InferenceOptionsV2 inferenceOptions
             , AsyncPollingOptions pollingOptions = null)
         {
             _logger?.LogInformation("Asynchronous parsing ...");
@@ -221,7 +221,7 @@ namespace Mindee
 
             var enqueueResponse = await EnqueueAsync(
                 inputSource,
-                predictOptions);
+                inferenceOptions);
 
             return await PollForResultsAsync(enqueueResponse, pollingOptions);
         }
@@ -255,8 +255,10 @@ namespace Mindee
                 {
                     return response;
                 }
+
                 retryCount++;
             }
+
             throw new MindeeException($"Could not complete after {retryCount} attempts.");
         }
 

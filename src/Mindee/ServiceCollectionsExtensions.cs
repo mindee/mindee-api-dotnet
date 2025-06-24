@@ -1,8 +1,11 @@
 using System;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Mindee.Http;
 using Mindee.Pdf;
@@ -35,14 +38,36 @@ namespace Mindee.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configureOptions"></param>
+        /// <param name="loggerFactory"></param>
         /// <param name="throwOnError"></param>
         /// <returns></returns>
         public static void AddMindeeApiV2(this IServiceCollection services,
-            Action<MindeeSettings> configureOptions, bool throwOnError = false)
+            Action<MindeeSettings> configureOptions,
+            ILoggerFactory loggerFactory = null,
+            bool throwOnError = false)
         {
             services.Configure(configureOptions);
-            services.AddSingleton<MindeeApiV2>();
+
             RegisterRestSharpClientV2(services, throwOnError);
+            if (loggerFactory is not null)
+            {
+                services.AddSingleton(loggerFactory);
+            }
+            else if (services.All(d => d.ServiceType != typeof(ILoggerFactory)))
+            {
+                services.AddSingleton<ILoggerFactory, NullLoggerFactory>();
+                services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
+            }
+
+            services.AddSingleton(serviceProvider =>
+            {
+                var options = serviceProvider.GetRequiredService<IOptions<MindeeSettings>>();
+                var restClient = serviceProvider.GetRequiredService<RestClient>();
+                var logger = serviceProvider.GetService<ILoggerFactory>()?.CreateLogger<MindeeApiV2>();
+
+                return new MindeeApiV2(options, restClient, logger);
+            });
+
         }
 
         private static void RegisterRestSharpClient(IServiceCollection services, bool throwOnError)
@@ -75,19 +100,26 @@ namespace Mindee.Extensions.DependencyInjection
         {
             services.AddSingleton(provider =>
             {
-                var mindeeSettingsV2 = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
-                mindeeSettingsV2.MindeeBaseUrl = Environment.GetEnvironmentVariable("MindeeV2__BaseUrl");
-                if (string.IsNullOrEmpty(mindeeSettingsV2.MindeeBaseUrl))
-                    mindeeSettingsV2.MindeeBaseUrl = "https://api.mindee.net";
-                if (mindeeSettingsV2.RequestTimeoutSeconds <= 0)
-                    mindeeSettingsV2.RequestTimeoutSeconds = 120;
-                if (string.IsNullOrEmpty(mindeeSettingsV2.ApiKey))
-                    mindeeSettingsV2.ApiKey = Environment.GetEnvironmentVariable("MindeeV2__ApiKey");
+                var settings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
+                if (string.IsNullOrWhiteSpace(settings.MindeeBaseUrl))
+                {
+                    var envBaseUrl = Environment.GetEnvironmentVariable("MindeeV2__BaseUrl");
+                    if (!string.IsNullOrWhiteSpace(envBaseUrl))
+                        settings.MindeeBaseUrl = envBaseUrl;
+                }
 
-                var clientOptions = new RestClientOptions(mindeeSettingsV2.MindeeBaseUrl)
+                if (string.IsNullOrWhiteSpace(settings.MindeeBaseUrl))
+                    settings.MindeeBaseUrl = "https://api.mindee.net";
+
+                if (settings.RequestTimeoutSeconds <= 0)
+                    settings.RequestTimeoutSeconds = 120;
+                if (string.IsNullOrEmpty(settings.ApiKey))
+                    settings.ApiKey = Environment.GetEnvironmentVariable("MindeeV2__ApiKey");
+
+                var clientOptions = new RestClientOptions(settings.MindeeBaseUrl)
                 {
                     FollowRedirects = false,
-                    Timeout = TimeSpan.FromSeconds(mindeeSettingsV2.RequestTimeoutSeconds),
+                    Timeout = TimeSpan.FromSeconds(settings.RequestTimeoutSeconds),
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
                     CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true },

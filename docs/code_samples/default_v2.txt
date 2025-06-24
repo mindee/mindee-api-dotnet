@@ -14,7 +14,7 @@ var inputSource = new LocalInputSource(filePath);
 
 // Call the product asynchronously with auto-polling
 var response = await mindeeClient
-    .EnqueueAndParseAsync(inputSource, new PredictOptionsV2(modelId));
+    .EnqueueAndParseAsync(inputSource, new InferenceOptionsV2(modelId));
 
 // Print a summary of all the predictions
 System.Console.WriteLine(response.Inference.ToString());

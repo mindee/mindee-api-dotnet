@@ -5,6 +5,7 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
 using Mindee.Parsing.Common;
@@ -21,7 +22,7 @@ namespace Mindee.Http
         public MindeeApiV2(IOptions<MindeeSettings> mindeeSettings, RestClient httpClient,
             ILogger<MindeeApiV2> logger = null)
         {
-            _logger = logger;
+            _logger = logger ?? NullLogger<MindeeApiV2>.Instance;
             _httpClient = httpClient;
 
             if (!string.IsNullOrWhiteSpace(mindeeSettings.Value.MindeeBaseUrl))

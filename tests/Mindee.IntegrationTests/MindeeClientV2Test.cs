@@ -23,7 +23,7 @@ namespace Mindee.IntegrationTests
         public async Task Parse_File_Standard_MultiplePages_MustSucceed()
         {
             var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
-            var predictOptions = new PredictOptionsV2(modelId: _findocModelId);
+            var predictOptions = new InferenceOptionsV2(modelId: _findocModelId);
             var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -38,7 +38,7 @@ namespace Mindee.IntegrationTests
             var inputSource =
                 new UrlInputSource(
                     "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/products/expense_receipts/default_sample.jpg");
-            var predictOptions = new PredictOptionsV2(modelId: _findocModelId);
+            var predictOptions = new InferenceOptionsV2(modelId: _findocModelId);
             var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -49,7 +49,7 @@ namespace Mindee.IntegrationTests
         public async Task Invalid_UUID_MustThrowError422()
         {
             var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
-            var predictOptions = new PredictOptionsV2("INVALID MODEL ID");
+            var predictOptions = new InferenceOptionsV2("INVALID MODEL ID");
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
                 () => _mindeeClientV2.EnqueueAsync(inputSource, predictOptions));
             Assert.Equal(422, ex.Status);
