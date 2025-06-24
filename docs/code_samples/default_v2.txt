@@ -18,6 +18,3 @@ var response = await mindeeClient
 
 // Print a summary of all the predictions
 System.Console.WriteLine(response.Inference.ToString());
-
-// Print only the document-level predictions
-// System.Console.WriteLine(response.Inference.Prediction.ToString());
