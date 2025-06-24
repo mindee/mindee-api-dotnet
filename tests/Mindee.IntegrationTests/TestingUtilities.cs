@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Extensions.DependencyInjection;
 
 namespace Mindee.IntegrationTests
@@ -77,10 +78,11 @@ namespace Mindee.IntegrationTests
             if (_mindeeClientV2 != null)
                 return _mindeeClientV2;
             var serviceCollection = new ServiceCollection();
+            var logger = NullLoggerFactory.Instance;
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = apiKey;
-            }, true);
+            }, logger);
             return _mindeeClientV2 ??= new MindeeClientV2(apiKey);
         }
 
