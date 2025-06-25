@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using Mindee.Product.Generated;
 
 namespace Mindee.Parsing.Common
 {
@@ -24,16 +25,15 @@ namespace Mindee.Parsing.Common
         /// The model result values.
         /// </summary>
         [JsonPropertyName("result")]
-        public ResultV2 Result { get; set; }
+        public GeneratedV2 Result { get; set; }
 
         /// <summary>
         /// A prettier representation.
         /// </summary>
         public override string ToString()
         {
-            var result = new StringBuilder("########\n");
+            var result = new StringBuilder("#########\n");
             result.Append("Inference\n");
-            result.Append("########\n");
             result.Append("#########\n");
             result.Append($":Model: {Model.Id}\n");
             result.Append(":File:\n");
@@ -43,7 +43,7 @@ namespace Mindee.Parsing.Common
                 result.Append($"  :Alias:{File.Alias}\n");
             }
             result.Append("\nResult\n");
-            result.Append("==========\n");
+            result.Append("======\n");
             result.Append(Result);
 
             return SummaryHelper.Clean(result.ToString());

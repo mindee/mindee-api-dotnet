@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Common;
 using Mindee.Parsing.Generated;
 
 namespace Mindee.Product.Generated
@@ -17,7 +18,14 @@ namespace Mindee.Product.Generated
         /// <summary>
         /// Dictionary containing the fields of the document.
         /// </summary>
+        [JsonPropertyName("fields")]
         public Dictionary<string, GeneratedFeatureV2> Fields { get; set; }
+
+        /// <summary>
+        /// <see cref="OptionsV2"/>
+        /// </summary>
+        [JsonPropertyName("options")]
+        public OptionsV2 Options { get; set; }
 
         /// <summary>
         /// A prettier representation of the current model values.

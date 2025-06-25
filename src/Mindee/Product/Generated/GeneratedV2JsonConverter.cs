@@ -19,25 +19,37 @@ namespace Mindee.Product.Generated
         /// </summary>
         public override GeneratedV2 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var fields = new Dictionary<string, GeneratedFeatureV2>();
-
+            // «result» object of the response
             JsonObject jsonObject = (JsonObject)JsonSerializer.Deserialize(ref reader, typeof(JsonObject), options);
 
-            if (jsonObject == null)
+            // Safety net
+            if (jsonObject is null)
             {
-                return new GeneratedV2 { Fields = fields };
+                return new GeneratedV2 { Fields = new Dictionary<string, GeneratedFeatureV2>() };
             }
+
+            /* -----------------------------------------------------------------
+             * V2 responses wrap the real prediction fields inside the property
+             * named "fields" and may also contain an "options" block.
+             * ----------------------------------------------------------------- */
+            if (jsonObject.TryGetPropertyValue("fields", out var fldNode) && fldNode is JsonObject fldObj)
+            {
+                jsonObject = fldObj;          // work on the inner object that really holds the 21 fields
+            }
+
+            var fields = new Dictionary<string, GeneratedFeatureV2>();
 
             foreach (var jsonNode in jsonObject)
             {
                 GeneratedFeatureV2 feature;
 
+                // ───────────── LIST FEATURE ─────────────
                 if (jsonNode.Value is JsonObject obj &&
                     obj.TryGetPropertyValue("items", out var itemsNode) &&
-                    itemsNode is JsonArray itemsArray
-                   )
+                    itemsNode is JsonArray itemsArray)
                 {
                     feature = new GeneratedFeatureV2(true);
+
                     foreach (var item in itemsArray)
                     {
                         feature.Add(item.Deserialize<GeneratedObjectV2>());
@@ -45,12 +57,14 @@ namespace Mindee.Product.Generated
 
                     fields.Add(jsonNode.Key, feature);
                 }
+                // ───────────── OBJECT WITH NESTED FIELDS ─────────────
                 else if (jsonNode.Value is JsonObject itemsObj &&
                          itemsObj.TryGetPropertyValue("fields", out var nestedFieldsNode) &&
                          nestedFieldsNode is JsonObject nestedFieldsObj)
                 {
                     fields.Add(jsonNode.Key, new GeneratedFeatureV2(false, nestedFieldsObj));
                 }
+                // ───────────── SIMPLE OBJECT ─────────────
                 else
                 {
                     fields.Add(
@@ -60,8 +74,12 @@ namespace Mindee.Product.Generated
                 }
             }
 
-            return new GeneratedV2 { Fields = fields };
+            return new GeneratedV2
+            {
+                Fields = fields
+            };
         }
+
 
         /// <summary>
         /// <see cref="Write(Utf8JsonWriter, GeneratedV2, JsonSerializerOptions)"/>
