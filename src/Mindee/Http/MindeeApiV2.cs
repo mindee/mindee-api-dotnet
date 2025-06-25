@@ -57,7 +57,7 @@ namespace Mindee.Http
             var queueRequest = new RestRequest(
                 $"v2/inferences/{jobId}");
 
-            _logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource} ...");
+            _logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource}...");
 
             var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest);
 
@@ -69,7 +69,7 @@ namespace Mindee.Http
 
                 var docRequest = new RestRequest(locationHeader.Value);
 
-                _logger?.LogInformation($"HTTP GET to {_baseUrl + docRequest.Resource} ...");
+                _logger?.LogInformation($"HTTP GET to {_baseUrl + docRequest.Resource}...");
                 var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
                 return ResponseHandler<AsyncPredictResponseV2>(docResponse);
             }
