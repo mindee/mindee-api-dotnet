@@ -38,7 +38,8 @@ namespace Mindee.UnitTests
                 cropper: false,
                 fullText: false,
                 rag: false,
-                webhookIds:[]);
+                webhookIds: []
+            );
         }
 
         private static ServiceProvider InitServiceProvider(HttpStatusCode statusCode, string fileContent)

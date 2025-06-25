@@ -21,6 +21,7 @@ namespace Mindee.UnitTests.V2.Product.Generated
                 {
                     continue;
                 }
+
                 if (field.Value.IsList)
                 {
                     Assert.Empty(field.Value);
@@ -38,7 +39,7 @@ namespace Mindee.UnitTests.V2.Product.Generated
         private static async Task<AsyncPredictResponseV2> GetAsyncPrediction(string name)
         {
             string fileName = $"Resources/v2/products/financial_document/{name}.json";
-            var mindeeAPi= UnitTestBase.GetMindeeApiV2(fileName);
+            var mindeeAPi = UnitTestBase.GetMindeeApiV2(fileName);
             return await mindeeAPi.DocumentQueueGetAsync("jobid");
         }
     }
