@@ -109,7 +109,7 @@ namespace Mindee.Extensions.DependencyInjection
                 }
 
                 if (string.IsNullOrWhiteSpace(settings.MindeeBaseUrl))
-                    settings.MindeeBaseUrl = "https://api-v2.mindee.net";
+                    settings.MindeeBaseUrl = "https://api-v2.mindee.com";
 
                 if (settings.RequestTimeoutSeconds <= 0)
                     settings.RequestTimeoutSeconds = 120;
