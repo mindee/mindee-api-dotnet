@@ -19,39 +19,48 @@ namespace Mindee.Product.Generated
         /// </summary>
         public override GeneratedV2 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var fields = new Dictionary<string, GeneratedFeature>();
+            var fields = new Dictionary<string, GeneratedFeatureV2>();
 
             JsonObject jsonObject = (JsonObject)JsonSerializer.Deserialize(ref reader, typeof(JsonObject), options);
 
+            if (jsonObject == null)
+            {
+                return new GeneratedV2 { Fields = fields };
+            }
+
             foreach (var jsonNode in jsonObject)
             {
-                GeneratedFeature feature;
+                GeneratedFeatureV2 feature;
 
-                if (jsonNode.Value is JsonArray)
+                if (jsonNode.Value is JsonObject obj &&
+                    obj.TryGetPropertyValue("items", out var itemsNode) &&
+                    itemsNode is JsonArray itemsArray
+                   )
                 {
-                    feature = new GeneratedFeature(true);
-                    foreach (var featureValue in (JsonArray)jsonNode.Value)
+                    feature = new GeneratedFeatureV2(true);
+                    foreach (var item in itemsArray)
                     {
-                        feature.Add(featureValue.Deserialize<GeneratedObject>());
+                        feature.Add(item.Deserialize<GeneratedObjectV2>());
                     }
+
                     fields.Add(jsonNode.Key, feature);
+                }
+                else if (jsonNode.Value is JsonObject itemsObj &&
+                         itemsObj.TryGetPropertyValue("fields", out var nestedFieldsNode) &&
+                         nestedFieldsNode is JsonObject nestedFieldsObj)
+                {
+                    fields.Add(jsonNode.Key, new GeneratedFeatureV2(false, nestedFieldsObj));
                 }
                 else
                 {
                     fields.Add(
                         jsonNode.Key,
-                        new GeneratedFeature(false)
-                        {
-                            jsonNode.Value.Deserialize<GeneratedObject>()
-                        }
+                        new GeneratedFeatureV2(false) { jsonNode.Value.Deserialize<GeneratedObjectV2>() }
                     );
                 }
             }
 
-            return new GeneratedV2()
-            {
-                Fields = fields
-            };
+            return new GeneratedV2 { Fields = fields };
         }
 
         /// <summary>

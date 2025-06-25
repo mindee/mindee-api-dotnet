@@ -17,7 +17,7 @@ namespace Mindee.Product.Generated
         /// <summary>
         /// Dictionary containing the fields of the document.
         /// </summary>
-        public Dictionary<string, GeneratedFeature> Fields { get; set; }
+        public Dictionary<string, GeneratedFeatureV2> Fields { get; set; }
 
         /// <summary>
         /// A prettier representation of the current model values.
@@ -25,7 +25,7 @@ namespace Mindee.Product.Generated
         public override string ToString()
         {
             StringBuilder result = new StringBuilder();
-            foreach (KeyValuePair<string, GeneratedFeature> feature in Fields)
+            foreach (KeyValuePair<string, GeneratedFeatureV2> feature in Fields)
             {
                 result.Append($":{feature.Key}: {feature.Value}\n");
             }
