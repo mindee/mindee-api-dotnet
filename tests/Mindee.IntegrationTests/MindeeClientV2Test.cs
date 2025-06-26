@@ -14,7 +14,9 @@ namespace Mindee.IntegrationTests
 
         public MindeeClientV2Test()
         {
-            _mindeeClientV2 = TestingUtilities.GetOrGenerateMindeeClientV2(null);
+            var apiKey = Environment.GetEnvironmentVariable("MindeeV2__ApiKey");
+            _mindeeClientV2 = TestingUtilities.GetOrGenerateMindeeClientV2(apiKey);
+            Console.WriteLine($"APIKey:{apiKey}");
             _findocModelId = Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id");
         }
 
