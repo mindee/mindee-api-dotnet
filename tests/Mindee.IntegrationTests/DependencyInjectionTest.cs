@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
 using Mindee.Product.Invoice;
@@ -16,6 +17,12 @@ namespace Mindee.IntegrationTests
         public DependencyInjectionTest()
         {
             var builder = Host.CreateDefaultBuilder()
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.AddConsole();
+                    logging.AddDebug();
+                })
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config.AddInMemoryCollection(new Dictionary<string, string>()!);
