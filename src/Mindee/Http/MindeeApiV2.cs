@@ -45,8 +45,6 @@ namespace Mindee.Http
 
             request.AddParameter("model_id", predictParameter.ModelId);
             AddPredictRequestParameters(predictParameter, request);
-            request.AddHeader("X-Request-ID", "debug-CI-SE");
-
 
             _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
 
