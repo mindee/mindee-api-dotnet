@@ -14,7 +14,7 @@ jobs:
     uses: mindee/mindee-api-dotnet/.github/workflows/_codeql.yml@main
     needs: test_units
   test_integrations:
-    uses: mindee/mindee-api-dotnet/.github/workflows/_test-integrations.yml@client-v2
+    uses: mindee/mindee-api-dotnet/.github/workflows/_test-integrations.yml@main
     needs: test_units
     secrets: inherit
   test_code_samples:
