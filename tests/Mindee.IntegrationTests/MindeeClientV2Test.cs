@@ -45,7 +45,7 @@ namespace Mindee.IntegrationTests
             Assert.Null(response.Inference.Result.Options);
         }
 
-        [Fact(Skip = "Server needs to be fixed.")]
+        [Fact]
         public async Task Invalid_UUID_MustThrowError422()
         {
             var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
