@@ -52,7 +52,6 @@ do
     sed -i "s/my-api-key/$API_KEY_V2/" $OUTPUT_FILE
     sed -i "s/my-model-id/$MODEL_ID/" $OUTPUT_FILE
   else
-  then
     sed -i "s/my-api-key/$API_KEY/" $OUTPUT_FILE
   fi
   sed -i "s/\/path\/to\/the\/file.ext/tests\/resources\/file_types\/pdf\/blank_1.pdf/" $OUTPUT_FILE
