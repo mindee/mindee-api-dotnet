@@ -2,5 +2,6 @@
   <PropertyGroup>
     <Description>Mindee is a class library helper to use the Mindee API. (Official Library)</Description>
     <LangVersion>7.3</LangVersion>
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
 </Project>
