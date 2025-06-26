@@ -18,7 +18,7 @@ namespace Mindee.IntegrationTests
             var builder = Host.CreateDefaultBuilder()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    config.AddInMemoryCollection(new Dictionary<string, string>());
+                    config.AddInMemoryCollection(new Dictionary<string, string>()!);
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
