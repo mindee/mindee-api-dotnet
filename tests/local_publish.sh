@@ -20,8 +20,10 @@ fi
 mkdir -p "${NUGET_DIR}"
 dotnet nuget add source "${NUGET_DIR}" -n "NugetLocal"
 
-sed -i "s/<VersionPrefix>[0-9.]*<\/VersionPrefix>/<VersionPrefix>99.99.99<\/VersionPrefix>/g" Directory.Build.props
-sed -i "s/\*-\*/98.99.99/g" docs/code_samples/base.csx
+sed -i "s/<VersionPrefix>[0-9.]*<\/VersionPrefix>/<VersionPrefix>$VERSION<\/VersionPrefix>/g" Directory.Build.props
+sed -i "s/<VersionSuffix>.*<\/VersionSuffix>//g" Directory.Build.props
+
+sed -i "s/\*-\*/$VERSION/g" docs/code_samples/base.csx
 
 rm -fr ./dist
 dotnet pack "src/Mindee" -p:TargetFrameworks="${FRAMEWORK}" --force --output ./dist
