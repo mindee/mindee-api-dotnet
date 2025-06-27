@@ -1,6 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
 using Mindee.Exceptions;
-using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
 
 namespace Mindee.IntegrationTests
@@ -20,16 +18,45 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Parse_File_Standard_MultiplePages_MustSucceed()
+        public async Task Parse_File_Empty_MultiplePages_MustSucceed()
         {
-            var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
+            var inputSource = new LocalInputSource(
+                "Resources/file_types/pdf/multipage_cut-2.pdf");
             var predictOptions = new InferenceOptionsV2(modelId: _findocModelId);
             var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
-            Assert.NotNull(response.Inference.ToString());
+            // make sure the file info is filled
+            Assert.NotNull(response.Inference.File);
+            Assert.Equal("multipage_cut-2.pdf", response.Inference.File.Name);
+            // make sure the mode info is filled
+            Assert.NotNull(response.Inference.Model);
+            Assert.Equal(_findocModelId, response.Inference.Model.Id);
+            // make sure the response is null since we sent an empty page
+            Assert.Null(response.Inference.Result);
             // flaky, sometimes the server doesn't return an options key
             // Assert.Null(response.Inference.Result.Options);
+        }
+
+        [Fact]
+        public async Task Parse_File_Filled_SinglePage_MustSucceed()
+        {
+            var inputSource = new LocalInputSource(
+                "Resources/products/financial_document/default_sample.jpg");
+            var predictOptions = new InferenceOptionsV2(modelId: _findocModelId);
+            var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
+            Assert.NotNull(response);
+            Assert.NotNull(response.Inference);
+            // make sure the file info is filled
+            Assert.NotNull(response.Inference.File);
+            Assert.Equal("default_sample.jpg", response.Inference.File.Name);
+            // make sure the mode info is filled
+            Assert.NotNull(response.Inference.Model);
+            Assert.Equal(_findocModelId, response.Inference.Model.Id);
+            // make sure fields are set
+            Assert.NotNull(response.Inference.Result);
+            Assert.NotNull(response.Inference.Result.Fields);
+            Assert.NotNull(response.Inference.Result.Fields["supplier_name"]);
         }
 
         [Fact(Skip = "URL sources aren't supported yet.")]
