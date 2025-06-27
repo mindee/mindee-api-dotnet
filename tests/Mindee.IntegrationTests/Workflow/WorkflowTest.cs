@@ -5,7 +5,7 @@ using Mindee.Product.Generated;
 
 namespace Mindee.IntegrationTests.Workflow
 {
-    [Trait("Category", "Integration tests")]
+    [Trait("Category", "Integration")]
     public class WorkflowTest
     {
         private readonly MindeeClient _client;

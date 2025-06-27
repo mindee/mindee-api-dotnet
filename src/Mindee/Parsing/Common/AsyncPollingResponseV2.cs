@@ -3,15 +3,14 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.Common
 {
     /// <summary>
-    /// Represent an enqueued predict response from Mindee V1 API.
+    /// Represent a polling response from Mindee V2 API.
     /// </summary>
-    public class AsyncPredictResponse<TModel> : PredictResponse<TModel>
-        where TModel : class, new()
+    public class AsyncPollingResponseV2 : CommonResponseV2
     {
         /// <summary>
         /// <see cref="Common.Job"/>
         /// </summary>
         [JsonPropertyName("job")]
-        public Job Job { get; set; }
+        public JobV2 Job { get; set; }
     }
 }

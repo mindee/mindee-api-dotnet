@@ -42,22 +42,9 @@ jobs:
       run: |
         dotnet tool install -g dotnet-script
 
-    - name: Create local NuGet source
-      run: |
-        mkdir "${{ github.workspace }}/nuget_local"
-        dotnet nuget add source "${{ github.workspace }}/nuget_local" -n "NugetLocal"
-
-    - name: Set the Version
-      run: |
-        VERSION=99.99.99
-        sed -i "s/<VersionPrefix>[0-9.]*<\/VersionPrefix>/<VersionPrefix>$VERSION<\/VersionPrefix>/g" Directory.Build.props
-        sed -i "s/\*-\*/$VERSION/g" docs/code_samples/base.csx
-
     - name: Publish Locally
       run: |
-        dotnet pack "src/Mindee" -p:TargetFrameworks=${{ matrix.dotnet }} --output ./dist
-        cd ./dist
-        dotnet nuget push *.nupkg --source "NugetLocal"
+        ./tests/test_code_samples.sh ${{ matrix.dotnet }} ${{ github.workspace }}
 
     - name: Tests sample code
       run: |

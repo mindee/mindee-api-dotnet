@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.Common
 {
     /// <summary>
-    /// Define the parsed document.
+    /// Define the parsed document with the legacy format.
     /// </summary>
     /// <typeparam name="TInferenceModel">The model which defines the type of document.</typeparam>
     public class Document<TInferenceModel>

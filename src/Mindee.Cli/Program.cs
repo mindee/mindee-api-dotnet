@@ -139,6 +139,7 @@ var runner = BuildCommandLine()
             .ConfigureServices((hostContext, services) =>
             {
                 services.AddMindeeClient();
+                services.AddMindeeClientV2();
             })
             .UseCommandHandler<PredictBarcodeReaderCommand, PredictBarcodeReaderCommand.Handler>()
             .UseCommandHandler<PredictBillOfLadingCommand, PredictBillOfLadingCommand.Handler>()

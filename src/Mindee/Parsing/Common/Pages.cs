@@ -19,7 +19,7 @@ namespace Mindee.Parsing.Common
         }
 
         /// <summary>
-        /// Returns whether or not the page list has any predictions set.
+        /// Returns whether the page list has any predictions set.
         /// </summary>
         /// <returns></returns>
         public bool HasPredictions()

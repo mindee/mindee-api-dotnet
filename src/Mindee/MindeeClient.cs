@@ -16,7 +16,7 @@ using Mindee.Product.Generated;
 namespace Mindee
 {
     /// <summary>
-    /// The entry point to use the Mindee features.
+    /// The entry point to use the Mindee API legacy features.
     /// </summary>
     public sealed class MindeeClient
     {

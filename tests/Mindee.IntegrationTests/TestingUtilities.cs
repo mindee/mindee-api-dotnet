@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Extensions.DependencyInjection;
 
 namespace Mindee.IntegrationTests
@@ -6,6 +7,7 @@ namespace Mindee.IntegrationTests
     public static class TestingUtilities
     {
         private static MindeeClient? _mindeeClient;
+        private static MindeeClientV2? _mindeeClientV2;
 
         /// <summary>g
         /// Gets the API version from an RST output
@@ -64,6 +66,24 @@ namespace Mindee.IntegrationTests
                 options.ApiKey = apiKey;
             }, true);
             return _mindeeClient ??= new MindeeClient(apiKey);
+        }
+
+        /// <summary>
+        /// Gets or generates a Mindee client V2 instance.
+        /// </summary>
+        /// <param name="apiKey">The API key for mindee.</param>
+        /// <returns>A valid Mindee client V2 instance.</returns>
+        public static MindeeClientV2 GetOrGenerateMindeeClientV2(string? apiKey)
+        {
+            if (_mindeeClientV2 != null)
+                return _mindeeClientV2;
+            var serviceCollection = new ServiceCollection();
+            var logger = NullLoggerFactory.Instance;
+            serviceCollection.AddMindeeApiV2(options =>
+            {
+                options.ApiKey = apiKey;
+            }, logger);
+            return _mindeeClientV2 ??= new MindeeClientV2(apiKey);
         }
 
         /// <summary>

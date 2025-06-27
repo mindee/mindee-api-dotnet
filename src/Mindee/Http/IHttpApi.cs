@@ -4,7 +4,7 @@ using Mindee.Parsing.Common;
 namespace Mindee.Http
 {
     /// <summary>
-    /// Communicate with the Mindee API.
+    /// Communicate with the Mindee API V2.
     /// <p>
     /// You may use this interface to make your own custom class.
     /// However, we may introduce breaking changes in minor versions as needed.

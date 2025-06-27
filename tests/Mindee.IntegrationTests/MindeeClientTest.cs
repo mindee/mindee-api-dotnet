@@ -10,7 +10,7 @@ using Mindee.Product.Receipt;
 
 namespace Mindee.IntegrationTests
 {
-    [Trait("Category", "Integration tests")]
+    [Trait("Category", "Integration")]
     public class MindeeClientTest
     {
         private readonly MindeeClient _mindeeClient;

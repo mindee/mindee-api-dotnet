@@ -9,9 +9,8 @@ namespace Mindee.Parsing.Generated
     /// <summary>
     /// An object within a feature.
     /// </summary>
-    public class GeneratedObject : Dictionary<string, JsonElement>
+    public class GeneratedObjectV2 : Dictionary<string, JsonElement>
     {
-
         /// <summary>
         /// Represent the object as a standard <see cref="StringField"/> object.
         /// </summary>
@@ -194,6 +193,7 @@ namespace Mindee.Parsing.Generated
                 var point = new Point(doubles[0].GetDouble(), doubles[1].GetDouble());
                 points.Add(point);
             }
+
             return new Polygon(points);
         }
 
@@ -202,7 +202,13 @@ namespace Mindee.Parsing.Generated
         /// </summary>
         public override string ToString()
         {
-            return ToString(0);
+            var result = new StringBuilder();
+            if (!ContainsKey("value") || this["value"].ValueKind is JsonValueKind.Null)
+            {
+                return string.Empty;
+            }
+            var text = result.ToString();
+            return string.IsNullOrWhiteSpace(text) ? string.Empty : text;
         }
 
         /// <summary>
@@ -214,9 +220,15 @@ namespace Mindee.Parsing.Generated
             StringBuilder result = new StringBuilder();
 
             foreach (KeyValuePair<string, JsonElement> field in this)
+            {
+                if (field.Value.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined)
+                {
+                    continue;
+                }
                 result.Append($"{padding}:{field.Key}: {field.Value}\n");
-
-            return result.ToString();
+            }
+            var text = result.ToString();
+            return string.IsNullOrWhiteSpace(text) ? string.Empty : text;
         }
     }
 }

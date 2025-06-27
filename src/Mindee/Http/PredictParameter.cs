@@ -6,23 +6,22 @@ namespace Mindee.Http
     /// <summary>
     /// Parameter required to use the predict feature.
     /// </summary>
-    public sealed class PredictParameter : GenericParameter
+    public class PredictParameter : GenericParameter
     {
         /// <summary>
-        /// Want an OCR result ?
+        /// Whether to retrieve the full text OCR on OTS products.
         /// </summary>
-        /// <remarks>It is not available on all API.</remarks>
+        /// <remarks>It is not available on all APIs.</remarks>
         public bool AllWords { get; }
 
         /// <summary>
-        /// Want the cropping result about the document?
+        /// Whether to include a cropping operation to the file.
         /// </summary>
-        /// <remarks>It is not available in API builder.</remarks>
         public bool Cropper { get; }
 
 
         /// <summary>
-        /// Prediction parameters for requests.
+        /// Result parameters for requests.
         /// </summary>
         /// <param name="localSource">Local input source containing the file.<see cref="GenericParameter.LocalSource"/></param>
         /// <param name="urlSource">Source URL to use.<see cref="GenericParameter.UrlSource"/></param>
