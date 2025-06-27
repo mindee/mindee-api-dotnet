@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using Mindee.Parsing.Common;
+using Mindee.Parsing.V2;
 
 namespace Mindee.Exceptions
 {
@@ -23,7 +22,7 @@ namespace Mindee.Exceptions
         /// Initializes a new instance of the MindeeHttpException class using the provided Error object.
         /// </summary>
         /// <param name="error">Contents of the error object.</param>
-        public MindeeHttpExceptionV2(ErrorV2 error) : base(error.Detail)
+        public MindeeHttpExceptionV2(ErrorResponse error) : base(error.Detail)
         {
             Detail = error.Detail;
             Status = error.Status;

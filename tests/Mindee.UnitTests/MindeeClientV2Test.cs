@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Http;
 using Mindee.Input;
-using Mindee.Parsing.Common;
+using Mindee.Parsing.V2;
 using Mindee.Pdf;
 using Moq;
 
@@ -17,10 +17,10 @@ namespace Mindee.UnitTests
             predictable.Setup(x => x.EnqueuePostAsync(
                     It.IsAny<PredictParameterV2>()
                 ))
-                .ReturnsAsync(new AsyncPollingResponseV2());
+                .ReturnsAsync(new AsyncJobResponse());
             predictable.Setup(x => x.DocumentQueueGetAsync(
                 It.IsAny<string>()
-            )).ReturnsAsync(new AsyncPredictResponseV2());
+            )).ReturnsAsync(new AsyncInferenceResponse());
             return new MindeeClientV2(GetDefaultPdfOperation(), predictable.Object);
         }
 

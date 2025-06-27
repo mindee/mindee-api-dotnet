@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Mindee.Parsing.Common;
+using Mindee.Parsing.V2;
 
 namespace Mindee.Http
 {
@@ -16,7 +16,7 @@ namespace Mindee.Http
         /// Do a prediction according parameters for custom model defined in the Studio.
         /// </summary>
         /// <param name="predictParameter"><see cref="PredictParameterV2"/></param>
-        Task<AsyncPollingResponseV2> EnqueuePostAsync(
+        Task<AsyncJobResponse> EnqueuePostAsync(
             PredictParameterV2 predictParameter);
 
 
@@ -24,7 +24,7 @@ namespace Mindee.Http
         /// Get a document which was predicted.
         /// </summary>
         /// <param name="jobId">The job ID as returned by the predict_async route.</param>
-        Task<AsyncPredictResponseV2> DocumentQueueGetAsync(
+        Task<AsyncInferenceResponse> DocumentQueueGetAsync(
             string jobId);
     }
 }

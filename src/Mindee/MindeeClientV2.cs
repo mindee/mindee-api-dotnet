@@ -9,7 +9,7 @@ using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Http;
 using Mindee.Input;
-using Mindee.Parsing.Common;
+using Mindee.Parsing.V2;
 using Mindee.Pdf;
 
 namespace Mindee
@@ -98,9 +98,9 @@ namespace Mindee
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
         /// <param name="inferenceOptions"><see cref="InferenceOptionsV2"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
-        /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
+        /// <returns><see cref="AsyncJobResponse"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<AsyncPollingResponseV2> EnqueueAsync(
+        public async Task<AsyncJobResponse> EnqueueAsync(
             LocalInputSource inputSource
             , InferenceOptionsV2 inferenceOptions
             , PageOptions pageOptions = null)
@@ -116,10 +116,7 @@ namespace Mindee
             return await _mindeeApi.EnqueuePostAsync(
                 new PredictParameterV2(
                     localSource: inputSource,
-                    urlSource: null,
                     modelId: inferenceOptions.ModelId,
-                    fullText: inferenceOptions.FullText,
-                    cropper: inferenceOptions.Cropper,
                     alias: inferenceOptions.Alias,
                     webhookIds: inferenceOptions.WebhookIds,
                     rag: inferenceOptions.Rag
@@ -131,9 +128,9 @@ namespace Mindee
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
         /// <param name="inferenceOptions"><see cref="InferenceOptionsV2"/></param>
-        /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
+        /// <returns><see cref="AsyncJobResponse"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<AsyncPollingResponseV2> EnqueueAsync(
+        public async Task<AsyncJobResponse> EnqueueAsync(
             UrlInputSource inputSource
             , InferenceOptionsV2 inferenceOptions)
         {
@@ -142,10 +139,7 @@ namespace Mindee
             return await _mindeeApi.EnqueuePostAsync(
                 new PredictParameterV2(
                     localSource: null,
-                    urlSource: inputSource,
                     modelId: inferenceOptions.ModelId,
-                    fullText: inferenceOptions.FullText,
-                    cropper: inferenceOptions.Cropper,
                     rag: inferenceOptions.Rag,
                     alias: inferenceOptions.Alias,
                     webhookIds: inferenceOptions.WebhookIds
@@ -156,8 +150,8 @@ namespace Mindee
         /// Parse a document from a Generated async queue.
         /// </summary>
         /// <param name="jobId">The job id.</param>
-        /// <returns><see cref="AsyncPredictResponseV2"/></returns>
-        public async Task<AsyncPredictResponseV2> ParseQueuedAsync(string jobId)
+        /// <returns><see cref="AsyncInferenceResponse"/></returns>
+        public async Task<AsyncInferenceResponse> ParseQueuedAsync(string jobId)
         {
             _logger?.LogInformation(message: "Parse from queue...");
 
@@ -177,9 +171,9 @@ namespace Mindee
         /// <param name="inferenceOptions"><see cref="InferenceOptionsV2"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
-        /// <returns><see cref="AsyncPredictResponseV2"/></returns>
+        /// <returns><see cref="AsyncInferenceResponse"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<AsyncPredictResponseV2> EnqueueAndParseAsync(
+        public async Task<AsyncInferenceResponse> EnqueueAndParseAsync(
             LocalInputSource inputSource
             , InferenceOptionsV2 inferenceOptions
             , PageOptions pageOptions = null
@@ -205,9 +199,9 @@ namespace Mindee
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
         /// <param name="inferenceOptions"><see cref="InferenceOptionsV2"/></param>
         /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
-        /// <returns><see cref="AsyncPredictResponseV2"/></returns>
+        /// <returns><see cref="AsyncInferenceResponse"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<AsyncPredictResponseV2> EnqueueAndParseAsync(
+        public async Task<AsyncInferenceResponse> EnqueueAndParseAsync(
             UrlInputSource inputSource
             , InferenceOptionsV2 inferenceOptions
             , AsyncPollingOptions pollingOptions = null)
@@ -229,12 +223,12 @@ namespace Mindee
         /// <summary>
         /// Poll for results until the prediction is retrieved or the max amount of attempts is reached.
         /// </summary>
-        /// <param name="enqueueResponse"><see cref="AsyncPredictResponse{TInferenceModel}"/></param>
+        /// <param name="enqueueResponse"><see cref="AsyncJobResponse"/></param>
         /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
-        /// <returns><see cref="AsyncPredictResponse{TInferenceModel}"/></returns>
+        /// <returns><see cref="AsyncInferenceResponse"/></returns>
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
-        private async Task<AsyncPredictResponseV2> PollForResultsAsync(
-            AsyncPollingResponseV2 enqueueResponse,
+        private async Task<AsyncInferenceResponse> PollForResultsAsync(
+            AsyncJobResponse enqueueResponse,
             AsyncPollingOptions pollingOptions)
         {
             int maxRetries = pollingOptions.MaxRetries + 1;
@@ -245,7 +239,7 @@ namespace Mindee
                 pollingOptions.InitialDelaySec);
             Thread.Sleep(pollingOptions.InitialDelayMilliSec);
             int retryCount = 1;
-            AsyncPredictResponseV2 response;
+            AsyncInferenceResponse response;
             while (retryCount < maxRetries)
             {
                 Thread.Sleep(pollingOptions.IntervalMilliSec);
@@ -255,10 +249,8 @@ namespace Mindee
                 {
                     return response;
                 }
-
                 retryCount++;
             }
-
             throw new MindeeException($"Could not complete after {retryCount} attempts.");
         }
 
@@ -268,10 +260,10 @@ namespace Mindee
         /// However, any kind of Mindee response may be loaded.
         /// </summary>
         /// <returns></returns>
-        public AsyncPredictResponseV2 LoadPrediction(
+        public AsyncInferenceResponse LoadPrediction(
             LocalResponse localResponse)
         {
-            var model = JsonSerializer.Deserialize<AsyncPredictResponseV2>(localResponse.FileBytes);
+            var model = JsonSerializer.Deserialize<AsyncInferenceResponse>(localResponse.FileBytes);
             model.RawResponse = ToString();
 
             return model;

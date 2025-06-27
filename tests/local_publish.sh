@@ -21,6 +21,8 @@ mkdir -p "${NUGET_DIR}"
 dotnet nuget add source "${NUGET_DIR}" -n "NugetLocal"
 
 sed -i "s/<VersionPrefix>[0-9.]*<\/VersionPrefix>/<VersionPrefix>$VERSION<\/VersionPrefix>/g" Directory.Build.props
+sed -i "s/<VersionSuffix>.*<\/VersionSuffix>//g" Directory.Build.props
+
 sed -i "s/\*-\*/$VERSION/g" docs/code_samples/base.csx
 
 rm -fr ./dist

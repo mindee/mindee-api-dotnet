@@ -32,11 +32,8 @@ namespace Mindee.UnitTests
                 localSource: new LocalInputSource(
                     fileBytes: new byte[] { byte.MinValue },
                     filename: "cacatiti.pdf"),
-                urlSource: null,
                 modelId: "model-id",
                 alias: null,
-                cropper: false,
-                fullText: false,
                 rag: false,
                 webhookIds: []
             );
