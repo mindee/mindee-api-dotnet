@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace Mindee.Parsing.Common
+namespace Mindee.Parsing.V2
 {
     /// <summary>
     /// Webhook info response for the V2 API.
@@ -18,14 +18,14 @@ namespace Mindee.Parsing.Common
         /// An error encountered while processing the job.
         /// </summary>
         [JsonPropertyName("error")]
-        public Error Error { get; set; }
+        public ErrorResponse Error { get; set; }
 
         /// <summary>
         /// Date and time the webhook was sent at.
         /// </summary>
-        [JsonPropertyName("sent_at")]
+        [JsonPropertyName("created_at")]
         [JsonConverter(typeof(DateTimeJsonConverter))]
-        public DateTime SentAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         /// <summary>
         /// Status of the job.

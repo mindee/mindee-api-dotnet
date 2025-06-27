@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
-using Mindee.Parsing.Common;
+using Mindee.Parsing.V2;
 using RestSharp;
 
 namespace Mindee.Http
@@ -37,7 +37,7 @@ namespace Mindee.Http
             _httpClient.AddDefaultHeaders(defaultHeaders);
         }
 
-        public async Task<AsyncPollingResponseV2> EnqueuePostAsync(
+        public async Task<AsyncJobResponse> EnqueuePostAsync(
             PredictParameterV2 predictParameter
         )
         {
@@ -49,10 +49,10 @@ namespace Mindee.Http
             _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
 
             var response = await _httpClient.ExecutePostAsync(request);
-            return ResponseHandler<AsyncPollingResponseV2>(response);
+            return ResponseHandler<AsyncJobResponse>(response);
         }
 
-        public async Task<AsyncPredictResponseV2> DocumentQueueGetAsync(string jobId)
+        public async Task<AsyncInferenceResponse> DocumentQueueGetAsync(string jobId)
         {
             var queueRequest = new RestRequest(
                 $"v2/inferences/{jobId}");
@@ -71,10 +71,10 @@ namespace Mindee.Http
 
                 _logger?.LogInformation($"HTTP GET to {_baseUrl + docRequest.Resource}...");
                 var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
-                return ResponseHandler<AsyncPredictResponseV2>(docResponse);
+                return ResponseHandler<AsyncInferenceResponse>(docResponse);
             }
 
-            var handledResponse = ResponseHandler<AsyncPredictResponseV2>(queueResponse);
+            var handledResponse = ResponseHandler<AsyncInferenceResponse>(queueResponse);
 
             return handledResponse;
         }
@@ -88,23 +88,6 @@ namespace Mindee.Http
                     predictParameter.LocalSource.FileBytes,
                     predictParameter.LocalSource.Filename);
             }
-            else if (predictParameter.UrlSource != null)
-            {
-                request.AddParameter(
-                    "file",
-                    predictParameter.UrlSource.FileUrl.ToString());
-            }
-
-            if (predictParameter.FullText)
-            {
-                request.AddQueryParameter(name: "full_text_ocr", value: "true");
-            }
-
-            if (predictParameter.Cropper)
-            {
-                request.AddQueryParameter(name: "cropper", value: "true");
-            }
-
             if (!string.IsNullOrWhiteSpace(predictParameter.Alias))
             {
                 request.AddParameter(name: "alias", value: predictParameter.Alias);
@@ -122,7 +105,7 @@ namespace Mindee.Http
         }
 
         private TResponse ResponseHandler<TResponse>(RestResponse restResponse)
-            where TResponse : CommonResponseV2, new()
+            where TResponse : CommonResponse, new()
         {
             _logger?.LogDebug($"HTTP response: {restResponse.Content}");
 
@@ -146,10 +129,10 @@ namespace Mindee.Http
                     try
                     {
                         var pollingErrorResponse =
-                            JsonSerializer.Deserialize<AsyncPollingResponseV2>(restResponse.Content);
-                        if (pollingErrorResponse.Job?.Error?.Code != null)
+                            JsonSerializer.Deserialize<AsyncJobResponse>(restResponse.Content);
+                        if (pollingErrorResponse.Job?.Error != null)
                         {
-                            throw new Mindee500Exception(pollingErrorResponse.Job.Error.Message);
+                            throw new Mindee500Exception(pollingErrorResponse.Job.Error.Detail);
                         }
                     }
                     catch (Exception)
@@ -178,7 +161,7 @@ namespace Mindee.Http
                 if (doc.RootElement.TryGetProperty("status", out var statusProp) &&
                     doc.RootElement.TryGetProperty("detail", out var detailsProp))
                 {
-                    var fallbackError = new ErrorV2
+                    var fallbackError = new ErrorResponse
                     {
                         Status = statusProp.GetInt32(),
                         Detail = detailsProp.GetString()
@@ -186,13 +169,12 @@ namespace Mindee.Http
 
                     throw new MindeeHttpExceptionV2(fallbackError);
                 }
-
-                var error = new ErrorV2 { Detail = "Unknown error", Code = "Unknown error" };
+                var error = new ErrorResponse { Detail = "Unknown error", Status = 500 };
                 throw new MindeeHttpExceptionV2(error);
             }
             catch (JsonException)
             {
-                var error = new ErrorV2 { Detail = "Unknown error", Code = "Unknown error" };
+                var error = new ErrorResponse { Detail = "Unknown error", Status = 500};
                 throw new MindeeHttpExceptionV2(error);
             }
         }

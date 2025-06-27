@@ -1,31 +1,30 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using Mindee.Product.Generated;
 
-namespace Mindee.Parsing.Common
+namespace Mindee.Parsing.V2
 {
     /// <summary>
     /// Inference object for the V2 API.
     /// </summary>
-    public class InferenceV2
+    public class Inference
     {
         /// <summary>
         /// Model info.
         /// </summary>
         [JsonPropertyName("model")]
-        public ModelV2 Model { get; set; }
+        public InferenceModel Model { get; set; }
 
         /// <summary>
         /// File info.
         /// </summary>
         [JsonPropertyName("file")]
-        public FileV2 File { get; set; }
+        public InferenceFile File { get; set; }
 
         /// <summary>
         /// The model result values.
         /// </summary>
         [JsonPropertyName("result")]
-        public GeneratedV2 Result { get; set; }
+        public InferenceResult Result { get; set; }
 
         /// <summary>
         /// A prettier representation.
@@ -37,11 +36,8 @@ namespace Mindee.Parsing.Common
             result.Append("#########\n");
             result.Append($":Model: {Model.Id}\n");
             result.Append(":File:\n");
-            result.Append($"  :Name:{File.Name}\n");
-            if (File.Alias != null)
-            {
-                result.Append($"  :Alias:{File.Alias}\n");
-            }
+            result.Append($"  :Name: {File.Name}\n");
+            result.Append($"  :Alias: {File.Alias}\n");
             result.Append("\nResult\n");
             result.Append("======\n");
             result.Append(Result);

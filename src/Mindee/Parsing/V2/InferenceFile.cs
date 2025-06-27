@@ -1,11 +1,11 @@
 using System.Text.Json.Serialization;
 
-namespace Mindee.Parsing.Common
+namespace Mindee.Parsing.V2
 {
     /// <summary>
     /// File info for V2 API.
     /// </summary>
-    public class FileV2
+    public class InferenceFile
     {
         /// <summary>
         /// File name.

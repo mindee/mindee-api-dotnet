@@ -1,16 +1,16 @@
 using System.Text.Json.Serialization;
 
-namespace Mindee.Parsing.Common
+namespace Mindee.Parsing.V2
 {
     /// <summary>
     /// Represent a predict response from Mindee V2 API.
     /// </summary>
-    public class AsyncPredictResponseV2 : CommonResponseV2
+    public class AsyncInferenceResponse : CommonResponse
     {
         /// <summary>
         /// Contents of the inference.
         /// </summary>
         [JsonPropertyName("inference")]
-        public InferenceV2 Inference { get; set; }
+        public Inference Inference { get; set; }
     }
 }

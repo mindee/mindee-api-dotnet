@@ -1,11 +1,11 @@
 using System.Text.Json.Serialization;
 
-namespace Mindee.Parsing.Common
+namespace Mindee.Parsing.V2
 {
     /// <summary>
     /// Model information for a V2 API inference.
     /// </summary>
-    public class ModelV2
+    public class InferenceModel
     {
         /// <summary>
         /// The Mindee ID of the model.
