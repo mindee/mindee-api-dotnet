@@ -1,9 +1,9 @@
 using Mindee;
 using Mindee.Input;
 
-string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
-string modelId = "my-model-id";
+string apiKey = "MY_API_KEY";
+string modelId = "MY_MODEL_ID";
 
 // Construct a new client
 MindeeClientV2 mindeeClient = new MindeeClientV2(apiKey);

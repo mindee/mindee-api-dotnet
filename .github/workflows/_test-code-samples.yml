@@ -44,7 +44,7 @@ jobs:
 
     - name: Publish Locally
       run: |
-        ./tests/test_code_samples.sh ${{ matrix.dotnet }} ${{ github.workspace }}
+        ./tests/local_publish.sh ${{ matrix.dotnet }} ${{ github.workspace }}
 
     - name: Tests sample code
       run: |

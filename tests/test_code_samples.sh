@@ -49,8 +49,8 @@ do
 
   if echo "${f}" | grep -q "default_v2.txt"
   then
-    sed -i "s/my-api-key/$API_KEY_V2/" $OUTPUT_FILE
-    sed -i "s/my-model-id/$MODEL_ID/" $OUTPUT_FILE
+    sed -i "s/MY_API_KEY/$API_KEY_V2/" $OUTPUT_FILE
+    sed -i "s/MY_MODEL_ID/$MODEL_ID/" $OUTPUT_FILE
   else
     sed -i "s/my-api-key/$API_KEY/" $OUTPUT_FILE
   fi
