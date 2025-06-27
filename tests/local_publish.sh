@@ -10,8 +10,12 @@ if [ -z "${NUGET_ROOT_DIR}" ]; then NUGET_ROOT_DIR="$HOME"; fi
 VERSION="99.99.99"
 NUGET_DIR="${NUGET_ROOT_DIR}/nuget_local"
 
-dotnet nuget remove source "NugetLocal"
-rm -fr "${NUGET_DIR}"
+# only clean up as needed, fails otherwise
+if dotnet nuget list source | grep "NugetLocal" -q
+then
+  dotnet nuget remove source "NugetLocal"
+  rm -fr "${NUGET_DIR}"
+fi
 
 mkdir -p "${NUGET_DIR}"
 dotnet nuget add source "${NUGET_DIR}" -n "NugetLocal"
