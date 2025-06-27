@@ -14,7 +14,7 @@ namespace Mindee.Parsing.Common
         public string Name { get; set; }
 
         /// <summary>
-        /// Optional file alias..
+        /// Optional file alias.
         /// </summary>
         [JsonPropertyName("alias")]
         public string Alias { get; set; }

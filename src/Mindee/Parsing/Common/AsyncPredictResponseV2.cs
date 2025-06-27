@@ -14,8 +14,7 @@ namespace Mindee.Parsing.Common
         public ApiRequest ApiRequest { get; set; }
 
         /// <summary>
-        /// Set the prediction model used to parse the document.
-        /// The response object will be instantiated based on this parameter.
+        /// Contents of the inference.
         /// </summary>
         [JsonPropertyName("inference")]
         public InferenceV2 Inference { get; set; }

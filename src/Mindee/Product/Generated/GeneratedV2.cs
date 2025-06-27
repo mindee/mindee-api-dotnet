@@ -13,7 +13,7 @@ namespace Mindee.Product.Generated
     /// </summary>
     [Serializable]
     [JsonConverter(typeof(GeneratedV2JsonConverter))]
-    public class GeneratedV2 : IPrediction
+    public class GeneratedV2
     {
         /// <summary>
         /// Dictionary containing the fields of the document.
