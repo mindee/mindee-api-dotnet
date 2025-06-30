@@ -11,6 +11,6 @@ namespace Mindee.Parsing.V2
         /// Field value, one of: string, bool, int, double, null.
         /// </summary>
         [JsonPropertyName("value")]
-        public dynamic Value { get; private set; }
+        public dynamic Value { get; set; }
     }
 }
