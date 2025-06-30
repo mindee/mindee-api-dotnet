@@ -51,7 +51,7 @@ namespace Mindee.UnitTests.V2.Product.Generated
             Assert.Equal(21, fields.Count);
             Assert.Single(fields["taxes"].ListField.Items);
             Assert.Equal(3, fields["taxes"].ListField.Items.First().ObjectField.Fields.Count);
-            Assert.Equal(31.5, (double) fields["taxes"].ListField.Items.First().ObjectField.Fields["base"].Value);
+            Assert.Equal(31.5, fields["taxes"].ListField.Items.First().ObjectField.Fields["base"].Value);
         }
 
         private static async Task<AsyncInferenceResponse> GetAsyncPrediction(string name)
