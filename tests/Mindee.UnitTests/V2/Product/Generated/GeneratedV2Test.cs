@@ -3,7 +3,7 @@ using Mindee.Parsing.V2;
 namespace Mindee.UnitTests.V2.Product.Generated
 {
     [Trait("Category", "GeneratedV2")]
-    [Trait("Category", "V2")]
+    [Trait("Category", "V22")]
     public class GeneratedV2Test
     {
         [Fact]
@@ -49,6 +49,9 @@ namespace Mindee.UnitTests.V2.Product.Generated
             var response = await GetAsyncPrediction("complete");
             var fields = response.Inference.Result.Fields;
             Assert.Equal(21, fields.Count);
+            Assert.Single(fields["taxes"].ListField.Items);
+            Assert.Equal(3, fields["taxes"].ListField.Items.First().ObjectField.Fields.Count);
+            Assert.Equal(31.5, (double) fields["taxes"].ListField.Items.First().ObjectField.Fields["base"].Value);
         }
 
         private static async Task<AsyncInferenceResponse> GetAsyncPrediction(string name)

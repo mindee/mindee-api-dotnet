@@ -12,6 +12,6 @@ namespace Mindee.Parsing.V2
         /// Detail relevant to the error.
         /// </summary>
         [JsonPropertyName("items")]
-        public List<DynamicField> Items { get; set; }
+        public List<DynamicField> Items { get; set; } = [];
     }
 }

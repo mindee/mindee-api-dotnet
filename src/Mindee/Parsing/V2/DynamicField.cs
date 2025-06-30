@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Mindee.Parsing.V2
 {
     /// <summary>
@@ -22,6 +24,7 @@ namespace Mindee.Parsing.V2
     /// <summary>
     /// Return the field class dynamically.
     /// </summary>
+    [JsonConverter(typeof(DynamicFieldJsonConverter))]
     public class DynamicField
     {
         /// <summary>

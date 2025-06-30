@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -26,33 +25,7 @@ namespace Mindee.Product.V2
 
             foreach (var jsonNode in jsonObject)
             {
-                DynamicField field;
-
-                // -------- LIST FEATURE --------
-                if (jsonNode.Value is JsonObject obj &&
-                    obj.TryGetPropertyValue("items", out var itemsNode) &&
-                    itemsNode is JsonArray itemsArray)
-                {
-                    field = new DynamicField(
-                        FieldType.ListField,
-                        listField: jsonNode.Value.Deserialize<ListField>());
-                }
-                // -------- OBJECT WITH NESTED FIELDS --------
-                else if (jsonNode.Value is JsonObject itemsObj &&
-                         itemsObj.TryGetPropertyValue("fields", out var nestedFieldsNode) &&
-                         nestedFieldsNode is JsonObject nestedFieldsObj)
-                {
-                    field = new DynamicField(FieldType.ObjectField,
-                        objectField: jsonNode.Value.Deserialize<ObjectField>());
-                }
-                // -------- SIMPLE OBJECT --------
-                else
-                {
-                    field = new DynamicField(
-                        FieldType.SimpleField,
-                        simpleField: jsonNode.Value.Deserialize<SimpleField>());
-                }
-                fields.Add(jsonNode.Key, field);
+                fields.Add(jsonNode.Key, jsonNode.Value.Deserialize<DynamicField>());
             }
             return fields;
         }

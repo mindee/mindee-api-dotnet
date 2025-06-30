@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
-using Mindee.Product.V2;
 
 namespace Mindee.Parsing.V2
 {
@@ -14,7 +13,6 @@ namespace Mindee.Parsing.V2
         /// Model fields..
         /// </summary>
         [JsonPropertyName("fields")]
-        [JsonConverter(typeof(InferenceFieldsJsonConverter))]
         public InferenceFields Fields { get; set; }
 
         /// <summary>
