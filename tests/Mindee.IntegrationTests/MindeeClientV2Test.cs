@@ -56,6 +56,7 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response.Inference.Result);
             Assert.NotNull(response.Inference.Result.Fields);
             Assert.NotNull(response.Inference.Result.Fields["supplier_name"]);
+            Assert.Equal("John Smith", response.Inference.Result.Fields["supplier_name"].SimpleField.Value);
         }
 
         [Fact]

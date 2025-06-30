@@ -174,7 +174,7 @@ namespace Mindee.Http
             }
             catch (JsonException)
             {
-                var error = new ErrorResponse { Detail = "Unknown error", Status = 500};
+                var error = new ErrorResponse { Detail = "Unknown error", Status = 500 };
                 throw new MindeeHttpExceptionV2(error);
             }
         }

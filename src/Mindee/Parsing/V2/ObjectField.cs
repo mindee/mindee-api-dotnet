@@ -1,12 +1,12 @@
-using System.Text.Json.Serialization;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.V2
 {
     /// <summary>
     /// Field having a set of sub-fields.
     /// </summary>
-    public class ObjectField: BaseField
+    public class ObjectField : BaseField
     {
         /// <summary>
         /// Detail relevant to the error.

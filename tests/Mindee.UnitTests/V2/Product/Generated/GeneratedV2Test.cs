@@ -37,8 +37,8 @@ namespace Mindee.UnitTests.V2.Product.Generated
                 else
                 {
                     Assert.NotNull(field.Value.SimpleField);
-                   Assert.Null(field.Value.ListField);
-                   Assert.Null(field.Value.ObjectField);
+                    Assert.Null(field.Value.ListField);
+                    Assert.Null(field.Value.ObjectField);
                 }
             }
         }

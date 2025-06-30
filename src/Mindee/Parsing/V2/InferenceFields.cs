@@ -5,7 +5,7 @@ namespace Mindee.Parsing.V2
     /// <summary>
     /// Inference fields dict.
     /// </summary>
-    public class InferenceFields: Dictionary<string, DynamicField>
+    public class InferenceFields : Dictionary<string, DynamicField>
     {
 
     }

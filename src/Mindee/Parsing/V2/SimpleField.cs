@@ -6,7 +6,7 @@ namespace Mindee.Parsing.V2
     /// Field having a single value.
     /// </summary>
     [JsonConverter(typeof(SimpleFieldJsonConverter))]
-    public class SimpleField: BaseField
+    public class SimpleField : BaseField
     {
         /// <summary>
         /// Field value, one of: string, bool, int, double, null.
