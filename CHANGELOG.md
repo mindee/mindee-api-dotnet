@@ -1,11 +1,11 @@
 # Mindee .NET API Library Changelog
 
-## v3.29.0-rc.1 - 2025-06-27
+## v3.29.0-rc1 - 2025-06-30
 ### Changes
-* :sparkles: add support for V2 API
-* :sparkles: add support for Generated V2
+* :alembic: add experimental support for V2 API
+* :alembic: add experimental support for V2 inferences
 * :memo: add sample codes
-* :wrench: add proper logging in V2 http calls
+* :wrench: add proper logging in V2 HTTP calls
 * :arrow_up: bump all MS dependencies
 * :recycle: tweak the way sanity testing is done
 ### Fix
