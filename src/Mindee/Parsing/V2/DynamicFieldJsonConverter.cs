@@ -46,6 +46,9 @@ namespace Mindee.Parsing.V2
             // -------- SIMPLE OBJECT --------
             else if (jsonObject.TryGetPropertyValue("value", out var simpleFieldNode))
             {
+                var fieldValue = simpleFieldNode.ToString();
+                System.Console.WriteLine(fieldValue);
+                
                 field = new DynamicField(
                     FieldType.SimpleField,
                     simpleField: jsonObject.Deserialize<SimpleField>());
