@@ -9,13 +9,13 @@ namespace Mindee.Parsing.V2
     public class Webhook
     {
         /// <summary>
-        /// Date and time the job was created at.
+        /// Date and time the webhook was created at.
         /// </summary>
         [JsonPropertyName("id")]
         public string Id { get; set; }
 
         /// <summary>
-        /// An error encountered while processing the job.
+        /// An error encountered while processing the webhook.
         /// </summary>
         [JsonPropertyName("error")]
         public ErrorResponse Error { get; set; }
@@ -28,7 +28,7 @@ namespace Mindee.Parsing.V2
         public DateTime CreatedAt { get; set; }
 
         /// <summary>
-        /// Status of the job.
+        /// Status of the webhook.
         /// </summary>
         [JsonPropertyName("status")]
         public string Status { get; set; }
