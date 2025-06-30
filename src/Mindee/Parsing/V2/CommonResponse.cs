@@ -1,11 +1,9 @@
-using System.Text.Json.Serialization;
-
-namespace Mindee.Parsing.Common
+namespace Mindee.Parsing.V2
 {
     /// <summary>
     /// Represent common response information from Mindee API.
     /// </summary>
-    public abstract class CommonResponseV2
+    public abstract class CommonResponse
     {
         /// <summary>
         /// The raw server response.

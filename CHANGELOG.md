@@ -1,5 +1,19 @@
 # Mindee .NET API Library Changelog
 
+## v3.29.0-rc.1 - 2025-06-27
+### Changes
+* :sparkles: add support for V2 API
+* :sparkles: add support for Generated V2
+* :memo: add sample codes
+* :wrench: add proper logging in V2 http calls
+* :arrow_up: bump all MS dependencies
+* :recycle: tweak the way sanity testing is done
+### Fix
+* :recycle: fix some issues with logging
+* :arrow_up: update some testing dependencies
+* :recycle: add fallback support for logging on older windows installs
+
+
 ## v3.28.0 - 2025-06-03
 ### Changes
 * :sparkles: add support for address fields

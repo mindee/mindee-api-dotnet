@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Mindee.Parsing.Common
+namespace Mindee.Parsing.V2
 {
     /// <summary>
     /// Define an enqueued job.
     /// </summary>
-    public class JobV2
+    public class Job
     {
         /// <summary>
         /// Date and time the job was created at.
@@ -32,7 +32,7 @@ namespace Mindee.Parsing.Common
         /// An error encountered while processing the job.
         /// </summary>
         [JsonPropertyName("error")]
-        public Error Error { get; set; }
+        public ErrorResponse Error { get; set; }
 
         /// <summary>
         /// ID of the model.
