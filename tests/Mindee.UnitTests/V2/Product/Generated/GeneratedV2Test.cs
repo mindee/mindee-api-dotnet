@@ -3,7 +3,7 @@ using Mindee.Parsing.V2;
 namespace Mindee.UnitTests.V2.Product.Generated
 {
     [Trait("Category", "GeneratedV2")]
-    [Trait("Category", "V22")]
+    [Trait("Category", "V2")]
     public class GeneratedV2Test
     {
         [Fact]
@@ -12,7 +12,7 @@ namespace Mindee.UnitTests.V2.Product.Generated
             var response = await GetAsyncPrediction("blank");
             var fields = response.Inference.Result.Fields;
             Assert.Equal(21, fields.Count);
-            Assert.Empty(fields["supplier_company_registration"].ListField.Items);
+            Assert.Empty(fields["taxes"].ListField.Items);
             Assert.NotNull(fields["supplier_address"].ObjectField);
 
             foreach (var field in fields)
@@ -52,6 +52,10 @@ namespace Mindee.UnitTests.V2.Product.Generated
             Assert.Single(fields["taxes"].ListField.Items);
             Assert.Equal(3, fields["taxes"].ListField.Items.First().ObjectField.Fields.Count);
             Assert.Equal(31.5, fields["taxes"].ListField.Items.First().ObjectField.Fields["base"].Value);
+
+            Assert.NotNull(fields["supplier_address"].ObjectField);
+            Assert.NotNull(fields["supplier_address"].ObjectField.Fields["country"]);
+            Assert.Equal("USA", fields["supplier_address"].ObjectField.Fields["country"].Value);
         }
 
         private static async Task<AsyncInferenceResponse> GetAsyncPrediction(string name)

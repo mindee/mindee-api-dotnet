@@ -58,19 +58,6 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response.Inference.Result.Fields["supplier_name"]);
         }
 
-        [Fact(Skip = "URL sources aren't supported yet.")]
-        public async Task Parse_Url_Standard_SinglePage_MustSucceed()
-        {
-            var inputSource =
-                new UrlInputSource(
-                    "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/products/expense_receipts/default_sample.jpg");
-            var predictOptions = new InferenceOptionsV2(modelId: _findocModelId);
-            var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
-            Assert.NotNull(response);
-            Assert.NotNull(response.Inference);
-            Assert.Null(response.Inference.Result.Options);
-        }
-
         [Fact]
         public async Task Invalid_UUID_MustThrowError422()
         {

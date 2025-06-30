@@ -2,7 +2,6 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using Mindee.Parsing.Custom;
 
 namespace Mindee.Parsing.V2
 {
@@ -21,11 +20,11 @@ namespace Mindee.Parsing.V2
             // read the response JSON into an object
             JsonObject jsonObject = (JsonObject)JsonSerializer.Deserialize(ref reader, typeof(JsonObject), options);
 
-            SimpleField field;
-
             jsonObject.TryGetPropertyValue("value", out var fieldValue);
+            if (fieldValue == null)
+                return new SimpleField(value: null);
 
-            System.Console.WriteLine(fieldValue);
+            SimpleField field;
 
             switch (fieldValue.GetValueKind())
             {

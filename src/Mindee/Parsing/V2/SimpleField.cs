@@ -22,5 +22,13 @@ namespace Mindee.Parsing.V2
         {
             Value = value;
         }
+
+        /// <summary>
+        /// Print the field's value.
+        /// </summary>
+        public override string ToString()
+        {
+            return $"Value: {Value}";
+        }
     }
 }
