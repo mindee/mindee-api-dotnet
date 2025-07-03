@@ -1,4 +1,14 @@
-# Mindee .NET API Library Changelog
+# Mindee .NET Client Library Changelog
+
+
+## v3.29.0-rc2 - 2025-07-03
+### Changes
+* :sparkles: add __very__ basic printing of results
+### Fix
+* :coffin: remove unneeded V2 classes
+* :recycle: use an abstract class for the API to harmonize JSON parsing, logging
+* :bug: use correct route for GET on job
+
 
 ## v3.29.0-rc1 - 2025-06-30
 ### Changes

@@ -13,16 +13,15 @@ using RestSharp;
 
 namespace Mindee.Http
 {
-    internal sealed class MindeeApiV2 : IHttpApiV2
+    internal sealed class MindeeApiV2 : HttpApiV2
     {
         private readonly string _baseUrl;
         private readonly RestClient _httpClient;
-        private readonly ILogger<MindeeApiV2> _logger;
 
         public MindeeApiV2(IOptions<MindeeSettings> mindeeSettings, RestClient httpClient,
             ILogger<MindeeApiV2> logger = null)
         {
-            _logger = logger ?? NullLogger<MindeeApiV2>.Instance;
+            Logger = logger ?? NullLogger<MindeeApiV2>.Instance;
             _httpClient = httpClient;
 
             if (!string.IsNullOrWhiteSpace(mindeeSettings.Value.MindeeBaseUrl))
@@ -37,7 +36,7 @@ namespace Mindee.Http
             _httpClient.AddDefaultHeaders(defaultHeaders);
         }
 
-        public async Task<AsyncJobResponse> EnqueuePostAsync(
+        public override async Task<AsyncJobResponse> EnqueuePostAsync(
             PredictParameterV2 predictParameter
         )
         {
@@ -46,22 +45,22 @@ namespace Mindee.Http
             request.AddParameter("model_id", predictParameter.ModelId);
             AddPredictRequestParameters(predictParameter, request);
 
-            _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
+            Logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
 
             var response = await _httpClient.ExecutePostAsync(request);
             return ResponseHandler<AsyncJobResponse>(response);
         }
 
-        public async Task<AsyncInferenceResponse> DocumentQueueGetAsync(string jobId)
+        public override async Task<AsyncInferenceResponse> GetInferenceFromQueueAsync(string jobId)
         {
             var queueRequest = new RestRequest(
-                $"v2/inferences/{jobId}");
+                $"v2/jobs/{jobId}");
 
-            _logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource}...");
+            Logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource}...");
 
             var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest);
 
-            _logger?.LogDebug($"HTTP response: {queueResponse.Content}");
+            Logger?.LogDebug($"HTTP response: {queueResponse.Content}");
 
             if (queueResponse.StatusCode == HttpStatusCode.Redirect && queueResponse.Headers != null)
             {
@@ -69,7 +68,7 @@ namespace Mindee.Http
 
                 var docRequest = new RestRequest(locationHeader.Value);
 
-                _logger?.LogInformation($"HTTP GET to {_baseUrl + docRequest.Resource}...");
+                Logger?.LogInformation($"HTTP GET to {_baseUrl + docRequest.Resource}...");
                 var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
                 return ResponseHandler<AsyncInferenceResponse>(docResponse);
             }
@@ -107,22 +106,18 @@ namespace Mindee.Http
         private TResponse ResponseHandler<TResponse>(RestResponse restResponse)
             where TResponse : CommonResponse, new()
         {
-            _logger?.LogDebug($"HTTP response: {restResponse.Content}");
+            Logger?.LogDebug($"HTTP response: {restResponse.Content}");
 
             string errorMessage = "Mindee API client: ";
 
-            if (!string.IsNullOrWhiteSpace(restResponse.Content))
+            if (restResponse.IsSuccessful && !string.IsNullOrWhiteSpace(restResponse.Content))
             {
-                _logger?.LogInformation($"Parsing response ...");
+                Logger?.LogInformation("Parsing successful response ...");
                 try
                 {
                     var model = JsonSerializer.Deserialize<TResponse>(restResponse.Content);
                     model.RawResponse = restResponse.Content;
-
-                    if (restResponse.IsSuccessful)
-                    {
-                        return model;
-                    }
+                    return model;
                 }
                 catch (Exception ex)
                 {
@@ -142,41 +137,12 @@ namespace Mindee.Http
                     }
 
                     errorMessage += ex.Message;
-                    _logger?.LogCritical(errorMessage);
+                    Logger?.LogCritical(errorMessage);
                     throw new MindeeException(errorMessage);
                 }
             }
 
-
-            // -----------------------------------------------------------------
-            // [TEMP] Fallback for placeholder error format:
-            // {
-            //    "status": 400,
-            //    "details": "Some explanation"
-            // }
-            // -----------------------------------------------------------------
-            try
-            {
-                using var doc = JsonDocument.Parse(restResponse.Content ?? "{}");
-                if (doc.RootElement.TryGetProperty("status", out var statusProp) &&
-                    doc.RootElement.TryGetProperty("detail", out var detailsProp))
-                {
-                    var fallbackError = new ErrorResponse
-                    {
-                        Status = statusProp.GetInt32(),
-                        Detail = detailsProp.GetString()
-                    };
-
-                    throw new MindeeHttpExceptionV2(fallbackError);
-                }
-                var error = new ErrorResponse { Detail = "Unknown error", Status = 500 };
-                throw new MindeeHttpExceptionV2(error);
-            }
-            catch (JsonException)
-            {
-                var error = new ErrorResponse { Detail = "Unknown error", Status = 500 };
-                throw new MindeeHttpExceptionV2(error);
-            }
+            throw new MindeeHttpExceptionV2(GetErrorFromContent(restResponse.Content));
         }
     }
 }

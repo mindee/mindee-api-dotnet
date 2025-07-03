@@ -24,11 +24,11 @@ namespace Mindee.Parsing.V2
         }
 
         /// <summary>
-        /// Print the field's value.
+        /// String representation of the field..
         /// </summary>
         public override string ToString()
         {
-            return $"Value: {Value}";
+            return $"{Value}";
         }
     }
 }

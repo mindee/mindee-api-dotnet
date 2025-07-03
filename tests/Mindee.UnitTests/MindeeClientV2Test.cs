@@ -12,13 +12,13 @@ namespace Mindee.UnitTests
     public class MindeeClientV2Test
     {
         private IPdfOperation GetDefaultPdfOperation() => new DocNetApi(new NullLogger<DocNetApi>());
-        private MindeeClientV2 MakeCustomMindeeClientV2(Mock<IHttpApiV2> predictable)
+        private MindeeClientV2 MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
         {
             predictable.Setup(x => x.EnqueuePostAsync(
                     It.IsAny<PredictParameterV2>()
                 ))
                 .ReturnsAsync(new AsyncJobResponse());
-            predictable.Setup(x => x.DocumentQueueGetAsync(
+            predictable.Setup(x => x.GetInferenceFromQueueAsync(
                 It.IsAny<string>()
             )).ReturnsAsync(new AsyncInferenceResponse());
             return new MindeeClientV2(GetDefaultPdfOperation(), predictable.Object);
@@ -27,7 +27,7 @@ namespace Mindee.UnitTests
         [Fact]
         public async Task Enqueue_Post_Async()
         {
-            var predictable = new Mock<IHttpApiV2>();
+            var predictable = new Mock<HttpApiV2>();
             var mindeeClient = MakeCustomMindeeClientV2(predictable);
 
             var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
@@ -43,13 +43,13 @@ namespace Mindee.UnitTests
         [Fact]
         public async Task Document_GetQueued_Async()
         {
-            var predictable = new Mock<IHttpApiV2>();
+            var predictable = new Mock<HttpApiV2>();
             var mindeeClient = MakeCustomMindeeClientV2(predictable);
             var response = await mindeeClient.ParseQueuedAsync(
                 "dummy-id");
 
             Assert.NotNull(response);
-            predictable.Verify(p => p.DocumentQueueGetAsync(
+            predictable.Verify(p => p.GetInferenceFromQueueAsync(
                     It.IsAny<string>())
                 , Times.AtMostOnce());
         }

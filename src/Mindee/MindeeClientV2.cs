@@ -20,7 +20,7 @@ namespace Mindee
     public sealed class MindeeClientV2
     {
         private readonly IPdfOperation _pdfOperation;
-        private readonly IHttpApiV2 _mindeeApi;
+        private readonly HttpApiV2 _mindeeApi;
         private readonly ILogger _logger;
         private readonly ILoggerFactory _loggerFactory;
 
@@ -83,7 +83,7 @@ namespace Mindee
         /// <param name="pdfOperation"><see cref="IPdfOperation"/></param>
         /// <param name="httpApi"><see cref="IHttpApi"/></param>
         /// <param name="logger"></param>
-        public MindeeClientV2(IPdfOperation pdfOperation, IHttpApiV2 httpApi, ILoggerFactory logger = null)
+        public MindeeClientV2(IPdfOperation pdfOperation, HttpApiV2 httpApi, ILoggerFactory logger = null)
         {
             _pdfOperation = pdfOperation;
             _mindeeApi = httpApi;
@@ -159,8 +159,7 @@ namespace Mindee
             {
                 throw new ArgumentNullException(jobId);
             }
-
-            return await _mindeeApi.DocumentQueueGetAsync(jobId);
+            return await _mindeeApi.GetInferenceFromQueueAsync(jobId);
         }
 
 
