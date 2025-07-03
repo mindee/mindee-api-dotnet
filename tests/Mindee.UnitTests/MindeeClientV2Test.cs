@@ -56,7 +56,7 @@ namespace Mindee.UnitTests
         // NOTE: The EnqueueAndParseAsync() method is covered in the integration tests.
 
         [Fact]
-        public Task Inference_LoadsLocally()
+        public void Inference_LoadsLocally()
         {
             var mindeeClient = new MindeeClientV2("dummy");
             var localResponse = new LocalResponse(new FileInfo("Resources/v2/products/financial_document/complete.json"));
