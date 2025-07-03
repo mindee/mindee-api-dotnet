@@ -66,5 +66,20 @@ namespace Mindee.Parsing.V2
             ListField = listField;
             ObjectField = objectField;
         }
+
+        /// <summary>
+        /// String representation of the field.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            if (SimpleField != null)
+                return SimpleField.ToString();
+            if (ListField != null)
+                return ListField.ToString();
+            if (ObjectField != null)
+                return ObjectField.ToString();
+            return "";
+        }
     }
 }

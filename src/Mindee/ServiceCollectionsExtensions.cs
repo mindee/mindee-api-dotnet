@@ -178,7 +178,7 @@ namespace Mindee.Extensions.DependencyInjection
             string sectionName = "Mindee")
         {
             services.AddSingleton<MindeeClientV2>();
-            services.AddSingleton<IHttpApiV2, MindeeApiV2>();
+            services.AddSingleton<HttpApiV2, MindeeApiV2>();
             services.AddOptions<MindeeSettings>()
                 .BindConfiguration(sectionName)
                 .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee api key is missing");

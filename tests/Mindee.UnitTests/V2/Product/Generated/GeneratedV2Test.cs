@@ -50,19 +50,23 @@ namespace Mindee.UnitTests.V2.Product.Generated
             var fields = response.Inference.Result.Fields;
             Assert.Equal(21, fields.Count);
             Assert.Single(fields["taxes"].ListField.Items);
+            Assert.NotNull(fields["taxes"].ToString());
             Assert.Equal(3, fields["taxes"].ListField.Items.First().ObjectField.Fields.Count);
-            Assert.Equal(31.5, fields["taxes"].ListField.Items.First().ObjectField.Fields["base"].Value);
+            Assert.Equal(31.5, fields["taxes"].ListField.Items.First().ObjectField.Fields["base"].SimpleField.Value);
 
             Assert.NotNull(fields["supplier_address"].ObjectField);
             Assert.NotNull(fields["supplier_address"].ObjectField.Fields["country"]);
-            Assert.Equal("USA", fields["supplier_address"].ObjectField.Fields["country"].Value);
+            Assert.Equal("USA", fields["supplier_address"].ObjectField.Fields["country"].SimpleField.Value);
+            Assert.Equal("USA", fields["supplier_address"].ObjectField.Fields["country"].ToString());
+
+            Assert.NotNull(fields["supplier_address"].ToString());
         }
 
         private static async Task<AsyncInferenceResponse> GetAsyncPrediction(string name)
         {
             string fileName = $"Resources/v2/products/financial_document/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApiV2(fileName);
-            return await mindeeAPi.DocumentQueueGetAsync("jobid");
+            return await mindeeAPi.GetInferenceFromQueueAsync("jobid");
         }
     }
 }

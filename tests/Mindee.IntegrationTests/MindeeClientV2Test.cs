@@ -32,9 +32,8 @@ namespace Mindee.IntegrationTests
             // make sure the mode info is filled
             Assert.NotNull(response.Inference.Model);
             Assert.Equal(_findocModelId, response.Inference.Model.Id);
-            // flaky, sometimes the server doesn't return this correctly
-            // Assert.NotNull(response.Inference.Result);
-            // Assert.Null(response.Inference.Result.Options);
+            Assert.NotNull(response.Inference.Result);
+            Assert.Null(response.Inference.Result.Options);
         }
 
         [Fact]
@@ -60,13 +59,22 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Invalid_UUID_MustThrowError422()
+        public async Task Invalid_Model_MustThrowError()
         {
             var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
             var predictOptions = new InferenceOptionsV2("INVALID MODEL ID");
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
                 () => _mindeeClientV2.EnqueueAsync(inputSource, predictOptions));
             Assert.Equal(422, ex.Status);
+        }
+
+        [Fact]
+        public async Task Invalid_Job_MustThrowError()
+        {
+            var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
+                () => _mindeeClientV2.ParseQueuedAsync("hello-my-name-is-mud"));
+            // server bug, enable when fixed
+            //Assert.Equal(404, ex.Status);
         }
     }
 }
