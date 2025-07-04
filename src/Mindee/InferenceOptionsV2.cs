@@ -31,7 +31,7 @@ namespace Mindee
         /// <summary>
         /// IDs of webhooks to propagate the API response to.
         /// </summary>
-        /// <remarks>It is not available on all API.</remarks>
+        /// <remarks>Not available on all APIs.</remarks>
         public List<string> WebhookIds { get; }
 
 

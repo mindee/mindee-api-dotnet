@@ -124,29 +124,6 @@ namespace Mindee
         }
 
         /// <summary>
-        /// Add a URL input source to an async queue.
-        /// </summary>
-        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="inferenceOptions"><see cref="InferenceOptionsV2"/></param>
-        /// <returns><see cref="AsyncJobResponse"/></returns>
-        /// <exception cref="MindeeException"></exception>
-        public async Task<AsyncJobResponse> EnqueueAsync(
-            UrlInputSource inputSource
-            , InferenceOptionsV2 inferenceOptions)
-        {
-            _logger?.LogInformation(message: "Enqueuing...");
-
-            return await _mindeeApi.EnqueuePostAsync(
-                new PredictParameterV2(
-                    localSource: null,
-                    modelId: inferenceOptions.ModelId,
-                    rag: inferenceOptions.Rag,
-                    alias: inferenceOptions.Alias,
-                    webhookIds: inferenceOptions.WebhookIds
-                ));
-        }
-
-        /// <summary>
         /// Parse a document from a Generated async queue.
         /// </summary>
         /// <param name="jobId">The job id.</param>
@@ -193,33 +170,6 @@ namespace Mindee
         }
 
         /// <summary>
-        /// Add the document to an async queue, poll, and parse when complete.
-        /// </summary>
-        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="inferenceOptions"><see cref="InferenceOptionsV2"/></param>
-        /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
-        /// <returns><see cref="AsyncInferenceResponse"/></returns>
-        /// <exception cref="MindeeException"></exception>
-        public async Task<AsyncInferenceResponse> EnqueueAndParseAsync(
-            UrlInputSource inputSource
-            , InferenceOptionsV2 inferenceOptions
-            , AsyncPollingOptions pollingOptions = null)
-        {
-            _logger?.LogInformation("Asynchronous parsing ...");
-
-            if (pollingOptions == null)
-            {
-                pollingOptions = new AsyncPollingOptions();
-            }
-
-            var enqueueResponse = await EnqueueAsync(
-                inputSource,
-                inferenceOptions);
-
-            return await PollForResultsAsync(enqueueResponse, pollingOptions);
-        }
-
-        /// <summary>
         /// Poll for results until the prediction is retrieved or the max amount of attempts is reached.
         /// </summary>
         /// <param name="enqueueResponse"><see cref="AsyncJobResponse"/></param>
@@ -254,12 +204,12 @@ namespace Mindee
         }
 
         /// <summary>
-        /// Load a local prediction.
+        /// Load a local inference.
         /// Typically used when wanting to load from a webhook callback.
         /// However, any kind of Mindee response may be loaded.
         /// </summary>
         /// <returns></returns>
-        public AsyncInferenceResponse LoadPrediction(
+        public AsyncInferenceResponse LoadInference(
             LocalResponse localResponse)
         {
             var model = JsonSerializer.Deserialize<AsyncInferenceResponse>(localResponse.FileBytes);

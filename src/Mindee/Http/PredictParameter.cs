@@ -11,7 +11,7 @@ namespace Mindee.Http
         /// <summary>
         /// Whether to retrieve the full text OCR on OTS products.
         /// </summary>
-        /// <remarks>It is not available on all APIs.</remarks>
+        /// <remarks>Not available on all APIs.</remarks>
         public bool AllWords { get; }
 
         /// <summary>
