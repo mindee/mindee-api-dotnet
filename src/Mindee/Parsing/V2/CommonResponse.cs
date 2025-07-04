@@ -1,7 +1,7 @@
 namespace Mindee.Parsing.V2
 {
     /// <summary>
-    /// Represent common response information from Mindee API.
+    /// Common response information from Mindee API V2.
     /// </summary>
     public abstract class CommonResponse
     {
