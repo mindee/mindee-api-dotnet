@@ -96,13 +96,13 @@ namespace Mindee
         /// Add a local input source to a Generated async queue.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="inferenceOptions"><see cref="InferenceOptionsV2"/></param>
+        /// <param name="inferencePredictOptions"><see cref="InferencePredictOptions"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <returns><see cref="AsyncJobResponse"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncJobResponse> EnqueueAsync(
             LocalInputSource inputSource
-            , InferenceOptionsV2 inferenceOptions
+            , InferencePredictOptions inferencePredictOptions
             , PageOptions pageOptions = null)
         {
             _logger?.LogInformation(message: "Enqueuing...");
@@ -116,10 +116,10 @@ namespace Mindee
             return await _mindeeApi.EnqueuePostAsync(
                 new PredictParameterV2(
                     localSource: inputSource,
-                    modelId: inferenceOptions.ModelId,
-                    alias: inferenceOptions.Alias,
-                    webhookIds: inferenceOptions.WebhookIds,
-                    rag: inferenceOptions.Rag
+                    modelId: inferencePredictOptions.ModelId,
+                    alias: inferencePredictOptions.Alias,
+                    webhookIds: inferencePredictOptions.WebhookIds,
+                    rag: inferencePredictOptions.Rag
                 ));
         }
 
@@ -144,14 +144,14 @@ namespace Mindee
         /// Add the document to an async queue, poll, and parse when complete.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="inferenceOptions"><see cref="InferenceOptionsV2"/></param>
+        /// <param name="inferencePredictOptions"><see cref="InferencePredictOptions"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
         /// <returns><see cref="AsyncInferenceResponse"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncInferenceResponse> EnqueueAndParseAsync(
             LocalInputSource inputSource
-            , InferenceOptionsV2 inferenceOptions
+            , InferencePredictOptions inferencePredictOptions
             , PageOptions pageOptions = null
             , AsyncPollingOptions pollingOptions = null)
         {
@@ -164,7 +164,7 @@ namespace Mindee
 
             var enqueueResponse = await EnqueueAsync(
                 inputSource,
-                inferenceOptions,
+                inferencePredictOptions,
                 pageOptions);
             return await PollForResultsAsync(enqueueResponse, pollingOptions);
         }

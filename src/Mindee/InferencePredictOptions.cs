@@ -5,7 +5,7 @@ namespace Mindee
     /// <summary>
     /// Options to pass when calling methods using the predict API V2.
     /// </summary>
-    public class InferenceOptionsV2
+    public class InferencePredictOptions
     {
         /// <summary>
         /// ID of the model.
@@ -44,7 +44,7 @@ namespace Mindee
         /// <param name="alias"><see cref="Alias"/></param>
         /// <param name="webhookIds"><see cref="WebhookIds"/></param>
         /// <param name="rag"><see cref="Rag"/></param>
-        public InferenceOptionsV2(
+        public InferencePredictOptions(
             string modelId,
             bool fullText = false,
             string alias = null,
