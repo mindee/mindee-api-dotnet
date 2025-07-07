@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.V2
 {
     /// <summary>
-    /// Define an enqueued job.
+    /// Defines an enqueued job.
     /// </summary>
     public class Job
     {
@@ -59,6 +59,12 @@ namespace Mindee.Parsing.V2
         /// </summary>
         [JsonPropertyName("polling_url")]
         public string PollingUrl { get; set; }
+
+        /// <summary>
+        /// URL to follow for the final result (redirects automatically).
+        /// </summary>
+        [JsonPropertyName("result_url")]
+        public string ResultUrl { get; set; }
 
 
         /// <summary>

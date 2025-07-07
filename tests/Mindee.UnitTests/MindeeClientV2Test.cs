@@ -32,7 +32,7 @@ namespace Mindee.UnitTests
 
             var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
             var response = await mindeeClient.EnqueueAsync(
-                inputSource, new InferenceOptionsV2("dummy-model-id"));
+                inputSource, new InferencePredictOptions("dummy-model-id"));
 
             Assert.NotNull(response);
             predictable.Verify(p => p.EnqueuePostAsync(
@@ -54,6 +54,17 @@ namespace Mindee.UnitTests
                 , Times.AtMostOnce());
         }
         // NOTE: The EnqueueAndParseAsync() method is covered in the integration tests.
+
+        [Fact]
+        public void Inference_LoadsLocally()
+        {
+            var mindeeClient = new MindeeClientV2("dummy");
+            var localResponse = new LocalResponse(new FileInfo("Resources/v2/products/financial_document/complete.json"));
+            var locallyLoadedResponse = mindeeClient.LoadInference(localResponse);
+            Assert.NotNull(locallyLoadedResponse);
+            Assert.Equal("12345678-1234-1234-1234-123456789abc", locallyLoadedResponse.Inference.Model.Id);
+            Assert.Equal("John Smith", locallyLoadedResponse.Inference.Result.Fields["supplier_name"].SimpleField.Value);
+        }
     }
 
 }

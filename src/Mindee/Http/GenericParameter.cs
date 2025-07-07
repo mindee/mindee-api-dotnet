@@ -22,7 +22,7 @@ namespace Mindee.Http
         /// Whether to include the full text data for async APIs.
         /// This performs a full OCR operation on the server and will increase response time and payload size.
         /// </summary>
-        /// <remarks>It is not available on all API.</remarks>
+        /// <remarks>Not available on all APIs.</remarks>
         public bool FullText { get; }
 
         /// <summary>

@@ -13,7 +13,7 @@ namespace Mindee
         /// Whether to include all the words on each page.
         /// This performs a full OCR operation on the server and will increase response time.
         /// </summary>
-        /// <remarks>It is not available on all API.</remarks>
+        /// <remarks>Not available on all APIs.</remarks>
         public bool AllWords { get; }
 
         /// <summary>
@@ -26,7 +26,6 @@ namespace Mindee
         /// Whether to include cropper results for each page.
         /// This performs a cropping operation on the server and will increase response time.
         /// </summary>
-        /// <remarks>It is not available in API builder.</remarks>
         public bool Cropper { get; }
 
         /// <summary>
