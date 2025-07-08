@@ -57,7 +57,7 @@ namespace Mindee
         /// <param name="rag"><see cref="Rag"/></param>
         /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <param name="pollingOptions"><see cref="PollingOptions"/></param>
-        public InferencePredictOptions(
+        private InferencePredictOptions(
             string modelId,
             bool fullText = false,
             string alias = null,
@@ -197,7 +197,7 @@ namespace Mindee
             /// </summary>
             /// <returns></returns>
             public InferencePredictOptions Build() =>
-                new InferencePredictOptions(
+                new(
                     _modelId,
                     _fullText,
                     _alias,

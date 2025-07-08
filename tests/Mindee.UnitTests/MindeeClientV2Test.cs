@@ -32,7 +32,7 @@ namespace Mindee.UnitTests
 
             var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
             var response = await mindeeClient.EnqueueAsync(
-                inputSource, new InferencePredictOptions("dummy-model-id"));
+                inputSource, InferencePredictOptions.Create("dummy-model-id").Build());
 
             Assert.NotNull(response);
             predictable.Verify(p => p.EnqueuePostAsync(
