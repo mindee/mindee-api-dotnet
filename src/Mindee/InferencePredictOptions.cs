@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Mindee.Input;
 
 namespace Mindee
 {
@@ -33,6 +34,15 @@ namespace Mindee
         /// </summary>
         public List<string> WebhookIds { get; }
 
+        /// <summary>
+        /// Page options.
+        /// </summary>
+        public PageOptions PageOptions { get; set; }
+
+        /// <summary>
+        /// Polling options.
+        /// </summary>
+        public AsyncPollingOptions PollingOptions { get; set; }
 
 
         /// <summary>
@@ -43,12 +53,16 @@ namespace Mindee
         /// <param name="alias"><see cref="Alias"/></param>
         /// <param name="webhookIds"><see cref="WebhookIds"/></param>
         /// <param name="rag"><see cref="Rag"/></param>
+        /// <param name="pageOptions"><see cref="PageOptions"/></param>
+        /// <param name="pollingOptions"><see cref="PollingOptions"/></param>
         public InferencePredictOptions(
             string modelId,
             bool fullText = false,
             string alias = null,
             List<string> webhookIds = null,
-            bool rag = false
+            bool rag = false,
+            PageOptions pageOptions = null,
+            AsyncPollingOptions pollingOptions = null
         )
         {
             ModelId = modelId;
@@ -56,6 +70,8 @@ namespace Mindee
             Alias = alias;
             WebhookIds = webhookIds ?? [];
             Rag = rag;
+            PageOptions = pageOptions;
+            PollingOptions = pollingOptions;
         }
     }
 }
