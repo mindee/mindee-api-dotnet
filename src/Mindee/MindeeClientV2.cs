@@ -97,20 +97,18 @@ namespace Mindee
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
         /// <param name="inferencePredictOptions"><see cref="InferencePredictOptions"/></param>
-        /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <returns><see cref="AsyncJobResponse"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncJobResponse> EnqueueAsync(
             LocalInputSource inputSource
-            , InferencePredictOptions inferencePredictOptions
-            , PageOptions pageOptions = null)
+            , InferencePredictOptions inferencePredictOptions)
         {
             _logger?.LogInformation(message: "Enqueuing...");
 
-            if (pageOptions != null && inputSource.IsPdf())
+            if (inferencePredictOptions.PageOptions != null && inputSource.IsPdf())
             {
                 inputSource.FileBytes = _pdfOperation.Split(
-                    new SplitQuery(inputSource.FileBytes, pageOptions)).File;
+                    new SplitQuery(inputSource.FileBytes, inferencePredictOptions.PageOptions)).File;
             }
 
             return await _mindeeApi.EnqueuePostAsync(
@@ -145,28 +143,23 @@ namespace Mindee
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
         /// <param name="inferencePredictOptions"><see cref="InferencePredictOptions"/></param>
-        /// <param name="pageOptions"><see cref="PageOptions"/></param>
-        /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
         /// <returns><see cref="AsyncInferenceResponse"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncInferenceResponse> EnqueueAndParseAsync(
             LocalInputSource inputSource
-            , InferencePredictOptions inferencePredictOptions
-            , PageOptions pageOptions = null
-            , AsyncPollingOptions pollingOptions = null)
+            , InferencePredictOptions inferencePredictOptions)
         {
             _logger?.LogInformation("Asynchronous parsing ...");
 
-            if (pollingOptions == null)
+            if (inferencePredictOptions.PollingOptions == null)
             {
-                pollingOptions = new AsyncPollingOptions();
+                inferencePredictOptions.PollingOptions = new AsyncPollingOptions();
             }
 
             var enqueueResponse = await EnqueueAsync(
                 inputSource,
-                inferencePredictOptions,
-                pageOptions);
-            return await PollForResultsAsync(enqueueResponse, pollingOptions);
+                inferencePredictOptions);
+            return await PollForResultsAsync(enqueueResponse, inferencePredictOptions.PollingOptions);
         }
 
         /// <summary>
