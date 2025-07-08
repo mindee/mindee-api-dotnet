@@ -22,7 +22,7 @@ namespace Mindee.IntegrationTests
         {
             var inputSource = new LocalInputSource(
                 "Resources/file_types/pdf/multipage_cut-2.pdf");
-            var predictOptions = InferencePredictOptions.Create(modelId: _findocModelId).Build();
+            var predictOptions = new InferencePredictOptions(modelId: _findocModelId);
             var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -41,7 +41,7 @@ namespace Mindee.IntegrationTests
         {
             var inputSource = new LocalInputSource(
                 "Resources/products/financial_document/default_sample.jpg");
-            var predictOptions = InferencePredictOptions.Create(modelId: _findocModelId).Build();
+            var predictOptions = new InferencePredictOptions(modelId: _findocModelId);
             var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -62,7 +62,7 @@ namespace Mindee.IntegrationTests
         public async Task Invalid_Model_MustThrowError()
         {
             var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
-            var predictOptions = InferencePredictOptions.Create("INVALID MODEL ID").Build();
+            var predictOptions = new InferencePredictOptions("INVALID MODEL ID");
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
                 () => _mindeeClientV2.EnqueueAsync(inputSource, predictOptions));
             Assert.Equal(422, ex.Status);
