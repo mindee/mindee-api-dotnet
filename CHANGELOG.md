@@ -1,5 +1,14 @@
 # Mindee .NET Client Library Changelog
 
+## v3.29.0-rc3 - 2025-07-09
+### Changes
+* :sparkles: merge enqueue parameters into a single object
+### Fixes
+* :recycle: `field` property of `ObjectField`s now deserializes into an `InferenceFields` instance.
+* :recycle: remove redundant logic
+* :memo: fix documentation typos
+* :recycle: fix code sample
+
 
 ## v3.29.0-rc2 - 2025-07-03
 ### Changes

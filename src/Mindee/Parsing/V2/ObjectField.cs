@@ -13,7 +13,7 @@ namespace Mindee.Parsing.V2
         /// Detail relevant to the error.
         /// </summary>
         [JsonPropertyName("fields")]
-        public Dictionary<string, DynamicField> Fields { get; set; }
+        public InferenceFields Fields { get; set; }
 
         /// <summary>
         /// Print the value for all fields.
