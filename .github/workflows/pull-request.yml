@@ -19,6 +19,9 @@ jobs:
   codeql:
     uses: ./.github/workflows/_codeql.yml
     needs: test-units
+    permissions:
+      actions: read
+      security-events: write
   test-integrations:
     uses: ./.github/workflows/_test-integrations.yml
     needs: codeql
