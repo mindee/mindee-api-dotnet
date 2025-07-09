@@ -24,6 +24,7 @@ jobs:
     permissions:
       actions: read
       security-events: write
+      contents: read
   test-integrations:
     uses: ./.github/workflows/_test-integrations.yml
     needs: codeql
