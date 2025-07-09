@@ -1,6 +1,6 @@
 using Mindee.Parsing.V2;
 
-namespace Mindee.UnitTests.V2.Product.Generated
+namespace Mindee.UnitTests.V2
 {
     [Trait("Category", "InferenceV2")]
     [Trait("Category", "V2")]
