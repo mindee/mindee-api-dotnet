@@ -3,7 +3,7 @@ name: Pull Request
 on:
   pull_request:
 
-permissions:
+permissions: # For warnings only, doesn't do anything.
   contents: read
   pull-requests: read
 
@@ -11,7 +11,9 @@ jobs:
   static-analysis:
     uses: ./.github/workflows/_static-analysis.yml
     permissions:
+      actions: read
       security-events: write
+      contents: read
   test-units:
     uses: ./.github/workflows/_test-units.yml
     needs: static-analysis
