@@ -3,21 +3,33 @@ name: Pull Request
 on:
   pull_request:
 
+permissions: # For warnings only, doesn't do anything.
+  contents: read
+  pull-requests: read
+
 jobs:
-  static_analysis:
-    uses: mindee/mindee-api-dotnet/.github/workflows/_static-analysis.yml@main
-  test_units:
-    uses: mindee/mindee-api-dotnet/.github/workflows/_test-units.yml@main
-    needs: static_analysis
+  static-analysis:
+    uses: ./.github/workflows/_static-analysis.yml
+    permissions:
+      actions: read
+      security-events: write
+      contents: read
+  test-units:
+    uses: ./.github/workflows/_test-units.yml
+    needs: static-analysis
     secrets: inherit
   codeql:
-    uses: mindee/mindee-api-dotnet/.github/workflows/_codeql.yml@main
-    needs: test_units
-  test_integrations:
-    uses: mindee/mindee-api-dotnet/.github/workflows/_test-integrations.yml@main
-    needs: test_units
+    uses: ./.github/workflows/_codeql.yml
+    needs: test-units
+    permissions:
+      actions: read
+      security-events: write
+      contents: read
+  test-integrations:
+    uses: ./.github/workflows/_test-integrations.yml
+    needs: codeql
     secrets: inherit
-  test_code_samples:
-    uses: mindee/mindee-api-dotnet/.github/workflows/_test-code-samples.yml@main
-    needs: test_units
+  test-code-samples:
+    uses: ./.github/workflows/_test-code-samples.yml
+    needs: test-integrations
     secrets: inherit

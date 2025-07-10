@@ -1,10 +1,10 @@
 using Mindee.Parsing.V2;
 
-namespace Mindee.UnitTests.V2.Product.Generated
+namespace Mindee.UnitTests.V2
 {
-    [Trait("Category", "GeneratedV2")]
+    [Trait("Category", "InferenceV2")]
     [Trait("Category", "V2")]
-    public class GeneratedV2Test
+    public class InferenceV2Test
     {
         [Fact]
         public async Task AsyncPredict_WhenEmpty_MustHaveValidProperties()
