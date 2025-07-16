@@ -24,7 +24,7 @@ namespace Mindee.Parsing.Common
         public DateTime? CreatedAt { get; set; }
 
         /// <summary>
-        /// File representation within a workflow execution.
+        /// ResultFile representation within a workflow execution.
         /// </summary>
         [JsonPropertyName("file")]
         public ExecutionFile File { get; set; }

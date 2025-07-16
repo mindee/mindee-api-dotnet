@@ -96,28 +96,28 @@ namespace Mindee
         /// Add a local input source to a Generated async queue.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="inferencePredictOptions"><see cref="InferencePredictOptions"/></param>
+        /// <param name="inferenceParameters"><see cref="InferenceParameters"/></param>
         /// <returns><see cref="AsyncJobResponse"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncJobResponse> EnqueueAsync(
             LocalInputSource inputSource
-            , InferencePredictOptions inferencePredictOptions)
+            , InferenceParameters inferenceParameters)
         {
             _logger?.LogInformation(message: "Enqueuing...");
 
-            if (inferencePredictOptions.PageOptions != null && inputSource.IsPdf())
+            if (inferenceParameters.PageOptions != null && inputSource.IsPdf())
             {
                 inputSource.FileBytes = _pdfOperation.Split(
-                    new SplitQuery(inputSource.FileBytes, inferencePredictOptions.PageOptions)).File;
+                    new SplitQuery(inputSource.FileBytes, inferenceParameters.PageOptions)).File;
             }
 
             return await _mindeeApi.EnqueuePostAsync(
                 new PredictParameterV2(
                     localSource: inputSource,
-                    modelId: inferencePredictOptions.ModelId,
-                    alias: inferencePredictOptions.Alias,
-                    webhookIds: inferencePredictOptions.WebhookIds,
-                    rag: inferencePredictOptions.Rag
+                    modelId: inferenceParameters.ModelId,
+                    alias: inferenceParameters.Alias,
+                    webhookIds: inferenceParameters.WebhookIds,
+                    rag: inferenceParameters.Rag
                 ));
         }
 
@@ -142,24 +142,24 @@ namespace Mindee
         /// Add the document to an async queue, poll, and parse when complete.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="inferencePredictOptions"><see cref="InferencePredictOptions"/></param>
+        /// <param name="inferenceParameters"><see cref="InferenceParameters"/></param>
         /// <returns><see cref="AsyncInferenceResponse"/></returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<AsyncInferenceResponse> EnqueueAndParseAsync(
             LocalInputSource inputSource
-            , InferencePredictOptions inferencePredictOptions)
+            , InferenceParameters inferenceParameters)
         {
             _logger?.LogInformation("Asynchronous parsing ...");
 
-            if (inferencePredictOptions.PollingOptions == null)
+            if (inferenceParameters.PollingOptions == null)
             {
-                inferencePredictOptions.PollingOptions = new AsyncPollingOptions();
+                inferenceParameters.PollingOptions = new AsyncPollingOptions();
             }
 
             var enqueueResponse = await EnqueueAsync(
                 inputSource,
-                inferencePredictOptions);
-            return await PollForResultsAsync(enqueueResponse, inferencePredictOptions.PollingOptions);
+                inferenceParameters);
+            return await PollForResultsAsync(enqueueResponse, inferenceParameters.PollingOptions);
         }
 
         /// <summary>

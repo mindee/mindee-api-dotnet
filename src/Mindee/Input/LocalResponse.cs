@@ -11,7 +11,7 @@ namespace Mindee.Input
     public class LocalResponse
     {
         /// <summary>
-        /// File as UTF-8 bytes.
+        /// ResultFile as UTF-8 bytes.
         /// </summary>
         public byte[] FileBytes { get; }
 

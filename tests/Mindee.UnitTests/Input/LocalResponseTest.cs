@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.Input
         // Real signature using fake secret key.
         private const string Signature = "5ed1673e34421217a5dbfcad905ee62261a3dd66c442f3edd19302072bbf70d0";
 
-        // File which the signature applies to.
+        // ResultFile which the signature applies to.
         private const string FilePath = "Resources/async/get_completed_empty.json";
 
         [Fact]

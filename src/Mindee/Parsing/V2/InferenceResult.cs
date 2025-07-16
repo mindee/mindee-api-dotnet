@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
+using Mindee.Parsing.V2.Field;
 
 namespace Mindee.Parsing.V2
 {
@@ -10,16 +11,16 @@ namespace Mindee.Parsing.V2
     public class InferenceResult
     {
         /// <summary>
-        /// Model fields..
+        /// ResultModel fields..
         /// </summary>
         [JsonPropertyName("fields")]
         public InferenceFields Fields { get; set; }
 
         /// <summary>
-        /// Options.
+        /// ResultOptions.
         /// </summary>
         [JsonPropertyName("options")]
-        public InferenceOptions Options { get; set; }
+        public InferenceResultOptions ResultOptions { get; set; }
 
         /// <summary>
         /// A prettier representation of the feature values.

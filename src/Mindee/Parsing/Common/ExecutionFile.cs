@@ -3,12 +3,12 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.Common
 {
     /// <summary>
-    /// File name.
+    /// ResultFile name.
     /// </summary>
     public class ExecutionFile
     {
         /// <summary>
-        /// File name.
+        /// ResultFile name.
         /// </summary>
         [JsonPropertyName("name")]
         public string Name { get; set; }

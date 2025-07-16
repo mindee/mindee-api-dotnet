@@ -83,7 +83,7 @@ namespace Mindee.Input
         /// <summary>
         /// Load the document to perform some checks.
         /// </summary>
-        /// <param name="fileinfo">File information from the file to load from disk.</param>
+        /// <param name="fileinfo">ResultFile information from the file to load from disk.</param>
         /// <exception cref="MindeeInputException"></exception>
         public LocalInputSource(FileInfo fileinfo)
         {

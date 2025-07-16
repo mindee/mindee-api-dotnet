@@ -22,18 +22,18 @@ namespace Mindee.IntegrationTests
         {
             var inputSource = new LocalInputSource(
                 "Resources/file_types/pdf/multipage_cut-2.pdf");
-            var predictOptions = new InferencePredictOptions(modelId: _findocModelId);
+            var predictOptions = new InferenceParameters(modelId: _findocModelId);
             var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
             // make sure the file info is filled
-            Assert.NotNull(response.Inference.File);
-            Assert.Equal("multipage_cut-2.pdf", response.Inference.File.Name);
+            Assert.NotNull(response.Inference.ResultFile);
+            Assert.Equal("multipage_cut-2.pdf", response.Inference.ResultFile.Name);
             // make sure the mode info is filled
-            Assert.NotNull(response.Inference.Model);
-            Assert.Equal(_findocModelId, response.Inference.Model.Id);
+            Assert.NotNull(response.Inference.ResultModel);
+            Assert.Equal(_findocModelId, response.Inference.ResultModel.Id);
             Assert.NotNull(response.Inference.Result);
-            Assert.Null(response.Inference.Result.Options);
+            Assert.Null(response.Inference.Result.ResultOptions);
         }
 
         [Fact]
@@ -41,16 +41,16 @@ namespace Mindee.IntegrationTests
         {
             var inputSource = new LocalInputSource(
                 "Resources/products/financial_document/default_sample.jpg");
-            var predictOptions = new InferencePredictOptions(modelId: _findocModelId);
+            var predictOptions = new InferenceParameters(modelId: _findocModelId);
             var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
             // make sure the file info is filled
-            Assert.NotNull(response.Inference.File);
-            Assert.Equal("default_sample.jpg", response.Inference.File.Name);
+            Assert.NotNull(response.Inference.ResultFile);
+            Assert.Equal("default_sample.jpg", response.Inference.ResultFile.Name);
             // make sure the mode info is filled
-            Assert.NotNull(response.Inference.Model);
-            Assert.Equal(_findocModelId, response.Inference.Model.Id);
+            Assert.NotNull(response.Inference.ResultModel);
+            Assert.Equal(_findocModelId, response.Inference.ResultModel.Id);
             // make sure fields are set
             Assert.NotNull(response.Inference.Result);
             Assert.NotNull(response.Inference.Result.Fields);
@@ -62,7 +62,7 @@ namespace Mindee.IntegrationTests
         public async Task Invalid_Model_MustThrowError()
         {
             var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
-            var predictOptions = new InferencePredictOptions("INVALID MODEL ID");
+            var predictOptions = new InferenceParameters("INVALID MODEL ID");
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
                 () => _mindeeClientV2.EnqueueAsync(inputSource, predictOptions));
             Assert.Equal(422, ex.Status);

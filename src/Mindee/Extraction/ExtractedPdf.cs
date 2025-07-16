@@ -12,7 +12,7 @@ namespace Mindee.Extraction
     public class ExtractedPdf
     {
         /// <summary>
-        /// File object for an ExtractedPdf.
+        /// ResultFile object for an ExtractedPdf.
         /// </summary>
         public readonly byte[] PdfBytes;
         /// <summary>
