@@ -8,13 +8,19 @@ string modelId = "MY_MODEL_ID";
 // Construct a new client
 MindeeClientV2 mindeeClient = new MindeeClientV2(apiKey);
 
-// Load an input source as a path string
-// Other input types can be used, as mentioned in the docs
+// Set inference parameters
+var inferenceParams = new InferenceParameters(
+    modelId: modelId
+    // If set to `true`, will enable Retrieval-Augmented Generation.
+    , rag: false
+);
+
+// Load a file from disk
 var inputSource = new LocalInputSource(filePath);
 
-// Call the product asynchronously with auto-polling
-var response = await mindeeClient
-    .EnqueueAndGetInferenceAsync(inputSource, new InferenceParameters(modelId));
+// Upload the file
+var response = await mindeeClient.EnqueueAndGetInferenceAsync(
+    inputSource, inferenceParams);
 
-// Print a summary of all the predictions
+// Print a summary of the response
 System.Console.WriteLine(response.Inference.ToString());
