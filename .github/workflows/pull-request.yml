@@ -27,7 +27,7 @@ jobs:
       contents: read
   test-integrations:
     uses: ./.github/workflows/_test-integrations.yml
-    needs: codeql
+    needs: test-units
     secrets: inherit
   test-code-samples:
     uses: ./.github/workflows/_test-code-samples.yml

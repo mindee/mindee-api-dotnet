@@ -235,5 +235,12 @@ namespace Mindee.UnitTests.Input
                 Assert.Equal(compressedWithText, initialWithText.FileBytes);
             }
         }
+
+        [Fact]
+        public void ApplyPageOperation_Should_Work()
+        {
+            var initialWithText = new LocalInputSource("Resources/file_types/pdf/multipage.pdf");
+            initialWithText.ApplyPageOptions(new PageOptions(new short[] { 1, 2 }));
+        }
     }
 }

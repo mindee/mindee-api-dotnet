@@ -1,6 +1,7 @@
 using Mindee.Parsing.V2;
+using Mindee.Parsing.V2.Field;
 
-namespace Mindee.UnitTests.V2
+namespace Mindee.UnitTests.Parsing.V2
 {
     [Trait("Category", "InferenceV2")]
     [Trait("Category", "V2")]
@@ -62,11 +63,11 @@ namespace Mindee.UnitTests.V2
             Assert.NotNull(fields["supplier_address"].ToString());
         }
 
-        private static async Task<AsyncInferenceResponse> GetAsyncPrediction(string name)
+        private static async Task<InferenceResponse> GetAsyncPrediction(string name)
         {
             string fileName = $"Resources/v2/products/financial_document/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApiV2(fileName);
-            return await mindeeAPi.GetInferenceFromQueueAsync("jobid");
+            return await mindeeAPi.ReqGetInferenceAsync("jobid");
         }
     }
 }

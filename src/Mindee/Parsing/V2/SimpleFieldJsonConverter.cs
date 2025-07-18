@@ -2,6 +2,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using Mindee.Parsing.V2.Field;
 
 namespace Mindee.Parsing.V2
 {

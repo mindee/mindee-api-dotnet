@@ -3,9 +3,9 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.V2
 {
     /// <summary>
-    /// Model information for a V2 API inference.
+    /// ResultModel information for a V2 API inference.
     /// </summary>
-    public class InferenceModel
+    public class InferenceResultModel
     {
         /// <summary>
         /// The Mindee ID of the model.

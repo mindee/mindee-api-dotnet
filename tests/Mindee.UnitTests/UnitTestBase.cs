@@ -26,9 +26,9 @@ namespace Mindee.UnitTests
                 rag: false);
         }
 
-        internal static PredictParameterV2 GetFakePredictParameterV2()
+        internal static InferencePostParameters GetFakePredictParameterV2()
         {
-            return new PredictParameterV2(
+            return new InferencePostParameters(
                 localSource: new LocalInputSource(
                     fileBytes: new byte[] { byte.MinValue },
                     filename: "cacatiti.pdf"),

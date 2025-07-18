@@ -1,5 +1,4 @@
 using System;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +9,6 @@ using Mindee.Extensions.DependencyInjection;
 using Mindee.Http;
 using Mindee.Input;
 using Mindee.Parsing.V2;
-using Mindee.Pdf;
 
 namespace Mindee
 {
@@ -19,7 +17,6 @@ namespace Mindee
     /// </summary>
     public sealed class MindeeClientV2
     {
-        private readonly IPdfOperation _pdfOperation;
         private readonly HttpApiV2 _mindeeApi;
         private readonly ILogger _logger;
         private readonly ILoggerFactory _loggerFactory;
@@ -31,15 +28,13 @@ namespace Mindee
         /// <param name="loggerFactory">Factory for the logger.</param>
         public MindeeClientV2(string apiKey, ILoggerFactory loggerFactory = null)
         {
-            var serviceCollection = new ServiceCollection();
             _loggerFactory = loggerFactory ?? LoggerFactory.Create(builder =>
             {
                 builder.SetMinimumLevel(LogLevel.Debug);
             });
             _logger = _loggerFactory.CreateLogger<MindeeClientV2>();
 
-            _pdfOperation = new DocNetApi();
-            serviceCollection.AddSingleton(_pdfOperation);
+            var serviceCollection = new ServiceCollection();
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = apiKey;
@@ -59,7 +54,6 @@ namespace Mindee
         {
             _loggerFactory = logger ?? NullLoggerFactory.Instance;
             var serviceCollection = new ServiceCollection();
-            _pdfOperation = new DocNetApi();
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = mindeeSettings.ApiKey;
@@ -80,53 +74,45 @@ namespace Mindee
         /// <summary>
         ///
         /// </summary>
-        /// <param name="pdfOperation"><see cref="IPdfOperation"/></param>
         /// <param name="httpApi"><see cref="IHttpApi"/></param>
         /// <param name="logger"></param>
-        public MindeeClientV2(IPdfOperation pdfOperation, HttpApiV2 httpApi, ILoggerFactory logger = null)
+        public MindeeClientV2(HttpApiV2 httpApi, ILoggerFactory logger = null)
         {
-            _pdfOperation = pdfOperation;
             _mindeeApi = httpApi;
             _loggerFactory = logger ?? NullLoggerFactory.Instance;
             _logger = _loggerFactory.CreateLogger<MindeeClientV2>();
         }
 
-
         /// <summary>
         /// Add a local input source to a Generated async queue.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="inferencePredictOptions"><see cref="InferencePredictOptions"/></param>
-        /// <returns><see cref="AsyncJobResponse"/></returns>
+        /// <param name="inferenceParameters"><see cref="InferenceParameters"/></param>
+        /// <returns><see cref="JobResponse"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<AsyncJobResponse> EnqueueAsync(
+        public async Task<JobResponse> EnqueueInferenceAsync(
             LocalInputSource inputSource
-            , InferencePredictOptions inferencePredictOptions)
+            , InferenceParameters inferenceParameters)
         {
             _logger?.LogInformation(message: "Enqueuing...");
 
-            if (inferencePredictOptions.PageOptions != null && inputSource.IsPdf())
-            {
-                inputSource.FileBytes = _pdfOperation.Split(
-                    new SplitQuery(inputSource.FileBytes, inferencePredictOptions.PageOptions)).File;
-            }
-
-            return await _mindeeApi.EnqueuePostAsync(
-                new PredictParameterV2(
+            return await _mindeeApi.ReqPostEnqueueInferenceAsync(
+                new InferencePostParameters(
                     localSource: inputSource,
-                    modelId: inferencePredictOptions.ModelId,
-                    alias: inferencePredictOptions.Alias,
-                    webhookIds: inferencePredictOptions.WebhookIds,
-                    rag: inferencePredictOptions.Rag
+                    modelId: inferenceParameters.ModelId,
+                    alias: inferenceParameters.Alias,
+                    webhookIds: inferenceParameters.WebhookIds,
+                    rag: inferenceParameters.Rag
                 ));
         }
 
         /// <summary>
-        /// Parse a document from a Generated async queue.
+        /// Get the status of an inference that was previously enqueued.
+        /// Can be used for polling.
         /// </summary>
         /// <param name="jobId">The job id.</param>
-        /// <returns><see cref="AsyncInferenceResponse"/></returns>
-        public async Task<AsyncInferenceResponse> ParseQueuedAsync(string jobId)
+        /// <returns><see cref="JobResponse"/></returns>
+        public async Task<JobResponse> GetJobAsync(string jobId)
         {
             _logger?.LogInformation(message: "Parse from queue...");
 
@@ -134,43 +120,59 @@ namespace Mindee
             {
                 throw new ArgumentNullException(jobId);
             }
-            return await _mindeeApi.GetInferenceFromQueueAsync(jobId);
+            return await _mindeeApi.ReqGetJobAsync(jobId);
         }
 
+        /// <summary>
+        /// Get the status of an inference that was previously enqueued.
+        /// Can be used for polling.
+        /// </summary>
+        /// <param name="inferenceId">The job id.</param>
+        /// <returns><see cref="InferenceResponse"/></returns>
+        public async Task<InferenceResponse> GetInferenceAsync(string inferenceId)
+        {
+            _logger?.LogInformation(message: "Parse from queue...");
+
+            if (string.IsNullOrWhiteSpace(inferenceId))
+            {
+                throw new ArgumentNullException(inferenceId);
+            }
+            return await _mindeeApi.ReqGetInferenceAsync(inferenceId);
+        }
 
         /// <summary>
         /// Add the document to an async queue, poll, and parse when complete.
         /// </summary>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
-        /// <param name="inferencePredictOptions"><see cref="InferencePredictOptions"/></param>
-        /// <returns><see cref="AsyncInferenceResponse"/></returns>
+        /// <param name="inferenceParameters"><see cref="InferenceParameters"/></param>
+        /// <returns><see cref="InferenceResponse"/></returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<AsyncInferenceResponse> EnqueueAndParseAsync(
+        public async Task<InferenceResponse> EnqueueAndGetInferenceAsync(
             LocalInputSource inputSource
-            , InferencePredictOptions inferencePredictOptions)
+            , InferenceParameters inferenceParameters)
         {
             _logger?.LogInformation("Asynchronous parsing ...");
 
-            if (inferencePredictOptions.PollingOptions == null)
+            if (inferenceParameters.PollingOptions == null)
             {
-                inferencePredictOptions.PollingOptions = new AsyncPollingOptions();
+                inferenceParameters.PollingOptions = new AsyncPollingOptions();
             }
 
-            var enqueueResponse = await EnqueueAsync(
+            var enqueueResponse = await EnqueueInferenceAsync(
                 inputSource,
-                inferencePredictOptions);
-            return await PollForResultsAsync(enqueueResponse, inferencePredictOptions.PollingOptions);
+                inferenceParameters);
+            return await PollForResultsAsync(enqueueResponse, inferenceParameters.PollingOptions);
         }
 
         /// <summary>
         /// Poll for results until the prediction is retrieved or the max amount of attempts is reached.
         /// </summary>
-        /// <param name="enqueueResponse"><see cref="AsyncJobResponse"/></param>
+        /// <param name="enqueueResponse"><see cref="JobResponse"/></param>
         /// <param name="pollingOptions"><see cref="AsyncPollingOptions"/></param>
-        /// <returns><see cref="AsyncInferenceResponse"/></returns>
+        /// <returns><see cref="InferenceResponse"/></returns>
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
-        private async Task<AsyncInferenceResponse> PollForResultsAsync(
-            AsyncJobResponse enqueueResponse,
+        private async Task<InferenceResponse> PollForResultsAsync(
+            JobResponse enqueueResponse,
             AsyncPollingOptions pollingOptions)
         {
             int maxRetries = pollingOptions.MaxRetries + 1;
@@ -181,34 +183,28 @@ namespace Mindee
                 pollingOptions.InitialDelaySec);
             Thread.Sleep(pollingOptions.InitialDelayMilliSec);
             int retryCount = 1;
-            AsyncInferenceResponse response;
+            JobResponse response = enqueueResponse; // First init is only for error handling purposes.
             while (retryCount < maxRetries)
             {
                 Thread.Sleep(pollingOptions.IntervalMilliSec);
                 _logger?.LogInformation("Attempting to retrieve: {} of {}", retryCount, maxRetries);
-                response = await ParseQueuedAsync(jobId);
-                if (response.Inference != null)
+                response = await GetJobAsync(jobId);
+                if (response.Job.Error != null)
                 {
-                    return response;
+                    break;
+                }
+                if (response.Job.Status.Equals("Processed"))
+                {
+                    return await GetInferenceAsync(response.Job.Id);
                 }
                 retryCount++;
             }
+            ErrorResponse error = response.Job.Error;
+            if (error != null)
+            {
+                throw new MindeeHttpExceptionV2(error.Status, error.Detail);
+            }
             throw new MindeeException($"Could not complete after {retryCount} attempts.");
-        }
-
-        /// <summary>
-        /// Load a local inference.
-        /// Typically used when wanting to load from a webhook callback.
-        /// However, any kind of Mindee response may be loaded.
-        /// </summary>
-        /// <returns></returns>
-        public AsyncInferenceResponse LoadInference(
-            LocalResponse localResponse)
-        {
-            var model = JsonSerializer.Deserialize<AsyncInferenceResponse>(localResponse.FileBytes);
-            model.RawResponse = ToString();
-
-            return model;
         }
     }
 }

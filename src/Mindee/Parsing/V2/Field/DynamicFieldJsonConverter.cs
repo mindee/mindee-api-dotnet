@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
-namespace Mindee.Parsing.V2
+namespace Mindee.Parsing.V2.Field
 {
     /// <summary>
     /// Custom deserializer for <see cref="DynamicField"/>

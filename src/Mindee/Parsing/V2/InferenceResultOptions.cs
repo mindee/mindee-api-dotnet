@@ -6,7 +6,7 @@ namespace Mindee.Parsing.V2
     /// <summary>
     /// Optional information about the document.
     /// </summary>
-    public sealed class InferenceOptions
+    public sealed class InferenceResultOptions
     {
         /// <summary>
         /// Full text extraction of the ocr result.
