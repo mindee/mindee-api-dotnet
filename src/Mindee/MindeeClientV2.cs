@@ -10,7 +10,6 @@ using Mindee.Extensions.DependencyInjection;
 using Mindee.Http;
 using Mindee.Input;
 using Mindee.Parsing.V2;
-using Mindee.Pdf;
 
 namespace Mindee
 {
@@ -19,7 +18,6 @@ namespace Mindee
     /// </summary>
     public sealed class MindeeClientV2
     {
-        private readonly IPdfOperation _pdfOperation;
         private readonly HttpApiV2 _mindeeApi;
         private readonly ILogger _logger;
         private readonly ILoggerFactory _loggerFactory;
@@ -31,15 +29,13 @@ namespace Mindee
         /// <param name="loggerFactory">Factory for the logger.</param>
         public MindeeClientV2(string apiKey, ILoggerFactory loggerFactory = null)
         {
-            var serviceCollection = new ServiceCollection();
             _loggerFactory = loggerFactory ?? LoggerFactory.Create(builder =>
             {
                 builder.SetMinimumLevel(LogLevel.Debug);
             });
             _logger = _loggerFactory.CreateLogger<MindeeClientV2>();
 
-            _pdfOperation = new DocNetApi();
-            serviceCollection.AddSingleton(_pdfOperation);
+            var serviceCollection = new ServiceCollection();
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = apiKey;
@@ -59,7 +55,6 @@ namespace Mindee
         {
             _loggerFactory = logger ?? NullLoggerFactory.Instance;
             var serviceCollection = new ServiceCollection();
-            _pdfOperation = new DocNetApi();
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = mindeeSettings.ApiKey;
@@ -80,12 +75,10 @@ namespace Mindee
         /// <summary>
         ///
         /// </summary>
-        /// <param name="pdfOperation"><see cref="IPdfOperation"/></param>
         /// <param name="httpApi"><see cref="IHttpApi"/></param>
         /// <param name="logger"></param>
-        public MindeeClientV2(IPdfOperation pdfOperation, HttpApiV2 httpApi, ILoggerFactory logger = null)
+        public MindeeClientV2(HttpApiV2 httpApi, ILoggerFactory logger = null)
         {
-            _pdfOperation = pdfOperation;
             _mindeeApi = httpApi;
             _loggerFactory = logger ?? NullLoggerFactory.Instance;
             _logger = _loggerFactory.CreateLogger<MindeeClientV2>();
@@ -106,7 +99,7 @@ namespace Mindee
             _logger?.LogInformation(message: "Enqueuing...");
 
             return await _mindeeApi.ReqPostEnqueueInferenceAsync(
-                new PredictParameterV2(
+                new InferencePostParameters(
                     localSource: inputSource,
                     modelId: inferenceParameters.ModelId,
                     alias: inferenceParameters.Alias,

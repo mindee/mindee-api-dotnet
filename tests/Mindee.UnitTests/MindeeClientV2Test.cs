@@ -1,8 +1,6 @@
-using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Http;
 using Mindee.Input;
 using Mindee.Parsing.V2;
-using Mindee.Pdf;
 using Moq;
 
 namespace Mindee.UnitTests
@@ -11,11 +9,10 @@ namespace Mindee.UnitTests
     [Trait("Category", "V2")]
     public class MindeeClientV2Test
     {
-        private IPdfOperation GetDefaultPdfOperation() => new DocNetApi(new NullLogger<DocNetApi>());
         private MindeeClientV2 MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
         {
             predictable.Setup(
-                x => x.ReqPostEnqueueInferenceAsync(It.IsAny<PredictParameterV2>())
+                x => x.ReqPostEnqueueInferenceAsync(It.IsAny<InferencePostParameters>())
                 ).ReturnsAsync(new JobResponse());
 
             predictable.Setup(
@@ -26,7 +23,7 @@ namespace Mindee.UnitTests
                 x => x.ReqGetJobAsync(It.IsAny<string>())
             ).ReturnsAsync(new JobResponse());
 
-            return new MindeeClientV2(GetDefaultPdfOperation(), predictable.Object);
+            return new MindeeClientV2(predictable.Object);
         }
 
         [Fact]
@@ -41,7 +38,7 @@ namespace Mindee.UnitTests
 
             Assert.NotNull(response);
             predictable.Verify(
-                p => p.ReqPostEnqueueInferenceAsync(It.IsAny<PredictParameterV2>()),
+                p => p.ReqPostEnqueueInferenceAsync(It.IsAny<InferencePostParameters>()),
                 Times.AtMostOnce());
         }
 

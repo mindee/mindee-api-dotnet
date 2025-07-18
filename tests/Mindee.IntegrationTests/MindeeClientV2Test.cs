@@ -41,8 +41,8 @@ namespace Mindee.IntegrationTests
         {
             var inputSource = new LocalInputSource(
                 "Resources/products/financial_document/default_sample.jpg");
-            var predictOptions = new InferenceParameters(modelId: _findocModelId);
-            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(inputSource, predictOptions);
+            var inferenceParams = new InferenceParameters(modelId: _findocModelId);
+            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(inputSource, inferenceParams);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
             // make sure the file info is filled
@@ -69,12 +69,19 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
-        public async Task Invalid_Job_MustThrowError()
+        public async Task NotFound_Job_MustThrowError()
         {
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
-                () => _mindeeClientV2.GetJobAsync("hello-my-name-is-mud"));
-            // server bug, enable when fixed
-            //Assert.Equal(404, ex.Status);
+                () => _mindeeClientV2.GetJobAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
+            Assert.Equal(404, ex.Status);
+        }
+
+        [Fact]
+        public async Task NotFound_Inference_MustThrowError()
+        {
+            var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
+                () => _mindeeClientV2.GetInferenceAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
+            Assert.Equal(404, ex.Status);
         }
     }
 }

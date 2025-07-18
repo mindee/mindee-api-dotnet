@@ -1,12 +1,11 @@
 using System.Collections.Generic;
-using Mindee.Input;
 
 namespace Mindee.Http
 {
     /// <summary>
-    /// Parameter required to use the predict feature on the API V2.
+    /// Parameters for running an inference.
     /// </summary>
-    public sealed class PredictParameterV2
+    public class InferenceOptions
     {
         /// <summary>
         /// Optional alias for the file.
@@ -30,31 +29,18 @@ namespace Mindee.Http
         public List<string> WebhookIds { get; }
 
         /// <summary>
-        /// A local input source.
+        ///
         /// </summary>
-        public LocalInputSource LocalSource { get; }
-
-
-        /// <summary>
-        /// Result parameters for requests.
-        /// </summary>
-        /// <param name="localSource">Local input source containing the file.<see cref="GenericParameter.LocalSource"/></param>
         /// <param name="modelId">ID of the model<see cref="ModelId"/></param>
         /// <param name="rag">If set, will enqueue to the workflows queue.<see cref="GenericParameter.Rag"/></param>
         /// <param name="alias">Optional alias for the filename.<see cref="Alias"/></param>
         /// <param name="webhookIds">List of webhook IDs to propagate the response to.<see cref="WebhookIds"/></param>
-        public PredictParameterV2(
-            LocalInputSource localSource,
-            string modelId,
-            bool rag,
-            string alias,
-            List<string> webhookIds)
+        public InferenceOptions(string modelId, bool rag, string alias, List<string> webhookIds)
         {
             ModelId = modelId;
             Alias = alias;
             Rag = rag;
-            LocalSource = localSource;
-            WebhookIds = webhookIds ?? [];
+            WebhookIds = webhookIds;
         }
     }
 }

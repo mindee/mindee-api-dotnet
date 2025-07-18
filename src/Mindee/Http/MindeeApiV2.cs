@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -35,7 +33,7 @@ namespace Mindee.Http
         }
 
         public override async Task<JobResponse> ReqPostEnqueueInferenceAsync(
-            PredictParameterV2 predictParameter
+            InferencePostParameters predictParameter
         )
         {
             var request = new RestRequest("v2/inferences/enqueue", Method.Post);
@@ -69,7 +67,7 @@ namespace Mindee.Http
             return handledResponse;
         }
 
-        private static void AddPredictRequestParameters(PredictParameterV2 predictParameter, RestRequest request)
+        private static void AddPredictRequestParameters(InferencePostParameters predictParameter, RestRequest request)
         {
             if (predictParameter.LocalSource != null)
             {
@@ -99,24 +97,18 @@ namespace Mindee.Http
         {
             Logger?.LogDebug($"HTTP response: {restResponse.Content}");
 
-            if (restResponse.IsSuccessful)
-            {
+            int statusCode = (int)restResponse.StatusCode;
+
+            if (statusCode is > 199 and < 400)
                 return DeserializeResponse<TResponse>(restResponse.Content);
-            }
 
             if (restResponse.Content?.Contains("status") ?? false)
             {
                 ErrorResponse error = GetErrorFromContent(restResponse.Content);
                 throw new MindeeHttpExceptionV2(error.Status, error.Detail);
             }
-
-            if ((int)restResponse.StatusCode is < 200 or > 399)
-            {
-                throw new MindeeHttpExceptionV2(
-                    (int)restResponse.StatusCode, restResponse.StatusDescription ?? "Unknown error.");
-            }
             throw new MindeeHttpExceptionV2(
-                -1, $"The server returned an unknown status: '{restResponse.Content}'");
+                statusCode, restResponse.StatusDescription ?? "Unknown error.");
         }
     }
 }

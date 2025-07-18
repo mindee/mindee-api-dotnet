@@ -3,9 +3,11 @@ using System.IO;
 using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Models;
+using Microsoft.Extensions.DependencyInjection;
 using Mindee.Exceptions;
 using Mindee.Image;
 using Mindee.Pdf;
+
 
 namespace Mindee.Input
 {
@@ -33,6 +35,8 @@ namespace Mindee.Input
         {
             ".pdf", ".webp", ".jpg", ".jpga", ".jpeg", ".png", ".heic", ".tiff", ".tif",
         };
+
+        private DocNetApi _pdfOperation;
 
         /// <summary>
         /// Construct from bytes.
@@ -156,7 +160,6 @@ namespace Mindee.Input
         /// <param name="disableSourceText">If the PDF has source text, whether to re-apply it to the original or not.</param>
         public void Compress(int quality = 85, int? maxWidth = null, int? maxHeight = null,
             bool forceSourceText = false, bool disableSourceText = true)
-
         {
             if (IsPdf())
             {
@@ -166,6 +169,28 @@ namespace Mindee.Input
             else
             {
                 this.FileBytes = ImageCompressor.CompressImage(this.FileBytes, quality, maxWidth, maxHeight);
+            }
+        }
+
+        /// <summary>
+        /// Apply cut and merge options on multipage documents.
+        /// </summary>
+        /// <param name="pageOptions"></param>
+        public void ApplyPageOptions(PageOptions pageOptions)
+        {
+            var serviceCollection = new ServiceCollection();
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+            _pdfOperation = serviceProvider.GetService<DocNetApi>();
+            if (_pdfOperation == null)
+            {
+                _pdfOperation = new DocNetApi();
+                serviceCollection.AddSingleton(_pdfOperation);
+            }
+
+            if (pageOptions != null && IsPdf())
+            {
+                FileBytes = _pdfOperation.Split(
+                    new SplitQuery(FileBytes, pageOptions)).File;
             }
         }
 
