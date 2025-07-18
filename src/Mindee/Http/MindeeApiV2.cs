@@ -36,7 +36,7 @@ namespace Mindee.Http
             _httpClient.AddDefaultHeaders(defaultHeaders);
         }
 
-        public override async Task<AsyncJobResponse> EnqueuePostAsync(
+        public override async Task<JobResponse> ReqPostEnqueueInferenceAsync(
             PredictParameterV2 predictParameter
         )
         {
@@ -48,33 +48,28 @@ namespace Mindee.Http
             Logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
 
             var response = await _httpClient.ExecutePostAsync(request);
-            return ResponseHandler<AsyncJobResponse>(response);
+            return ResponseHandler<JobResponse>(response);
         }
 
-        public override async Task<AsyncInferenceResponse> GetInferenceFromQueueAsync(string jobId)
+        public override async Task<JobResponse> ReqGetJob(string jobId)
         {
             var queueRequest = new RestRequest(
                 $"v2/jobs/{jobId}");
-
             Logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource}...");
-
             var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest);
-
             Logger?.LogDebug($"HTTP response: {queueResponse.Content}");
+            JobResponse handledResponse = ResponseHandler<JobResponse>(queueResponse);
+            return handledResponse;
+        }
 
-            if (queueResponse.StatusCode == HttpStatusCode.Redirect && queueResponse.Headers != null)
-            {
-                var locationHeader = queueResponse.Headers.First(h => h.Name == "Location");
 
-                var docRequest = new RestRequest(locationHeader.Value);
-
-                Logger?.LogInformation($"HTTP GET to {_baseUrl + docRequest.Resource}...");
-                var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
-                return ResponseHandler<AsyncInferenceResponse>(docResponse);
-            }
-
-            var handledResponse = ResponseHandler<AsyncInferenceResponse>(queueResponse);
-
+        public override async Task<InferenceResponse> ReqGetInference(string inferenceId)
+        {
+            var queueRequest = new RestRequest(
+                $"v2/inferences/{inferenceId}");
+            Logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource}...");
+            var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest);
+            var handledResponse = ResponseHandler<InferenceResponse>(queueResponse);
             return handledResponse;
         }
 
@@ -124,7 +119,7 @@ namespace Mindee.Http
                     try
                     {
                         var pollingErrorResponse =
-                            JsonSerializer.Deserialize<AsyncJobResponse>(restResponse.Content);
+                            JsonSerializer.Deserialize<JobResponse>(restResponse.Content);
                         if (pollingErrorResponse.Job?.Error != null)
                         {
                             throw new Mindee500Exception(pollingErrorResponse.Job.Error.Detail);
@@ -142,7 +137,17 @@ namespace Mindee.Http
                 }
             }
 
-            throw new MindeeHttpExceptionV2(GetErrorFromContent(restResponse.Content));
+            if (restResponse.Content?.Contains("status") ?? false)
+            {
+                ErrorResponse error = GetErrorFromContent(restResponse.Content);
+                throw new MindeeHttpExceptionV2(error.Status, error.Detail);
+            }
+
+            if ((int)restResponse.StatusCode is < 200 or > 399)
+            {
+                throw new MindeeHttpExceptionV2((int)restResponse.StatusCode, restResponse.StatusDescription ?? "Unknown error.");
+            }
+            throw new MindeeHttpExceptionV2(-1, $"The server returned an unknown status: '{restResponse.Content}'");
         }
     }
 }

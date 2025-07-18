@@ -5,7 +5,7 @@ namespace Mindee.Parsing.V2
     /// <summary>
     /// Represent a polling response from Mindee V2 API.
     /// </summary>
-    public class AsyncJobResponse : CommonResponse
+    public class JobResponse : CommonResponse
     {
         /// <summary>
         /// <see cref="Common.Job"/>

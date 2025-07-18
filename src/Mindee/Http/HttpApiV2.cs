@@ -26,14 +26,20 @@ namespace Mindee.Http
         /// Do a prediction according parameters for custom model defined in the Studio.
         /// </summary>
         /// <param name="predictParameter"><see cref="PredictParameterV2"/></param>
-        public abstract Task<AsyncJobResponse> EnqueuePostAsync(PredictParameterV2 predictParameter);
+        public abstract Task<JobResponse> ReqPostEnqueueInferenceAsync(PredictParameterV2 predictParameter);
 
 
         /// <summary>
-        /// Get a document which was predicted.
+        /// Get a job for an enqueued document.
         /// </summary>
         /// <param name="jobId">The job ID as returned by the predict_async route.</param>
-        public abstract Task<AsyncInferenceResponse> GetInferenceFromQueueAsync(string jobId);
+        public abstract Task<JobResponse> ReqGetJob(string jobId);
+
+        /// <summary>
+        /// Get a document inference.
+        /// </summary>
+        /// <param name="inferenceId">The inference ID as given by the job.</param>
+        public abstract Task<InferenceResponse> ReqGetInference(string inferenceId);
 
         /// <summary>
         /// Get the error from the server return.

@@ -14,13 +14,13 @@ namespace Mindee.UnitTests
         private IPdfOperation GetDefaultPdfOperation() => new DocNetApi(new NullLogger<DocNetApi>());
         private MindeeClientV2 MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
         {
-            predictable.Setup(x => x.EnqueuePostAsync(
+            predictable.Setup(x => x.ReqPostEnqueueInferenceAsync(
                     It.IsAny<PredictParameterV2>()
                 ))
-                .ReturnsAsync(new AsyncJobResponse());
-            predictable.Setup(x => x.GetInferenceFromQueueAsync(
+                .ReturnsAsync(new JobResponse());
+            predictable.Setup(x => x.ReqGetInference(
                 It.IsAny<string>()
-            )).ReturnsAsync(new AsyncInferenceResponse());
+            )).ReturnsAsync(new InferenceResponse());
             return new MindeeClientV2(GetDefaultPdfOperation(), predictable.Object);
         }
 
@@ -31,11 +31,11 @@ namespace Mindee.UnitTests
             var mindeeClient = MakeCustomMindeeClientV2(predictable);
 
             var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
-            var response = await mindeeClient.EnqueueAsync(
+            var response = await mindeeClient.EnqueueInferenceAsync(
                 inputSource, new InferenceParameters("dummy-model-id"));
 
             Assert.NotNull(response);
-            predictable.Verify(p => p.EnqueuePostAsync(
+            predictable.Verify(p => p.ReqPostEnqueueInferenceAsync(
                     It.IsAny<PredictParameterV2>())
                 , Times.AtMostOnce());
         }
@@ -45,15 +45,15 @@ namespace Mindee.UnitTests
         {
             var predictable = new Mock<HttpApiV2>();
             var mindeeClient = MakeCustomMindeeClientV2(predictable);
-            var response = await mindeeClient.ParseQueuedAsync(
+            var response = await mindeeClient.GetJobAsync(
                 "dummy-id");
 
             Assert.NotNull(response);
-            predictable.Verify(p => p.GetInferenceFromQueueAsync(
+            predictable.Verify(p => p.ReqGetInference(
                     It.IsAny<string>())
                 , Times.AtMostOnce());
         }
-        // NOTE: The EnqueueAndParseAsync() method is covered in the integration tests.
+        // NOTE: The EnqueueAndGetInferenceAsync() method is covered in the integration tests.
 
         [Fact]
         public void Inference_LoadsLocally()
