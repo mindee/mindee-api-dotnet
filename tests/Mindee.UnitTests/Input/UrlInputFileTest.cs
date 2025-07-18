@@ -67,7 +67,7 @@ namespace Mindee.UnitTests.Input
                 .ReturnsAsync(new RestResponse
                 {
                     StatusCode = HttpStatusCode.NotFound,
-                    ErrorMessage = "ResultFile not found",
+                    ErrorMessage = "File not found",
                     IsSuccessStatusCode = false
                 });
 

@@ -8,7 +8,7 @@ using SkiaSharp;
 
 namespace Mindee.UnitTests.Input
 {
-    [Trait("Category", "ResultFile loading")]
+    [Trait("Category", "File loading")]
     public class LocalInputSourceTest
     {
         [Fact]

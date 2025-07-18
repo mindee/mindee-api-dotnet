@@ -105,12 +105,6 @@ namespace Mindee
         {
             _logger?.LogInformation(message: "Enqueuing...");
 
-            if (inferenceParameters.PageOptions != null && inputSource.IsPdf())
-            {
-                inputSource.FileBytes = _pdfOperation.Split(
-                    new SplitQuery(inputSource.FileBytes, inferenceParameters.PageOptions)).File;
-            }
-
             return await _mindeeApi.ReqPostEnqueueInferenceAsync(
                 new PredictParameterV2(
                     localSource: inputSource,

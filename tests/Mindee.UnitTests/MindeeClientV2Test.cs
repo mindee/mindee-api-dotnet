@@ -14,13 +14,18 @@ namespace Mindee.UnitTests
         private IPdfOperation GetDefaultPdfOperation() => new DocNetApi(new NullLogger<DocNetApi>());
         private MindeeClientV2 MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
         {
-            predictable.Setup(x => x.ReqPostEnqueueInferenceAsync(
-                    It.IsAny<PredictParameterV2>()
-                ))
-                .ReturnsAsync(new JobResponse());
-            predictable.Setup(x => x.ReqGetInferenceAsync(
-                It.IsAny<string>()
-            )).ReturnsAsync(new InferenceResponse());
+            predictable.Setup(
+                x => x.ReqPostEnqueueInferenceAsync(It.IsAny<PredictParameterV2>())
+                ).ReturnsAsync(new JobResponse());
+
+            predictable.Setup(
+                x => x.ReqGetInferenceAsync(It.IsAny<string>())
+                ).ReturnsAsync(new InferenceResponse());
+
+            predictable.Setup(
+                x => x.ReqGetJobAsync(It.IsAny<string>())
+            ).ReturnsAsync(new JobResponse());
+
             return new MindeeClientV2(GetDefaultPdfOperation(), predictable.Object);
         }
 
@@ -35,30 +40,42 @@ namespace Mindee.UnitTests
                 inputSource, new InferenceParameters("dummy-model-id"));
 
             Assert.NotNull(response);
-            predictable.Verify(p => p.ReqPostEnqueueInferenceAsync(
-                    It.IsAny<PredictParameterV2>())
-                , Times.AtMostOnce());
+            predictable.Verify(
+                p => p.ReqPostEnqueueInferenceAsync(It.IsAny<PredictParameterV2>()),
+                Times.AtMostOnce());
         }
 
         [Fact]
-        public async Task Document_GetQueued_Async()
+        public async Task Document_GetInference_Async()
         {
             var predictable = new Mock<HttpApiV2>();
             var mindeeClient = MakeCustomMindeeClientV2(predictable);
-            var response = await mindeeClient.GetJobAsync(
-                "dummy-id");
-
+            var response = await mindeeClient.GetInferenceAsync("dummy-id");
             Assert.NotNull(response);
-            predictable.Verify(p => p.ReqGetInferenceAsync(
-                    It.IsAny<string>())
-                , Times.AtMostOnce());
+
+            predictable.Verify(
+                p => p.ReqGetInferenceAsync(It.IsAny<string>()),
+                Times.AtMostOnce());
         }
         // NOTE: The EnqueueAndGetInferenceAsync() method is covered in the integration tests.
 
         [Fact]
+        public async Task Document_GetJob_Async()
+        {
+            var predictable = new Mock<HttpApiV2>();
+            var mindeeClient = MakeCustomMindeeClientV2(predictable);
+            var response = await mindeeClient.GetJobAsync("dummy-id");
+            Assert.NotNull(response);
+
+            predictable.Verify(
+                p => p.ReqGetJobAsync(It.IsAny<string>()),
+                Times.AtMostOnce());
+        }
+
+        [Fact]
         public void Inference_LoadsLocally()
         {
-            var mindeeClient = new MindeeClientV2("dummy");
+            var mindeeClient = new MindeeClientV2(apiKey: "dummy");
             var localResponse = new LocalResponse(new FileInfo("Resources/v2/products/financial_document/complete.json"));
             var locallyLoadedResponse = mindeeClient.LoadInference(localResponse);
             Assert.NotNull(locallyLoadedResponse);

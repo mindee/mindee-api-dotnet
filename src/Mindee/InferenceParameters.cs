@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Mindee.Input;
 
 namespace Mindee
 {
@@ -9,17 +8,17 @@ namespace Mindee
     public class InferenceParameters
     {
         /// <summary>
-        /// ID of the model.
+        /// ID of the model, required.
         /// </summary>
         public string ModelId { get; }
 
         /// <summary>
-        /// If set, will enable Retrieval-Augmented Generation.
+        /// If set to `true`, will enable Retrieval-Augmented Generation.
         /// </summary>
         public bool Rag { get; }
 
         /// <summary>
-        /// Optional alias for the file.
+        /// Use an alias to link the file to your own DB. If empty, no alias will be used.
         /// </summary>
         public string Alias { get; }
 
@@ -29,31 +28,23 @@ namespace Mindee
         public List<string> WebhookIds { get; }
 
         /// <summary>
-        /// Page options.
-        /// </summary>
-        public PageOptions PageOptions { get; set; }
-
-        /// <summary>
-        /// Polling options.
+        /// Options for polling. Set only if having timeout issues.
         /// </summary>
         public AsyncPollingOptions PollingOptions { get; set; }
 
-
         /// <summary>
-        /// ResultOptions to pass when calling methods using the predict API.
+        /// Inference parameters to set when sending a file.
         /// </summary>
         /// <param name="modelId"><see cref="ModelId"/></param>
         /// <param name="alias"><see cref="Alias"/></param>
         /// <param name="webhookIds"><see cref="WebhookIds"/></param>
         /// <param name="rag"><see cref="Rag"/></param>
-        /// <param name="pageOptions"><see cref="PageOptions"/></param>
         /// <param name="pollingOptions"><see cref="PollingOptions"/></param>
         public InferenceParameters(
             string modelId,
             string alias = null,
             List<string> webhookIds = null,
             bool rag = false,
-            PageOptions pageOptions = null,
             AsyncPollingOptions pollingOptions = null
         )
         {
@@ -61,7 +52,6 @@ namespace Mindee
             Alias = alias;
             WebhookIds = webhookIds ?? [];
             Rag = rag;
-            PageOptions = pageOptions;
             PollingOptions = pollingOptions;
         }
     }
