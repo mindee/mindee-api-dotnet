@@ -1,5 +1,4 @@
 using System;
-using Mindee.Parsing.V2;
 
 namespace Mindee.Exceptions
 {
@@ -27,6 +26,14 @@ namespace Mindee.Exceptions
         {
             Detail = detail;
             Status = status;
+        }
+
+        /// <summary>
+        /// Representation of the error.
+        /// </summary>
+        public override string ToString()
+        {
+            return $"HTTP Status: {Status} - {Detail}";
         }
     }
 }
