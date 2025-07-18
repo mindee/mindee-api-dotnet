@@ -22,18 +22,11 @@ namespace Mindee.Exceptions
         /// </summary>
         /// <param name="status">Status code of the error.</param>
         /// <param name="detail">Detail sent alongside the error.</param>
-        public MindeeHttpExceptionV2(int status, String detail) : base(detail)
+        public MindeeHttpExceptionV2(int status, String detail)
+            : base($"HTTP Status: {status} - {detail}")
         {
             Detail = detail;
             Status = status;
-        }
-
-        /// <summary>
-        /// Representation of the error.
-        /// </summary>
-        public override string ToString()
-        {
-            return $"HTTP Status: {Status} - {Detail}";
         }
     }
 }
