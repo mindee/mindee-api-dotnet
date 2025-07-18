@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -51,24 +49,22 @@ namespace Mindee.Http
             return ResponseHandler<JobResponse>(response);
         }
 
-        public override async Task<JobResponse> ReqGetJob(string jobId)
+        public override async Task<JobResponse> ReqGetJobAsync(string jobId)
         {
-            var queueRequest = new RestRequest(
-                $"v2/jobs/{jobId}");
-            Logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource}...");
-            var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest);
-            Logger?.LogDebug($"HTTP response: {queueResponse.Content}");
-            JobResponse handledResponse = ResponseHandler<JobResponse>(queueResponse);
+            var request = new RestRequest($"v2/jobs/{jobId}");
+            Logger?.LogInformation($"HTTP GET to {_baseUrl + request.Resource}...");
+            var response = await _httpClient.ExecuteGetAsync(request);
+            Logger?.LogDebug($"HTTP response: {response.Content}");
+            JobResponse handledResponse = ResponseHandler<JobResponse>(response);
             return handledResponse;
         }
 
 
-        public override async Task<InferenceResponse> ReqGetInference(string inferenceId)
+        public override async Task<InferenceResponse> ReqGetInferenceAsync(string inferenceId)
         {
-            var queueRequest = new RestRequest(
-                $"v2/inferences/{inferenceId}");
-            Logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource}...");
-            var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest);
+            var request = new RestRequest($"v2/inferences/{inferenceId}");
+            Logger?.LogInformation($"HTTP GET to {_baseUrl + request.Resource}...");
+            var queueResponse = await _httpClient.ExecuteGetAsync(request);
             var handledResponse = ResponseHandler<InferenceResponse>(queueResponse);
             return handledResponse;
         }
@@ -103,38 +99,9 @@ namespace Mindee.Http
         {
             Logger?.LogDebug($"HTTP response: {restResponse.Content}");
 
-            string errorMessage = "Mindee API client: ";
-
-            if (restResponse.IsSuccessful && !string.IsNullOrWhiteSpace(restResponse.Content))
+            if (restResponse.IsSuccessful)
             {
-                Logger?.LogInformation("Parsing successful response ...");
-                try
-                {
-                    var model = JsonSerializer.Deserialize<TResponse>(restResponse.Content);
-                    model.RawResponse = restResponse.Content;
-                    return model;
-                }
-                catch (Exception ex)
-                {
-                    try
-                    {
-                        var pollingErrorResponse =
-                            JsonSerializer.Deserialize<JobResponse>(restResponse.Content);
-                        if (pollingErrorResponse.Job?.Error != null)
-                        {
-                            throw new Mindee500Exception(pollingErrorResponse.Job.Error.Detail);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        throw new MindeeException(
-                            "Couldn't deserialize response either as a polling error or a valid model response.");
-                    }
-
-                    errorMessage += ex.Message;
-                    Logger?.LogCritical(errorMessage);
-                    throw new MindeeException(errorMessage);
-                }
+                return DeserializeResponse<TResponse>(restResponse.Content);
             }
 
             if (restResponse.Content?.Contains("status") ?? false)
@@ -145,9 +112,11 @@ namespace Mindee.Http
 
             if ((int)restResponse.StatusCode is < 200 or > 399)
             {
-                throw new MindeeHttpExceptionV2((int)restResponse.StatusCode, restResponse.StatusDescription ?? "Unknown error.");
+                throw new MindeeHttpExceptionV2(
+                    (int)restResponse.StatusCode, restResponse.StatusDescription ?? "Unknown error.");
             }
-            throw new MindeeHttpExceptionV2(-1, $"The server returned an unknown status: '{restResponse.Content}'");
+            throw new MindeeHttpExceptionV2(
+                -1, $"The server returned an unknown status: '{restResponse.Content}'");
         }
     }
 }

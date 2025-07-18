@@ -67,7 +67,7 @@ namespace Mindee.UnitTests.Parsing.V2
         {
             string fileName = $"Resources/v2/products/financial_document/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApiV2(fileName);
-            return await mindeeAPi.ReqGetInference("jobid");
+            return await mindeeAPi.ReqGetInferenceAsync("jobid");
         }
     }
 }

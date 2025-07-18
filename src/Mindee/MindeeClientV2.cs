@@ -135,7 +135,7 @@ namespace Mindee
             {
                 throw new ArgumentNullException(jobId);
             }
-            return await _mindeeApi.ReqGetJob(jobId);
+            return await _mindeeApi.ReqGetJobAsync(jobId);
         }
 
 
@@ -153,7 +153,7 @@ namespace Mindee
             {
                 throw new ArgumentNullException(inferenceId);
             }
-            return await _mindeeApi.ReqGetInference(inferenceId);
+            return await _mindeeApi.ReqGetInferenceAsync(inferenceId);
         }
 
         /// <summary>

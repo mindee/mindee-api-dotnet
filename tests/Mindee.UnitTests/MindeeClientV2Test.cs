@@ -18,7 +18,7 @@ namespace Mindee.UnitTests
                     It.IsAny<PredictParameterV2>()
                 ))
                 .ReturnsAsync(new JobResponse());
-            predictable.Setup(x => x.ReqGetInference(
+            predictable.Setup(x => x.ReqGetInferenceAsync(
                 It.IsAny<string>()
             )).ReturnsAsync(new InferenceResponse());
             return new MindeeClientV2(GetDefaultPdfOperation(), predictable.Object);
@@ -49,7 +49,7 @@ namespace Mindee.UnitTests
                 "dummy-id");
 
             Assert.NotNull(response);
-            predictable.Verify(p => p.ReqGetInference(
+            predictable.Verify(p => p.ReqGetInferenceAsync(
                     It.IsAny<string>())
                 , Times.AtMostOnce());
         }
