@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
+using Mindee.Parsing.V2;
 
 namespace Mindee.Input
 {
@@ -66,6 +68,19 @@ namespace Mindee.Input
         public override string ToString()
         {
             return Encoding.UTF8.GetString(FileBytes);
+        }
+
+        /// <summary>
+        /// Load a local inference.
+        /// Typically used when wanting to load a V2 webhook callback.
+        /// </summary>
+        /// <returns></returns>
+        public TInferenceModel DeserializeResponse<TInferenceModel>() where TInferenceModel : CommonResponse, new()
+        {
+            var model = JsonSerializer.Deserialize<TInferenceModel>(FileBytes);
+            model.RawResponse = ToString();
+
+            return model;
         }
     }
 }

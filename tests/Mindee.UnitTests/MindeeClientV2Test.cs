@@ -72,9 +72,8 @@ namespace Mindee.UnitTests
         [Fact]
         public void Inference_LoadsLocally()
         {
-            var mindeeClient = new MindeeClientV2(apiKey: "dummy");
             var localResponse = new LocalResponse(new FileInfo("Resources/v2/products/financial_document/complete.json"));
-            var locallyLoadedResponse = mindeeClient.LoadInference(localResponse);
+            var locallyLoadedResponse = localResponse.DeserializeResponse<InferenceResponse>();
             Assert.NotNull(locallyLoadedResponse);
             Assert.Equal("12345678-1234-1234-1234-123456789abc", locallyLoadedResponse.Inference.ResultModel.Id);
             Assert.Equal("John Smith", locallyLoadedResponse.Inference.Result.Fields["supplier_name"].SimpleField.Value);

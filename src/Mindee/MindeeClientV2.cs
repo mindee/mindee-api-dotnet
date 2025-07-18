@@ -1,5 +1,4 @@
 using System;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -84,7 +83,6 @@ namespace Mindee
             _logger = _loggerFactory.CreateLogger<MindeeClientV2>();
         }
 
-
         /// <summary>
         /// Add a local input source to a Generated async queue.
         /// </summary>
@@ -124,7 +122,6 @@ namespace Mindee
             }
             return await _mindeeApi.ReqGetJobAsync(jobId);
         }
-
 
         /// <summary>
         /// Get the status of an inference that was previously enqueued.
@@ -196,7 +193,7 @@ namespace Mindee
                 {
                     break;
                 }
-                else if (response.Job.Status.Equals("Processed"))
+                if (response.Job.Status.Equals("Processed"))
                 {
                     return await GetInferenceAsync(response.Job.Id);
                 }
@@ -208,21 +205,6 @@ namespace Mindee
                 throw new MindeeHttpExceptionV2(error.Status, error.Detail);
             }
             throw new MindeeException($"Could not complete after {retryCount} attempts.");
-        }
-
-        /// <summary>
-        /// Load a local inference.
-        /// Typically used when wanting to load from a webhook callback.
-        /// However, any kind of Mindee response may be loaded.
-        /// </summary>
-        /// <returns></returns>
-        public InferenceResponse LoadInference(
-            LocalResponse localResponse)
-        {
-            var model = JsonSerializer.Deserialize<InferenceResponse>(localResponse.FileBytes);
-            model.RawResponse = ToString();
-
-            return model;
         }
     }
 }
