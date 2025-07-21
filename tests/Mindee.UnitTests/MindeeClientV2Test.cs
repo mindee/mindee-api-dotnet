@@ -75,7 +75,7 @@ namespace Mindee.UnitTests
             var localResponse = new LocalResponse(new FileInfo("Resources/v2/products/financial_document/complete.json"));
             var locallyLoadedResponse = localResponse.DeserializeResponse<InferenceResponse>();
             Assert.NotNull(locallyLoadedResponse);
-            Assert.Equal("12345678-1234-1234-1234-123456789abc", locallyLoadedResponse.Inference.ResultModel.Id);
+            Assert.Equal("12345678-1234-1234-1234-123456789abc", locallyLoadedResponse.Inference.Model.Id);
             Assert.Equal("John Smith", locallyLoadedResponse.Inference.Result.Fields["supplier_name"].SimpleField.Value);
         }
     }

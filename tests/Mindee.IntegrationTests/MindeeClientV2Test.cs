@@ -27,13 +27,13 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
             // make sure the file info is filled
-            Assert.NotNull(response.Inference.ResultFile);
-            Assert.Equal("multipage_cut-2.pdf", response.Inference.ResultFile.Name);
+            Assert.NotNull(response.Inference.File);
+            Assert.Equal("multipage_cut-2.pdf", response.Inference.File.Name);
             // make sure the mode info is filled
-            Assert.NotNull(response.Inference.ResultModel);
-            Assert.Equal(_findocModelId, response.Inference.ResultModel.Id);
+            Assert.NotNull(response.Inference.Model);
+            Assert.Equal(_findocModelId, response.Inference.Model.Id);
             Assert.NotNull(response.Inference.Result);
-            Assert.Null(response.Inference.Result.ResultOptions);
+            Assert.Null(response.Inference.Result.Options);
         }
 
         [Fact]
@@ -46,11 +46,11 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
             // make sure the file info is filled
-            Assert.NotNull(response.Inference.ResultFile);
-            Assert.Equal("default_sample.jpg", response.Inference.ResultFile.Name);
+            Assert.NotNull(response.Inference.File);
+            Assert.Equal("default_sample.jpg", response.Inference.File.Name);
             // make sure the mode info is filled
-            Assert.NotNull(response.Inference.ResultModel);
-            Assert.Equal(_findocModelId, response.Inference.ResultModel.Id);
+            Assert.NotNull(response.Inference.Model);
+            Assert.Equal(_findocModelId, response.Inference.Model.Id);
             // make sure fields are set
             Assert.NotNull(response.Inference.Result);
             Assert.NotNull(response.Inference.Result.Fields);

@@ -12,13 +12,13 @@ namespace Mindee.Parsing.V2
         /// ResultModel info.
         /// </summary>
         [JsonPropertyName("model")]
-        public InferenceResultModel ResultModel { get; set; }
+        public InferenceResultModel Model { get; set; }
 
         /// <summary>
         /// ResultFile info.
         /// </summary>
         [JsonPropertyName("file")]
-        public InferenceResultFile ResultFile { get; set; }
+        public InferenceResultFile File { get; set; }
 
         /// <summary>
         /// The model result values.
@@ -33,10 +33,10 @@ namespace Mindee.Parsing.V2
         {
             var result = new StringBuilder("Inference\n#########");
             result.Append("\nModel\n=====");
-            result.Append($"\n:ID: {ResultModel.Id}");
+            result.Append($"\n:ID: {Model.Id}");
             result.Append("\n\n:File:\n====");
-            result.Append($"\n:Name: {ResultFile.Name}");
-            result.Append($"\n:Alias: {ResultFile.Alias}");
+            result.Append($"\n:Name: {File.Name}");
+            result.Append($"\n:Alias: {File.Alias}");
             result.Append("\nResult\n======");
             result.Append("\n");
             result.Append(Result);

@@ -20,7 +20,7 @@ namespace Mindee.Parsing.V2
         /// ResultOptions.
         /// </summary>
         [JsonPropertyName("options")]
-        public InferenceResultOptions ResultOptions { get; set; }
+        public InferenceResultOptions Options { get; set; }
 
         /// <summary>
         /// A prettier representation of the feature values.

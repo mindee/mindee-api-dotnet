@@ -70,17 +70,17 @@ namespace Mindee
     public sealed class AsyncPollingOptions
     {
         /// <summary>
-        /// Wait this many seconds before the first polling attempt.
+        /// Initial delay before the first polling attempt.
         /// </summary>
         public double InitialDelaySec { get; }
 
         /// <summary>
-        /// Wait this many seconds between each polling attempt.
+        /// Delay between each polling attempt.
         /// </summary>
         public double IntervalSec { get; }
 
         /// <summary>
-        /// Maximum number of times to poll.
+        /// Total number of polling attempts.
         /// </summary>
         public int MaxRetries { get; }
 
