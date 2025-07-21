@@ -12,13 +12,13 @@ namespace Mindee.Input
         /// A negative index can be used, indicating an offset from the end of the document.
         /// [1, -1] represents the first and last pages of the document.
         /// </summary>
-        public short[] PageNumbers { get; }
+        public short[] PageIndexes { get; }
 
         /// <summary>
         /// <see cref="Input.PageOptionsOperation"/>
         /// </summary>
         /// <remarks>KeepOnly by default.</remarks>
-        public PageOptionsOperation PageOptionsOperation { get; }
+        public PageOptionsOperation Operation { get; }
 
         /// <summary>
         /// Apply the operation only if the document has at least this many pages.
@@ -29,17 +29,17 @@ namespace Mindee.Input
         /// <summary>
         ///
         /// </summary>
-        /// <param name="pageNumbers"><see cref="PageNumbers"/></param>
-        /// <param name="pageOptionsOperation"><see cref="PageOptionsOperation"/></param>
-        /// <param name="onMinPages"><see cref="PageOptionsOperation"/></param>
+        /// <param name="pageIndexes"><see cref="PageIndexes"/></param>
+        /// <param name="operation"><see cref="Operation"/></param>
+        /// <param name="onMinPages"><see cref="Operation"/></param>
         public PageOptions(
-            short[] pageNumbers
-            , PageOptionsOperation pageOptionsOperation = PageOptionsOperation.KeepOnly
+            short[] pageIndexes
+            , PageOptionsOperation operation = PageOptionsOperation.KeepOnly
             , ushort onMinPages = 0
             )
         {
-            PageNumbers = pageNumbers;
-            PageOptionsOperation = pageOptionsOperation;
+            PageIndexes = pageIndexes;
+            Operation = operation;
             OnMinPages = onMinPages;
         }
 
@@ -49,8 +49,8 @@ namespace Mindee.Input
         /// <returns></returns>
         public override string ToString()
         {
-            string pageNumbers = String.Join(", ", PageNumbers);
-            return $"min: {OnMinPages}, operation: {PageOptionsOperation}, pages: ({pageNumbers})";
+            string pageNumbers = String.Join(", ", PageIndexes);
+            return $"min: {OnMinPages}, operation: {Operation}, pages: ({pageNumbers})";
         }
     }
 }
