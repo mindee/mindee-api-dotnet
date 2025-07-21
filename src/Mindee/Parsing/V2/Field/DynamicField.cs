@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Mindee.Input;
 
 namespace Mindee.Parsing.V2.Field
 {
@@ -46,6 +48,19 @@ namespace Mindee.Parsing.V2.Field
         /// Value as object field.
         /// </summary>
         public ObjectField ObjectField;
+
+        /// <summary>
+        /// List of the location candidates for the value.
+        /// </summary>
+        [JsonPropertyName("locations")]
+        public List<FieldLocation> Locations { get; set; }
+
+        /// <summary>
+        /// Confidence associated with the field.
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter<FieldConfidence>))]
+        [JsonPropertyName("confidence")]
+        public FieldConfidence? Confidence { get; set; }
 
         /// <summary>
         /// Return the field class dynamically.
