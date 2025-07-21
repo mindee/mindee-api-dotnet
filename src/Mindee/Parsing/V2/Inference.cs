@@ -9,16 +9,16 @@ namespace Mindee.Parsing.V2
     public class Inference
     {
         /// <summary>
-        /// Model info.
+        /// ResultModel info.
         /// </summary>
         [JsonPropertyName("model")]
-        public InferenceModel Model { get; set; }
+        public InferenceResultModel Model { get; set; }
 
         /// <summary>
-        /// File info.
+        /// ResultFile info.
         /// </summary>
         [JsonPropertyName("file")]
-        public InferenceFile File { get; set; }
+        public InferenceResultFile File { get; set; }
 
         /// <summary>
         /// The model result values.
@@ -31,15 +31,14 @@ namespace Mindee.Parsing.V2
         /// </summary>
         public override string ToString()
         {
-            var result = new StringBuilder("#########\n");
-            result.Append("Inference\n");
-            result.Append("#########\n");
-            result.Append($":Model: {Model.Id}\n");
-            result.Append(":File:\n");
-            result.Append($"  :Name: {File.Name}\n");
-            result.Append($"  :Alias: {File.Alias}\n");
-            result.Append("\nResult\n");
-            result.Append("======\n");
+            var result = new StringBuilder("Inference\n#########");
+            result.Append("\nModel\n=====");
+            result.Append($"\n:ID: {Model.Id}");
+            result.Append("\n\n:File:\n====");
+            result.Append($"\n:Name: {File.Name}");
+            result.Append($"\n:Alias: {File.Alias}");
+            result.Append("\nResult\n======");
+            result.Append("\n");
             result.Append(Result);
 
             return SummaryHelper.Clean(result.ToString());

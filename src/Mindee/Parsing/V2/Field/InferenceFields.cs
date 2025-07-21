@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Mindee.Parsing.V2
+namespace Mindee.Parsing.V2.Field
 {
     /// <summary>
     /// Inference fields dict.

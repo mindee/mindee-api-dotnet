@@ -22,8 +22,8 @@ namespace Mindee.IntegrationTests
         {
             var inputSource = new LocalInputSource(
                 "Resources/file_types/pdf/multipage_cut-2.pdf");
-            var predictOptions = new InferencePredictOptions(modelId: _findocModelId);
-            var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
+            var predictOptions = new InferenceParameters(modelId: _findocModelId);
+            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
             // make sure the file info is filled
@@ -41,8 +41,8 @@ namespace Mindee.IntegrationTests
         {
             var inputSource = new LocalInputSource(
                 "Resources/products/financial_document/default_sample.jpg");
-            var predictOptions = new InferencePredictOptions(modelId: _findocModelId);
-            var response = await _mindeeClientV2.EnqueueAndParseAsync(inputSource, predictOptions);
+            var inferenceParams = new InferenceParameters(modelId: _findocModelId);
+            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(inputSource, inferenceParams);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
             // make sure the file info is filled
@@ -62,19 +62,26 @@ namespace Mindee.IntegrationTests
         public async Task Invalid_Model_MustThrowError()
         {
             var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
-            var predictOptions = new InferencePredictOptions("INVALID MODEL ID");
+            var predictOptions = new InferenceParameters("INVALID MODEL ID");
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
-                () => _mindeeClientV2.EnqueueAsync(inputSource, predictOptions));
+                () => _mindeeClientV2.EnqueueInferenceAsync(inputSource, predictOptions));
             Assert.Equal(422, ex.Status);
         }
 
         [Fact]
-        public async Task Invalid_Job_MustThrowError()
+        public async Task NotFound_Job_MustThrowError()
         {
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
-                () => _mindeeClientV2.ParseQueuedAsync("hello-my-name-is-mud"));
-            // server bug, enable when fixed
-            //Assert.Equal(404, ex.Status);
+                () => _mindeeClientV2.GetJobAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
+            Assert.Equal(404, ex.Status);
+        }
+
+        [Fact]
+        public async Task NotFound_Inference_MustThrowError()
+        {
+            var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
+                () => _mindeeClientV2.GetInferenceAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
+            Assert.Equal(404, ex.Status);
         }
     }
 }

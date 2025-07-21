@@ -5,7 +5,7 @@ using Mindee.Input;
 namespace Mindee
 {
     /// <summary>
-    /// Options to pass when calling methods using the predict API.
+    /// ResultOptions to pass when calling methods using the predict API.
     /// </summary>
     public sealed class PredictOptions
     {
@@ -41,7 +41,7 @@ namespace Mindee
 
 
         /// <summary>
-        /// Options to pass when calling methods using the predict API.
+        /// ResultOptions to pass when calling methods using the predict API.
         /// </summary>
         /// <param name="allWords"><see cref="AllWords"/></param>
         /// <param name="cropper"><see cref="Cropper"/></param>
@@ -65,22 +65,22 @@ namespace Mindee
     }
 
     /// <summary>
-    /// Options to pass for asynchronous parsing with polling.
+    /// ResultOptions to pass for asynchronous parsing with polling.
     /// </summary>
     public sealed class AsyncPollingOptions
     {
         /// <summary>
-        /// Wait this many seconds before the first polling attempt.
+        /// Initial delay before the first polling attempt.
         /// </summary>
         public double InitialDelaySec { get; }
 
         /// <summary>
-        /// Wait this many seconds between each polling attempt.
+        /// Delay between each polling attempt.
         /// </summary>
         public double IntervalSec { get; }
 
         /// <summary>
-        /// Maximum number of times to poll.
+        /// Total number of polling attempts.
         /// </summary>
         public int MaxRetries { get; }
 
@@ -95,7 +95,7 @@ namespace Mindee
         public int IntervalMilliSec { get; }
 
         /// <summary>
-        /// Options to pass for asynchronous parsing with polling.
+        /// ResultOptions to pass for asynchronous parsing with polling.
         /// </summary>
         /// <param name="initialDelaySec"><see cref="InitialDelaySec"/></param>
         /// <param name="intervalSec"><see cref="IntervalSec"/></param>
@@ -131,7 +131,7 @@ namespace Mindee
     }
 
     /// <summary>
-    /// Options for workflow executions.
+    /// ResultOptions for workflow executions.
     /// </summary>
     public sealed class WorkflowOptions
     {
@@ -164,7 +164,7 @@ namespace Mindee
         public bool Rag { get; }
 
         /// <summary>
-        /// Options for workflow executions.
+        /// ResultOptions for workflow executions.
         /// </summary>
         /// <param name="alias"></param>
         /// <param name="priority"></param>
