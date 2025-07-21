@@ -20,7 +20,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         {
             var splitQuery = new SplitQuery(
                 File.ReadAllBytes("Resources/file_types/pdf/multipage.pdf"),
-                new PageOptions(new short[] { 2 }));
+                new PageOptions(new short[] { 1 }));
 
             var splitPdf = _pdfOperation.Split(splitQuery);
 
@@ -35,7 +35,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         {
             var splitQuery = new SplitQuery(File.ReadAllBytes(
                 "Resources/file_types/pdf/multipage.pdf"),
-                new PageOptions(new short[] { 1, 2 }));
+                new PageOptions(new short[] { 0, 1 }));
 
             var splitPdf = _pdfOperation.Split(splitQuery);
 
@@ -48,20 +48,9 @@ namespace Mindee.UnitTests.Domain.Pdf
         [Trait("Category", "PDF operations")]
         public void Split_WantsTooManyPages_MustFail()
         {
+            var pageOptions = new PageOptions(new short[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 });
             var splitQuery = new SplitQuery(File.ReadAllBytes(
-                "Resources/file_types/pdf/multipage.pdf"),
-                new PageOptions(new short[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 }));
-
-            Assert.Throws<ArgumentOutOfRangeException>(() => _pdfOperation.Split(splitQuery));
-        }
-
-        [Fact]
-        [Trait("Category", "PDF operations")]
-        public void Split_WantsStartPageTo0_MustFail()
-        {
-            var splitQuery = new SplitQuery(File.ReadAllBytes(
-                "Resources/file_types/pdf/multipage.pdf"),
-                new PageOptions(new short[] { 0, 1, 2, 3 }));
+                "Resources/file_types/pdf/multipage.pdf"), pageOptions);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => _pdfOperation.Split(splitQuery));
         }
@@ -72,7 +61,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         {
             var splitQuery = new SplitQuery(File.ReadAllBytes(
                 "Resources/file_types/receipt.jpga"),
-                new PageOptions(new short[] { 1, 2, 3 }));
+                new PageOptions(new short[] { 0, 1, 2 }));
 
             Assert.Throws<MindeeException>(() => _pdfOperation.Split(splitQuery));
         }
@@ -83,7 +72,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         {
             var splitQuery = new SplitQuery(File.ReadAllBytes(
                 "Resources/file_types/pdf/multipage.pdf"),
-                new PageOptions(new short[] { 1, -2, -1 }));
+                new PageOptions(new short[] { 0, -2, -1 }));
 
             var splitPdf = _pdfOperation.Split(splitQuery);
 
@@ -99,7 +88,7 @@ namespace Mindee.UnitTests.Domain.Pdf
             var splitQuery = new SplitQuery(
                 File.ReadAllBytes("Resources/file_types/pdf/multipage.pdf")
                 , new PageOptions(
-                    new short[] { 1, 2, 3 }
+                    new short[] { 0, 1, 2 }
                     , PageOptionsOperation.Remove));
 
             var splitPdf = _pdfOperation.Split(splitQuery);
@@ -116,7 +105,7 @@ namespace Mindee.UnitTests.Domain.Pdf
             var splitQuery = new SplitQuery(
                 File.ReadAllBytes("Resources/file_types/pdf/multipage_cut-2.pdf")
                 , new PageOptions(
-                    new short[] { 1 }
+                    new short[] { 0 }
                     , PageOptionsOperation.Remove
                     , 5));
 

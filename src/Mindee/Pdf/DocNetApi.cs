@@ -37,14 +37,14 @@ namespace Mindee.Pdf
                 return new SplitPdf(splitQuery.File, totalPages);
             }
 
-            var targetedRange = splitQuery.PageOptions.PageNumbers.Select(pn =>
+            var targetedRange = splitQuery.PageOptions.PageIndexes.Select(pageIndex =>
             {
-                if (pn < 0)
+                if (pageIndex < 0)
                 {
-                    return (totalPages - System.Math.Abs(pn));
+                    return (totalPages - System.Math.Abs(pageIndex));
                 }
 
-                return pn;
+                return pageIndex + 1;
             }).ToArray();
 
             if (targetedRange.Count() > totalPages)
@@ -53,18 +53,18 @@ namespace Mindee.Pdf
                     $"The total indexes of pages to cut is superior to the total page count of the file ({totalPages}).");
             }
 
-            if (targetedRange.Any(pn => pn > totalPages || pn <= 0))
+            if (targetedRange.Any(pageIndex => pageIndex > totalPages || pageIndex <= 0))
             {
                 throw new ArgumentOutOfRangeException(
-                    $"Some indexes ({string.Join(",", splitQuery.PageOptions.PageNumbers)}) do not exist in the file ({totalPages} pages).");
+                    $"Some indexes ({string.Join(",", splitQuery.PageOptions.PageIndexes)}) do not exist in the file ({totalPages} pages).");
             }
 
             string range;
-            if (splitQuery.PageOptions.PageOptionsOperation == PageOptionsOperation.KeepOnly)
+            if (splitQuery.PageOptions.Operation == PageOptionsOperation.KeepOnly)
             {
                 range = string.Join(",", targetedRange);
             }
-            else if (splitQuery.PageOptions.PageOptionsOperation == PageOptionsOperation.Remove)
+            else if (splitQuery.PageOptions.Operation == PageOptionsOperation.Remove)
             {
                 var pageIndiceOriginalDocument = Enumerable.Range(1, totalPages);
                 range = string.Join(",", pageIndiceOriginalDocument.Where(v => !targetedRange.Contains(v)));
@@ -72,7 +72,7 @@ namespace Mindee.Pdf
             else
             {
                 throw new InvalidOperationException(
-                    $"This operation is not available ({splitQuery.PageOptions.PageOptionsOperation}).");
+                    $"This operation is not available ({splitQuery.PageOptions.Operation}).");
             }
 
             lock (DocLib.Instance)

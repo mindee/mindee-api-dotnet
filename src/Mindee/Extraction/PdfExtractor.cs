@@ -82,7 +82,7 @@ namespace Mindee.Extraction
 
                 var splitQuery = new SplitQuery(
                     SourcePdf,
-                    new PageOptions(pageIndexElem.ConvertAll(item => (short)(item + 1)).ToArray()));
+                    new PageOptions(pageIndexElem.ConvertAll(item => (short)item).ToArray()));
                 var pdfOperation = new DocNetApi(new NullLogger<DocNetApi>());
                 var mergedPdfBytes = pdfOperation.Split(splitQuery).File;
                 extractedPdfs.Add(new ExtractedPdf(mergedPdfBytes, fieldFilename));

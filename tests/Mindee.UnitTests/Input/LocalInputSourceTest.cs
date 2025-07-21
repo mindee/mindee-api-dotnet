@@ -127,7 +127,7 @@ namespace Mindee.UnitTests.Input
         public void Image_Resize_From_InputSource()
         {
             var imageResizeInput = new LocalInputSource("Resources/file_types/receipt.jpg");
-            imageResizeInput.Compress(75, 250, 1000);
+            imageResizeInput.Compress(maxWidth: 250, maxHeight: 1000);
             File.WriteAllBytes("Resources/output/resize_indirect.jpg", imageResizeInput.FileBytes);
             var initialFileInfo = new FileInfo("Resources/file_types/receipt.jpg");
             var renderedFileInfo = new FileInfo("Resources/output/resize_indirect.jpg");
@@ -171,7 +171,7 @@ namespace Mindee.UnitTests.Input
         public void Pdf_Compress_From_InputSource()
         {
             var pdfResizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
-            pdfResizeInput.Compress(75);
+            pdfResizeInput.Compress(quality: 75);
             File.WriteAllBytes("Resources/output/resize_indirect.pdf", pdfResizeInput.FileBytes);
             var initialFileInfo = new FileInfo("Resources/products/invoice_splitter/default_sample.pdf");
             var renderedFileInfo = new FileInfo("Resources/output/resize_indirect.pdf");
@@ -237,10 +237,43 @@ namespace Mindee.UnitTests.Input
         }
 
         [Fact]
-        public void ApplyPageOperation_Should_Work()
+        public void ApplyPageOperation_KeepFirstPage_Should_Work()
+        {
+            var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage.pdf");
+            var pageOptions = new PageOptions(
+                operation: PageOptionsOperation.KeepOnly
+                , pageIndexes: new short[] { 0 });
+            inputSource.ApplyPageOptions(pageOptions);
+        }
+
+        [Fact]
+        public void ApplyPageOperation_Keep5FirstPages_Should_Work()
         {
             var initialWithText = new LocalInputSource("Resources/file_types/pdf/multipage.pdf");
-            initialWithText.ApplyPageOptions(new PageOptions(new short[] { 1, 2 }));
+            // Only for documents having 10 or more pages:
+            // Remove the first 5 pages
+            var pageOptions = new PageOptions(
+                operation: PageOptionsOperation.Remove,
+                onMinPages: 10,
+                pageIndexes: new short[] { 0, 1, 2, 3, 4 }
+            );
+
+            initialWithText.ApplyPageOptions(pageOptions);
+        }
+
+        [Fact]
+        public void ApplyPageOperation_Keep3VariousPages_Should_Work()
+        {
+            var initialWithText = new LocalInputSource("Resources/file_types/pdf/multipage.pdf");
+
+            // Only for documents having 2 or more pages:
+            // Keep only these pages: first, penultimate, last
+            var pageOptions = new PageOptions(
+                operation: PageOptionsOperation.KeepOnly,
+                onMinPages: 2,
+                pageIndexes: new short[] { 0, -2, -1 }
+            );
+            initialWithText.ApplyPageOptions(pageOptions);
         }
     }
 }

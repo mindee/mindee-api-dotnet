@@ -245,7 +245,7 @@ namespace Mindee.UnitTests
 
             var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/multipage.pdf"));
             Assert.Equal(12, inputSource.GetPageCount());
-            var pageOptions = new PageOptions(pageNumbers: new short[] { 1, 2, 3 });
+            var pageOptions = new PageOptions(pageIndexes: new short[] { 1, 2, 3 });
             var response = await mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource, pageOptions: pageOptions);
 
