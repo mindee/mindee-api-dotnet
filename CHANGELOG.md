@@ -1,5 +1,16 @@
 # Mindee .NET Client Library Changelog
 
+## v3.29.0-rc4 - 2025-07-22
+### Changes
+* :sparkles: add support for field locations & confidence score
+* :recycle: change name of main calling methods (e.g. `EnqueueAndParseAsync` becomes `EnqueueAndGetInferenceAsync`)
+* :sparkles: :boom: upgrade page options usage to match other SDKs (page indexes now start at 0)
+
+### Fixes
+* :bug: fix tests
+* :recycle: update internal syntaxes
+
+
 ## v3.29.0-rc3 - 2025-07-09
 ### Changes
 * :sparkles: merge enqueue parameters into a single object
