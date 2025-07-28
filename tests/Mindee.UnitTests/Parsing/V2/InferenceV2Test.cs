@@ -157,7 +157,7 @@ namespace Mindee.UnitTests.Parsing.V2
 
             Assert.Equal(
                 NormalizeLineEndings(rstReference),
-                NormalizeLineEndings(inf!.ToString())
+                NormalizeLineEndings(inf.ToString())
             );
 
         }
