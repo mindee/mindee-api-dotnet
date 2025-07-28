@@ -111,13 +111,13 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.NotNull(fields["field_simple_string"].SimpleField);
             Assert.Equal("field_simple_string-value", fields["field_simple_string"].SimpleField.Value);
             Assert.NotNull(fields["field_simple_int"].SimpleField);
-            Assert.Equal(12, fields["field_simple_int"].SimpleField.Value);
+            Assert.Equal(12.0, fields["field_simple_int"].SimpleField.Value);
             Assert.NotNull(fields["field_simple_float"].SimpleField);
             Assert.Equal(1.1, fields["field_simple_float"].SimpleField.Value);
             Assert.NotNull(fields["field_simple_bool"].SimpleField);
             Assert.True(fields["field_simple_bool"].SimpleField.Value);
             Assert.NotNull(fields["field_simple_zero"].SimpleField);
-            Assert.Equal(0, fields["field_simple_zero"].SimpleField.Value);
+            Assert.Equal(0.0, fields["field_simple_zero"].SimpleField.Value);
             Assert.NotNull(fields["field_simple_null"].SimpleField);
             Assert.Null(fields["field_simple_null"].SimpleField.Value);
             Assert.NotNull(fields["field_object"].ObjectField);

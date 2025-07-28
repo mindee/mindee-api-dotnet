@@ -34,13 +34,7 @@ namespace Mindee.Parsing.V2.Field
                     field = new SimpleField(value: fieldValue.GetValue<string>());
                     break;
                 case JsonValueKind.Number:
-                    var element = fieldValue.Deserialize<JsonElement>();
-                    if (element.TryGetInt64(out var asInt))
-                    {
-                        field = new SimpleField((int)asInt);
-                        break;
-                    }
-                    field = new SimpleField(element.GetDouble());
+                    field = new SimpleField(value: fieldValue.GetValue<double>());
                     break;
 
                 case JsonValueKind.True:

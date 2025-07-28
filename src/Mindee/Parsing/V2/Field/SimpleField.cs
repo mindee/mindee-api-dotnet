@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.V2.Field
@@ -31,16 +32,14 @@ namespace Mindee.Parsing.V2.Field
         {
             return Value switch
             {
-                int i => $"{i}.0",
-                long l => l.ToString(),
+                double d => d % 1 == 0
+                    ? d.ToString("0.0", CultureInfo.InvariantCulture)
+                    : d.ToString(CultureInfo.InvariantCulture),
 
-                double d when d % 1 == 0 => ((long)d).ToString(),
-                float f when f % 1 == 0 => ((long)f).ToString(),
                 bool b => b ? "True" : "False",
 
                 _ => Value?.ToString() ?? string.Empty
             };
         }
-
     }
 }
