@@ -107,6 +107,29 @@ namespace Mindee
         }
 
         /// <summary>
+        /// Add a remote input source to a Generated async queue.
+        /// </summary>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="inferenceParameters"><see cref="InferenceParameters"/></param>
+        /// <returns><see cref="JobResponse"/></returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<JobResponse> EnqueueInferenceAsync(
+            UrlInputSource inputSource
+            , InferenceParameters inferenceParameters)
+        {
+            _logger?.LogInformation(message: "Enqueuing...");
+
+            return await _mindeeApi.ReqPostEnqueueInferenceAsync(
+                new InferencePostParameters(
+                    urlSource: inputSource,
+                    modelId: inferenceParameters.ModelId,
+                    alias: inferenceParameters.Alias,
+                    webhookIds: inferenceParameters.WebhookIds,
+                    rag: inferenceParameters.Rag
+                ));
+        }
+
+        /// <summary>
         /// Get the status of an inference that was previously enqueued.
         /// Can be used for polling.
         /// </summary>
@@ -138,6 +161,31 @@ namespace Mindee
                 throw new ArgumentNullException(inferenceId);
             }
             return await _mindeeApi.ReqGetInferenceAsync(inferenceId);
+        }
+
+
+        /// <summary>
+        /// Add the URL source to an async queue, poll, and parse when complete.
+        /// </summary>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="inferenceParameters"><see cref="InferenceParameters"/></param>
+        /// <returns><see cref="InferenceResponse"/></returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<InferenceResponse> EnqueueAndGetInferenceAsync(
+            UrlInputSource inputSource
+            , InferenceParameters inferenceParameters)
+        {
+            _logger?.LogInformation("Asynchronous parsing ...");
+
+            if (inferenceParameters.PollingOptions == null)
+            {
+                inferenceParameters.PollingOptions = new AsyncPollingOptions();
+            }
+
+            var enqueueResponse = await EnqueueInferenceAsync(
+                inputSource,
+                inferenceParameters);
+            return await PollForResultsAsync(enqueueResponse, inferenceParameters.PollingOptions);
         }
 
         /// <summary>
