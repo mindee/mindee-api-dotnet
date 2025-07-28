@@ -154,8 +154,21 @@ namespace Mindee.UnitTests.Parsing.V2
             Inference inf = resp.Inference;
 
             Assert.NotNull(inf);
-            Assert.Equal(rstReference, inf.ToString());
+
+            Assert.Equal(
+                NormalizeLineEndings(rstReference),
+                NormalizeLineEndings(inf!.ToString())
+            );
+
         }
+
+        /// <summary>
+        /// Ensures all line endings are identical before comparison so the test
+        /// behaves the same on every platform (LF vs CRLF).
+        /// </summary>
+        private static string NormalizeLineEndings(string input) =>
+            input.Replace("\r\n", "\n").Replace("\r", "\n");
+
 
         private static InferenceResponse GetInference(string path)
         {
