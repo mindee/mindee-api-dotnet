@@ -24,11 +24,23 @@ namespace Mindee.Parsing.V2.Field
         }
 
         /// <summary>
-        /// String representation of the field..
+        /// String representation of the field.
+        /// Checks that integers get displayed with proper formatting.
         /// </summary>
         public override string ToString()
         {
-            return $"{Value}";
+            return Value switch
+            {
+                int i => $"{i}.0",
+                long l => l.ToString(),
+
+                double d when d % 1 == 0 => ((long)d).ToString(),
+                float f when f % 1 == 0 => ((long)f).ToString(),
+                bool b => b ? "True" : "False",
+
+                _ => Value?.ToString() ?? string.Empty
+            };
         }
+
     }
 }

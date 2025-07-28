@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing.V2.Field;
@@ -25,15 +24,22 @@ namespace Mindee.Parsing.V2
         /// <summary>
         /// A prettier representation of the feature values.
         /// </summary>
-
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder();
-            foreach (KeyValuePair<string, DynamicField> feature in Fields)
+            var strBuilder = new StringBuilder();
+
+            strBuilder.AppendLine("Fields")
+                .AppendLine("======")
+                .AppendLine(Fields?.ToString() ?? string.Empty);
+
+            if (Options != null)
             {
-                result.Append($":{feature.Key}: {feature.Value}\n");
+                strBuilder.AppendLine("Options")
+                    .AppendLine("=======")
+                    .AppendLine(Options.ToString());
             }
-            return result.ToString();
+            string summary = strBuilder.ToString().TrimEnd('\n', '\r');
+            return SummaryHelper.Clean(summary);
         }
     }
 }

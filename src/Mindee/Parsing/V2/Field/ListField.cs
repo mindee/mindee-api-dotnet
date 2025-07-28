@@ -20,12 +20,45 @@ namespace Mindee.Parsing.V2.Field
         /// </summary>
         public override string ToString()
         {
-            StringBuilder output = new StringBuilder();
-            foreach (DynamicField field in Items)
+            if (Items is null || Items.Count == 0)
             {
-                output.Append($"{field}\n");
+                return "\n";
             }
-            return output.ToString();
+
+            string separator = "\n  * ";
+            StringBuilder sb = new();
+
+            sb.Append('\n');
+            sb.Append("  * ");
+
+            bool first = true;
+            foreach (DynamicField item in Items)
+            {
+                if (!first)
+                {
+                    sb.Append(separator);
+                }
+                else
+                {
+                    first = false;
+                }
+
+                if (item is null)
+                {
+                    continue;
+                }
+                if (item.Type == FieldType.ObjectField)
+                {
+                    sb.Append(item.ObjectField?.ToStringFromList());
+                }
+                else
+                {
+                    sb.Append(item);
+                }
+            }
+
+            return sb.ToString();
         }
+
     }
 }

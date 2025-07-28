@@ -1,10 +1,10 @@
 using System;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using Mindee.Parsing.V2.Field;
 
-namespace Mindee.Parsing.V2
+namespace Mindee.Parsing.V2.Field
 {
     /// <summary>
     /// Custom deserializer for <see cref="DynamicField"/>
@@ -21,6 +21,7 @@ namespace Mindee.Parsing.V2
             // read the response JSON into an object
             JsonObject jsonObject = (JsonObject)JsonSerializer.Deserialize(ref reader, typeof(JsonObject), options);
 
+            Debug.Assert(jsonObject != null, nameof(jsonObject) + " != null");
             jsonObject.TryGetPropertyValue("value", out var fieldValue);
             if (fieldValue == null)
                 return new SimpleField(value: null);
@@ -33,8 +34,15 @@ namespace Mindee.Parsing.V2
                     field = new SimpleField(value: fieldValue.GetValue<string>());
                     break;
                 case JsonValueKind.Number:
-                    field = new SimpleField(value: fieldValue.GetValue<double>());
+                    var element = fieldValue.Deserialize<JsonElement>();
+                    if (element.TryGetInt64(out var asInt))
+                    {
+                        field = new SimpleField((int)asInt);
+                        break;
+                    }
+                    field = new SimpleField(element.GetDouble());
                     break;
+
                 case JsonValueKind.True:
                     field = new SimpleField(value: true);
                     break;
@@ -45,6 +53,7 @@ namespace Mindee.Parsing.V2
                     field = new SimpleField(value: null);
                     break;
             }
+
             return field;
         }
 

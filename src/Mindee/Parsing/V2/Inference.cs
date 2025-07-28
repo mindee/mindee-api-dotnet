@@ -31,17 +31,15 @@ namespace Mindee.Parsing.V2
         /// </summary>
         public override string ToString()
         {
-            var result = new StringBuilder("Inference\n#########");
-            result.Append("\nModel\n=====");
-            result.Append($"\n:ID: {Model.Id}");
-            result.Append("\n\n:File:\n====");
-            result.Append($"\n:Name: {File.Name}");
-            result.Append($"\n:Alias: {File.Alias}");
-            result.Append("\nResult\n======");
-            result.Append("\n");
-            result.Append(Result);
+            var stringBuilder = new StringBuilder("Inference\n#########\n");
+            stringBuilder.Append(Model);
+            stringBuilder.Append("\n\n");
+            stringBuilder.Append(File);
+            stringBuilder.Append("\n\n");
+            stringBuilder.Append(Result);
+            stringBuilder.Append("\n");
 
-            return SummaryHelper.Clean(result.ToString());
+            return SummaryHelper.Clean(stringBuilder.ToString());
         }
     }
 }
