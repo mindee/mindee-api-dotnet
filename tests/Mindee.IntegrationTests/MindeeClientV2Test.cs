@@ -26,10 +26,8 @@ namespace Mindee.IntegrationTests
             var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
-            // make sure the file info is filled
             Assert.NotNull(response.Inference.File);
             Assert.Equal("multipage_cut-2.pdf", response.Inference.File.Name);
-            // make sure the mode info is filled
             Assert.NotNull(response.Inference.Model);
             Assert.Equal(_findocModelId, response.Inference.Model.Id);
             Assert.NotNull(response.Inference.Result);
@@ -45,13 +43,10 @@ namespace Mindee.IntegrationTests
             var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(inputSource, inferenceParams);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
-            // make sure the file info is filled
             Assert.NotNull(response.Inference.File);
             Assert.Equal("default_sample.jpg", response.Inference.File.Name);
-            // make sure the mode info is filled
             Assert.NotNull(response.Inference.Model);
             Assert.Equal(_findocModelId, response.Inference.Model.Id);
-            // make sure fields are set
             Assert.NotNull(response.Inference.Result);
             Assert.NotNull(response.Inference.Result.Fields);
             Assert.NotNull(response.Inference.Result.Fields["supplier_name"]);
@@ -82,6 +77,21 @@ namespace Mindee.IntegrationTests
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
                 () => _mindeeClientV2.GetInferenceAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
             Assert.Equal(404, ex.Status);
+        }
+
+        [Fact]
+        public async Task Url_InputSource_MustNotRaiseErrors()
+        {
+            var url = Environment.GetEnvironmentVariable("Mindee__V2__Se__Tests__Blank__Pdf__Url");
+            Assert.False(string.IsNullOrWhiteSpace(url),
+                "Environment variable Mindee__V2__Se__Tests__Blank__Pdf__Url must be set and contain a valid URL.");
+
+            var inputSource = new UrlInputSource(new Uri(url!));
+            var inferenceParams = new InferenceParameters(modelId: _findocModelId);
+            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(inputSource, inferenceParams);
+
+            Assert.NotNull(response);
+            Assert.NotNull(response.Inference);
         }
     }
 }
