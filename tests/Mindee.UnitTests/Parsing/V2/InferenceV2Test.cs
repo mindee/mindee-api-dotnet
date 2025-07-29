@@ -108,7 +108,18 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.NotNull(inf);
 
             InferenceFields fields = inf.Result.Fields;
-            Assert.NotNull(fields["field_simple"].SimpleField);
+            Assert.NotNull(fields["field_simple_string"].SimpleField);
+            Assert.Equal("field_simple_string-value", fields["field_simple_string"].SimpleField.Value);
+            Assert.NotNull(fields["field_simple_int"].SimpleField);
+            Assert.Equal(12.0, fields["field_simple_int"].SimpleField.Value);
+            Assert.NotNull(fields["field_simple_float"].SimpleField);
+            Assert.Equal(1.1, fields["field_simple_float"].SimpleField.Value);
+            Assert.NotNull(fields["field_simple_bool"].SimpleField);
+            Assert.True(fields["field_simple_bool"].SimpleField.Value);
+            Assert.NotNull(fields["field_simple_zero"].SimpleField);
+            Assert.Equal(0.0, fields["field_simple_zero"].SimpleField.Value);
+            Assert.NotNull(fields["field_simple_null"].SimpleField);
+            Assert.Null(fields["field_simple_null"].SimpleField.Value);
             Assert.NotNull(fields["field_object"].ObjectField);
             Assert.NotNull(fields["field_simple_list"].ListField);
             Assert.NotNull(fields["field_object_list"].ListField);
@@ -121,7 +132,7 @@ namespace Mindee.UnitTests.Parsing.V2
             Inference? inf = resp.Inference;
             InferenceFields fields = inf.Result.Fields;
             Assert.NotNull(inf);
-            DynamicField simpleField = fields["field_simple"];
+            DynamicField simpleField = fields["field_simple_string"];
             Assert.Null(simpleField.Confidence);
             Assert.NotNull(simpleField.Locations);
             Assert.Single(simpleField.Locations);
@@ -132,6 +143,32 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.Equal([1, 1], polygon[2]);
             Assert.Equal([1, 1], polygon[3]);
         }
+
+        [Fact(DisplayName = "standard_field_types.rst – RST display must be parsed and exposed")]
+        public void RstDisplay_mustBeAccessible()
+        {
+            // Arrange
+            var resp = GetInference("Resources/v2/inference/standard_field_types.json");
+            var rstReference = File.ReadAllText("Resources/v2/inference/standard_field_types.rst");
+
+            Inference inf = resp.Inference;
+
+            Assert.NotNull(inf);
+
+            Assert.Equal(
+                NormalizeLineEndings(rstReference),
+                NormalizeLineEndings(inf.ToString())
+            );
+
+        }
+
+        /// <summary>
+        /// Ensures all line endings are identical before comparison so the test
+        /// behaves the same on every platform (LF vs CRLF).
+        /// </summary>
+        private static string NormalizeLineEndings(string input) =>
+            input.Replace("\r\n", "\n").Replace("\r", "\n");
+
 
         private static InferenceResponse GetInference(string path)
         {

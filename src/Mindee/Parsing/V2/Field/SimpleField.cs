@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.V2.Field
@@ -24,11 +25,21 @@ namespace Mindee.Parsing.V2.Field
         }
 
         /// <summary>
-        /// String representation of the field..
+        /// String representation of the field.
+        /// Checks that integers get displayed with proper formatting.
         /// </summary>
         public override string ToString()
         {
-            return $"{Value}";
+            return Value switch
+            {
+                double d => d % 1 == 0
+                    ? d.ToString("0.0", CultureInfo.InvariantCulture)
+                    : d.ToString(CultureInfo.InvariantCulture),
+
+                bool b => b ? "True" : "False",
+
+                _ => Value?.ToString() ?? string.Empty
+            };
         }
     }
 }

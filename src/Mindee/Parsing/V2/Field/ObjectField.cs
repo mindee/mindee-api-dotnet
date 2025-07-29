@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.V2.Field
@@ -15,17 +13,31 @@ namespace Mindee.Parsing.V2.Field
         [JsonPropertyName("fields")]
         public InferenceFields Fields { get; set; }
 
+
         /// <summary>
         /// Print the value for all fields.
         /// </summary>
         public override string ToString()
         {
-            StringBuilder output = new StringBuilder();
-            foreach (KeyValuePair<string, DynamicField> fieldPair in Fields)
+            return "\n" + (Fields != null ? Fields.ToString(1) : "");
+        }
+
+        /// <summary>
+        /// Helper to display fields' values when called from a list.
+        /// </summary>
+        /// <returns>
+        /// A left-aligned string representation of <see cref="Fields"/>;
+        /// an empty string when <see cref="Fields"/> is <c>null</c>.
+        /// </returns>
+        public string ToStringFromList()
+        {
+            if (Fields == null)
             {
-                output.Append($"{fieldPair.Key}: {fieldPair.Value}\n");
+                return string.Empty;
             }
-            return output.ToString();
+
+            string raw = Fields.ToString(2);
+            return raw.Length > 4 ? raw.Substring(4) : raw;
         }
     }
 }
