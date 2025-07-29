@@ -6,174 +6,40 @@ Quickly and easily connect to Mindee's API services using .NET.
 ## Requirements
 The following .NET versions are tested and officially supported:
 * Standard 2.0
-* 4.7.2, 4.8 (Windows only)
+* 4.7.2, 4.8 (Windows only, V1 only)
 * 6.0, 7.0, 8.0, 9.0 (Linux, macOS x64, Windows)
 
-## Quick Start
-Here's the TL;DR of getting started.
+## Mindee API Versions
+This client library has support for both Mindee platform versions.
 
-First, get an [API Key](https://developers.mindee.com/docs/create-api-key)
+### Latest - V2
+This is the new platform located here:
 
-Then, install this library:
-```shell
-dotnet add package Mindee
-```
+https://app.mindee.com
 
-### Define the API Key
-The API key is retrieved using `IConfiguration`.
+It uses **API version 2**.
 
-So you could define it in multiple ways: 
-* From an environment variable
-```
-Mindee__ApiKey
-```
-* From an appsettings.json file
-```
-"Mindee": {
-    "ApiKey":  "my-api-key"
-},
-```
-
-### Instantiate The Client
-You can instantiate the client either manually or by using dependency injection.
-
-#### Dependency Injection
-In your Startup.cs or Program.cs file, configure the dependency injection (DI) as follows:
-```csharp
-services.AddMindeeClient();
-```
-This call will configure the client entry point and the PDF library used internally.
-
-Then, in your controller or service instance, pass as an argument the class ``MindeeClient``.
+Consult the
+**[Latest Documentation](https://docs.mindee.com/integrations/client-libraries-sdk)**
 
 
-#### Manually
-Or, you could also simply instantiate a new instance of `MindeeClient`:
-```csharp
-using Mindee;
+### Legacy - V1
+This is the legacy platform located here:
 
-MindeeClient mindeeClient = new MindeeClient("my-api-key");
-```
+https://platform.mindee.com/
 
-### Loading a File and Parsing It
+It uses **API version 1**.
 
-#### Global Documents
-```csharp
-using Mindee;
-using Mindee.Input;
-using Mindee.Product.Invoice;
+Consult the
+**[Legacy Documentation](https://developers.mindee.com/docs/dotnet-ocr-overview)**
 
-string apiKey = "my-api-key";
-string filePath = "/path/to/the/file.ext";
+## Additional Information
 
-// Construct a new client
-MindeeClient mindeeClient = new MindeeClient(apiKey);
+**[Source Code](https://github.com/mindee/mindee-api-dotnet)**
 
-// Load an input source as a path string
-// Other input types can be used, as mentioned in the docs
-var inputSource = new LocalInputSource(filePath);
+**[Reference Documentation](https://mindee.github.io/mindee-api-dotnet/)**
 
-// Call the API and parse the input
-var response = await mindeeClient
-    .ParseAsync<InvoiceV4>(inputSource);
-
-// Print a summary of the predictions
-System.Console.WriteLine(response.Document.ToString());
-
-// Print the document-level predictions
-// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
-```
-
-#### Region-Specific Documents
-```csharp
-using Mindee;
-using Mindee.Input;
-using Mindee.Product.Us.BankCheck;
-
-string apiKey = "my-api-key";
-string filePath = "/path/to/the/file.ext";
-
-MindeeClient mindeeClient = new MindeeClient(apiKey);
-
-// Load an input source as a path string
-// Other input types can be used, as mentioned in the docs
-var inputSource = new LocalInputSource(filePath);
-
-// Call the API and parse the input
-var response = await mindeeClient
-    .ParseAsync<BankCheckV1>(inputSource);
-
-// Print a summary of the predictions
-System.Console.WriteLine(response.Document.ToString());
-
-// Print the document-level predictions
-// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
-```
-
-#### Custom Documents (docTI & Custom APIs)
-
-```csharp
-using Mindee;
-using Mindee.Http;
-using Mindee.Parsing;
-
-string apiKey = "my-api-key";
-string filePath = "/path/to/the/file.ext";
-
-MindeeClient mindeeClient = new MindeeClient(apiKey);
-
-// Load an input source as a path string
-// Other input types can be used, as mentioned in the docs
-var inputSource = new LocalInputSource(filePath);
-
-// Set the endpoint configuration 
-CustomEndpoint myEndpoint = new CustomEndpoint(
-    endpointName: "my-endpoint",
-    accountName: "my-account"
-    // optionally, lock the version
-    //, version: "1.1"
-);
-
-// Call the API and parse the input
-var response = await mindeeClient.EnqueueAndParseAsync(
-    inputSource, myEndpoint);
-
-// Print a summary of all the predictions
-System.Console.WriteLine(response.Document.ToString());
-
-// Print a summary of the predictions
-System.Console.WriteLine(response.Document.ToString());
-
-// Print the document-level predictions
-// System.Console.WriteLine(response.Document.Inference.Prediction.ToString());
-```
-
-## Further Reading
-Complete details on the working of the library are available in the following guides:
-
-* [Getting started](https://developers.mindee.com/docs/dotnet-ocr-overview)
-* [.NET Generated APIs](https://developers.mindee.com/docs/dotnet-generated-ocr)
-* [.NET Custom APIs (API Builder - Deprecated)](https://developers.mindee.com/docs/dotnet-api-builder)
-* [.NET Invoice OCR](https://developers.mindee.com/docs/dotnet-invoice-ocr)
-* [.NET Receipt OCR](https://developers.mindee.com/docs/dotnet-receipt-ocr)
-* [.NET Financial Document OCR](https://developers.mindee.com/docs/dotnet-financial-document-ocr)
-* [.NET Passport OCR](https://developers.mindee.com/docs/dotnet-passport-ocr)
-* [.NET Resume OCR](https://developers.mindee.com/docs/dotnet-resume-ocr)
-* [.NET International Id OCR](https://developers.mindee.com/docs/dotnet-international-id-ocr)
-* [.NET FR Bank Account Detail OCR](https://developers.mindee.com/docs/dotnet-fr-bank-account-details-ocr)
-* [.NET FR Carte Grise OCR](https://developers.mindee.com/docs/dotnet-fr-carte-grise-ocr)
-* [.NET FR Health Card OCR](https://developers.mindee.com/docs/dotnet-fr-health-card-ocr)
-* [.NET FR ID Card OCR](https://developers.mindee.com/docs/dotnet-fr-carte-nationale-didentite-ocr)
-* [.NET US Bank Check OCR](https://developers.mindee.com/docs/dotnet-us-bank-check-ocr)
-* [.NET Barcode Reader API](https://developers.mindee.com/docs/dotnet-barcode-reader-ocr)
-* [.NET Cropper API](https://developers.mindee.com/docs/dotnet-cropper-ocr)
-* [.NET Invoice Splitter API](https://developers.mindee.com/docs/dotnet-invoice-splitter-ocr)
-* [.NET Multi Receipts Detector API](https://developers.mindee.com/docs/dotnet-multi-receipts-detector-ocr)
-
-You can view the source code on [GitHub](https://github.com/mindee/mindee-api-dotnet).
-
-You can also take a look at the
-**[Reference Documentation](https://mindee.github.io/mindee-api-dotnet/)**.
+**[Feedback](https://feedback.mindee.com/)**
 
 ## License
 Copyright © Mindee

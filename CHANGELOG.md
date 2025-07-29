@@ -1,5 +1,12 @@
 # Mindee .NET Client Library Changelog
 
+## v3.29.0 - 2025-07-29
+### Changes
+* :sparkles: Add support for mindee API V2 client & features
+* :wrench: Tweak CI & testing
+* :recycle: Uniformize variable naming across files
+
+
 ## v3.29.0-rc4 - 2025-07-22
 ### Changes
 * :sparkles: add support for field locations & confidence score
