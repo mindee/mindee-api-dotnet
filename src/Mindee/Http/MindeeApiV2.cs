@@ -78,7 +78,7 @@ namespace Mindee.Http
             }
             else if (predictParameter.UrlSource != null)
             {
-                request.AddParameter("url", predictParameter.UrlSource.FileUrl.ToString());;
+                request.AddParameter("url", predictParameter.UrlSource.FileUrl.ToString());
             }
             if (!string.IsNullOrWhiteSpace(predictParameter.Alias))
             {
