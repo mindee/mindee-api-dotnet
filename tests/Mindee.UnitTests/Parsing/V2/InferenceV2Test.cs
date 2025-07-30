@@ -66,6 +66,11 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.Equal("USA", fields["supplier_address"].ObjectField.Fields["country"].ToString());
 
             Assert.NotNull(fields["supplier_address"].ToString());
+            var file = response.Inference.File;
+            Assert.Equal("complete.jpg", file.Name);
+            Assert.Equal(1, file.PageCount);
+            Assert.Equal("image/jpeg", file.MimeType);
+            Assert.Null(file.Alias);
         }
 
 
@@ -123,6 +128,7 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.NotNull(fields["field_object"].ObjectField);
             Assert.NotNull(fields["field_simple_list"].ListField);
             Assert.NotNull(fields["field_object_list"].ListField);
+
         }
 
         [Fact(DisplayName = "standard_field_types.json - simple / object / list variants must be recognised")]

@@ -4,9 +4,9 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.V2
 {
     /// <summary>
-    /// Webhook info response for the V2 API.
+    /// Webhook info response for jobs in the V2 API.
     /// </summary>
-    public class Webhook
+    public class JobWebhook
     {
         /// <summary>
         /// Date and time the webhook was created at.
