@@ -71,6 +71,6 @@ namespace Mindee.Parsing.V2
         /// Webhooks.
         /// </summary>
         [JsonPropertyName("webhooks")]
-        public List<Webhook> Webhooks { get; set; }
+        public List<JobWebhook> Webhooks { get; set; }
     }
 }

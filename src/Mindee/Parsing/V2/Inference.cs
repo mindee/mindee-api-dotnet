@@ -12,13 +12,13 @@ namespace Mindee.Parsing.V2
         /// ResultModel info.
         /// </summary>
         [JsonPropertyName("model")]
-        public InferenceResultModel Model { get; set; }
+        public InferenceModel Model { get; set; }
 
         /// <summary>
         /// ResultFile info.
         /// </summary>
         [JsonPropertyName("file")]
-        public InferenceResultFile File { get; set; }
+        public InferenceFile File { get; set; }
 
         /// <summary>
         /// The model result values.

@@ -6,7 +6,7 @@ namespace Mindee.Parsing.V2
     /// <summary>
     /// ResultModel information for a V2 API inference.
     /// </summary>
-    public class InferenceResultModel
+    public class InferenceModel
     {
         /// <summary>
         /// The Mindee ID of the model.
