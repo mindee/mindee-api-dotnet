@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text.Json.Serialization;
 
@@ -18,8 +19,11 @@ namespace Mindee.Parsing.V2.Field
         /// <summary>
         /// Represents a field with a single value.
         /// Inherits from the <see cref="BaseField"/> class.
+        /// <param name="value"><see cref="Value"/></param>
+        /// <param name="confidence"><see cref="BaseField.Confidence"/></param>
+        /// <param name="locations"><see cref="BaseField.Locations"/></param>
         /// </summary>
-        public SimpleField(dynamic value)
+        public SimpleField(dynamic value, FieldConfidence? confidence, List<FieldLocation> locations) : base(confidence, locations)
         {
             Value = value;
         }
