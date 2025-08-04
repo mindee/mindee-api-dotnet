@@ -115,20 +115,39 @@ namespace Mindee.UnitTests.Parsing.V2
             InferenceFields fields = inf.Result.Fields;
             Assert.NotNull(fields["field_simple_string"].SimpleField);
             Assert.Equal("field_simple_string-value", fields["field_simple_string"].SimpleField.Value);
-            Assert.NotNull(fields["field_simple_int"].SimpleField);
-            Assert.Equal(12.0, fields["field_simple_int"].SimpleField.Value);
+            Assert.Equal(FieldConfidence.Certain, fields["field_simple_string"].SimpleField.Confidence);
+
             Assert.NotNull(fields["field_simple_float"].SimpleField);
             Assert.Equal(1.1, fields["field_simple_float"].SimpleField.Value);
-            Assert.NotNull(fields["field_simple_bool"].SimpleField);
-            Assert.True(fields["field_simple_bool"].SimpleField.Value);
+            Assert.Equal(FieldConfidence.High, fields["field_simple_float"].SimpleField.Confidence);
+
+            Assert.NotNull(fields["field_simple_int"].SimpleField);
+            Assert.Equal(12.0, fields["field_simple_int"].SimpleField.Value);
+            Assert.Equal(FieldConfidence.Medium, fields["field_simple_int"].SimpleField.Confidence);
+
             Assert.NotNull(fields["field_simple_zero"].SimpleField);
             Assert.Equal(0.0, fields["field_simple_zero"].SimpleField.Value);
+            Assert.Equal(FieldConfidence.Low, fields["field_simple_zero"].SimpleField.Confidence);
+
+            Assert.NotNull(fields["field_simple_bool"].SimpleField);
+            Assert.True(fields["field_simple_bool"].SimpleField.Value);
+            Assert.Null(fields["field_simple_bool"].SimpleField.Confidence);
+
             Assert.NotNull(fields["field_simple_null"].SimpleField);
             Assert.Null(fields["field_simple_null"].SimpleField.Value);
-            Assert.NotNull(fields["field_object"].ObjectField);
-            Assert.NotNull(fields["field_simple_list"].ListField);
-            Assert.NotNull(fields["field_object_list"].ListField);
+            Assert.Null(fields["field_simple_null"].SimpleField.Confidence);
 
+            Assert.NotNull(fields["field_object"].ObjectField);
+            Assert.Null(fields["field_object"].ObjectField.Confidence);
+            Assert.Equal(2, fields["field_object"].ObjectField.Fields.Count);
+
+            Assert.NotNull(fields["field_simple_list"].ListField);
+            Assert.Null(fields["field_simple_list"].ListField.Confidence);
+            Assert.Equal(2, fields["field_simple_list"].ListField.Items.Count);
+
+            Assert.NotNull(fields["field_object_list"].ListField);
+            Assert.Null(fields["field_simple_list"].ListField.Confidence);
+            Assert.Equal(2, fields["field_object_list"].ListField.Items.Count);
         }
 
         [Fact(DisplayName = "standard_field_types.json - simple / object / list variants must be recognised")]
@@ -138,8 +157,8 @@ namespace Mindee.UnitTests.Parsing.V2
             Inference? inf = resp.Inference;
             InferenceFields fields = inf.Result.Fields;
             Assert.NotNull(inf);
-            DynamicField simpleField = fields["field_simple_string"];
-            Assert.Null(simpleField.Confidence);
+            SimpleField simpleField = fields["field_simple_string"].SimpleField;
+            Assert.Equal(FieldConfidence.Certain, simpleField.Confidence);
             Assert.NotNull(simpleField.Locations);
             Assert.Single(simpleField.Locations);
             Assert.Equal(0, simpleField.Locations.First().Page);

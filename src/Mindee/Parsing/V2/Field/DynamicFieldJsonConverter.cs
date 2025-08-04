@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -23,28 +22,16 @@ namespace Mindee.Parsing.V2.Field
 
             DynamicField field;
 
-            FieldConfidence? confidence = null;
-            if (jsonObject.TryGetPropertyValue("confidence", out JsonNode confidenceNode))
-            {
-                confidence = confidenceNode.Deserialize<FieldConfidence?>(options);
-            }
-
-            List<FieldLocation> locations;
-            if (jsonObject.TryGetPropertyValue("locations", out JsonNode locationsNode) &&
-                locationsNode is JsonArray)
-            {
-                locations = locationsNode.Deserialize<List<FieldLocation>>(options);
-            }
-            else
-            {
-                locations = null;
-            }
-
             // -------- LIST FEATURE --------
             if (jsonObject.TryGetPropertyValue("items", out var itemsNode) &&
                 itemsNode is JsonArray itemsArray)
             {
-                var listField = new ListField();
+                FieldConfidence? confidence = null;
+                if (jsonObject.TryGetPropertyValue("confidence", out JsonNode confidenceNode))
+                {
+                    confidence = confidenceNode.Deserialize<FieldConfidence?>(options);
+                }
+                ListField listField = new ListField(confidence: confidence);
                 foreach (var item in itemsArray)
                 {
                     listField.Items.Add(item.Deserialize<DynamicField>());
@@ -71,9 +58,6 @@ namespace Mindee.Parsing.V2.Field
             {
                 return null;
             }
-
-            field.Confidence = confidence;
-            field.Locations = locations;
             return field;
         }
 

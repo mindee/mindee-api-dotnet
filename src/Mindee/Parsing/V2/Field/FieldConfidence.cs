@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Mindee.Input;
 
 namespace Mindee.Parsing.V2.Field
@@ -13,6 +14,7 @@ namespace Mindee.Parsing.V2.Field
     /// <see cref="EnumMemberAttribute"/> annotations makes sure the
     /// values are correctly (de)serialised.
     /// </remarks>
+    [JsonConverter(typeof(StringEnumConverter<FieldConfidence>))]
     public enum FieldConfidence
     {
         /// <summary>100 % confidence.</summary>

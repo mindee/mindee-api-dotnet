@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.V2.Field
@@ -12,6 +13,13 @@ namespace Mindee.Parsing.V2.Field
         /// </summary>
         [JsonPropertyName("fields")]
         public InferenceFields Fields { get; set; }
+
+        /// <summary>
+        /// Object field.
+        /// </summary>
+        /// <param name="confidence"><see cref="BaseField.Confidence"/></param>
+        /// <param name="locations"><see cref="BaseField.Locations"/></param>
+        public ObjectField(FieldConfidence? confidence, List<FieldLocation> locations) : base(confidence, locations) { }
 
 
         /// <summary>
