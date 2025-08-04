@@ -1,5 +1,12 @@
 # Mindee .NET Client Library Changelog
 
+## v3.30.0 - 2025-08-04
+### Changes
+* :sparkles: add support for page count & mime type, fix v2 field naming conventions
+### Fixes
+* :bug: fix for field attributes being at the wrong level
+
+
 ## v3.29.0 - 2025-07-29
 ### Changes
 * :sparkles: Add support for mindee API V2 client & features
