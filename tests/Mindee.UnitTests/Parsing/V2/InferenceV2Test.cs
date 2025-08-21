@@ -114,15 +114,18 @@ namespace Mindee.UnitTests.Parsing.V2
 
             InferenceFields fields = inf.Result.Fields;
             Assert.NotNull(fields["field_simple_string"].SimpleField);
-            Assert.Equal("field_simple_string-value", fields["field_simple_string"].SimpleField.Value);
+            string fieldSimpleStringValue = fields["field_simple_string"].SimpleField.Value;
+            Assert.Equal("field_simple_string-value", fieldSimpleStringValue);
             Assert.Equal(FieldConfidence.Certain, fields["field_simple_string"].SimpleField.Confidence);
 
             Assert.NotNull(fields["field_simple_float"].SimpleField);
-            Assert.Equal(1.1, fields["field_simple_float"].SimpleField.Value);
+            Double fieldSimpleFloatValue = fields["field_simple_float"].SimpleField.Value;
+            Assert.Equal(1.1, fieldSimpleFloatValue);
             Assert.Equal(FieldConfidence.High, fields["field_simple_float"].SimpleField.Confidence);
 
             Assert.NotNull(fields["field_simple_int"].SimpleField);
-            Assert.Equal(12.0, fields["field_simple_int"].SimpleField.Value);
+            Double fieldSimpleIntValue = fields["field_simple_int"].SimpleField.Value;
+            Assert.Equal(12.0, fieldSimpleIntValue);
             Assert.Equal(FieldConfidence.Medium, fields["field_simple_int"].SimpleField.Confidence);
 
             Assert.NotNull(fields["field_simple_zero"].SimpleField);
@@ -130,7 +133,8 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.Equal(FieldConfidence.Low, fields["field_simple_zero"].SimpleField.Confidence);
 
             Assert.NotNull(fields["field_simple_bool"].SimpleField);
-            Assert.True(fields["field_simple_bool"].SimpleField.Value);
+            Boolean fieldSimpleBoolValue = fields["field_simple_bool"].SimpleField.Value;
+            Assert.True(fieldSimpleBoolValue);
             Assert.Null(fields["field_simple_bool"].SimpleField.Confidence);
 
             Assert.NotNull(fields["field_simple_null"].SimpleField);
@@ -160,9 +164,10 @@ namespace Mindee.UnitTests.Parsing.V2
             SimpleField simpleField = fields["field_simple_string"].SimpleField;
             Assert.Equal(FieldConfidence.Certain, simpleField.Confidence);
             Assert.NotNull(simpleField.Locations);
-            Assert.Single(simpleField.Locations);
-            Assert.Equal(0, simpleField.Locations.First().Page);
-            Polygon polygon = simpleField.Locations.First().Polygon;
+            List<FieldLocation> locations = simpleField.Locations;
+            Assert.Single(locations);
+            Assert.Equal(0, locations.First().Page);
+            Polygon polygon = locations.First().Polygon;
             Assert.Equal([0, 0], polygon[0]);
             Assert.Equal([0, 0], polygon[1]);
             Assert.Equal([1, 1], polygon[2]);
