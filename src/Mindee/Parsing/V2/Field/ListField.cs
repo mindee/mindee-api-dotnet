@@ -21,6 +21,48 @@ namespace Mindee.Parsing.V2.Field
         /// <param name="confidence"><see cref="BaseField.Confidence"/></param>
         public ListField(FieldConfidence? confidence) : base(confidence, null) { }
 
+        private List<SimpleField> _simpleItems;
+
+        /// <summary>
+        /// List of simple fields.
+        /// </summary>
+        public List<SimpleField> SimpleItems
+        {
+            get
+            {
+                if (_simpleItems != null)
+                    return _simpleItems;
+                _simpleItems = new List<SimpleField>();
+                foreach (DynamicField item in Items)
+                {
+                    if (item.SimpleField != null)
+                        _simpleItems.Add(item.SimpleField);
+                }
+                return _simpleItems;
+            }
+        }
+
+        private List<ObjectField> _objectItems;
+
+        /// <summary>
+        /// List of object fields.
+        /// </summary>
+        public List<ObjectField> ObjectItems
+        {
+            get
+            {
+                if (_objectItems != null)
+                    return _objectItems;
+                _objectItems = new List<ObjectField>();
+                foreach (DynamicField item in Items)
+                {
+                    if (item.ObjectField != null)
+                        _objectItems.Add(item.ObjectField);
+                }
+                return _objectItems;
+            }
+        }
+
         /// <summary>
         /// Print the value for all items.
         /// </summary>

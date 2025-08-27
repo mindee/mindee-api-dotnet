@@ -59,7 +59,6 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.Equal(195.0, fields["total_net"].SimpleField.Value);
             Assert.Null(fields["tips_gratuity"].SimpleField.Value);
 
-
             Assert.NotNull(fields["supplier_address"].ObjectField);
             Assert.NotNull(fields["supplier_address"].ObjectField.Fields["country"]);
             Assert.Equal("USA", fields["supplier_address"].ObjectField.Fields["country"].SimpleField.Value);
@@ -104,15 +103,36 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.Equal("value_9", deepSimple.Value);
         }
 
-
-        [Fact(DisplayName = "standard_field_types.json – simple / object / list variants must be recognised")]
-        public void StandardFieldTypes_mustExposeCorrectTypes()
+        [Fact(DisplayName = "standard_field_types.json – file metadata must be recognised")]
+        public void StandardFieldTypes_mustExposeFileValues()
         {
             var resp = GetInference("Resources/v2/inference/standard_field_types.json");
-            Inference? inf = resp.Inference;
-            Assert.NotNull(inf);
+            Inference? inference = resp.Inference;
+            Assert.NotNull(inference);
+            InferenceFile file = inference.File;
+            Assert.NotNull(file);
 
-            InferenceFields fields = inf.Result.Fields;
+            string fileName = file.Name;
+            Assert.Equal("test-file-name.jpg", fileName);
+
+            string mimeType = file.MimeType;
+            Assert.Equal("image/jpeg", mimeType);
+
+            int pageCount = file.PageCount;
+            Assert.Equal(1, pageCount);
+
+            string? alias = file.Alias;
+            Assert.Null(alias);
+        }
+
+        [Fact(DisplayName = "standard_field_types.json – simple fields must be recognised")]
+        public void StandardFieldTypes_mustExposeSimpleFieldValues()
+        {
+            var resp = GetInference("Resources/v2/inference/standard_field_types.json");
+            Inference? inference = resp.Inference;
+            Assert.NotNull(inference);
+            InferenceFields fields = inference.Result.Fields;
+
             Assert.NotNull(fields["field_simple_string"].SimpleField);
             string fieldSimpleStringValue = fields["field_simple_string"].SimpleField.Value;
             Assert.Equal("field_simple_string-value", fieldSimpleStringValue);
@@ -140,19 +160,85 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.NotNull(fields["field_simple_null"].SimpleField);
             Assert.Null(fields["field_simple_null"].SimpleField.Value);
             Assert.Null(fields["field_simple_null"].SimpleField.Confidence);
-
-            Assert.NotNull(fields["field_object"].ObjectField);
-            Assert.Null(fields["field_object"].ObjectField.Confidence);
-            Assert.Equal(2, fields["field_object"].ObjectField.Fields.Count);
-
-            Assert.NotNull(fields["field_simple_list"].ListField);
-            Assert.Null(fields["field_simple_list"].ListField.Confidence);
-            Assert.Equal(2, fields["field_simple_list"].ListField.Items.Count);
-
-            Assert.NotNull(fields["field_object_list"].ListField);
-            Assert.Null(fields["field_simple_list"].ListField.Confidence);
-            Assert.Equal(2, fields["field_object_list"].ListField.Items.Count);
         }
+
+        [Fact(DisplayName = "standard_field_types.json – simple list fields must be recognised")]
+        public void StandardFieldTypes_mustExposeSimpleListFieldValues()
+        {
+            var resp = GetInference("Resources/v2/inference/standard_field_types.json");
+            Inference? inference = resp.Inference;
+            Assert.NotNull(inference);
+            InferenceFields fields = inference.Result.Fields;
+
+            ListField fieldSimpleList = fields["field_simple_list"].ListField;
+            Assert.NotNull(fieldSimpleList);
+            Assert.Null(fieldSimpleList.Confidence);
+
+            List<SimpleField> simpleItems = fieldSimpleList.SimpleItems;
+            Assert.Equal(2, simpleItems.Count);
+            foreach (SimpleField itemField in simpleItems)
+            {
+                string fieldValue = itemField.Value;
+                Assert.NotNull(fieldValue);
+            }
+        }
+
+        [Fact(DisplayName = "standard_field_types.json – object fields must be recognised")]
+        public void StandardFieldTypes_mustExposeObjectFieldValues()
+        {
+            var resp = GetInference("Resources/v2/inference/standard_field_types.json");
+            Inference? inference = resp.Inference;
+            Assert.NotNull(inference);
+            InferenceFields fields = inference.Result.Fields;
+
+            ObjectField objectField = fields["field_object"].ObjectField;
+            Assert.NotNull(objectField);
+
+            Dictionary<string, SimpleField> subFields = objectField.SimpleFields;
+            SimpleField subField1 = subFields["subfield_1"];
+            Assert.Equal(FieldConfidence.High, subField1.Confidence);
+
+            foreach (var entry in subFields)
+            {
+                string fieldName = entry.Key;
+                SimpleField subField = entry.Value;
+                Assert.StartsWith("subfield_", fieldName);
+                Assert.NotNull(subField.Value);
+            }
+        }
+
+        [Fact(DisplayName = "standard_field_types.json – simple list fields must be recognised")]
+        public void StandardFieldTypes_mustExposeObjectListFieldValues()
+        {
+            var resp = GetInference("Resources/v2/inference/standard_field_types.json");
+            Inference? inference = resp.Inference;
+            Assert.NotNull(inference);
+            InferenceFields fields = inference.Result.Fields;
+
+            ListField fieldObjectList = fields["field_object_list"].ListField;
+            Assert.NotNull(fieldObjectList);
+            Assert.Null(fieldObjectList.Confidence);
+
+            List<ObjectField> objectItems = fieldObjectList.ObjectItems;
+            Assert.Equal(2, objectItems.Count);
+
+            foreach (ObjectField itemField in objectItems)
+            {
+                InferenceFields subFields = itemField.Fields;
+
+                SimpleField subField1 = subFields["subfield_1"].SimpleField;
+                string subFieldValue = subField1.Value;
+
+                foreach (var entry in subFields)
+                {
+                    string fieldName = entry.Key;
+                    SimpleField subField = entry.Value.SimpleField;
+                    Assert.StartsWith("subfield_", fieldName);
+                    Assert.NotNull(subField.Value);
+                }
+            }
+        }
+
 
         [Fact(DisplayName = "standard_field_types.json - simple / object / list variants must be recognised")]
         public void StandardFieldTypes_mustHaveLocations()
