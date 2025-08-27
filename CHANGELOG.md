@@ -1,5 +1,12 @@
 # Mindee .NET Client Library Changelog
 
+## v3.31.0 - 2025-08-27
+### Changes
+* :sparkles: add typed properties to list and object
+### Fixes
+* :memo: fix page options doc
+
+
 ## v3.30.0 - 2025-08-04
 ### Changes
 * :sparkles: add support for page count & mime type, fix v2 field naming conventions
