@@ -9,10 +9,30 @@ namespace Mindee.Parsing.V2.Field
     public class ObjectField : BaseField
     {
         /// <summary>
-        /// Detail relevant to the error.
+        /// Sub-fields of the field.
         /// </summary>
         [JsonPropertyName("fields")]
         public InferenceFields Fields { get; set; }
+
+        private Dictionary<string, SimpleField> _simpleFields;
+
+        /// <summary>
+        /// Simple sub-fields of the field.
+        /// </summary>
+        public Dictionary<string, SimpleField> SimpleFields
+        {
+            get
+            {
+                if (_simpleFields != null)
+                    return _simpleFields;
+                _simpleFields = new Dictionary<string, SimpleField>();
+                foreach (var field in Fields)
+                {
+                    _simpleFields.Add(field.Key, field.Value.SimpleField);
+                }
+                return _simpleFields;
+            }
+        }
 
         /// <summary>
         /// Object field.

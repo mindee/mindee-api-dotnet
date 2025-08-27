@@ -174,11 +174,12 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.NotNull(fieldSimpleList);
             Assert.Null(fieldSimpleList.Confidence);
 
-            List<DynamicField> simpleItems = fieldSimpleList.Items;
+            List<SimpleField> simpleItems = fieldSimpleList.SimpleItems;
             Assert.Equal(2, simpleItems.Count);
-            foreach (DynamicField itemField in simpleItems)
+            foreach (SimpleField itemField in simpleItems)
             {
-                string fieldValue = itemField.SimpleField.Value;
+                string fieldValue = itemField.Value;
+                Assert.NotNull(fieldValue);
             }
         }
 
@@ -193,14 +194,16 @@ namespace Mindee.UnitTests.Parsing.V2
             ObjectField objectField = fields["field_object"].ObjectField;
             Assert.NotNull(objectField);
 
-            InferenceFields subFields = objectField.Fields;
-            SimpleField subField1 = subFields["subfield_1"].SimpleField;
+            Dictionary<string, SimpleField> subFields = objectField.SimpleFields;
+            SimpleField subField1 = subFields["subfield_1"];
             Assert.Equal(FieldConfidence.High, subField1.Confidence);
 
             foreach (var entry in subFields)
             {
                 string fieldName = entry.Key;
-                SimpleField subField = entry.Value.SimpleField;
+                SimpleField subField = entry.Value;
+                Assert.StartsWith("subfield_", fieldName);
+                Assert.NotNull(subField.Value);
             }
         }
 
@@ -216,12 +219,12 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.NotNull(fieldObjectList);
             Assert.Null(fieldObjectList.Confidence);
 
-            List<DynamicField> objectItems = fieldObjectList.Items;
+            List<ObjectField> objectItems = fieldObjectList.ObjectItems;
             Assert.Equal(2, objectItems.Count);
 
-            foreach (DynamicField itemField in objectItems)
+            foreach (ObjectField itemField in objectItems)
             {
-                InferenceFields subFields = itemField.ObjectField.Fields;
+                InferenceFields subFields = itemField.Fields;
 
                 SimpleField subField1 = subFields["subfield_1"].SimpleField;
                 string subFieldValue = subField1.Value;
@@ -230,6 +233,8 @@ namespace Mindee.UnitTests.Parsing.V2
                 {
                     string fieldName = entry.Key;
                     SimpleField subField = entry.Value.SimpleField;
+                    Assert.StartsWith("subfield_", fieldName);
+                    Assert.NotNull(subField.Value);
                 }
             }
         }
