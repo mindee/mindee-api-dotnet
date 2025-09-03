@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using Mindee.Parsing.V2;
+using Mindee.Parsing.V2.Field;
 
 namespace Mindee.Http
 {
@@ -18,9 +21,26 @@ namespace Mindee.Http
         public string ModelId { get; }
 
         /// <summary>
-        /// If true, activate Retrieval-Augmented Generation.
+        /// Enhance extraction accuracy with Retrieval-Augmented Generation.
         /// </summary>
-        public bool Rag { get; }
+        public bool? Rag { get; }
+
+        /// <summary>
+        /// Extract the full text content from the document as strings, and fill the
+        /// <see cref="InferenceResult.RawText"/> attribute.
+        /// </summary>
+        public bool? RawText { get; }
+
+        /// <summary>
+        /// Calculate bounding box polygons for all fields, and fill their <see cref="BaseField.Locations"/> attribute
+        /// </summary>
+        public bool? Polygon { get; }
+
+        /// <summary>
+        /// Boost the precision and accuracy of all extractions.
+        /// Calculate confidence scores for all fields, and fill their <see cref="BaseField.Confidence"/> attribute.
+        /// </summary>
+        public bool? Confidence { get; }
 
         /// <summary>
         /// IDs of webhooks to propagate the API response to.
@@ -32,14 +52,27 @@ namespace Mindee.Http
         ///
         /// </summary>
         /// <param name="modelId">ID of the model<see cref="ModelId"/></param>
-        /// <param name="rag">If set, will enqueue to the workflows queue.<see cref="GenericParameter.Rag"/></param>
-        /// <param name="alias">Optional alias for the filename.<see cref="Alias"/></param>
-        /// <param name="webhookIds">List of webhook IDs to propagate the response to.<see cref="WebhookIds"/></param>
-        public InferenceOptions(string modelId, bool rag, string alias, List<string> webhookIds)
+        /// <param name="rag"><see cref="Rag"/></param>
+        /// <param name="alias"><see cref="Alias"/></param>
+        /// <param name="rawText"><see cref="RawText"/></param>
+        /// <param name="polygon"><see cref="Polygon"/></param>
+        /// <param name="confidence"><see cref="Confidence"/></param>
+        /// <param name="webhookIds"><see cref="WebhookIds"/></param>
+        public InferenceOptions(
+            string modelId,
+            bool? rag,
+            bool? rawText,
+            bool? polygon,
+            bool? confidence,
+            string alias,
+            List<string> webhookIds)
         {
             ModelId = modelId;
             Alias = alias;
             Rag = rag;
+            RawText = rawText;
+            Polygon = polygon;
+            Confidence = confidence;
             WebhookIds = webhookIds;
         }
     }

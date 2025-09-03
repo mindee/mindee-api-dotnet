@@ -50,6 +50,13 @@ namespace Mindee.UnitTests.Parsing.V2
         public void AsyncPredict_WhenComplete_MustHaveValidProperties()
         {
             var response = GetInference("Resources/v2/products/financial_document/complete.json");
+            InferenceActiveOptions activeOptions = response.Inference.ActiveOptions;
+            Assert.NotNull(activeOptions);
+            Assert.False(activeOptions.Rag);
+            Assert.False(activeOptions.Polygon);
+            Assert.False(activeOptions.Confidence);
+            Assert.False(activeOptions.RawText);
+
             var fields = response.Inference.Result.Fields;
             Assert.Equal(21, fields.Count);
             Assert.Single(fields["taxes"].ListField.Items);
@@ -228,6 +235,7 @@ namespace Mindee.UnitTests.Parsing.V2
 
                 SimpleField subField1 = subFields["subfield_1"].SimpleField;
                 string subFieldValue = subField1.Value;
+                Assert.StartsWith("field_object_list", subFieldValue);
 
                 foreach (var entry in subFields)
                 {
@@ -239,8 +247,29 @@ namespace Mindee.UnitTests.Parsing.V2
             }
         }
 
+        [Fact]
+        public void AsyncPredict_WhenComplete_MustHaveRawText()
+        {
+            InferenceResponse response = GetInference("Resources/v2/inference/raw_texts.json");
 
-        [Fact(DisplayName = "standard_field_types.json - simple / object / list variants must be recognised")]
+            InferenceActiveOptions activeOptions = response.Inference.ActiveOptions;
+            Assert.NotNull(activeOptions);
+            Assert.False(activeOptions.Rag);
+            Assert.False(activeOptions.Polygon);
+            Assert.False(activeOptions.Confidence);
+            Assert.True(activeOptions.RawText);
+
+            RawText rawText = response.Inference.Result.RawText;
+            Assert.NotNull(rawText);
+            Assert.NotNull(rawText.Pages);
+            Assert.Equal(2, rawText.Pages.Count);
+            Assert.Equal("This is the raw text of the first page...", rawText.Pages[0].Content);
+            Assert.Equal(
+                File.ReadAllText("Resources/v2/inference/raw_texts.txt"),
+                rawText.ToString());
+        }
+
+        [Fact(DisplayName = "standard_field_types.json - locations must be recognised")]
         public void StandardFieldTypes_mustHaveLocations()
         {
             var resp = GetInference("Resources/v2/inference/standard_field_types.json");

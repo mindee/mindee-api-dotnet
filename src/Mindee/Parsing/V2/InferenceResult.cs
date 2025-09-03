@@ -16,10 +16,10 @@ namespace Mindee.Parsing.V2
         public InferenceFields Fields { get; set; }
 
         /// <summary>
-        /// ResultOptions.
+        /// Full text extraction of the ocr result.
         /// </summary>
-        [JsonPropertyName("options")]
-        public InferenceResultOptions Options { get; set; }
+        [JsonPropertyName("raw_text")]
+        public RawText RawText { get; set; }
 
         /// <summary>
         /// A prettier representation of the feature values.
@@ -32,12 +32,6 @@ namespace Mindee.Parsing.V2
                 .AppendLine("======")
                 .AppendLine(Fields?.ToString() ?? string.Empty);
 
-            if (Options != null)
-            {
-                strBuilder.AppendLine("Options")
-                    .AppendLine("=======")
-                    .AppendLine(Options.ToString());
-            }
             string summary = strBuilder.ToString().TrimEnd('\n', '\r');
             return SummaryHelper.Clean(summary);
         }

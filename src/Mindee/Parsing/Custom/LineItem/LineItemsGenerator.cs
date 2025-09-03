@@ -13,7 +13,7 @@ namespace Mindee.Parsing.Custom.LineItem
         /// <summary>
         /// Prepare the line of a table.
         /// </summary>
-        /// <param name="fields">The list of fields that will be transform to line items.</param>
+        /// <param name="fields">The list of fields to transform into line items.</param>
         /// <param name="anchor">
         /// The line items generation is based on the fact that
         /// this field is most present that the others one, on all lines that we want.

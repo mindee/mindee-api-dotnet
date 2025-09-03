@@ -102,7 +102,10 @@ namespace Mindee
                     modelId: inferenceParameters.ModelId,
                     alias: inferenceParameters.Alias,
                     webhookIds: inferenceParameters.WebhookIds,
-                    rag: inferenceParameters.Rag
+                    rag: inferenceParameters.Rag,
+                    rawText: inferenceParameters.RawText,
+                    polygon: inferenceParameters.Polygon,
+                    confidence: inferenceParameters.Confidence
                 ));
         }
 
@@ -125,7 +128,10 @@ namespace Mindee
                     modelId: inferenceParameters.ModelId,
                     alias: inferenceParameters.Alias,
                     webhookIds: inferenceParameters.WebhookIds,
-                    rag: inferenceParameters.Rag
+                    rag: inferenceParameters.Rag,
+                    rawText: inferenceParameters.RawText,
+                    polygon: inferenceParameters.Polygon,
+                    confidence: inferenceParameters.Confidence
                 ));
         }
 
