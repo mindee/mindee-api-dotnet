@@ -1,5 +1,7 @@
 using Mindee.Exceptions;
 using Mindee.Input;
+using Mindee.Parsing.V2;
+using Mindee.Parsing.V2.Field;
 
 namespace Mindee.IntegrationTests
 {
@@ -22,16 +24,47 @@ namespace Mindee.IntegrationTests
         {
             var inputSource = new LocalInputSource(
                 "Resources/file_types/pdf/multipage_cut-2.pdf");
-            var predictOptions = new InferenceParameters(modelId: _findocModelId);
-            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(inputSource, predictOptions);
+            var inferenceParams = new InferenceParameters(
+                modelId: _findocModelId,
+                rag: false,
+                rawText: true,
+                polygon: false,
+                confidence: false);
+
+            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
+                inputSource, inferenceParams);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
-            Assert.NotNull(response.Inference.File);
-            Assert.Equal("multipage_cut-2.pdf", response.Inference.File.Name);
+
             Assert.NotNull(response.Inference.Model);
             Assert.Equal(_findocModelId, response.Inference.Model.Id);
-            Assert.NotNull(response.Inference.Result);
-            Assert.Null(response.Inference.Result.Options);
+
+            InferenceFile file = response.Inference.File;
+            Assert.NotNull(file);
+            Assert.Equal("multipage_cut-2.pdf", file.Name);
+            Assert.Equal(2, file.PageCount);
+
+            InferenceActiveOptions activeOptions = response.Inference.ActiveOptions;
+            Assert.NotNull(activeOptions);
+            Assert.False(activeOptions.Rag);
+            Assert.False(activeOptions.Polygon);
+            Assert.False(activeOptions.Confidence);
+            Assert.True(activeOptions.RawText);
+
+            InferenceResult result = response.Inference.Result;
+            Assert.NotNull(result);
+
+            InferenceFields fields = response.Inference.Result.Fields;
+            Assert.NotNull(fields);
+            Assert.NotNull(fields["supplier_name"]);
+            SimpleField supplierName = fields["supplier_name"].SimpleField;
+            Assert.Null(supplierName.Value);
+            Assert.Null(supplierName.Confidence);
+            Assert.Empty(supplierName.Locations);
+
+            RawText rawText = result.RawText;
+            Assert.NotNull(rawText);
+            Assert.Equal(2, rawText.Pages.Count);
         }
 
         [Fact]
@@ -39,18 +72,38 @@ namespace Mindee.IntegrationTests
         {
             var inputSource = new LocalInputSource(
                 "Resources/products/financial_document/default_sample.jpg");
-            var inferenceParams = new InferenceParameters(modelId: _findocModelId);
-            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(inputSource, inferenceParams);
+            var inferenceParams = new InferenceParameters(
+                modelId: _findocModelId);
+
+            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
+                inputSource, inferenceParams);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
-            Assert.NotNull(response.Inference.File);
-            Assert.Equal("default_sample.jpg", response.Inference.File.Name);
+
             Assert.NotNull(response.Inference.Model);
             Assert.Equal(_findocModelId, response.Inference.Model.Id);
+
+            InferenceFile file = response.Inference.File;
+            Assert.NotNull(file);
+            Assert.Equal("default_sample.jpg", file.Name);
+            Assert.Equal(1, file.PageCount);
+
+            InferenceActiveOptions activeOptions = response.Inference.ActiveOptions;
+            Assert.NotNull(activeOptions);
+            Assert.False(activeOptions.Rag);
+            Assert.False(activeOptions.Polygon);
+            Assert.False(activeOptions.Confidence);
+            Assert.False(activeOptions.RawText);
+
             Assert.NotNull(response.Inference.Result);
-            Assert.NotNull(response.Inference.Result.Fields);
-            Assert.NotNull(response.Inference.Result.Fields["supplier_name"]);
-            Assert.Equal("John Smith", response.Inference.Result.Fields["supplier_name"].SimpleField.Value);
+
+            InferenceFields fields = response.Inference.Result.Fields;
+            Assert.NotNull(fields);
+            Assert.NotNull(fields["supplier_name"]);
+            SimpleField supplierName = fields["supplier_name"].SimpleField;
+            Assert.Equal("John Smith", supplierName.Value);
+            Assert.Null(supplierName.Confidence);
+            Assert.Empty(supplierName.Locations);
         }
 
         [Fact]

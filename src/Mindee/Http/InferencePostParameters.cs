@@ -25,18 +25,30 @@ namespace Mindee.Http
         /// <param name="urlSource">Remote input source containing the file.<see cref="UrlInputSource"/></param>
         /// <param name="modelId"><see cref="InferenceOptions.ModelId"/></param>
         /// <param name="rag"><see cref="InferenceOptions.Rag"/></param>
+        /// <param name="rawText"><see cref="InferenceOptions.RawText"/></param>
+        /// <param name="polygon"><see cref="InferenceOptions.Polygon"/></param>
+        /// <param name="confidence"><see cref="InferenceOptions.Confidence"/></param>
         /// <param name="alias"><see cref="InferenceOptions.Alias"/></param>
         /// <param name="webhookIds"><see cref="InferenceOptions.WebhookIds"/></param>
         public InferencePostParameters(
             string modelId,
-            bool rag,
             string alias,
             List<string> webhookIds,
+            bool? rag = null,
+            bool? rawText = null,
+            bool? polygon = null,
+            bool? confidence = null,
             LocalInputSource localSource = null,
             UrlInputSource urlSource = null
-
             )
-        : base(modelId, rag, alias, webhookIds)
+        : base(
+            modelId: modelId,
+            rag: rag,
+            rawText: rawText,
+            polygon: polygon,
+            confidence: confidence,
+            alias: alias,
+            webhookIds: webhookIds)
         {
             if (localSource == null && urlSource == null)
             {

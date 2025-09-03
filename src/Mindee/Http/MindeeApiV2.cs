@@ -84,10 +84,21 @@ namespace Mindee.Http
             {
                 request.AddParameter(name: "alias", value: predictParameter.Alias);
             }
-
-            if (predictParameter.Rag)
+            if (predictParameter.Rag != null)
             {
-                request.AddQueryParameter("rag", "true");
+                request.AddParameter("rag", predictParameter.Rag.ToString().ToLower());
+            }
+            if (predictParameter.RawText != null)
+            {
+                request.AddParameter("raw_text", predictParameter.RawText.ToString().ToLower());
+            }
+            if (predictParameter.Polygon != null)
+            {
+                request.AddParameter("polygon", predictParameter.Polygon.ToString().ToLower());
+            }
+            if (predictParameter.Confidence != null)
+            {
+                request.AddParameter("confidence", predictParameter.Confidence.ToString().ToLower());
             }
 
             if (predictParameter.WebhookIds is { Count: > 0 })

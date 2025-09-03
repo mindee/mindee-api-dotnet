@@ -26,19 +26,6 @@ namespace Mindee.UnitTests
                 rag: false);
         }
 
-        internal static InferencePostParameters GetFakePredictParameterV2()
-        {
-            return new InferencePostParameters(
-                localSource: new LocalInputSource(
-                    fileBytes: new byte[] { byte.MinValue },
-                    filename: "cacatiti.pdf"),
-                modelId: "model-id",
-                alias: null,
-                rag: false,
-                webhookIds: []
-            );
-        }
-
         private static ServiceProvider InitServiceProvider(HttpStatusCode statusCode, string fileContent)
         {
             var services = new ServiceCollection();

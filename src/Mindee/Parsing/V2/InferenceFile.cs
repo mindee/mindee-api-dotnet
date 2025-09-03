@@ -44,6 +44,5 @@ namespace Mindee.Parsing.V2
             sb.Append($"\n:MIME Type: {MimeType}");
             return sb.ToString();
         }
-
     }
 }

@@ -21,6 +21,12 @@ namespace Mindee.Parsing.V2
         public InferenceFile File { get; set; }
 
         /// <summary>
+        /// Active options for the inference.
+        /// </summary>
+        [JsonPropertyName("active_options")]
+        public InferenceActiveOptions ActiveOptions { get; set; }
+
+        /// <summary>
         /// The model result values.
         /// </summary>
         [JsonPropertyName("result")]
@@ -35,6 +41,8 @@ namespace Mindee.Parsing.V2
             stringBuilder.Append(Model);
             stringBuilder.Append("\n\n");
             stringBuilder.Append(File);
+            stringBuilder.Append("\n\n");
+            stringBuilder.Append(ActiveOptions);
             stringBuilder.Append("\n\n");
             stringBuilder.Append(Result);
             stringBuilder.Append("\n");
