@@ -263,6 +263,10 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.NotNull(rawText);
             Assert.NotNull(rawText.Pages);
             Assert.Equal(2, rawText.Pages.Count);
+            foreach (RawTextPage page in rawText.Pages)
+            {
+                Assert.NotNull(page.Content);
+            }
             Assert.Equal("This is the raw text of the first page...", rawText.Pages[0].Content);
             Assert.Equal(
                 File.ReadAllText("Resources/v2/inference/raw_texts.txt"),

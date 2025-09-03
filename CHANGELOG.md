@@ -1,5 +1,12 @@
 # Mindee .NET Client Library Changelog
 
+## v3.32.0 - 2025-09-03
+### Changes
+* :sparkles: add inference options
+### ¡Breaking Changes!
+* :recycle: :boom: update raw text output from server
+
+
 ## v3.31.0 - 2025-08-27
 ### Changes
 * :sparkles: add typed properties to list and object
