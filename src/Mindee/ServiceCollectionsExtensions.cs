@@ -25,8 +25,10 @@ namespace Mindee.Extensions.DependencyInjection
         /// <param name="configureOptions"></param>
         /// <param name="throwOnError"></param>
         /// <returns></returns>
-        public static void AddMindeeApi(this IServiceCollection services,
-            Action<MindeeSettings> configureOptions, bool throwOnError = false)
+        public static void AddMindeeApi(
+            this IServiceCollection services,
+            Action<MindeeSettings> configureOptions,
+            bool throwOnError = false)
         {
             services.Configure(configureOptions);
             services.AddSingleton<MindeeApi>();
@@ -41,7 +43,8 @@ namespace Mindee.Extensions.DependencyInjection
         /// <param name="loggerFactory"></param>
         /// <param name="throwOnError"></param>
         /// <returns></returns>
-        public static void AddMindeeApiV2(this IServiceCollection services,
+        public static void AddMindeeApiV2(
+            this IServiceCollection services,
             Action<MindeeSettings> configureOptions,
             ILoggerFactory loggerFactory = null,
             bool throwOnError = false)

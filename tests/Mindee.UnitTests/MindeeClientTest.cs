@@ -386,7 +386,7 @@ namespace Mindee.UnitTests
                     , It.IsAny<CustomEndpoint>()
                 ))
                 .ReturnsAsync(new PredictResponse<CustomV1>());
-            return new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
+            return new MindeeClient(pdfOperation: GetDefaultPdfOperation(), httpApi: predictable.Object);
         }
 
         private MindeeClient MakeGeneratedMindeeClient(Mock<IHttpApi> predictable)

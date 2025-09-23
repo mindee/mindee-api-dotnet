@@ -23,7 +23,7 @@ namespace Mindee.UnitTests
                 x => x.ReqGetJobAsync(It.IsAny<string>())
             ).ReturnsAsync(new JobResponse());
 
-            return new MindeeClientV2(predictable.Object);
+            return new MindeeClientV2(httpApi: predictable.Object);
         }
 
         [Fact]

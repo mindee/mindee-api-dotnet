@@ -287,10 +287,10 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.Single(locations);
             Assert.Equal(0, locations.First().Page);
             Polygon polygon = locations.First().Polygon;
-            Assert.Equal([0, 0], polygon[0]);
-            Assert.Equal([0, 0], polygon[1]);
-            Assert.Equal([1, 1], polygon[2]);
-            Assert.Equal([1, 1], polygon[3]);
+            Assert.Equal(new Point(0, 0), polygon[0]);
+            Assert.Equal(new Point(0, 0), polygon[1]);
+            Assert.Equal(new Point(1, 1), polygon[2]);
+            Assert.Equal(new Point(1, 1), polygon[3]);
         }
 
         [Fact(DisplayName = "standard_field_types.rst – RST display must be parsed and exposed")]
