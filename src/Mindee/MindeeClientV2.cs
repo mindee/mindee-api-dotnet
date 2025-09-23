@@ -48,9 +48,9 @@ namespace Mindee
         /// <summary>
         ///
         /// </summary>
-        /// <param name="mindeeSettings"><see cref="MindeeSettings"/></param>
+        /// <param name="mindeeSettings"><see cref="MindeeSettingsV2"/></param>
         /// <param name="logger"></param>
-        public MindeeClientV2(MindeeSettings mindeeSettings, ILoggerFactory logger = null)
+        public MindeeClientV2(MindeeSettingsV2 mindeeSettings, ILoggerFactory logger = null)
         {
             _loggerFactory = logger ?? NullLoggerFactory.Instance;
             var serviceCollection = new ServiceCollection();

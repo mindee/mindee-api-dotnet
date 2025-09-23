@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -14,7 +15,9 @@ namespace Mindee.Http
         private readonly string _baseUrl;
         private readonly RestClient _httpClient;
 
-        public MindeeApiV2(IOptions<MindeeSettings> mindeeSettings, RestClient httpClient,
+        public MindeeApiV2(
+            IOptions<MindeeSettingsV2> mindeeSettings,
+            [FromKeyedServices("MindeeV2RestClient")] RestClient httpClient,
             ILogger<MindeeApiV2> logger = null)
         {
             Logger = logger ?? NullLogger<MindeeApiV2>.Instance;

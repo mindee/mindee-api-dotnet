@@ -82,7 +82,7 @@ namespace Mindee.IntegrationTests
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = apiKey;
-            }, logger);
+            }, logger, true);
             return _mindeeClientV2 ??= new MindeeClientV2(apiKey);
         }
 

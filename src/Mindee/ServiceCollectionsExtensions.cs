@@ -22,7 +22,7 @@ namespace Mindee.Extensions.DependencyInjection
         /// Configure the Mindee API in the DI, mainly used for mocking/testing purposes.
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="configureOptions"></param>
+        /// <param name="configureOptions"></param>*
         /// <param name="throwOnError"></param>
         /// <returns></returns>
         public static void AddMindeeApi(
@@ -31,8 +31,15 @@ namespace Mindee.Extensions.DependencyInjection
             bool throwOnError = false)
         {
             services.Configure(configureOptions);
-            services.AddSingleton<MindeeApi>();
-            RegisterRestSharpClient(services, throwOnError);
+            RegisterV1RestSharpClient(services, throwOnError);
+
+            services.AddSingleton(serviceProvider =>
+            {
+                var settings = serviceProvider.GetRequiredService<IOptions<MindeeSettings>>();
+                var restClient = serviceProvider.GetRequiredKeyedService<RestClient>("MindeeV1RestClient");
+                var logger = serviceProvider.GetService<ILoggerFactory>()?.CreateLogger<MindeeApi>();
+                return new MindeeApi(settings, restClient, logger);
+            });
         }
 
         /// <summary>
@@ -45,13 +52,13 @@ namespace Mindee.Extensions.DependencyInjection
         /// <returns></returns>
         public static void AddMindeeApiV2(
             this IServiceCollection services,
-            Action<MindeeSettings> configureOptions,
+            Action<MindeeSettingsV2> configureOptions,
             ILoggerFactory loggerFactory = null,
             bool throwOnError = false)
         {
             services.Configure(configureOptions);
+            RegisterV2RestSharpClient(services, throwOnError);
 
-            RegisterRestSharpClientV2(services, throwOnError);
             if (loggerFactory is not null)
             {
                 services.AddSingleton(loggerFactory);
@@ -64,32 +71,30 @@ namespace Mindee.Extensions.DependencyInjection
 
             services.AddSingleton(serviceProvider =>
             {
-                var options = serviceProvider.GetRequiredService<IOptions<MindeeSettings>>();
-                var restClient = serviceProvider.GetRequiredService<RestClient>();
+                var settings = serviceProvider.GetRequiredService<IOptions<MindeeSettingsV2>>();
+                var restClient = serviceProvider.GetRequiredKeyedService<RestClient>("MindeeV2RestClient");
                 var logger = serviceProvider.GetService<ILoggerFactory>()?.CreateLogger<MindeeApiV2>();
-
-                return new MindeeApiV2(options, restClient, logger);
+                return new MindeeApiV2(settings, restClient, logger);
             });
-
         }
 
-        private static void RegisterRestSharpClient(IServiceCollection services, bool throwOnError)
+        private static void RegisterV1RestSharpClient(IServiceCollection services, bool throwOnError)
         {
-            services.AddSingleton(provider =>
+            services.AddKeyedSingleton("MindeeV1RestClient", (provider, _) =>
             {
-                var mindeeSettings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
-                mindeeSettings.MindeeBaseUrl = Environment.GetEnvironmentVariable("Mindee__BaseUrl");
-                if (string.IsNullOrEmpty(mindeeSettings.MindeeBaseUrl))
-                    mindeeSettings.MindeeBaseUrl = "https://api.mindee.net";
-                if (mindeeSettings.RequestTimeoutSeconds <= 0)
-                    mindeeSettings.RequestTimeoutSeconds = 120;
-                if (string.IsNullOrEmpty(mindeeSettings.ApiKey))
-                    mindeeSettings.ApiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+                MindeeSettings settings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
+                settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("Mindee__BaseUrl");
+                if (string.IsNullOrEmpty(settings.MindeeBaseUrl))
+                    settings.MindeeBaseUrl = "https://api.mindee.net";
+                if (settings.RequestTimeoutSeconds <= 0)
+                    settings.RequestTimeoutSeconds = 120;
+                if (string.IsNullOrEmpty(settings.ApiKey))
+                    settings.ApiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
 
-                var clientOptions = new RestClientOptions(mindeeSettings.MindeeBaseUrl)
+                var clientOptions = new RestClientOptions(settings.MindeeBaseUrl)
                 {
                     FollowRedirects = false,
-                    Timeout = TimeSpan.FromSeconds(mindeeSettings.RequestTimeoutSeconds),
+                    Timeout = TimeSpan.FromSeconds(settings.RequestTimeoutSeconds),
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
                     CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true },
@@ -99,21 +104,14 @@ namespace Mindee.Extensions.DependencyInjection
             });
         }
 
-        private static void RegisterRestSharpClientV2(IServiceCollection services, bool throwOnError)
+        private static void RegisterV2RestSharpClient(IServiceCollection services, bool throwOnError)
         {
-            services.AddSingleton(provider =>
+            services.AddKeyedSingleton("MindeeV2RestClient", (provider, _) =>
             {
-                var settings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
-                if (string.IsNullOrWhiteSpace(settings.MindeeBaseUrl))
-                {
-                    var envBaseUrl = Environment.GetEnvironmentVariable("MindeeV2__BaseUrl");
-                    if (!string.IsNullOrWhiteSpace(envBaseUrl))
-                        settings.MindeeBaseUrl = envBaseUrl;
-                }
-
-                if (string.IsNullOrWhiteSpace(settings.MindeeBaseUrl))
+                MindeeSettingsV2 settings = provider.GetRequiredService<IOptions<MindeeSettingsV2>>().Value;
+                settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("MindeeV2__BaseUrl");
+                if (string.IsNullOrEmpty(settings.MindeeBaseUrl))
                     settings.MindeeBaseUrl = "https://api-v2.mindee.net";
-
                 if (settings.RequestTimeoutSeconds <= 0)
                     settings.RequestTimeoutSeconds = 120;
                 if (string.IsNullOrEmpty(settings.ApiKey))
@@ -162,8 +160,8 @@ namespace Mindee.Extensions.DependencyInjection
             services.AddSingleton<IHttpApi, MindeeApi>();
             services.AddOptions<MindeeSettings>()
                 .BindConfiguration(sectionName)
-                .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee api key is missing");
-            RegisterRestSharpClient(services, false);
+                .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee V1 API key is missing");
+            RegisterV1RestSharpClient(services, false);
 
             services.AddPdfOperation();
 
@@ -178,14 +176,14 @@ namespace Mindee.Extensions.DependencyInjection
         /// <remarks>The <see cref="MindeeClient"/> instance is registered as a transient.</remarks>
         public static IServiceCollection AddMindeeClientV2(
             this IServiceCollection services,
-            string sectionName = "Mindee")
+            string sectionName = "MindeeV2")
         {
             services.AddSingleton<MindeeClientV2>();
             services.AddSingleton<HttpApiV2, MindeeApiV2>();
-            services.AddOptions<MindeeSettings>()
+            services.AddOptions<MindeeSettingsV2>()
                 .BindConfiguration(sectionName)
-                .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee api key is missing");
-            RegisterRestSharpClientV2(services, false);
+                .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee V2 API key is missing");
+            RegisterV2RestSharpClient(services, false);
 
             services.AddPdfOperation();
 
