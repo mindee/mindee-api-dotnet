@@ -19,17 +19,36 @@ namespace Mindee.IntegrationTests
             _findocModelId = Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id");
         }
 
-        [Fact]
-        public async Task Parse_File_Empty_MultiplePages_MustSucceed()
+        private void AssertActiveOptions(
+            InferenceActiveOptions activeOptions, bool rawText, bool polygon, bool confidence, bool rag)
+        {
+            Assert.NotNull(activeOptions);
+            Assert.Equal(activeOptions.Rag, rag);
+            Assert.Equal(activeOptions.Polygon, polygon);
+            Assert.Equal(activeOptions.Confidence, confidence);
+            Assert.Equal(activeOptions.RawText, rawText);
+        }
+
+        [Theory]
+        [InlineData(false, false, false)]
+        [InlineData(true, false, false)]
+        [InlineData(false, true, false)]
+        [InlineData(true, true, false)]
+        [InlineData(false, false, true)]
+        [InlineData(true, false, true)]
+        [InlineData(false, true, true)]
+        [InlineData(true, true, true)]
+        public async Task Parse_File_Empty_MultiplePages_ParameterVariations_MustSucceed(
+            bool rawText, bool polygon, bool confidence)
         {
             var inputSource = new LocalInputSource(
                 "Resources/file_types/pdf/multipage_cut-2.pdf");
             var inferenceParams = new InferenceParameters(
                 modelId: _findocModelId,
                 rag: false,
-                rawText: true,
-                polygon: false,
-                confidence: false);
+                rawText: rawText,
+                polygon: polygon,
+                confidence: confidence);
 
             var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
                 inputSource, inferenceParams);
@@ -44,27 +63,44 @@ namespace Mindee.IntegrationTests
             Assert.Equal("multipage_cut-2.pdf", file.Name);
             Assert.Equal(2, file.PageCount);
 
-            InferenceActiveOptions activeOptions = response.Inference.ActiveOptions;
-            Assert.NotNull(activeOptions);
-            Assert.False(activeOptions.Rag);
-            Assert.False(activeOptions.Polygon);
-            Assert.False(activeOptions.Confidence);
-            Assert.True(activeOptions.RawText);
+            AssertActiveOptions(
+                response.Inference.ActiveOptions, rawText, polygon, confidence, false);
 
             InferenceResult result = response.Inference.Result;
             Assert.NotNull(result);
+
+            RawText resultRawText = result.RawText;
+            if (rawText)
+            {
+                Assert.NotNull(resultRawText);
+                Assert.Equal(2, resultRawText.Pages.Count);
+            }
+            else
+                Assert.Null(resultRawText);
 
             InferenceFields fields = response.Inference.Result.Fields;
             Assert.NotNull(fields);
             Assert.NotNull(fields["supplier_name"]);
             SimpleField supplierName = fields["supplier_name"].SimpleField;
-            Assert.Null(supplierName.Value);
-            Assert.Null(supplierName.Confidence);
-            Assert.Empty(supplierName.Locations);
+            // the server sometimes returns "null"
+            // Assert.Null(supplierName.Value);
 
-            RawText rawText = result.RawText;
-            Assert.NotNull(rawText);
-            Assert.Equal(2, rawText.Pages.Count);
+            Assert.NotNull(fields["taxes"]);
+            ListField taxes = fields["taxes"].ListField;
+            // the server sometimes returns a list of empty objects
+            // Assert.Empty(taxes.ObjectItems);
+
+            Assert.Empty(supplierName.Locations);
+            if (confidence)
+            {
+                Assert.NotNull(supplierName.Confidence);
+                Assert.NotNull(taxes.Confidence);
+            }
+            else
+            {
+                Assert.Null(supplierName.Confidence);
+                Assert.Null(taxes.Confidence);
+            }
         }
 
         [Fact]
@@ -88,12 +124,8 @@ namespace Mindee.IntegrationTests
             Assert.Equal("default_sample.jpg", file.Name);
             Assert.Equal(1, file.PageCount);
 
-            InferenceActiveOptions activeOptions = response.Inference.ActiveOptions;
-            Assert.NotNull(activeOptions);
-            Assert.False(activeOptions.Rag);
-            Assert.False(activeOptions.Polygon);
-            Assert.False(activeOptions.Confidence);
-            Assert.False(activeOptions.RawText);
+            AssertActiveOptions(
+                response.Inference.ActiveOptions, false, false, false, false);
 
             Assert.NotNull(response.Inference.Result);
 

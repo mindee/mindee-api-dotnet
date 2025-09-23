@@ -86,19 +86,19 @@ namespace Mindee.Http
             }
             if (predictParameter.Rag != null)
             {
-                request.AddParameter("rag", predictParameter.Rag.ToString().ToLower());
+                request.AddParameter("rag", predictParameter.Rag.Value.ToString());
             }
             if (predictParameter.RawText != null)
             {
-                request.AddParameter("raw_text", predictParameter.RawText.ToString().ToLower());
+                request.AddParameter("raw_text", predictParameter.RawText.Value.ToString());
             }
             if (predictParameter.Polygon != null)
             {
-                request.AddParameter("polygon", predictParameter.Polygon.ToString().ToLower());
+                request.AddParameter("polygon", predictParameter.Polygon.Value.ToString());
             }
             if (predictParameter.Confidence != null)
             {
-                request.AddParameter("confidence", predictParameter.Confidence.ToString().ToLower());
+                request.AddParameter("confidence", predictParameter.Confidence.Value.ToString());
             }
 
             if (predictParameter.WebhookIds is { Count: > 0 })
