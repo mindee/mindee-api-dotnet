@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Mindee.Parsing.Standard;
@@ -16,12 +17,12 @@ namespace Mindee.Parsing
 
         public static string FormatAmount(double? amount)
         {
-            return amount == null ? "" : amount.Value.ToString("0.00###");
+            return amount == null ? "" : amount.Value.ToString("0.00###", CultureInfo.InvariantCulture);
         }
 
         public static string FormatAmount(decimal? amount)
         {
-            return amount == null ? "" : amount.Value.ToString("0.00###");
+            return amount == null ? "" : amount.Value.ToString("0.00###", CultureInfo.InvariantCulture);
         }
 
         public static string FormatString(string str)
