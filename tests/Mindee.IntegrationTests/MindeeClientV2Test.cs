@@ -82,13 +82,11 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(fields);
             Assert.NotNull(fields["supplier_name"]);
             SimpleField supplierName = fields["supplier_name"].SimpleField;
-            // the server sometimes returns "null"
-            // Assert.Null(supplierName.Value);
+            Assert.Null(supplierName.Value);
 
             Assert.NotNull(fields["taxes"]);
             ListField taxes = fields["taxes"].ListField;
-            // the server sometimes returns a list of empty objects
-            // Assert.Empty(taxes.ObjectItems);
+            Assert.Empty(taxes.ObjectItems);
 
             Assert.Empty(supplierName.Locations);
             if (confidence)
