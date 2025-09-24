@@ -23,7 +23,7 @@ jobs:
           - "macos-13"
         dotnet-version:
           - "net6.0"
-          - "net8.0"
+          - "net9.0"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
