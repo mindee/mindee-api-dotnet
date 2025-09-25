@@ -2,65 +2,21 @@ using System.Net;
 using System.Net.Http; // Necessary for .NET 4.7.2
 using Microsoft.Extensions.DependencyInjection;
 using Mindee.Exceptions;
-using Mindee.Extensions.DependencyInjection;
 using Mindee.Http;
 using Mindee.Product.Invoice;
 using Mindee.Product.Receipt;
-using Moq;
-using Moq.Protected;
-using RestSharp;
 
 namespace Mindee.UnitTests.Http
 {
     [Trait("Category", "Mindee Api")]
     public sealed class MindeeApiTest
     {
-
         private const string DateOutputFormat = "yyyy-MM-ddTHH:mm:ss.fffff";
-
-        private static ServiceProvider InitServiceProvider(HttpStatusCode statusCode, string fileContent)
-        {
-            var services = new ServiceCollection();
-            services.AddOptions();
-            services.Configure<MindeeSettings>(options =>
-            {
-                options.ApiKey = "MyKey";
-                options.MindeeBaseUrl = "https://api.mindee.net";
-                options.RequestTimeoutSeconds = 120;
-            });
-
-            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-            mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = statusCode,
-                    Content = new StringContent(fileContent, System.Text.Encoding.UTF8, "application/json")
-                });
-
-
-            services.AddMindeeApi(options =>
-            {
-                options.ApiKey = "MyKey";
-                options.MindeeBaseUrl = "https://api.mindee.net";
-                options.RequestTimeoutSeconds = 120;
-            });
-
-            services.AddSingleton(new RestClient(new RestClientOptions
-            {
-                BaseUrl = new Uri("https://api.mindee.net"),
-                ConfigureMessageHandler = _ => mockHttpMessageHandler.Object,
-            }));
-
-            return services.BuildServiceProvider();
-        }
 
         [Fact]
         public async Task Predict_WithWrongKey()
         {
-            var serviceProvider = InitServiceProvider(
+            var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.BadRequest,
                 File.ReadAllText("Resources/errors/error_401_invalid_token.json")
             );
@@ -77,7 +33,7 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task Predict_WithValidResponse()
         {
-            var serviceProvider = InitServiceProvider(
+            var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.OK,
                 File.ReadAllText("Resources/products/invoices/response_v4/complete.json")
             );
@@ -99,7 +55,7 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task Predict_WithErrorResponse()
         {
-            var serviceProvider = InitServiceProvider(
+            var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.BadRequest,
                 File.ReadAllText("Resources/errors/error_400_with_object_in_detail.json")
             );
@@ -114,7 +70,7 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task Predict_500Error()
         {
-            var serviceProvider = InitServiceProvider(
+            var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.InternalServerError,
                 File.ReadAllText("Resources/errors/error_500_inference_fail.json")
             );
@@ -128,7 +84,7 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task Predict_429Error()
         {
-            var serviceProvider = InitServiceProvider(
+            var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 (HttpStatusCode)429,
                 File.ReadAllText("Resources/errors/error_429_too_many_requests.json")
             );
@@ -143,7 +99,7 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task Predict_401Error()
         {
-            var serviceProvider = InitServiceProvider(
+            var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.Unauthorized,
                 File.ReadAllText("Resources/errors/error_401_invalid_token.json")
             );
@@ -158,7 +114,7 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task PredictAsyncPostAsync_WithFailForbidden()
         {
-            var serviceProvider = InitServiceProvider(
+            var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.Forbidden,
                 File.ReadAllText("Resources/async/post_fail_forbidden.json")
             );
@@ -173,7 +129,7 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task PredictAsyncPostAsync_WithSuccess()
         {
-            var serviceProvider = InitServiceProvider(
+            var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.OK,
                 File.ReadAllText("Resources/async/post_success.json")
             );
@@ -193,7 +149,7 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task DocumentQueueGetAsync_WithJobProcessing()
         {
-            var serviceProvider = InitServiceProvider(
+            var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.OK,
                 File.ReadAllText("Resources/async/get_processing.json")
             );
@@ -212,7 +168,7 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task DocumentQueueGetAsync_WithJobFailed()
         {
-            var serviceProvider = InitServiceProvider(
+            var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.OK,
                 File.ReadAllText("Resources/async/get_failed_job_error.json")
             );
@@ -226,7 +182,7 @@ namespace Mindee.UnitTests.Http
         [Fact]
         public async Task DocumentQueueGetAsync_WithSuccess()
         {
-            var serviceProvider = InitServiceProvider(
+            var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.OK,
                 File.ReadAllText("Resources/async/get_completed.json")
             );

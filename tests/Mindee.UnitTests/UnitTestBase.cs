@@ -26,7 +26,7 @@ namespace Mindee.UnitTests
                 rag: false);
         }
 
-        private static ServiceProvider InitServiceProvider(HttpStatusCode statusCode, string fileContent)
+        public static ServiceProvider InitServiceProviderV1(HttpStatusCode statusCode, string fileContent)
         {
             var services = new ServiceCollection();
             services.AddOptions();
@@ -47,7 +47,6 @@ namespace Mindee.UnitTests
                     StatusCode = statusCode,
                     Content = new StringContent(fileContent, System.Text.Encoding.UTF8, "application/json")
                 });
-
 
             services.AddMindeeApi(options =>
             {
@@ -95,7 +94,7 @@ namespace Mindee.UnitTests
                 options.RequestTimeoutSeconds = 120;
             });
 
-            services.AddSingleton(new RestClient(new RestClientOptions
+            services.AddKeyedSingleton("MindeeV2RestClient", new RestClient(new RestClientOptions
             {
                 BaseUrl = new Uri("https://api.mindee.net"),
                 ConfigureMessageHandler = _ => mockHttpMessageHandler.Object,
@@ -108,7 +107,7 @@ namespace Mindee.UnitTests
         {
             var fileContent = File.ReadAllText(fileName);
 
-            var serviceProvider = InitServiceProvider(
+            var serviceProvider = InitServiceProviderV1(
                 HttpStatusCode.OK,
                 fileContent: fileContent
             );

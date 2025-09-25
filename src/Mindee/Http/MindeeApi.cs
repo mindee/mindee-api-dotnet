@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
@@ -19,7 +20,9 @@ namespace Mindee.Http
         private readonly RestClient _httpClient;
         private readonly ILogger<MindeeApi> _logger;
 
-        public MindeeApi(IOptions<MindeeSettings> mindeeSettings, RestClient httpClient,
+        public MindeeApi(
+            IOptions<MindeeSettings> mindeeSettings,
+            RestClient httpClient,
             ILogger<MindeeApi> logger = null)
         {
             _logger = logger;

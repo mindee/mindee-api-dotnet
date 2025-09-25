@@ -38,7 +38,6 @@ namespace Mindee
             {
                 options.ApiKey = apiKey;
             });
-
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
             if (logger != null)
@@ -59,6 +58,7 @@ namespace Mindee
         {
             var serviceCollection = new ServiceCollection();
             _pdfOperation = new DocNetApi();
+
             serviceCollection.AddMindeeApi(options =>
             {
                 options.ApiKey = mindeeSettings.ApiKey;
