@@ -42,7 +42,7 @@ namespace Mindee.Product.Us.PayrollCheckRegister
         {
             return new Dictionary<string, string>()
             {
-                {"Amount", Amount.ToString()},
+                {"Amount", SummaryHelper.FormatAmount(Amount)},
                 {"Code", SummaryHelper.FormatString(Code)},
             };
         }

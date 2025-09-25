@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -19,7 +20,7 @@ namespace Mindee.Parsing.Standard
             {
                 return null;
             }
-            return decimal.Parse(valueString);
+            return decimal.Parse(valueString, CultureInfo.InvariantCulture);
         }
 
         /// <summary>

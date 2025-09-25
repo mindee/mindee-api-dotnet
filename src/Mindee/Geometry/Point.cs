@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Mindee.Geometry
@@ -34,7 +35,9 @@ namespace Mindee.Geometry
         /// </summary>
         public override string ToString()
         {
-            return $"[{X}, {Y}]";
+            string x = X.ToString(CultureInfo.InvariantCulture);
+            string y = Y.ToString(CultureInfo.InvariantCulture);
+            return $"[{x}, {y}]";
         }
     }
 }
