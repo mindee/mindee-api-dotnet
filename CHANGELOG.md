@@ -1,5 +1,16 @@
 # Mindee .NET Client Library Changelog
 
+## v3.33.0 - 2025-09-25
+### Fixes
+* :bug: fix for setting inference options
+* :bug: ensure consistent number formatting
+### ¡Breaking Changes!
+* :coffin: remove obsolete US Mail V2
+* :bug: make sure DI uses separate services for v1 and v2 clients
+  * :recycle: :boom: Use dedicated settings class for v2 (normally not used directly)
+  * :recycle: :boom: Use dedicated settings section for v2 (normally not used directly)
+
+
 ## v3.32.0 - 2025-09-03
 ### Changes
 * :sparkles: add inference options
