@@ -22,7 +22,7 @@ namespace Mindee.Http
 
         public MindeeApi(
             IOptions<MindeeSettings> mindeeSettings,
-            [FromKeyedServices("MindeeV1RestClient")] RestClient httpClient,
+            RestClient httpClient,
             ILogger<MindeeApi> logger = null)
         {
             _logger = logger;

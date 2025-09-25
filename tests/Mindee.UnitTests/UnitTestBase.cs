@@ -55,7 +55,7 @@ namespace Mindee.UnitTests
                 options.RequestTimeoutSeconds = 120;
             });
 
-            services.AddKeyedSingleton("MindeeV1RestClient", new RestClient(new RestClientOptions
+            services.AddSingleton(new RestClient(new RestClientOptions
             {
                 BaseUrl = new Uri("https://api.mindee.net"),
                 ConfigureMessageHandler = _ => mockHttpMessageHandler.Object,

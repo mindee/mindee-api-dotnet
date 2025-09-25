@@ -36,7 +36,7 @@ namespace Mindee.Extensions.DependencyInjection
             services.AddSingleton(serviceProvider =>
             {
                 var settings = serviceProvider.GetRequiredService<IOptions<MindeeSettings>>();
-                var restClient = serviceProvider.GetRequiredKeyedService<RestClient>("MindeeV1RestClient");
+                var restClient = serviceProvider.GetRequiredService<RestClient>();
                 var logger = serviceProvider.GetService<ILoggerFactory>()?.CreateLogger<MindeeApi>();
                 return new MindeeApi(settings, restClient, logger);
             });
@@ -80,7 +80,7 @@ namespace Mindee.Extensions.DependencyInjection
 
         private static void RegisterV1RestSharpClient(IServiceCollection services, bool throwOnError)
         {
-            services.AddKeyedSingleton("MindeeV1RestClient", (provider, _) =>
+            services.AddSingleton(provider =>
             {
                 MindeeSettings settings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
                 settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("Mindee__BaseUrl");
