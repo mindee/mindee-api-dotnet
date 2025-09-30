@@ -94,7 +94,7 @@ namespace Mindee
             LocalInputSource inputSource
             , InferenceParameters inferenceParameters)
         {
-            _logger?.LogInformation(message: "Enqueuing...");
+            _logger?.LogInformation(message: "Enqueuing: local source");
 
             return await _mindeeApi.ReqPostEnqueueInferenceAsync(
                 new InferencePostParameters(
@@ -120,7 +120,7 @@ namespace Mindee
             UrlInputSource inputSource
             , InferenceParameters inferenceParameters)
         {
-            _logger?.LogInformation(message: "Enqueuing...");
+            _logger?.LogInformation(message: "Enqueuing: URL source");
 
             return await _mindeeApi.ReqPostEnqueueInferenceAsync(
                 new InferencePostParameters(
@@ -143,7 +143,7 @@ namespace Mindee
         /// <returns><see cref="JobResponse"/></returns>
         public async Task<JobResponse> GetJobAsync(string jobId)
         {
-            _logger?.LogInformation(message: "Parse from queue...");
+            _logger?.LogInformation(message: "Getting Job: {}", jobId);
 
             if (string.IsNullOrWhiteSpace(jobId))
             {
@@ -160,7 +160,7 @@ namespace Mindee
         /// <returns><see cref="InferenceResponse"/></returns>
         public async Task<InferenceResponse> GetInferenceAsync(string inferenceId)
         {
-            _logger?.LogInformation(message: "Parse from queue...");
+            _logger?.LogInformation(message: "Getting Inference: {}", inferenceId);
 
             if (string.IsNullOrWhiteSpace(inferenceId))
             {
@@ -181,7 +181,7 @@ namespace Mindee
             UrlInputSource inputSource
             , InferenceParameters inferenceParameters)
         {
-            _logger?.LogInformation("Asynchronous parsing ...");
+            _logger?.LogInformation(message: "Enqueue and poll: URL source");
 
             if (inferenceParameters.PollingOptions == null)
             {
@@ -205,7 +205,7 @@ namespace Mindee
             LocalInputSource inputSource
             , InferenceParameters inferenceParameters)
         {
-            _logger?.LogInformation("Asynchronous parsing ...");
+            _logger?.LogInformation(message: "Enqueue and poll: local source");
 
             if (inferenceParameters.PollingOptions == null)
             {
