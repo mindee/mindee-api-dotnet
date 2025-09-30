@@ -14,7 +14,7 @@ namespace Mindee.Parsing.V2
         public string Content { get; set; }
 
         /// <summary>
-        /// Page contents as a string..
+        /// Page contents as a string.
         /// </summary>
         public override string ToString()
         {
