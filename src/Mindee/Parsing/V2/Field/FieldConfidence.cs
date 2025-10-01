@@ -4,7 +4,6 @@ using Mindee.Input;
 
 namespace Mindee.Parsing.V2.Field
 {
-
     /// <summary>
     /// Confidence level of a field as returned by the V2 API.
     /// </summary>
@@ -19,19 +18,18 @@ namespace Mindee.Parsing.V2.Field
     {
         /// <summary>100 % confidence.</summary>
         [EnumMember(Value = "Certain")]
-        Certain,
+        Certain = 4,
 
         /// <summary>Very high confidence.</summary>
         [EnumMember(Value = "High")]
-        High,
+        High = 3,
 
         /// <summary>Medium confidence.</summary>
         [EnumMember(Value = "Medium")]
-        Medium,
+        Medium = 2,
 
         /// <summary>Low confidence.</summary>
         [EnumMember(Value = "Low")]
-        Low
+        Low = 1
     }
-
 }

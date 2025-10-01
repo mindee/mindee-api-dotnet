@@ -140,10 +140,13 @@ namespace Mindee.UnitTests.Parsing.V2
             Assert.NotNull(inference);
             InferenceFields fields = inference.Result.Fields;
 
-            Assert.NotNull(fields["field_simple_string"].SimpleField);
-            string fieldSimpleStringValue = fields["field_simple_string"].SimpleField.Value;
+            SimpleField fieldSimpleString = fields["field_simple_string"].SimpleField;
+            Assert.NotNull(fieldSimpleString);
+            string fieldSimpleStringValue = fieldSimpleString.Value;
             Assert.Equal("field_simple_string-value", fieldSimpleStringValue);
-            Assert.Equal(FieldConfidence.Certain, fields["field_simple_string"].SimpleField.Confidence);
+            Assert.Equal(FieldConfidence.Certain, fieldSimpleString.Confidence);
+            Assert.Equal(4, (int?)fieldSimpleString.Confidence);
+            Assert.True((int?)fieldSimpleString.Confidence >= (int)FieldConfidence.Medium);
 
             Assert.NotNull(fields["field_simple_float"].SimpleField);
             Double fieldSimpleFloatValue = fields["field_simple_float"].SimpleField.Value;
