@@ -1,5 +1,11 @@
 # Mindee .NET Client Library Changelog
 
+## v3.34.0 - 2025-10-01
+### Changes
+* :loud_sound: better logging for v2
+* :sparkles: allow comparing v2 field confidence score
+
+
 ## v3.33.0 - 2025-09-25
 ### Fixes
 * :bug: fix for setting inference options

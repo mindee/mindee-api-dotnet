@@ -14,9 +14,9 @@ env:
 jobs:
   test-nix:
     name: Integration Test on *NIX
-    timeout-minutes: 30
+    timeout-minutes: 35
     strategy:
-      max-parallel: 4
+      max-parallel: 6
       matrix:
         os:
           - "ubuntu-22.04"
