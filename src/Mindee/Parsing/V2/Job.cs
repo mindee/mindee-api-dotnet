@@ -40,7 +40,6 @@ namespace Mindee.Parsing.V2
         [JsonPropertyName("model_id")]
         public string ModelId { get; set; }
 
-
         /// <summary>
         /// Name of the file.
         /// </summary>
@@ -53,7 +52,6 @@ namespace Mindee.Parsing.V2
         [JsonPropertyName("file_alias")]
         public string FileAlias { get; set; }
 
-
         /// <summary>
         /// URL to use for polling.
         /// </summary>
@@ -61,14 +59,13 @@ namespace Mindee.Parsing.V2
         public string PollingUrl { get; set; }
 
         /// <summary>
-        /// URL to follow for the final result (redirects automatically).
+        /// URL to follow for the final result.
         /// </summary>
         [JsonPropertyName("result_url")]
         public string ResultUrl { get; set; }
 
-
         /// <summary>
-        /// Webhooks.
+        /// Webhooks to call.
         /// </summary>
         [JsonPropertyName("webhooks")]
         public List<JobWebhook> Webhooks { get; set; }

@@ -14,7 +14,7 @@ namespace Mindee.IntegrationTests
 
         public MindeeClientV2Test()
         {
-            var apiKey = Environment.GetEnvironmentVariable("MindeeV2__ApiKey");
+            string? apiKey = Environment.GetEnvironmentVariable("MindeeV2__ApiKey");
             _mindeeClientV2 = TestingUtilities.GetOrGenerateMindeeClientV2(apiKey);
             _findocModelId = Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id");
         }
@@ -139,6 +139,58 @@ namespace Mindee.IntegrationTests
         }
 
         [Fact]
+        public async Task FailedWebhook_Retrieve_Job_MustSucceed()
+        {
+            string? webhookId = Environment.GetEnvironmentVariable("MindeeV2__Failure__Webhook__Id");
+
+            var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-1.pdf");
+            var inferenceParams = new InferenceParameters(
+                modelId: _findocModelId, webhookIds: new List<string?> { webhookId });
+
+            JobResponse enqueueResponse = await _mindeeClientV2.EnqueueInferenceAsync(inputSource, inferenceParams);
+            Assert.NotNull(enqueueResponse);
+            Assert.NotNull(enqueueResponse.Job);
+            Assert.NotNull(enqueueResponse.Job.Webhooks);
+
+            string jobId = enqueueResponse.Job.Id;
+            Assert.NotNull(jobId);
+
+            Thread.Sleep(200);
+
+            JobResponse jobResponse = await _mindeeClientV2.GetJobAsync(jobId);
+            Assert.NotNull(jobResponse);
+
+            Job job = jobResponse.Job;
+            Assert.Equal(_findocModelId, job.ModelId);
+            Assert.NotNull(job.Webhooks);
+
+            JobWebhook webhook = job.Webhooks.First();
+            Assert.NotNull(webhook);
+            Assert.Equal(webhookId, webhook.Id);
+            Assert.Equal("Processing", webhook.Status);
+
+            for (int i = 0; i < 10; i++)
+            {
+                Thread.Sleep(1000);
+
+                JobResponse loopJobResponse = await _mindeeClientV2.GetJobAsync(jobId);
+                JobWebhook loopWebhook = loopJobResponse.Job.Webhooks.First();
+                Assert.NotNull(loopWebhook);
+                Assert.Equal(webhookId, loopWebhook.Id);
+
+                if (loopWebhook.Status != "Failed")
+                    continue;
+
+                ErrorResponse error = loopWebhook.Error;
+                Assert.NotNull(error);
+                Assert.True(error.Status >= 400);
+
+                return;
+            }
+            throw new Exception("Did not receive a failed webhook.");
+        }
+
+        [Fact]
         public async Task Invalid_Model_MustThrowError()
         {
             var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
@@ -167,9 +219,9 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task Url_InputSource_MustNotRaiseErrors()
         {
-            var url = Environment.GetEnvironmentVariable("Mindee__V2__Se__Tests__Blank__Pdf__Url");
+            var url = Environment.GetEnvironmentVariable("MindeeV2__Blank__Pdf__Url");
             Assert.False(string.IsNullOrWhiteSpace(url),
-                "Environment variable Mindee__V2__Se__Tests__Blank__Pdf__Url must be set and contain a valid URL.");
+                "Environment variable MindeeV2__Blank__Pdf__Url must be set and contain a valid URL.");
 
             var inputSource = new UrlInputSource(new Uri(url!));
             var inferenceParams = new InferenceParameters(modelId: _findocModelId);
