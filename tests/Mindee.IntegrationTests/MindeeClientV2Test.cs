@@ -50,7 +50,7 @@ namespace Mindee.IntegrationTests
                 polygon: polygon,
                 confidence: confidence);
 
-            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
+            InferenceResponse response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
                 inputSource, inferenceParams);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
