@@ -5,8 +5,8 @@ using Mindee.Parsing.V2.Field;
 
 namespace Mindee.UnitTests.Parsing.V2
 {
-    [Trait("Category", "InferenceV2")]
     [Trait("Category", "V2")]
+    [Trait("Category", "Inference")]
     public class InferenceV2Test
     {
         [Fact]

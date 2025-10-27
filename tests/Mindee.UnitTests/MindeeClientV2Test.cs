@@ -5,8 +5,8 @@ using Moq;
 
 namespace Mindee.UnitTests
 {
-    [Trait("Category", "Mindee client")]
     [Trait("Category", "V2")]
+    [Trait("Category", "Mindee client")]
     public class MindeeClientV2Test
     {
         private MindeeClientV2 MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
@@ -72,7 +72,8 @@ namespace Mindee.UnitTests
         [Fact]
         public void Inference_LoadsLocally()
         {
-            var localResponse = new LocalResponse(new FileInfo("Resources/v2/products/financial_document/complete.json"));
+            var localResponse = new LocalResponse(
+                new FileInfo("Resources/v2/products/financial_document/complete.json"));
             var locallyLoadedResponse = localResponse.DeserializeResponse<InferenceResponse>();
             Assert.NotNull(locallyLoadedResponse);
             Assert.Equal("12345678-1234-1234-1234-123456789abc", locallyLoadedResponse.Inference.Model.Id);

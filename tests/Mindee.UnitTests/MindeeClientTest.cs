@@ -11,6 +11,7 @@ using Moq;
 
 namespace Mindee.UnitTests
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "Mindee client")]
     public class MindeeClientTest
     {

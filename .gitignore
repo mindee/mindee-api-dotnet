@@ -360,7 +360,8 @@ docs/api_reference
 dist
 
 # Tests
-_test.csx
+_test_v1.csx
+_test_v2.csx
 local_test/
 
 # DocFX files

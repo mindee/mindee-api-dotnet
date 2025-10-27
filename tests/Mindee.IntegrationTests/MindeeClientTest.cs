@@ -56,7 +56,7 @@ namespace Mindee.IntegrationTests
         {
             var inputSource =
                 new UrlInputSource(
-                    "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/products/expense_receipts/default_sample.jpg");
+                    "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/v1/products/expense_receipts/default_sample.jpg");
             var response = await _mindeeClient.ParseAsync<ReceiptV5>(inputSource);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
@@ -211,7 +211,7 @@ namespace Mindee.IntegrationTests
         {
             var inputSource =
                 new UrlInputSource(
-                    "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/products/invoice_splitter/default_sample.pdf");
+                    "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/v1/products/invoice_splitter/default_sample.pdf");
             var pollingOptions = new AsyncPollingOptions();
             var response = await _mindeeClient.EnqueueAndParseAsync<InvoiceSplitterV1>(
                 inputSource, pollingOptions: pollingOptions);
@@ -236,7 +236,7 @@ namespace Mindee.IntegrationTests
         {
             var inputSource =
                 new UrlInputSource(
-                    "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/products/international_id/default_sample.jpg");
+                    "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/v1/products/international_id/default_sample.jpg");
             var pollingOptions = new AsyncPollingOptions();
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
             var response = await _mindeeClient.EnqueueAndParseAsync<GeneratedV1>(
