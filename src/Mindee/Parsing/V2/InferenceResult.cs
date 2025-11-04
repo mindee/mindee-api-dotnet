@@ -22,6 +22,12 @@ namespace Mindee.Parsing.V2
         public RawText RawText { get; set; }
 
         /// <summary>
+        /// RAG metadata.
+        /// </summary>
+        [JsonPropertyName("rag")]
+        public RawText Rag { get; set; }
+
+        /// <summary>
         /// A prettier representation of the feature values.
         /// </summary>
         public override string ToString()
