@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
         private async Task<Ocr> LoadOcr()
         {
             var response = await JsonSerializer.DeserializeAsync<PredictResponse<ReceiptV4>>(
-                new FileInfo("Resources/v1/extras/ocr/complete.json").OpenRead());
+                new FileInfo(Constants.V1RootDir + "extras/ocr/complete.json").OpenRead());
 
             Assert.NotNull(response);
             Assert.NotNull(response.Document.Ocr);
@@ -30,7 +30,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
         public async Task StringShouldBeOrdered()
         {
             var ocr = await LoadOcr();
-            var expected = File.ReadAllText("Resources/v1/extras/ocr/ocr.txt");
+            var expected = File.ReadAllText(Constants.V1RootDir + "extras/ocr/ocr.txt");
             Assert.Equal(expected, ocr.ToString());
         }
     }

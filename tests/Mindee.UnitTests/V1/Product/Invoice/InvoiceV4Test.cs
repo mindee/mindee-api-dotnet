@@ -46,13 +46,13 @@ namespace Mindee.UnitTests.V1.Product.Invoice
         public async Task Predict_CheckSummary()
         {
             var response = await GetPrediction("complete");
-            var expected = File.ReadAllText("Resources/v1/products/invoices/response_v4/summary_full.rst");
+            var expected = File.ReadAllText(Constants.V1ProductDir + "invoices/response_v4/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
 
         private static async Task<PredictResponse<InvoiceV4>> GetPrediction(string name)
         {
-            string fileName = $"Resources/v1/products/invoices/response_v4/{name}.json";
+            string fileName = Constants.V1RootDir + $"products/invoices/response_v4/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<InvoiceV4>(
                 UnitTestBase.GetFakePredictParameter());

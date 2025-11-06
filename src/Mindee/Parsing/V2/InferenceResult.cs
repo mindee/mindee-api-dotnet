@@ -25,7 +25,7 @@ namespace Mindee.Parsing.V2
         /// RAG metadata.
         /// </summary>
         [JsonPropertyName("rag")]
-        public RawText Rag { get; set; }
+        public RagMetadata Rag { get; set; }
 
         /// <summary>
         /// A prettier representation of the feature values.

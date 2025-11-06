@@ -19,13 +19,13 @@ namespace Mindee.UnitTests.V1.Product.BarcodeReader
         public async Task Predict_CheckSummary()
         {
             var response = await GetPrediction("complete");
-            var expected = File.ReadAllText("Resources/v1/products/barcode_reader/response_v1/summary_full.rst");
+            var expected = File.ReadAllText(Constants.V1ProductDir + "barcode_reader/response_v1/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
 
         private static async Task<PredictResponse<BarcodeReaderV1>> GetPrediction(string name)
         {
-            string fileName = $"Resources/v1/products/barcode_reader/response_v1/{name}.json";
+            string fileName = Constants.V1RootDir + $"products/barcode_reader/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<BarcodeReaderV1>(
                 UnitTestBase.GetFakePredictParameter());

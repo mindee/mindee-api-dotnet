@@ -7,7 +7,7 @@ namespace Mindee.UnitTests.V2
 {
     [Trait("Category", "V2")]
     [Trait("Category", "Mindee client")]
-    public class MindeeV1ClientTest
+    public class MindeeClientTest
     {
         private MindeeClientV2 MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
         {
@@ -32,7 +32,7 @@ namespace Mindee.UnitTests.V2
             var predictable = new Mock<HttpApiV2>();
             var mindeeClient = MakeCustomMindeeClientV2(predictable);
 
-            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
+            var inputSource = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
             var response = await mindeeClient.EnqueueInferenceAsync(
                 inputSource, new InferenceParameters("dummy-model-id"));
 
@@ -73,7 +73,7 @@ namespace Mindee.UnitTests.V2
         public void Inference_LoadsLocally()
         {
             var localResponse = new LocalResponse(
-                new FileInfo("Resources/v2/products/financial_document/complete.json"));
+                new FileInfo(Constants.V2RootDir + "products/financial_document/complete.json"));
             var locallyLoadedResponse = localResponse.DeserializeResponse<InferenceResponse>();
             Assert.NotNull(locallyLoadedResponse);
             Assert.Equal("12345678-1234-1234-1234-123456789abc", locallyLoadedResponse.Inference.Model.Id);
