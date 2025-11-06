@@ -28,7 +28,7 @@ namespace Mindee.UnitTests.V1.Workflow
         public async Task GivenAWorkflowMockFileShouldReturnAValidWorkflowObject()
         {
             // Arrange
-            var file = new FileInfo("src/test/resources/file_types/pdf/blank_1.pdf");
+            var file = new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf");
             var workflowResponse = new WorkflowResponse<GeneratedV1> { Execution = new Execution<GeneratedV1>(), ApiRequest = null };
 
             mindeeApi.Setup(api => api.PostWorkflowExecution<GeneratedV1>(
@@ -52,7 +52,7 @@ namespace Mindee.UnitTests.V1.Workflow
         public async Task SendingADocumentToAnExecutionShouldDeserializeResponseCorrectly()
         {
             // Arrange
-            var jsonFile = File.ReadAllText("src/test/resources/v1/workflows/success.json");
+            var jsonFile = File.ReadAllText(Constants.V1RootDir + "workflows/success.json");
             var mockResponse = JsonSerializer.Deserialize<WorkflowResponse<GeneratedV1>>(jsonFile);
 
             mockedClient.Setup(mindeeClient => mindeeClient.ExecuteWorkflowAsync(
@@ -63,7 +63,7 @@ namespace Mindee.UnitTests.V1.Workflow
                 .ReturnsAsync(mockResponse);
 
             string workflowId = "07ebf237-ff27-4eee-b6a2-425df4a5cca6";
-            string filePath = "src/test/resources/products/financial_document/default_sample.jpg";
+            string filePath = "Resources/products/financial_document/default_sample.jpg";
             var inputSource = new LocalInputSource(filePath);
 
             // Act
@@ -98,7 +98,7 @@ namespace Mindee.UnitTests.V1.Workflow
         public async Task SendingADocumentToAnExecutionWithPriorityAndAliasShouldDeserializeResponseCorrectly()
         {
             // Arrange
-            var jsonFile = File.ReadAllText("src/test/resources/v1/workflows/success_low_priority.json");
+            var jsonFile = File.ReadAllText(Constants.V1RootDir + "workflows/success_low_priority.json");
             var mockResponse = JsonSerializer.Deserialize<WorkflowResponse<GeneratedV1>>(jsonFile);
 
             mockedClient.Setup(mindeeClient => mindeeClient.ExecuteWorkflowAsync(
@@ -109,7 +109,7 @@ namespace Mindee.UnitTests.V1.Workflow
                 .ReturnsAsync(mockResponse);
 
             string workflowId = "07ebf237-ff27-4eee-b6a2-425df4a5cca6";
-            string filePath = "src/test/resources/products/financial_document/default_sample.jpg";
+            string filePath = Constants.V1ProductDir + "financial_document/default_sample.jpg";
             var inputSource = new LocalInputSource(filePath);
 
             // Act

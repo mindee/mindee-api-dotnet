@@ -29,20 +29,20 @@ namespace Mindee.UnitTests.V1.Product.Fr.IdCard
         public async Task Predict_CheckSummary()
         {
             var response = await GetPrediction("complete");
-            var expected = File.ReadAllText("Resources/v1/products/idcard_fr/response_v1/summary_full.rst");
+            var expected = File.ReadAllText(Constants.V1ProductDir + "idcard_fr/response_v1/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
         [Fact]
         public async Task Predict_CheckPage0()
         {
             var response = await GetPrediction("complete");
-            var expected = File.ReadAllText("Resources/v1/products/idcard_fr/response_v1/summary_page0.rst");
+            var expected = File.ReadAllText(Constants.V1ProductDir + "idcard_fr/response_v1/summary_page0.rst");
             Assert.Equal(expected, response.Document.Inference.Pages[0].ToString());
         }
 
         private static async Task<PredictResponse<IdCardV1>> GetPrediction(string name)
         {
-            string fileName = $"Resources/v1/products/idcard_fr/response_v1/{name}.json";
+            string fileName = Constants.V1RootDir + $"products/idcard_fr/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<IdCardV1>(
                 UnitTestBase.GetFakePredictParameter());

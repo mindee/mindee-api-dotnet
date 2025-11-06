@@ -19,7 +19,7 @@ namespace Mindee.UnitTests.Http
         {
             var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.BadRequest,
-                File.ReadAllText("Resources/v1/errors/error_401_invalid_token.json")
+                File.ReadAllText(Constants.V1RootDir + "errors/error_401_invalid_token.json")
             );
 
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
@@ -36,7 +36,7 @@ namespace Mindee.UnitTests.Http
         {
             var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.OK,
-                File.ReadAllText("Resources/v1/products/invoices/response_v4/complete.json")
+                File.ReadAllText(Constants.V1ProductDir + "invoices/response_v4/complete.json")
             );
 
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
@@ -45,8 +45,8 @@ namespace Mindee.UnitTests.Http
                 UnitTestBase.GetFakePredictParameter()
             );
 
-            var expectedParse = File.ReadAllText("Resources/v1/products/invoices/response_v4/summary_full.rst");
-            var expectedJson = File.ReadAllText("Resources/v1/products/invoices/response_v4/complete.json");
+            var expectedParse = File.ReadAllText(Constants.V1ProductDir + "invoices/response_v4/summary_full.rst");
+            var expectedJson = File.ReadAllText(Constants.V1ProductDir + "invoices/response_v4/complete.json");
 
             Assert.NotNull(response);
             Assert.Equal(expectedParse, response.Document.ToString());
@@ -58,7 +58,7 @@ namespace Mindee.UnitTests.Http
         {
             var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.BadRequest,
-                File.ReadAllText("Resources/v1/errors/error_400_with_object_in_detail.json")
+                File.ReadAllText(Constants.V1RootDir + "errors/error_400_with_object_in_detail.json")
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
@@ -73,7 +73,7 @@ namespace Mindee.UnitTests.Http
         {
             var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.InternalServerError,
-                File.ReadAllText("Resources/v1/errors/error_500_inference_fail.json")
+                File.ReadAllText(Constants.V1RootDir + "errors/error_500_inference_fail.json")
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
             await Assert.ThrowsAsync<Mindee500Exception>(
@@ -87,7 +87,7 @@ namespace Mindee.UnitTests.Http
         {
             var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 (HttpStatusCode)429,
-                File.ReadAllText("Resources/v1/errors/error_429_too_many_requests.json")
+                File.ReadAllText(Constants.V1RootDir + "errors/error_429_too_many_requests.json")
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
@@ -102,7 +102,7 @@ namespace Mindee.UnitTests.Http
         {
             var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.Unauthorized,
-                File.ReadAllText("Resources/v1/errors/error_401_invalid_token.json")
+                File.ReadAllText(Constants.V1RootDir + "errors/error_401_invalid_token.json")
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
@@ -117,7 +117,7 @@ namespace Mindee.UnitTests.Http
         {
             var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.Forbidden,
-                File.ReadAllText("Resources/v1/async/post_fail_forbidden.json")
+                File.ReadAllText(Constants.V1RootDir + "async/post_fail_forbidden.json")
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
@@ -132,7 +132,7 @@ namespace Mindee.UnitTests.Http
         {
             var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.OK,
-                File.ReadAllText("Resources/v1/async/post_success.json")
+                File.ReadAllText(Constants.V1RootDir + "async/post_success.json")
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
@@ -152,7 +152,7 @@ namespace Mindee.UnitTests.Http
         {
             var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.OK,
-                File.ReadAllText("Resources/v1/async/get_processing.json")
+                File.ReadAllText(Constants.V1RootDir + "async/get_processing.json")
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
@@ -171,7 +171,7 @@ namespace Mindee.UnitTests.Http
         {
             var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.OK,
-                File.ReadAllText("Resources/v1/async/get_failed_job_error.json")
+                File.ReadAllText(Constants.V1RootDir + "async/get_failed_job_error.json")
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
@@ -185,7 +185,7 @@ namespace Mindee.UnitTests.Http
         {
             var serviceProvider = UnitTestBase.InitServiceProviderV1(
                 HttpStatusCode.OK,
-                File.ReadAllText("Resources/v1/async/get_completed.json")
+                File.ReadAllText(Constants.V1RootDir + "async/get_completed.json")
             );
 
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();

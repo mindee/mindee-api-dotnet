@@ -26,7 +26,7 @@ namespace Mindee.IntegrationTests.V1.Extraction
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var client = TestingUtilities.GetOrGenerateMindeeClient(apiKey);
-            var invoiceSplitterBytes = File.ReadAllBytes("Resources/v1/products/invoice_splitter/default_sample.pdf");
+            var invoiceSplitterBytes = File.ReadAllBytes(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
             var invoiceSplitterInputSource = new LocalInputSource(invoiceSplitterBytes, "default_sample.pdf");
             var response = await client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource);
             InvoiceSplitterV1 inference = response.Document.Inference;
@@ -43,7 +43,7 @@ namespace Mindee.IntegrationTests.V1.Extraction
                 await client.ParseAsync<InvoiceV4>(extractedPdfsStrict[0].AsInputSource());
 
             string testStringRstInvoice0 = PrepareInvoiceReturn(
-                "Resources/v1/products/invoices/response_v4/summary_full_invoice_p1.rst", invoice0.Document);
+                Constants.V1ProductDir + "invoices/response_v4/summary_full_invoice_p1.rst", invoice0.Document);
 
             double ratio = TestingUtilities.LevenshteinRatio(testStringRstInvoice0, invoice0.Document.ToString());
             Assert.True(ratio >= 0.90);
