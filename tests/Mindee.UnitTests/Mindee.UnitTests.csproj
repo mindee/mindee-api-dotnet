@@ -46,6 +46,7 @@
     <Folder Include="..\resources\async">
       <Link>Resources\async</Link>
     </Folder>
+    <Folder Include="V1\Parsing\" />
   </ItemGroup>
 
 </Project>

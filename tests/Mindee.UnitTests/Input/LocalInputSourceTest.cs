@@ -170,10 +170,10 @@ namespace Mindee.UnitTests.Input
         [Fact]
         public void Pdf_Compress_From_InputSource()
         {
-            var pdfResizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
+            var pdfResizeInput = new LocalInputSource("Resources/v1/products/invoice_splitter/default_sample.pdf");
             pdfResizeInput.Compress(quality: 75);
             File.WriteAllBytes("Resources/output/resize_indirect.pdf", pdfResizeInput.FileBytes);
-            var initialFileInfo = new FileInfo("Resources/products/invoice_splitter/default_sample.pdf");
+            var initialFileInfo = new FileInfo("Resources/v1/products/invoice_splitter/default_sample.pdf");
             var renderedFileInfo = new FileInfo("Resources/output/resize_indirect.pdf");
             Assert.True(renderedFileInfo.Length < initialFileInfo.Length);
         }
@@ -181,7 +181,7 @@ namespace Mindee.UnitTests.Input
         [Fact]
         public void Pdf_Compress_From_Compressor()
         {
-            var pdfResizeInput = new LocalInputSource("Resources/products/invoice_splitter/default_sample.pdf");
+            var pdfResizeInput = new LocalInputSource("Resources/v1/products/invoice_splitter/default_sample.pdf");
             var resizes = new List<byte[]>
             {
                 PdfCompressor.CompressPdf(pdfResizeInput.FileBytes),
@@ -193,7 +193,7 @@ namespace Mindee.UnitTests.Input
             File.WriteAllBytes("Resources/output/compress75.pdf", resizes[1]);
             File.WriteAllBytes("Resources/output/compress50.pdf", resizes[2]);
             File.WriteAllBytes("Resources/output/compress10.pdf", resizes[3]);
-            var initialFileInfo = new FileInfo("Resources/products/invoice_splitter/default_sample.pdf");
+            var initialFileInfo = new FileInfo("Resources/v1/products/invoice_splitter/default_sample.pdf");
             var renderedFileInfos = new List<FileInfo>
             {
                 new("Resources/output/compress85.pdf"),
