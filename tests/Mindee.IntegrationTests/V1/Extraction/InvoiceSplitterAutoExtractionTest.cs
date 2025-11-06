@@ -1,0 +1,52 @@
+using Mindee.Extraction;
+using Mindee.Input;
+using Mindee.Parsing.Common;
+using Mindee.Product.Invoice;
+using Mindee.Product.InvoiceSplitter;
+
+namespace Mindee.IntegrationTests.V1.Extraction
+{
+    [Trait("Category", "Integration")]
+    public class InvoiceSplitterAutoExtractionTest
+    {
+        private static string PrepareInvoiceReturn(string rstFilePath, Document<InvoiceV4> invoicePrediction)
+        {
+            string rstRefLines = File.ReadAllText(rstFilePath);
+            string parsingVersion = invoicePrediction.Inference.Product.Version;
+            string parsingId = invoicePrediction.Id;
+            rstRefLines = rstRefLines
+                .Replace(TestingUtilities.GetVersion(rstRefLines), parsingVersion)
+                .Replace(TestingUtilities.GetId(rstRefLines), parsingId)
+                .Replace(TestingUtilities.GetFileName(rstRefLines), invoicePrediction.Filename);
+            return rstRefLines;
+        }
+
+        [Fact]
+        public async Task GivenAPdf_ShouldExtractInvoicesStrict_MustSucceed()
+        {
+            var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+            var client = TestingUtilities.GetOrGenerateMindeeClient(apiKey);
+            var invoiceSplitterBytes = File.ReadAllBytes("Resources/v1/products/invoice_splitter/default_sample.pdf");
+            var invoiceSplitterInputSource = new LocalInputSource(invoiceSplitterBytes, "default_sample.pdf");
+            var response = await client.EnqueueAndParseAsync<InvoiceSplitterV1>(invoiceSplitterInputSource);
+            InvoiceSplitterV1 inference = response.Document.Inference;
+
+            PdfExtractor extractor = new PdfExtractor(invoiceSplitterInputSource);
+            Assert.Equal(2, extractor.GetPageCount());
+            List<ExtractedPdf> extractedPdfsStrict = extractor.ExtractInvoices(
+                inference.Prediction.InvoicePageGroups, false);
+            Assert.Equal(2, extractedPdfsStrict.Count);
+            Assert.Equal("default_sample_001-001.pdf", extractedPdfsStrict[0].Filename);
+            Assert.Equal("default_sample_002-002.pdf", extractedPdfsStrict[1].Filename);
+
+            PredictResponse<InvoiceV4> invoice0 =
+                await client.ParseAsync<InvoiceV4>(extractedPdfsStrict[0].AsInputSource());
+
+            string testStringRstInvoice0 = PrepareInvoiceReturn(
+                "Resources/v1/products/invoices/response_v4/summary_full_invoice_p1.rst", invoice0.Document);
+
+            double ratio = TestingUtilities.LevenshteinRatio(testStringRstInvoice0, invoice0.Document.ToString());
+            Assert.True(ratio >= 0.90);
+        }
+    }
+}

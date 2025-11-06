@@ -12,7 +12,7 @@ namespace Mindee.UnitTests.Extraction
         [Fact]
         public async Task GivenAnImage_ShouldExtractPositionFields()
         {
-            var image = new LocalInputSource("Resources/products/multi_receipts_detector/default_sample.jpg");
+            var image = new LocalInputSource("Resources/v1/products/multi_receipts_detector/default_sample.jpg");
             var response = await GetMultiReceiptsDetectorPrediction("complete");
             var inference = response.Document.Inference;
 
@@ -41,7 +41,7 @@ namespace Mindee.UnitTests.Extraction
         [Fact]
         public async Task GivenAnImage_ShouldExtractValueFields()
         {
-            var image = new LocalInputSource("Resources/products/barcode_reader/default_sample.jpg");
+            var image = new LocalInputSource("Resources/v1/products/barcode_reader/default_sample.jpg");
             var response = await GetBarcodeReaderPrediction("complete");
             var inference = response.Document.Inference;
 
@@ -76,7 +76,7 @@ namespace Mindee.UnitTests.Extraction
         public async Task GivenAPdf_ShouldExtractPositionFields()
         {
             var image = new LocalInputSource(
-                "Resources/products/multi_receipts_detector/multipage_sample.pdf");
+                "Resources/v1/products/multi_receipts_detector/multipage_sample.pdf");
             var response = await GetMultiReceiptsDetectorPrediction("multipage_sample");
             var inference = response.Document.Inference;
 
@@ -105,7 +105,7 @@ namespace Mindee.UnitTests.Extraction
         private static async Task<PredictResponse<MultiReceiptsDetectorV1>> GetMultiReceiptsDetectorPrediction(
             string name)
         {
-            string fileName = $"Resources/products/multi_receipts_detector/response_v1/{name}.json";
+            string fileName = $"Resources/v1/products/multi_receipts_detector/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<MultiReceiptsDetectorV1>(
                 UnitTestBase.GetFakePredictParameter());
@@ -113,7 +113,7 @@ namespace Mindee.UnitTests.Extraction
 
         private static async Task<PredictResponse<BarcodeReaderV1>> GetBarcodeReaderPrediction(string name)
         {
-            string fileName = $"Resources/products/barcode_reader/response_v1/{name}.json";
+            string fileName = $"Resources/v1/products/barcode_reader/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<BarcodeReaderV1>(
                 UnitTestBase.GetFakePredictParameter());
