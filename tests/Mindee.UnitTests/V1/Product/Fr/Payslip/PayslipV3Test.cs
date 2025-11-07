@@ -58,13 +58,13 @@ namespace Mindee.UnitTests.V1.Product.Fr.Payslip
         public async Task Predict_CheckSummary()
         {
             var response = await GetPrediction("complete");
-            var expected = File.ReadAllText("Resources/v1/products/payslip_fra/response_v3/summary_full.rst");
+            var expected = File.ReadAllText(Constants.V1ProductDir + "payslip_fra/response_v3/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
 
         private static async Task<PredictResponse<PayslipV3>> GetPrediction(string name)
         {
-            string fileName = $"Resources/v1/products/payslip_fra/response_v3/{name}.json";
+            string fileName = Constants.V1RootDir + $"products/payslip_fra/response_v3/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<PayslipV3>(
                 UnitTestBase.GetFakePredictParameter());

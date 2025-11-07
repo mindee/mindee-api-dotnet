@@ -42,7 +42,7 @@ namespace Mindee.IntegrationTests.V2
             bool rawText, bool polygon, bool confidence)
         {
             var inputSource = new LocalInputSource(
-                "Resources/file_types/pdf/multipage_cut-2.pdf");
+                Constants.RootDir + "file_types/pdf/multipage_cut-2.pdf");
             var inferenceParams = new InferenceParameters(
                 modelId: _findocModelId,
                 rag: false,
@@ -107,7 +107,7 @@ namespace Mindee.IntegrationTests.V2
         public async Task Parse_File_Filled_SinglePage_MustSucceed()
         {
             var inputSource = new LocalInputSource(
-                "Resources/v1/products/financial_document/default_sample.jpg");
+                Constants.V1ProductDir + "financial_document/default_sample.jpg");
             var inferenceParams = new InferenceParameters(
                 modelId: _findocModelId);
 
@@ -143,7 +143,7 @@ namespace Mindee.IntegrationTests.V2
         {
             string? webhookId = Environment.GetEnvironmentVariable("MindeeV2__Failure__Webhook__Id");
 
-            var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-1.pdf");
+            var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/multipage_cut-1.pdf");
             var inferenceParams = new InferenceParameters(
                 modelId: _findocModelId, webhookIds: new List<string?> { webhookId });
 
@@ -193,7 +193,7 @@ namespace Mindee.IntegrationTests.V2
         [Fact]
         public async Task Invalid_Model_MustThrowError()
         {
-            var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
+            var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/multipage_cut-2.pdf");
             var predictOptions = new InferenceParameters("INVALID MODEL ID");
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
                 () => _mindeeClientV2.EnqueueInferenceAsync(inputSource, predictOptions));

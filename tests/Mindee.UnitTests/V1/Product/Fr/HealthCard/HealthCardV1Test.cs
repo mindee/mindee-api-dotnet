@@ -21,13 +21,13 @@ namespace Mindee.UnitTests.V1.Product.Fr.HealthCard
         public async Task Predict_CheckSummary()
         {
             var response = await GetPrediction("complete");
-            var expected = File.ReadAllText("Resources/v1/products/french_healthcard/response_v1/summary_full.rst");
+            var expected = File.ReadAllText(Constants.V1ProductDir + "french_healthcard/response_v1/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
 
         private static async Task<PredictResponse<HealthCardV1>> GetPrediction(string name)
         {
-            string fileName = $"Resources/v1/products/french_healthcard/response_v1/{name}.json";
+            string fileName = Constants.V1RootDir + $"products/french_healthcard/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<HealthCardV1>(
                 UnitTestBase.GetFakePredictParameter());

@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.V1.Product.Receipt
         public async Task Predict_CheckSummary()
         {
             var response = await GetPrediction();
-            var expected = File.ReadAllText("Resources/v1/products/expense_receipts/response_v4/summary_full.rst");
+            var expected = File.ReadAllText(Constants.V1ProductDir + "expense_receipts/response_v4/summary_full.rst");
             Assert.Equal(
                 expected,
                 response.Document.ToString());
@@ -20,7 +20,7 @@ namespace Mindee.UnitTests.V1.Product.Receipt
         public async Task Predict_CheckSummary_WithMultiplePages()
         {
             var response = await GetPrediction();
-            var expected = File.ReadAllText("Resources/v1/products/expense_receipts/response_v4/summary_page0.rst");
+            var expected = File.ReadAllText(Constants.V1ProductDir + "expense_receipts/response_v4/summary_page0.rst");
             Assert.Equal(
                 expected,
                 response.Document.Inference.Pages.First().ToString());
@@ -73,7 +73,7 @@ namespace Mindee.UnitTests.V1.Product.Receipt
         [Fact]
         public async Task Predict_WithCropping_MustSuccess()
         {
-            const string fileName = "Resources/v1/extras/cropper/complete.json";
+            const string fileName = Constants.V1RootDir + "extras/cropper/complete.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             var response = await mindeeAPi.PredictPostAsync<ReceiptV4>(UnitTestBase.GetFakePredictParameter());
 
@@ -138,7 +138,7 @@ namespace Mindee.UnitTests.V1.Product.Receipt
 
         private static async Task<PredictResponse<ReceiptV4>> GetPrediction()
         {
-            const string fileName = "Resources/v1/products/expense_receipts/response_v4/complete.json";
+            const string fileName = Constants.V1ProductDir + "expense_receipts/response_v4/complete.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<ReceiptV4>(UnitTestBase.GetFakePredictParameter());
         }

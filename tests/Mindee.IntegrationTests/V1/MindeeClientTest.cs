@@ -25,7 +25,7 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task Parse_File_Standard_MultiplePages_MustSucceed()
         {
-            var inputSource = new LocalInputSource("Resources/file_types/pdf/multipage_cut-2.pdf");
+            var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/multipage_cut-2.pdf");
             var response = await _mindeeClient.ParseAsync<InvoiceV4>(inputSource);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
@@ -40,7 +40,7 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task Parse_File_Standard_SinglePage_MustSucceed()
         {
-            var inputSource = new LocalInputSource("Resources/file_types/receipt.jpg");
+            var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg");
             var response = await _mindeeClient.ParseAsync<ReceiptV5>(inputSource);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
@@ -80,7 +80,7 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task Parse_File_Cropper_MustSucceed()
         {
-            var inputSource = new LocalInputSource("Resources/file_types/receipt.jpg");
+            var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg");
             var predictOptions = new PredictOptions(cropper: true);
             var response = await _mindeeClient.ParseAsync<ReceiptV5>(inputSource, predictOptions);
             Assert.NotNull(response);
@@ -97,7 +97,7 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task Parse_File_Standard_AllWords_MustSucceed()
         {
-            var inputSource = new LocalInputSource("Resources/file_types/receipt.jpg");
+            var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg");
             var predictOptions = new PredictOptions(allWords: true);
             var response = await _mindeeClient.ParseAsync<InvoiceV4>(inputSource, predictOptions);
             Assert.NotNull(response);
@@ -115,7 +115,7 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task Parse_File_Standard_FullText_MustSucceed()
         {
-            var inputSource = new LocalInputSource("Resources/v1/products/international_id/default_sample.jpg");
+            var inputSource = new LocalInputSource(Constants.V1ProductDir + "international_id/default_sample.jpg");
             var predictOptions = new PredictOptions(fullText: true);
             var response = await _mindeeClient.EnqueueAndParseAsync<InternationalIdV2>(inputSource, predictOptions);
             Assert.NotNull(response);
@@ -131,7 +131,7 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task Parse_File_Standard_AllWords_And_Cropper_MustSucceed()
         {
-            var inputSource = new LocalInputSource("Resources/file_types/receipt.jpg");
+            var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg");
             var predictOptions = new PredictOptions(allWords: true, cropper: true);
             var response = await _mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource, predictOptions);
@@ -151,7 +151,7 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task Enqueue_File_Standard_SyncOnly_Async_MustFail()
         {
-            var inputSource = new LocalInputSource("Resources/v1/products/passport/default_sample.jpg");
+            var inputSource = new LocalInputSource(Constants.V1ProductDir + "passport/default_sample.jpg");
             await Assert.ThrowsAsync<Mindee403Exception>(
                 () => _mindeeClient.EnqueueAsync<CropperV1>(inputSource));
         }
@@ -159,7 +159,7 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task Enqueue_File_Standard_AsyncOnly_Async_MustSucceed()
         {
-            var inputSource = new LocalInputSource("Resources/v1/products/invoice_splitter/default_sample.pdf");
+            var inputSource = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
             var response = await _mindeeClient.EnqueueAsync<InvoiceSplitterV1>(inputSource);
 
             Assert.NotNull(response);
@@ -178,7 +178,7 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task Enqueue_File_Standard_AsyncOnly_Sync_MustFail()
         {
-            var inputSource = new LocalInputSource("Resources/v1/products/invoice_splitter/default_sample.pdf");
+            var inputSource = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
             await Assert.ThrowsAsync<Mindee403Exception>(
                 () => _mindeeClient.ParseAsync<InvoiceSplitterV1>(inputSource));
         }
@@ -186,7 +186,7 @@ namespace Mindee.IntegrationTests
         [Fact]
         public async Task EnqueueAndParse_File_Standard_AsyncOnly_Async_MustSucceed()
         {
-            var inputSource = new LocalInputSource("Resources/v1/products/invoice_splitter/default_sample.pdf");
+            var inputSource = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
             var pollingOptions = new AsyncPollingOptions();
             var response = await _mindeeClient.EnqueueAndParseAsync<InvoiceSplitterV1>(
                 inputSource, pollingOptions: pollingOptions);
@@ -271,7 +271,7 @@ namespace Mindee.IntegrationTests
         public async Task Enqueue_File_Generated_AsyncOnly_Sync_MustFail()
         {
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
-            var inputSource = new LocalInputSource("Resources/v1/products/international_id/default_sample.jpg");
+            var inputSource = new LocalInputSource(Constants.V1ProductDir + "international_id/default_sample.jpg");
             await Assert.ThrowsAsync<Mindee403Exception>(
                 () => _mindeeClient.ParseAsync<GeneratedV1>(inputSource, endpoint));
         }
@@ -280,7 +280,7 @@ namespace Mindee.IntegrationTests
         public async Task EnqueueAndParse_File_Generated_AsyncOnly_Async_MustSucceed()
         {
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
-            var inputSource = new LocalInputSource("Resources/v1/products/international_id/default_sample.jpg");
+            var inputSource = new LocalInputSource(Constants.V1ProductDir + "international_id/default_sample.jpg");
             var response = await _mindeeClient.EnqueueAndParseAsync<GeneratedV1>(inputSource, endpoint);
 
             Assert.NotNull(response);

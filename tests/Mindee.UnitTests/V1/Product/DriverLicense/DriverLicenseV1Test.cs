@@ -30,13 +30,13 @@ namespace Mindee.UnitTests.V1.Product.DriverLicense
         public async Task Predict_CheckSummary()
         {
             var response = await GetPrediction("complete");
-            var expected = File.ReadAllText("Resources/v1/products/driver_license/response_v1/summary_full.rst");
+            var expected = File.ReadAllText(Constants.V1ProductDir + "driver_license/response_v1/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
 
         private static async Task<PredictResponse<DriverLicenseV1>> GetPrediction(string name)
         {
-            string fileName = $"Resources/v1/products/driver_license/response_v1/{name}.json";
+            string fileName = Constants.V1RootDir + $"products/driver_license/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<DriverLicenseV1>(
                 UnitTestBase.GetFakePredictParameter());
