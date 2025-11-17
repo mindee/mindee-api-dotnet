@@ -198,6 +198,7 @@ namespace Mindee.IntegrationTests.V2
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
                 () => _mindeeClientV2.EnqueueInferenceAsync(inputSource, predictOptions));
             Assert.Equal(422, ex.Status);
+            Assert.StartsWith("422-", ex.Code);
         }
 
         [Fact]
@@ -206,6 +207,7 @@ namespace Mindee.IntegrationTests.V2
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
                 () => _mindeeClientV2.GetJobAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
             Assert.Equal(404, ex.Status);
+            Assert.StartsWith("404-", ex.Code);
         }
 
         [Fact]
@@ -214,6 +216,7 @@ namespace Mindee.IntegrationTests.V2
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
                 () => _mindeeClientV2.GetInferenceAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
             Assert.Equal(404, ex.Status);
+            Assert.StartsWith("404-", ex.Code);
         }
 
         [Fact]

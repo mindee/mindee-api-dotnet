@@ -256,7 +256,7 @@ namespace Mindee
             ErrorResponse error = response.Job.Error;
             if (error != null)
             {
-                throw new MindeeHttpExceptionV2(error.Status, error.Detail);
+                throw new MindeeHttpExceptionV2(error);
             }
             throw new MindeeException($"Could not complete after {retryCount} attempts.");
         }

@@ -6,37 +6,40 @@ namespace Mindee.Parsing.V2
     /// <summary>
     /// Error response detailing a problem. The format adheres to RFC 9457.
     /// </summary>
-    public class ErrorResponse
+    public class ErrorResponse : IErrorResponse
     {
-        /// <summary>
-        /// The HTTP status code returned by the server.
-        /// </summary>
+
+        /// <inheritdoc/>
         [JsonPropertyName("status")]
         public int Status { get; set; }
 
-        /// <summary>
-        /// A human-readable explanation specific to the occurrence of the problem.
-        /// </summary>
+        /// <inheritdoc/>
         [JsonPropertyName("detail")]
         public string Detail { get; set; }
 
-        /// <summary>
-        /// A short, human-readable summary of the problem.
-        /// </summary>
+        /// <inheritdoc/>
         [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        /// <summary>
-        /// A machine-readable code specific to the occurrence of the problem.
-        /// </summary>
+        /// <inheritdoc/>
         [JsonPropertyName("code")]
         public string Code { get; set; }
 
-        /// <summary>
-        /// A list of explicit details on the problem.
-        /// </summary>
+        /// <inheritdoc/>
         [JsonPropertyName("errors")]
         public List<ErrorItem> Errors { get; set; }
+
+        /// <summary>
+        /// Constructor with all attributes.
+        /// </summary>
+        public ErrorResponse(int status, string title, string detail, string code, List<ErrorItem> errors)
+        {
+            Status = status;
+            Title = title;
+            Detail = detail;
+            Code = code;
+            Errors = errors;
+        }
 
         /// <summary>
         /// To make the error prettier to display.

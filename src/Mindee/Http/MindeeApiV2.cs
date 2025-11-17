@@ -120,13 +120,8 @@ namespace Mindee.Http
             if (statusCode is > 199 and < 400)
                 return DeserializeResponse<TResponse>(restResponse.Content);
 
-            if (restResponse.Content?.Contains("status") ?? false)
-            {
-                ErrorResponse error = GetErrorFromContent(restResponse.Content);
-                throw new MindeeHttpExceptionV2(error.Status, error.Detail);
-            }
             throw new MindeeHttpExceptionV2(
-                statusCode, restResponse.StatusDescription ?? "Unknown error.");
+                GetErrorFromContent((int)restResponse.StatusCode, restResponse.Content));
         }
     }
 }
