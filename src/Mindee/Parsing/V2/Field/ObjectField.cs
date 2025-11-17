@@ -26,9 +26,9 @@ namespace Mindee.Parsing.V2.Field
                 if (_simpleFields != null)
                     return _simpleFields;
                 _simpleFields = new Dictionary<string, SimpleField>();
-                foreach (var field in Fields)
+                foreach (var currentField in Fields)
                 {
-                    _simpleFields.Add(field.Key, field.Value.SimpleField);
+                    _simpleFields.Add(currentField.Key, currentField.Value.SimpleField);
                 }
                 return _simpleFields;
             }
