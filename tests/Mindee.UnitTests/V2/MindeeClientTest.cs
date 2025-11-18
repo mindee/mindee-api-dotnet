@@ -32,9 +32,14 @@ namespace Mindee.UnitTests.V2
             var predictable = new Mock<HttpApiV2>();
             var mindeeClient = MakeCustomMindeeClientV2(predictable);
 
-            var inputSource = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
+            var inputSource = new LocalInputSource(
+                new FileInfo(fileName: Constants.RootDir + "file_types/pdf/blank_1.pdf"));
+            var inferenceParams = new InferenceParameters(
+                modelId: "dummy-model-id",
+                rawText: false,
+                textContext: "Hello my name is mud.");
             var response = await mindeeClient.EnqueueInferenceAsync(
-                inputSource, new InferenceParameters("dummy-model-id"));
+                inputSource, inferenceParams);
 
             Assert.NotNull(response);
             predictable.Verify(

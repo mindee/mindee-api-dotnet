@@ -49,6 +49,12 @@ namespace Mindee.Http
         public List<string> WebhookIds { get; }
 
         /// <summary>
+        /// Additional text context used by the model during inference. Not recommended, for specific use only.
+        /// </summary>
+        /// <remarks>Not available on all APIs.</remarks>
+        public string TextContext { get; }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="modelId">ID of the model<see cref="ModelId"/></param>
@@ -58,6 +64,7 @@ namespace Mindee.Http
         /// <param name="polygon"><see cref="Polygon"/></param>
         /// <param name="confidence"><see cref="Confidence"/></param>
         /// <param name="webhookIds"><see cref="WebhookIds"/></param>
+        /// <param name="textContext"><see cref="TextContext"/></param>
         public InferenceOptions(
             string modelId,
             bool? rag,
@@ -65,7 +72,8 @@ namespace Mindee.Http
             bool? polygon,
             bool? confidence,
             string alias,
-            List<string> webhookIds)
+            List<string> webhookIds,
+            string textContext)
         {
             ModelId = modelId;
             Alias = alias;
@@ -74,6 +82,7 @@ namespace Mindee.Http
             Polygon = polygon;
             Confidence = confidence;
             WebhookIds = webhookIds;
+            TextContext = textContext;
         }
     }
 }

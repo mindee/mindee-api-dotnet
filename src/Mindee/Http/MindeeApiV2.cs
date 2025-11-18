@@ -103,7 +103,10 @@ namespace Mindee.Http
             {
                 request.AddParameter("confidence", predictParameter.Confidence.Value.ToString());
             }
-
+            if (predictParameter.TextContext != null)
+            {
+                request.AddParameter("text_context", predictParameter.TextContext);
+            }
             if (predictParameter.WebhookIds is { Count: > 0 })
             {
                 request.AddParameter(name: "webhook_ids", value: string.Join(",", predictParameter.WebhookIds));
