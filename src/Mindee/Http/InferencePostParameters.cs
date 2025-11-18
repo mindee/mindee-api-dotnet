@@ -30,6 +30,7 @@ namespace Mindee.Http
         /// <param name="confidence"><see cref="InferenceOptions.Confidence"/></param>
         /// <param name="alias"><see cref="InferenceOptions.Alias"/></param>
         /// <param name="webhookIds"><see cref="InferenceOptions.WebhookIds"/></param>
+        /// <param name="textContext"><see cref="InferenceOptions.TextContext"/></param>
         public InferencePostParameters(
             string modelId,
             string alias,
@@ -38,6 +39,7 @@ namespace Mindee.Http
             bool? rawText = null,
             bool? polygon = null,
             bool? confidence = null,
+            string textContext = null,
             LocalInputSource localSource = null,
             UrlInputSource urlSource = null
             )
@@ -48,7 +50,8 @@ namespace Mindee.Http
             polygon: polygon,
             confidence: confidence,
             alias: alias,
-            webhookIds: webhookIds)
+            webhookIds: webhookIds,
+            textContext: textContext)
         {
             if (localSource == null && urlSource == null)
             {

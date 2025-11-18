@@ -24,6 +24,7 @@ namespace Mindee
         /// <param name="rawText"><see cref="InferenceOptions.RawText"/></param>
         /// <param name="polygon"><see cref="InferenceOptions.Polygon"/></param>
         /// <param name="confidence"><see cref="InferenceOptions.Confidence"/></param>
+        /// <param name="textContext"><see cref="InferenceOptions.TextContext"/></param>
         /// <param name="pollingOptions"><see cref="PollingOptions"/></param>
         public InferenceParameters(
             string modelId,
@@ -33,6 +34,7 @@ namespace Mindee
             bool? rawText = null,
             bool? polygon = null,
             bool? confidence = null,
+            string textContext = null,
             AsyncPollingOptions pollingOptions = null
         ) : base(
             modelId: modelId,
@@ -41,7 +43,8 @@ namespace Mindee
             polygon: polygon,
             confidence: confidence,
             alias: alias,
-            webhookIds: webhookIds)
+            webhookIds: webhookIds,
+            textContext: textContext)
         {
             PollingOptions = pollingOptions;
         }

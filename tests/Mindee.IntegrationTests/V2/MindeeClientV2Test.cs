@@ -109,7 +109,8 @@ namespace Mindee.IntegrationTests.V2
             var inputSource = new LocalInputSource(
                 Constants.V1ProductDir + "financial_document/default_sample.jpg");
             var inferenceParams = new InferenceParameters(
-                modelId: _findocModelId);
+                modelId: _findocModelId,
+                textContext: "this is an invoice.");
 
             var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
                 inputSource, inferenceParams);
@@ -194,9 +195,11 @@ namespace Mindee.IntegrationTests.V2
         public async Task Invalid_Model_MustThrowError()
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/multipage_cut-2.pdf");
-            var predictOptions = new InferenceParameters("INVALID MODEL ID");
+            var inferenceParams = new InferenceParameters(
+                modelId: "INVALID MODEL ID",
+                textContext: "hello my name is mud");
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
-                () => _mindeeClientV2.EnqueueInferenceAsync(inputSource, predictOptions));
+                () => _mindeeClientV2.EnqueueInferenceAsync(inputSource, inferenceParams));
             Assert.Equal(422, ex.Status);
             Assert.StartsWith("422-", ex.Code);
         }
