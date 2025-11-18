@@ -1,23 +1,45 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Mindee.Parsing.V2
 {
     /// <summary>
-    /// Represent an error information from the API response.
+    /// Error response detailing a problem. The format adheres to RFC 9457.
     /// </summary>
-    public class ErrorResponse
+    public class ErrorResponse : IErrorResponse
     {
-        /// <summary>
-        /// Detail relevant to the error.
-        /// </summary>
+
+        /// <inheritdoc/>
+        [JsonPropertyName("status")]
+        public int Status { get; set; }
+
+        /// <inheritdoc/>
         [JsonPropertyName("detail")]
         public string Detail { get; set; }
 
+        /// <inheritdoc/>
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
+
+        /// <inheritdoc/>
+        [JsonPropertyName("code")]
+        public string Code { get; set; }
+
+        /// <inheritdoc/>
+        [JsonPropertyName("errors")]
+        public List<ErrorItem> Errors { get; set; }
+
         /// <summary>
-        /// Http error code.
+        /// Constructor with all attributes.
         /// </summary>
-        [JsonPropertyName("status")]
-        public int Status { get; set; }
+        public ErrorResponse(int status, string title, string detail, string code, List<ErrorItem> errors)
+        {
+            Status = status;
+            Title = title;
+            Detail = detail;
+            Code = code;
+            Errors = errors;
+        }
 
         /// <summary>
         /// To make the error prettier to display.

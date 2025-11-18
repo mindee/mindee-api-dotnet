@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
         public async Task Should_GetCropperResult()
         {
             var response = await JsonSerializer.DeserializeAsync<PredictResponse<ReceiptV4>>(
-                new FileInfo("Resources/v1/extras/cropper/complete.json").OpenRead());
+                new FileInfo(Constants.V1RootDir + "extras/cropper/complete.json").OpenRead());
 
             Assert.NotNull(response);
             Assert.NotEmpty(response.Document.Inference.Pages);

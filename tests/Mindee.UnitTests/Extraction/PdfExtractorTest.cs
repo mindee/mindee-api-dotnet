@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.Extraction
         [Fact]
         public void GivenAnImage_ShouldExtractAPDF()
         {
-            var jpg = "Resources/v1/products/invoices/default_sample.jpg";
+            var jpg = Constants.V1ProductDir + "invoices/default_sample.jpg";
             var localInput = new LocalInputSource(jpg);
             Assert.False(localInput.IsPdf());
             var extractor = new PdfExtractor(localInput);
@@ -21,7 +21,7 @@ namespace Mindee.UnitTests.Extraction
         [Fact]
         public async Task GivenAPDF_ShouldExtractInvoicesNoStrict()
         {
-            var pdf = new LocalInputSource("Resources/v1/products/invoice_splitter/invoice_5p.pdf");
+            var pdf = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/invoice_5p.pdf");
             var response = await GetPrediction();
             Assert.NotNull(response);
             var inference = response.Document.Inference;
@@ -41,7 +41,7 @@ namespace Mindee.UnitTests.Extraction
         [Fact]
         public async Task GivenAPDF_ShouldExtractInvoicesStrict()
         {
-            var pdf = new LocalInputSource("Resources/v1/products/invoice_splitter/invoice_5p.pdf");
+            var pdf = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/invoice_5p.pdf");
             var response = await GetPrediction();
             Assert.NotNull(response);
             var inference = response.Document.Inference;
@@ -58,7 +58,7 @@ namespace Mindee.UnitTests.Extraction
         }
         private async Task<AsyncPredictResponse<InvoiceSplitterV1>> GetPrediction()
         {
-            const string fileName = "Resources/v1/products/invoice_splitter/response_v1/complete.json";
+            const string fileName = Constants.V1ProductDir + "invoice_splitter/response_v1/complete.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.DocumentQueueGetAsync<InvoiceSplitterV1>("hello");
         }

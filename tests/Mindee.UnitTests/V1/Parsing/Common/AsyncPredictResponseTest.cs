@@ -13,7 +13,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
         public async Task WhenAsyncPost_ReturnsErrorForbidden_MustBeDeserialized()
         {
             var response = await JsonSerializer.DeserializeAsync<AsyncPredictResponse<InvoiceSplitterV1>>(
-                new FileInfo("Resources/v1/async/post_fail_forbidden.json").OpenRead());
+                new FileInfo(Constants.V1RootDir + "async/post_fail_forbidden.json").OpenRead());
 
             Assert.NotNull(response);
             Assert.Equal("failure", response.ApiRequest.Status);
@@ -25,7 +25,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
         public async Task WhenAsyncPost_ReturnsSuccess_MustBeDeserialized()
         {
             var response = await JsonSerializer.DeserializeAsync<AsyncPredictResponse<InvoiceSplitterV1>>(
-                new FileInfo("Resources/v1/async/post_success.json").OpenRead());
+                new FileInfo(Constants.V1RootDir + "async/post_success.json").OpenRead());
 
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
@@ -40,7 +40,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
         public async Task WhenAsyncGet_ReturnsCompleted_MustBeDeserialized()
         {
             var response = await JsonSerializer.DeserializeAsync<AsyncPredictResponse<InvoiceSplitterV1>>(
-                new FileInfo("Resources/v1/async/get_completed.json").OpenRead());
+                new FileInfo(Constants.V1RootDir + "async/get_completed.json").OpenRead());
 
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
@@ -56,7 +56,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
         public async Task WhenAsyncGet_ReturnsFailedJob_MustBeDeserialized()
         {
             var response = await JsonSerializer.DeserializeAsync<AsyncPredictResponse<InvoiceSplitterV1>>(
-                new FileInfo("Resources/v1/async/get_failed_job_error.json").OpenRead());
+                new FileInfo(Constants.V1RootDir + "async/get_failed_job_error.json").OpenRead());
 
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);

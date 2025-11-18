@@ -22,7 +22,7 @@ namespace Mindee.UnitTests.V1
             var mindeeClient = MakeCustomMindeeClient(predictable);
 
             var endpoint = new CustomEndpoint("", "");
-            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
+            var inputSource = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
             var response = await mindeeClient.ParseAsync(
                 inputSource, endpoint);
 
@@ -56,7 +56,7 @@ namespace Mindee.UnitTests.V1
             var mindeeClient = MakeCustomMindeeClient(predictable);
 
             var endpoint = new CustomEndpoint("", "");
-            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
+            var inputSource = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
             var predictOptions = new PredictOptions(allWords: true, cropper: true);
             var response = await mindeeClient.ParseAsync(
                 inputSource,
@@ -76,7 +76,7 @@ namespace Mindee.UnitTests.V1
             var mindeeClient = MakeGeneratedMindeeClient(predictable);
 
             var endpoint = new CustomEndpoint("", "");
-            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
+            var inputSource = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
             var response = await mindeeClient.ParseAsync<GeneratedV1>(
                 inputSource, endpoint);
 
@@ -93,7 +93,7 @@ namespace Mindee.UnitTests.V1
             var mindeeClient = MakeGeneratedMindeeClient(predictable);
 
             var endpoint = new CustomEndpoint("", "");
-            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
+            var inputSource = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
             var predictOptions = new PredictOptions(allWords: true, cropper: true);
             var response = await mindeeClient.ParseAsync<GeneratedV1>(
                 inputSource, endpoint, predictOptions);
@@ -128,7 +128,7 @@ namespace Mindee.UnitTests.V1
             var mindeeClient = MakeGeneratedMindeeClient(predictable);
 
             var endpoint = new CustomEndpoint("", "");
-            var inputSource = new LocalInputSource("Resources/file_types/pdf/blank_1.pdf");
+            var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/blank_1.pdf");
             var response = await mindeeClient.EnqueueAsync<GeneratedV1>(
                 inputSource, endpoint);
 
@@ -145,7 +145,7 @@ namespace Mindee.UnitTests.V1
             var mindeeClient = MakeGeneratedMindeeClient(predictable);
 
             var endpoint = new CustomEndpoint("", "");
-            var inputSource = new LocalInputSource("Resources/file_types/pdf/blank_1.pdf");
+            var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/blank_1.pdf");
             var predictOptions = new PredictOptions(allWords: true, cropper: true);
             var response = await mindeeClient.EnqueueAsync<GeneratedV1>(
                 inputSource, endpoint, predictOptions);
@@ -194,7 +194,7 @@ namespace Mindee.UnitTests.V1
             var predictable = new Mock<IHttpApi>();
             var mindeeClient = MakeStandardMindeeClient(predictable);
 
-            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
+            var inputSource = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
             Assert.Equal(1, inputSource.GetPageCount());
             var document = await mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource);
@@ -227,7 +227,8 @@ namespace Mindee.UnitTests.V1
             var predictable = new Mock<IHttpApi>();
             var mindeeClient = MakeStandardMindeeClient(predictable);
 
-            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/blank_1.pdf"));
+            var inputSource = new LocalInputSource(
+                new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
             var predictOptions = new PredictOptions(allWords: true, cropper: true);
             var response = await mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource, predictOptions);
@@ -244,7 +245,8 @@ namespace Mindee.UnitTests.V1
             var predictable = new Mock<IHttpApi>();
             var mindeeClient = MakeStandardMindeeClient(predictable);
 
-            var inputSource = new LocalInputSource(new FileInfo("Resources/file_types/pdf/multipage.pdf"));
+            var inputSource = new LocalInputSource(
+                new FileInfo(Constants.RootDir + "file_types/pdf/multipage.pdf"));
             Assert.Equal(12, inputSource.GetPageCount());
             var pageOptions = new PageOptions(pageIndexes: new short[] { 1, 2, 3 });
             var response = await mindeeClient.ParseAsync<InvoiceV4>(
@@ -263,7 +265,7 @@ namespace Mindee.UnitTests.V1
             var mindeeClient = MakeStandardMindeeClient(predictable);
 
             var inputSource = new LocalInputSource(
-                File.ReadAllBytes("Resources/file_types/pdf/blank_1.pdf"),
+                File.ReadAllBytes(Constants.RootDir + "file_types/pdf/blank_1.pdf"),
                 "blank_1.pdf"
                 );
             var response = await mindeeClient.ParseAsync<InvoiceV4>(
@@ -281,7 +283,7 @@ namespace Mindee.UnitTests.V1
             var predictable = new Mock<IHttpApi>();
             var mindeeClient = MakeStandardMindeeClient(predictable);
 
-            var inputSource = new LocalInputSource("Resources/file_types/pdf/blank_1.pdf");
+            var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/blank_1.pdf");
             var response = await mindeeClient.EnqueueAsync<InvoiceV4>(inputSource);
 
             Assert.NotNull(response);
@@ -311,7 +313,8 @@ namespace Mindee.UnitTests.V1
             var predictable = new Mock<IHttpApi>();
             var mindeeClient = MakeStandardMindeeClient(predictable);
 
-            var inputSource = new LocalInputSource("Resources/file_types/pdf/blank_1.pdf");
+            var inputSource = new LocalInputSource(
+                Constants.RootDir + "file_types/pdf/blank_1.pdf");
             var predictOptions = new PredictOptions(allWords: true, cropper: true);
             var response = await mindeeClient.EnqueueAsync<InvoiceV4>(inputSource, predictOptions);
 
@@ -353,13 +356,13 @@ namespace Mindee.UnitTests.V1
             var mindeeClient = MakeStandardMindeeClient(predictable);
 
             var localresponse = new LocalResponse(
-                new FileInfo("Resources/v1/products/invoices/response_v4/complete.json"));
+                new FileInfo(Constants.V1ProductDir + "invoices/response_v4/complete.json"));
             var response = mindeeClient.LoadPrediction<InvoiceV4>(localresponse);
 
             Assert.NotNull(response);
             Assert.Equal(
                 response.Document.ToString(),
-                File.ReadAllText("Resources/v1/products/invoices/response_v4/summary_full.rst"));
+                File.ReadAllText(Constants.V1ProductDir + "invoices/response_v4/summary_full.rst"));
         }
 
         [Fact]
@@ -369,13 +372,13 @@ namespace Mindee.UnitTests.V1
             var mindeeClient = MakeStandardMindeeClient(predictable);
 
             var localresponse = new LocalResponse(
-                new FileInfo("Resources/v1/products/international_id/response_v2/complete.json"));
+                new FileInfo(Constants.V1ProductDir + "international_id/response_v2/complete.json"));
             var response = mindeeClient.LoadPrediction<InternationalIdV2>(localresponse);
 
             Assert.NotNull(response);
             Assert.Equal(
                 response.Document.ToString(),
-                File.ReadAllText("Resources/v1/products/international_id/response_v2/summary_full.rst"));
+                File.ReadAllText(Constants.V1ProductDir + "international_id/response_v2/summary_full.rst"));
         }
 
         private IPdfOperation GetDefaultPdfOperation() => new DocNetApi(new NullLogger<DocNetApi>());

@@ -2,8 +2,9 @@ using Mindee.Exceptions;
 
 namespace Mindee.UnitTests
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "Mindee client options")]
-    public class MindeeClientOptionsTest
+    public class PollingOptionsTest
     {
         [Fact]
         public void InvalidPollingOptions_MustFail()

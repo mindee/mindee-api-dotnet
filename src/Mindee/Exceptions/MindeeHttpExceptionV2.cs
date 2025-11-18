@@ -1,32 +1,41 @@
 using System;
+using System.Collections.Generic;
+using Mindee.Parsing.V2;
 
 namespace Mindee.Exceptions
 {
     /// <summary>
     /// Representation of a Mindee API V2 exception.
     /// </summary>
-    public class MindeeHttpExceptionV2 : Exception
+    public class MindeeHttpExceptionV2 : Exception, IErrorResponse
     {
-        /// <summary>
-        /// Detail relevant to the error.
-        /// </summary>
+        /// <inheritdoc/>
         public string Detail { get; set; }
 
-        /// <summary>
-        /// Specific error code.
-        /// </summary>
+        /// <inheritdoc/>
         public int Status { get; set; }
 
+        /// <inheritdoc/>
+        public string Title { get; set; }
+
+        /// <inheritdoc/>
+        public string Code { get; set; }
+
+        /// <inheritdoc/>
+        public List<ErrorItem> Errors { get; set; }
+
         /// <summary>
-        /// Initializes a new instance of the MindeeHttpException class using the provided Error object.
+        /// Initialize an instance using the provided Error object.
         /// </summary>
-        /// <param name="status">Status code of the error.</param>
-        /// <param name="detail">Detail sent alongside the error.</param>
-        public MindeeHttpExceptionV2(int status, String detail)
-            : base($"HTTP Status: {status} - {detail}")
+        /// <param name="error">ErrorResponse object.</param>
+        public MindeeHttpExceptionV2(ErrorResponse error)
+            : base($"HTTP {error.Status} - {error.Title} :: {error.Code} - {error.Detail}")
         {
-            Detail = detail;
-            Status = status;
+            Detail = error.Detail;
+            Status = error.Status;
+            Title = error.Title;
+            Code = error.Code;
+            Errors = error.Errors;
         }
     }
 }
