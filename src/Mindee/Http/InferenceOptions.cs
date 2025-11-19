@@ -45,13 +45,11 @@ namespace Mindee.Http
         /// <summary>
         /// IDs of webhooks to propagate the API response to.
         /// </summary>
-        /// <remarks>Not available on all APIs.</remarks>
         public List<string> WebhookIds { get; }
 
         /// <summary>
         /// Additional text context used by the model during inference. Not recommended, for specific use only.
         /// </summary>
-        /// <remarks>Not available on all APIs.</remarks>
         public string TextContext { get; }
 
         /// <summary>

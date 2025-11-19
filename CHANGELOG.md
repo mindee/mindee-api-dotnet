@@ -1,5 +1,15 @@
 # Mindee .NET Client Library Changelog
 
+## v3.35.0 - 2025-11-19
+### Changes
+* :memo: update readme links
+* :sparkles: add RAG metadata in V2 results
+* :sparkles: improved v2 error messages and exceptions
+* :sparkles: add text_context option on V2 enqueue
+### Fixes
+* :bug: fix for C# 14 and .NET 10
+
+
 ## v3.34.0 - 2025-10-01
 ### Changes
 * :loud_sound: better logging for v2
