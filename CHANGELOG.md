@@ -1,5 +1,10 @@
 # Mindee .NET Client Library Changelog
 
+## v3.36.0 - 2025-12-02
+### Changes
+* :sparkles: add support for text_context in active options return
+
+
 ## v3.35.0 - 2025-11-19
 ### Changes
 * :memo: update readme links
