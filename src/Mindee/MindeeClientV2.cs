@@ -105,7 +105,8 @@ namespace Mindee
                     rag: inferenceParameters.Rag,
                     rawText: inferenceParameters.RawText,
                     polygon: inferenceParameters.Polygon,
-                    confidence: inferenceParameters.Confidence
+                    confidence: inferenceParameters.Confidence,
+                    textContext: inferenceParameters.TextContext
                 ));
         }
 
