@@ -24,7 +24,7 @@ namespace Mindee.Input
         /// <param name="input">Will be decoded as UTF-8.</param>
         public LocalResponse(string input)
         {
-            FileBytes = Encoding.UTF8.GetBytes(input.Trim());
+            FileBytes = Encoding.UTF8.GetBytes(input.Replace("\r", "").Replace("\n", ""));
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Mindee.Input
         public LocalResponse(FileInfo input)
         {
             FileBytes = Encoding.UTF8.GetBytes(
-                File.ReadAllText(input.FullName).Trim());
+                File.ReadAllText(input.FullName).Replace("\r", "").Replace("\n", ""));
         }
 
         /// <summary>

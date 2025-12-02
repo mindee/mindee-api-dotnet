@@ -3,7 +3,7 @@ using Mindee.Input;
 namespace Mindee.UnitTests.V1.Input
 {
     [Trait("Category", "JSON Response loading")]
-    public class LocalResponseV1Test
+    public class LocalResponseTest
     {
         // Fake secret key.
         private const string SecretKey = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";

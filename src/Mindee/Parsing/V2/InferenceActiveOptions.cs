@@ -35,7 +35,7 @@ namespace Mindee.Parsing.V2
         public bool Confidence { get; set; }
 
         /// <summary>
-        /// Boost Whether the text context feature was activated.
+        /// Whether the text context feature was activated.
         /// When this feature is activated, the provided context is used to improve the accuracy of the inference.
         /// </summary>
         [JsonPropertyName("text_context")]
