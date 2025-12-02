@@ -20,13 +20,15 @@ namespace Mindee.IntegrationTests.V2
         }
 
         private void AssertActiveOptions(
-            InferenceActiveOptions activeOptions, bool rawText, bool polygon, bool confidence, bool rag)
+            InferenceActiveOptions activeOptions, bool rawText, bool polygon, bool confidence, bool rag,
+            bool textContext)
         {
             Assert.NotNull(activeOptions);
             Assert.Equal(activeOptions.Rag, rag);
             Assert.Equal(activeOptions.Polygon, polygon);
             Assert.Equal(activeOptions.Confidence, confidence);
             Assert.Equal(activeOptions.RawText, rawText);
+            Assert.Equal(activeOptions.TextContext, textContext);
         }
 
         [Theory]
@@ -64,7 +66,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.Equal(2, file.PageCount);
 
             AssertActiveOptions(
-                response.Inference.ActiveOptions, rawText, polygon, confidence, false);
+                response.Inference.ActiveOptions, rawText, polygon, confidence, false, false);
 
             InferenceResult result = response.Inference.Result;
             Assert.NotNull(result);
@@ -126,7 +128,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.Equal(1, file.PageCount);
 
             AssertActiveOptions(
-                response.Inference.ActiveOptions, false, false, false, false);
+                response.Inference.ActiveOptions, false, false, false, false, true);
 
             Assert.NotNull(response.Inference.Result);
 
@@ -188,6 +190,7 @@ namespace Mindee.IntegrationTests.V2
 
                 return;
             }
+
             throw new Exception("Did not receive a failed webhook.");
         }
 
@@ -198,8 +201,8 @@ namespace Mindee.IntegrationTests.V2
             var inferenceParams = new InferenceParameters(
                 modelId: "INVALID MODEL ID",
                 textContext: "hello my name is mud");
-            var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
-                () => _mindeeClientV2.EnqueueInferenceAsync(inputSource, inferenceParams));
+            var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
+                _mindeeClientV2.EnqueueInferenceAsync(inputSource, inferenceParams));
             Assert.Equal(422, ex.Status);
             Assert.StartsWith("422-", ex.Code);
         }
@@ -207,8 +210,8 @@ namespace Mindee.IntegrationTests.V2
         [Fact]
         public async Task NotFound_Job_MustThrowError()
         {
-            var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
-                () => _mindeeClientV2.GetJobAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
+            var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
+                _mindeeClientV2.GetJobAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
             Assert.Equal(404, ex.Status);
             Assert.StartsWith("404-", ex.Code);
         }
@@ -216,8 +219,8 @@ namespace Mindee.IntegrationTests.V2
         [Fact]
         public async Task NotFound_Inference_MustThrowError()
         {
-            var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(
-                () => _mindeeClientV2.GetInferenceAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
+            var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
+                _mindeeClientV2.GetInferenceAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
             Assert.Equal(404, ex.Status);
             Assert.StartsWith("404-", ex.Code);
         }
