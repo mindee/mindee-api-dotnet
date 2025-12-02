@@ -35,6 +35,13 @@ namespace Mindee.Parsing.V2
         public bool Confidence { get; set; }
 
         /// <summary>
+        /// Whether the text context feature was activated.
+        /// When this feature is activated, the provided context is used to improve the accuracy of the inference.
+        /// </summary>
+        [JsonPropertyName("text_context")]
+        public bool TextContext { get; set; }
+
+        /// <summary>
         /// Pretty-prints the file section exactly as expected by Inference.ToString().
         /// </summary>
         public override string ToString()
