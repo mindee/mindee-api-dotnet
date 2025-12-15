@@ -9,25 +9,31 @@ namespace Mindee.Parsing.V2
     public class Inference
     {
         /// <summary>
-        /// ResultModel info.
+        /// UUID of the Inference.
+        /// </summary>
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Model used for the inference.
         /// </summary>
         [JsonPropertyName("model")]
         public InferenceModel Model { get; set; }
 
         /// <summary>
-        /// ResultFile info.
+        /// File used for the inference.
         /// </summary>
         [JsonPropertyName("file")]
         public InferenceFile File { get; set; }
 
         /// <summary>
-        /// Active options for the inference.
+        /// Options which were activated during the inference.
         /// </summary>
         [JsonPropertyName("active_options")]
         public InferenceActiveOptions ActiveOptions { get; set; }
 
         /// <summary>
-        /// The model result values.
+        /// Result of the inference.
         /// </summary>
         [JsonPropertyName("result")]
         public InferenceResult Result { get; set; }

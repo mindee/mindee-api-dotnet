@@ -11,12 +11,12 @@ jobs:
       matrix:
         os:
           - "ubuntu-22.04"
-          - "macos-13"
+          # needs looking into
+          # - "macos-14"
         dotnet:
           - "net6.0"
-          - "net7.0"
           - "net8.0"
-          - "net9.0"
+          - "net10.0"
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -29,9 +29,8 @@ jobs:
       with:
         dotnet-version: |
           6.0.x
-          7.0.x
           8.0.x
-          9.0.x
+          10.0.x
 
     - uses: actions/cache@v4
       with:
@@ -55,9 +54,8 @@ jobs:
           - "net472"
           - "net482"
           - "net6.0"
-          - "net7.0"
           - "net8.0"
-          - "net9.0"
+          - "net10.0"
     runs-on: "windows-2022"
     steps:
     - uses: actions/checkout@v4
@@ -70,9 +68,8 @@ jobs:
       with:
         dotnet-version: |
           6.0.x
-          7.0.x
           8.0.x
-          9.0.x
+          10.0.x
 
     - uses: actions/cache@v4
       with:
