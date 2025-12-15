@@ -13,6 +13,7 @@ namespace Mindee.UnitTests.V2.Parsing
         {
             JobResponse response = GetJob("job/ok_processing.json");
             Assert.NotNull(response.Job);
+            Assert.NotNull(response.Job.Id);
             Assert.Equal(2025, response.Job.CreatedAt.Year);
             Assert.StartsWith("https", response.Job.PollingUrl);
             Assert.Null(response.Job.ResultUrl);
@@ -24,6 +25,7 @@ namespace Mindee.UnitTests.V2.Parsing
         {
             JobResponse response = GetJob("job/ok_processed_webhooks_ok.json");
             Assert.NotNull(response.Job);
+            Assert.NotNull(response.Job.Id);
             Assert.Equal(2026, response.Job.CreatedAt.Year);
             Assert.StartsWith("https", response.Job.PollingUrl);
             Assert.StartsWith("https", response.Job.ResultUrl);
@@ -41,6 +43,7 @@ namespace Mindee.UnitTests.V2.Parsing
         {
             JobResponse response = GetJob("job/fail_422.json");
             Assert.NotNull(response.Job);
+            Assert.NotNull(response.Job.Id);
             Assert.Equal(2025, response.Job.CreatedAt.Year);
             ErrorResponse error = response.Job.Error;
             Assert.NotNull(error);
