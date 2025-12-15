@@ -14,17 +14,21 @@ namespace Mindee.UnitTests.Input
         [Fact]
         public void Can_Load_Type_ImageFiles()
         {
-            Assert.IsType<LocalInputSource>(new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg"));
-            Assert.IsType<LocalInputSource>(new LocalInputSource(Constants.RootDir + "file_types/receipt.heic"));
-            Assert.IsType<LocalInputSource>(new LocalInputSource(Constants.RootDir + "file_types/receipt.jpga"));
-            Assert.IsType<LocalInputSource>(new LocalInputSource(Constants.RootDir + "file_types/receipt.tif"));
-            Assert.IsType<LocalInputSource>(new LocalInputSource(Constants.RootDir + "file_types/receipt.tiff"));
+            List<string> imageExtensions = new() { ".heic", ".jpg", ".jpga", ".png", ".tif", ".tiff", ".webp" };
+            foreach (var extension in imageExtensions)
+            {
+                var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt" + extension);
+                Assert.True(inputSource.IsExtensionValid());
+                Assert.False(inputSource.IsPdf());
+            }
         }
 
         [Fact]
         public void Can_Load_Type_PDF()
         {
-            Assert.IsType<LocalInputSource>(new LocalInputSource(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
+            var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/blank_1.pdf");
+            Assert.True(inputSource.IsExtensionValid());
+            Assert.True(inputSource.IsPdf());
         }
 
         [Fact]
