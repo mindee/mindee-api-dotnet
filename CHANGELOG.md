@@ -1,5 +1,13 @@
 # Mindee .NET Client Library Changelog
 
+## v3.36.1 - 2025-12-15
+### Changes
+* :white_check_mark: add initial testing on .NET 10
+* :white_check_mark: test loading webP files
+### Fixes
+* :bug: allow retrieval of the inference ID
+
+
 ## v3.36.0 - 2025-12-02
 ### Changes
 * :sparkles: add support for text_context in active options return
