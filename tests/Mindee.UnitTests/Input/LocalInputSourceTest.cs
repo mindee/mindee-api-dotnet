@@ -194,17 +194,17 @@ namespace Mindee.UnitTests.Input
             File.WriteAllBytes("Resources/output/compress50.pdf", resizes[2]);
             File.WriteAllBytes("Resources/output/compress10.pdf", resizes[3]);
             var initialFileInfo = new FileInfo(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
-            var renderedFileInfos = new List<FileInfo>
+            var renderedFileInfo = new List<FileInfo>
             {
                 new("Resources/output/compress85.pdf"),
                 new("Resources/output/compress75.pdf"),
                 new("Resources/output/compress50.pdf"),
                 new("Resources/output/compress10.pdf"),
             };
-            Assert.True(initialFileInfo.Length > renderedFileInfos[0].Length);
-            Assert.True(renderedFileInfos[0].Length > renderedFileInfos[1].Length);
-            Assert.True(renderedFileInfos[1].Length > renderedFileInfos[2].Length);
-            Assert.True(renderedFileInfos[2].Length > renderedFileInfos[3].Length);
+            Assert.True(initialFileInfo.Length > renderedFileInfo[0].Length);
+            Assert.True(renderedFileInfo[0].Length > renderedFileInfo[1].Length);
+            Assert.True(renderedFileInfo[1].Length > renderedFileInfo[2].Length);
+            Assert.True(renderedFileInfo[2].Length > renderedFileInfo[3].Length);
         }
 
         [Fact]

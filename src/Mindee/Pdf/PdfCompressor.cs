@@ -20,7 +20,10 @@ namespace Mindee.Pdf
         /// <param name="forceSourceTextCompression">Whether to force the rendering of source pdf. If enabled, will attempt to re-write the detected text.</param>
         /// <param name="disableSourceText">If the PDF has source text, whether to re-apply it to the original or not.</param>
         /// <returns>A byte array containing a compressed PDF.</returns>
-        public static byte[] CompressPdf(byte[] pdfData, int imageQuality = 85, bool forceSourceTextCompression = false,
+        public static byte[] CompressPdf(
+            byte[] pdfData,
+            int imageQuality = 85,
+            bool forceSourceTextCompression = false,
             bool disableSourceText = true)
         {
             if (!forceSourceTextCompression && PdfUtils.HasSourceText(pdfData))
