@@ -60,23 +60,6 @@ namespace Mindee.Http
         /// </summary>
         public DataSchema DataSchema { get; }
 
-
-        private static DataSchema GenerateDataSchema(Dictionary<string, object> dataSchema)
-        {
-            return new DataSchema(
-                dataSchema
-                ?? throw new MindeeInputException("Invalid Data Schema string")
-            );
-        }
-
-        private static DataSchema GenerateDataSchema(string dataSchema)
-        {
-            return new DataSchema(
-                dataSchema
-                ?? throw new MindeeInputException("Invalid Data Schema string")
-            );
-        }
-
         /// <summary>
         ///
         /// </summary>
@@ -114,12 +97,12 @@ namespace Mindee.Http
                 DataSchema dataSchemaClass => dataSchemaClass,
                 JsonElement element => element.ValueKind switch
                 {
-                    JsonValueKind.Object => GenerateDataSchema(JsonSerializer.Deserialize<Dictionary<string, object>>(element.GetRawText())),
-                    JsonValueKind.String => GenerateDataSchema(element.GetString()),
+                    JsonValueKind.Object => new DataSchema(JsonSerializer.Deserialize<Dictionary<string, object>>(element.GetRawText())),
+                    JsonValueKind.String => new DataSchema(element.GetString()),
                     _ => throw new MindeeInputException("Invalid Data Schema format.")
                 },
-                Dictionary<string, object> dataSchemaDict => GenerateDataSchema(dataSchemaDict),
-                string dataSchemaStr => GenerateDataSchema(dataSchemaStr),
+                Dictionary<string, object> dataSchemaDict => new DataSchema(dataSchemaDict),
+                string dataSchemaStr => new DataSchema(dataSchemaStr),
                 null => null,
                 _ => throw new MindeeInputException("Invalid Data Schema format.")
             };
