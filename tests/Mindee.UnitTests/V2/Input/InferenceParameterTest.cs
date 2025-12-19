@@ -1,3 +1,4 @@
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using Mindee.Input;
 
@@ -14,8 +15,13 @@ namespace Mindee.UnitTests.V2.Input
 
         public InferenceParameterTest()
         {
-            DataSchemaString = File.ReadAllText(ReplacePath).Trim();
-            DataSchemaDict = JsonSerializer.Deserialize<Dictionary<string, object>>(DataSchemaString) ?? new Dictionary<string, object>();
+            var fileContent = File.ReadAllText(ReplacePath).Trim();
+            DataSchemaDict = JsonSerializer.Deserialize<Dictionary<string, object>>(fileContent) ?? new Dictionary<string, object>();
+            DataSchemaString = JsonSerializer.Serialize(DataSchemaDict, new JsonSerializerOptions
+            {
+                WriteIndented = false,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
             DataSchemaInstance = new DataSchema(DataSchemaDict);
         }
         [Fact]

@@ -180,7 +180,7 @@ namespace Mindee.Input
             using (var writer = new Utf8JsonWriter(stream,
                        new JsonWriterOptions
                        {
-                           Indented = true,
+                           Indented = false,
                            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                        }))
             {
@@ -273,7 +273,7 @@ namespace Mindee.Input
             using (var writer = new Utf8JsonWriter(stream,
                        new JsonWriterOptions
                        {
-                           Indented = true,
+                           Indented = false,
                            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                        }))
             {
