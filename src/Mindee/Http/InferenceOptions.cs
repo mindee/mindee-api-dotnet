@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
+using Mindee.Exceptions;
+using Mindee.Input;
 using Mindee.Parsing.V2;
 using Mindee.Parsing.V2.Field;
 
@@ -53,6 +56,12 @@ namespace Mindee.Http
         public string TextContext { get; }
 
         /// <summary>
+        /// Dynamic changes to the data schema of the model for this inference.
+        /// Not recommended, for specific use only.
+        /// </summary>
+        public DataSchema DataSchema { get; }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="modelId">ID of the model<see cref="ModelId"/></param>
@@ -63,6 +72,7 @@ namespace Mindee.Http
         /// <param name="confidence"><see cref="Confidence"/></param>
         /// <param name="webhookIds"><see cref="WebhookIds"/></param>
         /// <param name="textContext"><see cref="TextContext"/></param>
+        /// <param name="dataSchema"><see cref="DataSchema"/></param>
         public InferenceOptions(
             string modelId,
             bool? rag,
@@ -71,7 +81,9 @@ namespace Mindee.Http
             bool? confidence,
             string alias,
             List<string> webhookIds,
-            string textContext)
+            string textContext,
+            object dataSchema
+            )
         {
             ModelId = modelId;
             Alias = alias;
@@ -81,6 +93,27 @@ namespace Mindee.Http
             Confidence = confidence;
             WebhookIds = webhookIds;
             TextContext = textContext;
+
+            DataSchema = dataSchema switch
+            {
+                DataSchema dataSchemaClass => dataSchemaClass,
+                JsonElement element => element.ValueKind switch
+                {
+                    JsonValueKind.Object => new DataSchema(
+                        JsonSerializer.Deserialize<Dictionary<string, object>>(element.GetRawText())
+                        ?? throw new MindeeInputException("Invalid Data Schema object")
+                    ),
+                    JsonValueKind.String => new DataSchema(
+                        element.GetString()
+                        ?? throw new MindeeInputException("Invalid Data Schema string")
+                    ),
+                    _ => throw new MindeeInputException("Invalid Data Schema format.")
+                },
+                Dictionary<string, object> dataSchemaDict => new DataSchema(dataSchemaDict),
+                string dataSchemaStr => new DataSchema(dataSchemaStr),
+                null => null,
+                _ => throw new MindeeInputException("Invalid Data Schema format.")
+            };
         }
     }
 }

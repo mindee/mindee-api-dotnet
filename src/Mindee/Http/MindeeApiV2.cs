@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -106,6 +107,11 @@ namespace Mindee.Http
             if (predictParameter.TextContext != null)
             {
                 request.AddParameter("text_context", predictParameter.TextContext);
+            }
+
+            if (predictParameter.DataSchema != null)
+            {
+                request.AddParameter("data_schema", predictParameter.DataSchema.ToString());
             }
             if (predictParameter.WebhookIds is { Count: > 0 })
             {
