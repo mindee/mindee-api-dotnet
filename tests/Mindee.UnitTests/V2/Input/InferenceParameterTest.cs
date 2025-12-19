@@ -31,7 +31,7 @@ namespace Mindee.UnitTests.V2.Input
             Assert.Null(inferenceParameters.DataSchema);
         }
         [Fact]
-        public void DataSchemaRStr_ShouldInitialize()
+        public void DataSchemaStr_ShouldInitialize()
         {
             InferenceParameters inferenceParameters = new InferenceParameters(modelId: "test", dataSchema: DataSchemaString);
             Assert.Equal(DataSchemaString, inferenceParameters.DataSchema.ToString());

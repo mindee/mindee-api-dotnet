@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Mindee.Exceptions;
@@ -61,6 +60,23 @@ namespace Mindee.Http
         /// </summary>
         public DataSchema DataSchema { get; }
 
+
+        private static DataSchema GenerateDataSchema(Dictionary<string, object> dataSchema)
+        {
+            return new DataSchema(
+                dataSchema
+                ?? throw new MindeeInputException("Invalid Data Schema string")
+            );
+        }
+
+        private static DataSchema GenerateDataSchema(string dataSchema)
+        {
+            return new DataSchema(
+                dataSchema
+                ?? throw new MindeeInputException("Invalid Data Schema string")
+            );
+        }
+
         /// <summary>
         ///
         /// </summary>
@@ -93,24 +109,17 @@ namespace Mindee.Http
             Confidence = confidence;
             WebhookIds = webhookIds;
             TextContext = textContext;
-
             DataSchema = dataSchema switch
             {
                 DataSchema dataSchemaClass => dataSchemaClass,
                 JsonElement element => element.ValueKind switch
                 {
-                    JsonValueKind.Object => new DataSchema(
-                        JsonSerializer.Deserialize<Dictionary<string, object>>(element.GetRawText())
-                        ?? throw new MindeeInputException("Invalid Data Schema object")
-                    ),
-                    JsonValueKind.String => new DataSchema(
-                        element.GetString()
-                        ?? throw new MindeeInputException("Invalid Data Schema string")
-                    ),
+                    JsonValueKind.Object => GenerateDataSchema(JsonSerializer.Deserialize<Dictionary<string, object>>(element.GetRawText())),
+                    JsonValueKind.String => GenerateDataSchema(element.GetString()),
                     _ => throw new MindeeInputException("Invalid Data Schema format.")
                 },
-                Dictionary<string, object> dataSchemaDict => new DataSchema(dataSchemaDict),
-                string dataSchemaStr => new DataSchema(dataSchemaStr),
+                Dictionary<string, object> dataSchemaDict => GenerateDataSchema(dataSchemaDict),
+                string dataSchemaStr => GenerateDataSchema(dataSchemaStr),
                 null => null,
                 _ => throw new MindeeInputException("Invalid Data Schema format.")
             };
