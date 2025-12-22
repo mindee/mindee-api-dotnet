@@ -7,7 +7,7 @@ using Mindee.Exceptions;
 namespace Mindee.Input
 {
     /// <summary>
-    /// Display name for the field, also impacts inference results.
+    /// Data Schema Field
     /// </summary>
     public class DataSchemaField
     {
