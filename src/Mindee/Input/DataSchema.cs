@@ -116,18 +116,30 @@ namespace Mindee.Input
         public DataSchemaReplace Replace { get; set; }
 
         /// <summary>
+        /// Initializes the Replace property.
+        /// </summary>
+        /// <param name="dataSchema"></param>
+        /// <exception cref="MindeeInputException"></exception>
+        private void Setup(Dictionary<string, object> dataSchema)
+        {
+            if (dataSchema == null)
+                return;
+            if (!dataSchema.TryGetValue("replace", out var value))
+            {
+                throw new MindeeInputException("Invalid Data Schema format.");
+            }
+            Replace = JsonSerializer.Deserialize<DataSchemaReplace>(
+                JsonSerializer.Serialize(value)
+            );
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DataSchema"/> class from a dictionary.
         /// </summary>
         /// <param name="dataSchema">Dictionary containing the data schema configuration.</param>
         public DataSchema(Dictionary<string, object> dataSchema)
         {
-            if (!dataSchema.ContainsKey("replace") || dataSchema["replace"] == null)
-            {
-                throw new MindeeInputException("Invalid Data Schema format.");
-            }
-            Replace = JsonSerializer.Deserialize<DataSchemaReplace>(
-                JsonSerializer.Serialize(dataSchema["replace"])
-            );
+            Setup(dataSchema);
         }
 
         /// <summary>
@@ -137,13 +149,7 @@ namespace Mindee.Input
         public DataSchema(string jsonString)
         {
             var dataSchema = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonString);
-            if (!dataSchema.ContainsKey("replace") || dataSchema["replace"] == null)
-            {
-                throw new MindeeInputException("Invalid Data Schema format.");
-            }
-            Replace = JsonSerializer.Deserialize<DataSchemaReplace>(
-                JsonSerializer.Serialize(dataSchema["replace"])
-            );
+            Setup(dataSchema);
         }
 
         /// <summary>
