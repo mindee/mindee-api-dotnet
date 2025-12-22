@@ -38,13 +38,15 @@ namespace Mindee.Input
         /// <summary>
         /// Detailed description of what this field represents.
         /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// Detailed description of what this field represents.
+        /// Optional extraction guidelines.
         /// </summary>
         [JsonPropertyName("guidelines")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string Guidelines { get; set; }
 
         /// <summary>
@@ -56,7 +58,7 @@ namespace Mindee.Input
         public bool? UniqueValues { get; set; }
 
         /// <summary>
-        /// Optional extraction guidelines.
+        /// Subfields when type is `nested_object`. Leave empty for other types.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("nested_fields")]
