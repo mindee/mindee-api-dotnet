@@ -31,7 +31,7 @@ namespace Mindee.Http
 
             var defaultHeaders = new Dictionary<string, string>
             {
-                { "Authorization", $"{mindeeSettings.Value.ApiKey}" }, { "Connection", "close" }
+                { "Authorization", $"{mindeeSettings.Value.ApiKey}" }
             };
             _httpClient.AddDefaultHeaders(defaultHeaders);
         }
