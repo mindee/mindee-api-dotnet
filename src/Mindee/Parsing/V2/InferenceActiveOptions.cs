@@ -42,6 +42,12 @@ namespace Mindee.Parsing.V2
         public bool TextContext { get; set; }
 
         /// <summary>
+        /// Data schema options provided for the inference.
+        /// </summary>
+        [JsonPropertyName("data_schema")]
+        public DataSchemaActiveOptions DataSchema { get; set; }
+
+        /// <summary>
         /// Pretty-prints the file section exactly as expected by Inference.ToString().
         /// </summary>
         public override string ToString()
@@ -51,6 +57,8 @@ namespace Mindee.Parsing.V2
             sb.Append($"\n:Polygon: {Polygon}");
             sb.Append($"\n:Confidence: {Confidence}");
             sb.Append($"\n:RAG: {Rag}");
+            sb.Append($"\n:Text Context: {TextContext}");
+            sb.Append($"\n\n{DataSchema}");
             return sb.ToString();
         }
     }

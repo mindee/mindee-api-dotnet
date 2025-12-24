@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Mindee.Http;
+using Mindee.Input;
 
 namespace Mindee
 {
@@ -14,6 +15,7 @@ namespace Mindee
         /// </summary>
         public AsyncPollingOptions PollingOptions { get; set; }
 
+
         /// <summary>
         /// Inference parameters to set when sending a file.
         /// </summary>
@@ -26,6 +28,7 @@ namespace Mindee
         /// <param name="confidence"><see cref="InferenceOptions.Confidence"/></param>
         /// <param name="textContext"><see cref="InferenceOptions.TextContext"/></param>
         /// <param name="pollingOptions"><see cref="PollingOptions"/></param>
+        /// <param name="dataSchema"><see cref="DataSchema"/></param>
         public InferenceParameters(
             string modelId,
             string alias = null,
@@ -35,7 +38,8 @@ namespace Mindee
             bool? polygon = null,
             bool? confidence = null,
             string textContext = null,
-            AsyncPollingOptions pollingOptions = null
+            AsyncPollingOptions pollingOptions = null,
+            object dataSchema = null
         ) : base(
             modelId: modelId,
             rag: rag,
@@ -44,7 +48,8 @@ namespace Mindee
             confidence: confidence,
             alias: alias,
             webhookIds: webhookIds,
-            textContext: textContext)
+            textContext: textContext,
+            dataSchema: dataSchema)
         {
             PollingOptions = pollingOptions;
         }
