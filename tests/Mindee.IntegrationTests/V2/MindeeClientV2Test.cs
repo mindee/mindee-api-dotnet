@@ -208,7 +208,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.StartsWith("422-", ex.Code);
         }
 
-        [Fact(Skip = "Temporarily disabled due to server-side errors")]
+        [Fact]
         public async Task NotFound_Job_MustThrowError()
         {
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
