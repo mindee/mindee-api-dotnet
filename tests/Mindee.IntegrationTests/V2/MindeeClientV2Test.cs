@@ -19,16 +19,17 @@ namespace Mindee.IntegrationTests.V2
             _findocModelId = Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id");
         }
 
-        private void AssertActiveOptions(
+        private static void AssertActiveOptions(
             InferenceActiveOptions activeOptions, bool rawText, bool polygon, bool confidence, bool rag,
-            bool textContext)
+            bool textContext, bool dataSchemaReplace)
         {
             Assert.NotNull(activeOptions);
-            Assert.Equal(activeOptions.Rag, rag);
-            Assert.Equal(activeOptions.Polygon, polygon);
-            Assert.Equal(activeOptions.Confidence, confidence);
-            Assert.Equal(activeOptions.RawText, rawText);
-            Assert.Equal(activeOptions.TextContext, textContext);
+            Assert.Equal(rag, activeOptions.Rag);
+            Assert.Equal(polygon, activeOptions.Polygon);
+            Assert.Equal(confidence, activeOptions.Confidence);
+            Assert.Equal(rawText, activeOptions.RawText);
+            Assert.Equal(textContext, activeOptions.TextContext);
+            Assert.Equal(dataSchemaReplace, activeOptions.DataSchema.Replace);
         }
 
         [Theory]
@@ -66,7 +67,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.Equal(2, file.PageCount);
 
             AssertActiveOptions(
-                response.Inference.ActiveOptions, rawText, polygon, confidence, false, false);
+                response.Inference.ActiveOptions, rawText, polygon, confidence, false, false, false);
 
             InferenceResult result = response.Inference.Result;
             Assert.NotNull(result);
@@ -128,7 +129,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.Equal(1, file.PageCount);
 
             AssertActiveOptions(
-                response.Inference.ActiveOptions, false, false, false, false, true);
+                response.Inference.ActiveOptions, false, false, false, false, true, false);
 
             Assert.NotNull(response.Inference.Result);
 
@@ -238,6 +239,47 @@ namespace Mindee.IntegrationTests.V2
 
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
+        }
+
+        [Fact]
+        public async Task DataSchemaOverride_OverridesTheDataSchemaSuccessfully()
+        {
+            var inputSource = new LocalInputSource(
+                Constants.RootDir + "file_types/pdf/blank_1.pdf");
+            string dataSchemaContents =
+                File.ReadAllText(Constants.V2RootDir + "inference/data_schema_replace_param.json");
+            var inferenceParams = new InferenceParameters(
+                modelId: _findocModelId,
+                dataSchema: dataSchemaContents);
+
+            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
+                inputSource, inferenceParams);
+            Assert.NotNull(response);
+            Assert.NotNull(response.Inference);
+
+            Assert.NotNull(response.Inference.Model);
+            Assert.Equal(_findocModelId, response.Inference.Model.Id);
+
+            InferenceFile file = response.Inference.File;
+            Assert.NotNull(file);
+            Assert.Equal("blank_1.pdf", file.Name);
+            Assert.Equal(1, file.PageCount);
+
+            AssertActiveOptions(
+                response.Inference.ActiveOptions,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true
+            );
+
+            Assert.NotNull(response.Inference.Result);
+
+            InferenceFields fields = response.Inference.Result.Fields;
+            Assert.NotNull(fields);
+            Assert.Equal("a test value", fields["test_replace"].ToString());
         }
     }
 }

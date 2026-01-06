@@ -31,6 +31,7 @@ namespace Mindee.Http
         /// <param name="alias"><see cref="InferenceOptions.Alias"/></param>
         /// <param name="webhookIds"><see cref="InferenceOptions.WebhookIds"/></param>
         /// <param name="textContext"><see cref="InferenceOptions.TextContext"/></param>
+        /// <param name="dataSchema"><see cref="InferenceOptions.DataSchema"/></param>
         public InferencePostParameters(
             string modelId,
             string alias,
@@ -41,7 +42,8 @@ namespace Mindee.Http
             bool? confidence = null,
             string textContext = null,
             LocalInputSource localSource = null,
-            UrlInputSource urlSource = null
+            UrlInputSource urlSource = null,
+            DataSchema dataSchema = null
             )
         : base(
             modelId: modelId,
@@ -51,7 +53,8 @@ namespace Mindee.Http
             confidence: confidence,
             alias: alias,
             webhookIds: webhookIds,
-            textContext: textContext)
+            textContext: textContext,
+            dataSchema: dataSchema)
         {
             if (localSource == null && urlSource == null)
             {
