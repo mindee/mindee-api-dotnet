@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <VersionPrefix>3.36.1</VersionPrefix>
+    <VersionPrefix>3.37.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>Mindee</Authors>
     <PackageProjectUrl>https://github.com/mindee/mindee-api-dotnet</PackageProjectUrl>
