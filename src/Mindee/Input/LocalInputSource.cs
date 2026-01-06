@@ -95,6 +95,17 @@ namespace Mindee.Input
             SetFileName(fileinfo.Name);
         }
 
+        /// <summary>
+        /// Load a file from a given base64 string.
+        /// </summary>
+        /// <param name="base64Data"></param>
+        /// <param name="filename"></param>
+        public LocalInputSource(string base64Data, string filename)
+        {
+            FileBytes = Convert.FromBase64String(base64Data);
+            SetFileName(filename);
+        }
+
         /// <param name="filename"></param>
         /// <exception cref="MindeeInputException"></exception>
         private void SetFileName(string filename)
