@@ -60,6 +60,14 @@ namespace Mindee.UnitTests.Input
             Assert.IsType<LocalInputSource>(new LocalInputSource(memoryStream, "receipt.jpg"));
         }
 
+
+        [Fact]
+        public void Can_Load_Using_Base64()
+        {
+            var fileText = File.ReadAllText(Constants.RootDir + "file_types/receipt.txt");
+            Assert.IsType<LocalInputSource>(new LocalInputSource(fileText, "receipt.jpg"));
+        }
+
         [Fact]
         public void Can_Load_Using_FileBytes()
         {
