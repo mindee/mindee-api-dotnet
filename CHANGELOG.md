@@ -1,5 +1,11 @@
 # Mindee .NET Client Library Changelog
 
+## v3.37.0 - 2026-01-06
+### Changes
+* :sparkles: add loading local input source from base64
+* :sparkles: add support for data schema parameter
+
+
 ## v3.36.1 - 2025-12-15
 ### Changes
 * :white_check_mark: add initial testing on .NET 10
