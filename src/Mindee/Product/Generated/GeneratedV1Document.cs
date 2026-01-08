@@ -8,27 +8,28 @@ using Mindee.Parsing.Generated;
 namespace Mindee.Product.Generated
 {
     /// <summary>
-    /// Document data for Generated Documents, API version 1.
+    ///     Document data for Generated Documents, API version 1.
     /// </summary>
     [Serializable]
     [JsonConverter(typeof(GeneratedV1DocumentJsonConverter))]
     public class GeneratedV1Document : IPrediction
     {
         /// <summary>
-        /// Dictionary containing the fields of the document.
+        ///     Dictionary containing the fields of the document.
         /// </summary>
         public Dictionary<string, GeneratedFeature> Fields { get; set; }
 
         /// <summary>
-        /// A prettier representation of the current model values.
+        ///     A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder();
-            foreach (KeyValuePair<string, GeneratedFeature> feature in Fields)
+            var result = new StringBuilder();
+            foreach (var feature in Fields)
             {
                 result.Append($":{feature.Key}: {feature.Value}\n");
             }
+
             return result.ToString();
         }
     }

@@ -13,21 +13,21 @@ using SkiaSharp;
 namespace Mindee.Extraction
 {
     /// <summary>
-    /// Extract sub-images from an image.
+    ///     Extract sub-images from an image.
     /// </summary>
     public class ImageExtractor
     {
-        private readonly List<SKBitmap> _pageImages;
         private readonly string _filename;
+        private readonly List<SKBitmap> _pageImages;
         private readonly string _saveFormat;
 
         /// <summary>
-        /// LocalInputSource object used by the ImageExtractor.
+        ///     LocalInputSource object used by the ImageExtractor.
         /// </summary>
         public readonly LocalInputSource LocalInput;
 
         /// <summary>
-        /// Init from a Local Input Source.
+        ///     Init from a Local Input Source.
         /// </summary>
         /// <param name="localInput">Locally loaded resource.</param>
         /// <param name="saveFormat">Format to save the resulting images as.</param>
@@ -55,7 +55,7 @@ namespace Mindee.Extraction
 
             if (localInput.IsPdf())
             {
-                List<SKBitmap> pdfPageImages = PdfToImages(localInput.FileBytes);
+                var pdfPageImages = PdfToImages(localInput.FileBytes);
                 _pageImages.AddRange(pdfPageImages);
             }
             else
@@ -65,7 +65,7 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        /// Init from a path.
+        ///     Init from a path.
         /// </summary>
         /// <param name="filePath">Path to the file.</param>
         public ImageExtractor(string filePath) : this(new LocalInputSource(filePath))
@@ -73,17 +73,17 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        /// Renders the input Pdf's pages as individual images.
+        ///     Renders the input Pdf's pages as individual images.
         /// </summary>
         /// <param name="fileBytes">Input pdf.</param>
         /// <returns>A list of pages, as SKBitmap.</returns>
         public static List<SKBitmap> PdfToImages(byte[] fileBytes)
         {
-            List<SKBitmap> images = new List<SKBitmap>();
+            var images = new List<SKBitmap>();
             lock (DocLib.Instance)
             {
                 using var docReader = DocLib.Instance.GetDocReader(fileBytes, new PageDimensions(1));
-                for (int i = 0; i < docReader.GetPageCount(); i++)
+                for (var i = 0; i < docReader.GetPageCount(); i++)
                 {
                     using var pageReader = docReader.GetPageReader(i);
                     var width = pageReader.GetPageWidth();
@@ -98,7 +98,7 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        /// Splits the filename into name and extension.
+        ///     Splits the filename into name and extension.
         /// </summary>
         private static string[] SplitNameStrict(string filename)
         {
@@ -110,7 +110,7 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        /// Gets the number of pages in the file.
+        ///     Gets the number of pages in the file.
         /// </summary>
         /// <returns>The number of pages in the file.</returns>
         public int GetPageCount()
@@ -119,7 +119,7 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        /// Extract multiple images on a given page from a list of fields having position data.
+        ///     Extract multiple images on a given page from a list of fields having position data.
         /// </summary>
         /// <param name="fields">List of Fields to extract.</param>
         /// <param name="pageIndex">The page index to extract, begins at 0.</param>
@@ -130,7 +130,7 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        /// Extract multiple images on a given page from a list of fields having position data.
+        ///     Extract multiple images on a given page from a list of fields having position data.
         /// </summary>
         /// <param name="fields">List of Fields to extract.</param>
         /// <param name="pageIndex">The page index to extract, begins at 0.</param>
@@ -142,7 +142,7 @@ namespace Mindee.Extraction
             string filename;
             if (GetPageCount() > 1)
             {
-                string[] splitName = SplitNameStrict(outputName);
+                var splitName = SplitNameStrict(outputName);
                 filename = $"{splitName[0]}.{_saveFormat}";
             }
             else
@@ -154,7 +154,7 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        /// Extract multiple images on a given page from a list of fields having position data.
+        ///     Extract multiple images on a given page from a list of fields having position data.
         /// </summary>
         /// <param name="fields">List of Fields to extract.</param>
         /// <param name="pageIndex">The page index to extract, begins at 0.</param>
@@ -166,7 +166,7 @@ namespace Mindee.Extraction
             string filename;
             if (GetPageCount() > 1)
             {
-                string[] splitName = SplitNameStrict(outputName);
+                var splitName = SplitNameStrict(outputName);
                 filename = $"{splitName[0]}.{_saveFormat}";
             }
             else
@@ -178,7 +178,7 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        /// Extract multiple images on a given page from a list of fields having position data.
+        ///     Extract multiple images on a given page from a list of fields having position data.
         /// </summary>
         /// <param name="fields">List of Fields to extract.</param>
         /// <param name="pageIndex">The page index to extract, begins at 0.</param>
@@ -187,13 +187,13 @@ namespace Mindee.Extraction
         private List<ExtractedImage> ExtractFromPage<TBaseField>(IList<TBaseField> fields, int pageIndex,
             string outputName) where TBaseField : BaseField
         {
-            string[] splitName = SplitNameStrict(outputName);
-            string filename = $"{splitName[0]}_page-{(pageIndex + 1):D3}.{_saveFormat}";
+            var splitName = SplitNameStrict(outputName);
+            var filename = $"{splitName[0]}_page-{pageIndex + 1:D3}.{_saveFormat}";
 
-            List<ExtractedImage> extractedImages = new List<ExtractedImage>();
-            for (int i = 0; i < fields.Count; i++)
+            var extractedImages = new List<ExtractedImage>();
+            for (var i = 0; i < fields.Count; i++)
             {
-                ExtractedImage extractedImage = ExtractImage(fields[i], pageIndex, i + 1, filename);
+                var extractedImage = ExtractImage(fields[i], pageIndex, i + 1, filename);
                 if (extractedImage != null)
                 {
                     extractedImages.Add(extractedImage);
@@ -205,13 +205,13 @@ namespace Mindee.Extraction
 
         private List<ExtractedImage> ExtractFromPage(IList<PositionField> fields, int pageIndex, string outputName)
         {
-            string[] splitName = SplitNameStrict(outputName);
-            string filename = $"{splitName[0]}_page-{(pageIndex + 1):D3}.{_saveFormat}";
+            var splitName = SplitNameStrict(outputName);
+            var filename = $"{splitName[0]}_page-{pageIndex + 1:D3}.{_saveFormat}";
 
-            List<ExtractedImage> extractedImages = new List<ExtractedImage>();
-            for (int i = 0; i < fields.Count; i++)
+            var extractedImages = new List<ExtractedImage>();
+            for (var i = 0; i < fields.Count; i++)
             {
-                ExtractedImage extractedImage = ExtractImage(fields[i], pageIndex, i + 1, filename);
+                var extractedImage = ExtractImage(fields[i], pageIndex, i + 1, filename);
                 if (extractedImage != null)
                 {
                     extractedImages.Add(extractedImage);
@@ -222,7 +222,7 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        /// Extracts a single image from a Position field.
+        ///     Extracts a single image from a Position field.
         /// </summary>
         /// <param name="field">The field to extract.</param>
         /// <param name="pageIndex">The page index to extract, begins at 0.</param>
@@ -231,7 +231,7 @@ namespace Mindee.Extraction
         /// <returns>The extracted image, or null if the field does not have valid position data.</returns>
         public ExtractedImage ExtractImage(PositionField field, int pageIndex, int index, string filename)
         {
-            string[] splitName = SplitNameStrict(filename);
+            var splitName = SplitNameStrict(filename);
             Polygon boundingBox;
 
             if (field.Polygon is { Count: > 0 })
@@ -255,13 +255,13 @@ namespace Mindee.Extraction
                 throw new MindeeException("Provided field {field} has no valid position data.");
             }
 
-            Bbox bbox = Utils.BboxFromPolygon(boundingBox);
-            string fieldFilename = $"{splitName[0]}_{index:D3}.{_saveFormat}";
+            var bbox = Utils.BboxFromPolygon(boundingBox);
+            var fieldFilename = $"{splitName[0]}_{index:D3}.{_saveFormat}";
             return new ExtractedImage(ExtractImage(bbox, pageIndex), fieldFilename, _saveFormat);
         }
 
         /// <summary>
-        /// Extracts a single image from a field having position data.
+        ///     Extracts a single image from a field having position data.
         /// </summary>
         /// <param name="field">The field to extract.</param>
         /// <param name="pageIndex">The page index to extract, begins at 0.</param>
@@ -270,7 +270,7 @@ namespace Mindee.Extraction
         /// <returns>The extracted image, or null if the field does not have valid position data.</returns>
         public ExtractedImage ExtractImage(BaseField field, int pageIndex, int index, string filename)
         {
-            string[] splitName = SplitNameStrict(filename);
+            var splitName = SplitNameStrict(filename);
             Polygon boundingBox;
 
             if (field.Polygon.Count > 0)
@@ -282,26 +282,26 @@ namespace Mindee.Extraction
                 throw new MindeeException("Provided field has no valid position data.");
             }
 
-            Bbox bbox = Utils.BboxFromPolygon(boundingBox);
-            string fieldFilename = $"{splitName[0]}_{index:D3}.{_saveFormat}";
+            var bbox = Utils.BboxFromPolygon(boundingBox);
+            var fieldFilename = $"{splitName[0]}_{index:D3}.{_saveFormat}";
             return new ExtractedImage(ExtractImage(bbox, pageIndex), fieldFilename, _saveFormat);
         }
 
         private SKBitmap ExtractImage(Bbox bbox, int pageIndex)
         {
-            SKBitmap image = _pageImages[pageIndex];
-            int width = image.Width;
-            int height = image.Height;
-            int minX = (int)Math.Round(bbox.MinX * width);
-            int maxX = (int)Math.Round(bbox.MaxX * width);
-            int minY = (int)Math.Round(bbox.MinY * height);
-            int maxY = (int)Math.Round(bbox.MaxY * height);
+            var image = _pageImages[pageIndex];
+            var width = image.Width;
+            var height = image.Height;
+            var minX = (int)Math.Round(bbox.MinX * width);
+            var maxX = (int)Math.Round(bbox.MaxX * width);
+            var minY = (int)Math.Round(bbox.MinY * height);
+            var maxY = (int)Math.Round(bbox.MaxY * height);
 
-            SKBitmap croppedBitmap = new SKBitmap(maxX - minX, maxY - minY);
-            using (SKCanvas canvas = new SKCanvas(croppedBitmap))
+            var croppedBitmap = new SKBitmap(maxX - minX, maxY - minY);
+            using (var canvas = new SKCanvas(croppedBitmap))
             {
-                SKRect destRect = new SKRect(0, 0, croppedBitmap.Width, croppedBitmap.Height);
-                SKRect sourceRect = new SKRect(minX, minY, maxX, maxY);
+                var destRect = new SKRect(0, 0, croppedBitmap.Width, croppedBitmap.Height);
+                var sourceRect = new SKRect(minX, minY, maxX, maxY);
                 canvas.DrawBitmap(image, sourceRect, destRect);
             }
 

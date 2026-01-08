@@ -1,4 +1,5 @@
 using Mindee.Parsing.Common;
+using Mindee.Parsing.Standard;
 using Mindee.Product.Invoice;
 
 namespace Mindee.UnitTests.V1.Product.Invoice
@@ -35,10 +36,10 @@ namespace Mindee.UnitTests.V1.Product.Invoice
             Assert.Null(docPrediction.CustomerId.Value);
             Assert.Null(docPrediction.ShippingAddress.Value);
             Assert.Null(docPrediction.BillingAddress.Value);
-            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.DocumentType);
-            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.DocumentTypeExtended);
-            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.Subcategory);
-            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.Category);
+            Assert.IsType<ClassificationField>(docPrediction.DocumentType);
+            Assert.IsType<ClassificationField>(docPrediction.DocumentTypeExtended);
+            Assert.IsType<ClassificationField>(docPrediction.Subcategory);
+            Assert.IsType<ClassificationField>(docPrediction.Category);
             Assert.Empty(docPrediction.LineItems);
         }
 
@@ -52,7 +53,7 @@ namespace Mindee.UnitTests.V1.Product.Invoice
 
         private static async Task<PredictResponse<InvoiceV4>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/invoices/response_v4/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/invoices/response_v4/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<InvoiceV4>(
                 UnitTestBase.GetFakePredictParameter());

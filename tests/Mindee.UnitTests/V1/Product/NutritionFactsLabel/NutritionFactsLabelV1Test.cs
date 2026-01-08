@@ -61,7 +61,7 @@ namespace Mindee.UnitTests.V1.Product.NutritionFactsLabel
 
         private static async Task<PredictResponse<NutritionFactsLabelV1>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/nutrition_facts/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/nutrition_facts/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<NutritionFactsLabelV1>(
                 UnitTestBase.GetFakePredictParameter());

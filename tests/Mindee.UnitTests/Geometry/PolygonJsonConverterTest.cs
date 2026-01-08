@@ -23,14 +23,14 @@ namespace Mindee.UnitTests.Geometry
 
         public class Fake
         {
-            [JsonPropertyName("polygon")]
-            [JsonConverter(typeof(PolygonJsonConverter))]
-            public Polygon Polygon { get; }
-
             public Fake(Polygon polygon)
             {
                 Polygon = polygon;
             }
+
+            [JsonPropertyName("polygon")]
+            [JsonConverter(typeof(PolygonJsonConverter))]
+            public Polygon Polygon { get; }
         }
     }
 }

@@ -8,55 +8,55 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Us.BankCheck
 {
     /// <summary>
-    /// Bank Check API version 1.1 document data.
+    ///     Bank Check API version 1.1 document data.
     /// </summary>
     public class BankCheckV1Document : IPrediction
     {
         /// <summary>
-        /// The check payer's account number.
+        ///     The check payer's account number.
         /// </summary>
         [JsonPropertyName("account_number")]
         public StringField AccountNumber { get; set; }
 
         /// <summary>
-        /// The amount of the check.
+        ///     The amount of the check.
         /// </summary>
         [JsonPropertyName("amount")]
         public AmountField Amount { get; set; }
 
         /// <summary>
-        /// The issuer's check number.
+        ///     The issuer's check number.
         /// </summary>
         [JsonPropertyName("check_number")]
         public StringField CheckNumber { get; set; }
 
         /// <summary>
-        /// The date the check was issued.
+        ///     The date the check was issued.
         /// </summary>
         [JsonPropertyName("date")]
         public DateField Date { get; set; }
 
         /// <summary>
-        /// List of the check's payees (recipients).
+        ///     List of the check's payees (recipients).
         /// </summary>
         [JsonPropertyName("payees")]
         public IList<StringField> Payees { get; set; } = new List<StringField>();
 
         /// <summary>
-        /// The check issuer's routing number.
+        ///     The check issuer's routing number.
         /// </summary>
         [JsonPropertyName("routing_number")]
         public StringField RoutingNumber { get; set; }
 
         /// <summary>
-        /// A prettier representation of the current model values.
+        ///     A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
         {
-            string payees = string.Join(
+            var payees = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 8)),
                 Payees.Select(item => item));
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             result.Append($":Check Issue Date: {Date}\n");
             result.Append($":Amount: {Amount}\n");
             result.Append($":Payees: {payees}\n");

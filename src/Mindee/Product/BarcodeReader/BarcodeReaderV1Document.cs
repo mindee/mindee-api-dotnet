@@ -8,34 +8,34 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.BarcodeReader
 {
     /// <summary>
-    /// Barcode Reader API version 1.0 document data.
+    ///     Barcode Reader API version 1.0 document data.
     /// </summary>
     public class BarcodeReaderV1Document : IPrediction
     {
         /// <summary>
-        /// List of decoded 1D barcodes.
+        ///     List of decoded 1D barcodes.
         /// </summary>
         [JsonPropertyName("codes_1d")]
         public IList<StringField> Codes1D { get; set; } = new List<StringField>();
 
         /// <summary>
-        /// List of decoded 2D barcodes.
+        ///     List of decoded 2D barcodes.
         /// </summary>
         [JsonPropertyName("codes_2d")]
         public IList<StringField> Codes2D { get; set; } = new List<StringField>();
 
         /// <summary>
-        /// A prettier representation of the current model values.
+        ///     A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
         {
-            string codes1D = string.Join(
+            var codes1D = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 13)),
                 Codes1D.Select(item => item));
-            string codes2D = string.Join(
+            var codes2D = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 13)),
                 Codes2D.Select(item => item));
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             result.Append($":Barcodes 1D: {codes1D}\n");
             result.Append($":Barcodes 2D: {codes2D}\n");
             return SummaryHelper.Clean(result.ToString());

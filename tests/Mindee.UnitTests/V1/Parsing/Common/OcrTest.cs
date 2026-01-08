@@ -23,7 +23,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
             var ocr = await LoadOcr();
             Assert.NotNull(ocr.MvisionV1);
             Assert.Single(ocr.MvisionV1.Pages);
-            Assert.Equal(expected: 95, actual: ocr.MvisionV1.Pages[0].AllWords.Count);
+            Assert.Equal(95, ocr.MvisionV1.Pages[0].AllWords.Count);
         }
 
         [Fact]

@@ -8,15 +8,12 @@ namespace Mindee.UnitTests.Geometry
         [Fact]
         public void CreateFromOnePolygon()
         {
-            var polygon = new Polygon(new List<Point>()
+            var polygon = new Polygon(new List<Point>
             {
-                new Point(0.081, 0.442),
-                new Point(0.15, 0.442),
-                new Point(0.15, 0.451),
-                new Point(0.081, 0.451)
+                new(0.081, 0.442), new(0.15, 0.442), new(0.15, 0.451), new(0.081, 0.451)
             });
 
-            Bbox bbox = Utils.BboxFromPolygon(polygon);
+            var bbox = Utils.BboxFromPolygon(polygon);
 
             Assert.Equal(0.442, bbox.MinY);
             Assert.Equal(0.081, bbox.MinX);

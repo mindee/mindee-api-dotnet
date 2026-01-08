@@ -34,7 +34,7 @@ namespace Mindee.UnitTests.V1.Product.Passport
 
         private static async Task<PredictResponse<PassportV1>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/passport/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/passport/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<PassportV1>(
                 UnitTestBase.GetFakePredictParameter());

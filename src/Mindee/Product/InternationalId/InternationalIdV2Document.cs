@@ -8,124 +8,124 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.InternationalId
 {
     /// <summary>
-    /// International ID API version 2.2 document data.
+    ///     International ID API version 2.2 document data.
     /// </summary>
     public class InternationalIdV2Document : IPrediction
     {
         /// <summary>
-        /// The physical address of the document holder.
+        ///     The physical address of the document holder.
         /// </summary>
         [JsonPropertyName("address")]
         public StringField Address { get; set; }
 
         /// <summary>
-        /// The date of birth of the document holder.
+        ///     The date of birth of the document holder.
         /// </summary>
         [JsonPropertyName("birth_date")]
         public DateField BirthDate { get; set; }
 
         /// <summary>
-        /// The place of birth of the document holder.
+        ///     The place of birth of the document holder.
         /// </summary>
         [JsonPropertyName("birth_place")]
         public StringField BirthPlace { get; set; }
 
         /// <summary>
-        /// The country where the document was issued.
+        ///     The country where the document was issued.
         /// </summary>
         [JsonPropertyName("country_of_issue")]
         public StringField CountryOfIssue { get; set; }
 
         /// <summary>
-        /// The unique identifier assigned to the document.
+        ///     The unique identifier assigned to the document.
         /// </summary>
         [JsonPropertyName("document_number")]
         public StringField DocumentNumber { get; set; }
 
         /// <summary>
-        /// The type of personal identification document.
+        ///     The type of personal identification document.
         /// </summary>
         [JsonPropertyName("document_type")]
         public ClassificationField DocumentType { get; set; }
 
         /// <summary>
-        /// The date when the document becomes invalid.
+        ///     The date when the document becomes invalid.
         /// </summary>
         [JsonPropertyName("expiry_date")]
         public DateField ExpiryDate { get; set; }
 
         /// <summary>
-        /// The list of the document holder's given names.
+        ///     The list of the document holder's given names.
         /// </summary>
         [JsonPropertyName("given_names")]
         public IList<StringField> GivenNames { get; set; } = new List<StringField>();
 
         /// <summary>
-        /// The date when the document was issued.
+        ///     The date when the document was issued.
         /// </summary>
         [JsonPropertyName("issue_date")]
         public DateField IssueDate { get; set; }
 
         /// <summary>
-        /// The Machine Readable Zone, first line.
+        ///     The Machine Readable Zone, first line.
         /// </summary>
         [JsonPropertyName("mrz_line1")]
         public StringField MrzLine1 { get; set; }
 
         /// <summary>
-        /// The Machine Readable Zone, second line.
+        ///     The Machine Readable Zone, second line.
         /// </summary>
         [JsonPropertyName("mrz_line2")]
         public StringField MrzLine2 { get; set; }
 
         /// <summary>
-        /// The Machine Readable Zone, third line.
+        ///     The Machine Readable Zone, third line.
         /// </summary>
         [JsonPropertyName("mrz_line3")]
         public StringField MrzLine3 { get; set; }
 
         /// <summary>
-        /// The country of citizenship of the document holder.
+        ///     The country of citizenship of the document holder.
         /// </summary>
         [JsonPropertyName("nationality")]
         public StringField Nationality { get; set; }
 
         /// <summary>
-        /// The unique identifier assigned to the document holder.
+        ///     The unique identifier assigned to the document holder.
         /// </summary>
         [JsonPropertyName("personal_number")]
         public StringField PersonalNumber { get; set; }
 
         /// <summary>
-        /// The biological sex of the document holder.
+        ///     The biological sex of the document holder.
         /// </summary>
         [JsonPropertyName("sex")]
         public StringField Sex { get; set; }
 
         /// <summary>
-        /// The state or territory where the document was issued.
+        ///     The state or territory where the document was issued.
         /// </summary>
         [JsonPropertyName("state_of_issue")]
         public StringField StateOfIssue { get; set; }
 
         /// <summary>
-        /// The list of the document holder's family names.
+        ///     The list of the document holder's family names.
         /// </summary>
         [JsonPropertyName("surnames")]
         public IList<StringField> Surnames { get; set; } = new List<StringField>();
 
         /// <summary>
-        /// A prettier representation of the current model values.
+        ///     A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
         {
-            string surnames = string.Join(
+            var surnames = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 10)),
                 Surnames.Select(item => item));
-            string givenNames = string.Join(
+            var givenNames = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 13)),
                 GivenNames.Select(item => item));
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             result.Append($":Document Type: {DocumentType}\n");
             result.Append($":Document Number: {DocumentNumber}\n");
             result.Append($":Surnames: {surnames}\n");

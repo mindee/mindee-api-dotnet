@@ -1,5 +1,3 @@
-using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -7,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.Common
 {
     /// <summary>
-    /// Define the inference model of values.
+    ///     Define the inference model of values.
     /// </summary>
     /// <typeparam name="TPagePrediction">Page prediction (could be the same that TDocumentPrediction).</typeparam>
     /// <typeparam name="TDocumentPrediction">Document prediction (could be the same that TPagePrediction).</typeparam>
@@ -15,58 +13,58 @@ namespace Mindee.Parsing.Common
         where TPagePrediction : IPrediction, new()
         where TDocumentPrediction : IPrediction, new()
     {
+        private InferenceExtras _extras;
+
         /// <summary>
-        /// Was a rotation applied to parse the document ?
+        ///     Was a rotation applied to parse the document ?
         /// </summary>
         [JsonPropertyName("is_rotation_applied")]
         public bool? IsRotationApplied { get; set; }
 
         /// <summary>
-        /// Type of product.
+        ///     Type of product.
         /// </summary>
         [JsonPropertyName("product")]
         public Product Product { get; set; }
 
         /// <summary>
-        /// The pages and the associated values which was detected on the document.
+        ///     The pages and the associated values which was detected on the document.
         /// </summary>
         [JsonPropertyName("pages")]
         public virtual Pages<TPagePrediction> Pages { get; set; }
 
-        private InferenceExtras _extras;
-
         /// <summary>
-        /// Optional information.
+        ///     Optional information.
         /// </summary>
         [JsonPropertyName("extras")]
         public InferenceExtras Extras
         {
             get
             {
-                if (this.Pages.Count > 0 && (this._extras?.FullTextOcr == null))
+                if (Pages.Count > 0 && _extras?.FullTextOcr == null)
                 {
-                    this._extras ??= new InferenceExtras();
-                    if (this.Pages.First().Extras is { FullTextOcr: not null })
+                    _extras ??= new InferenceExtras();
+                    if (Pages.First().Extras is { FullTextOcr: not null })
                     {
-                        this._extras.FullTextOcr = string.Join("\n",
-                            this.Pages.Select(page => page.Extras.FullTextOcr.Content));
+                        _extras.FullTextOcr = string.Join("\n",
+                            Pages.Select(page => page.Extras.FullTextOcr.Content));
                     }
                 }
 
-                return this._extras;
+                return _extras;
             }
             set => _extras = value;
         }
 
 
         /// <summary>
-        /// The prediction model values.
+        ///     The prediction model values.
         /// </summary>
         [JsonPropertyName("prediction")]
         public TDocumentPrediction Prediction { get; set; }
 
         /// <summary>
-        /// A prettier representation.
+        ///     A prettier representation.
         /// </summary>
         public override string ToString()
         {

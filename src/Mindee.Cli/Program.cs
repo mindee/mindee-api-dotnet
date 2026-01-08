@@ -133,7 +133,7 @@ using PredictUsMailCommand = Mindee.Cli.PredictCommand<
 >;
 
 var runner = BuildCommandLine()
-    .UseHost(_ => Host.CreateDefaultBuilder(args), (builder) =>
+    .UseHost(_ => Host.CreateDefaultBuilder(args), builder =>
     {
         builder
             .ConfigureServices((hostContext, services) =>
@@ -185,85 +185,85 @@ static CommandLineBuilder BuildCommandLine()
     var root = new RootCommand();
     root.AddCommand(new PredictCustomCommand());
     root.AddCommand(new PredictBarcodeReaderCommand(new CommandOptions(
-        name: "barcode-reader", description: "Barcode Reader",
-        allWords: false, fullText: false, sync: true, async: false)));
+        "barcode-reader", "Barcode Reader",
+        false, false, true, false)));
     root.AddCommand(new PredictBillOfLadingCommand(new CommandOptions(
-        name: "bill-of-lading", description: "Bill of Lading",
-        allWords: false, fullText: false, sync: false, async: true)));
+        "bill-of-lading", "Bill of Lading",
+        false, false, false, true)));
     root.AddCommand(new PredictBusinessCardCommand(new CommandOptions(
-        name: "business-card", description: "Business Card",
-        allWords: false, fullText: false, sync: false, async: true)));
+        "business-card", "Business Card",
+        false, false, false, true)));
     root.AddCommand(new PredictCropperCommand(new CommandOptions(
-        name: "cropper", description: "Cropper",
-        allWords: false, fullText: false, sync: true, async: false)));
+        "cropper", "Cropper",
+        false, false, true, false)));
     root.AddCommand(new PredictDeliveryNoteCommand(new CommandOptions(
-        name: "delivery-note", description: "Delivery note",
-        allWords: false, fullText: false, sync: false, async: true)));
+        "delivery-note", "Delivery note",
+        false, false, false, true)));
     root.AddCommand(new PredictDriverLicenseCommand(new CommandOptions(
-        name: "driver-license", description: "Driver License",
-        allWords: false, fullText: false, sync: false, async: true)));
+        "driver-license", "Driver License",
+        false, false, false, true)));
     root.AddCommand(new PredictFinancialDocumentCommand(new CommandOptions(
-        name: "financial-document", description: "Financial Document",
-        allWords: true, fullText: false, sync: true, async: true)));
+        "financial-document", "Financial Document",
+        true, false, true, true)));
     root.AddCommand(new PredictBankAccountDetailsCommand(new CommandOptions(
-        name: "fr-bank-account-details", description: "FR Bank Account Details",
-        allWords: false, fullText: false, sync: true, async: false)));
+        "fr-bank-account-details", "FR Bank Account Details",
+        false, false, true, false)));
     root.AddCommand(new PredictCarteGriseCommand(new CommandOptions(
-        name: "fr-carte-grise", description: "FR Carte Grise",
-        allWords: false, fullText: false, sync: true, async: false)));
+        "fr-carte-grise", "FR Carte Grise",
+        false, false, true, false)));
     root.AddCommand(new PredictEnergyBillCommand(new CommandOptions(
-        name: "fr-energy-bill", description: "FR Energy Bill",
-        allWords: false, fullText: false, sync: false, async: true)));
+        "fr-energy-bill", "FR Energy Bill",
+        false, false, false, true)));
     root.AddCommand(new PredictHealthCardCommand(new CommandOptions(
-        name: "fr-health-card", description: "FR Health Card",
-        allWords: false, fullText: false, sync: false, async: true)));
+        "fr-health-card", "FR Health Card",
+        false, false, false, true)));
     root.AddCommand(new PredictIdCardCommand(new CommandOptions(
-        name: "fr-carte-nationale-d-identite", description: "FR Carte Nationale d'Identité",
-        allWords: false, fullText: false, sync: true, async: false)));
+        "fr-carte-nationale-d-identite", "FR Carte Nationale d'Identité",
+        false, false, true, false)));
     root.AddCommand(new PredictPayslipCommand(new CommandOptions(
-        name: "fr-payslip", description: "FR Payslip",
-        allWords: false, fullText: false, sync: false, async: true)));
+        "fr-payslip", "FR Payslip",
+        false, false, false, true)));
     root.AddCommand(new PredictIndianPassportCommand(new CommandOptions(
-        name: "ind-passport-india", description: "IND Passport - India",
-        allWords: false, fullText: false, sync: false, async: true)));
+        "ind-passport-india", "IND Passport - India",
+        false, false, false, true)));
     root.AddCommand(new PredictInternationalIdCommand(new CommandOptions(
-        name: "international-id", description: "International ID",
-        allWords: false, fullText: true, sync: false, async: true)));
+        "international-id", "International ID",
+        false, true, false, true)));
     root.AddCommand(new PredictInvoiceCommand(new CommandOptions(
-        name: "invoice", description: "Invoice",
-        allWords: true, fullText: false, sync: true, async: true)));
+        "invoice", "Invoice",
+        true, false, true, true)));
     root.AddCommand(new PredictInvoiceSplitterCommand(new CommandOptions(
-        name: "invoice-splitter", description: "Invoice Splitter",
-        allWords: false, fullText: false, sync: false, async: true)));
+        "invoice-splitter", "Invoice Splitter",
+        false, false, false, true)));
     root.AddCommand(new PredictMultiReceiptsDetectorCommand(new CommandOptions(
-        name: "multi-receipts-detector", description: "Multi Receipts Detector",
-        allWords: false, fullText: false, sync: true, async: false)));
+        "multi-receipts-detector", "Multi Receipts Detector",
+        false, false, true, false)));
     root.AddCommand(new PredictNutritionFactsLabelCommand(new CommandOptions(
-        name: "nutrition-facts-label", description: "Nutrition Facts Label",
-        allWords: false, fullText: false, sync: false, async: true)));
+        "nutrition-facts-label", "Nutrition Facts Label",
+        false, false, false, true)));
     root.AddCommand(new PredictPassportCommand(new CommandOptions(
-        name: "passport", description: "Passport",
-        allWords: false, fullText: false, sync: true, async: false)));
+        "passport", "Passport",
+        false, false, true, false)));
     root.AddCommand(new PredictReceiptCommand(new CommandOptions(
-        name: "receipt", description: "Receipt",
-        allWords: true, fullText: false, sync: true, async: true)));
+        "receipt", "Receipt",
+        true, false, true, true)));
     root.AddCommand(new PredictResumeCommand(new CommandOptions(
-        name: "resume", description: "Resume",
-        allWords: false, fullText: false, sync: false, async: true)));
+        "resume", "Resume",
+        false, false, false, true)));
     root.AddCommand(new PredictBankCheckCommand(new CommandOptions(
-        name: "us-bank-check", description: "US Bank Check",
-        allWords: false, fullText: false, sync: true, async: false)));
+        "us-bank-check", "US Bank Check",
+        false, false, true, false)));
     root.AddCommand(new PredictHealthcareCardCommand(new CommandOptions(
-        name: "us-healthcare-card", description: "US Healthcare Card",
-        allWords: false, fullText: false, sync: false, async: true)));
+        "us-healthcare-card", "US Healthcare Card",
+        false, false, false, true)));
     root.AddCommand(new PredictUsMailCommand(new CommandOptions(
-        name: "us-us-mail", description: "US US Mail",
-        allWords: false, fullText: true, sync: false, async: true)));
+        "us-us-mail", "US US Mail",
+        false, true, false, true)));
 
-    root.AddGlobalOption(new Option<bool>(name: "--silent", "Disables diagnostics output"));
-    root.SetHandler(handle: () =>
+    root.AddGlobalOption(new Option<bool>("--silent", "Disables diagnostics output"));
+    root.SetHandler(() =>
     {
-        root.InvokeAsync(commandLine: "--help");
+        root.InvokeAsync("--help");
     });
 
     return new CommandLineBuilder(root);

@@ -13,13 +13,13 @@ namespace Mindee.UnitTests.V1.Workflow
     public abstract class WorklowTest
     {
         private readonly MindeeClient client;
-        private readonly Mock<MindeeClient> mockedClient;
         private readonly Mock<IHttpApi> mindeeApi;
+        private readonly Mock<MindeeClient> mockedClient;
 
         protected WorklowTest()
         {
             mindeeApi = new Mock<IHttpApi>();
-            Mock<IPdfOperation> pdfOperation = new Mock<IPdfOperation>();
+            var pdfOperation = new Mock<IPdfOperation>();
             client = new MindeeClient(pdfOperation.Object, mindeeApi.Object);
             mockedClient = new Mock<MindeeClient>();
         }
@@ -29,7 +29,8 @@ namespace Mindee.UnitTests.V1.Workflow
         {
             // Arrange
             var file = new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf");
-            var workflowResponse = new WorkflowResponse<GeneratedV1> { Execution = new Execution<GeneratedV1>(), ApiRequest = null };
+            var workflowResponse =
+                new WorkflowResponse<GeneratedV1> { Execution = new Execution<GeneratedV1>(), ApiRequest = null };
 
             mindeeApi.Setup(api => api.PostWorkflowExecution<GeneratedV1>(
                     It.IsAny<string>(),
@@ -62,8 +63,8 @@ namespace Mindee.UnitTests.V1.Workflow
                     It.IsAny<PageOptions>()))
                 .ReturnsAsync(mockResponse);
 
-            string workflowId = "07ebf237-ff27-4eee-b6a2-425df4a5cca6";
-            string filePath = "Resources/products/financial_document/default_sample.jpg";
+            var workflowId = "07ebf237-ff27-4eee-b6a2-425df4a5cca6";
+            var filePath = "Resources/products/financial_document/default_sample.jpg";
             var inputSource = new LocalInputSource(filePath);
 
             // Act
@@ -108,8 +109,8 @@ namespace Mindee.UnitTests.V1.Workflow
                     It.IsAny<PageOptions>()))
                 .ReturnsAsync(mockResponse);
 
-            string workflowId = "07ebf237-ff27-4eee-b6a2-425df4a5cca6";
-            string filePath = Constants.V1ProductDir + "financial_document/default_sample.jpg";
+            var workflowId = "07ebf237-ff27-4eee-b6a2-425df4a5cca6";
+            var filePath = Constants.V1ProductDir + "financial_document/default_sample.jpg";
             var inputSource = new LocalInputSource(filePath);
 
             // Act

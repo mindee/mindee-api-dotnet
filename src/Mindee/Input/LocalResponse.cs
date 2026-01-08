@@ -8,18 +8,12 @@ using Mindee.Parsing.V2;
 namespace Mindee.Input
 {
     /// <summary>
-    /// A Mindee response saved locally.
+    ///     A Mindee response saved locally.
     /// </summary>
     public class LocalResponse
     {
         /// <summary>
-        /// ResultFile as UTF-8 bytes.
-        /// </summary>
-        public byte[] FileBytes { get; }
-
-
-        /// <summary>
-        /// Load from a string.
+        ///     Load from a string.
         /// </summary>
         /// <param name="input">Will be decoded as UTF-8.</param>
         public LocalResponse(string input)
@@ -28,7 +22,7 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Load from a file.
+        ///     Load from a file.
         /// </summary>
         /// <param name="input">Will be decoded as UTF-8.</param>
         public LocalResponse(FileInfo input)
@@ -38,20 +32,25 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Get the HMAC signature of the payload.
+        ///     ResultFile as UTF-8 bytes.
+        /// </summary>
+        public byte[] FileBytes { get; }
+
+        /// <summary>
+        ///     Get the HMAC signature of the payload.
         /// </summary>
         /// <param name="secretKey">Your secret key from the Mindee platform.</param>
         /// <returns>The generated HMAC signature.</returns>
         public string GetHmacSignature(string secretKey)
         {
-            byte[] keyBytes = Encoding.UTF8.GetBytes(secretKey);
-            using HMACSHA256 hmac = new HMACSHA256(keyBytes);
-            string hexString = BitConverter.ToString(hmac.ComputeHash(FileBytes));
+            var keyBytes = Encoding.UTF8.GetBytes(secretKey);
+            using var hmac = new HMACSHA256(keyBytes);
+            var hexString = BitConverter.ToString(hmac.ComputeHash(FileBytes));
             return hexString.Replace("-", "").ToLower();
         }
 
         /// <summary>
-        /// Verify that the payload's signature matches the one received from the server.
+        ///     Verify that the payload's signature matches the one received from the server.
         /// </summary>
         /// <param name="secretKey">Your secret key from the Mindee platform.</param>
         /// <param name="signature">The signature from the "X-Mindee-Hmac-Signature" HTTP header.</param>
@@ -62,7 +61,7 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Print the file as a UTF-8 string.
+        ///     Print the file as a UTF-8 string.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
@@ -71,8 +70,8 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Load a local inference.
-        /// Typically used when wanting to load a V2 webhook callback.
+        ///     Load a local inference.
+        ///     Typically used when wanting to load a V2 webhook callback.
         /// </summary>
         /// <returns></returns>
         public TInferenceModel DeserializeResponse<TInferenceModel>() where TInferenceModel : CommonResponse, new()

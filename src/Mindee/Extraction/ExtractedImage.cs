@@ -5,27 +5,17 @@ using SkiaSharp;
 namespace Mindee.Extraction
 {
     /// <summary>
-    /// An extracted sub-image.
+    ///     An extracted sub-image.
     /// </summary>
     public class ExtractedImage
     {
         /// <summary>
-        /// SKBitmap wrapper for the image.
-        /// </summary>
-        public SKBitmap Image { get; }
-
-        /// <summary>
-        /// Name of the file.
-        /// </summary>
-        private string Filename { get; }
-
-        /// <summary>
-        /// String representation of the save format.
+        ///     String representation of the save format.
         /// </summary>
         private readonly string _saveFormat;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtractedImage"/> class.
+        ///     Initializes a new instance of the <see cref="ExtractedImage" /> class.
         /// </summary>
         /// <param name="image">The extracted image.</param>
         /// <param name="filename">The filename for the image.</param>
@@ -38,14 +28,24 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        /// Writes the image to a file.
-        /// Uses the default image format and filename.
+        ///     SKBitmap wrapper for the image.
+        /// </summary>
+        public SKBitmap Image { get; }
+
+        /// <summary>
+        ///     Name of the file.
+        /// </summary>
+        private string Filename { get; }
+
+        /// <summary>
+        ///     Writes the image to a file.
+        ///     Uses the default image format and filename.
         /// </summary>
         /// <param name="outputPath">The output directory (must exist).</param>
         public void WriteToFile(string outputPath)
         {
-            string imagePath = Path.Combine(outputPath, Filename);
-            SKEncodedImageFormat format = GetEncodedImageFormat(_saveFormat);
+            var imagePath = Path.Combine(outputPath, Filename);
+            var format = GetEncodedImageFormat(_saveFormat);
 
             using (var image = SKImage.FromBitmap(Image))
             using (var data = image.Encode(format, 100))
@@ -56,14 +56,14 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        /// Returns the image in a format suitable for sending to a client for parsing.
+        ///     Returns the image in a format suitable for sending to a client for parsing.
         /// </summary>
-        /// <returns>An instance of <see cref="LocalInputSource"/>.</returns>
+        /// <returns>An instance of <see cref="LocalInputSource" />.</returns>
         public LocalInputSource AsInputSource()
         {
             using (var image = SKImage.FromBitmap(Image))
             using (var data = image.Encode(GetEncodedImageFormat(_saveFormat), 100))
-            using (MemoryStream output = new MemoryStream())
+            using (var output = new MemoryStream())
             {
                 data.SaveTo(output);
                 return new LocalInputSource(output.ToArray(), Filename);

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
@@ -47,9 +46,11 @@ namespace Mindee.Http
             where TModel : class, new()
         {
             if (endpoint is null)
+            {
                 endpoint = CustomEndpoint.GetEndpoint<TModel>();
+            }
 
-            String url;
+            string url;
             if (predictParameter.WorkflowId != null)
             {
                 url = $"v1/workflows/{predictParameter.WorkflowId}/predict_async";
@@ -80,7 +81,9 @@ namespace Mindee.Http
             where TModel : class, new()
         {
             if (endpoint is null)
+            {
                 endpoint = CustomEndpoint.GetEndpoint<TModel>();
+            }
 
             var request = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/predict"
@@ -100,7 +103,9 @@ namespace Mindee.Http
             where TModel : class, new()
         {
             if (endpoint is null)
+            {
                 endpoint = CustomEndpoint.GetEndpoint<TModel>();
+            }
 
             var queueRequest = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/documents/queue/{jobId}");
@@ -115,7 +120,7 @@ namespace Mindee.Http
             {
                 var locationHeader = queueResponse.Headers.First(h => h.Name == "Location");
 
-                var docRequest = new RestRequest(locationHeader.Value?.ToString());
+                var docRequest = new RestRequest(locationHeader.Value);
 
                 _logger?.LogInformation($"HTTP GET to {_baseUrl + docRequest.Resource} ...");
                 var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
@@ -163,27 +168,27 @@ namespace Mindee.Http
                     "document",
                     workflowParameter.UrlSource.FileUrl.ToString());
             }
+
             if (workflowParameter.FullText)
             {
-                request.AddQueryParameter(name: "full_text_ocr", value: "true");
+                request.AddQueryParameter("full_text_ocr", "true");
             }
 
             if (workflowParameter.Alias != null)
             {
-                request.AddParameter(name: "alias", value: workflowParameter.Alias);
+                request.AddParameter("alias", workflowParameter.Alias);
             }
 
             if (workflowParameter.PublicUrl != null)
             {
-                request.AddParameter(name: "public_url", value: workflowParameter.PublicUrl);
+                request.AddParameter("public_url", workflowParameter.PublicUrl);
             }
 
             if (workflowParameter.Priority != null)
             {
                 request.AddParameter(
-                    name: "priority",
-                    value: workflowParameter.Priority != null ?
-                        workflowParameter.Priority.ToString()?.ToLower() : null);
+                    "priority",
+                    workflowParameter.Priority != null ? workflowParameter.Priority.ToString()?.ToLower() : null);
             }
 
             if (workflowParameter.Rag)
@@ -210,17 +215,17 @@ namespace Mindee.Http
 
             if (predictParameter.AllWords)
             {
-                request.AddParameter(name: "include_mvision", value: "true");
+                request.AddParameter("include_mvision", "true");
             }
 
             if (predictParameter.FullText)
             {
-                request.AddQueryParameter(name: "full_text_ocr", value: "true");
+                request.AddQueryParameter("full_text_ocr", "true");
             }
 
             if (predictParameter.Cropper)
             {
-                request.AddQueryParameter(name: "cropper", value: "true");
+                request.AddQueryParameter("cropper", "true");
             }
         }
 
@@ -229,7 +234,7 @@ namespace Mindee.Http
         {
             _logger?.LogDebug($"HTTP response: {restResponse.Content}");
 
-            string errorMessage = "Mindee API client: ";
+            var errorMessage = "Mindee API client: ";
             TModel model = null;
 
             if (!string.IsNullOrWhiteSpace(restResponse.Content))
@@ -259,12 +264,18 @@ namespace Mindee.Http
             // If the server JSON return is empty, try to dump the raw contents.
             // If that STILL doesn't work, notify the user that the server response is empty.
             var apiErrorMessage = model?.ApiRequest.Error.ToString();
-            if (!String.IsNullOrEmpty(apiErrorMessage))
+            if (!string.IsNullOrEmpty(apiErrorMessage))
+            {
                 errorMessage += apiErrorMessage;
-            else if (!String.IsNullOrEmpty(restResponse.Content))
+            }
+            else if (!string.IsNullOrEmpty(restResponse.Content))
+            {
                 errorMessage += restResponse.Content;
+            }
             else
+            {
                 errorMessage += "Empty response from server.";
+            }
 
             _logger?.LogError(errorMessage);
 

@@ -1,10 +1,10 @@
 using System.Net;
-using System.Net.Http; // Necessary for .NET 4.7.2
 using Microsoft.Extensions.DependencyInjection;
 using Mindee.Exceptions;
 using Mindee.Http;
 using Mindee.Product.Invoice;
 using Mindee.Product.Receipt;
+// Necessary for .NET 4.7.2
 
 namespace Mindee.UnitTests.Http
 {
@@ -24,8 +24,7 @@ namespace Mindee.UnitTests.Http
 
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
-            await Assert.ThrowsAsync<Mindee400Exception>(
-                () => _ = mindeeApi.PredictPostAsync<ReceiptV4>(
+            await Assert.ThrowsAsync<Mindee400Exception>(() => _ = mindeeApi.PredictPostAsync<ReceiptV4>(
                     UnitTestBase.GetFakePredictParameter()
                 )
             );
@@ -62,10 +61,9 @@ namespace Mindee.UnitTests.Http
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
-            await Assert.ThrowsAsync<Mindee400Exception>(
-                           () => mindeeApi.PredictPostAsync<ReceiptV4>(
-                               UnitTestBase.GetFakePredictParameter())
-                           );
+            await Assert.ThrowsAsync<Mindee400Exception>(() => mindeeApi.PredictPostAsync<ReceiptV4>(
+                UnitTestBase.GetFakePredictParameter())
+            );
         }
 
         [Fact]
@@ -76,10 +74,9 @@ namespace Mindee.UnitTests.Http
                 File.ReadAllText(Constants.V1RootDir + "errors/error_500_inference_fail.json")
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
-            await Assert.ThrowsAsync<Mindee500Exception>(
-                           () => mindeeApi.PredictPostAsync<ReceiptV4>(
-                               UnitTestBase.GetFakePredictParameter())
-                           );
+            await Assert.ThrowsAsync<Mindee500Exception>(() => mindeeApi.PredictPostAsync<ReceiptV4>(
+                UnitTestBase.GetFakePredictParameter())
+            );
         }
 
         [Fact]
@@ -91,10 +88,9 @@ namespace Mindee.UnitTests.Http
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
-            await Assert.ThrowsAsync<Mindee429Exception>(
-               () => mindeeApi.PredictPostAsync<ReceiptV4>(
-                   UnitTestBase.GetFakePredictParameter())
-               );
+            await Assert.ThrowsAsync<Mindee429Exception>(() => mindeeApi.PredictPostAsync<ReceiptV4>(
+                UnitTestBase.GetFakePredictParameter())
+            );
         }
 
         [Fact]
@@ -106,10 +102,9 @@ namespace Mindee.UnitTests.Http
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
-            await Assert.ThrowsAsync<Mindee401Exception>(
-                () => mindeeApi.PredictPostAsync<ReceiptV4>(
-                    UnitTestBase.GetFakePredictParameter())
-                );
+            await Assert.ThrowsAsync<Mindee401Exception>(() => mindeeApi.PredictPostAsync<ReceiptV4>(
+                UnitTestBase.GetFakePredictParameter())
+            );
         }
 
         [Fact]
@@ -121,10 +116,9 @@ namespace Mindee.UnitTests.Http
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
-            await Assert.ThrowsAsync<Mindee403Exception>(
-                () => mindeeApi.PredictAsyncPostAsync<ReceiptV4>(
-                    UnitTestBase.GetFakePredictParameter())
-                );
+            await Assert.ThrowsAsync<Mindee403Exception>(() => mindeeApi.PredictAsyncPostAsync<ReceiptV4>(
+                UnitTestBase.GetFakePredictParameter())
+            );
         }
 
         [Fact]
@@ -175,8 +169,8 @@ namespace Mindee.UnitTests.Http
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
-            await Assert.ThrowsAsync<Mindee500Exception>(
-                () => mindeeApi.DocumentQueueGetAsync<InvoiceV4>("d88406ed-47bd-4db0-b3f3-145c8667a343")
+            await Assert.ThrowsAsync<Mindee500Exception>(() =>
+                mindeeApi.DocumentQueueGetAsync<InvoiceV4>("d88406ed-47bd-4db0-b3f3-145c8667a343")
             );
         }
 

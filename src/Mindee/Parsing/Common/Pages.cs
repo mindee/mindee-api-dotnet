@@ -4,14 +4,14 @@ using System.Linq;
 namespace Mindee.Parsing.Common
 {
     /// <summary>
-    /// The pages and the associated values which were detected on the document.
+    ///     The pages and the associated values which were detected on the document.
     /// </summary>
     /// <typeparam name="TPagePrediction"></typeparam>
     public class Pages<TPagePrediction> : List<Page<TPagePrediction>>
         where TPagePrediction : IPrediction, new()
     {
         /// <summary>
-        /// A prettier representation.
+        ///     A prettier representation.
         /// </summary>
         public override string ToString()
         {
@@ -19,12 +19,12 @@ namespace Mindee.Parsing.Common
         }
 
         /// <summary>
-        /// Returns whether the page list has any predictions set.
+        ///     Returns whether the page list has any predictions set.
         /// </summary>
         /// <returns></returns>
         public bool HasPredictions()
         {
-            return (this.Count > 0 && this.First().Prediction != null);
+            return Count > 0 && this.First().Prediction != null;
         }
     }
 }

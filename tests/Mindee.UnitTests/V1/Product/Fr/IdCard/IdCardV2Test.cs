@@ -1,4 +1,5 @@
 using Mindee.Parsing.Common;
+using Mindee.Parsing.Standard;
 using Mindee.Product.Fr.IdCard;
 
 namespace Mindee.UnitTests.V1.Product.Fr.IdCard
@@ -27,8 +28,8 @@ namespace Mindee.UnitTests.V1.Product.Fr.IdCard
             Assert.Null(docPrediction.IssueDate.Value);
             Assert.Null(docPrediction.Authority.Value);
             var pagePrediction = response.Document.Inference.Pages.First().Prediction;
-            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(pagePrediction.DocumentType);
-            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(pagePrediction.DocumentSide);
+            Assert.IsType<ClassificationField>(pagePrediction.DocumentType);
+            Assert.IsType<ClassificationField>(pagePrediction.DocumentSide);
         }
 
         [Fact]
@@ -38,6 +39,7 @@ namespace Mindee.UnitTests.V1.Product.Fr.IdCard
             var expected = File.ReadAllText(Constants.V1ProductDir + "idcard_fr/response_v2/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
+
         [Fact]
         public async Task Predict_CheckPage0()
         {
@@ -48,7 +50,7 @@ namespace Mindee.UnitTests.V1.Product.Fr.IdCard
 
         private static async Task<PredictResponse<IdCardV2>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/idcard_fr/response_v2/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/idcard_fr/response_v2/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<IdCardV2>(
                 UnitTestBase.GetFakePredictParameter());

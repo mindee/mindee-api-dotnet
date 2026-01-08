@@ -6,19 +6,19 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.V2.Field
 {
     /// <summary>
-    /// Custom deserializer for <see cref="DynamicField"/>
+    ///     Custom deserializer for <see cref="DynamicField" />
     /// </summary>
     [Serializable]
     [JsonConverter(typeof(DynamicFieldJsonConverter))]
     public class DynamicFieldJsonConverter : JsonConverter<DynamicField>
     {
         /// <summary>
-        /// <see cref="Read(ref Utf8JsonReader, Type, JsonSerializerOptions)"/>
+        ///     <see cref="Read(ref Utf8JsonReader, Type, JsonSerializerOptions)" />
         /// </summary>
         public override DynamicField Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             // read the response JSON into an object
-            JsonObject jsonObject = (JsonObject)JsonSerializer.Deserialize(ref reader, typeof(JsonObject), options);
+            var jsonObject = (JsonObject)JsonSerializer.Deserialize(ref reader, typeof(JsonObject), options);
 
             DynamicField field;
 
@@ -27,15 +27,17 @@ namespace Mindee.Parsing.V2.Field
                 itemsNode is JsonArray itemsArray)
             {
                 FieldConfidence? confidence = null;
-                if (jsonObject.TryGetPropertyValue("confidence", out JsonNode confidenceNode))
+                if (jsonObject.TryGetPropertyValue("confidence", out var confidenceNode))
                 {
                     confidence = confidenceNode.Deserialize<FieldConfidence?>(options);
                 }
-                ListField listField = new ListField(confidence: confidence);
+
+                var listField = new ListField(confidence);
                 foreach (var item in itemsArray)
                 {
                     listField.Items.Add(item.Deserialize<DynamicField>());
                 }
+
                 field = new DynamicField(
                     FieldType.ListField, listField: listField);
             }
@@ -52,17 +54,18 @@ namespace Mindee.Parsing.V2.Field
             {
                 field = new DynamicField(
                     FieldType.SimpleField,
-                    simpleField: jsonObject.Deserialize<SimpleField>());
+                    jsonObject.Deserialize<SimpleField>());
             }
             else
             {
                 return null;
             }
+
             return field;
         }
 
         /// <summary>
-        /// <see cref="Write(Utf8JsonWriter, DynamicField, JsonSerializerOptions)"/>
+        ///     <see cref="Write(Utf8JsonWriter, DynamicField, JsonSerializerOptions)" />
         /// </summary>
         public override void Write(Utf8JsonWriter writer, DynamicField value, JsonSerializerOptions options)
         {

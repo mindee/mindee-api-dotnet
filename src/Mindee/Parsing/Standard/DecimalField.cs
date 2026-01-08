@@ -4,30 +4,30 @@ using Mindee.Geometry;
 namespace Mindee.Parsing.Standard
 {
     /// <summary>
-    /// Represent an amount.
+    ///     Represent an amount.
     /// </summary>
     public class DecimalField : BaseField
     {
         /// <summary>
-        /// An amount value.
-        /// </summary>
-        /// <example>5.89</example>
-        [JsonPropertyName("value")]
-        [JsonConverter(typeof(DecimalJsonConverter))]
-        public decimal? Value { get; set; }
-
-        /// <summary>
-        /// Empty constructor.
+        ///     Empty constructor.
         /// </summary>
         public DecimalField() { }
 
         /// <summary>
-        /// Default constructor.
+        ///     Default constructor.
         /// </summary>
-        /// <param name="value"><see cref="Value"/></param>
-        /// <param name="confidence"><see cref="BaseField.Confidence"/></param>
-        /// <param name="polygon"><see cref="BaseField.Polygon"/></param>
-        /// <param name="pageId"><see cref="BaseField.PageId"/></param>
+        /// <param name="value">
+        ///     <see cref="Value" />
+        /// </param>
+        /// <param name="confidence">
+        ///     <see cref="BaseField.Confidence" />
+        /// </param>
+        /// <param name="polygon">
+        ///     <see cref="BaseField.Polygon" />
+        /// </param>
+        /// <param name="pageId">
+        ///     <see cref="BaseField.PageId" />
+        /// </param>
         public DecimalField(
             decimal? value,
             double? confidence,
@@ -38,7 +38,15 @@ namespace Mindee.Parsing.Standard
         }
 
         /// <summary>
-        /// A pretty summary of the value.
+        ///     An amount value.
+        /// </summary>
+        /// <example>5.89</example>
+        [JsonPropertyName("value")]
+        [JsonConverter(typeof(DecimalJsonConverter))]
+        public decimal? Value { get; set; }
+
+        /// <summary>
+        ///     A pretty summary of the value.
         /// </summary>
         public override string ToString()
         {

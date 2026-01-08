@@ -57,11 +57,11 @@ namespace Mindee.UnitTests.V1
 
             var endpoint = new CustomEndpoint("", "");
             var inputSource = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
-            var predictOptions = new PredictOptions(allWords: true, cropper: true);
+            var predictOptions = new PredictOptions(true, cropper: true);
             var response = await mindeeClient.ParseAsync(
                 inputSource,
                 endpoint,
-                predictOptions: predictOptions);
+                predictOptions);
 
             Assert.NotNull(response);
             predictable.Verify(p => p.PredictPostAsync<CustomV1>(
@@ -94,7 +94,7 @@ namespace Mindee.UnitTests.V1
 
             var endpoint = new CustomEndpoint("", "");
             var inputSource = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
-            var predictOptions = new PredictOptions(allWords: true, cropper: true);
+            var predictOptions = new PredictOptions(true, cropper: true);
             var response = await mindeeClient.ParseAsync<GeneratedV1>(
                 inputSource, endpoint, predictOptions);
 
@@ -146,7 +146,7 @@ namespace Mindee.UnitTests.V1
 
             var endpoint = new CustomEndpoint("", "");
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/blank_1.pdf");
-            var predictOptions = new PredictOptions(allWords: true, cropper: true);
+            var predictOptions = new PredictOptions(true, cropper: true);
             var response = await mindeeClient.EnqueueAsync<GeneratedV1>(
                 inputSource, endpoint, predictOptions);
 
@@ -229,7 +229,7 @@ namespace Mindee.UnitTests.V1
 
             var inputSource = new LocalInputSource(
                 new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
-            var predictOptions = new PredictOptions(allWords: true, cropper: true);
+            var predictOptions = new PredictOptions(true, cropper: true);
             var response = await mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource, predictOptions);
 
@@ -248,7 +248,7 @@ namespace Mindee.UnitTests.V1
             var inputSource = new LocalInputSource(
                 new FileInfo(Constants.RootDir + "file_types/pdf/multipage.pdf"));
             Assert.Equal(12, inputSource.GetPageCount());
-            var pageOptions = new PageOptions(pageIndexes: new short[] { 1, 2, 3 });
+            var pageOptions = new PageOptions(new short[] { 1, 2, 3 });
             var response = await mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource, pageOptions: pageOptions);
 
@@ -267,13 +267,13 @@ namespace Mindee.UnitTests.V1
             var inputSource = new LocalInputSource(
                 File.ReadAllBytes(Constants.RootDir + "file_types/pdf/blank_1.pdf"),
                 "blank_1.pdf"
-                );
+            );
             var response = await mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource);
 
             Assert.NotNull(response);
             predictable.Verify(p => p.PredictPostAsync<InvoiceV4>(
-                It.IsAny<PredictParameter>(), null)
+                    It.IsAny<PredictParameter>(), null)
                 , Times.AtMostOnce());
         }
 
@@ -315,7 +315,7 @@ namespace Mindee.UnitTests.V1
 
             var inputSource = new LocalInputSource(
                 Constants.RootDir + "file_types/pdf/blank_1.pdf");
-            var predictOptions = new PredictOptions(allWords: true, cropper: true);
+            var predictOptions = new PredictOptions(true, cropper: true);
             var response = await mindeeClient.EnqueueAsync<InvoiceV4>(inputSource, predictOptions);
 
             Assert.NotNull(response);
@@ -330,8 +330,7 @@ namespace Mindee.UnitTests.V1
             var predictable = new Mock<IHttpApi>();
             var mindeeClient = MakeStandardMindeeClient(predictable);
 
-            await Assert.ThrowsAsync<ArgumentNullException>(
-                () => _ = mindeeClient.ParseQueuedAsync<InvoiceV4>(""));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _ = mindeeClient.ParseQueuedAsync<InvoiceV4>(""));
         }
 
         [Fact]
@@ -381,7 +380,10 @@ namespace Mindee.UnitTests.V1
                 File.ReadAllText(Constants.V1ProductDir + "international_id/response_v2/summary_full.rst"));
         }
 
-        private IPdfOperation GetDefaultPdfOperation() => new DocNetApi(new NullLogger<DocNetApi>());
+        private IPdfOperation GetDefaultPdfOperation()
+        {
+            return new DocNetApi(new NullLogger<DocNetApi>());
+        }
 
         private MindeeClient MakeCustomMindeeClient(Mock<IHttpApi> predictable)
         {
@@ -390,7 +392,7 @@ namespace Mindee.UnitTests.V1
                     , It.IsAny<CustomEndpoint>()
                 ))
                 .ReturnsAsync(new PredictResponse<CustomV1>());
-            return new MindeeClient(pdfOperation: GetDefaultPdfOperation(), httpApi: predictable.Object);
+            return new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
         }
 
         private MindeeClient MakeGeneratedMindeeClient(Mock<IHttpApi> predictable)
@@ -405,7 +407,7 @@ namespace Mindee.UnitTests.V1
                     , It.IsAny<CustomEndpoint>()))
                 .ReturnsAsync(new AsyncPredictResponse<GeneratedV1>());
             predictable.Setup(x => x.DocumentQueueGetAsync<GeneratedV1>(
-                        It.IsAny<string>()
+                    It.IsAny<string>()
                     , It.IsAny<CustomEndpoint>()))
                 .ReturnsAsync(new AsyncPredictResponse<GeneratedV1>());
             return new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
@@ -424,6 +426,5 @@ namespace Mindee.UnitTests.V1
                 .ReturnsAsync(new AsyncPredictResponse<InvoiceV4>());
             return new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
         }
-
     }
 }

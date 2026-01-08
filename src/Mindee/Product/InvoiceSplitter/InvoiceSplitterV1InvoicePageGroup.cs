@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -8,70 +7,65 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.InvoiceSplitter
 {
     /// <summary>
-    /// List of page groups. Each group represents a single invoice within a multi-invoice document.
+    ///     List of page groups. Each group represents a single invoice within a multi-invoice document.
     /// </summary>
     public sealed class InvoiceSplitterV1InvoicePageGroup : LineItemField
     {
         /// <summary>
-        /// List of page indexes that belong to the same invoice (group).
+        ///     List of page indexes that belong to the same invoice (group).
         /// </summary>
         [JsonPropertyName("page_indexes")]
         public List<int> PageIndexes { get; set; }
 
         private Dictionary<string, string> TablePrintableValues()
         {
-            return new Dictionary<string, string>()
-            {
-                {"PageIndexes", String.Join(", ", PageIndexes)},
-            };
+            return new Dictionary<string, string> { { "PageIndexes", string.Join(", ", PageIndexes) } };
         }
 
         /// <summary>
-        /// Output the line in a format suitable for inclusion in an rST table.
+        ///     Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            Dictionary<string, string> printable = TablePrintableValues();
+            var printable = TablePrintableValues();
             return "| "
-              + String.Format("{0,-72}", printable["PageIndexes"])
-              + " |";
+                   + string.Format("{0,-72}", printable["PageIndexes"])
+                   + " |";
         }
 
         /// <summary>
-        /// A prettier representation of the line values.
+        ///     A prettier representation of the line values.
         /// </summary>
         public override string ToString()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            var printable = PrintableValues();
             return "Page Indexes: "
-              + printable["PageIndexes"].Trim();
+                   + printable["PageIndexes"].Trim();
         }
 
         private Dictionary<string, string> PrintableValues()
         {
-            return new Dictionary<string, string>()
-            {
-                {"PageIndexes", String.Join(", ", PageIndexes)},
-            };
+            return new Dictionary<string, string> { { "PageIndexes", string.Join(", ", PageIndexes) } };
         }
     }
 
     /// <summary>
-    /// List of page groups. Each group represents a single invoice within a multi-invoice document.
+    ///     List of page groups. Each group represents a single invoice within a multi-invoice document.
     /// </summary>
     public class InvoiceSplitterV1InvoicePageGroups : List<InvoiceSplitterV1InvoicePageGroup>
     {
         /// <summary>
-        /// Default string representation.
+        ///     Default string representation.
         /// </summary>
         public override string ToString()
         {
-            if (this.Count == 0)
+            if (Count == 0)
             {
                 return "\n";
             }
+
             int[] columnSizes = { 74 };
-            StringBuilder outStr = new StringBuilder("\n");
+            var outStr = new StringBuilder("\n");
             outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '-') + "  ");
             outStr.Append("| Page Indexes                                                             ");
             outStr.Append("|\n  " + SummaryHelper.LineSeparator(columnSizes, '='));

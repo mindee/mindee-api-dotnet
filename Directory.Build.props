@@ -29,6 +29,8 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <AnalysisLevel>latest</AnalysisLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

@@ -65,7 +65,7 @@ namespace Mindee.UnitTests.V1.Product.Fr.Payslip
 
         private static async Task<PredictResponse<PayslipV2>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/payslip_fra/response_v2/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/payslip_fra/response_v2/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<PayslipV2>(
                 UnitTestBase.GetFakePredictParameter());

@@ -1,58 +1,54 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
-using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.NutritionFactsLabel
 {
     /// <summary>
-    /// The size of a single serving of the product.
+    ///     The size of a single serving of the product.
     /// </summary>
     public sealed class NutritionFactsLabelV1ServingSize
     {
         /// <summary>
-        /// The amount of a single serving.
+        ///     The amount of a single serving.
         /// </summary>
         [JsonPropertyName("amount")]
         public double? Amount { get; set; }
 
         /// <summary>
-        /// The unit for the amount of a single serving.
+        ///     The unit for the amount of a single serving.
         /// </summary>
         [JsonPropertyName("unit")]
         public string Unit { get; set; }
 
         /// <summary>
-        /// Output the object in a format suitable for inclusion in an rST field list.
+        ///     Output the object in a format suitable for inclusion in an rST field list.
         /// </summary>
         public string ToFieldList()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            var printable = PrintableValues();
             return "\n"
-                + $"  :Amount: {printable["Amount"]}\n"
-                + $"  :Unit: {printable["Unit"]}\n";
+                   + $"  :Amount: {printable["Amount"]}\n"
+                   + $"  :Unit: {printable["Unit"]}\n";
         }
 
         /// <summary>
-        /// A prettier representation of the line values.
+        ///     A prettier representation of the line values.
         /// </summary>
         public override string ToString()
         {
-            Dictionary<string, string> printable = PrintableValues();
+            var printable = PrintableValues();
             return "Amount: "
-              + printable["Amount"]
-              + ", Unit: "
-              + printable["Unit"].Trim();
+                   + printable["Amount"]
+                   + ", Unit: "
+                   + printable["Unit"].Trim();
         }
 
         private Dictionary<string, string> PrintableValues()
         {
-            return new Dictionary<string, string>()
+            return new Dictionary<string, string>
             {
-                {"Amount", SummaryHelper.FormatAmount(Amount)},
-                {"Unit", SummaryHelper.FormatString(Unit)},
+                { "Amount", SummaryHelper.FormatAmount(Amount) }, { "Unit", SummaryHelper.FormatString(Unit) }
             };
         }
     }

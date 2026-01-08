@@ -1,4 +1,5 @@
 using Mindee.Parsing.Common;
+using Mindee.Parsing.Standard;
 using Mindee.Product.Receipt;
 
 namespace Mindee.UnitTests.V1.Product.Receipt
@@ -12,9 +13,9 @@ namespace Mindee.UnitTests.V1.Product.Receipt
             var response = await GetPrediction("empty");
             var docPrediction = response.Document.Inference.Prediction;
             Assert.Null(docPrediction.Locale.Value);
-            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.Category);
-            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.Subcategory);
-            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.DocumentType);
+            Assert.IsType<ClassificationField>(docPrediction.Category);
+            Assert.IsType<ClassificationField>(docPrediction.Subcategory);
+            Assert.IsType<ClassificationField>(docPrediction.DocumentType);
             Assert.Null(docPrediction.Date.Value);
             Assert.Null(docPrediction.Time.Value);
             Assert.Null(docPrediction.TotalAmount.Value);
@@ -40,7 +41,7 @@ namespace Mindee.UnitTests.V1.Product.Receipt
 
         private static async Task<PredictResponse<ReceiptV5>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/expense_receipts/response_v5/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/expense_receipts/response_v5/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<ReceiptV5>(
                 UnitTestBase.GetFakePredictParameter());

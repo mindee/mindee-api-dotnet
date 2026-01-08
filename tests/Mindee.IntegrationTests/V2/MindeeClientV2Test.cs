@@ -1,7 +1,6 @@
 using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.Parsing.V2;
-using Mindee.Parsing.V2.Field;
 
 namespace Mindee.IntegrationTests.V2
 {
@@ -9,12 +8,12 @@ namespace Mindee.IntegrationTests.V2
     [Trait("Category", "Integration")]
     public class MindeeClientV2Test
     {
-        private readonly MindeeClientV2 _mindeeClientV2;
         private readonly string? _findocModelId;
+        private readonly MindeeClientV2 _mindeeClientV2;
 
         public MindeeClientV2Test()
         {
-            string? apiKey = Environment.GetEnvironmentVariable("MindeeV2__ApiKey");
+            var apiKey = Environment.GetEnvironmentVariable("MindeeV2__ApiKey");
             _mindeeClientV2 = TestingUtilities.GetOrGenerateMindeeClientV2(apiKey);
             _findocModelId = Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id");
         }
@@ -47,13 +46,13 @@ namespace Mindee.IntegrationTests.V2
             var inputSource = new LocalInputSource(
                 Constants.RootDir + "file_types/pdf/multipage_cut-2.pdf");
             var inferenceParams = new InferenceParameters(
-                modelId: _findocModelId,
+                _findocModelId,
                 rag: false,
                 rawText: rawText,
                 polygon: polygon,
                 confidence: confidence);
 
-            InferenceResponse response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
+            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
                 inputSource, inferenceParams);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -61,7 +60,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.NotNull(response.Inference.Model);
             Assert.Equal(_findocModelId, response.Inference.Model.Id);
 
-            InferenceFile file = response.Inference.File;
+            var file = response.Inference.File;
             Assert.NotNull(file);
             Assert.Equal("multipage_cut-2.pdf", file.Name);
             Assert.Equal(2, file.PageCount);
@@ -69,27 +68,29 @@ namespace Mindee.IntegrationTests.V2
             AssertActiveOptions(
                 response.Inference.ActiveOptions, rawText, polygon, confidence, false, false, false);
 
-            InferenceResult result = response.Inference.Result;
+            var result = response.Inference.Result;
             Assert.NotNull(result);
 
-            RawText resultRawText = result.RawText;
+            var resultRawText = result.RawText;
             if (rawText)
             {
                 Assert.NotNull(resultRawText);
                 Assert.Equal(2, resultRawText.Pages.Count);
             }
             else
+            {
                 Assert.Null(resultRawText);
+            }
 
-            InferenceFields fields = response.Inference.Result.Fields;
+            var fields = response.Inference.Result.Fields;
             Assert.NotNull(fields);
             Assert.NotNull(fields["supplier_name"]);
-            SimpleField supplierName = fields["supplier_name"].SimpleField;
+            var supplierName = fields["supplier_name"].SimpleField;
             // the server sometimes returns "null"
             // Assert.Null(supplierName.Value);
 
             Assert.NotNull(fields["taxes"]);
-            ListField taxes = fields["taxes"].ListField;
+            var taxes = fields["taxes"].ListField;
             // the server sometimes returns a list of empty objects
             // Assert.Empty(taxes.ObjectItems);
 
@@ -112,7 +113,7 @@ namespace Mindee.IntegrationTests.V2
             var inputSource = new LocalInputSource(
                 Constants.V1ProductDir + "financial_document/default_sample.jpg");
             var inferenceParams = new InferenceParameters(
-                modelId: _findocModelId,
+                _findocModelId,
                 textContext: "this is an invoice.");
 
             var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
@@ -123,7 +124,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.NotNull(response.Inference.Model);
             Assert.Equal(_findocModelId, response.Inference.Model.Id);
 
-            InferenceFile file = response.Inference.File;
+            var file = response.Inference.File;
             Assert.NotNull(file);
             Assert.Equal("default_sample.jpg", file.Name);
             Assert.Equal(1, file.PageCount);
@@ -133,10 +134,10 @@ namespace Mindee.IntegrationTests.V2
 
             Assert.NotNull(response.Inference.Result);
 
-            InferenceFields fields = response.Inference.Result.Fields;
+            var fields = response.Inference.Result.Fields;
             Assert.NotNull(fields);
             Assert.NotNull(fields["supplier_name"]);
-            SimpleField supplierName = fields["supplier_name"].SimpleField;
+            var supplierName = fields["supplier_name"].SimpleField;
             Assert.Equal("John Smith", supplierName.Value);
             Assert.Null(supplierName.Confidence);
             Assert.Empty(supplierName.Locations);
@@ -145,47 +146,49 @@ namespace Mindee.IntegrationTests.V2
         [Fact]
         public async Task FailedWebhook_Retrieve_Job_MustSucceed()
         {
-            string? webhookId = Environment.GetEnvironmentVariable("MindeeV2__Failure__Webhook__Id");
+            var webhookId = Environment.GetEnvironmentVariable("MindeeV2__Failure__Webhook__Id");
 
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/multipage_cut-1.pdf");
             var inferenceParams = new InferenceParameters(
-                modelId: _findocModelId, webhookIds: new List<string?> { webhookId });
+                _findocModelId, webhookIds: new List<string?> { webhookId });
 
-            JobResponse enqueueResponse = await _mindeeClientV2.EnqueueInferenceAsync(inputSource, inferenceParams);
+            var enqueueResponse = await _mindeeClientV2.EnqueueInferenceAsync(inputSource, inferenceParams);
             Assert.NotNull(enqueueResponse);
             Assert.NotNull(enqueueResponse.Job);
             Assert.NotNull(enqueueResponse.Job.Webhooks);
 
-            string jobId = enqueueResponse.Job.Id;
+            var jobId = enqueueResponse.Job.Id;
             Assert.NotNull(jobId);
 
             Thread.Sleep(200);
 
-            JobResponse jobResponse = await _mindeeClientV2.GetJobAsync(jobId);
+            var jobResponse = await _mindeeClientV2.GetJobAsync(jobId);
             Assert.NotNull(jobResponse);
 
-            Job job = jobResponse.Job;
+            var job = jobResponse.Job;
             Assert.Equal(_findocModelId, job.ModelId);
             Assert.NotNull(job.Webhooks);
 
-            JobWebhook webhook = job.Webhooks.First();
+            var webhook = job.Webhooks.First();
             Assert.NotNull(webhook);
             Assert.Equal(webhookId, webhook.Id);
             Assert.Equal("Processing", webhook.Status);
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 Thread.Sleep(1000);
 
-                JobResponse loopJobResponse = await _mindeeClientV2.GetJobAsync(jobId);
-                JobWebhook loopWebhook = loopJobResponse.Job.Webhooks.First();
+                var loopJobResponse = await _mindeeClientV2.GetJobAsync(jobId);
+                var loopWebhook = loopJobResponse.Job.Webhooks.First();
                 Assert.NotNull(loopWebhook);
                 Assert.Equal(webhookId, loopWebhook.Id);
 
                 if (loopWebhook.Status != "Failed")
+                {
                     continue;
+                }
 
-                ErrorResponse error = loopWebhook.Error;
+                var error = loopWebhook.Error;
                 Assert.NotNull(error);
                 Assert.True(error.Status >= 400);
 
@@ -200,7 +203,7 @@ namespace Mindee.IntegrationTests.V2
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/multipage_cut-2.pdf");
             var inferenceParams = new InferenceParameters(
-                modelId: "INVALID MODEL ID",
+                "INVALID MODEL ID",
                 textContext: "hello my name is mud");
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
                 _mindeeClientV2.EnqueueInferenceAsync(inputSource, inferenceParams));
@@ -234,7 +237,7 @@ namespace Mindee.IntegrationTests.V2
                 "Environment variable MindeeV2__Blank__Pdf__Url must be set and contain a valid URL.");
 
             var inputSource = new UrlInputSource(new Uri(url!));
-            var inferenceParams = new InferenceParameters(modelId: _findocModelId);
+            var inferenceParams = new InferenceParameters(_findocModelId);
             var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(inputSource, inferenceParams);
 
             Assert.NotNull(response);
@@ -246,10 +249,10 @@ namespace Mindee.IntegrationTests.V2
         {
             var inputSource = new LocalInputSource(
                 Constants.RootDir + "file_types/pdf/blank_1.pdf");
-            string dataSchemaContents =
+            var dataSchemaContents =
                 File.ReadAllText(Constants.V2RootDir + "inference/data_schema_replace_param.json");
             var inferenceParams = new InferenceParameters(
-                modelId: _findocModelId,
+                _findocModelId,
                 dataSchema: dataSchemaContents);
 
             var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
@@ -260,7 +263,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.NotNull(response.Inference.Model);
             Assert.Equal(_findocModelId, response.Inference.Model.Id);
 
-            InferenceFile file = response.Inference.File;
+            var file = response.Inference.File;
             Assert.NotNull(file);
             Assert.Equal("blank_1.pdf", file.Name);
             Assert.Equal(1, file.PageCount);
@@ -277,7 +280,7 @@ namespace Mindee.IntegrationTests.V2
 
             Assert.NotNull(response.Inference.Result);
 
-            InferenceFields fields = response.Inference.Result.Fields;
+            var fields = response.Inference.Result.Fields;
             Assert.NotNull(fields);
             Assert.Equal("a test value", fields["test_replace"].ToString());
         }

@@ -8,228 +8,229 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.FinancialDocument
 {
     /// <summary>
-    /// Financial Document API version 1.14 document data.
+    ///     Financial Document API version 1.14 document data.
     /// </summary>
     public class FinancialDocumentV1Document : IPrediction
     {
         /// <summary>
-        /// The customer's address used for billing.
+        ///     The customer's address used for billing.
         /// </summary>
         [JsonPropertyName("billing_address")]
         public AddressField BillingAddress { get; set; }
 
         /// <summary>
-        /// The purchase category.
+        ///     The purchase category.
         /// </summary>
         [JsonPropertyName("category")]
         public ClassificationField Category { get; set; }
 
         /// <summary>
-        /// The address of the customer.
+        ///     The address of the customer.
         /// </summary>
         [JsonPropertyName("customer_address")]
         public AddressField CustomerAddress { get; set; }
 
         /// <summary>
-        /// List of company registration numbers associated to the customer.
+        ///     List of company registration numbers associated to the customer.
         /// </summary>
         [JsonPropertyName("customer_company_registrations")]
         public IList<CompanyRegistration> CustomerCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
-        /// The customer account number or identifier from the supplier.
+        ///     The customer account number or identifier from the supplier.
         /// </summary>
         [JsonPropertyName("customer_id")]
         public StringField CustomerId { get; set; }
 
         /// <summary>
-        /// The name of the customer.
+        ///     The name of the customer.
         /// </summary>
         [JsonPropertyName("customer_name")]
         public StringField CustomerName { get; set; }
 
         /// <summary>
-        /// The date the purchase was made.
+        ///     The date the purchase was made.
         /// </summary>
         [JsonPropertyName("date")]
         public DateField Date { get; set; }
 
         /// <summary>
-        /// The document number or identifier (invoice number or receipt number).
+        ///     The document number or identifier (invoice number or receipt number).
         /// </summary>
         [JsonPropertyName("document_number")]
         public StringField DocumentNumber { get; set; }
 
         /// <summary>
-        /// The type of the document: INVOICE or CREDIT NOTE if it is an invoice, CREDIT CARD RECEIPT or EXPENSE RECEIPT if it is a receipt.
+        ///     The type of the document: INVOICE or CREDIT NOTE if it is an invoice, CREDIT CARD RECEIPT or EXPENSE RECEIPT if it
+        ///     is a receipt.
         /// </summary>
         [JsonPropertyName("document_type")]
         public ClassificationField DocumentType { get; set; }
 
         /// <summary>
-        /// Document type extended.
+        ///     Document type extended.
         /// </summary>
         [JsonPropertyName("document_type_extended")]
         public ClassificationField DocumentTypeExtended { get; set; }
 
         /// <summary>
-        /// The date on which the payment is due.
+        ///     The date on which the payment is due.
         /// </summary>
         [JsonPropertyName("due_date")]
         public DateField DueDate { get; set; }
 
         /// <summary>
-        /// The invoice number or identifier only if document is an invoice.
+        ///     The invoice number or identifier only if document is an invoice.
         /// </summary>
         [JsonPropertyName("invoice_number")]
         public StringField InvoiceNumber { get; set; }
 
         /// <summary>
-        /// List of line item present on the document.
+        ///     List of line item present on the document.
         /// </summary>
         [JsonPropertyName("line_items")]
         [JsonConverter(typeof(ObjectListJsonConverter<FinancialDocumentV1LineItems, FinancialDocumentV1LineItem>))]
         public FinancialDocumentV1LineItems LineItems { get; set; }
 
         /// <summary>
-        /// The locale of the document.
+        ///     The locale of the document.
         /// </summary>
         [JsonPropertyName("locale")]
         public Locale Locale { get; set; }
 
         /// <summary>
-        /// The date on which the payment is due / fullfilled.
+        ///     The date on which the payment is due / fullfilled.
         /// </summary>
         [JsonPropertyName("payment_date")]
         public DateField PaymentDate { get; set; }
 
         /// <summary>
-        /// The purchase order number, only if the document is an invoice.
+        ///     The purchase order number, only if the document is an invoice.
         /// </summary>
         [JsonPropertyName("po_number")]
         public StringField PoNumber { get; set; }
 
         /// <summary>
-        /// The receipt number or identifier only if document is a receipt.
+        ///     The receipt number or identifier only if document is a receipt.
         /// </summary>
         [JsonPropertyName("receipt_number")]
         public StringField ReceiptNumber { get; set; }
 
         /// <summary>
-        /// List of Reference numbers, including PO number, only if the document is an invoice.
+        ///     List of Reference numbers, including PO number, only if the document is an invoice.
         /// </summary>
         [JsonPropertyName("reference_numbers")]
         public IList<StringField> ReferenceNumbers { get; set; } = new List<StringField>();
 
         /// <summary>
-        /// The customer's address used for shipping.
+        ///     The customer's address used for shipping.
         /// </summary>
         [JsonPropertyName("shipping_address")]
         public AddressField ShippingAddress { get; set; }
 
         /// <summary>
-        /// The purchase subcategory for transport, food and shooping.
+        ///     The purchase subcategory for transport, food and shooping.
         /// </summary>
         [JsonPropertyName("subcategory")]
         public ClassificationField Subcategory { get; set; }
 
         /// <summary>
-        /// The address of the supplier or merchant.
+        ///     The address of the supplier or merchant.
         /// </summary>
         [JsonPropertyName("supplier_address")]
         public AddressField SupplierAddress { get; set; }
 
         /// <summary>
-        /// List of company registration numbers associated to the supplier.
+        ///     List of company registration numbers associated to the supplier.
         /// </summary>
         [JsonPropertyName("supplier_company_registrations")]
         public IList<CompanyRegistration> SupplierCompanyRegistrations { get; set; } = new List<CompanyRegistration>();
 
         /// <summary>
-        /// The email of the supplier or merchant.
+        ///     The email of the supplier or merchant.
         /// </summary>
         [JsonPropertyName("supplier_email")]
         public StringField SupplierEmail { get; set; }
 
         /// <summary>
-        /// The name of the supplier or merchant.
+        ///     The name of the supplier or merchant.
         /// </summary>
         [JsonPropertyName("supplier_name")]
         public StringField SupplierName { get; set; }
 
         /// <summary>
-        /// List of payment details associated to the supplier (only for invoices).
+        ///     List of payment details associated to the supplier (only for invoices).
         /// </summary>
         [JsonPropertyName("supplier_payment_details")]
         public IList<PaymentDetail> SupplierPaymentDetails { get; set; } = new List<PaymentDetail>();
 
         /// <summary>
-        /// The phone number of the supplier or merchant.
+        ///     The phone number of the supplier or merchant.
         /// </summary>
         [JsonPropertyName("supplier_phone_number")]
         public StringField SupplierPhoneNumber { get; set; }
 
         /// <summary>
-        /// The website URL of the supplier or merchant.
+        ///     The website URL of the supplier or merchant.
         /// </summary>
         [JsonPropertyName("supplier_website")]
         public StringField SupplierWebsite { get; set; }
 
         /// <summary>
-        /// List of all taxes on the document.
+        ///     List of all taxes on the document.
         /// </summary>
         [JsonPropertyName("taxes")]
         [JsonConverter(typeof(ObjectListJsonConverter<Taxes, Tax>))]
         public Taxes Taxes { get; set; }
 
         /// <summary>
-        /// The time the purchase was made (only for receipts).
+        ///     The time the purchase was made (only for receipts).
         /// </summary>
         [JsonPropertyName("time")]
         public StringField Time { get; set; }
 
         /// <summary>
-        /// The total amount of tip and gratuity
+        ///     The total amount of tip and gratuity
         /// </summary>
         [JsonPropertyName("tip")]
         public AmountField Tip { get; set; }
 
         /// <summary>
-        /// The total amount paid: includes taxes, tips, fees, and other charges.
+        ///     The total amount paid: includes taxes, tips, fees, and other charges.
         /// </summary>
         [JsonPropertyName("total_amount")]
         public AmountField TotalAmount { get; set; }
 
         /// <summary>
-        /// The net amount paid: does not include taxes, fees, and discounts.
+        ///     The net amount paid: does not include taxes, fees, and discounts.
         /// </summary>
         [JsonPropertyName("total_net")]
         public AmountField TotalNet { get; set; }
 
         /// <summary>
-        /// The sum of all taxes present on the document.
+        ///     The sum of all taxes present on the document.
         /// </summary>
         [JsonPropertyName("total_tax")]
         public AmountField TotalTax { get; set; }
 
         /// <summary>
-        /// A prettier representation of the current model values.
+        ///     A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
         {
-            string referenceNumbers = string.Join(
+            var referenceNumbers = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 19)),
                 ReferenceNumbers.Select(item => item));
-            string supplierPaymentDetails = string.Join(
+            var supplierPaymentDetails = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 26)),
                 SupplierPaymentDetails.Select(item => item));
-            string supplierCompanyRegistrations = string.Join(
+            var supplierCompanyRegistrations = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 32)),
                 SupplierCompanyRegistrations.Select(item => item));
-            string customerCompanyRegistrations = string.Join(
+            var customerCompanyRegistrations = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 32)),
                 CustomerCompanyRegistrations.Select(item => item));
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             result.Append($":Locale: {Locale}\n");
             result.Append($":Invoice Number: {InvoiceNumber}\n");
             result.Append($":Purchase Order Number: {PoNumber}\n");

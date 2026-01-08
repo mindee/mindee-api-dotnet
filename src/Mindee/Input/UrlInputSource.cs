@@ -8,19 +8,16 @@ using RestSharp.Authenticators;
 namespace Mindee.Input
 {
     /// <summary>
-    /// Represent a document to parse.
+    ///     Represent a document to parse.
     /// </summary>
     public sealed class UrlInputSource
     {
         /// <summary>
-        /// The URI of the file.
+        ///     Construct from string.
         /// </summary>
-        public Uri FileUrl { get; }
-
-        /// <summary>
-        /// Construct from string.
-        /// </summary>
-        /// <param name="fileUrl"><see cref="FileUrl"/></param>
+        /// <param name="fileUrl">
+        ///     <see cref="FileUrl" />
+        /// </param>
         public UrlInputSource(string fileUrl)
         {
             FileUrl = new Uri(fileUrl);
@@ -28,9 +25,11 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Construct from a URI object.
+        ///     Construct from a URI object.
         /// </summary>
-        /// <param name="fileUrl"><see cref="FileUrl"/></param>
+        /// <param name="fileUrl">
+        ///     <see cref="FileUrl" />
+        /// </param>
         public UrlInputSource(Uri fileUrl)
         {
             FileUrl = fileUrl;
@@ -38,7 +37,12 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Determine if the URI is valid.
+        ///     The URI of the file.
+        /// </summary>
+        public Uri FileUrl { get; }
+
+        /// <summary>
+        ///     Determine if the URI is valid.
         /// </summary>
         private void IsUriValid()
         {
@@ -59,7 +63,7 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Downloads the file from the url, and returns a LocalInputSource wrapper object for it.
+        ///     Downloads the file from the url, and returns a LocalInputSource wrapper object for it.
         /// </summary>
         /// <returns>A LocalInputSource.</returns>
         /// <exception cref="MindeeInputException">Throws if the file can't be accessed or downloaded.</exception>
@@ -95,8 +99,9 @@ namespace Mindee.Input
             // Note: response.IsSuccessful can't be mocked as easily, so this is a better solution at the moment.
             if (response.IsSuccessStatusCode)
             {
-                return new LocalInputSource(fileBytes: response.RawBytes, filename: filename);
+                return new LocalInputSource(response.RawBytes, filename);
             }
+
             throw new MindeeInputException($"Failed to download file: {response.ErrorMessage}");
         }
     }

@@ -27,7 +27,7 @@ namespace Mindee.UnitTests.V1.Product.Fr.HealthCard
 
         private static async Task<PredictResponse<HealthCardV1>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/french_healthcard/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/french_healthcard/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<HealthCardV1>(
                 UnitTestBase.GetFakePredictParameter());

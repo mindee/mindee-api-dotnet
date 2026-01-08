@@ -3,12 +3,12 @@ using SkiaSharp;
 namespace Mindee.Image
 {
     /// <summary>
-    /// Image compressor static class to handle image compression.
+    ///     Image compressor static class to handle image compression.
     /// </summary>
     public static class ImageCompressor
     {
         /// <summary>
-        /// Resize and/or compress an SKBitmap. This assumes the ratio was provided before hands.
+        ///     Resize and/or compress an SKBitmap. This assumes the ratio was provided before hands.
         /// </summary>
         /// <param name="original">Original, unedited bitmap.</param>
         /// <param name="quality">Quality of the final file.</param>
@@ -26,7 +26,7 @@ namespace Mindee.Image
 
 
         /// <summary>
-        /// Resize and/or compress an image using SkiaSharp. This maintains the provided ratio.
+        ///     Resize and/or compress an image using SkiaSharp. This maintains the provided ratio.
         /// </summary>
         /// <param name="imageData">Byte array representing the content of the image.</param>
         /// <param name="quality">Quality of the final file.</param>

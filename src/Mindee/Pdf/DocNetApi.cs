@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Exceptions;
+using Docnet.Core.Models;
 using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 using Mindee.Input;
@@ -22,7 +23,7 @@ namespace Mindee.Pdf
         {
             if (!CanBeOpen(splitQuery.File))
             {
-                throw new MindeeException($"This document is not recognized as a PDF file and cannot be split.");
+                throw new MindeeException("This document is not recognized as a PDF file and cannot be split.");
             }
 
             var totalPages = GetTotalPagesNumber(splitQuery.File);
@@ -41,7 +42,7 @@ namespace Mindee.Pdf
             {
                 if (pageIndex < 0)
                 {
-                    return (totalPages - System.Math.Abs(pageIndex));
+                    return totalPages - Math.Abs(pageIndex);
                 }
 
                 return pageIndex + 1;
@@ -89,7 +90,7 @@ namespace Mindee.Pdf
             {
                 lock (DocLib.Instance)
                 {
-                    using var docReader = DocLib.Instance.GetDocReader(file, new Docnet.Core.Models.PageDimensions());
+                    using var docReader = DocLib.Instance.GetDocReader(file, new PageDimensions());
                     return true;
                 }
             }
@@ -106,7 +107,7 @@ namespace Mindee.Pdf
             {
                 lock (DocLib.Instance)
                 {
-                    using var docReader = DocLib.Instance.GetDocReader(file, new Docnet.Core.Models.PageDimensions());
+                    using var docReader = DocLib.Instance.GetDocReader(file, new PageDimensions());
                     return (ushort)docReader.GetPageCount();
                 }
             }

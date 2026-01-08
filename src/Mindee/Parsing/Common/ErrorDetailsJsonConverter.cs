@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -7,12 +6,12 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.Common
 {
     /// <summary>
-    /// Custom de-serialize for <see cref="ErrorDetails"/>
+    ///     Custom de-serialize for <see cref="ErrorDetails" />
     /// </summary>
     public class ErrorDetailsJsonConverter : JsonConverter<ErrorDetails>
     {
         /// <summary>
-        /// <see cref="Read(ref Utf8JsonReader, Type, JsonSerializerOptions)"/>
+        ///     <see cref="Read(ref Utf8JsonReader, Type, JsonSerializerOptions)" />
         /// </summary>
         public override ErrorDetails Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
@@ -20,7 +19,7 @@ namespace Mindee.Parsing.Common
 
             if (reader.TokenType == JsonTokenType.StartObject)
             {
-                JsonObject jsonObject = (JsonObject)JsonSerializer.Deserialize(
+                var jsonObject = (JsonObject)JsonSerializer.Deserialize(
                     ref reader,
                     typeof(JsonObject),
                     options);
@@ -40,7 +39,7 @@ namespace Mindee.Parsing.Common
         }
 
         /// <summary>
-        /// <see cref="Write(Utf8JsonWriter, ErrorDetails, JsonSerializerOptions)"/>
+        ///     <see cref="Write(Utf8JsonWriter, ErrorDetails, JsonSerializerOptions)" />
         /// </summary>
         public override void Write(Utf8JsonWriter writer, ErrorDetails value, JsonSerializerOptions options)
         {
