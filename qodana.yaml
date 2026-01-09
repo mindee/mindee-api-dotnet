@@ -13,7 +13,7 @@ version: "1.0"
 ide: QDNET
 
 dotnet:
-  solution: Mindee.sln
+  solution: Mindee
 
 #Specify inspection profile for code analysis
 profile:
