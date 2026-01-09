@@ -21,7 +21,9 @@ jobs:
     permissions:
       actions: read
       security-events: write
-      contents: read
+      checks: write
+      contents: write
+      pull-requests: write
   build:
     uses: mindee/mindee-api-dotnet/.github/workflows/_test-units.yml@main
     needs: static_analysis

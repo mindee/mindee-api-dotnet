@@ -19,7 +19,9 @@ jobs:
     permissions:
       actions: read
       security-events: write
-      contents: read
+      checks: write
+      contents: write
+      pull-requests: write
     secrets: inherit
   codeql:
     uses: ./.github/workflows/_codeql.yml
