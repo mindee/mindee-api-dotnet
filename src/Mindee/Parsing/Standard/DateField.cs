@@ -9,8 +9,6 @@ namespace Mindee.Parsing.Standard
     /// </summary>
     public class DateField : StringField
     {
-        private readonly ILogger _logger;
-
         /// <summary>
         ///     Default constructor.
         /// </summary>
@@ -37,19 +35,21 @@ namespace Mindee.Parsing.Standard
             bool? isComputed = null
         ) : base(value, null, confidence, polygon, pageId)
         {
-            _logger = MindeeLogger.GetLogger();
+            var logger = MindeeLogger.GetLogger();
             IsComputed = isComputed;
 
-            if (!string.IsNullOrEmpty(Value))
+            if (string.IsNullOrEmpty(Value))
             {
-                try
-                {
-                    DateObject = DateTime.Parse(Value);
-                }
-                catch (FormatException)
-                {
-                    _logger?.LogWarning("Unable to parse the date: {}", Value);
-                }
+                return;
+            }
+
+            try
+            {
+                DateObject = DateTime.Parse(Value);
+            }
+            catch (FormatException)
+            {
+                logger?.LogWarning("Unable to parse the date: {}", Value);
             }
         }
 

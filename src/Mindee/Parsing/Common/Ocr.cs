@@ -85,7 +85,6 @@ namespace Mindee.Parsing.Common
 
                 return _allLines;
             }
-            private set { }
         }
 
         /// <summary>
@@ -113,7 +112,7 @@ namespace Mindee.Parsing.Common
             var lines = new List<List<Word>>();
 
             // go through each word ...
-            foreach (var ignored in AllWords)
+            foreach (var unused in AllWords)
             {
                 var line = new List<Word>();
                 var idx = 0;

@@ -37,7 +37,7 @@ namespace Mindee.Parsing.Custom.LineItem
             }
 
             // If anchor words are not sorted based on their Y value, strange things will happen.
-            anchorField.Values.Sort(delegate(ListFieldValue a, ListFieldValue b)
+            anchorField.Values.Sort(delegate (ListFieldValue a, ListFieldValue b)
             {
                 return a.Polygon.GetMinY().CompareTo(b.Polygon.GetMinY());
             });

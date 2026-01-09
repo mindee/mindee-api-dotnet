@@ -3,7 +3,7 @@ using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.Pdf;
 
-namespace Mindee.UnitTests.Domain.Pdf
+namespace Mindee.UnitTests.Pdf
 {
     public class PdfOperationTest
     {

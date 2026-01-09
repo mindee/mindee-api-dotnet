@@ -1,4 +1,4 @@
-namespace Mindee.Cli
+namespace Mindee.Cli.Commands
 {
     /// <summary>
     ///     How to output the response.

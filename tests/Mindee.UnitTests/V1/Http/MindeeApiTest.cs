@@ -6,7 +6,7 @@ using Mindee.Product.Invoice;
 using Mindee.Product.Receipt;
 // Necessary for .NET 4.7.2
 
-namespace Mindee.UnitTests.Http
+namespace Mindee.UnitTests.V1.Http
 {
     [Trait("Category", "V1")]
     [Trait("Category", "Mindee API")]

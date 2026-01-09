@@ -15,7 +15,6 @@ namespace Mindee.Http
     internal sealed class MindeeApi : IHttpApi
     {
         private readonly string _baseUrl;
-        private readonly Dictionary<string, string> _defaultHeaders;
         private readonly RestClient _httpClient;
         private readonly ILogger<MindeeApi> _logger;
 
@@ -32,11 +31,11 @@ namespace Mindee.Http
                 _baseUrl = mindeeSettings.Value.MindeeBaseUrl;
             }
 
-            _defaultHeaders = new Dictionary<string, string>
+            var defaultHeaders = new Dictionary<string, string>
             {
                 { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" }, { "Connection", "close" }
             };
-            _httpClient.AddDefaultHeaders(_defaultHeaders);
+            _httpClient.AddDefaultHeaders(defaultHeaders);
         }
 
         public async Task<AsyncPredictResponse<TModel>> PredictAsyncPostAsync<TModel>(
@@ -188,7 +187,7 @@ namespace Mindee.Http
             {
                 request.AddParameter(
                     "priority",
-                    workflowParameter.Priority != null ? workflowParameter.Priority.ToString()?.ToLower() : null);
+                    workflowParameter.Priority != null ? workflowParameter.Priority.ToString().ToLower() : null);
             }
 
             if (workflowParameter.Rag)

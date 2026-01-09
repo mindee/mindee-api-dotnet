@@ -7,7 +7,7 @@ using Mindee.Input;
 using Mindee.Parsing;
 using Mindee.Parsing.Common;
 
-namespace Mindee.Cli
+namespace Mindee.Cli.Commands
 {
     internal struct CommandOptions
     {

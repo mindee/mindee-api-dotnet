@@ -14,7 +14,7 @@ namespace Mindee.Parsing.Standard
         public override decimal? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var valueString = reader.GetString();
-            if (valueString == "")
+            if (string.IsNullOrEmpty(valueString))
             {
                 return null;
             }

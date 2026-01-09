@@ -1,6 +1,6 @@
 using Mindee.Exceptions;
 
-namespace Mindee.UnitTests
+namespace Mindee.UnitTests.V1
 {
     [Trait("Category", "V1")]
     [Trait("Category", "Mindee client options")]

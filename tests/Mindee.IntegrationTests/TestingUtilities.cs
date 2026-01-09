@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
-using Mindee.Extensions.DependencyInjection;
 
 namespace Mindee.IntegrationTests
 {
@@ -127,21 +126,21 @@ namespace Mindee.IntegrationTests
             }
 
             for (var j = 1; j <= targetLength; j++)
-            for (var i = 1; i <= refLength; i++)
-            {
-                if (refString[i - 1] == targetString[j - 1])
+                for (var i = 1; i <= refLength; i++)
                 {
-                    distanceMatrix[i, j] = distanceMatrix[i - 1, j - 1];
+                    if (refString[i - 1] == targetString[j - 1])
+                    {
+                        distanceMatrix[i, j] = distanceMatrix[i - 1, j - 1];
+                    }
+                    else
+                    {
+                        distanceMatrix[i, j] = Math.Min(Math.Min(
+                                distanceMatrix[i - 1, j] + 1,
+                                distanceMatrix[i, j - 1] + 1),
+                            distanceMatrix[i - 1, j - 1] + 1
+                        );
+                    }
                 }
-                else
-                {
-                    distanceMatrix[i, j] = Math.Min(Math.Min(
-                            distanceMatrix[i - 1, j] + 1,
-                            distanceMatrix[i, j - 1] + 1),
-                        distanceMatrix[i - 1, j - 1] + 1
-                    );
-                }
-            }
 
             return distanceMatrix[refLength, targetLength];
         }

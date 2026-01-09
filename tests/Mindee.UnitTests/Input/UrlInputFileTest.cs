@@ -44,7 +44,9 @@ namespace Mindee.UnitTests.Input
                 .Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RestResponse
                 {
-                    StatusCode = HttpStatusCode.OK, RawBytes = [1, 2, 3, 4, 5], IsSuccessStatusCode = true
+                    StatusCode = HttpStatusCode.OK,
+                    RawBytes = [1, 2, 3, 4, 5],
+                    IsSuccessStatusCode = true
                 });
 
             var urlInputSource = new UrlInputSource("https://example.com/file.pdf");
@@ -79,7 +81,9 @@ namespace Mindee.UnitTests.Input
                 .Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RestResponse
                 {
-                    StatusCode = HttpStatusCode.OK, RawBytes = [1, 2, 3, 4, 5], IsSuccessStatusCode = true
+                    StatusCode = HttpStatusCode.OK,
+                    RawBytes = [1, 2, 3, 4, 5],
+                    IsSuccessStatusCode = true
                 });
 
             var urlInputSource = new UrlInputSource("https://example.com/file.pdf");
@@ -96,7 +100,9 @@ namespace Mindee.UnitTests.Input
                 .Setup(x => x.ExecuteAsync(It.IsAny<RestRequest>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new RestResponse
                 {
-                    StatusCode = HttpStatusCode.OK, RawBytes = [1, 2, 3, 4, 5], IsSuccessStatusCode = true
+                    StatusCode = HttpStatusCode.OK,
+                    RawBytes = [1, 2, 3, 4, 5],
+                    IsSuccessStatusCode = true
                 });
 
             var urlInputSource = new UrlInputSource("https://example.com/file.pdf");

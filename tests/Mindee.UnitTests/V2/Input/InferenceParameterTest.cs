@@ -21,7 +21,8 @@ namespace Mindee.UnitTests.V2.Input
             DataSchemaString = JsonSerializer.Serialize(DataSchemaDict,
                 new JsonSerializerOptions
                 {
-                    WriteIndented = false, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                    WriteIndented = false,
+                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                 });
             DataSchemaInstance = new DataSchema(DataSchemaDict);
         }

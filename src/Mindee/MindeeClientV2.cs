@@ -18,7 +18,6 @@ namespace Mindee
     public sealed class MindeeClientV2
     {
         private readonly ILogger _logger;
-        private readonly ILoggerFactory _loggerFactory;
         private readonly HttpApiV2 _mindeeApi;
 
         /// <summary>
@@ -27,17 +26,17 @@ namespace Mindee
         /// <param name="loggerFactory">Factory for the logger.</param>
         public MindeeClientV2(string apiKey, ILoggerFactory loggerFactory = null)
         {
-            _loggerFactory = loggerFactory ?? LoggerFactory.Create(builder =>
+            var loggerFactory1 = loggerFactory ?? LoggerFactory.Create(builder =>
             {
                 builder.SetMinimumLevel(LogLevel.Debug);
             });
-            _logger = _loggerFactory.CreateLogger<MindeeClientV2>();
+            _logger = loggerFactory1.CreateLogger<MindeeClientV2>();
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = apiKey;
-            }, _loggerFactory);
+            }, loggerFactory1);
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
@@ -52,14 +51,14 @@ namespace Mindee
         /// <param name="logger"></param>
         public MindeeClientV2(MindeeSettingsV2 mindeeSettings, ILoggerFactory logger = null)
         {
-            _loggerFactory = logger ?? NullLoggerFactory.Instance;
+            var loggerFactory = logger ?? NullLoggerFactory.Instance;
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = mindeeSettings.ApiKey;
                 options.MindeeBaseUrl = mindeeSettings.MindeeBaseUrl;
                 options.RequestTimeoutSeconds = mindeeSettings.RequestTimeoutSeconds;
-            }, _loggerFactory);
+            }, loggerFactory);
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
             if (logger != null)
@@ -80,8 +79,8 @@ namespace Mindee
         public MindeeClientV2(HttpApiV2 httpApi, ILoggerFactory logger = null)
         {
             _mindeeApi = httpApi;
-            _loggerFactory = logger ?? NullLoggerFactory.Instance;
-            _logger = _loggerFactory.CreateLogger<MindeeClientV2>();
+            var loggerFactory = logger ?? NullLoggerFactory.Instance;
+            _logger = loggerFactory.CreateLogger<MindeeClientV2>();
         }
 
         /// <summary>
@@ -212,10 +211,7 @@ namespace Mindee
         {
             _logger?.LogInformation("Enqueue and poll: URL source");
 
-            if (inferenceParameters.PollingOptions == null)
-            {
-                inferenceParameters.PollingOptions = new AsyncPollingOptions();
-            }
+            inferenceParameters.PollingOptions ??= new AsyncPollingOptions();
 
             var enqueueResponse = await EnqueueInferenceAsync(
                 inputSource,
@@ -242,10 +238,7 @@ namespace Mindee
         {
             _logger?.LogInformation("Enqueue and poll: local source");
 
-            if (inferenceParameters.PollingOptions == null)
-            {
-                inferenceParameters.PollingOptions = new AsyncPollingOptions();
-            }
+            inferenceParameters.PollingOptions ??= new AsyncPollingOptions();
 
             var enqueueResponse = await EnqueueInferenceAsync(
                 inputSource,
@@ -282,7 +275,11 @@ namespace Mindee
             while (retryCount < maxRetries)
             {
                 Thread.Sleep(pollingOptions.IntervalMilliSec);
-                _logger?.LogInformation("Attempting to retrieve: {} of {}", retryCount, maxRetries);
+                _logger?.LogInformation(
+                    "Attempting to retrieve: {RetryCount} of {MaxRetries}",
+                    retryCount,
+                    maxRetries);
+
                 response = await GetJobAsync(jobId);
                 if (response.Job.Error != null)
                 {

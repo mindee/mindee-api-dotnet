@@ -44,7 +44,8 @@ namespace Mindee.Parsing.Standard
         {
             var printable = new Dictionary<string, string>
             {
-                ["type"] = SummaryHelper.FormatString(Type), ["value"] = SummaryHelper.FormatString(Value)
+                ["type"] = SummaryHelper.FormatString(Type),
+                ["value"] = SummaryHelper.FormatString(Value)
             };
             return printable;
         }

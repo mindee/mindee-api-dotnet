@@ -8,7 +8,7 @@ using Mindee.Product.Invoice;
 using Mindee.Product.InvoiceSplitter;
 using Mindee.Product.Receipt;
 
-namespace Mindee.IntegrationTests
+namespace Mindee.IntegrationTests.V1
 {
     [Trait("Category", "V1")]
     [Trait("Category", "Integration")]

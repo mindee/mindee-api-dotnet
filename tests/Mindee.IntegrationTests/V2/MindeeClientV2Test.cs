@@ -236,7 +236,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.False(string.IsNullOrWhiteSpace(url),
                 "Environment variable MindeeV2__Blank__Pdf__Url must be set and contain a valid URL.");
 
-            var inputSource = new UrlInputSource(new Uri(url!));
+            var inputSource = new UrlInputSource(new Uri(url));
             var inferenceParams = new InferenceParameters(_findocModelId);
             var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(inputSource, inferenceParams);
 
