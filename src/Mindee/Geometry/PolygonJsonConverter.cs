@@ -6,12 +6,12 @@ using System.Text.Json.Serialization;
 namespace Mindee.Geometry
 {
     /// <summary>
-    /// Custom de-serialize for <see cref="Polygon"/>
+    ///     Custom de-serialize for <see cref="Polygon" />
     /// </summary>
     public class PolygonJsonConverter : JsonConverter<Polygon>
     {
         /// <summary>
-        /// <see cref="Read(ref Utf8JsonReader, Type, JsonSerializerOptions)"/>
+        ///     <see cref="Read(ref Utf8JsonReader, Type, JsonSerializerOptions)" />
         /// </summary>
         public override Polygon Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
@@ -20,11 +20,12 @@ namespace Mindee.Geometry
             {
                 return new Polygon(points);
             }
+
             return null;
         }
 
         /// <summary>
-        /// <see cref="Write(Utf8JsonWriter, Polygon, JsonSerializerOptions)"/>
+        ///     <see cref="Write(Utf8JsonWriter, Polygon, JsonSerializerOptions)" />
         /// </summary>
         public override void Write(Utf8JsonWriter writer, Polygon value, JsonSerializerOptions options)
         {

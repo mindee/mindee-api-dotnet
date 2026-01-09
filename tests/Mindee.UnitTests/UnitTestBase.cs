@@ -1,5 +1,6 @@
 using System.Net;
-using System.Net.Http; // Necessary for .NET 4.7.2
+using System.Net.Http;
+using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Http;
@@ -7,6 +8,7 @@ using Mindee.Input;
 using Moq;
 using Moq.Protected;
 using RestSharp;
+// Necessary for .NET 4.7.2
 
 namespace Mindee.UnitTests
 {
@@ -15,10 +17,10 @@ namespace Mindee.UnitTests
         internal static PredictParameter GetFakePredictParameter()
         {
             return new PredictParameter(
-                localSource: new LocalInputSource(
-                    fileBytes: new byte[] { byte.MinValue },
-                    filename: "titicaca.pdf"),
-                urlSource: null,
+                new LocalInputSource(
+                    new[] { byte.MinValue },
+                    "titicaca.pdf"),
+                null,
                 cropper: false,
                 allWords: false,
                 fullText: false,
@@ -45,7 +47,7 @@ namespace Mindee.UnitTests
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = statusCode,
-                    Content = new StringContent(fileContent, System.Text.Encoding.UTF8, "application/json")
+                    Content = new StringContent(fileContent, Encoding.UTF8, "application/json")
                 });
 
             services.AddMindeeApi(options =>
@@ -58,7 +60,7 @@ namespace Mindee.UnitTests
             services.AddSingleton(new RestClient(new RestClientOptions
             {
                 BaseUrl = new Uri("https://api.mindee.net"),
-                ConfigureMessageHandler = _ => mockHttpMessageHandler.Object,
+                ConfigureMessageHandler = _ => mockHttpMessageHandler.Object
             }));
 
             return services.BuildServiceProvider();
@@ -83,7 +85,7 @@ namespace Mindee.UnitTests
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = statusCode,
-                    Content = new StringContent(fileContent, System.Text.Encoding.UTF8, "application/json")
+                    Content = new StringContent(fileContent, Encoding.UTF8, "application/json")
                 });
 
 
@@ -94,11 +96,12 @@ namespace Mindee.UnitTests
                 options.RequestTimeoutSeconds = 120;
             });
 
-            services.AddKeyedSingleton("MindeeV2RestClient", new RestClient(new RestClientOptions
-            {
-                BaseUrl = new Uri("https://api.mindee.net"),
-                ConfigureMessageHandler = _ => mockHttpMessageHandler.Object,
-            }));
+            services.AddKeyedSingleton("MindeeV2RestClient",
+                new RestClient(new RestClientOptions
+                {
+                    BaseUrl = new Uri("https://api.mindee.net"),
+                    ConfigureMessageHandler = _ => mockHttpMessageHandler.Object
+                }));
 
             return services.BuildServiceProvider();
         }
@@ -109,7 +112,7 @@ namespace Mindee.UnitTests
 
             var serviceProvider = InitServiceProviderV1(
                 HttpStatusCode.OK,
-                fileContent: fileContent
+                fileContent
             );
 
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
@@ -123,7 +126,7 @@ namespace Mindee.UnitTests
 
             var serviceProvider = InitServiceProviderV2(
                 HttpStatusCode.OK,
-                fileContent: fileContent
+                fileContent
             );
 
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApiV2>();

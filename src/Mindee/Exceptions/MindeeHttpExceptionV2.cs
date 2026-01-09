@@ -5,27 +5,12 @@ using Mindee.Parsing.V2;
 namespace Mindee.Exceptions
 {
     /// <summary>
-    /// Representation of a Mindee API V2 exception.
+    ///     Representation of a Mindee API V2 exception.
     /// </summary>
     public class MindeeHttpExceptionV2 : Exception, IErrorResponse
     {
-        /// <inheritdoc/>
-        public string Detail { get; set; }
-
-        /// <inheritdoc/>
-        public int Status { get; set; }
-
-        /// <inheritdoc/>
-        public string Title { get; set; }
-
-        /// <inheritdoc/>
-        public string Code { get; set; }
-
-        /// <inheritdoc/>
-        public List<ErrorItem> Errors { get; set; }
-
         /// <summary>
-        /// Initialize an instance using the provided Error object.
+        ///     Initialize an instance using the provided Error object.
         /// </summary>
         /// <param name="error">ErrorResponse object.</param>
         public MindeeHttpExceptionV2(ErrorResponse error)
@@ -37,5 +22,20 @@ namespace Mindee.Exceptions
             Code = error.Code;
             Errors = error.Errors;
         }
+
+        /// <inheritdoc />
+        public string Detail { get; set; }
+
+        /// <inheritdoc />
+        public int Status { get; set; }
+
+        /// <inheritdoc />
+        public string Title { get; set; }
+
+        /// <inheritdoc />
+        public string Code { get; set; }
+
+        /// <inheritdoc />
+        public List<ErrorItem> Errors { get; set; }
     }
 }

@@ -11,13 +11,10 @@ namespace Mindee.UnitTests.V1.Parsing.Custom
         public async Task BuildLineItems_SingeTable01()
         {
             var mindeeAPi = GetMindeeApiForCustom(
-                fileName: Constants.V1ProductDir + "custom/response_v1/line_items/single_table_01.json");
-            var fieldNamesToLineItems = new List<string>()
+                Constants.V1ProductDir + "custom/response_v1/line_items/single_table_01.json");
+            var fieldNamesToLineItems = new List<string>
             {
-                "beneficiary_name",
-                "beneficiary_birth_date",
-                "beneficiary_number",
-                "beneficiary_rank"
+                "beneficiary_name", "beneficiary_birth_date", "beneficiary_number", "beneficiary_rank"
             };
 
             var response = await mindeeAPi.PredictPostAsync<CustomV1>(
@@ -46,9 +43,9 @@ namespace Mindee.UnitTests.V1.Parsing.Custom
         public async Task BuildLineItems_MultipleTables01()
         {
             var mindeeAPi = GetMindeeApiForCustom(
-                fileName: Constants.V1ProductDir + "custom/response_v1/line_items/multiple_tables_01.json");
+                Constants.V1ProductDir + "custom/response_v1/line_items/multiple_tables_01.json");
 
-            var earningsAnchor = new Anchor(name: "earnings_description", tolerance: 0.002d);
+            var earningsAnchor = new Anchor("earnings_description", 0.002d);
             var earningsFields = new List<string>
             {
                 "earnings_description",
@@ -59,12 +56,8 @@ namespace Mindee.UnitTests.V1.Parsing.Custom
                 "earnings_ytd_hrs"
             };
 
-            var taxesAnchor = new Anchor(name: "taxes_description", tolerance: 0.002d);
-            var taxesFields = new List<string>(new string[] {
-                "taxes_description",
-                "taxes_amount",
-                "taxes_ytd_amt",
-            });
+            var taxesAnchor = new Anchor("taxes_description", 0.002d);
+            var taxesFields = new List<string>(new[] { "taxes_description", "taxes_amount", "taxes_ytd_amt" });
 
             var response = await mindeeAPi.PredictPostAsync<CustomV1>(
                 UnitTestBase.GetFakePredictParameter()
@@ -94,9 +87,9 @@ namespace Mindee.UnitTests.V1.Parsing.Custom
         public async Task BuildLineItems_MultipleTables02()
         {
             var mindeeAPi = GetMindeeApiForCustom(
-                fileName: Constants.V1ProductDir + "custom/response_v1/line_items/multiple_tables_02.json");
+                Constants.V1ProductDir + "custom/response_v1/line_items/multiple_tables_02.json");
 
-            var earningsAnchor = new Anchor(name: "earnings_description", tolerance: 0.002d);
+            var earningsAnchor = new Anchor("earnings_description", 0.002d);
             var earningsFields = new List<string>
             {
                 "earnings_description",
@@ -107,12 +100,8 @@ namespace Mindee.UnitTests.V1.Parsing.Custom
                 "earnings_ytd_hrs"
             };
 
-            var taxesAnchor = new Anchor(name: "taxes_description", tolerance: 0.002d);
-            var taxesFields = new List<string>(new string[] {
-                "taxes_description",
-                "taxes_amount",
-                "taxes_ytd_amt",
-            });
+            var taxesAnchor = new Anchor("taxes_description", 0.002d);
+            var taxesFields = new List<string>(new[] { "taxes_description", "taxes_amount", "taxes_ytd_amt" });
 
             var response = await mindeeAPi.PredictPostAsync<CustomV1>(
                 UnitTestBase.GetFakePredictParameter()
@@ -138,7 +127,8 @@ namespace Mindee.UnitTests.V1.Parsing.Custom
             Assert.Equal("ZZ Disability", taxesLastLine.Fields["taxes_description"].Content);
         }
 
-        private MindeeApi GetMindeeApiForCustom(string fileName = Constants.V1ProductDir + "custom/response_v1/complete.json")
+        private MindeeApi GetMindeeApiForCustom(
+            string fileName = Constants.V1ProductDir + "custom/response_v1/complete.json")
         {
             return UnitTestBase.GetMindeeApi(fileName);
         }

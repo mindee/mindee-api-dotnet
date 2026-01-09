@@ -7,11 +7,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
     [Trait("Category", "FullTextOcr")]
     public class FullTextOcrTest
     {
-
-        private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        };
+        private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
 
         private Inference<InternationalIdV2Document, InternationalIdV2Document> LoadInference()
         {
@@ -21,6 +17,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
             {
                 throw new Exception();
             }
+
             return prediction.Document.Inference;
         }
 
@@ -32,6 +29,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
             {
                 throw new Exception();
             }
+
             return prediction.Document.Inference.Pages;
         }
 
@@ -43,8 +41,8 @@ namespace Mindee.UnitTests.V1.Parsing.Common
             var inference = LoadInference();
 
             // Act
-            string fullTextOcr = inference.Extras.FullTextOcr;
-            string page0Ocr = pages[0].Extras.FullTextOcr.Content;
+            var fullTextOcr = inference.Extras.FullTextOcr;
+            var page0Ocr = pages[0].Extras.FullTextOcr.Content;
 
             // Assert
             Assert.Equal(string.Join("\n", expectedText), fullTextOcr);

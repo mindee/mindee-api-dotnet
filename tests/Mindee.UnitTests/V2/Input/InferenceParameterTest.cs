@@ -9,43 +9,49 @@ namespace Mindee.UnitTests.V2.Input
     public class InferenceParameterTest
     {
         private const string ReplacePath = Constants.V2RootDir + "inference/data_schema_replace_param.json";
-        private string DataSchemaString;
-        private Dictionary<string, object> DataSchemaDict;
-        private DataSchema DataSchemaInstance;
+        private readonly Dictionary<string, object> DataSchemaDict;
+        private readonly DataSchema DataSchemaInstance;
+        private readonly string DataSchemaString;
 
         public InferenceParameterTest()
         {
             var fileContent = File.ReadAllText(ReplacePath).Trim();
-            DataSchemaDict = JsonSerializer.Deserialize<Dictionary<string, object>>(fileContent) ?? new Dictionary<string, object>();
-            DataSchemaString = JsonSerializer.Serialize(DataSchemaDict, new JsonSerializerOptions
-            {
-                WriteIndented = false,
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            });
+            DataSchemaDict = JsonSerializer.Deserialize<Dictionary<string, object>>(fileContent) ??
+                             new Dictionary<string, object>();
+            DataSchemaString = JsonSerializer.Serialize(DataSchemaDict,
+                new JsonSerializerOptions
+                {
+                    WriteIndented = false,
+                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                });
             DataSchemaInstance = new DataSchema(DataSchemaDict);
         }
+
         [Fact]
         public void DataSchemaNull_ShouldInitializeWithoutIssues()
         {
-            InferenceParameters inferenceParameters = new InferenceParameters(modelId: "test");
+            var inferenceParameters = new InferenceParameters("test");
             Assert.Null(inferenceParameters.DataSchema);
         }
+
         [Fact]
         public void DataSchemaStr_ShouldInitialize()
         {
-            InferenceParameters inferenceParameters = new InferenceParameters(modelId: "test", dataSchema: DataSchemaString);
+            var inferenceParameters = new InferenceParameters("test", dataSchema: DataSchemaString);
             Assert.Equal(DataSchemaString, inferenceParameters.DataSchema.ToString());
         }
+
         [Fact]
         public void DataSchemaDict_ShouldInitialize()
         {
-            InferenceParameters inferenceParameters = new InferenceParameters(modelId: "test", dataSchema: DataSchemaDict);
+            var inferenceParameters = new InferenceParameters("test", dataSchema: DataSchemaDict);
             Assert.Equal(DataSchemaString, inferenceParameters.DataSchema.ToString());
         }
+
         [Fact]
         public void DataSchemaInstance_ShouldInitialize()
         {
-            InferenceParameters inferenceParameters = new InferenceParameters(modelId: "test", dataSchema: DataSchemaInstance);
+            var inferenceParameters = new InferenceParameters("test", dataSchema: DataSchemaInstance);
             Assert.Equal(DataSchemaString, inferenceParameters.DataSchema.ToString());
         }
     }

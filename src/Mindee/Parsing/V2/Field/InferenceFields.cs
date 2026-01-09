@@ -6,12 +6,12 @@ using System.Text;
 namespace Mindee.Parsing.V2.Field
 {
     /// <summary>
-    /// Inference fields dict.
+    ///     Inference fields dict.
     /// </summary>
     public class InferenceFields : Dictionary<string, DynamicField>
     {
         /// <summary>
-        /// Pretty-prints the dictionary with an optional indentation level.
+        ///     Pretty-prints the dictionary with an optional indentation level.
         /// </summary>
         /// <param name="indent">Indent level (each level equals two spaces).</param>
         /// <returns>String representation similar to the Java implementation.</returns>
@@ -22,12 +22,12 @@ namespace Mindee.Parsing.V2.Field
                 return string.Empty;
             }
 
-            string padding = string.Concat(Enumerable.Repeat("  ", Math.Max(0, indent)));
+            var padding = string.Concat(Enumerable.Repeat("  ", Math.Max(0, indent)));
             StringBuilder joiner = new();
 
-            foreach (KeyValuePair<string, DynamicField> fieldPair in this)
+            foreach (var fieldPair in this)
             {
-                DynamicField fieldValue = fieldPair.Value;
+                var fieldValue = fieldPair.Value;
                 StringBuilder line = new();
 
                 line.Append(padding)
@@ -45,7 +45,7 @@ namespace Mindee.Parsing.V2.Field
                 }
                 else if (fieldValue.SimpleField != null)
                 {
-                    string simpleText = fieldValue.SimpleField.ToString();
+                    var simpleText = fieldValue.SimpleField.ToString();
                     if (!string.IsNullOrEmpty(simpleText))
                     {
                         line.Append(" " + simpleText);
@@ -54,13 +54,17 @@ namespace Mindee.Parsing.V2.Field
 
                 joiner.AppendLine(line.ToString());
             }
-            string summary = joiner.ToString().TrimEnd('\n', '\r');
+
+            var summary = joiner.ToString().TrimEnd('\n', '\r');
             return SummaryHelper.Clean(summary);
         }
 
         /// <summary>
-        /// Default string representation.
+        ///     Default string representation.
         /// </summary>
-        public override string ToString() => ToString(0);
+        public override string ToString()
+        {
+            return ToString(0);
+        }
     }
 }

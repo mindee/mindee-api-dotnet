@@ -45,7 +45,7 @@ namespace Mindee.UnitTests.V1.Product.BillOfLading
 
         private static async Task<PredictResponse<BillOfLadingV1>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/bill_of_lading/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/bill_of_lading/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<BillOfLadingV1>(
                 UnitTestBase.GetFakePredictParameter());

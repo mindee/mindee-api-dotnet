@@ -23,7 +23,7 @@ namespace Mindee.UnitTests.Extraction
             foreach (var page in inference.Pages)
             {
                 var subImages = extractor.ExtractImagesFromPage(page.Prediction.Receipts, page.Id);
-                for (int i = 0; i < subImages.Count; i++)
+                for (var i = 0; i < subImages.Count; i++)
                 {
                     var extractedImage = subImages[i];
                     Assert.NotNull(extractedImage.Image);
@@ -51,7 +51,7 @@ namespace Mindee.UnitTests.Extraction
             foreach (var page in inference.Pages)
             {
                 var codes1D = extractor.ExtractImagesFromPage(page.Prediction.Codes1D, page.Id, "barcodes_1D.jpg");
-                for (int i = 0; i < codes1D.Count; i++)
+                for (var i = 0; i < codes1D.Count; i++)
                 {
                     var extractedImage = codes1D[i];
                     Assert.NotNull(extractedImage.Image);
@@ -87,7 +87,7 @@ namespace Mindee.UnitTests.Extraction
             {
                 var subImages = extractor.ExtractImagesFromPage(page.Prediction.Receipts, page.Id);
 
-                for (int i = 0; i < subImages.Count; i++)
+                for (var i = 0; i < subImages.Count; i++)
                 {
                     var extractedImage = subImages[i];
                     Assert.NotNull(extractedImage.Image);
@@ -105,7 +105,7 @@ namespace Mindee.UnitTests.Extraction
         private static async Task<PredictResponse<MultiReceiptsDetectorV1>> GetMultiReceiptsDetectorPrediction(
             string name)
         {
-            string fileName = Constants.V1RootDir + $"products/multi_receipts_detector/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/multi_receipts_detector/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<MultiReceiptsDetectorV1>(
                 UnitTestBase.GetFakePredictParameter());
@@ -113,7 +113,7 @@ namespace Mindee.UnitTests.Extraction
 
         private static async Task<PredictResponse<BarcodeReaderV1>> GetBarcodeReaderPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/barcode_reader/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/barcode_reader/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<BarcodeReaderV1>(
                 UnitTestBase.GetFakePredictParameter());

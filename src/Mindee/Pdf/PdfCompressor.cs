@@ -8,16 +8,19 @@ using SkiaSharp;
 namespace Mindee.Pdf
 {
     /// <summary>
-    /// Image compressor static class to handle PDF compression.
+    ///     Image compressor static class to handle PDF compression.
     /// </summary>
     public static class PdfCompressor
     {
         /// <summary>
-        /// Compresses a PDF file using DocLib.
+        ///     Compresses a PDF file using DocLib.
         /// </summary>
         /// <param name="pdfData">Byte array representing the content of the PDF file.</param>
         /// <param name="imageQuality">Quality of the final file.</param>
-        /// <param name="forceSourceTextCompression">Whether to force the rendering of source pdf. If enabled, will attempt to re-write the detected text.</param>
+        /// <param name="forceSourceTextCompression">
+        ///     Whether to force the rendering of source pdf. If enabled, will attempt to
+        ///     re-write the detected text.
+        /// </param>
         /// <param name="disableSourceText">If the PDF has source text, whether to re-apply it to the original or not.</param>
         /// <returns>A byte array containing a compressed PDF.</returns>
         public static byte[] CompressPdf(
@@ -54,7 +57,7 @@ namespace Mindee.Pdf
         private static void ProcessPages(IDocReader docReader, SKDocument document, int imageQuality,
             bool disableSourceText)
         {
-            for (int i = 0; i < docReader.GetPageCount(); i++)
+            for (var i = 0; i < docReader.GetPageCount(); i++)
             {
                 ProcessSinglePage(docReader, document, i, imageQuality, disableSourceText);
             }

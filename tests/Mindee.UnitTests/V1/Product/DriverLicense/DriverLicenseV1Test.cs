@@ -36,7 +36,7 @@ namespace Mindee.UnitTests.V1.Product.DriverLicense
 
         private static async Task<PredictResponse<DriverLicenseV1>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/driver_license/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/driver_license/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<DriverLicenseV1>(
                 UnitTestBase.GetFakePredictParameter());

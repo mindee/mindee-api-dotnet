@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +17,8 @@ namespace Mindee.Http
 
         public MindeeApiV2(
             IOptions<MindeeSettingsV2> mindeeSettings,
-            [FromKeyedServices("MindeeV2RestClient")] RestClient httpClient,
+            [FromKeyedServices("MindeeV2RestClient")]
+            RestClient httpClient,
             ILogger<MindeeApiV2> logger = null)
         {
             Logger = logger ?? NullLogger<MindeeApiV2>.Instance;
@@ -31,7 +31,7 @@ namespace Mindee.Http
 
             var defaultHeaders = new Dictionary<string, string>
             {
-                { "Authorization", $"{mindeeSettings.Value.ApiKey}" }, {"Connection", "close"}
+                { "Authorization", $"{mindeeSettings.Value.ApiKey}" }, { "Connection", "close" }
             };
             _httpClient.AddDefaultHeaders(defaultHeaders);
         }
@@ -57,7 +57,7 @@ namespace Mindee.Http
             Logger?.LogInformation($"HTTP GET to {_baseUrl + request.Resource}...");
             var response = await _httpClient.ExecuteGetAsync(request);
             Logger?.LogDebug($"HTTP response: {response.Content}");
-            JobResponse handledResponse = ResponseHandler<JobResponse>(response);
+            var handledResponse = ResponseHandler<JobResponse>(response);
             return handledResponse;
         }
 
@@ -84,26 +84,32 @@ namespace Mindee.Http
             {
                 request.AddParameter("url", predictParameter.UrlSource.FileUrl.ToString());
             }
+
             if (!string.IsNullOrWhiteSpace(predictParameter.Alias))
             {
-                request.AddParameter(name: "alias", value: predictParameter.Alias);
+                request.AddParameter("alias", predictParameter.Alias);
             }
+
             if (predictParameter.Rag != null)
             {
                 request.AddParameter("rag", predictParameter.Rag.Value.ToString());
             }
+
             if (predictParameter.RawText != null)
             {
                 request.AddParameter("raw_text", predictParameter.RawText.Value.ToString());
             }
+
             if (predictParameter.Polygon != null)
             {
                 request.AddParameter("polygon", predictParameter.Polygon.Value.ToString());
             }
+
             if (predictParameter.Confidence != null)
             {
                 request.AddParameter("confidence", predictParameter.Confidence.Value.ToString());
             }
+
             if (predictParameter.TextContext != null)
             {
                 request.AddParameter("text_context", predictParameter.TextContext);
@@ -113,9 +119,10 @@ namespace Mindee.Http
             {
                 request.AddParameter("data_schema", predictParameter.DataSchema.ToString());
             }
+
             if (predictParameter.WebhookIds is { Count: > 0 })
             {
-                request.AddParameter(name: "webhook_ids", value: string.Join(",", predictParameter.WebhookIds));
+                request.AddParameter("webhook_ids", string.Join(",", predictParameter.WebhookIds));
             }
         }
 
@@ -124,10 +131,12 @@ namespace Mindee.Http
         {
             Logger?.LogDebug($"HTTP response: {restResponse.Content}");
 
-            int statusCode = (int)restResponse.StatusCode;
+            var statusCode = (int)restResponse.StatusCode;
 
             if (statusCode is > 199 and < 400)
+            {
                 return DeserializeResponse<TResponse>(restResponse.Content);
+            }
 
             throw new MindeeHttpExceptionV2(
                 GetErrorFromContent((int)restResponse.StatusCode, restResponse.Content));

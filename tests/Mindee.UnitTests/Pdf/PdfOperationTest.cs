@@ -3,7 +3,7 @@ using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.Pdf;
 
-namespace Mindee.UnitTests.Domain.Pdf
+namespace Mindee.UnitTests.Pdf
 {
     public class PdfOperationTest
     {
@@ -34,7 +34,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         public void Split_Wants2Pages_MustGet2Pages()
         {
             var splitQuery = new SplitQuery(File.ReadAllBytes(
-                Constants.RootDir + "file_types/pdf/multipage.pdf"),
+                    Constants.RootDir + "file_types/pdf/multipage.pdf"),
                 new PageOptions(new short[] { 0, 1 }));
 
             var splitPdf = _pdfOperation.Split(splitQuery);
@@ -60,7 +60,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         public void Split_OtherThanAPdf_MustFail()
         {
             var splitQuery = new SplitQuery(File.ReadAllBytes(
-                Constants.RootDir + "file_types/receipt.jpga"),
+                    Constants.RootDir + "file_types/receipt.jpga"),
                 new PageOptions(new short[] { 0, 1, 2 }));
 
             Assert.Throws<MindeeException>(() => _pdfOperation.Split(splitQuery));
@@ -71,7 +71,7 @@ namespace Mindee.UnitTests.Domain.Pdf
         public void Split_ShouldCutTheFirstAndThe2LastPages_MustSuccess()
         {
             var splitQuery = new SplitQuery(File.ReadAllBytes(
-                Constants.RootDir + "file_types/pdf/multipage.pdf"),
+                    Constants.RootDir + "file_types/pdf/multipage.pdf"),
                 new PageOptions(new short[] { 0, -2, -1 }));
 
             var splitPdf = _pdfOperation.Split(splitQuery);

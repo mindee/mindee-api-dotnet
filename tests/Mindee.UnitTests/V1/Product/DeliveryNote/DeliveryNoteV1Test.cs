@@ -30,7 +30,7 @@ namespace Mindee.UnitTests.V1.Product.DeliveryNote
 
         private static async Task<PredictResponse<DeliveryNoteV1>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/delivery_notes/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/delivery_notes/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<DeliveryNoteV1>(
                 UnitTestBase.GetFakePredictParameter());

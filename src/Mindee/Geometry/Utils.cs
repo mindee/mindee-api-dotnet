@@ -5,12 +5,12 @@ using System.Linq;
 namespace Mindee.Geometry
 {
     /// <summary>
-    /// Various geometry functions.
+    ///     Various geometry functions.
     /// </summary>
     public static class Utils
     {
         /// <summary>
-        /// Determine if a Point is within two Y coordinates.
+        ///     Determine if a Point is within two Y coordinates.
         /// </summary>
         /// <param name="point"></param>
         /// <param name="minY"></param>
@@ -22,31 +22,37 @@ namespace Mindee.Geometry
         }
 
         /// <summary>
-        /// Compare two polygons based on their Y coordinates.
-        /// Useful for sorting lists.
+        ///     Compare two polygons based on their Y coordinates.
+        ///     Useful for sorting lists.
         /// </summary>
         public static int CompareOnY(Polygon polygon1, Polygon polygon2)
         {
-            double sort = polygon1.GetMinY() - polygon2.GetMinY();
+            var sort = polygon1.GetMinY() - polygon2.GetMinY();
             if (sort == 0)
+            {
                 return 0;
+            }
+
             return sort < 0 ? -1 : 1;
         }
 
         /// <summary>
-        /// Compare two polygons based on their X coordinates.
-        /// Useful for sorting lists.
+        ///     Compare two polygons based on their X coordinates.
+        ///     Useful for sorting lists.
         /// </summary>
         public static int CompareOnX(Polygon polygon1, Polygon polygon2)
         {
-            double sort = polygon1.GetMinX() - polygon2.GetMinX();
+            var sort = polygon1.GetMinX() - polygon2.GetMinX();
             if (sort == 0)
+            {
                 return 0;
+            }
+
             return sort < 0 ? -1 : 1;
         }
 
         /// <summary>
-        /// Create from polygon.
+        ///     Create from polygon.
         /// </summary>
         /// <param name="polygon"></param>
         public static Bbox BboxFromPolygon(Polygon polygon)
@@ -61,39 +67,39 @@ namespace Mindee.Geometry
                 polygon.GetMaxX(),
                 polygon.GetMinY(),
                 polygon.GetMaxY()
-                );
+            );
         }
 
         /// <summary>
-        /// Create from a list of polygons.
+        ///     Create from a list of polygons.
         /// </summary>
-        /// <param name="polygons"><see cref="Polygon"/></param>
+        /// <param name="polygons">
+        ///     <see cref="Polygon" />
+        /// </param>
         /// <exception cref="ArgumentException"></exception>
         public static Polygon BoundingBoxFromPolygons(IEnumerable<Polygon> polygons)
         {
-            if (!polygons.Any())
+            var polygonsAsList = polygons as Polygon[] ?? polygons.ToArray();
+            if (polygonsAsList.Length == 0)
             {
-                throw new ArgumentException(nameof(polygons));
+                throw new ArgumentException(null, nameof(polygons));
             }
 
-            var minX = polygons.Min(p => p.GetMinX());
-            var minY = polygons.Min(p => p.GetMinY());
-            var maxX = polygons.Max(p => p.GetMaxX());
-            var maxY = polygons.Max(p => p.GetMaxY());
+            var minX = polygonsAsList.Min(p => p.GetMinX());
+            var minY = polygonsAsList.Min(p => p.GetMinY());
+            var maxX = polygonsAsList.Max(p => p.GetMaxX());
+            var maxY = polygonsAsList.Max(p => p.GetMaxY());
 
             return new Polygon(
-                new List<Point>() {
-                    new Point(minX, minY),
-                    new Point(maxX, minY),
-                    new Point(maxX, maxY),
-                    new Point(minX, maxY)
-                });
+                new List<Point> { new(minX, minY), new(maxX, minY), new(maxX, maxY), new(minX, maxY) });
         }
 
         /// <summary>
-        /// Create from polygon.
+        ///     Create from polygon.
         /// </summary>
-        /// <param name="polygon"><see cref="Polygon"/></param>
+        /// <param name="polygon">
+        ///     <see cref="Polygon" />
+        /// </param>
         public static Polygon BoundingBoxFromPolygon(Polygon polygon)
         {
             if (polygon == null)
@@ -107,12 +113,7 @@ namespace Mindee.Geometry
             var maxY = polygon.GetMaxY();
 
             return new Polygon(
-                new List<Point>() {
-                    new Point(minX, minY),
-                    new Point(maxX, minY),
-                    new Point(maxX, maxY),
-                    new Point(minX, maxY)
-                });
+                new List<Point> { new(minX, minY), new(maxX, minY), new(maxX, maxY), new(minX, maxY) });
         }
     }
 }

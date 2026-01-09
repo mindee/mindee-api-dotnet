@@ -1,13 +1,13 @@
 namespace Mindee.Parsing
 {
     /// <summary>
-    /// All prediction classes.
+    ///     All prediction classes.
     /// </summary>
     public interface IPrediction
     {
         /// <summary>
-        /// A prettier representation of the current model values.
+        ///     A prettier representation of the current model values.
         /// </summary>
-        public string ToString();
+        string ToString();
     }
 }

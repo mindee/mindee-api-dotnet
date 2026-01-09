@@ -16,24 +16,12 @@ namespace Mindee.UnitTests.Geometry
 
         private static List<Point> GetPointsAsRectangle()
         {
-            return new List<Point>()
-            {
-                new Point(0.123, 0.53),
-                new Point(0.175, 0.53),
-                new Point(0.175, 0.546),
-                new Point(0.123, 0.546)
-            };
+            return new List<Point> { new(0.123, 0.53), new(0.175, 0.53), new(0.175, 0.546), new(0.123, 0.546) };
         }
 
         private static List<Point> GetPointsWichIsNotRectangle()
         {
-            return new List<Point>()
-            {
-                new Point(0.205, 0.407),
-                new Point(0.379, 0.407),
-                new Point(0.381, 0.43),
-                new Point(0.207, 0.43)
-            };
+            return new List<Point> { new(0.205, 0.407), new(0.379, 0.407), new(0.381, 0.43), new(0.207, 0.43) };
         }
     }
 }

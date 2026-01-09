@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -11,7 +10,7 @@ namespace Mindee.Parsing
     {
         public static string Clean(string summary)
         {
-            Regex cleanSpace = new Regex(" \n", RegexOptions.Multiline);
+            var cleanSpace = new Regex(" \n", RegexOptions.Multiline);
             return cleanSpace.Replace(summary, "\n");
         }
 
@@ -37,38 +36,41 @@ namespace Mindee.Parsing
 
         public static string FormatString(string str, int maxLength)
         {
-            String strSummary = FormatString(str);
+            var strSummary = FormatString(str);
             if (strSummary.Length > maxLength)
             {
                 strSummary = strSummary.Substring(0, maxLength - 3) + "...";
             }
+
             return strSummary;
         }
 
         /// <summary>
-        /// Format an rST table line separator.
+        ///     Format an rST table line separator.
         /// </summary>
         public static string LineSeparator(int[] columnSizes, char str)
         {
-            StringBuilder outStr = new StringBuilder("+");
+            var outStr = new StringBuilder("+");
 
             foreach (var size in columnSizes)
             {
-                outStr.Append(new String(str, size) + "+");
+                outStr.Append(new string(str, size) + "+");
             }
+
             outStr.Append('\n');
             return outStr.ToString();
         }
 
-        public static String ArrayToString<T>(List<T> lineItems, int[] columnSizes)
-        where T : LineItemField, new()
+        public static string ArrayToString<T>(List<T> lineItems, int[] columnSizes)
+            where T : LineItemField, new()
         {
-            StringBuilder outStr = new StringBuilder();
+            var outStr = new StringBuilder();
             foreach (var lineItem in lineItems)
             {
                 outStr.Append("  " + lineItem.ToTableLine() + '\n');
                 outStr.Append("  " + LineSeparator(columnSizes, '-'));
             }
+
             return outStr.ToString();
         }
     }

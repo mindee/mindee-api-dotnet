@@ -8,29 +8,13 @@ using Mindee.Exceptions;
 using Mindee.Image;
 using Mindee.Pdf;
 
-
 namespace Mindee.Input
 {
     /// <summary>
-    /// Represent a document to parse.
+    ///     Represent a document to parse.
     /// </summary>
     public sealed class LocalInputSource
     {
-        /// <summary>
-        /// The file as a stream.
-        /// </summary>
-        public byte[] FileBytes { get; set; }
-
-        /// <summary>
-        /// The name of the file.
-        /// </summary>
-        public string Filename { get; set; }
-
-        /// <summary>
-        /// Extension file's.
-        /// </summary>
-        public string Extension { get; set; }
-
         private static readonly string[] _authorizedFileExtensions =
         {
             ".heic", ".jpg", ".jpga", ".jpeg", ".pdf", ".png", ".tiff", ".tif", ".webp"
@@ -39,7 +23,7 @@ namespace Mindee.Input
         private DocNetApi _pdfOperation;
 
         /// <summary>
-        /// Construct from bytes.
+        ///     Construct from bytes.
         /// </summary>
         /// <param name="fileBytes">The file contents as bytes.</param>
         /// <param name="filename">The name of the file.</param>
@@ -51,7 +35,7 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Construct from string.
+        ///     Construct from string.
         /// </summary>
         /// <param name="filePath">The file's local path as a string.</param>
         /// <exception cref="MindeeInputException"></exception>
@@ -68,7 +52,7 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Construct from stream.
+        ///     Construct from stream.
         /// </summary>
         /// <param name="fileStream">The file contents as a stream.</param>
         /// <param name="filename">The file name.</param>
@@ -85,7 +69,7 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Load the document to perform some checks.
+        ///     Load the document to perform some checks.
         /// </summary>
         /// <param name="fileinfo">ResultFile information from the file to load from disk.</param>
         /// <exception cref="MindeeInputException"></exception>
@@ -96,7 +80,7 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Load a file from a given base64 string.
+        ///     Load a file from a given base64 string.
         /// </summary>
         /// <param name="base64Data"></param>
         /// <param name="filename"></param>
@@ -105,6 +89,21 @@ namespace Mindee.Input
             FileBytes = Convert.FromBase64String(base64Data);
             SetFileName(filename);
         }
+
+        /// <summary>
+        ///     The file as a stream.
+        /// </summary>
+        public byte[] FileBytes { get; set; }
+
+        /// <summary>
+        ///     The name of the file.
+        /// </summary>
+        public string Filename { get; set; }
+
+        /// <summary>
+        ///     Extension file's.
+        /// </summary>
+        public string Extension { get; set; }
 
         /// <param name="filename"></param>
         /// <exception cref="MindeeInputException"></exception>
@@ -124,17 +123,16 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Determine if the file extension is valid.
+        ///     Determine if the file extension is valid.
         /// </summary>
         public bool IsExtensionValid()
         {
-            return _authorizedFileExtensions.Any(
-                f => f.Equals(Extension, StringComparison.InvariantCultureIgnoreCase)
+            return _authorizedFileExtensions.Any(f => f.Equals(Extension, StringComparison.InvariantCultureIgnoreCase)
             );
         }
 
         /// <summary>
-        /// Determine if the file is a PDF.
+        ///     Determine if the file is a PDF.
         /// </summary>
         public bool IsPdf()
         {
@@ -142,7 +140,7 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Returns the page count for PDF files, or '1' otherwise.
+        ///     Returns the page count for PDF files, or '1' otherwise.
         /// </summary>
         /// <returns>The page count, as an integer.</returns>
         public int GetPageCount()
@@ -154,37 +152,38 @@ namespace Mindee.Input
 
             lock (DocLib.Instance)
             {
-                var docInstance = DocLib.Instance.GetDocReader(this.FileBytes, new PageDimensions(1, 1));
+                var docInstance = DocLib.Instance.GetDocReader(FileBytes, new PageDimensions(1, 1));
                 return docInstance.GetPageCount();
             }
         }
 
         /// <summary>
-        /// Compresses the file, according to the provided info.
+        ///     Compresses the file, according to the provided info.
         /// </summary>
         /// <param name="quality">Quality of the output file.</param>
         /// <param name="maxWidth">Maximum width (Ignored for PDFs)</param>
         /// <param name="maxHeight">Maximum height (Ignored for PDFs)</param>
-        /// <param name="forceSourceText">Whether to force the operation on PDFs with source text. This will attempt to
-        /// re-render PDF text over the rasterized original. If disabled, ignored the operation.
-        /// WARNING: this operation is strongly discouraged.</param>
+        /// <param name="forceSourceText">
+        ///     Whether to force the operation on PDFs with source text. This will attempt to
+        ///     re-render PDF text over the rasterized original. If disabled, ignored the operation.
+        ///     WARNING: this operation is strongly discouraged.
+        /// </param>
         /// <param name="disableSourceText">If the PDF has source text, whether to re-apply it to the original or not.</param>
         public void Compress(int quality = 85, int? maxWidth = null, int? maxHeight = null,
             bool forceSourceText = false, bool disableSourceText = true)
         {
             if (IsPdf())
             {
-                this.FileBytes = PdfCompressor.CompressPdf(this.FileBytes, quality, forceSourceText, disableSourceText);
-
+                FileBytes = PdfCompressor.CompressPdf(FileBytes, quality, forceSourceText, disableSourceText);
             }
             else
             {
-                this.FileBytes = ImageCompressor.CompressImage(this.FileBytes, quality, maxWidth, maxHeight);
+                FileBytes = ImageCompressor.CompressImage(FileBytes, quality, maxWidth, maxHeight);
             }
         }
 
         /// <summary>
-        /// Apply cut and merge options on multipage documents.
+        ///     Apply cut and merge options on multipage documents.
         /// </summary>
         /// <param name="pageOptions"></param>
         public void ApplyPageOptions(PageOptions pageOptions)
@@ -206,7 +205,7 @@ namespace Mindee.Input
         }
 
         /// <summary>
-        /// Returns true if the source PDF has source text inside. Returns false for images.
+        ///     Returns true if the source PDF has source text inside. Returns false for images.
         /// </summary>
         /// <returns>True if at least one character exists in one page.</returns>
         public bool HasSourceText()
@@ -215,6 +214,7 @@ namespace Mindee.Input
             {
                 return false;
             }
+
             return PdfUtils.HasSourceText(FileBytes);
         }
     }

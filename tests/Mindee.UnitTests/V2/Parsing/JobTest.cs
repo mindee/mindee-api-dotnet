@@ -1,5 +1,4 @@
 using Mindee.Input;
-using Mindee.Parsing.Common;
 using Mindee.Parsing.V2;
 
 namespace Mindee.UnitTests.V2.Parsing
@@ -11,7 +10,7 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact]
         public void OkProcessing_MustHaveValidProperties()
         {
-            JobResponse response = GetJob("job/ok_processing.json");
+            var response = GetJob("job/ok_processing.json");
             Assert.NotNull(response.Job);
             Assert.NotNull(response.Job.Id);
             Assert.Equal(2025, response.Job.CreatedAt.Year);
@@ -23,7 +22,7 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact]
         public void OkProcessed_WebhooksOk_MustHaveValidProperties()
         {
-            JobResponse response = GetJob("job/ok_processed_webhooks_ok.json");
+            var response = GetJob("job/ok_processed_webhooks_ok.json");
             Assert.NotNull(response.Job);
             Assert.NotNull(response.Job.Id);
             Assert.Equal(2026, response.Job.CreatedAt.Year);
@@ -31,7 +30,7 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.StartsWith("https", response.Job.ResultUrl);
             Assert.Null(response.Job.Error);
             Assert.NotEmpty(response.Job.Webhooks);
-            JobWebhook webhook = response.Job.Webhooks.First();
+            var webhook = response.Job.Webhooks.First();
             Assert.NotNull(webhook.Id);
             Assert.Equal(2026, webhook.CreatedAt.Year);
             Assert.Equal("Processed", webhook.Status);
@@ -41,11 +40,11 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact]
         public void Error_422_MustHaveValidProperties()
         {
-            JobResponse response = GetJob("job/fail_422.json");
+            var response = GetJob("job/fail_422.json");
             Assert.NotNull(response.Job);
             Assert.NotNull(response.Job.Id);
             Assert.Equal(2025, response.Job.CreatedAt.Year);
-            ErrorResponse error = response.Job.Error;
+            var error = response.Job.Error;
             Assert.NotNull(error);
             Assert.Equal(422, error.Status);
             Assert.StartsWith("422-", error.Code);
@@ -55,7 +54,7 @@ namespace Mindee.UnitTests.V2.Parsing
 
         private static JobResponse GetJob(string path)
         {
-            LocalResponse localResponse = new LocalResponse(
+            var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2RootDir + path));
             return localResponse.DeserializeResponse<JobResponse>();
         }

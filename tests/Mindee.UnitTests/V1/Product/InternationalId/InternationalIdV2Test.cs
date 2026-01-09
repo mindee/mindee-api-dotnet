@@ -1,4 +1,5 @@
 using Mindee.Parsing.Common;
+using Mindee.Parsing.Standard;
 using Mindee.Product.InternationalId;
 
 namespace Mindee.UnitTests.V1.Product.InternationalId
@@ -11,7 +12,7 @@ namespace Mindee.UnitTests.V1.Product.InternationalId
         {
             var response = await GetPrediction("empty");
             var docPrediction = response.Document.Inference.Prediction;
-            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.DocumentType);
+            Assert.IsType<ClassificationField>(docPrediction.DocumentType);
             Assert.Null(docPrediction.DocumentNumber.Value);
             Assert.Empty(docPrediction.Surnames);
             Assert.Empty(docPrediction.GivenNames);
@@ -40,7 +41,7 @@ namespace Mindee.UnitTests.V1.Product.InternationalId
 
         private static async Task<PredictResponse<InternationalIdV2>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/international_id/response_v2/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/international_id/response_v2/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<InternationalIdV2>(
                 UnitTestBase.GetFakePredictParameter());

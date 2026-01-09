@@ -4,33 +4,12 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.V2
 {
     /// <summary>
-    /// Error response detailing a problem. The format adheres to RFC 9457.
+    ///     Error response detailing a problem. The format adheres to RFC 9457.
     /// </summary>
     public class ErrorResponse : IErrorResponse
     {
-
-        /// <inheritdoc/>
-        [JsonPropertyName("status")]
-        public int Status { get; set; }
-
-        /// <inheritdoc/>
-        [JsonPropertyName("detail")]
-        public string Detail { get; set; }
-
-        /// <inheritdoc/>
-        [JsonPropertyName("title")]
-        public string Title { get; set; }
-
-        /// <inheritdoc/>
-        [JsonPropertyName("code")]
-        public string Code { get; set; }
-
-        /// <inheritdoc/>
-        [JsonPropertyName("errors")]
-        public List<ErrorItem> Errors { get; set; }
-
         /// <summary>
-        /// Constructor with all attributes.
+        ///     Constructor with all attributes.
         /// </summary>
         public ErrorResponse(int status, string title, string detail, string code, List<ErrorItem> errors)
         {
@@ -41,8 +20,28 @@ namespace Mindee.Parsing.V2
             Errors = errors;
         }
 
+        /// <inheritdoc />
+        [JsonPropertyName("status")]
+        public int Status { get; set; }
+
+        /// <inheritdoc />
+        [JsonPropertyName("detail")]
+        public string Detail { get; set; }
+
+        /// <inheritdoc />
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
+
+        /// <inheritdoc />
+        [JsonPropertyName("code")]
+        public string Code { get; set; }
+
+        /// <inheritdoc />
+        [JsonPropertyName("errors")]
+        public List<ErrorItem> Errors { get; set; }
+
         /// <summary>
-        /// To make the error prettier to display.
+        ///     To make the error prettier to display.
         /// </summary>
         public override string ToString()
         {

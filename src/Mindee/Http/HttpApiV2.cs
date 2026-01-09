@@ -1,47 +1,49 @@
+#nullable enable
+
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 using Mindee.Parsing.V2;
 
-#nullable enable
-
 namespace Mindee.Http
 {
     /// <summary>
-    /// Communicate with the Mindee HTTP API V2.
-    /// <p>
-    /// You may use this base class to make your own custom class.
-    /// However, we may introduce breaking changes in minor versions as needed.
-    /// </p>
+    ///     Communicate with the Mindee HTTP API V2.
+    ///     <p>
+    ///         You may use this base class to make your own custom class.
+    ///         However, we may introduce breaking changes in minor versions as needed.
+    ///     </p>
     /// </summary>
     public abstract class HttpApiV2
     {
         /// <summary>
-        /// Set this to your logger.
+        ///     Set this to your logger.
         /// </summary>
         protected ILogger<HttpApiV2>? Logger;
 
         /// <summary>
-        /// Do a prediction according parameters for custom model defined in the Studio.
+        ///     Do a prediction according parameters for custom model defined in the Studio.
         /// </summary>
-        /// <param name="predictParameter"><see cref="InferencePostParameters"/></param>
+        /// <param name="predictParameter">
+        ///     <see cref="InferencePostParameters" />
+        /// </param>
         public abstract Task<JobResponse> ReqPostEnqueueInferenceAsync(InferencePostParameters predictParameter);
 
         /// <summary>
-        /// Get a job for an enqueued document.
+        ///     Get a job for an enqueued document.
         /// </summary>
         /// <param name="jobId">The job ID as returned by the predict_async route.</param>
         public abstract Task<JobResponse> ReqGetJobAsync(string jobId);
 
         /// <summary>
-        /// Get a document inference.
+        ///     Get a document inference.
         /// </summary>
         /// <param name="inferenceId">The inference ID as given by the job.</param>
         public abstract Task<InferenceResponse> ReqGetInferenceAsync(string inferenceId);
 
         /// <summary>
-        /// Get the error from the server return.
+        ///     Get the error from the server return.
         /// </summary>
         /// <param name="responseContent">HTTP Status of the response</param>
         /// <param name="statusCode">String content of the response</param>
@@ -53,10 +55,13 @@ namespace Mindee.Http
             {
                 if (responseContent != null && responseContent.Contains("\"status\":"))
                 {
-                    ErrorResponse? error = JsonSerializer.Deserialize<ErrorResponse>(responseContent);
+                    var error = JsonSerializer.Deserialize<ErrorResponse>(responseContent);
                     if (error != null)
+                    {
                         return error;
+                    }
                 }
+
                 return MakeUnknownError(statusCode, responseContent);
             }
             catch (JsonException)
@@ -66,7 +71,7 @@ namespace Mindee.Http
         }
 
         /// <summary>
-        /// Attempt to deserialize a response from the server.
+        ///     Attempt to deserialize a response from the server.
         /// </summary>
         /// <param name="responseContent"></param>
         /// <typeparam name="TResponse"></typeparam>
@@ -77,7 +82,9 @@ namespace Mindee.Http
             Logger?.LogInformation("Parsing HTTP 2xx response ...");
 
             if (responseContent == null || string.IsNullOrWhiteSpace(responseContent))
+            {
                 throw new MindeeException("Empty response from server.");
+            }
 
             var model = JsonSerializer.Deserialize<TResponse>(responseContent);
             if (model != null)
@@ -99,8 +106,8 @@ namespace Mindee.Http
         private static ErrorResponse MakeUnknownError(int statusCode, string? responseContent)
         {
             return new ErrorResponse(
-                status: statusCode,
-                title: "Unknown Error",
+                statusCode,
+                "Unknown Error",
                 code: "000-000",
                 detail: responseContent ?? "An unknown error occurred.",
                 errors: null);

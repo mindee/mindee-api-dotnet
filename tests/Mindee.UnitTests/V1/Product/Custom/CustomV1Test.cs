@@ -33,12 +33,10 @@ namespace Mindee.UnitTests.V1.Product.Custom
             Assert.Equal(0.99, listField.Values.First().Confidence);
             Assert.Equal("2020-12-17", listField.Values.First().Content);
             Assert.Equal(0, listField.Values.First().PageId);
-            Assert.Equal(new List<List<double>>()
+            Assert.Equal(
+                new List<List<double>>
                 {
-                    new List<double>() { 0.834, 0.177 },
-                    new List<double>() { 0.927, 0.177 },
-                    new List<double>() { 0.927, 0.186 },
-                    new List<double>() { 0.835, 0.187 },
+                    new() { 0.834, 0.177 }, new() { 0.927, 0.177 }, new() { 0.927, 0.186 }, new() { 0.835, 0.187 }
                 },
                 listField.Values.First().Polygon);
         }
@@ -53,14 +51,12 @@ namespace Mindee.UnitTests.V1.Product.Custom
             Assert.Equal(0.99, listField.Values.First().Confidence);
             Assert.Equal("2020-12-17", listField.Values.First().Content);
             Assert.Null(listField.Values.First().PageId);
-            Assert.Equal(new List<List<double>>()
-            {
-                new List<double>() { 0.834, 0.177 },
-                new List<double>() { 0.927, 0.177 },
-                new List<double>() { 0.927, 0.186 },
-                new List<double>() { 0.835, 0.187 },
-            },
-            listField.Values.First().Polygon);
+            Assert.Equal(
+                new List<List<double>>
+                {
+                    new() { 0.834, 0.177 }, new() { 0.927, 0.177 }, new() { 0.927, 0.186 }, new() { 0.835, 0.187 }
+                },
+                listField.Values.First().Polygon);
         }
 
         [Fact]
@@ -75,15 +71,13 @@ namespace Mindee.UnitTests.V1.Product.Custom
             Assert.Equal("great", listField.Values.Last().Content);
             Assert.Equal("Jenny_is_great", listField.ContentsString("_"));
             Assert.Equal("Jenny is great", listField.ToString());
-            Assert.Equal(new List<string>() { "Jenny", "is", "great" }, listField.ContentsList);
-            Assert.Equal(new List<List<double>>()
-            {
-                new List<double>() { 0.713, 0.013 },
-                new List<double>() { 0.956, 0.013 },
-                new List<double>() { 0.956, 0.054 },
-                new List<double>() { 0.713, 0.055 },
-            },
-            listField.Values.First().Polygon);
+            Assert.Equal(new List<string> { "Jenny", "is", "great" }, listField.ContentsList);
+            Assert.Equal(
+                new List<List<double>>
+                {
+                    new() { 0.713, 0.013 }, new() { 0.956, 0.013 }, new() { 0.956, 0.054 }, new() { 0.713, 0.055 }
+                },
+                listField.Values.First().Polygon);
         }
 
         [Fact]
@@ -111,7 +105,7 @@ namespace Mindee.UnitTests.V1.Product.Custom
 
         private static async Task<PredictResponse<CustomV1>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/custom/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/custom/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<CustomV1>(
                 UnitTestBase.GetFakePredictParameter()

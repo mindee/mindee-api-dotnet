@@ -22,7 +22,7 @@ namespace Mindee.UnitTests.V2.Input
             Assert.Equal(signature, localResponse.GetHmacSignature(secretKey));
             Assert.True(localResponse.IsValidHmacSignature(
                 secretKey, signature));
-            InferenceResponse inferenceResponse = localResponse.DeserializeResponse<InferenceResponse>();
+            var inferenceResponse = localResponse.DeserializeResponse<InferenceResponse>();
             Assert.NotNull(inferenceResponse);
             Assert.NotNull(inferenceResponse.Inference);
         }

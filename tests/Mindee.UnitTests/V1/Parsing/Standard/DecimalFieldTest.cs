@@ -8,29 +8,29 @@ namespace Mindee.UnitTests.V1.Parsing.Standard
         [Fact]
         public void DecimalField_Must_PrintCorrectly()
         {
-            DecimalField field = new DecimalField();
+            var field = new DecimalField();
             field.Value = new decimal(0.2);
-            Assert.Equal(expected: "0.20", actual: field.ToString());
+            Assert.Equal("0.20", field.ToString());
 
             field.Value = new decimal(1.2);
-            Assert.Equal(expected: "1.20", actual: field.ToString());
+            Assert.Equal("1.20", field.ToString());
 
             field.Value = new decimal(1.2345);
-            Assert.Equal(expected: "1.2345", actual: field.ToString());
+            Assert.Equal("1.2345", field.ToString());
         }
 
         [Fact]
         public void AmountField_Must_PrintCorrectly()
         {
-            AmountField field = new AmountField();
+            var field = new AmountField();
             field.Value = 0.2;
-            Assert.Equal(expected: "0.20", actual: field.ToString());
+            Assert.Equal("0.20", field.ToString());
 
             field.Value = 1.2;
-            Assert.Equal(expected: "1.20", actual: field.ToString());
+            Assert.Equal("1.20", field.ToString());
 
             field.Value = 1.2345;
-            Assert.Equal(expected: "1.2345", actual: field.ToString());
+            Assert.Equal("1.2345", field.ToString());
         }
     }
 }

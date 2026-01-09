@@ -24,7 +24,7 @@ namespace Mindee.UnitTests.V1.Product.InvoiceSplitter
 
         private static async Task<PredictResponse<InvoiceSplitterV1>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/invoice_splitter/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/invoice_splitter/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<InvoiceSplitterV1>(
                 UnitTestBase.GetFakePredictParameter());

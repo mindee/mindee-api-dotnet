@@ -1,7 +1,5 @@
-using Mindee.Geometry;
 using Mindee.Parsing.Standard;
 using Mindee.UnitTests.Geometry;
-
 
 namespace Mindee.UnitTests.V1.Parsing.Standard
 {
@@ -11,10 +9,10 @@ namespace Mindee.UnitTests.V1.Parsing.Standard
         [Fact]
         public void Constructor_Should_Succeed()
         {
-            Polygon polygon = FakesPolygon.GetPolygonAsRectangle();
-            DateField field = new DateField(value: "1980-05-17", confidence: 1.0, polygon: polygon, 0, true);
-            Assert.Equal(expected: "1980-05-17", actual: field.Value);
-            Assert.Equal(expected: "1980-05-17", actual: field.DateObject?.ToString("yyyy-MM-dd"));
+            var polygon = FakesPolygon.GetPolygonAsRectangle();
+            var field = new DateField("1980-05-17", 1.0, polygon, 0, true);
+            Assert.Equal("1980-05-17", field.Value);
+            Assert.Equal("1980-05-17", field.DateObject?.ToString("yyyy-MM-dd"));
             Assert.True(field.IsComputed);
         }
     }

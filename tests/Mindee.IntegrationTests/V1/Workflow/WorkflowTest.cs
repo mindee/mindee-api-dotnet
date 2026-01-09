@@ -27,9 +27,9 @@ namespace Mindee.IntegrationTests.V1.Workflow
         [Fact]
         public async Task Given_AWorkflowIdUpload_ShouldReturnACorrectWorkflowObject()
         {
-            string currentDateTime = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
+            var currentDateTime = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
             var alias = "dotnet-" + currentDateTime;
-            WorkflowOptions options = new WorkflowOptions(alias, ExecutionPriority.Low, rag: true);
+            var options = new WorkflowOptions(alias, ExecutionPriority.Low, rag: true);
             var response = await _client.ExecuteWorkflowAsync(
                 _workflowId, _ragMatchInputSource, options);
 
@@ -40,8 +40,8 @@ namespace Mindee.IntegrationTests.V1.Workflow
         [Fact]
         public async Task Given_AWorkflowIdPredictCustom_ShouldPollAndMatchRag()
         {
-            CustomEndpoint endpoint = new CustomEndpoint("financial_document", "mindee");
-            PredictOptions options = new PredictOptions(
+            var endpoint = new CustomEndpoint("financial_document", "mindee");
+            var options = new PredictOptions(
                 workflowId: _workflowId, rag: true);
             var response = await _client.EnqueueAndParseAsync<GeneratedV1>(
                 _ragMatchInputSource,
@@ -55,7 +55,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
         [Fact]
         public async Task Given_AWorkflowIdPredictOTS_ShouldPollAndMatchRag()
         {
-            PredictOptions options = new PredictOptions(
+            var options = new PredictOptions(
                 workflowId: _workflowId, rag: true);
             var response = await _client.EnqueueAndParseAsync<FinancialDocumentV1>(
                 _ragMatchInputSource,
@@ -68,7 +68,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
         [Fact]
         public async Task Given_AWorkflowIdPredictOTS_ShouldPollAndNotMatchRag()
         {
-            PredictOptions options = new PredictOptions(
+            var options = new PredictOptions(
                 workflowId: _workflowId, rag: true);
             var response = await _client.EnqueueAndParseAsync<FinancialDocumentV1>(
                 _ragNoMatchInputSource,
@@ -81,8 +81,8 @@ namespace Mindee.IntegrationTests.V1.Workflow
         [Fact]
         public async Task Given_AWorkflowIdPredictCustom_ShouldPollWithoutRag()
         {
-            CustomEndpoint endpoint = new CustomEndpoint("financial_document", "mindee");
-            PredictOptions options = new PredictOptions(
+            var endpoint = new CustomEndpoint("financial_document", "mindee");
+            var options = new PredictOptions(
                 workflowId: _workflowId);
             var response = await _client.EnqueueAndParseAsync<GeneratedV1>(
                 _ragMatchInputSource,
@@ -96,7 +96,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
         [Fact]
         public async Task Given_AWorkflowIdPredictOTS_ShouldPollWithoutRag()
         {
-            PredictOptions options = new PredictOptions(
+            var options = new PredictOptions(
                 workflowId: _workflowId);
             var response = await _client.EnqueueAndParseAsync<FinancialDocumentV1>(
                 _ragMatchInputSource,
