@@ -1,6 +1,7 @@
 name: Qodana
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
   qodana:
