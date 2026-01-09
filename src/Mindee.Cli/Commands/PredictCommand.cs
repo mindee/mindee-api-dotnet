@@ -2,7 +2,6 @@ using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.CommandLine.IO;
 using System.Text.Json;
-using Microsoft.Extensions.Logging;
 using Mindee.Input;
 using Mindee.Parsing;
 using Mindee.Parsing.Common;
@@ -88,18 +87,9 @@ namespace Mindee.Cli.Commands
             AddArgument(new Argument<string>("path", "The path of the file to parse"));
         }
 
-        public new class Handler : ICommandHandler
+        public new class Handler(MindeeClient mindeeClient) : ICommandHandler
         {
-            private readonly JsonSerializerOptions _jsonSerializerOptions;
-            private readonly ILogger<Handler> _logger;
-            private readonly MindeeClient _mindeeClient;
-
-            public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
-            {
-                _logger = logger;
-                _mindeeClient = mindeeClient;
-                _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
-            }
+            private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
 
             public string Path { get; set; } = null!;
             public bool AllWords { get; set; } = false;
@@ -126,7 +116,7 @@ namespace Mindee.Cli.Commands
 
             private async Task<int> ParseAsync(InvocationContext context, ParseOptions options)
             {
-                var response = await _mindeeClient.ParseAsync<TInferenceModel>(
+                var response = await mindeeClient.ParseAsync<TInferenceModel>(
                     new LocalInputSource(options.Path),
                     new PredictOptions(AllWords, FullText));
 
@@ -142,7 +132,7 @@ namespace Mindee.Cli.Commands
 
             private async Task<int> EnqueueAndParseAsync(InvocationContext context, ParseOptions options)
             {
-                var response = await _mindeeClient.EnqueueAndParseAsync<TInferenceModel>(
+                var response = await mindeeClient.EnqueueAndParseAsync<TInferenceModel>(
                     new LocalInputSource(options.Path),
                     new PredictOptions(AllWords, FullText),
                     null,

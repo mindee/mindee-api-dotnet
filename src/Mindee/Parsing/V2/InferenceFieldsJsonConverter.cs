@@ -22,7 +22,12 @@ namespace Mindee.Parsing.V2
             var fields = new InferenceFields();
 
             // read the response JSON into an object
-            var jsonObject = (JsonObject)JsonSerializer.Deserialize(ref reader, typeof(JsonObject), options);
+            var jsonObject = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
+
+            if (jsonObject == null)
+            {
+                return fields;
+            }
 
             foreach (var jsonNode in jsonObject)
             {

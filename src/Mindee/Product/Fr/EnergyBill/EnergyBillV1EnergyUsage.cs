@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -7,155 +8,154 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Fr.EnergyBill
 {
     /// <summary>
-    ///     Details of energy consumption.
+    /// Details of energy consumption.
     /// </summary>
     public sealed class EnergyBillV1EnergyUsage : LineItemField
     {
         /// <summary>
-        ///     The price per unit of energy consumed.
+        /// The price per unit of energy consumed.
         /// </summary>
         [JsonPropertyName("consumption")]
         public double? Consumption { get; set; }
 
         /// <summary>
-        ///     Description or details of the energy usage.
+        /// Description or details of the energy usage.
         /// </summary>
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
         /// <summary>
-        ///     The end date of the energy usage.
+        /// The end date of the energy usage.
         /// </summary>
         [JsonPropertyName("end_date")]
         public string EndDate { get; set; }
 
         /// <summary>
-        ///     The start date of the energy usage.
+        /// The start date of the energy usage.
         /// </summary>
         [JsonPropertyName("start_date")]
         public string StartDate { get; set; }
 
         /// <summary>
-        ///     The rate of tax applied to the total cost.
+        /// The rate of tax applied to the total cost.
         /// </summary>
         [JsonPropertyName("tax_rate")]
         public double? TaxRate { get; set; }
 
         /// <summary>
-        ///     The total cost of energy consumed.
+        /// The total cost of energy consumed.
         /// </summary>
         [JsonPropertyName("total")]
         public double? Total { get; set; }
 
         /// <summary>
-        ///     The unit of measurement for energy consumption.
+        /// The unit of measurement for energy consumption.
         /// </summary>
         [JsonPropertyName("unit")]
         public string Unit { get; set; }
 
         /// <summary>
-        ///     The price per unit of energy consumed.
+        /// The price per unit of energy consumed.
         /// </summary>
         [JsonPropertyName("unit_price")]
         public double? UnitPrice { get; set; }
 
         private Dictionary<string, string> TablePrintableValues()
         {
-            return new Dictionary<string, string>
+            return new Dictionary<string, string>()
             {
-                { "Consumption", SummaryHelper.FormatAmount(Consumption) },
-                { "Description", SummaryHelper.FormatString(Description, 36) },
-                { "EndDate", SummaryHelper.FormatString(EndDate, 10) },
-                { "StartDate", SummaryHelper.FormatString(StartDate) },
-                { "TaxRate", SummaryHelper.FormatAmount(TaxRate) },
-                { "Total", SummaryHelper.FormatAmount(Total) },
-                { "Unit", SummaryHelper.FormatString(Unit) },
-                { "UnitPrice", SummaryHelper.FormatAmount(UnitPrice) }
+                {"Consumption", SummaryHelper.FormatAmount(Consumption)},
+                {"Description", SummaryHelper.FormatString(Description, 36)},
+                {"EndDate", SummaryHelper.FormatString(EndDate, 10)},
+                {"StartDate", SummaryHelper.FormatString(StartDate)},
+                {"TaxRate", SummaryHelper.FormatAmount(TaxRate)},
+                {"Total", SummaryHelper.FormatAmount(Total)},
+                {"Unit", SummaryHelper.FormatString(Unit)},
+                {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
             };
         }
 
         /// <summary>
-        ///     Output the line in a format suitable for inclusion in an rST table.
+        /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            var printable = TablePrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
-                   + string.Format("{0,-11}", printable["Consumption"])
-                   + " | "
-                   + string.Format("{0,-36}", printable["Description"])
-                   + " | "
-                   + string.Format("{0,-10}", printable["EndDate"])
-                   + " | "
-                   + string.Format("{0,-10}", printable["StartDate"])
-                   + " | "
-                   + string.Format("{0,-8}", printable["TaxRate"])
-                   + " | "
-                   + string.Format("{0,-9}", printable["Total"])
-                   + " | "
-                   + string.Format("{0,-15}", printable["Unit"])
-                   + " | "
-                   + string.Format("{0,-10}", printable["UnitPrice"])
-                   + " |";
+              + String.Format("{0,-11}", printable["Consumption"])
+              + " | "
+              + String.Format("{0,-36}", printable["Description"])
+              + " | "
+              + String.Format("{0,-10}", printable["EndDate"])
+              + " | "
+              + String.Format("{0,-10}", printable["StartDate"])
+              + " | "
+              + String.Format("{0,-8}", printable["TaxRate"])
+              + " | "
+              + String.Format("{0,-9}", printable["Total"])
+              + " | "
+              + String.Format("{0,-15}", printable["Unit"])
+              + " | "
+              + String.Format("{0,-10}", printable["UnitPrice"])
+              + " |";
         }
 
         /// <summary>
-        ///     A prettier representation of the line values.
+        /// A prettier representation of the line values.
         /// </summary>
         public override string ToString()
         {
-            var printable = PrintableValues();
+            Dictionary<string, string> printable = PrintableValues();
             return "Consumption: "
-                   + printable["Consumption"]
-                   + ", Description: "
-                   + printable["Description"]
-                   + ", End Date: "
-                   + printable["EndDate"]
-                   + ", Start Date: "
-                   + printable["StartDate"]
-                   + ", Tax Rate: "
-                   + printable["TaxRate"]
-                   + ", Total: "
-                   + printable["Total"]
-                   + ", Unit of Measure: "
-                   + printable["Unit"]
-                   + ", Unit Price: "
-                   + printable["UnitPrice"].Trim();
+              + printable["Consumption"]
+              + ", Description: "
+              + printable["Description"]
+              + ", End Date: "
+              + printable["EndDate"]
+              + ", Start Date: "
+              + printable["StartDate"]
+              + ", Tax Rate: "
+              + printable["TaxRate"]
+              + ", Total: "
+              + printable["Total"]
+              + ", Unit of Measure: "
+              + printable["Unit"]
+              + ", Unit Price: "
+              + printable["UnitPrice"].Trim();
         }
 
         private Dictionary<string, string> PrintableValues()
         {
-            return new Dictionary<string, string>
+            return new Dictionary<string, string>()
             {
-                { "Consumption", SummaryHelper.FormatAmount(Consumption) },
-                { "Description", SummaryHelper.FormatString(Description) },
-                { "EndDate", SummaryHelper.FormatString(EndDate) },
-                { "StartDate", SummaryHelper.FormatString(StartDate) },
-                { "TaxRate", SummaryHelper.FormatAmount(TaxRate) },
-                { "Total", SummaryHelper.FormatAmount(Total) },
-                { "Unit", SummaryHelper.FormatString(Unit) },
-                { "UnitPrice", SummaryHelper.FormatAmount(UnitPrice) }
+                {"Consumption", SummaryHelper.FormatAmount(Consumption)},
+                {"Description", SummaryHelper.FormatString(Description)},
+                {"EndDate", SummaryHelper.FormatString(EndDate)},
+                {"StartDate", SummaryHelper.FormatString(StartDate)},
+                {"TaxRate", SummaryHelper.FormatAmount(TaxRate)},
+                {"Total", SummaryHelper.FormatAmount(Total)},
+                {"Unit", SummaryHelper.FormatString(Unit)},
+                {"UnitPrice", SummaryHelper.FormatAmount(UnitPrice)},
             };
         }
     }
 
     /// <summary>
-    ///     Details of energy consumption.
+    /// Details of energy consumption.
     /// </summary>
     public class EnergyBillV1EnergyUsages : List<EnergyBillV1EnergyUsage>
     {
         /// <summary>
-        ///     Default string representation.
+        /// Default string representation.
         /// </summary>
         public override string ToString()
         {
-            if (Count == 0)
+            if (this.Count == 0)
             {
                 return "\n";
             }
-
             int[] columnSizes = { 13, 38, 12, 12, 10, 11, 17, 12 };
-            var outStr = new StringBuilder("\n");
+            StringBuilder outStr = new StringBuilder("\n");
             outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '-') + "  ");
             outStr.Append("| Consumption ");
             outStr.Append("| Description                          ");

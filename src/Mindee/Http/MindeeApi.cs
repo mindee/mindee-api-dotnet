@@ -187,7 +187,7 @@ namespace Mindee.Http
             {
                 request.AddParameter(
                     "priority",
-                    workflowParameter.Priority != null ? workflowParameter.Priority.ToString().ToLower() : null);
+                    workflowParameter.Priority?.ToString().ToLower());
             }
 
             if (workflowParameter.Rag)

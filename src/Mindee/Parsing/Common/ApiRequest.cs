@@ -17,6 +17,7 @@ namespace Mindee.Parsing.Common
         /// <summary>
         /// </summary>
         [JsonPropertyName("resources")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "CollectionNeverUpdated.Global")]
         public List<string> Resources { get; set; }
 
         /// <summary>

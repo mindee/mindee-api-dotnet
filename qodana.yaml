@@ -44,3 +44,9 @@ profile:
 #  testCoverageThresholds:
 #    fresh: 70
 #    total: 50
+
+exclude:
+  - name: All
+    paths:
+      - src/Mindee/Product
+  - name: UnusedAutoPropertyAccessor.Global # TODO: address this in the next major

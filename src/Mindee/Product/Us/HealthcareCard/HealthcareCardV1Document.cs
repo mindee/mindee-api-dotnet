@@ -8,104 +8,104 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Us.HealthcareCard
 {
     /// <summary>
-    ///     Healthcare Card API version 1.3 document data.
+    /// Healthcare Card API version 1.3 document data.
     /// </summary>
     public class HealthcareCardV1Document : IPrediction
     {
         /// <summary>
-        ///     The name of the company that provides the healthcare plan.
+        /// The name of the company that provides the healthcare plan.
         /// </summary>
         [JsonPropertyName("company_name")]
         public StringField CompanyName { get; set; }
 
         /// <summary>
-        ///     Copayments for covered services.
+        /// Copayments for covered services.
         /// </summary>
         [JsonPropertyName("copays")]
         [JsonConverter(typeof(ObjectListJsonConverter<HealthcareCardV1Copays, HealthcareCardV1Copay>))]
         public HealthcareCardV1Copays Copays { get; set; }
 
         /// <summary>
-        ///     The list of dependents covered by the healthcare plan.
+        /// The list of dependents covered by the healthcare plan.
         /// </summary>
         [JsonPropertyName("dependents")]
         public IList<StringField> Dependents { get; set; } = new List<StringField>();
 
         /// <summary>
-        ///     The date when the member enrolled in the healthcare plan.
+        /// The date when the member enrolled in the healthcare plan.
         /// </summary>
         [JsonPropertyName("enrollment_date")]
         public DateField EnrollmentDate { get; set; }
 
         /// <summary>
-        ///     The group number associated with the healthcare plan.
+        /// The group number associated with the healthcare plan.
         /// </summary>
         [JsonPropertyName("group_number")]
         public StringField GroupNumber { get; set; }
 
         /// <summary>
-        ///     The organization that issued the healthcare plan.
+        /// The organization that issued the healthcare plan.
         /// </summary>
         [JsonPropertyName("issuer_80840")]
         public StringField Issuer80840 { get; set; }
 
         /// <summary>
-        ///     The unique identifier for the member in the healthcare system.
+        /// The unique identifier for the member in the healthcare system.
         /// </summary>
         [JsonPropertyName("member_id")]
         public StringField MemberId { get; set; }
 
         /// <summary>
-        ///     The name of the member covered by the healthcare plan.
+        /// The name of the member covered by the healthcare plan.
         /// </summary>
         [JsonPropertyName("member_name")]
         public StringField MemberName { get; set; }
 
         /// <summary>
-        ///     The unique identifier for the payer in the healthcare system.
+        /// The unique identifier for the payer in the healthcare system.
         /// </summary>
         [JsonPropertyName("payer_id")]
         public StringField PayerId { get; set; }
 
         /// <summary>
-        ///     The name of the healthcare plan.
+        /// The name of the healthcare plan.
         /// </summary>
         [JsonPropertyName("plan_name")]
         public StringField PlanName { get; set; }
 
         /// <summary>
-        ///     The BIN number for prescription drug coverage.
+        /// The BIN number for prescription drug coverage.
         /// </summary>
         [JsonPropertyName("rx_bin")]
         public StringField RxBin { get; set; }
 
         /// <summary>
-        ///     The group number for prescription drug coverage.
+        /// The group number for prescription drug coverage.
         /// </summary>
         [JsonPropertyName("rx_grp")]
         public StringField RxGrp { get; set; }
 
         /// <summary>
-        ///     The ID number for prescription drug coverage.
+        /// The ID number for prescription drug coverage.
         /// </summary>
         [JsonPropertyName("rx_id")]
         public StringField RxId { get; set; }
 
         /// <summary>
-        ///     The PCN number for prescription drug coverage.
+        /// The PCN number for prescription drug coverage.
         /// </summary>
         [JsonPropertyName("rx_pcn")]
         public StringField RxPcn { get; set; }
 
         /// <summary>
-        ///     A prettier representation of the current model values.
+        /// A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
         {
-            var dependents = string.Join(
+            string dependents = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 12)),
                 Dependents.Select(item => item));
-            var result = new StringBuilder();
+            StringBuilder result = new StringBuilder();
             result.Append($":Company Name: {CompanyName}\n");
             result.Append($":Plan Name: {PlanName}\n");
             result.Append($":Member Name: {MemberName}\n");

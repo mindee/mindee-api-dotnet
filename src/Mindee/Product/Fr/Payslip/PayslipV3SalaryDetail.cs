@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -7,119 +8,118 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Fr.Payslip
 {
     /// <summary>
-    ///     Detailed information about the earnings.
+    /// Detailed information about the earnings.
     /// </summary>
     public sealed class PayslipV3SalaryDetail : LineItemField
     {
         /// <summary>
-        ///     The amount of the earning.
+        /// The amount of the earning.
         /// </summary>
         [JsonPropertyName("amount")]
         public double? Amount { get; set; }
 
         /// <summary>
-        ///     The base rate value of the earning.
+        /// The base rate value of the earning.
         /// </summary>
         [JsonPropertyName("base")]
         public double? Base { get; set; }
 
         /// <summary>
-        ///     The description of the earnings.
+        /// The description of the earnings.
         /// </summary>
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
         /// <summary>
-        ///     The number of units in the earning.
+        /// The number of units in the earning.
         /// </summary>
         [JsonPropertyName("number")]
         public double? Number { get; set; }
 
         /// <summary>
-        ///     The rate of the earning.
+        /// The rate of the earning.
         /// </summary>
         [JsonPropertyName("rate")]
         public double? Rate { get; set; }
 
         private Dictionary<string, string> TablePrintableValues()
         {
-            return new Dictionary<string, string>
+            return new Dictionary<string, string>()
             {
-                { "Amount", SummaryHelper.FormatAmount(Amount) },
-                { "Base", SummaryHelper.FormatAmount(Base) },
-                { "Description", SummaryHelper.FormatString(Description, 36) },
-                { "Number", SummaryHelper.FormatAmount(Number) },
-                { "Rate", SummaryHelper.FormatAmount(Rate) }
+                {"Amount", SummaryHelper.FormatAmount(Amount)},
+                {"Base", SummaryHelper.FormatAmount(Base)},
+                {"Description", SummaryHelper.FormatString(Description, 36)},
+                {"Number", SummaryHelper.FormatAmount(Number)},
+                {"Rate", SummaryHelper.FormatAmount(Rate)},
             };
         }
 
         /// <summary>
-        ///     Output the line in a format suitable for inclusion in an rST table.
+        /// Output the line in a format suitable for inclusion in an rST table.
         /// </summary>
         public override string ToTableLine()
         {
-            var printable = TablePrintableValues();
+            Dictionary<string, string> printable = TablePrintableValues();
             return "| "
-                   + string.Format("{0,-12}", printable["Amount"])
-                   + " | "
-                   + string.Format("{0,-9}", printable["Base"])
-                   + " | "
-                   + string.Format("{0,-36}", printable["Description"])
-                   + " | "
-                   + string.Format("{0,-6}", printable["Number"])
-                   + " | "
-                   + string.Format("{0,-9}", printable["Rate"])
-                   + " |";
+              + String.Format("{0,-12}", printable["Amount"])
+              + " | "
+              + String.Format("{0,-9}", printable["Base"])
+              + " | "
+              + String.Format("{0,-36}", printable["Description"])
+              + " | "
+              + String.Format("{0,-6}", printable["Number"])
+              + " | "
+              + String.Format("{0,-9}", printable["Rate"])
+              + " |";
         }
 
         /// <summary>
-        ///     A prettier representation of the line values.
+        /// A prettier representation of the line values.
         /// </summary>
         public override string ToString()
         {
-            var printable = PrintableValues();
+            Dictionary<string, string> printable = PrintableValues();
             return "Amount: "
-                   + printable["Amount"]
-                   + ", Base: "
-                   + printable["Base"]
-                   + ", Description: "
-                   + printable["Description"]
-                   + ", Number: "
-                   + printable["Number"]
-                   + ", Rate: "
-                   + printable["Rate"].Trim();
+              + printable["Amount"]
+              + ", Base: "
+              + printable["Base"]
+              + ", Description: "
+              + printable["Description"]
+              + ", Number: "
+              + printable["Number"]
+              + ", Rate: "
+              + printable["Rate"].Trim();
         }
 
         private Dictionary<string, string> PrintableValues()
         {
-            return new Dictionary<string, string>
+            return new Dictionary<string, string>()
             {
-                { "Amount", SummaryHelper.FormatAmount(Amount) },
-                { "Base", SummaryHelper.FormatAmount(Base) },
-                { "Description", SummaryHelper.FormatString(Description) },
-                { "Number", SummaryHelper.FormatAmount(Number) },
-                { "Rate", SummaryHelper.FormatAmount(Rate) }
+                {"Amount", SummaryHelper.FormatAmount(Amount)},
+                {"Base", SummaryHelper.FormatAmount(Base)},
+                {"Description", SummaryHelper.FormatString(Description)},
+                {"Number", SummaryHelper.FormatAmount(Number)},
+                {"Rate", SummaryHelper.FormatAmount(Rate)},
             };
         }
     }
 
     /// <summary>
-    ///     Detailed information about the earnings.
+    /// Detailed information about the earnings.
     /// </summary>
     public class PayslipV3SalaryDetails : List<PayslipV3SalaryDetail>
     {
         /// <summary>
-        ///     Default string representation.
+        /// Default string representation.
         /// </summary>
         public override string ToString()
         {
-            if (Count == 0)
+            if (this.Count == 0)
             {
                 return "\n";
             }
-
             int[] columnSizes = { 14, 11, 38, 8, 11 };
-            var outStr = new StringBuilder("\n");
+            StringBuilder outStr = new StringBuilder("\n");
             outStr.Append("  " + SummaryHelper.LineSeparator(columnSizes, '-') + "  ");
             outStr.Append("| Amount       ");
             outStr.Append("| Base      ");

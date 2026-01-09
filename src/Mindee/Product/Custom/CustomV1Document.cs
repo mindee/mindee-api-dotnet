@@ -8,28 +8,28 @@ using Mindee.Parsing.Custom;
 namespace Mindee.Product.Custom
 {
     /// <summary>
-    ///     Document data for Custom Documents, API version 1.
+    /// Document data for Custom Documents, API version 1.
     /// </summary>
     [Serializable]
     [JsonConverter(typeof(CustomV1DocumentJsonConverter))]
     public sealed class CustomV1Document : IPrediction
     {
         /// <summary>
-        ///     Classification fields.
+        /// Classification fields.
         /// </summary>
         public Dictionary<string, ClassificationField> ClassificationFields { get; set; }
 
         /// <summary>
-        ///     Fields that are not classifications.
+        /// Fields that are not classifications.
         /// </summary>
         public Dictionary<string, ListField> Fields { get; set; }
 
         /// <summary>
-        ///     A prettier reprensentation.
+        /// A prettier reprensentation.
         /// </summary>
         public override string ToString()
         {
-            var result = new StringBuilder();
+            StringBuilder result = new StringBuilder();
 
             foreach (var classificationField in ClassificationFields)
             {

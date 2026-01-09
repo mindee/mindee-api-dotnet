@@ -1,8 +1,6 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.CommandLine.IO;
-using System.Text.Json;
-using Microsoft.Extensions.Logging;
 using Mindee.Http;
 using Mindee.Input;
 using Mindee.Parsing.Common;
@@ -33,19 +31,8 @@ namespace Mindee.Cli.Commands
 
         public IConsole Console { get; set; } = null!;
 
-        public new class Handler : ICommandHandler
+        public new class Handler(MindeeClient mindeeClient) : ICommandHandler
         {
-            private readonly JsonSerializerOptions _jsonSerializerOptions;
-            private readonly ILogger<Handler> _logger;
-            private readonly MindeeClient _mindeeClient;
-
-            public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
-            {
-                _logger = logger;
-                _mindeeClient = mindeeClient;
-                _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
-            }
-
             public string Path { get; set; } = null!;
             public string Endpoint { get; set; } = null!;
             public string Account { get; set; } = null!;
@@ -70,7 +57,7 @@ namespace Mindee.Cli.Commands
 
             private async Task<int> ParseAsync(InvocationContext context)
             {
-                var response = await _mindeeClient.ParseAsync<GeneratedV1>(
+                var response = await mindeeClient.ParseAsync<GeneratedV1>(
                     new LocalInputSource(Path),
                     new CustomEndpoint(
                         Endpoint,
@@ -89,7 +76,7 @@ namespace Mindee.Cli.Commands
 
             private async Task<int> EnqueueAndParseAsync(InvocationContext context)
             {
-                var response = await _mindeeClient.EnqueueAndParseAsync<GeneratedV1>(
+                var response = await mindeeClient.EnqueueAndParseAsync<GeneratedV1>(
                     new LocalInputSource(Path),
                     new CustomEndpoint(
                         Endpoint,

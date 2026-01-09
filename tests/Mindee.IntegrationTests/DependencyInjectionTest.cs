@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
 using Mindee.Product.Invoice;
 
@@ -22,11 +23,11 @@ namespace Mindee.IntegrationTests
                     logging.AddConsole();
                     logging.AddDebug();
                 })
-                .ConfigureAppConfiguration((hostingContext, config) =>
+                .ConfigureAppConfiguration((_, config) =>
                 {
                     config.AddInMemoryCollection(new Dictionary<string, string>()!);
                 })
-                .ConfigureServices((hostContext, services) =>
+                .ConfigureServices((_, services) =>
                 {
                     services.AddMindeeClient();
                     services.AddMindeeClientV2();

@@ -135,7 +135,7 @@ var runner = BuildCommandLine()
     .UseHost(_ => Host.CreateDefaultBuilder(args), builder =>
     {
         builder
-            .ConfigureServices((hostContext, services) =>
+            .ConfigureServices((_, services) =>
             {
                 services.AddMindeeClient();
                 services.AddMindeeClientV2();

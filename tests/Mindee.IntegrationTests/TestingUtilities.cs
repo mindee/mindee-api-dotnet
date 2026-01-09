@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
+using Mindee.Extensions.DependencyInjection;
 
 namespace Mindee.IntegrationTests
 {

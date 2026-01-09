@@ -1,54 +1,58 @@
+using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.Parsing.Standard;
 
 namespace Mindee.Product.Fr.EnergyBill
 {
     /// <summary>
-    ///     The company that supplies the energy.
+    /// The company that supplies the energy.
     /// </summary>
     public sealed class EnergyBillV1EnergySupplier
     {
         /// <summary>
-        ///     The address of the energy supplier.
+        /// The address of the energy supplier.
         /// </summary>
         [JsonPropertyName("address")]
         public string Address { get; set; }
 
         /// <summary>
-        ///     The name of the energy supplier.
+        /// The name of the energy supplier.
         /// </summary>
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
         /// <summary>
-        ///     Output the object in a format suitable for inclusion in an rST field list.
+        /// Output the object in a format suitable for inclusion in an rST field list.
         /// </summary>
         public string ToFieldList()
         {
-            var printable = PrintableValues();
+            Dictionary<string, string> printable = PrintableValues();
             return "\n"
-                   + $"  :Address: {printable["Address"]}\n"
-                   + $"  :Name: {printable["Name"]}\n";
+                + $"  :Address: {printable["Address"]}\n"
+                + $"  :Name: {printable["Name"]}\n";
         }
 
         /// <summary>
-        ///     A prettier representation of the line values.
+        /// A prettier representation of the line values.
         /// </summary>
         public override string ToString()
         {
-            var printable = PrintableValues();
+            Dictionary<string, string> printable = PrintableValues();
             return "Address: "
-                   + printable["Address"]
-                   + ", Name: "
-                   + printable["Name"].Trim();
+              + printable["Address"]
+              + ", Name: "
+              + printable["Name"].Trim();
         }
 
         private Dictionary<string, string> PrintableValues()
         {
-            return new Dictionary<string, string>
+            return new Dictionary<string, string>()
             {
-                { "Address", SummaryHelper.FormatString(Address) }, { "Name", SummaryHelper.FormatString(Name) }
+                {"Address", SummaryHelper.FormatString(Address)},
+                {"Name", SummaryHelper.FormatString(Name)},
             };
         }
     }

@@ -820,7 +820,7 @@ namespace Mindee
             WorkflowOptions workflowOptions = null,
             PageOptions pageOptions = null)
         {
-            _logger?.LogInformation("Sending '{}' to workflow '{}'...", inputSource.Filename, workflowId);
+            _logger?.LogInformation("Sending '{Filename}' to workflow '{WorkflowId}'...", inputSource.Filename, workflowId);
 
             if (pageOptions != null && inputSource.IsPdf())
             {
@@ -936,7 +936,7 @@ namespace Mindee
             while (retryCount < maxRetries)
             {
                 Thread.Sleep(pollingOptions.IntervalMilliSec);
-                _logger?.LogInformation("Attempting to retrieve: {} of {}", retryCount, maxRetries);
+                _logger?.LogInformation("Attempting to retrieve: {RetryCount} of {MaxRetries}", retryCount, maxRetries);
                 response = await ParseQueuedAsync<TInferenceModel>(endpoint, jobId);
                 if (response.Document != null)
                 {
@@ -983,7 +983,7 @@ namespace Mindee
             while (retryCount < maxRetries)
             {
                 Thread.Sleep(pollingOptions.IntervalMilliSec);
-                _logger?.LogInformation("Attempting to retrieve: {} of {}", retryCount, maxRetries);
+                _logger?.LogInformation("Attempting to retrieve: {RetryCount} of {MaxRetries}", retryCount, maxRetries);
                 response = await ParseQueuedAsync<TInferenceModel>(jobId);
                 if (response.Document != null)
                 {

@@ -18,12 +18,13 @@ namespace Mindee.Parsing.V2.Field
         public override DynamicField Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             // read the response JSON into an object
-            var jsonObject = (JsonObject)JsonSerializer.Deserialize(ref reader, typeof(JsonObject), options);
+            var jsonObject = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
 
             DynamicField field;
 
             // -------- LIST FEATURE --------
-            if (jsonObject.TryGetPropertyValue("items", out var itemsNode) &&
+            if (jsonObject != null &&
+                jsonObject.TryGetPropertyValue("items", out var itemsNode) &&
                 itemsNode is JsonArray itemsArray)
             {
                 FieldConfidence? confidence = null;
@@ -43,14 +44,15 @@ namespace Mindee.Parsing.V2.Field
             }
 
             // -------- OBJECT WITH NESTED FIELDS --------
-            else if (jsonObject.TryGetPropertyValue("fields", out var nestedFieldsNode) &&
+            else if (jsonObject != null &&
+                     jsonObject.TryGetPropertyValue("fields", out var nestedFieldsNode) &&
                      nestedFieldsNode is JsonObject)
             {
                 field = new DynamicField(FieldType.ObjectField,
                     objectField: jsonObject.Deserialize<ObjectField>());
             }
             // -------- SIMPLE OBJECT --------
-            else if (jsonObject.ContainsKey("value"))
+            else if (jsonObject != null && jsonObject.ContainsKey("value"))
             {
                 field = new DynamicField(
                     FieldType.SimpleField,

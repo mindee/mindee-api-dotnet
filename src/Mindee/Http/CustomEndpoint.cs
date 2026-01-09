@@ -67,6 +67,11 @@ namespace Mindee.Http
             var endpointAttribute = (EndpointAttribute)Attribute.GetCustomAttribute(
                 typeof(TModel), typeof(EndpointAttribute));
 
+            if (endpointAttribute == null)
+            {
+                throw new NotSupportedException("The endpoint attribute is missing.");
+            }
+
             return new CustomEndpoint(
                 endpointAttribute.ModelName,
                 endpointAttribute.AccountName,

@@ -35,6 +35,7 @@ namespace Mindee.Parsing.Common
         ///     All the ocr pages.
         /// </summary>
         [JsonPropertyName("pages")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "CollectionNeverUpdated.Global")]
         public List<Page> Pages { get; set; }
 
         /// <summary>

@@ -79,15 +79,16 @@ namespace Mindee.Geometry
         /// <exception cref="ArgumentException"></exception>
         public static Polygon BoundingBoxFromPolygons(IEnumerable<Polygon> polygons)
         {
-            if (!polygons.Any())
+            var polygonsAsList = polygons as Polygon[] ?? polygons.ToArray();
+            if (polygonsAsList.Length == 0)
             {
-                throw new ArgumentException(nameof(polygons));
+                throw new ArgumentException(null, nameof(polygons));
             }
 
-            var minX = polygons.Min(p => p.GetMinX());
-            var minY = polygons.Min(p => p.GetMinY());
-            var maxX = polygons.Max(p => p.GetMaxX());
-            var maxY = polygons.Max(p => p.GetMaxY());
+            var minX = polygonsAsList.Min(p => p.GetMinX());
+            var minY = polygonsAsList.Min(p => p.GetMinY());
+            var maxX = polygonsAsList.Max(p => p.GetMaxX());
+            var maxY = polygonsAsList.Max(p => p.GetMaxY());
 
             return new Polygon(
                 new List<Point> { new(minX, minY), new(maxX, minY), new(maxX, maxY), new(minX, maxY) });

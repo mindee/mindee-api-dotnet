@@ -8,25 +8,25 @@ using Mindee.Parsing.Standard;
 namespace Mindee.Product.Cropper
 {
     /// <summary>
-    ///     Cropper API version 1.1 page data.
+    /// Cropper API version 1.1 page data.
     /// </summary>
     public sealed class CropperV1Page : CropperV1Document
     {
         /// <summary>
-        ///     List of documents found in the image.
+        /// List of documents found in the image.
         /// </summary>
         [JsonPropertyName("cropping")]
         public IList<PositionField> Cropping { get; set; } = new List<PositionField>();
 
         /// <summary>
-        ///     A prettier representation of the current model values.
+        /// A prettier representation of the current model values.
         /// </summary>
         public override string ToString()
         {
-            var cropping = string.Join(
+            string cropping = string.Join(
                 "\n " + string.Concat(Enumerable.Repeat(" ", 18)),
                 Cropping.Select(item => item));
-            var result = new StringBuilder();
+            StringBuilder result = new StringBuilder();
             result.Append($":Document Cropper: {cropping}\n");
             result.Append(base.ToString());
             return SummaryHelper.Clean(result.ToString());

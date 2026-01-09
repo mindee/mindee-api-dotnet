@@ -17,22 +17,20 @@ namespace Mindee.Parsing.Common
         {
             string errorDetails;
 
-            if (reader.TokenType == JsonTokenType.StartObject)
+            switch (reader.TokenType)
             {
-                var jsonObject = (JsonObject)JsonSerializer.Deserialize(
-                    ref reader,
-                    typeof(JsonObject),
-                    options);
+                case JsonTokenType.StartObject:
+                {
+                    var jsonObject = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
 
-                errorDetails = jsonObject.ToJsonString();
-            }
-            else if (reader.TokenType == JsonTokenType.String)
-            {
-                errorDetails = reader.GetString();
-            }
-            else
-            {
-                throw new InvalidOperationException("The JSON type is not handled.");
+                    errorDetails = jsonObject.ToJsonString();
+                    break;
+                }
+                case JsonTokenType.String:
+                    errorDetails = reader.GetString();
+                    break;
+                default:
+                    throw new InvalidOperationException("The JSON type is not handled.");
             }
 
             return new ErrorDetails(errorDetails);

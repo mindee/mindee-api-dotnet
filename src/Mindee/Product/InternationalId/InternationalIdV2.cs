@@ -5,13 +5,13 @@ using Mindee.Parsing.Common;
 namespace Mindee.Product.InternationalId
 {
     /// <summary>
-    ///     International ID API version 2 inference prediction.
+    /// International ID API version 2 inference prediction.
     /// </summary>
     [Endpoint("international_id", "2")]
     public sealed class InternationalIdV2 : Inference<InternationalIdV2Document, InternationalIdV2Document>
     {
         /// <summary>
-        ///     The pages and the associated values which were detected on the document.
+        /// The pages and the associated values which were detected on the document.
         /// </summary>
         [JsonPropertyName("pages")]
         [JsonConverter(typeof(PagesJsonConverter<InternationalIdV2Document>))]

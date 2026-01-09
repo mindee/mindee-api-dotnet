@@ -20,10 +20,10 @@ namespace Mindee.Parsing.V2.Field
         public override SimpleField Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             // read the response JSON into an object
-            var jsonObject = (JsonObject)JsonSerializer.Deserialize(ref reader, typeof(JsonObject), options);
+            var jsonObject = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
 
             FieldConfidence? confidence;
-            if (jsonObject.TryGetPropertyValue("confidence", out var confidenceNode))
+            if (jsonObject != null && jsonObject.TryGetPropertyValue("confidence", out var confidenceNode))
             {
                 confidence = confidenceNode.Deserialize<FieldConfidence?>(options);
             }
@@ -33,7 +33,8 @@ namespace Mindee.Parsing.V2.Field
             }
 
             List<FieldLocation> locations;
-            if (jsonObject.TryGetPropertyValue("locations", out var locationsNode) &&
+            if (jsonObject != null &&
+                jsonObject.TryGetPropertyValue("locations", out var locationsNode) &&
                 locationsNode is JsonArray)
             {
                 locations = locationsNode.Deserialize<List<FieldLocation>>(options);
@@ -50,32 +51,14 @@ namespace Mindee.Parsing.V2.Field
                 return new SimpleField(null, confidence, locations);
             }
 
-            SimpleField field;
-
-            switch (fieldValue.GetValueKind())
+            SimpleField field = fieldValue.GetValueKind() switch
             {
-                case JsonValueKind.String:
-                    field = new SimpleField(
-                        fieldValue.GetValue<string>(), confidence, locations);
-                    break;
-                case JsonValueKind.Number:
-                    field = new SimpleField(
-                        fieldValue.GetValue<double>(), confidence, locations);
-                    break;
-
-                case JsonValueKind.True:
-                    field = new SimpleField(
-                        true, confidence, locations);
-                    break;
-                case JsonValueKind.False:
-                    field = new SimpleField(
-                        false, confidence, locations);
-                    break;
-                default:
-                    field = new SimpleField(
-                        null, confidence, locations);
-                    break;
-            }
+                JsonValueKind.String => new SimpleField(fieldValue.GetValue<string>(), confidence, locations),
+                JsonValueKind.Number => new SimpleField(fieldValue.GetValue<double>(), confidence, locations),
+                JsonValueKind.True => new SimpleField(true, confidence, locations),
+                JsonValueKind.False => new SimpleField(false, confidence, locations),
+                _ => new SimpleField(null, confidence, locations)
+            };
 
             return field;
         }
