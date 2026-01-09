@@ -20,12 +20,12 @@ namespace Mindee.Parsing.Common
             switch (reader.TokenType)
             {
                 case JsonTokenType.StartObject:
-                {
-                    var jsonObject = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
+                    {
+                        var jsonObject = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
 
-                    errorDetails = jsonObject.ToJsonString();
-                    break;
-                }
+                        errorDetails = jsonObject.ToJsonString();
+                        break;
+                    }
                 case JsonTokenType.String:
                     errorDetails = reader.GetString();
                     break;
