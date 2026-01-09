@@ -8,6 +8,20 @@ on:
 jobs:
   static_analysis:
     uses: mindee/mindee-api-dotnet/.github/workflows/_static-analysis.yml@main
+  qodana-code-quality:
+    uses: ./.github/workflows/_qodana_code_quality.yml
+    permissions:
+      actions: read
+      security-events: write
+      contents: read
+    secrets: inherit
+  codeql:
+    uses: ./.github/workflows/_codeql.yml
+    needs: test-units
+    permissions:
+      actions: read
+      security-events: write
+      contents: read
   build:
     uses: mindee/mindee-api-dotnet/.github/workflows/_test-units.yml@main
     needs: static_analysis
