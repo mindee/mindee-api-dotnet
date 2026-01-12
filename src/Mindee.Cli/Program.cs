@@ -4,6 +4,7 @@ using System.CommandLine.Hosting;
 using System.CommandLine.Parsing;
 using Microsoft.Extensions.Hosting;
 using Mindee.Cli.Commands;
+// ReSharper disable once RedundantUsingDirective
 using Mindee.Extensions.DependencyInjection;
 using PredictBankAccountDetailsCommand = Mindee.Cli.Commands.PredictCommand<
     Mindee.Product.Fr.BankAccountDetails.BankAccountDetailsV2,

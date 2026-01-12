@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+// ReSharper disable once RedundantUsingDirective
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
 using Mindee.Product.Invoice;
@@ -25,7 +26,7 @@ namespace Mindee.IntegrationTests
                 })
                 .ConfigureAppConfiguration((_, config) =>
                 {
-                    config.AddInMemoryCollection(new Dictionary<string, string>()!);
+                    config.AddInMemoryCollection(new Dictionary<string, string?>());
                 })
                 .ConfigureServices((_, services) =>
                 {

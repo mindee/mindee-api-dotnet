@@ -1,10 +1,10 @@
 using System.Net;
 // ReSharper disable once RedundantUsingDirective
-// Note: Necessary for .NET 4.7.2
+// Note: Necessary for .NET 4.7.2/4.8.2
 using System.Net.Http;
-// ReSharper restore RedundantUsingDirective
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
+// ReSharper disable once RedundantUsingDirective
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Http;
 using Mindee.Input;

@@ -1,4 +1,6 @@
 using System;
+// ReSharper disable once RedundantUsingDirective
+// Note: Necessary for .NET 4.7.2/4.8.2
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -176,7 +178,7 @@ namespace Mindee.Extensions.DependencyInjection
         ///     Configure the Mindee client in the DI.
         /// </summary>
         /// <param name="services">
-        ///     <see cref="IServiceCollection" />
+        ///     <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection" />
         /// </param>
         /// <param name="sectionName">The name of the section to bind from the configuration.</param>
         /// <remarks>The <see cref="MindeeClient" /> instance is registered as a transient.</remarks>
@@ -200,7 +202,7 @@ namespace Mindee.Extensions.DependencyInjection
         ///     Configure the Mindee client V2 in the DI.
         /// </summary>
         /// <param name="services">
-        ///     <see cref="IServiceCollection" />
+        ///     <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection" />
         /// </param>
         /// <param name="sectionName">The name of the section to bind from the configuration.</param>
         /// <remarks>The <see cref="MindeeClient" /> instance is registered as a transient.</remarks>
