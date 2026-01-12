@@ -16,6 +16,7 @@ jobs:
       contents: read
   qodana-code-quality:
     uses: ./.github/workflows/_qodana_code_quality.yml
+    needs: test-units
     permissions:
       actions: read
       security-events: write
@@ -25,7 +26,7 @@ jobs:
     secrets: inherit
   codeql:
     uses: ./.github/workflows/_codeql.yml
-    needs: test-units
+    needs: qodana-code-quality
     permissions:
       actions: read
       security-events: write
