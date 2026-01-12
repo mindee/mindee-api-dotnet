@@ -12,7 +12,9 @@ namespace Mindee
         /// <summary>
         ///     Assign a LoggerFactory.
         /// </summary>
-        /// <param name="loggerFactory"><see cref="ILoggerFactory" />></param>
+        /// <param name="loggerFactory">
+        ///     <see cref="global::Microsoft.Extensions.Logging.ILoggerFactory" />
+        /// </param>
         public static void Assign(ILoggerFactory loggerFactory)
         {
             _instance = loggerFactory.CreateLogger("MindeeClient");

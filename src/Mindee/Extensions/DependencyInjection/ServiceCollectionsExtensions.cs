@@ -25,7 +25,6 @@ namespace Mindee.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configureOptions"></param>
-        /// *
         /// <param name="throwOnError"></param>
         /// <returns></returns>
         public static void AddMindeeApi(
@@ -178,7 +177,7 @@ namespace Mindee.Extensions.DependencyInjection
         ///     Configure the Mindee client in the DI.
         /// </summary>
         /// <param name="services">
-        ///     <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection" />
+        ///     <see cref="global::Microsoft.Extensions.DependencyInjection.IServiceCollection" />
         /// </param>
         /// <param name="sectionName">The name of the section to bind from the configuration.</param>
         /// <remarks>The <see cref="MindeeClient" /> instance is registered as a transient.</remarks>
@@ -202,7 +201,7 @@ namespace Mindee.Extensions.DependencyInjection
         ///     Configure the Mindee client V2 in the DI.
         /// </summary>
         /// <param name="services">
-        ///     <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection" />
+        ///     <see cref="global::Microsoft.Extensions.DependencyInjection.IServiceCollection" />
         /// </param>
         /// <param name="sectionName">The name of the section to bind from the configuration.</param>
         /// <remarks>The <see cref="MindeeClient" /> instance is registered as a transient.</remarks>
