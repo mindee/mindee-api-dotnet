@@ -1,5 +1,8 @@
 using System.Net;
+// ReSharper disable once RedundantUsingDirective
+// Note: Necessary for .NET 4.7.2
 using System.Net.Http;
+// ReSharper restore RedundantUsingDirective
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Mindee.Extensions.DependencyInjection;
@@ -8,7 +11,6 @@ using Mindee.Input;
 using Moq;
 using Moq.Protected;
 using RestSharp;
-// Necessary for .NET 4.7.2
 
 namespace Mindee.UnitTests
 {
