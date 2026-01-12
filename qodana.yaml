@@ -19,7 +19,7 @@ profile:
 
 
 dotnet:
-  solution: ./Mindee.sln
+  project: Directory.Build.props
 
 #Enable inspections
 #include:
