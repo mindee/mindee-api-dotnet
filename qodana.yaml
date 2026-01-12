@@ -19,7 +19,7 @@ profile:
 
 
 dotnet:
-  solution: Mindee.sln
+  solution: ./Mindee.sln
 
 #Enable inspections
 #include:
