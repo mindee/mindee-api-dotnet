@@ -177,7 +177,7 @@ namespace Mindee.Extensions.DependencyInjection
         ///     Configure the Mindee client in the DI.
         /// </summary>
         /// <param name="services">
-        ///     <see cref="global::Microsoft.Extensions.DependencyInjection.IServiceCollection" />
+        ///     <c>IServiceCollection</c>
         /// </param>
         /// <param name="sectionName">The name of the section to bind from the configuration.</param>
         /// <remarks>The <see cref="MindeeClient" /> instance is registered as a transient.</remarks>
@@ -201,7 +201,7 @@ namespace Mindee.Extensions.DependencyInjection
         ///     Configure the Mindee client V2 in the DI.
         /// </summary>
         /// <param name="services">
-        ///     <see cref="global::Microsoft.Extensions.DependencyInjection.IServiceCollection" />
+        ///     <c>IServiceCollection</c>
         /// </param>
         /// <param name="sectionName">The name of the section to bind from the configuration.</param>
         /// <remarks>The <see cref="MindeeClient" /> instance is registered as a transient.</remarks>

@@ -13,7 +13,7 @@ namespace Mindee
         ///     Assign a LoggerFactory.
         /// </summary>
         /// <param name="loggerFactory">
-        ///     <see cref="global::Microsoft.Extensions.Logging.ILoggerFactory" />
+        ///     <c>ILoggerFactory</c>
         /// </param>
         public static void Assign(ILoggerFactory loggerFactory)
         {
