@@ -21,6 +21,7 @@ namespace Mindee.UnitTests.V1.Product.Cropper
             var expected = File.ReadAllText(Constants.V1ProductDir + "cropper/response_v1/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
+
         [Fact]
         public async Task Predict_CheckPage0()
         {
@@ -31,7 +32,7 @@ namespace Mindee.UnitTests.V1.Product.Cropper
 
         private static async Task<PredictResponse<CropperV1>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/cropper/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/cropper/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<CropperV1>(
                 UnitTestBase.GetFakePredictParameter());

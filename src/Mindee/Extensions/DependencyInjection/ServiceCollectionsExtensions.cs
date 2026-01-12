@@ -1,4 +1,6 @@
 using System;
+// ReSharper disable once RedundantUsingDirective
+// Note: Necessary for .NET 4.7.2/4.8.2
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -14,15 +16,15 @@ using RestSharp;
 namespace Mindee.Extensions.DependencyInjection
 {
     /// <summary>
-    /// To configure DI.
+    ///     To configure DI.
     /// </summary>
     public static class ServiceCollectionsExtensions
     {
         /// <summary>
-        /// Configure the Mindee API in the DI, mainly used for mocking/testing purposes.
+        ///     Configure the Mindee API in the DI, mainly used for mocking/testing purposes.
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="configureOptions"></param>*
+        /// <param name="configureOptions"></param>
         /// <param name="throwOnError"></param>
         /// <returns></returns>
         public static void AddMindeeApi(
@@ -43,7 +45,7 @@ namespace Mindee.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// Configure the Mindee API in the DI, mainly used for mocking/testing purposes.
+        ///     Configure the Mindee API in the DI, mainly used for mocking/testing purposes.
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configureOptions"></param>
@@ -82,14 +84,22 @@ namespace Mindee.Extensions.DependencyInjection
         {
             services.AddSingleton(provider =>
             {
-                MindeeSettings settings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
+                var settings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
                 settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("Mindee__BaseUrl");
                 if (string.IsNullOrEmpty(settings.MindeeBaseUrl))
+                {
                     settings.MindeeBaseUrl = "https://api.mindee.net";
+                }
+
                 if (settings.RequestTimeoutSeconds <= 0)
+                {
                     settings.RequestTimeoutSeconds = 120;
+                }
+
                 if (string.IsNullOrEmpty(settings.ApiKey))
+                {
                     settings.ApiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+                }
 
                 var clientOptions = new RestClientOptions(settings.MindeeBaseUrl)
                 {
@@ -98,7 +108,7 @@ namespace Mindee.Extensions.DependencyInjection
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
                     CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true },
-                    ThrowOnAnyError = throwOnError,
+                    ThrowOnAnyError = throwOnError
                 };
                 return new RestClient(clientOptions);
             });
@@ -108,14 +118,22 @@ namespace Mindee.Extensions.DependencyInjection
         {
             services.AddKeyedSingleton("MindeeV2RestClient", (provider, _) =>
             {
-                MindeeSettingsV2 settings = provider.GetRequiredService<IOptions<MindeeSettingsV2>>().Value;
+                var settings = provider.GetRequiredService<IOptions<MindeeSettingsV2>>().Value;
                 settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("MindeeV2__BaseUrl");
                 if (string.IsNullOrEmpty(settings.MindeeBaseUrl))
+                {
                     settings.MindeeBaseUrl = "https://api-v2.mindee.net";
+                }
+
                 if (settings.RequestTimeoutSeconds <= 0)
+                {
                     settings.RequestTimeoutSeconds = 120;
+                }
+
                 if (string.IsNullOrEmpty(settings.ApiKey))
+                {
                     settings.ApiKey = Environment.GetEnvironmentVariable("MindeeV2__ApiKey");
+                }
 
                 var clientOptions = new RestClientOptions(settings.MindeeBaseUrl)
                 {
@@ -124,7 +142,7 @@ namespace Mindee.Extensions.DependencyInjection
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
                     CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true },
-                    ThrowOnAnyError = throwOnError,
+                    ThrowOnAnyError = throwOnError
                 };
                 return new RestClient(clientOptions);
             });
@@ -134,24 +152,35 @@ namespace Mindee.Extensions.DependencyInjection
         {
             string platform;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
                 platform = "windows";
+            }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
                 platform = "linux";
+            }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
                 platform = "macos";
+            }
             else
+            {
                 platform = "other";
+            }
+
             return $"mindee-api-dotnet@v{Assembly.GetExecutingAssembly().GetName().Version}"
                    + $" dotnet-v{Environment.Version}"
                    + $" {platform}";
         }
 
         /// <summary>
-        /// Configure the Mindee client in the DI.
+        ///     Configure the Mindee client in the DI.
         /// </summary>
-        /// <param name="services"><see cref="IServiceCollection"/></param>
+        /// <param name="services">
+        ///     <c>IServiceCollection</c>
+        /// </param>
         /// <param name="sectionName">The name of the section to bind from the configuration.</param>
-        /// <remarks>The <see cref="MindeeClient"/> instance is registered as a transient.</remarks>
+        /// <remarks>The <see cref="MindeeClient" /> instance is registered as a transient.</remarks>
         public static IServiceCollection AddMindeeClient(
             this IServiceCollection services,
             string sectionName = "Mindee")
@@ -169,11 +198,13 @@ namespace Mindee.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// Configure the Mindee client V2 in the DI.
+        ///     Configure the Mindee client V2 in the DI.
         /// </summary>
-        /// <param name="services"><see cref="IServiceCollection"/></param>
+        /// <param name="services">
+        ///     <c>IServiceCollection</c>
+        /// </param>
         /// <param name="sectionName">The name of the section to bind from the configuration.</param>
-        /// <remarks>The <see cref="MindeeClient"/> instance is registered as a transient.</remarks>
+        /// <remarks>The <see cref="MindeeClient" /> instance is registered as a transient.</remarks>
         public static IServiceCollection AddMindeeClientV2(
             this IServiceCollection services,
             string sectionName = "MindeeV2")
@@ -191,10 +222,10 @@ namespace Mindee.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// Configure the Mindee client in the DI with your own custom pdf implementation.
+        ///     Configure the Mindee client in the DI with your own custom pdf implementation.
         /// </summary>
         /// <typeparam name="TPdfOperationImplementation">Will be registered as a singleton.</typeparam>
-        /// <remarks>The <see cref="MindeeClient"/> instance is registered as a transient.</remarks>
+        /// <remarks>The <see cref="MindeeClient" /> instance is registered as a transient.</remarks>
         public static IServiceCollection AddMindeeClientWithCustomPdfImplementation<TPdfOperationImplementation>(
             this IServiceCollection services)
             where TPdfOperationImplementation : class, IPdfOperation, new()
@@ -206,10 +237,10 @@ namespace Mindee.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// Configure the Mindee client V2 in the DI with your own custom pdf implementation.
+        ///     Configure the Mindee client V2 in the DI with your own custom pdf implementation.
         /// </summary>
         /// <typeparam name="TPdfOperationImplementation">Will be registered as a singleton.</typeparam>
-        /// <remarks>The <see cref="MindeeClient"/> instance is registered as a transient.</remarks>
+        /// <remarks>The <see cref="MindeeClient" /> instance is registered as a transient.</remarks>
         public static IServiceCollection AddMindeeClientV2WithCustomPdfImplementation<TPdfOperationImplementation>(
             this IServiceCollection services)
             where TPdfOperationImplementation : class, IPdfOperation, new()

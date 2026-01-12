@@ -32,13 +32,11 @@ namespace Mindee.UnitTests.Input
         [Fact]
         public void DoesNot_Load_InvalidUrl()
         {
-            Assert.Throws<MindeeInputException>(
-                () => new UrlInputSource("http://www.example.com/some/file.ext"));
-            Assert.Throws<MindeeInputException>(
-                () => new UrlInputSource("file://users/home/some/file.ext"));
-            Assert.Throws<UriFormatException>(
-                () => new UrlInputSource("invalid-url"));
+            Assert.Throws<MindeeInputException>(() => new UrlInputSource("http://www.example.com/some/file.ext"));
+            Assert.Throws<MindeeInputException>(() => new UrlInputSource("file://users/home/some/file.ext"));
+            Assert.Throws<UriFormatException>(() => new UrlInputSource("invalid-url"));
         }
+
         [Fact]
         public async Task AsLocalInputSource_SuccessfulDownload()
         {
@@ -72,8 +70,8 @@ namespace Mindee.UnitTests.Input
                 });
 
             var urlInputSource = new UrlInputSource("https://example.com/nonexistent.pdf");
-            await Assert.ThrowsAsync<MindeeInputException>(
-                () => urlInputSource.AsLocalInputSource(restClient: _mockRestClient.Object));
+            await Assert.ThrowsAsync<MindeeInputException>(() =>
+                urlInputSource.AsLocalInputSource(restClient: _mockRestClient.Object));
         }
 
         [Fact]
@@ -108,7 +106,8 @@ namespace Mindee.UnitTests.Input
                 });
 
             var urlInputSource = new UrlInputSource("https://example.com/file.pdf");
-            var result = await urlInputSource.AsLocalInputSource(username: "user", password: "pass", restClient: _mockRestClient.Object);
+            var result = await urlInputSource.AsLocalInputSource(username: "user", password: "pass",
+                restClient: _mockRestClient.Object);
 
             Assert.IsType<LocalInputSource>(result);
             Assert.Equal("file.pdf", result.Filename);

@@ -1,18 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.Extensions.Primitives;
 
 namespace Mindee.Geometry
 {
     /// <summary>
-    /// A set of points.
+    ///     A set of points.
     /// </summary>
     public class Polygon : List<Point>
     {
         /// <summary>
-        ///
         /// </summary>
         /// <param name="coordinates">List of points of coordinates on X and Y.</param>
         public Polygon(List<List<double>> coordinates)
@@ -20,36 +17,39 @@ namespace Mindee.Geometry
             foreach (var point in coordinates)
             {
                 if (point.Count != 2)
+                {
                     throw new InvalidOperationException("A point must have 2 coordinates.");
+                }
 
                 Add(new Point(point.First(), point.Last()));
             }
         }
 
         /// <summary>
-        ///
         /// </summary>
-        /// <param name="coordinates"><see cref="IEnumerable{Point}"/></param>
+        /// <param name="coordinates">
+        ///     <see cref="IEnumerable{Point}" />
+        /// </param>
         public Polygon(IEnumerable<Point> coordinates)
         {
             AddRange(coordinates);
         }
 
         /// <summary>
-        /// Get the centroid of the current polygon.
+        ///     Get the centroid of the current polygon.
         /// </summary>
         public Point GetCentroid()
         {
-            int verticesCount = this.Count();
+            var verticesCount = this.Count();
 
-            double xSum = this.Sum(c => c.X);
-            double ySum = this.Sum(c => c.Y);
+            var xSum = this.Sum(c => c.X);
+            var ySum = this.Sum(c => c.Y);
 
             return new Point(xSum / verticesCount, ySum / verticesCount);
         }
 
         /// <summary>
-        /// Get the Y min coordinate.
+        ///     Get the Y min coordinate.
         /// </summary>
         public double GetMinY()
         {
@@ -57,7 +57,7 @@ namespace Mindee.Geometry
         }
 
         /// <summary>
-        /// Get the Y max coordinate.
+        ///     Get the Y max coordinate.
         /// </summary>
         public double GetMaxY()
         {
@@ -65,7 +65,7 @@ namespace Mindee.Geometry
         }
 
         /// <summary>
-        /// Get the X min coordinate.
+        ///     Get the X min coordinate.
         /// </summary>
         public double GetMinX()
         {
@@ -73,7 +73,7 @@ namespace Mindee.Geometry
         }
 
         /// <summary>
-        /// Get the X max coordinate.
+        ///     Get the X max coordinate.
         /// </summary>
         public double GetMaxX()
         {
@@ -81,32 +81,35 @@ namespace Mindee.Geometry
         }
 
         /// <summary>
-        /// Determine if a Point is within the polygon's Y coordinates.
+        ///     Determine if a Point is within the polygon's Y coordinates.
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
         public bool IsPointInY(Point point)
         {
-            return Utils.IsPointInY(point: point, minY: GetMinY(), maxY: GetMaxY());
+            return Utils.IsPointInY(point, GetMinY(), GetMaxY());
         }
 
         /// <summary>
-        /// The default string representation.
+        ///     The default string representation.
         /// </summary>
         public override string ToString()
         {
-            if (this.Count > 0)
-                return $"Polygon with {this.Count} points.";
+            if (Count > 0)
+            {
+                return $"Polygon with {Count} points.";
+            }
+
             return "";
         }
 
         /// <summary>
-        /// A string representation suitable for outputting to JSON.
+        ///     A string representation suitable for outputting to JSON.
         /// </summary>
         /// <returns></returns>
         public string ToJsonString()
         {
-            return "[" + String.Join(", ", this) + "]";
+            return "[" + string.Join(", ", this) + "]";
         }
     }
 }

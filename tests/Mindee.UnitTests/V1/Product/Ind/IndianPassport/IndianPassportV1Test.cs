@@ -1,4 +1,5 @@
 using Mindee.Parsing.Common;
+using Mindee.Parsing.Standard;
 using Mindee.Product.Ind.IndianPassport;
 
 namespace Mindee.UnitTests.V1.Product.Ind.IndianPassport
@@ -11,7 +12,7 @@ namespace Mindee.UnitTests.V1.Product.Ind.IndianPassport
         {
             var response = await GetPrediction("empty");
             var docPrediction = response.Document.Inference.Prediction;
-            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.PageNumber);
+            Assert.IsType<ClassificationField>(docPrediction.PageNumber);
             Assert.Null(docPrediction.Country.Value);
             Assert.Null(docPrediction.IdNumber.Value);
             Assert.Null(docPrediction.GivenNames.Value);
@@ -19,7 +20,7 @@ namespace Mindee.UnitTests.V1.Product.Ind.IndianPassport
             Assert.Null(docPrediction.BirthDate.Value);
             Assert.Null(docPrediction.BirthPlace.Value);
             Assert.Null(docPrediction.IssuancePlace.Value);
-            Assert.IsType<Mindee.Parsing.Standard.ClassificationField>(docPrediction.Gender);
+            Assert.IsType<ClassificationField>(docPrediction.Gender);
             Assert.Null(docPrediction.IssuanceDate.Value);
             Assert.Null(docPrediction.ExpiryDate.Value);
             Assert.Null(docPrediction.Mrz1.Value);
@@ -46,7 +47,7 @@ namespace Mindee.UnitTests.V1.Product.Ind.IndianPassport
 
         private static async Task<PredictResponse<IndianPassportV1>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/ind_passport/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/ind_passport/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<IndianPassportV1>(
                 UnitTestBase.GetFakePredictParameter());

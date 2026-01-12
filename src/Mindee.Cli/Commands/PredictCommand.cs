@@ -2,12 +2,11 @@ using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.CommandLine.IO;
 using System.Text.Json;
-using Microsoft.Extensions.Logging;
 using Mindee.Input;
 using Mindee.Parsing;
 using Mindee.Parsing.Common;
 
-namespace Mindee.Cli
+namespace Mindee.Cli.Commands
 {
     internal struct CommandOptions
     {
@@ -20,12 +19,12 @@ namespace Mindee.Cli
 
         public CommandOptions(string name, string description, bool allWords, bool fullText, bool sync, bool async)
         {
-            this.Name = name;
-            this.Description = description;
-            this.AllWords = allWords;
-            this.FullText = fullText;
-            this.Async = async;
-            this.Sync = sync;
+            Name = name;
+            Description = description;
+            AllWords = allWords;
+            FullText = fullText;
+            Async = async;
+            Sync = sync;
         }
     }
 
@@ -38,10 +37,10 @@ namespace Mindee.Cli
 
         public ParseOptions(string path, bool allWords, bool fullText, OutputType output)
         {
-            this.Path = path;
-            this.AllWords = allWords;
-            this.FullText = fullText;
-            this.Output = output;
+            Path = path;
+            AllWords = allWords;
+            FullText = fullText;
+            Output = output;
         }
     }
 
@@ -51,23 +50,23 @@ namespace Mindee.Cli
         where TInferenceModel : Inference<TDoc, TPage>, new()
     {
         public PredictCommand(CommandOptions options)
-            : base(name: options.Name, description: options.Description)
+            : base(options.Name, options.Description)
         {
-            AddOption(new Option<OutputType>(new string[] { "-o", "--output", "output" },
-                description: "Specify how to output the data. \n" +
-                             "- summary: a basic summary (default)\n" +
-                             "- raw: full JSON object\n"));
+            AddOption(new Option<OutputType>(new[] { "-o", "--output", "output" },
+                "Specify how to output the data. \n" +
+                "- summary: a basic summary (default)\n" +
+                "- raw: full JSON object\n"));
             if (options.AllWords)
             {
-                var option = new Option<bool>(new string[] { "-w", "--all-words", "allWords" },
-                    description: "To get all the words in the current document. False by default.");
+                var option = new Option<bool>(new[] { "-w", "--all-words", "allWords" },
+                    "To get all the words in the current document. False by default.");
                 AddOption(option);
             }
 
             if (options.FullText)
             {
-                var option = new Option<bool>(new string[] { "-f", "--full-text", "fullText" },
-                    description: "To get all the words in the current document. False by default.");
+                var option = new Option<bool>(new[] { "-f", "--full-text", "fullText" },
+                    "To get all the words in the current document. False by default.");
                 AddOption(option);
             }
 
@@ -75,37 +74,28 @@ namespace Mindee.Cli
             {
                 // Inject an "option" not changeable by the user.
                 // This will set the `Handler.Async` property to always be `true`.
-                var option = new Option<bool>(name: "async", getDefaultValue: () => true);
+                var option = new Option<bool>("async", () => true);
                 option.IsHidden = true;
                 AddOption(option);
             }
             else if (options.Async && options.Sync)
             {
-                AddOption(new Option<bool>(new string[] { "--async" },
-                    description: "Process the file asynchronously. False by default."));
+                AddOption(new Option<bool>(new[] { "--async" },
+                    "Process the file asynchronously. False by default."));
             }
 
             AddArgument(new Argument<string>("path", "The path of the file to parse"));
         }
 
-        public new class Handler : ICommandHandler
+        public new class Handler(MindeeClient mindeeClient) : ICommandHandler
         {
-            private readonly ILogger<Handler> _logger;
-            private readonly MindeeClient _mindeeClient;
-            private readonly JsonSerializerOptions _jsonSerializerOptions;
+            private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
 
             public string Path { get; set; } = null!;
             public bool AllWords { get; set; } = false;
             public bool FullText { get; set; } = false;
             public OutputType Output { get; set; } = OutputType.Full;
             public bool Async { get; set; } = false;
-
-            public Handler(ILogger<Handler> logger, MindeeClient mindeeClient)
-            {
-                _logger = logger;
-                _mindeeClient = mindeeClient;
-                _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
-            }
 
             public int Invoke(InvocationContext context)
             {
@@ -114,8 +104,8 @@ namespace Mindee.Cli
 
             public async Task<int> InvokeAsync(InvocationContext context)
             {
-                ParseOptions options =
-                    new ParseOptions(path: Path, allWords: AllWords, fullText: FullText, output: Output);
+                var options =
+                    new ParseOptions(Path, AllWords, FullText, Output);
                 if (Async)
                 {
                     return await EnqueueAndParseAsync(context, options);
@@ -126,9 +116,9 @@ namespace Mindee.Cli
 
             private async Task<int> ParseAsync(InvocationContext context, ParseOptions options)
             {
-                var response = await _mindeeClient.ParseAsync<TInferenceModel>(
+                var response = await mindeeClient.ParseAsync<TInferenceModel>(
                     new LocalInputSource(options.Path),
-                    new PredictOptions(allWords: AllWords, fullText: FullText));
+                    new PredictOptions(AllWords, FullText));
 
                 if (response == null)
                 {
@@ -142,9 +132,9 @@ namespace Mindee.Cli
 
             private async Task<int> EnqueueAndParseAsync(InvocationContext context, ParseOptions options)
             {
-                var response = await _mindeeClient.EnqueueAndParseAsync<TInferenceModel>(
+                var response = await mindeeClient.EnqueueAndParseAsync<TInferenceModel>(
                     new LocalInputSource(options.Path),
-                    new PredictOptions(allWords: AllWords, fullText: FullText),
+                    new PredictOptions(AllWords, FullText),
                     null,
                     new AsyncPollingOptions());
 
@@ -158,26 +148,32 @@ namespace Mindee.Cli
                 PredictResponse<TInferenceModel> response)
             {
                 if (options.Output == OutputType.Raw)
+                {
                     console.Write(JsonSerializer.Serialize(response, _jsonSerializerOptions));
+                }
                 else
                 {
                     if (options.AllWords && response.Document.Ocr != null)
                     {
                         console.Write("#############\nDocument Text\n#############\n::\n");
-                        string ocr = response.Document.Ocr.ToString().Replace("\n", "\n  ");
+                        var ocr = response.Document.Ocr.ToString().Replace("\n", "\n  ");
                         console.Write("  " + ocr + "\n\n");
                     }
                     else if (options.FullText && response.Document.Inference.Extras.FullTextOcr != null)
                     {
                         console.Write("#############\nDocument Text\n#############\n::\n");
-                        string ocr = response.Document.Inference.Extras.FullTextOcr.Replace("\n", "\n  ");
+                        var ocr = response.Document.Inference.Extras.FullTextOcr.Replace("\n", "\n  ");
                         console.Write("  " + ocr + "\n\n");
                     }
 
                     if (options.Output == OutputType.Full)
+                    {
                         console.Write(response.Document.ToString());
+                    }
                     else if (options.Output == OutputType.Summary)
+                    {
                         console.Write(response.Document.Inference.Prediction.ToString());
+                    }
                 }
             }
         }

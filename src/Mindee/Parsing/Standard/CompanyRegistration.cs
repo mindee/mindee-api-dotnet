@@ -4,25 +4,25 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.Standard
 {
     /// <summary>
-    /// Represent a company registration.
+    ///     Represent a company registration.
     /// </summary>
     public class CompanyRegistration : LineItemField
     {
         /// <summary>
-        /// Type of the company registration number.
+        ///     Type of the company registration number.
         /// </summary>
         [JsonPropertyName("type")]
         public string Type { get; set; }
 
         /// <summary>
-        /// The value of the field.
+        ///     The value of the field.
         /// </summary>
         [JsonPropertyName("value")]
         public string Value { get; set; }
 
 
         /// <summary>
-        /// Print as a table line for RST display.
+        ///     Print as a table line for RST display.
         /// </summary>
         /// <returns></returns>
         public override string ToTableLine()
@@ -32,7 +32,7 @@ namespace Mindee.Parsing.Standard
         }
 
         /// <summary>
-        /// A pretty summary of the value.
+        ///     A pretty summary of the value.
         /// </summary>
         public override string ToString()
         {

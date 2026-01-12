@@ -1,29 +1,22 @@
 using System.Collections.Generic;
 using System.Text;
-using Mindee.Parsing.Common;
 
 namespace Mindee.Parsing.Custom.LineItem
 {
     /// <summary>
-    /// Table equivalent.
+    ///     Table equivalent.
     /// </summary>
     public class LineItems
     {
         /// <summary>
-        /// All the lines.
         /// </summary>
-        public IEnumerable<Line> Lines { get; }
-
-        /// <summary>
-        /// List of field names used to construct the line items.
-        /// </summary>
-        public List<string> FieldNames { get; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="lines"><see cref="Lines"/></param>
-        /// /// <param name="fieldNames"><see cref="FieldNames"/></param>
+        /// <param name="lines">
+        ///     <see cref="Lines" />
+        /// </param>
+        /// ///
+        /// <param name="fieldNames">
+        ///     <see cref="FieldNames" />
+        /// </param>
         public LineItems(IEnumerable<Line> lines, List<string> fieldNames)
         {
             Lines = lines;
@@ -31,11 +24,21 @@ namespace Mindee.Parsing.Custom.LineItem
         }
 
         /// <summary>
-        /// Output the line items as an RST Table.
+        ///     All the lines.
+        /// </summary>
+        public IEnumerable<Line> Lines { get; }
+
+        /// <summary>
+        ///     List of field names used to construct the line items.
+        /// </summary>
+        public List<string> FieldNames { get; }
+
+        /// <summary>
+        ///     Output the line items as an RST Table.
         /// </summary>
         public string ToRst(string title)
         {
-            StringBuilder result = new StringBuilder($"\n:{title}:\n");
+            var result = new StringBuilder($"\n:{title}:\n");
 
             var header = new StringBuilder();
             var columnNames = new StringBuilder();
@@ -54,9 +57,10 @@ namespace Mindee.Parsing.Custom.LineItem
                 foreach (var fieldName in FieldNames)
                 {
                     ListFieldValue field;
-                    string fieldValue = line.Fields.TryGetValue(fieldName, out field) ? field.ToString() : "";
+                    var fieldValue = line.Fields.TryGetValue(fieldName, out field) ? field.ToString() : "";
                     result.Append(fieldValue.PadRight(fieldName.Length + 1));
                 }
+
                 result.Append('\n');
             }
 
@@ -66,7 +70,7 @@ namespace Mindee.Parsing.Custom.LineItem
         }
 
         /// <summary>
-        /// Prettier representation.
+        ///     Prettier representation.
         /// </summary>
         public override string ToString()
         {

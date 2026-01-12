@@ -6,63 +6,68 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.V2.Field
 {
     /// <summary>
-    /// Custom deserializer for <see cref="DynamicField"/>
+    ///     Custom deserializer for <see cref="DynamicField" />
     /// </summary>
     [Serializable]
     [JsonConverter(typeof(DynamicFieldJsonConverter))]
     public class DynamicFieldJsonConverter : JsonConverter<DynamicField>
     {
         /// <summary>
-        /// <see cref="Read(ref Utf8JsonReader, Type, JsonSerializerOptions)"/>
+        ///     <see cref="Read(ref Utf8JsonReader, Type, JsonSerializerOptions)" />
         /// </summary>
         public override DynamicField Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             // read the response JSON into an object
-            JsonObject jsonObject = (JsonObject)JsonSerializer.Deserialize(ref reader, typeof(JsonObject), options);
+            var jsonObject = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
 
             DynamicField field;
 
             // -------- LIST FEATURE --------
-            if (jsonObject.TryGetPropertyValue("items", out var itemsNode) &&
+            if (jsonObject != null &&
+                jsonObject.TryGetPropertyValue("items", out var itemsNode) &&
                 itemsNode is JsonArray itemsArray)
             {
                 FieldConfidence? confidence = null;
-                if (jsonObject.TryGetPropertyValue("confidence", out JsonNode confidenceNode))
+                if (jsonObject.TryGetPropertyValue("confidence", out var confidenceNode))
                 {
                     confidence = confidenceNode.Deserialize<FieldConfidence?>(options);
                 }
-                ListField listField = new ListField(confidence: confidence);
+
+                var listField = new ListField(confidence);
                 foreach (var item in itemsArray)
                 {
                     listField.Items.Add(item.Deserialize<DynamicField>());
                 }
+
                 field = new DynamicField(
                     FieldType.ListField, listField: listField);
             }
 
             // -------- OBJECT WITH NESTED FIELDS --------
-            else if (jsonObject.TryGetPropertyValue("fields", out var nestedFieldsNode) &&
+            else if (jsonObject != null &&
+                     jsonObject.TryGetPropertyValue("fields", out var nestedFieldsNode) &&
                      nestedFieldsNode is JsonObject)
             {
                 field = new DynamicField(FieldType.ObjectField,
                     objectField: jsonObject.Deserialize<ObjectField>());
             }
             // -------- SIMPLE OBJECT --------
-            else if (jsonObject.ContainsKey("value"))
+            else if (jsonObject != null && jsonObject.ContainsKey("value"))
             {
                 field = new DynamicField(
                     FieldType.SimpleField,
-                    simpleField: jsonObject.Deserialize<SimpleField>());
+                    jsonObject.Deserialize<SimpleField>());
             }
             else
             {
                 return null;
             }
+
             return field;
         }
 
         /// <summary>
-        /// <see cref="Write(Utf8JsonWriter, DynamicField, JsonSerializerOptions)"/>
+        ///     <see cref="Write(Utf8JsonWriter, DynamicField, JsonSerializerOptions)" />
         /// </summary>
         public override void Write(Utf8JsonWriter writer, DynamicField value, JsonSerializerOptions options)
         {

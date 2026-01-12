@@ -3,26 +3,12 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.Standard
 {
     /// <summary>
-    /// Define a classification field.
+    ///     Define a classification field.
     /// </summary>
     public class ClassificationField
     {
         /// <summary>
-        /// The content of the value.
-        /// </summary>
-        [JsonPropertyName("value")]
-        public string Value { get; set; }
-
-        /// <summary>
-        /// The confidence about the selected classification.
-        /// A value from 0 to 1.
-        /// </summary>
-        /// <example>0.9</example>
-        [JsonPropertyName("confidence")]
-        public double? Confidence { get; set; }
-
-        /// <summary>
-        /// Default constructor.
+        ///     Default constructor.
         /// </summary>
         /// <param name="value"></param>
         public ClassificationField(string value)
@@ -31,7 +17,21 @@ namespace Mindee.Parsing.Standard
         }
 
         /// <summary>
-        /// A prettier representation.
+        ///     The content of the value.
+        /// </summary>
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
+
+        /// <summary>
+        ///     The confidence about the selected classification.
+        ///     A value from 0 to 1.
+        /// </summary>
+        /// <example>0.9</example>
+        [JsonPropertyName("confidence")]
+        public double? Confidence { get; set; }
+
+        /// <summary>
+        ///     A prettier representation.
         /// </summary>
         public override string ToString()
         {

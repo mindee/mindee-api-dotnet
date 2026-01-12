@@ -1,21 +1,23 @@
-namespace Mindee.Cli
+namespace Mindee.Cli.Commands
 {
     /// <summary>
-    /// How to output the response.
+    ///     How to output the response.
     /// </summary>
     internal enum OutputType
     {
         /// <summary>
-        /// Raw JSON.
+        ///     Raw JSON.
         /// </summary>
         Raw,
+
         /// <summary>
-        /// Document-level in rST format.
+        ///     Document-level in rST format.
         /// </summary>
         Summary,
+
         /// <summary>
-        /// Complete response in rST format.
+        ///     Complete response in rST format.
         /// </summary>
-        Full,
+        Full
     }
 }

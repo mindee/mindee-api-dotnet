@@ -5,25 +5,18 @@ using System.Linq;
 namespace Mindee.Geometry
 {
     /// <summary>
-    /// Group of 2 coordinates.
+    ///     Group of 2 coordinates.
     /// </summary>
     public class Point : List<double>
     {
         /// <summary>
-        /// X coordinate.
         /// </summary>
-        public double X => this.First();
-
-        /// <summary>
-        /// Y coordinate.
-        /// </summary>
-        public double Y => this.Last();
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="x"><see cref="X"/></param>
-        /// <param name="y"><see cref="Y"/></param>
+        /// <param name="x">
+        ///     <see cref="X" />
+        /// </param>
+        /// <param name="y">
+        ///     <see cref="Y" />
+        /// </param>
         public Point(double x, double y)
         {
             Add(x);
@@ -31,12 +24,22 @@ namespace Mindee.Geometry
         }
 
         /// <summary>
-        /// The default string representation.
+        ///     X coordinate.
+        /// </summary>
+        public double X => this.First();
+
+        /// <summary>
+        ///     Y coordinate.
+        /// </summary>
+        public double Y => this.Last();
+
+        /// <summary>
+        ///     The default string representation.
         /// </summary>
         public override string ToString()
         {
-            string x = X.ToString(CultureInfo.InvariantCulture);
-            string y = Y.ToString(CultureInfo.InvariantCulture);
+            var x = X.ToString(CultureInfo.InvariantCulture);
+            var y = Y.ToString(CultureInfo.InvariantCulture);
             return $"[{x}, {y}]";
         }
     }

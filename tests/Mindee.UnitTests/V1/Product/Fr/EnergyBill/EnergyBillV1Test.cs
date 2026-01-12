@@ -41,7 +41,7 @@ namespace Mindee.UnitTests.V1.Product.Fr.EnergyBill
 
         private static async Task<PredictResponse<EnergyBillV1>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/energy_bill_fra/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/energy_bill_fra/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<EnergyBillV1>(
                 UnitTestBase.GetFakePredictParameter());

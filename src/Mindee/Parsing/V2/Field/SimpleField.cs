@@ -5,32 +5,39 @@ using System.Text.Json.Serialization;
 namespace Mindee.Parsing.V2.Field
 {
     /// <summary>
-    /// Field having a single value.
+    ///     Field having a single value.
     /// </summary>
     [JsonConverter(typeof(SimpleFieldJsonConverter))]
     public class SimpleField : BaseField
     {
         /// <summary>
-        /// Field value, one of: string, bool, int, double, null.
+        ///     Represents a field with a single value.
+        ///     Inherits from the <see cref="BaseField" /> class.
+        ///     <param name="value">
+        ///         <see cref="Value" />
+        ///     </param>
+        ///     <param name="confidence">
+        ///         <see cref="BaseField.Confidence" />
+        ///     </param>
+        ///     <param name="locations">
+        ///         <see cref="BaseField.Locations" />
+        ///     </param>
         /// </summary>
-        [JsonPropertyName("value")]
-        public dynamic Value { get; set; }
-
-        /// <summary>
-        /// Represents a field with a single value.
-        /// Inherits from the <see cref="BaseField"/> class.
-        /// <param name="value"><see cref="Value"/></param>
-        /// <param name="confidence"><see cref="BaseField.Confidence"/></param>
-        /// <param name="locations"><see cref="BaseField.Locations"/></param>
-        /// </summary>
-        public SimpleField(dynamic value, FieldConfidence? confidence, List<FieldLocation> locations) : base(confidence, locations)
+        public SimpleField(dynamic value, FieldConfidence? confidence, List<FieldLocation> locations) : base(confidence,
+            locations)
         {
             Value = value;
         }
 
         /// <summary>
-        /// String representation of the field.
-        /// Checks that integers get displayed with proper formatting.
+        ///     Field value, one of: string, bool, int, double, null.
+        /// </summary>
+        [JsonPropertyName("value")]
+        public dynamic Value { get; set; }
+
+        /// <summary>
+        ///     String representation of the field.
+        ///     Checks that integers get displayed with proper formatting.
         /// </summary>
         public override string ToString()
         {

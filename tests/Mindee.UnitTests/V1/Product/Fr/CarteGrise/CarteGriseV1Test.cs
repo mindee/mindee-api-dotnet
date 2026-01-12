@@ -64,7 +64,7 @@ namespace Mindee.UnitTests.V1.Product.Fr.CarteGrise
 
         private static async Task<PredictResponse<CarteGriseV1>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/carte_grise/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/carte_grise/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<CarteGriseV1>(
                 UnitTestBase.GetFakePredictParameter());

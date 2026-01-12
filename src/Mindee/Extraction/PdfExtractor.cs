@@ -14,24 +14,24 @@ using SkiaSharp;
 namespace Mindee.Extraction
 {
     /// <summary>
-    /// PDF extraction class.
+    ///     PDF extraction class.
     /// </summary>
     public class PdfExtractor
     {
-        private readonly byte[] SourcePdf;
         private readonly string Filename;
+        private readonly byte[] SourcePdf;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PdfExtractor"/> class.
+        ///     Initializes a new instance of the <see cref="PdfExtractor" /> class.
         /// </summary>
         /// <param name="localInput">Instance of a LocalInputSource, provided by the user.</param>
         public PdfExtractor(LocalInputSource localInput)
         {
-            this.Filename = localInput.Filename;
+            Filename = localInput.Filename;
 
             if (localInput.IsPdf())
             {
-                this.SourcePdf = localInput.FileBytes;
+                SourcePdf = localInput.FileBytes;
             }
             else
             {
@@ -44,22 +44,23 @@ namespace Mindee.Extraction
                     var canvas = document.BeginPage(pageSize.Width, pageSize.Height);
                     canvas.DrawBitmap(bmp, SKPoint.Empty);
                 }
-                this.SourcePdf = memoryStream.ToArray();
+
+                SourcePdf = memoryStream.ToArray();
             }
         }
 
         /// <summary>
-        /// Wrapper for pdf GetPageCount();
+        ///     Wrapper for pdf GetPageCount();
         /// </summary>
         /// <returns>The number of pages in the file.</returns>
         public int GetPageCount()
         {
-            var docInstance = DocLib.Instance.GetDocReader(this.SourcePdf, new PageDimensions(1, 1));
+            var docInstance = DocLib.Instance.GetDocReader(SourcePdf, new PageDimensions(1, 1));
             return docInstance.GetPageCount();
         }
 
         /// <summary>
-        /// Extracts sub-documents from the source document using list of page indexes.
+        ///     Extracts sub-documents from the source document using list of page indexes.
         /// </summary>
         /// <param name="pageIndexes">List of sub-lists of pages to keep.</param>
         /// <returns>Extracted documents.</returns>
@@ -92,18 +93,18 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        /// Extracts invoices as complete PDFs from the document. Include cuts for confidence scores below 1.0.
+        ///     Extracts invoices as complete PDFs from the document. Include cuts for confidence scores below 1.0.
         /// </summary>
         /// <param name="pageIndexes">List of sub-lists of pages to keep.</param>
         /// <returns>A list of extracted invoices.</returns>
         public List<ExtractedPdf> ExtractInvoices(List<InvoiceSplitterV1InvoicePageGroup> pageIndexes)
         {
-            List<List<int>> indexes = pageIndexes.Select(pi => pi.PageIndexes.ToList()).ToList();
+            var indexes = pageIndexes.Select(pi => pi.PageIndexes.ToList()).ToList();
             return ExtractSubDocuments(indexes.ToList());
         }
 
         /// <summary>
-        /// Extracts invoices as complete PDFs from the document.
+        ///     Extracts invoices as complete PDFs from the document.
         /// </summary>
         /// <param name="pageIndexes">List of sub-lists of pages to keep.</param>
         /// <param name="strict">Whether to trust confidence scores of 1.0 only or not.</param>
@@ -125,7 +126,7 @@ namespace Mindee.Extraction
             {
                 var pageIndex = iterator.Current;
                 Debug.Assert(pageIndex != null, nameof(pageIndex) + " != null");
-                double confidence = pageIndex.Confidence ?? 0.0;
+                var confidence = pageIndex.Confidence ?? 0.0;
                 var pageList = pageIndex.PageIndexes;
 
                 if (Math.Abs(confidence - 1.0) < 0.01 && previousConfidence == null)

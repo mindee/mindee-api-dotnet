@@ -3,28 +3,12 @@ using System;
 namespace Mindee.Http
 {
     /// <summary>
-    /// Define a Mindee V1 API endpoint.
+    ///     Define a Mindee V1 API endpoint.
     /// </summary>
     public sealed class CustomEndpoint
     {
         /// <summary>
-        /// The name of the product associated to the expected model.
-        /// </summary>
-        public string EndpointName { get; }
-
-        /// <summary>
-        /// The version number of the API. Without the v (for example for the v1.2: 1.2). By default set to 1.0.
-        /// </summary>
-        public string Version { get; }
-
-        /// <summary>
-        /// The name of the organization which owns the API. Useful when using custom builder.
-        /// Defaults to "mindee".
-        /// </summary>
-        public string AccountName { get; }
-
-        /// <summary>
-        /// Default constructor.
+        ///     Default constructor.
         /// </summary>
         /// <param name="endpointName">The name of the product associated to the expected model.</param>
         /// <param name="accountName">The name of the account which owns the API. Useful when using custom builder.</param>
@@ -40,7 +24,23 @@ namespace Mindee.Http
         }
 
         /// <summary>
-        /// Get the base URL for the endpoint.
+        ///     The name of the product associated to the expected model.
+        /// </summary>
+        public string EndpointName { get; }
+
+        /// <summary>
+        ///     The version number of the API. Without the v (for example for the v1.2: 1.2). By default set to 1.0.
+        /// </summary>
+        public string Version { get; }
+
+        /// <summary>
+        ///     The name of the organization which owns the API. Useful when using custom builder.
+        ///     Defaults to "mindee".
+        /// </summary>
+        public string AccountName { get; }
+
+        /// <summary>
+        ///     Get the base URL for the endpoint.
         /// </summary>
         /// <returns></returns>
         public string GetBaseUrl()
@@ -49,7 +49,7 @@ namespace Mindee.Http
         }
 
         /// <summary>
-        /// Get an endpoint for a given prediction model.
+        ///     Get an endpoint for a given prediction model.
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <returns></returns>
@@ -64,8 +64,13 @@ namespace Mindee.Http
                     "Please refer to the documentation or contact support.");
             }
 
-            EndpointAttribute endpointAttribute = (EndpointAttribute)Attribute.GetCustomAttribute(
-                element: typeof(TModel), typeof(EndpointAttribute));
+            var endpointAttribute = (EndpointAttribute)Attribute.GetCustomAttribute(
+                typeof(TModel), typeof(EndpointAttribute));
+
+            if (endpointAttribute == null)
+            {
+                throw new NotSupportedException("The endpoint attribute is missing.");
+            }
 
             return new CustomEndpoint(
                 endpointAttribute.ModelName,

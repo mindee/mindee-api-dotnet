@@ -3,16 +3,18 @@ using Microsoft.Extensions.Logging;
 namespace Mindee
 {
     /// <summary>
-    /// Global Mindee logger.
+    ///     Global Mindee logger.
     /// </summary>
     public class MindeeLogger
     {
         private static ILogger _instance;
 
         /// <summary>
-        /// Assign a LoggerFactory.
+        ///     Assign a LoggerFactory.
         /// </summary>
-        /// <param name="loggerFactory"><see cref="ILoggerFactory"/>></param>
+        /// <param name="loggerFactory">
+        ///     <c>ILoggerFactory</c>
+        /// </param>
         public static void Assign(ILoggerFactory loggerFactory)
         {
             _instance = loggerFactory.CreateLogger("MindeeClient");
@@ -20,8 +22,8 @@ namespace Mindee
         }
 
         /// <summary>
-        /// Get the logger instance.
-        /// Will be null if a logger factory has not been <see cref="Assign"/>.
+        ///     Get the logger instance.
+        ///     Will be null if a logger factory has not been <see cref="Assign" />.
         /// </summary>
         public static ILogger GetLogger()
         {

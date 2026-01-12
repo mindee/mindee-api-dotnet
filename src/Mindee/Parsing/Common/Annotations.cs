@@ -5,7 +5,6 @@ namespace Mindee.Parsing.Common
 {
     internal class Annotations
     {
-        [JsonPropertyName("labels")]
-        public List<object> Labels { get; set; }
+        [JsonPropertyName("labels")] public List<object> Labels { get; set; }
     }
 }

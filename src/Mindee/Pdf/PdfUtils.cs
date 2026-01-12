@@ -10,12 +10,12 @@ using SkiaSharp;
 namespace Mindee.Pdf
 {
     /// <summary>
-    /// PDF Utility class.
+    ///     PDF Utility class.
     /// </summary>
     public static class PdfUtils
     {
         /// <summary>
-        /// Draws the content of a bitmap onto a canvas. Optionally writes the text from a source PDF onto said canvas.
+        ///     Draws the content of a bitmap onto a canvas. Optionally writes the text from a source PDF onto said canvas.
         /// </summary>
         /// <param name="canvas">SkiaSharp canvas object.</param>
         /// <param name="resizedBitmap">Resized bitmap to transpose.</param>
@@ -42,7 +42,7 @@ namespace Mindee.Pdf
         }
 
         /// <summary>
-        /// Generates a bitmap of the current read page. This operation rasterizes the contents.
+        ///     Generates a bitmap of the current read page. This operation rasterizes the contents.
         /// </summary>
         /// <param name="imageQuality">Target quality for the contents of the page.</param>
         /// <param name="pageReader">Page reader instance for the currently read page.</param>
@@ -82,10 +82,10 @@ namespace Mindee.Pdf
         }
 
         /// <summary>
-        /// Writes the source text of a page to the newly-created canvas (on top of images).
-        /// Does not extract font-family due to Skiasharp limitations.
-        /// Also approximates the positioning of letters since vertical anchor is not extracted from the text and
-        /// SkiaSharp places letters from bounding boxes.
+        ///     Writes the source text of a page to the newly-created canvas (on top of images).
+        ///     Does not extract font-family due to Skiasharp limitations.
+        ///     Also approximates the positioning of letters since vertical anchor is not extracted from the text and
+        ///     SkiaSharp places letters from bounding boxes.
         /// </summary>
         /// <param name="bitmap">The input bitmap.</param>
         /// <param name="character">The currently read character.</param>
@@ -93,14 +93,14 @@ namespace Mindee.Pdf
         private static void WriteTextToCanvas(SKBitmap bitmap, Character character, SKCanvas canvas)
         {
             using var paint = new SKPaint();
-            SKColor textColor = ImageUtils.InferTextColor(bitmap, character.Box);
+            var textColor = ImageUtils.InferTextColor(bitmap, character.Box);
             paint.TextSize = (float)character.FontSize * (72f / 96f);
             paint.Color = textColor;
 
             var fontManager = SKFontManager.Default;
             string[] preferredFonts = ["Lucida Grande", "Arial", "Liberation Sans"];
 
-            string fontName = preferredFonts.FirstOrDefault(tmpFontName =>
+            var fontName = preferredFonts.FirstOrDefault(tmpFontName =>
                 fontManager.MatchFamily(tmpFontName) != null &&
                 string.Equals(fontManager.MatchFamily(tmpFontName).FamilyName, tmpFontName,
                     StringComparison.OrdinalIgnoreCase)
@@ -109,28 +109,28 @@ namespace Mindee.Pdf
 
             paint.TextAlign = SKTextAlign.Left;
 
-            string text = character.Char.ToString();
-            string[] lines = text.Split(["\r\n", "\n"], StringSplitOptions.None);
+            var text = character.Char.ToString();
+            var lines = text.Split(["\r\n", "\n"], StringSplitOptions.None);
 
-            float lineHeight = paint.FontSpacing;
-            float boxCenterX = (character.Box.Left + character.Box.Right) / 2f;
+            var lineHeight = paint.FontSpacing;
+            var boxCenterX = (character.Box.Left + character.Box.Right) / 2f;
             float boxBottom = character.Box.Bottom;
 
-            for (int i = 0; i < lines.Length; i++)
+            for (var i = 0; i < lines.Length; i++)
             {
-                string line = lines[i];
+                var line = lines[i];
                 if (string.IsNullOrEmpty(line))
                 {
                     continue;
                 }
 
-                SKRect lineBounds = new SKRect();
+                var lineBounds = new SKRect();
                 paint.MeasureText(line, ref lineBounds);
 
-                float x = boxCenterX - (lineBounds.Width / 2f);
-                float y = boxBottom - ((lines.Length - i) * lineHeight);
+                var x = boxCenterX - (lineBounds.Width / 2f);
+                var y = boxBottom - ((lines.Length - i) * lineHeight);
 
-                foreach (char c in line)
+                foreach (var c in line)
                 {
                     if (char.IsControl(c))
                     {
@@ -138,7 +138,7 @@ namespace Mindee.Pdf
                         continue;
                     }
 
-                    string charString = c.ToString();
+                    var charString = c.ToString();
                     canvas.DrawText(charString, x, y, paint);
                     x += paint.MeasureText(charString);
                 }
@@ -146,7 +146,7 @@ namespace Mindee.Pdf
         }
 
         /// <summary>
-        /// Returns true if the source PDF has source text inside. Returns false for images.
+        ///     Returns true if the source PDF has source text inside. Returns false for images.
         /// </summary>
         /// <param name="fileBytes">A byte array representing a PDF.</param>
         /// <returns>True if at least one character exists in one page.</returns>
@@ -158,7 +158,7 @@ namespace Mindee.Pdf
                     (DocLib.Instance)
                 {
                     using var docReader = DocLib.Instance.GetDocReader(fileBytes, new PageDimensions(1));
-                    for (int i = 0; i < docReader.GetPageCount(); i++)
+                    for (var i = 0; i < docReader.GetPageCount(); i++)
                     {
                         using var pageReader = docReader.GetPageReader(i);
                         if (pageReader.GetText().Length > 0)

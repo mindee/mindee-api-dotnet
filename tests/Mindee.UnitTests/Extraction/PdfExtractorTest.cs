@@ -7,7 +7,6 @@ namespace Mindee.UnitTests.Extraction
 {
     public class PdfExtractorTest
     {
-
         [Fact]
         public void GivenAnImage_ShouldExtractAPDF()
         {
@@ -56,6 +55,7 @@ namespace Mindee.UnitTests.Extraction
             Assert.Equal("invoice_5p_002-005.pdf", extractedPDFStrict[1].Filename);
             Assert.Equal(4, extractedPDFStrict[1].GetPageCount());
         }
+
         private async Task<AsyncPredictResponse<InvoiceSplitterV1>> GetPrediction()
         {
             const string fileName = Constants.V1ProductDir + "invoice_splitter/response_v1/complete.json";

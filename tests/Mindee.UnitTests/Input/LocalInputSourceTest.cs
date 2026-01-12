@@ -14,7 +14,16 @@ namespace Mindee.UnitTests.Input
         [Fact]
         public void Can_Load_Type_ImageFiles()
         {
-            List<string> imageExtensions = new() { ".heic", ".jpg", ".jpga", ".png", ".tif", ".tiff", ".webp" };
+            List<string> imageExtensions = new()
+            {
+                ".heic",
+                ".jpg",
+                ".jpga",
+                ".png",
+                ".tif",
+                ".tiff",
+                ".webp"
+            };
             foreach (var extension in imageExtensions)
             {
                 var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt" + extension);
@@ -34,14 +43,14 @@ namespace Mindee.UnitTests.Input
         [Fact]
         public void DoesNot_Load_InvalidFile()
         {
-            Assert.Throws<MindeeInputException>(
-                () => new LocalInputSource(Constants.RootDir + "file_types/receipt.txt"));
+            Assert.Throws<MindeeInputException>(() =>
+                new LocalInputSource(Constants.RootDir + "file_types/receipt.txt"));
         }
 
         [Fact]
         public void Can_Load_Using_FileInfo()
         {
-            FileInfo fileInfo = new FileInfo(Constants.RootDir + "file_types/receipt.jpg");
+            var fileInfo = new FileInfo(Constants.RootDir + "file_types/receipt.jpg");
             Assert.IsType<LocalInputSource>(new LocalInputSource(fileInfo));
         }
 
@@ -72,8 +81,8 @@ namespace Mindee.UnitTests.Input
         public void Can_Load_Using_FileBytes()
         {
             Assert.IsType<LocalInputSource>(new LocalInputSource(
-                fileBytes: new byte[] { byte.MinValue },
-                filename: "titicaca.jpg"));
+                new[] { byte.MinValue },
+                "titicaca.jpg"));
         }
 
         [Fact]
@@ -171,7 +180,7 @@ namespace Mindee.UnitTests.Input
                 new("Resources/output/resize500xnull.jpg"),
                 new("Resources/output/resize250x500.jpg"),
                 new("Resources/output/resize500x250.jpg"),
-                new("Resources/output/resizenullx250.jpg"),
+                new("Resources/output/resizenullx250.jpg")
             };
             Assert.True(initialFileInfo.Length > renderedFileInfos[0].Length);
             Assert.True(renderedFileInfos[0].Length > renderedFileInfos[1].Length);
@@ -183,7 +192,7 @@ namespace Mindee.UnitTests.Input
         public void Pdf_Compress_From_InputSource()
         {
             var pdfResizeInput = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
-            pdfResizeInput.Compress(quality: 75);
+            pdfResizeInput.Compress(75);
             File.WriteAllBytes("Resources/output/resize_indirect.pdf", pdfResizeInput.FileBytes);
             var initialFileInfo = new FileInfo(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
             var renderedFileInfo = new FileInfo("Resources/output/resize_indirect.pdf");
@@ -211,7 +220,7 @@ namespace Mindee.UnitTests.Input
                 new("Resources/output/compress85.pdf"),
                 new("Resources/output/compress75.pdf"),
                 new("Resources/output/compress50.pdf"),
-                new("Resources/output/compress10.pdf"),
+                new("Resources/output/compress10.pdf")
             };
             Assert.True(initialFileInfo.Length > renderedFileInfo[0].Length);
             Assert.True(renderedFileInfo[0].Length > renderedFileInfo[1].Length);
@@ -226,13 +235,15 @@ namespace Mindee.UnitTests.Input
             {
                 var initialWithText = new LocalInputSource(Constants.RootDir + "file_types/pdf/multipage.pdf");
                 var compressedWithText = PdfCompressor.CompressPdf(initialWithText.FileBytes, 100, true, false);
-                using var originalReader = DocLib.Instance.GetDocReader(initialWithText.FileBytes, new PageDimensions(1));
+                using var originalReader =
+                    DocLib.Instance.GetDocReader(initialWithText.FileBytes, new PageDimensions(1));
                 using var compressedReader = DocLib.Instance.GetDocReader(compressedWithText, new PageDimensions(1));
                 Assert.Equal(originalReader.GetPageCount(), compressedReader.GetPageCount());
 
                 for (var i = 0; i < originalReader.GetPageCount(); i++)
                 {
-                    Assert.Equal(originalReader.GetPageReader(i).GetText(), compressedReader.GetPageReader(i).GetText());
+                    Assert.Equal(originalReader.GetPageReader(i).GetText(),
+                        compressedReader.GetPageReader(i).GetText());
                 }
             }
         }

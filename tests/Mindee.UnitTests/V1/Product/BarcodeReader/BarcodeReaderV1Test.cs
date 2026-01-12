@@ -25,7 +25,7 @@ namespace Mindee.UnitTests.V1.Product.BarcodeReader
 
         private static async Task<PredictResponse<BarcodeReaderV1>> GetPrediction(string name)
         {
-            string fileName = Constants.V1RootDir + $"products/barcode_reader/response_v1/{name}.json";
+            var fileName = Constants.V1RootDir + $"products/barcode_reader/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<BarcodeReaderV1>(
                 UnitTestBase.GetFakePredictParameter());
