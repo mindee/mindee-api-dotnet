@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <VersionPrefix>3.38.0</VersionPrefix>
-    <VersionSuffix></VersionSuffix>
+    <VersionSuffix>strongname</VersionSuffix>
     <Authors>Mindee</Authors>
     <PackageProjectUrl>https://github.com/mindee/mindee-api-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mindee/mindee-api-dotnet</RepositoryUrl>
@@ -81,4 +81,12 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
     <Reference Include="System.Net.Http"/>
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(MindeeStrongNameKeyFile)' != ''">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MindeeStrongNameKeyFile)</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+    <PublicSign>false</PublicSign>
+    <NoWarn>$(NoWarn);CS8002</NoWarn>
+  </PropertyGroup>
 </Project>
