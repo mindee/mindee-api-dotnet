@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <VersionPrefix>3.37.2</VersionPrefix>
-    <VersionSuffix></VersionSuffix>
+    <VersionSuffix>strongname</VersionSuffix>
     <Authors>Mindee</Authors>
     <PackageProjectUrl>https://github.com/mindee/mindee-api-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mindee/mindee-api-dotnet</RepositoryUrl>
@@ -39,5 +39,13 @@
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <FileAlignment>512</FileAlignment>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(MindeeStrongNameKeyFile)' != ''">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MindeeStrongNameKeyFile)</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+    <PublicSign>false</PublicSign>
+    <NoWarn>$(NoWarn);CS8002</NoWarn>
   </PropertyGroup>
 </Project>
