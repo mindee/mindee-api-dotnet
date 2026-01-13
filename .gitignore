@@ -366,3 +366,7 @@ local_test/
 
 # DocFX files
 _site
+
+# StrongName files
+*.snk
+*.snk.b64

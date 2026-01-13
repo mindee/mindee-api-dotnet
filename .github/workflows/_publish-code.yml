@@ -12,15 +12,34 @@ jobs:
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
+
+      - name: Restore strong-name key from secret
+        run: |
+          echo "${{ secrets.MINDEE_SNK_B64 }}" | base64 -d > /tmp/Mindee.snk
+          chmod 600 /tmp/Mindee.snk
+
       - name: Install dependencies
         run: dotnet restore "src/Mindee"
-      - name: Build
-        run: dotnet build "src/Mindee" --configuration Release --no-restore
+
+      - name: Build (strong-name signed)
+        run: dotnet build "src/Mindee" --configuration Release --no-restore -p:MindeeStrongNameKeyFile=/tmp/Mindee.snk
+
       - name: Pack
         run: dotnet pack "src/Mindee" -c Release -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --output nuget
+
       - name: Publish NuGet packages to NuGet
         run: dotnet nuget push nuget/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source "nuget.org" --skip-duplicate
+
+      - name: Verify strong-name (PublicKeyToken)
+        run: |
+         sudo apt-get update
+         sudo apt-get install -y mono-devel unzip
+         unzip -p nuget/*.nupkg lib/net48/Mindee.dll > /tmp/Mindee.dll
+         sn -T /tmp/Mindee.dll
+         sn -vf /tmp/Mindee.dll
+
