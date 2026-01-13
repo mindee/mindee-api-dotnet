@@ -46,5 +46,6 @@
     <AssemblyOriginatorKeyFile>$(MindeeStrongNameKeyFile)</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
     <PublicSign>false</PublicSign>
+    <NoWarn>$(NoWarn);CS8002</NoWarn>
   </PropertyGroup>
 </Project>
