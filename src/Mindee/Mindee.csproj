@@ -4,22 +4,34 @@
     <TargetFrameworks>net472;net48;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
   </PropertyGroup>
 
+  <!-- Common packages for all frameworks -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6"/>
     <PackageReference Include="SkiaSharp" Version="2.88.8"/>
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.8"/>
     <PackageReference Include="System.Text.Json" Version="8.0.5"/>
     <PackageReference Include="Docnet.Core" Version="2.3.1"/>
     <PackageReference Include="RestSharp" Version="112.0.0"/>
+  </ItemGroup>
+
+  <!-- Microsoft.Extensions packages for .NET Framework 4.x -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472' Or '$(TargetFramework)' == 'net48'">
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0"/>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0"/>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.4"/>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0"/>
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0"/>
+  </ItemGroup>
+
+  <!-- Microsoft.Extensions packages for modern .NET -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0' Or '$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.6"/>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.6"/>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.6"/>
     <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.6"/>
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.6"/>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net472' Or '$(TargetFramework)' == 'net48'">
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0"/>
   </ItemGroup>
 
   <ItemGroup>
