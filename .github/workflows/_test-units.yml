@@ -52,7 +52,7 @@ jobs:
       matrix:
         dotnet:
           - "net472"
-          - "net482"
+          - "net48"
           - "net6.0"
           - "net8.0"
           - "net10.0"
