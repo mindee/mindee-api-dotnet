@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+#if NET6_0_OR_GREATER
 using Microsoft.Extensions.DependencyInjection;
+#endif
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -17,7 +19,9 @@ namespace Mindee.Http
 
         public MindeeApiV2(
             IOptions<MindeeSettingsV2> mindeeSettings,
+#if NET6_0_OR_GREATER
             [FromKeyedServices("MindeeV2RestClient")]
+#endif
             RestClient httpClient,
             ILogger<MindeeApiV2> logger = null)
         {
