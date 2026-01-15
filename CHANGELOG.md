@@ -1,5 +1,11 @@
 # Mindee .NET Client Library Changelog
 
+## v3.37.1 - 2026-01-15
+### Changes
+
+* :broom: add code quality checks & reformat entire codebase
+
+
 ## v3.37.0 - 2026-01-06
 
 ### Changes
