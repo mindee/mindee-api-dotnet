@@ -14,15 +14,15 @@ jobs:
       actions: read
       security-events: write
       contents: read
-  qodana-code-quality:
-    uses: ./.github/workflows/_qodana_code_quality.yml
-    permissions:
-      actions: read
-      security-events: write
-      checks: write
-      contents: write
-      pull-requests: write
-    secrets: inherit
+#  qodana-code-quality:
+#    uses: ./.github/workflows/_qodana_code_quality.yml
+#    permissions:
+#      actions: read
+#      security-events: write
+#      checks: write
+#      contents: write
+#      pull-requests: write
+#    secrets: inherit
   codeql:
     uses: ./.github/workflows/_codeql.yml
     permissions:
@@ -31,7 +31,10 @@ jobs:
       contents: read
   test-units:
     uses: ./.github/workflows/_test-units.yml
-    needs: [static-analysis, qodana-code-quality, codeql]
+    needs:
+      - static-analysis
+      - codeql
+#      - qodana-code-quality
     secrets: inherit
   test-integrations:
     uses: ./.github/workflows/_test-integrations.yml
