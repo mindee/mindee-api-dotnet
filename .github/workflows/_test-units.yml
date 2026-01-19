@@ -51,8 +51,6 @@ jobs:
     strategy:
       matrix:
         dotnet:
-          - "net472"
-          - "net482"
           - "net6.0"
           - "net8.0"
           - "net10.0"
@@ -83,3 +81,30 @@ jobs:
     - name: Build and test
       run: |
         dotnet test -f ${{ matrix.dotnet }} --no-restore --verbosity normal "tests\Mindee.UnitTests"
+
+  test-windows-legacy:
+    name: Test on Windows
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        dotnet:
+          - "net472"
+          - "net48"
+    runs-on: "windows-2022"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+
+      - name: Install dependencies
+        run: |
+          dotnet restore
+
+      - name: Build and test
+        run: |
+          dotnet test -f ${{ matrix.dotnet }} --no-restore --verbosity normal "tests\Mindee.UnitTests"
