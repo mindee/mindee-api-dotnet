@@ -1,5 +1,13 @@
 # Mindee .NET Client Library Changelog
 
+
+## v3.37.2 - 2026-01-19
+### Fixes
+
+* :bug: fix some older .NET versions not compiling properly
+
+
+
 ## v3.37.1 - 2026-01-15
 ### Changes
 
