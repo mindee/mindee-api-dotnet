@@ -55,13 +55,13 @@ namespace Mindee.Cli.Commands
             switch (options.Async)
             {
                 case true when !options.Sync:
-                {
-                    // Inject an "option" not changeable by the user.
-                    // This will set the `Handler.Async` property to always be `true`.
-                    var option = new Option<bool>("async", () => true) { IsHidden = true };
-                    AddOption(option);
-                    break;
-                }
+                    {
+                        // Inject an "option" not changeable by the user.
+                        // This will set the `Handler.Async` property to always be `true`.
+                        var option = new Option<bool>("async", () => true) { IsHidden = true };
+                        AddOption(option);
+                        break;
+                    }
                 case true when options.Sync:
                     AddOption(new Option<bool>(["--async"],
                         "Process the file asynchronously. False by default."));
