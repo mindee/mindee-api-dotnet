@@ -44,10 +44,7 @@ namespace Mindee.Http
         )
             where TModel : class, new()
         {
-            if (endpoint is null)
-            {
-                endpoint = CustomEndpoint.GetEndpoint<TModel>();
-            }
+            endpoint ??= CustomEndpoint.GetEndpoint<TModel>();
 
             string url;
             if (predictParameter.WorkflowId != null)
@@ -68,7 +65,7 @@ namespace Mindee.Http
 
             AddPredictRequestParameters(predictParameter, request);
 
-            _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
+            _logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
 
             var response = await _httpClient.ExecutePostAsync(request);
             return ResponseHandler<AsyncPredictResponse<TModel>>(response);
@@ -90,7 +87,7 @@ namespace Mindee.Http
 
             AddPredictRequestParameters(predictParameter, request);
 
-            _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
+            _logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
 
             var response = await _httpClient.ExecutePostAsync(request);
             return ResponseHandler<PredictResponse<TModel>>(response);
@@ -109,11 +106,11 @@ namespace Mindee.Http
             var queueRequest = new RestRequest(
                 $"v1/products/{endpoint.GetBaseUrl()}/documents/queue/{jobId}");
 
-            _logger?.LogInformation($"HTTP GET to {_baseUrl + queueRequest.Resource} ...");
+            _logger?.LogInformation("HTTP GET to {QueueRequestResource} ...", _baseUrl + queueRequest.Resource);
 
             var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest);
 
-            _logger?.LogDebug($"HTTP response: {queueResponse.Content}");
+            _logger?.LogDebug("HTTP response: {QueueResponseContent}", queueResponse.Content);
 
             if (queueResponse.StatusCode == HttpStatusCode.Redirect && queueResponse.Headers != null)
             {
@@ -121,7 +118,7 @@ namespace Mindee.Http
 
                 var docRequest = new RestRequest(locationHeader.Value);
 
-                _logger?.LogInformation($"HTTP GET to {_baseUrl + docRequest.Resource} ...");
+                _logger?.LogInformation("HTTP GET to {DocRequestResource} ...", _baseUrl + docRequest.Resource);
                 var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
                 return ResponseHandler<AsyncPredictResponse<TModel>>(docResponse);
             }
@@ -146,7 +143,7 @@ namespace Mindee.Http
 
             AddWorkflowRequestParameters(workflowParameter, request);
 
-            _logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
+            _logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
 
             var response = await _httpClient.ExecutePostAsync(request);
             return ResponseHandler<WorkflowResponse<TModel>>(response);
@@ -231,14 +228,14 @@ namespace Mindee.Http
         private TModel ResponseHandler<TModel>(RestResponse restResponse)
             where TModel : CommonResponse, new()
         {
-            _logger?.LogDebug($"HTTP response: {restResponse.Content}");
+            _logger?.LogDebug("HTTP response: {RestResponseContent}", restResponse.Content);
 
             var errorMessage = "Mindee API client: ";
             TModel model = null;
 
             if (!string.IsNullOrWhiteSpace(restResponse.Content))
             {
-                _logger?.LogInformation($"Parsing response {typeof(TModel).Name} ...");
+                _logger?.LogInformation("Parsing response {Name} ...", typeof(TModel).Name);
                 try
                 {
                     model = JsonSerializer.Deserialize<TModel>(restResponse.Content);
@@ -246,8 +243,7 @@ namespace Mindee.Http
                 }
                 catch (Exception ex)
                 {
-                    errorMessage += ex.Message;
-                    _logger?.LogCritical(errorMessage);
+                    _logger?.LogCritical(ex, "Mindee API client: {ErrorMessage}", ex.Message);
                     throw new MindeeException(errorMessage);
                 }
 
@@ -276,25 +272,18 @@ namespace Mindee.Http
                 errorMessage += "Empty response from server.";
             }
 
-            _logger?.LogError(errorMessage);
+            _logger?.LogError("{ErrorMessage}", errorMessage);
 
-            switch (restResponse.StatusCode)
+            throw restResponse.StatusCode switch
             {
-                case HttpStatusCode.InternalServerError:
-                    throw new Mindee500Exception(errorMessage);
-                case HttpStatusCode.BadRequest:
-                    throw new Mindee400Exception(errorMessage);
-                case HttpStatusCode.Unauthorized:
-                    throw new Mindee401Exception(errorMessage);
-                case HttpStatusCode.Forbidden:
-                    throw new Mindee403Exception(errorMessage);
-                case HttpStatusCode.NotFound:
-                    throw new Mindee404Exception(errorMessage);
-                case (HttpStatusCode)429:
-                    throw new Mindee429Exception(errorMessage);
-                default:
-                    throw new MindeeException(restResponse.ErrorMessage);
-            }
+                HttpStatusCode.InternalServerError => new Mindee500Exception(errorMessage),
+                HttpStatusCode.BadRequest => new Mindee400Exception(errorMessage),
+                HttpStatusCode.Unauthorized => new Mindee401Exception(errorMessage),
+                HttpStatusCode.Forbidden => new Mindee403Exception(errorMessage),
+                HttpStatusCode.NotFound => new Mindee404Exception(errorMessage),
+                (HttpStatusCode)429 => new Mindee429Exception(errorMessage),
+                _ => new MindeeException(restResponse.ErrorMessage)
+            };
         }
     }
 }
