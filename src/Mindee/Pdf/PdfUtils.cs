@@ -98,7 +98,7 @@ namespace Mindee.Pdf
             paint.Color = textColor;
 
             var fontManager = SKFontManager.Default;
-            var preferredFonts = new[]{"Lucida Grande", "Arial", "Liberation Sans"};
+            var preferredFonts = new[] { "Lucida Grande", "Arial", "Liberation Sans" };
 
             var fontName = preferredFonts.FirstOrDefault(tmpFontName =>
                 fontManager.MatchFamily(tmpFontName) != null &&

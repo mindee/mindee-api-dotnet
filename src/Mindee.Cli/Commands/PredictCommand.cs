@@ -8,43 +8,25 @@ using Mindee.Parsing.Common;
 
 namespace Mindee.Cli.Commands
 {
-    internal struct CommandOptions
+    internal struct CommandOptions(string name, string description, bool allWords, bool fullText, bool sync, bool async)
     {
-        public readonly string Name;
-        public readonly string Description;
-        public readonly bool AllWords;
-        public readonly bool FullText;
-        public readonly bool Async;
-        public readonly bool Sync;
-
-        public CommandOptions(string name, string description, bool allWords, bool fullText, bool sync, bool async)
-        {
-            Name = name;
-            Description = description;
-            AllWords = allWords;
-            FullText = fullText;
-            Async = async;
-            Sync = sync;
-        }
+        public readonly string Name = name;
+        public readonly string Description = description;
+        public readonly bool AllWords = allWords;
+        public readonly bool FullText = fullText;
+        public readonly bool Async = async;
+        public readonly bool Sync = sync;
     }
 
-    internal struct ParseOptions
+    internal struct ParseOptions(string path, bool allWords, bool fullText, OutputType output)
     {
-        public readonly string Path;
-        public readonly bool AllWords;
-        public readonly bool FullText;
-        public readonly OutputType Output;
-
-        public ParseOptions(string path, bool allWords, bool fullText, OutputType output)
-        {
-            Path = path;
-            AllWords = allWords;
-            FullText = fullText;
-            Output = output;
-        }
+        public readonly string Path = path;
+        public readonly bool AllWords = allWords;
+        public readonly bool FullText = fullText;
+        public readonly OutputType Output = output;
     }
 
-    internal class PredictCommand<TInferenceModel, TDoc, TPage> : Command
+    class PredictCommand<TInferenceModel, TDoc, TPage> : Command
         where TDoc : IPrediction, new()
         where TPage : IPrediction, new()
         where TInferenceModel : Inference<TDoc, TPage>, new()
@@ -52,36 +34,38 @@ namespace Mindee.Cli.Commands
         public PredictCommand(CommandOptions options)
             : base(options.Name, options.Description)
         {
-            AddOption(new Option<OutputType>(new[] { "-o", "--output", "output" },
+            AddOption(new Option<OutputType>(["-o", "--output", "output"],
                 "Specify how to output the data. \n" +
                 "- summary: a basic summary (default)\n" +
                 "- raw: full JSON object\n"));
             if (options.AllWords)
             {
-                var option = new Option<bool>(new[] { "-w", "--all-words", "allWords" },
+                var option = new Option<bool>(["-w", "--all-words", "allWords"],
                     "To get all the words in the current document. False by default.");
                 AddOption(option);
             }
 
             if (options.FullText)
             {
-                var option = new Option<bool>(new[] { "-f", "--full-text", "fullText" },
+                var option = new Option<bool>(["-f", "--full-text", "fullText"],
                     "To get all the words in the current document. False by default.");
                 AddOption(option);
             }
 
-            if (options.Async && !options.Sync)
+            switch (options.Async)
             {
-                // Inject an "option" not changeable by the user.
-                // This will set the `Handler.Async` property to always be `true`.
-                var option = new Option<bool>("async", () => true);
-                option.IsHidden = true;
-                AddOption(option);
-            }
-            else if (options.Async && options.Sync)
-            {
-                AddOption(new Option<bool>(new[] { "--async" },
-                    "Process the file asynchronously. False by default."));
+                case true when !options.Sync:
+                {
+                    // Inject an "option" not changeable by the user.
+                    // This will set the `Handler.Async` property to always be `true`.
+                    var option = new Option<bool>("async", () => true) { IsHidden = true };
+                    AddOption(option);
+                    break;
+                }
+                case true when options.Sync:
+                    AddOption(new Option<bool>(["--async"],
+                        "Process the file asynchronously. False by default."));
+                    break;
             }
 
             AddArgument(new Argument<string>("path", "The path of the file to parse"));
@@ -166,13 +150,17 @@ namespace Mindee.Cli.Commands
                         console.Write("  " + ocr + "\n\n");
                     }
 
-                    if (options.Output == OutputType.Full)
+                    switch (options.Output)
                     {
-                        console.Write(response.Document.ToString());
-                    }
-                    else if (options.Output == OutputType.Summary)
-                    {
-                        console.Write(response.Document.Inference.Prediction.ToString());
+                        case OutputType.Full:
+                            console.Write(response.Document.ToString());
+                            break;
+                        case OutputType.Summary:
+                            console.Write(response.Document.Inference.Prediction.ToString());
+                            break;
+                        case OutputType.Raw:
+                        default:
+                            break;
                     }
                 }
             }
