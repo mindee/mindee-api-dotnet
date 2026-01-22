@@ -77,7 +77,7 @@ namespace Mindee.Extraction
         /// </summary>
         /// <param name="fileBytes">Input pdf.</param>
         /// <returns>A list of pages, as SKBitmap.</returns>
-        public static List<SKBitmap> PdfToImages(byte[] fileBytes)
+        private static List<SKBitmap> PdfToImages(byte[] fileBytes)
         {
             var images = new List<SKBitmap>();
             lock (DocLib.Instance)
@@ -157,8 +157,8 @@ namespace Mindee.Extraction
         ///     Extract multiple images on a given page from a list of fields having position data.
         /// </summary>
         /// <param name="fields">List of Fields to extract.</param>
-        /// <param name="pageIndex">The page index to extract, begins at 0.</param>
-        /// <param name="outputName">The base output filename, must have an image extension.</param>
+        /// <param name="pageIndex">The page index to extract. Begins at 0.</param>
+        /// <param name="outputName">The base output filename. Must have an image extension.</param>
         /// <returns>A list of extracted images.</returns>
         public IList<ExtractedImage> ExtractImagesFromPage(IList<PositionField> fields, int pageIndex,
             string outputName)
