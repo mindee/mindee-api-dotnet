@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;net48;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net472;net48;net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
   </PropertyGroup>
 
   <!-- Common packages for all frameworks -->
@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <!-- Microsoft.Extensions packages for modern .NET -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0' Or '$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0'">
+  <ItemGroup Condition="'$(TargetFramework)' != 'net472' And '$(TargetFramework)' != 'net48'">
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.6"/>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.6"/>
