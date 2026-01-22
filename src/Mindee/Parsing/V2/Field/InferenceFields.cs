@@ -33,7 +33,7 @@ namespace Mindee.Parsing.V2.Field
                 line.Append(padding)
                     .Append(':')
                     .Append(fieldPair.Key)
-                    .Append(":");
+                    .Append(':');
 
                 if (fieldValue.ListField is { Items.Count: > 0 } listField)
                 {

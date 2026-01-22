@@ -5,7 +5,7 @@ namespace Mindee
     /// <summary>
     ///     Global Mindee logger.
     /// </summary>
-    public class MindeeLogger
+    public static class MindeeLogger
     {
         private static ILogger _instance;
 
