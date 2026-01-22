@@ -19,7 +19,7 @@ namespace Mindee.UnitTests.V1
         public async Task ParseQueued_GeneratedProduct_WithJob_NoDocumentInResponse()
         {
             var predictable = new Mock<IHttpApi>();
-            var mindeeClient = MakeGeneratedMindeeClient(predictable);
+            var mindeeClient = MindeeV1ClientTest.MakeGeneratedMindeeClient(predictable);
 
             var endpoint = new CustomEndpoint("", "");
             var response = await mindeeClient.ParseQueuedAsync<GeneratedV1>(endpoint, "my-job-id");
@@ -52,7 +52,7 @@ namespace Mindee.UnitTests.V1
         public async Task Parse_StandardProduct_WithUrl_NoOptions()
         {
             var predictable = new Mock<IHttpApi>();
-            var mindeeClient = MakeStandardMindeeClient(predictable);
+            var mindeeClient = MindeeV1ClientTest.MakeStandardMindeeClient(predictable);
 
             var inputSource = new UrlInputSource("https://example.com/blank_1.pdf");
             var response = await mindeeClient.ParseAsync<InvoiceV4>(
@@ -91,7 +91,7 @@ namespace Mindee.UnitTests.V1
             var inputSource = new LocalInputSource(
                 new FileInfo(Constants.RootDir + "file_types/pdf/multipage.pdf"));
             Assert.Equal(12, inputSource.GetPageCount());
-            var pageOptions = new PageOptions(new short[] { 1, 2, 3 });
+            var pageOptions = new PageOptions([1, 2, 3]);
             var response = await mindeeClient.ParseAsync<InvoiceV4>(
                 inputSource, pageOptions: pageOptions);
 
@@ -223,12 +223,12 @@ namespace Mindee.UnitTests.V1
                 File.ReadAllText(Constants.V1ProductDir + "international_id/response_v2/summary_full.rst"));
         }
 
-        private IPdfOperation GetDefaultPdfOperation()
+        private static DocNetApi GetDefaultPdfOperation()
         {
             return new DocNetApi(new NullLogger<DocNetApi>());
         }
 
-        private MindeeClient MakeGeneratedMindeeClient(Mock<IHttpApi> predictable)
+        private static MindeeClient MakeGeneratedMindeeClient(Mock<IHttpApi> predictable)
         {
             predictable.Setup(x => x.PredictPostAsync<GeneratedV1>(
                     It.IsAny<PredictParameter>()
@@ -246,7 +246,7 @@ namespace Mindee.UnitTests.V1
             return new MindeeClient(GetDefaultPdfOperation(), predictable.Object);
         }
 
-        private MindeeClient MakeStandardMindeeClient(Mock<IHttpApi> predictable)
+        private static MindeeClient MakeStandardMindeeClient(Mock<IHttpApi> predictable)
         {
             predictable.Setup(x => x.PredictPostAsync<InvoiceV4>(
                     It.IsAny<PredictParameter>(), null))

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -64,13 +65,10 @@ namespace Mindee.Parsing.V2.Field
                     return _objectItems;
                 }
 
-                _objectItems = new List<ObjectField>();
-                foreach (var item in Items)
+                _objectItems = [];
+                foreach (var item in Items.Where(item => item.ObjectField != null))
                 {
-                    if (item.ObjectField != null)
-                    {
-                        _objectItems.Add(item.ObjectField);
-                    }
+                    _objectItems.Add(item.ObjectField);
                 }
 
                 return _objectItems;
@@ -87,18 +85,18 @@ namespace Mindee.Parsing.V2.Field
                 return "\n";
             }
 
-            var separator = "\n  * ";
-            StringBuilder sb = new();
+            const string separator = "\n  * ";
+            StringBuilder joiner = new();
 
-            sb.Append('\n');
-            sb.Append("  * ");
+            joiner.Append('\n');
+            joiner.Append("  * ");
 
             var first = true;
             foreach (var item in Items)
             {
                 if (!first)
                 {
-                    sb.Append(separator);
+                    joiner.Append(separator);
                 }
                 else
                 {
@@ -112,15 +110,15 @@ namespace Mindee.Parsing.V2.Field
 
                 if (item.Type == FieldType.ObjectField)
                 {
-                    sb.Append(item.ObjectField?.ToStringFromList());
+                    joiner.Append(item.ObjectField?.ToStringFromList());
                 }
                 else
                 {
-                    sb.Append(item);
+                    joiner.Append(item);
                 }
             }
 
-            return sb.ToString();
+            return joiner.ToString();
         }
     }
 }
