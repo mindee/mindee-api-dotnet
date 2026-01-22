@@ -11,7 +11,6 @@ using Mindee.Http;
 using Mindee.Input;
 using Mindee.Parsing.Common;
 using Mindee.Pdf;
-using Mindee.Product.Custom;
 using Mindee.Product.Generated;
 
 namespace Mindee
@@ -95,96 +94,6 @@ namespace Mindee
                 MindeeLogger.Assign(logger);
                 _logger = MindeeLogger.GetLogger();
             }
-        }
-
-        /// <summary>
-        ///     Call Custom prediction API on a local input source and parse the results.
-        /// </summary>
-        /// <param name="endpoint">
-        ///     <see cref="CustomEndpoint" />
-        /// </param>
-        /// <param name="inputSource">
-        ///     <see cref="LocalInputSource" />
-        /// </param>
-        /// <param name="predictOptions">
-        ///     <see cref="PredictOptions" />
-        /// </param>
-        /// <param name="pageOptions">
-        ///     <see cref="PageOptions" />
-        /// </param>
-        /// <returns>
-        ///     <see cref="PredictResponse{CustomV1Inference}" />
-        /// </returns>
-        /// <exception cref="MindeeException"></exception>
-        public async Task<PredictResponse<CustomV1>> ParseAsync(
-            LocalInputSource inputSource
-            , CustomEndpoint endpoint
-            , PredictOptions predictOptions = null
-            , PageOptions pageOptions = null)
-        {
-            _logger?.LogInformation("Synchronous parsing of {} ...", nameof(CustomV1));
-
-            if (predictOptions == null)
-            {
-                predictOptions = new PredictOptions();
-            }
-
-            if (pageOptions != null && inputSource.IsPdf())
-            {
-                inputSource.FileBytes = _pdfOperation.Split(
-                    new SplitQuery(inputSource.FileBytes, pageOptions)).File;
-            }
-
-            return await _mindeeApi.PredictPostAsync<CustomV1>(
-                new PredictParameter(
-                    inputSource,
-                    null,
-                    predictOptions.AllWords,
-                    predictOptions.FullText,
-                    predictOptions.Cropper,
-                    predictOptions.WorkflowId,
-                    predictOptions.Rag)
-                , endpoint);
-        }
-
-        /// <summary>
-        ///     Call Custom prediction API on a URL input source and parse the results.
-        /// </summary>
-        /// <param name="endpoint">
-        ///     <see cref="CustomEndpoint" />
-        /// </param>
-        /// <param name="inputSource">
-        ///     <see cref="LocalInputSource" />
-        /// </param>
-        /// <param name="predictOptions">
-        ///     <see cref="PredictOptions" />
-        /// </param>
-        /// <returns>
-        ///     <see cref="PredictResponse{CustomV1Inference}" />
-        /// </returns>
-        /// <exception cref="MindeeException"></exception>
-        public async Task<PredictResponse<CustomV1>> ParseAsync(
-            UrlInputSource inputSource
-            , CustomEndpoint endpoint
-            , PredictOptions predictOptions = null)
-        {
-            _logger?.LogInformation("Synchronous parsing of {} ...", nameof(CustomV1));
-
-            if (predictOptions == null)
-            {
-                predictOptions = new PredictOptions();
-            }
-
-            return await _mindeeApi.PredictPostAsync<CustomV1>(
-                new PredictParameter(
-                    null,
-                    inputSource,
-                    predictOptions.AllWords,
-                    predictOptions.FullText,
-                    predictOptions.Cropper,
-                    predictOptions.WorkflowId,
-                    predictOptions.Rag)
-                , endpoint);
         }
 
         /// <summary>

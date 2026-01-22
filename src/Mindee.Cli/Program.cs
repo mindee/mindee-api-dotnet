@@ -183,7 +183,6 @@ return await runner.InvokeAsync(args);
 static CommandLineBuilder BuildCommandLine()
 {
     var root = new RootCommand();
-    root.AddCommand(new PredictCustomCommand());
     root.AddCommand(new PredictBarcodeReaderCommand(new CommandOptions(
         "barcode-reader", "Barcode Reader",
         false, false, true, false)));

@@ -49,7 +49,7 @@ namespace Mindee.Http
             request.AddParameter("model_id", predictParameter.ModelId);
             AddPredictRequestParameters(predictParameter, request);
 
-            Logger?.LogInformation($"HTTP POST to {_baseUrl + request.Resource} ...");
+            Logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
 
             var response = await _httpClient.ExecutePostAsync(request);
             return ResponseHandler<JobResponse>(response);
@@ -58,9 +58,9 @@ namespace Mindee.Http
         public override async Task<JobResponse> ReqGetJobAsync(string jobId)
         {
             var request = new RestRequest($"v2/jobs/{jobId}");
-            Logger?.LogInformation($"HTTP GET to {_baseUrl + request.Resource}...");
+            Logger?.LogInformation("HTTP GET to {RequestResource}...", _baseUrl + request.Resource);
             var response = await _httpClient.ExecuteGetAsync(request);
-            Logger?.LogDebug($"HTTP response: {response.Content}");
+            Logger?.LogDebug("HTTP response: {ResponseContent}", response.Content);
             var handledResponse = ResponseHandler<JobResponse>(response);
             return handledResponse;
         }
@@ -69,7 +69,7 @@ namespace Mindee.Http
         public override async Task<InferenceResponse> ReqGetInferenceAsync(string inferenceId)
         {
             var request = new RestRequest($"v2/inferences/{inferenceId}");
-            Logger?.LogInformation($"HTTP GET to {_baseUrl + request.Resource}...");
+            Logger?.LogInformation("HTTP GET to {RequestResource}...", _baseUrl + request.Resource);
             var queueResponse = await _httpClient.ExecuteGetAsync(request);
             var handledResponse = ResponseHandler<InferenceResponse>(queueResponse);
             return handledResponse;
@@ -133,7 +133,7 @@ namespace Mindee.Http
         private TResponse ResponseHandler<TResponse>(RestResponse restResponse)
             where TResponse : CommonResponse, new()
         {
-            Logger?.LogDebug($"HTTP response: {restResponse.Content}");
+            Logger?.LogDebug("HTTP response: {RestResponseContent}", restResponse.Content);
 
             var statusCode = (int)restResponse.StatusCode;
 
