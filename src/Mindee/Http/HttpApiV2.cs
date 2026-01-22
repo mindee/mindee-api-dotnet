@@ -23,7 +23,7 @@ namespace Mindee.Http
         protected ILogger<HttpApiV2>? Logger;
 
         /// <summary>
-        ///     Do a prediction according parameters for custom model defined in the Studio.
+        ///     Do a prediction according parameters for a custom model defined in the Studio.
         /// </summary>
         /// <param name="predictParameter">
         ///     <see cref="InferencePostParameters" />
@@ -53,16 +53,13 @@ namespace Mindee.Http
             Logger?.LogInformation("Parsing error response ...");
             try
             {
-                if (responseContent != null && responseContent.Contains("\"status\":"))
+                if (responseContent == null || !responseContent.Contains("\"status\":"))
                 {
-                    var error = JsonSerializer.Deserialize<ErrorResponse>(responseContent);
-                    if (error != null)
-                    {
-                        return error;
-                    }
+                    return MakeUnknownError(statusCode, responseContent);
                 }
 
-                return MakeUnknownError(statusCode, responseContent);
+                var error = JsonSerializer.Deserialize<ErrorResponse>(responseContent);
+                return error ?? MakeUnknownError(statusCode, responseContent);
             }
             catch (JsonException)
             {

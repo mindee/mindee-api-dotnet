@@ -98,7 +98,7 @@ namespace Mindee.Pdf
             paint.Color = textColor;
 
             var fontManager = SKFontManager.Default;
-            string[] preferredFonts = ["Lucida Grande", "Arial", "Liberation Sans"];
+            var preferredFonts = new[]{"Lucida Grande", "Arial", "Liberation Sans"};
 
             var fontName = preferredFonts.FirstOrDefault(tmpFontName =>
                 fontManager.MatchFamily(tmpFontName) != null &&
@@ -134,7 +134,7 @@ namespace Mindee.Pdf
                 {
                     if (char.IsControl(c))
                     {
-                        // Necessary, otherwise it prints a ￾ at line returns (not quite sure why).
+                        // Necessary, otherwise it prints a ￾ at line returns due to SkiaSharp rendering issues.
                         continue;
                     }
 
