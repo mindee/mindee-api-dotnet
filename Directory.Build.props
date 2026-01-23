@@ -41,4 +41,32 @@
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
   </PropertyGroup>
+
+  <!-- Common packages for all frameworks -->
+  <ItemGroup>
+    <PackageReference Include="RestSharp" Version="113.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.2" />
+    <PackageReference Include="SkiaSharp" Version="3.119.1" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" />
+    <PackageReference Include="Docnet.Core" Version="2.6.0" />
+  </ItemGroup>
+
+  <!-- .NET Framework specific packages -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472' Or '$(TargetFramework)' == 'net48'">
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <PackageReference Include="System.Net.Http" Version="4.3.4"/>
+  </ItemGroup>
+
+  <!-- Modern .NET specific packages -->
+  <ItemGroup Condition="'$(TargetFramework)' != 'net472' And '$(TargetFramework)' != 'net48'">
+    <PackageReference Include="System.Text.Json" Version="10.0.2" />
+  </ItemGroup>
 </Project>
