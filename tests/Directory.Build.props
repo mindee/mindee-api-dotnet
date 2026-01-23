@@ -1,0 +1,12 @@
+<Project>
+  <!--
+    This file is intentionally empty (except for basic settings) to prevent
+    test projects from inheriting the root Directory.Build.props.
+    This stops the injection of library-specific packages (SkiaSharp, etc.)
+    and incompatible build settings into the test runner.
+  -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+</Project>
