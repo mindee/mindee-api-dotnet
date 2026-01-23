@@ -45,7 +45,12 @@ namespace Mindee.Pdf
                 using var docReader = DocLib.Instance.GetDocReader(pdfData, new PageDimensions(1));
                 var outputStream = new MemoryStream();
 
-                using (var document = SKDocument.CreatePdf(outputStream))
+                var metadata = new SKDocumentPdfMetadata
+                {
+                    EncodingQuality = imageQuality
+                };
+
+                using (var document = SKDocument.CreatePdf(outputStream, metadata))
                 {
                     ProcessPages(docReader, document, imageQuality, disableSourceText);
                 }
