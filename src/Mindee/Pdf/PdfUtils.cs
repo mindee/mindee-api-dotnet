@@ -60,12 +60,8 @@ namespace Mindee.Pdf
 
                 var compressedImage = ImageCompressor.CompressImage(initialBitmap, imageQuality, width, height);
 
-                var colorType = SKColorType.Argb4444;
                 using var compressedBitmap = SKBitmap.Decode(compressedImage);
-                if (imageQuality > 85)
-                {
-                    colorType = SKColorType.Rgb565;
-                }
+                const SKColorType colorType = SKColorType.Rgb565;
 
                 using var surface = SKSurface.Create(new SKImageInfo(width, height, colorType));
 
