@@ -7,10 +7,4 @@
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.20.72" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="..\resources\**\*.*" Link="Resources\%(RecursiveDir)%(Filename)%(Extension)">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
 </Project>

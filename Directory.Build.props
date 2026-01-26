@@ -42,6 +42,12 @@
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include="..\resources\**\*.*" Link="Resources\%(RecursiveDir)%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <!-- Common packages for all frameworks -->
   <ItemGroup>
     <PackageReference Include="RestSharp" Version="113.1.0" />
