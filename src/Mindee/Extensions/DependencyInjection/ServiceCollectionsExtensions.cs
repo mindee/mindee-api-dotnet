@@ -195,12 +195,7 @@ namespace Mindee.Extensions.DependencyInjection
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
                     CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true },
-                    ThrowOnAnyError = throwOnError,
-                    ConfigureMessageHandler = _ => new System.Net.Http.HttpClientHandler
-                    {
-                        UseProxy = false,
-                        AutomaticDecompression = System.Net.DecompressionMethods.None
-                    }
+                    ThrowOnAnyError = throwOnError
                 };
                 return new MindeeV2RestClientWrapper(new RestClient(clientOptions));
             });

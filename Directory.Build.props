@@ -44,7 +44,6 @@
 
   <!-- Common packages for all frameworks -->
   <ItemGroup>
-    <PackageReference Include="RestSharp" Version="113.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.2" />
@@ -55,8 +54,14 @@
     <PackageReference Include="Docnet.Core" Version="2.6.0" />
   </ItemGroup>
 
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net472' And '$(TargetFramework)' != 'net48'">
+    <PackageReference Include="RestSharp" Version="113.1.0" />
+  </ItemGroup>
+
   <!-- .NET Framework specific packages -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net472' Or '$(TargetFramework)' == 'net48'">
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0"/>
+    <PackageReference Include="RestSharp" Version="112.0.0" />
   </ItemGroup>
 </Project>
