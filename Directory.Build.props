@@ -54,4 +54,9 @@
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" />
     <PackageReference Include="Docnet.Core" Version="2.6.0" />
   </ItemGroup>
+
+  <!-- .NET Framework specific packages -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472' Or '$(TargetFramework)' == 'net48'">
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0"/>
+  </ItemGroup>
 </Project>
