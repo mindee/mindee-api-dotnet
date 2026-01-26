@@ -42,13 +42,6 @@
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="$(MSBuildProjectDirectory)\Resources\**\*.*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>Resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </None>
-  </ItemGroup>
-
   <!-- Common packages for all frameworks -->
   <ItemGroup>
     <PackageReference Include="RestSharp" Version="113.1.0" />

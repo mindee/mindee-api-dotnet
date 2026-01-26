@@ -24,7 +24,12 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)resources\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <Folder Include="..\resources\async">
       <Link>Resources\async</Link>
