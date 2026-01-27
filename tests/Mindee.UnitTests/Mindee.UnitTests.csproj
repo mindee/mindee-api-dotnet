@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Mindee\Mindee.csproj"/>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Moq" Version="4.20.72" />
   </ItemGroup>
 </Project>
