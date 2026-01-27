@@ -15,10 +15,10 @@ namespace Mindee.Input
     /// </summary>
     public sealed class LocalInputSource
     {
-        private static readonly string[] _authorizedFileExtensions =
-        {
+        private static readonly string[] AuthorizedFileExtensions =
+        [
             ".heic", ".jpg", ".jpga", ".jpeg", ".pdf", ".png", ".tiff", ".tif", ".webp"
-        };
+        ];
 
         private DocNetApi _pdfOperation;
 
@@ -127,7 +127,7 @@ namespace Mindee.Input
         /// </summary>
         public bool IsExtensionValid()
         {
-            return _authorizedFileExtensions.Any(f => f.Equals(Extension, StringComparison.InvariantCultureIgnoreCase)
+            return AuthorizedFileExtensions.Any(f => f.Equals(Extension, StringComparison.InvariantCultureIgnoreCase)
             );
         }
 

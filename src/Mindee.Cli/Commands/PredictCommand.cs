@@ -1,6 +1,4 @@
 using System.CommandLine;
-using System.CommandLine.Invocation;
-using System.CommandLine.IO;
 using System.Text.Json;
 using Mindee.Input;
 using Mindee.Parsing;
@@ -31,103 +29,134 @@ namespace Mindee.Cli.Commands
         where TPage : IPrediction, new()
         where TInferenceModel : Inference<TDoc, TPage>, new()
     {
+        private readonly Option<OutputType> _outputOption;
+        private readonly Option<bool>? _allWordsOption;
+        private readonly Option<bool>? _fullTextOption;
+        private readonly Option<bool>? _asyncOption;
+        private readonly Argument<string> _pathArgument;
+
         public PredictCommand(CommandOptions options)
             : base(options.Name, options.Description)
         {
-            AddOption(new Option<OutputType>(["-o", "--output", "output"],
-                "Specify how to output the data. \n" +
-                "- summary: a basic summary (default)\n" +
-                "- raw: full JSON object\n"));
+            _outputOption = new Option<OutputType>("--output", "-o")
+            {
+                Description = "Specify how to output the data. \n" +
+                    "- summary: a basic summary (default)\n" +
+                    "- raw: full JSON object\n",
+                DefaultValueFactory = _ => OutputType.Summary
+            };
+            Options.Add(_outputOption);
+
             if (options.AllWords)
             {
-                var option = new Option<bool>(["-w", "--all-words", "allWords"],
-                    "To get all the words in the current document. False by default.");
-                AddOption(option);
+                _allWordsOption = new Option<bool>("--all-words", "-w")
+                {
+                    Description = "To get all the words in the current document. False by default.",
+                    DefaultValueFactory = _ => false
+                };
+                Options.Add(_allWordsOption);
             }
 
             if (options.FullText)
             {
-                var option = new Option<bool>(["-f", "--full-text", "fullText"],
-                    "To get all the words in the current document. False by default.");
-                AddOption(option);
+                _fullTextOption = new Option<bool>("--full-text", "-f")
+                {
+                    Description = "To get all the words in the current document. False by default.",
+                    DefaultValueFactory = _ => false
+                };
+                Options.Add(_fullTextOption);
             }
 
             switch (options.Async)
             {
                 case true when !options.Sync:
                     {
-                        // Inject an "option" not changeable by the user.
-                        // This will set the `Handler.Async` property to always be `true`.
-                        var option = new Option<bool>("async", () => true) { IsHidden = true };
-                        AddOption(option);
+                        _asyncOption = new Option<bool>("async")
+                        {
+                            Hidden = true,
+                            DefaultValueFactory = _ => true
+                        };
+                        Options.Add(_asyncOption);
                         break;
                     }
                 case true when options.Sync:
-                    AddOption(new Option<bool>(["--async"],
-                        "Process the file asynchronously. False by default."));
+                    _asyncOption = new Option<bool>("--async")
+                    {
+                        Description = "Process the file asynchronously. False by default.",
+                        DefaultValueFactory = _ => false
+                    };
+                    Options.Add(_asyncOption);
                     break;
             }
 
-            AddArgument(new Argument<string>("path", "The path of the file to parse"));
+            _pathArgument = new Argument<string>("path") { Description = "The path of the file to parse" };
+            Arguments.Add(_pathArgument);
         }
 
-        public new class Handler(MindeeClient mindeeClient) : ICommandHandler
+        public void ConfigureAction(MindeeClient mindeeClient)
         {
-            private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
-
-            public string Path { get; set; } = null!;
-            public bool AllWords { get; set; } = false;
-            public bool FullText { get; set; } = false;
-            public OutputType Output { get; set; } = OutputType.Full;
-            public bool Async { get; set; } = false;
-
-            public int Invoke(InvocationContext context)
+            this.SetAction(parseResult =>
             {
-                return InvokeAsync(context).GetAwaiter().GetResult();
-            }
+                var path = parseResult.GetValue(_pathArgument)!;
+                var allWords = _allWordsOption != null && parseResult.GetValue(_allWordsOption);
+                var fullText = _fullTextOption != null && parseResult.GetValue(_fullTextOption);
+                var output = parseResult.GetValue(_outputOption);
+                var isAsync = _asyncOption != null && parseResult.GetValue(_asyncOption);
 
-            public async Task<int> InvokeAsync(InvocationContext context)
+                var handler = new Handler(mindeeClient);
+                return handler.InvokeAsync(path, allWords, fullText, output, isAsync).GetAwaiter().GetResult();
+            });
+        }
+
+        public class Handler(MindeeClient mindeeClient)
+        {
+            private readonly JsonSerializerOptions _jsonSerializerOptions = new()
             {
-                var options =
-                    new ParseOptions(Path, AllWords, FullText, Output);
-                if (Async)
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+
+            public async Task<int> InvokeAsync(string path, bool allWords, bool fullText, OutputType output, bool isAsync)
+            {
+                var options = new ParseOptions(path, allWords, fullText, output);
+                if (isAsync)
                 {
-                    return await EnqueueAndParseAsync(context, options);
+                    return await EnqueueAndParseAsync(options);
                 }
 
-                return await ParseAsync(context, options);
+                return await ParseAsync(options);
             }
 
-            private async Task<int> ParseAsync(InvocationContext context, ParseOptions options)
+            private async Task<int> ParseAsync(ParseOptions options)
             {
                 var response = await mindeeClient.ParseAsync<TInferenceModel>(
                     new LocalInputSource(options.Path),
-                    new PredictOptions(AllWords, FullText));
+                    new PredictOptions(options.AllWords, options.FullText));
 
                 if (response == null)
                 {
-                    context.Console.Out.Write("null");
+                    await Console.Out.WriteAsync("null");
                     return 1;
                 }
 
-                PrintToConsole(context.Console.Out, options, response);
+                PrintToConsole(Console.Out, options, response);
                 return 0;
             }
 
-            private async Task<int> EnqueueAndParseAsync(InvocationContext context, ParseOptions options)
+            private async Task<int> EnqueueAndParseAsync(ParseOptions options)
             {
                 var response = await mindeeClient.EnqueueAndParseAsync<TInferenceModel>(
                     new LocalInputSource(options.Path),
-                    new PredictOptions(AllWords, FullText),
+                    new PredictOptions(options.AllWords, options.FullText),
                     null,
                     new AsyncPollingOptions());
 
-                PrintToConsole(context.Console.Out, options, response);
+                PrintToConsole(Console.Out, options, response);
                 return 0;
             }
 
             private void PrintToConsole(
-                IStandardStreamWriter console,
+                TextWriter console,
                 ParseOptions options,
                 PredictResponse<TInferenceModel> response)
             {

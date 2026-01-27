@@ -62,7 +62,8 @@ jobs:
         os:
           - "windows-2022"
         dotnet-version:
-          - "net482"
+          - "net472"
+          - "net48"
           - "net6.0"
           - "net10.0"
     runs-on: ${{ matrix.os }}
