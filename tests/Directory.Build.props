@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Mindee\Mindee.csproj"/>
+    <ProjectReference Include="..\src\Mindee\Mindee.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
