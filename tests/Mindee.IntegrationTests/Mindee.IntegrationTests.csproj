@@ -7,9 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Mindee\Mindee.csproj"/>
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net472' Or '$(TargetFramework)' == 'net48'">
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0"/>
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest"/>
