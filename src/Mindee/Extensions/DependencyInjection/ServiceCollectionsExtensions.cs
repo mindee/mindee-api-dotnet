@@ -122,7 +122,6 @@ namespace Mindee.Extensions.DependencyInjection
 
                 var clientOptions = new RestClientOptions(settings.MindeeBaseUrl)
                 {
-                    FollowRedirects = false,
                     Timeout = TimeSpan.FromSeconds(settings.RequestTimeoutSeconds),
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
@@ -157,7 +156,6 @@ namespace Mindee.Extensions.DependencyInjection
 
                 var clientOptions = new RestClientOptions(settings.MindeeBaseUrl)
                 {
-                    FollowRedirects = false,
                     Timeout = TimeSpan.FromSeconds(settings.RequestTimeoutSeconds),
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
@@ -190,7 +188,6 @@ namespace Mindee.Extensions.DependencyInjection
                 var clientOptions = new RestClientOptions
                 {
                     BaseUrl = new Uri(settings.MindeeBaseUrl),
-                    FollowRedirects = false,
                     Timeout = TimeSpan.FromSeconds(settings.RequestTimeoutSeconds),
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
