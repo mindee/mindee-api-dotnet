@@ -210,20 +210,22 @@ namespace Mindee.Extensions.DependencyInjection
             });
 #endif
         }
-
 #if !NET6_0_OR_GREATER
-
         /// <summary>
         /// Adjusts global ServicePointManager settings for .NET Framework to allow modern API usage.
         /// </summary>
         private static void ConfigureLegacyNetworking()
         {
+#pragma warning disable SYSLIB0014
+
             if (System.Net.ServicePointManager.DefaultConnectionLimit < 50)
             {
                 System.Net.ServicePointManager.DefaultConnectionLimit = 50;
             }
 
             System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12;
+
+#pragma warning restore SYSLIB0014
         }
 #endif
 
