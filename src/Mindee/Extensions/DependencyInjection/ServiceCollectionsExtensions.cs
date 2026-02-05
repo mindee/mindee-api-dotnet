@@ -53,11 +53,8 @@ namespace Mindee.Extensions.DependencyInjection
             services.AddSingleton(serviceProvider =>
             {
                 var settings = serviceProvider.GetRequiredService<IOptions<MindeeSettings>>();
-#if NET6_0_OR_GREATER
-                var restClient = serviceProvider.GetRequiredKeyedService<RestClient>("MindeeV2RestClient");
-#else
-                var restClient = serviceProvider.GetRequiredService<MindeeV2RestClientWrapper>().Client;
-#endif
+                var restClient = serviceProvider.GetRequiredService<RestClient>();
+
                 var logger = serviceProvider.GetService<ILoggerFactory>()?.CreateLogger<MindeeApi>();
                 return new MindeeApi(settings, restClient, logger);
             });
