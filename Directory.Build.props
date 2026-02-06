@@ -50,14 +50,15 @@
     <PackageReference Include="System.Text.Json" Version="10.0.2" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.2" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.2"/>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2"/>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.2"/>
   </ItemGroup>
 
 
+  <!-- .NET 6+ packages -->
   <ItemGroup Condition="'$(TargetFramework)' != 'net472' And '$(TargetFramework)' != 'net48'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2"/>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2"/>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.2" />
     <PackageReference Include="RestSharp" Version="113.1.0" />
   </ItemGroup>
@@ -66,6 +67,8 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net472' Or '$(TargetFramework)' == 'net48'">
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0"/>
     <PackageReference Include="RestSharp" Version="112.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.6"/>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6"/>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6"/>
   </ItemGroup>
 </Project>
