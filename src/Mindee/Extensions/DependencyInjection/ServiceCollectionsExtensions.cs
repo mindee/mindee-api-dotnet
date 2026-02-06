@@ -54,7 +54,6 @@ namespace Mindee.Extensions.DependencyInjection
             {
                 var settings = serviceProvider.GetRequiredService<IOptions<MindeeSettings>>();
                 var restClient = serviceProvider.GetRequiredService<RestClient>();
-
                 var logger = serviceProvider.GetService<ILoggerFactory>()?.CreateLogger<MindeeApi>();
                 return new MindeeApi(settings, restClient, logger);
             });
@@ -104,10 +103,6 @@ namespace Mindee.Extensions.DependencyInjection
         {
             services.AddSingleton(provider =>
             {
-#if !NET6_0_OR_GREATER
-                // FIX: Ensure legacy .NET Framework allows enough connections and uses modern TLS.
-                ConfigureLegacyNetworking();
-#endif
                 var settings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
                 settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("Mindee__BaseUrl");
                 if (string.IsNullOrEmpty(settings.MindeeBaseUrl))
@@ -127,8 +122,8 @@ namespace Mindee.Extensions.DependencyInjection
 
                 var clientOptions = new RestClientOptions(settings.MindeeBaseUrl)
                 {
-                    Timeout = TimeSpan.FromSeconds(settings.RequestTimeoutSeconds),
                     FollowRedirects = false,
+                    Timeout = TimeSpan.FromSeconds(settings.RequestTimeoutSeconds),
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
                     CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true },
@@ -162,8 +157,8 @@ namespace Mindee.Extensions.DependencyInjection
 
                 var clientOptions = new RestClientOptions(settings.MindeeBaseUrl)
                 {
-                    Timeout = TimeSpan.FromSeconds(settings.RequestTimeoutSeconds),
                     FollowRedirects = false,
+                    Timeout = TimeSpan.FromSeconds(settings.RequestTimeoutSeconds),
                     UserAgent = BuildUserAgent(),
                     Expect100Continue = false,
                     CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true },
@@ -172,10 +167,9 @@ namespace Mindee.Extensions.DependencyInjection
                 return new RestClient(clientOptions);
             });
 #else
+            // For .NET Framework, register as a named singleton using a wrapper approach
             services.AddSingleton(provider =>
             {
-                ConfigureLegacyNetworking();
-
                 var settings = provider.GetRequiredService<IOptions<MindeeSettingsV2>>().Value;
                 settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("MindeeV2__BaseUrl");
                 if (string.IsNullOrEmpty(settings.MindeeBaseUrl))
@@ -207,24 +201,6 @@ namespace Mindee.Extensions.DependencyInjection
             });
 #endif
         }
-#if !NET6_0_OR_GREATER
-        /// <summary>
-        /// Adjusts global ServicePointManager settings for .NET Framework to allow modern API usage.
-        /// </summary>
-        private static void ConfigureLegacyNetworking()
-        {
-#pragma warning disable SYSLIB0014
-
-            if (System.Net.ServicePointManager.DefaultConnectionLimit < 50)
-            {
-                System.Net.ServicePointManager.DefaultConnectionLimit = 50;
-            }
-
-            System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12;
-
-#pragma warning restore SYSLIB0014
-        }
-#endif
 
         private static string BuildUserAgent()
         {
