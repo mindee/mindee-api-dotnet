@@ -8,7 +8,7 @@ namespace Mindee.UnitTests.V2.Input
     [Trait("Category", "V2")]
     public class InferenceParameterTest
     {
-        private const string ReplacePath = Constants.V2RootDir + "inference/data_schema_replace_param.json";
+        private const string ReplacePath = Constants.V2RootDir + "products/extraction/data_schema_replace_param.json";
         private readonly Dictionary<string, object> DataSchemaDict;
         private readonly DataSchema DataSchemaInstance;
         private readonly string DataSchemaString;

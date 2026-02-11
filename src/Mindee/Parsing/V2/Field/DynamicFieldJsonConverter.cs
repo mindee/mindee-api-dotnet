@@ -36,7 +36,7 @@ namespace Mindee.Parsing.V2.Field
                 var listField = new ListField(confidence);
                 foreach (var item in itemsArray)
                 {
-                    listField.Items.Add(item.Deserialize<DynamicField>());
+                    listField.Items.Add(item.Deserialize<DynamicField>(options));
                 }
 
                 field = new DynamicField(
@@ -49,14 +49,14 @@ namespace Mindee.Parsing.V2.Field
                      nestedFieldsNode is JsonObject)
             {
                 field = new DynamicField(FieldType.ObjectField,
-                    objectField: jsonObject.Deserialize<ObjectField>());
+                    objectField: jsonObject.Deserialize<ObjectField>(options));
             }
             // -------- SIMPLE OBJECT --------
             else if (jsonObject != null && jsonObject.ContainsKey("value"))
             {
                 field = new DynamicField(
                     FieldType.SimpleField,
-                    jsonObject.Deserialize<SimpleField>());
+                    jsonObject.Deserialize<SimpleField>(options));
             }
             else
             {

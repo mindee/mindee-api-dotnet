@@ -250,7 +250,7 @@ namespace Mindee.IntegrationTests.V2
             var inputSource = new LocalInputSource(
                 Constants.RootDir + "file_types/pdf/blank_1.pdf");
             var dataSchemaContents =
-                File.ReadAllText(Constants.V2RootDir + "inference/data_schema_replace_param.json");
+                File.ReadAllText(Constants.V2RootDir + "products/extraction/data_schema_replace_param.json");
             var inferenceParams = new InferenceParameters(
                 _findocModelId,
                 dataSchema: dataSchemaContents);

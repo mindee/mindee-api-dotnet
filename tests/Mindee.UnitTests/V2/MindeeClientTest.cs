@@ -75,7 +75,7 @@ namespace Mindee.UnitTests.V2
         public void Inference_LoadsLocally()
         {
             var localResponse = new LocalResponse(
-                new FileInfo(Constants.V2RootDir + "products/financial_document/complete.json"));
+                new FileInfo(Constants.V2RootDir + "products/extraction/financial_document/complete.json"));
             var locallyLoadedResponse = localResponse.DeserializeResponse<InferenceResponse>();
             Assert.NotNull(locallyLoadedResponse);
             Assert.Equal("12345678-1234-1234-1234-123456789abc", locallyLoadedResponse.Inference.Model.Id);

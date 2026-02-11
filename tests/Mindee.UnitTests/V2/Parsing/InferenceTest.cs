@@ -12,7 +12,7 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact]
         public void FinancialDocument_WhenEmpty_MustHaveValidProperties()
         {
-            var response = GetInference("products/financial_document/blank.json");
+            var response = GetInference("products/extraction/financial_document/blank.json");
             AssertInferenceResponse(response);
 
             var fields = response.Inference.Result.Fields;
@@ -51,7 +51,7 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact]
         public void FinancialDocument_WhenComplete_MustHaveValidProperties()
         {
-            var response = GetInference("products/financial_document/complete.json");
+            var response = GetInference("products/extraction/financial_document/complete.json");
             AssertInferenceResponse(response);
 
             var activeOptions = response.Inference.ActiveOptions;
@@ -87,7 +87,7 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact(DisplayName = "deep_nested_fields.json – all nested structures must be typed correctly")]
         public void DeepNestedFields_mustExposeCorrectTypes()
         {
-            var response = GetInference("inference/deep_nested_fields.json");
+            var response = GetInference("products/extraction/deep_nested_fields.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -97,6 +97,12 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.NotNull(fields["field_object"].ObjectField);
 
             var fieldObject = fields["field_object"].ObjectField!;
+            Assert.Single(fieldObject.SimpleFields);
+            Assert.Single(fieldObject.ListFields);
+            Assert.Single(fieldObject.ObjectFields);
+            Assert.Equal("value_2", fieldObject.GetSimpleField("sub_object_simple").Value);
+            Assert.Equal(2, fieldObject.GetListField("sub_object_list").Items.Count);
+            Assert.NotEmpty(fieldObject.GetObjectField("sub_object_object").Fields);
             var lvl1 = fieldObject.Fields;
             Assert.NotNull(lvl1["sub_object_list"].ListField);
             Assert.NotNull(lvl1["sub_object_object"].ObjectField);
@@ -118,7 +124,7 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact(DisplayName = "standard_field_types.json – file metadata must be recognised")]
         public void StandardFieldTypes_mustExposeFileValues()
         {
-            var response = GetInference("inference/standard_field_types.json");
+            var response = GetInference("products/extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -140,7 +146,7 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact(DisplayName = "standard_field_types.json – simple fields must be recognised")]
         public void StandardFieldTypes_mustExposeSimpleFieldValues()
         {
-            var response = GetInference("inference/standard_field_types.json");
+            var response = GetInference("products/extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -181,7 +187,7 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact(DisplayName = "standard_field_types.json – simple list fields must be recognised")]
         public void StandardFieldTypes_mustExposeSimpleListFieldValues()
         {
-            var response = GetInference("inference/standard_field_types.json");
+            var response = GetInference("products/extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -203,7 +209,7 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact(DisplayName = "standard_field_types.json – object fields must be recognised")]
         public void StandardFieldTypes_mustExposeObjectFieldValues()
         {
-            var response = GetInference("inference/standard_field_types.json");
+            var response = GetInference("products/extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -228,7 +234,7 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact(DisplayName = "standard_field_types.json – simple list fields must be recognised")]
         public void StandardFieldTypes_mustExposeObjectListFieldValues()
         {
-            var response = GetInference("inference/standard_field_types.json");
+            var response = GetInference("products/extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -262,7 +268,7 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact(DisplayName = "standard_field_types.json - locations must be recognised")]
         public void StandardFieldTypes_mustHaveLocations()
         {
-            var response = GetInference("inference/standard_field_types.json");
+            var response = GetInference("products/extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -285,9 +291,9 @@ namespace Mindee.UnitTests.V2.Parsing
         public void RstDisplay_mustBeAccessible()
         {
             // Arrange
-            var resp = GetInference("inference/standard_field_types.json");
+            var resp = GetInference("products/extraction/standard_field_types.json");
             var rstReference = File.ReadAllText(
-                Constants.V2RootDir + "inference/standard_field_types.rst");
+                Constants.V2RootDir + "products/extraction/standard_field_types.rst");
 
             var inf = resp.Inference;
 
@@ -302,7 +308,7 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact]
         public void RawText_whenActivated_mustExposeProperties()
         {
-            var response = GetInference("inference/raw_texts.json");
+            var response = GetInference("products/extraction/raw_texts.json");
             AssertInferenceResponse(response);
 
             var activeOptions = response.Inference.ActiveOptions;
@@ -324,14 +330,14 @@ namespace Mindee.UnitTests.V2.Parsing
 
             Assert.Equal("This is the raw text of the first page...", rawText.Pages[0].Content);
             Assert.Equal(
-                File.ReadAllText(Constants.V2RootDir + "inference/raw_texts.txt"),
+                File.ReadAllText(Constants.V2RootDir + "products/extraction/raw_texts.txt"),
                 rawText.ToString());
         }
 
         [Fact]
         public void Rag_whenMatched_mustExposeProperties()
         {
-            var response = GetInference("inference/rag_matched.json");
+            var response = GetInference("products/extraction/rag_matched.json");
             AssertInferenceResponse(response);
 
             var activeOptions = response.Inference.ActiveOptions;
@@ -349,7 +355,7 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact]
         public void Rag_whenNotMatched_mustExposeProperties()
         {
-            var response = GetInference("inference/rag_not_matched.json");
+            var response = GetInference("products/extraction/rag_not_matched.json");
             AssertInferenceResponse(response);
 
             var activeOptions = response.Inference.ActiveOptions;
