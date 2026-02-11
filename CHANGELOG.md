@@ -1,5 +1,11 @@
 # Mindee .NET Client Library Changelog
 
+## v3.38.0 - 2026-02-11
+### Changes
+* :sparkles: add missing accessors & fix broken simplefields accessors
+### Fixes
+* :bug: fix improper handling of .NET 10
+
 
 ## v3.37.2 - 2026-01-19
 ### Fixes
