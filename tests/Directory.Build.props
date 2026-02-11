@@ -36,8 +36,4 @@
     </Folder>
     <Folder Include="V1\Parsing\"/>
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
-    <Reference Include="System.Net.Http"/>
-  </ItemGroup>
 </Project>
