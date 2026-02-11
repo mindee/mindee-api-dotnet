@@ -3,11 +3,15 @@
     <TargetFrameworks>net472;net48;net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\Mindee\Mindee.csproj"/>
   </ItemGroup>
-  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472' Or '$(TargetFramework)' == 'net48'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6"/>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6"/>
+  </ItemGroup>
+
   <ItemGroup>
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
