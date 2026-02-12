@@ -290,7 +290,17 @@ namespace Mindee.Extensions.DependencyInjection
             string sectionName = "Mindee")
         {
             services.AddSingleton<MindeeClient>();
-            services.AddSingleton<IHttpApi, MindeeApi>();
+            services.AddSingleton<IHttpApi>(provider =>
+            {
+                var settings = provider.GetRequiredService<IOptions<MindeeSettings>>();
+#if NET6_0_OR_GREATER
+                    var restClient = provider.GetRequiredService<RestClient>();
+#else
+                var restClient = provider.GetRequiredService<MindeeV1RestClientWrapper>().Client;
+#endif
+                var logger = provider.GetService<ILoggerFactory>()?.CreateLogger<MindeeApi>();
+                return new MindeeApi(settings, restClient, logger);
+            });
             services.AddOptions<MindeeSettings>()
                 .BindConfiguration(sectionName)
                 .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee V1 API key is missing");
@@ -314,7 +324,17 @@ namespace Mindee.Extensions.DependencyInjection
             string sectionName = "MindeeV2")
         {
             services.AddSingleton<MindeeClientV2>();
-            services.AddSingleton<HttpApiV2, MindeeApiV2>();
+            services.AddSingleton<HttpApiV2>(provider =>
+            {
+                var settings = provider.GetRequiredService<IOptions<MindeeSettingsV2>>();
+#if NET6_0_OR_GREATER
+                    var restClient = provider.GetRequiredKeyedService<RestClient>("MindeeV2RestClient");
+#else
+                var restClient = provider.GetRequiredService<MindeeV2RestClientWrapper>().Client;
+#endif
+                var logger = provider.GetService<ILoggerFactory>()?.CreateLogger<MindeeApiV2>();
+                return new MindeeApiV2(settings, restClient, logger);
+            });
             services.AddOptions<MindeeSettingsV2>()
                 .BindConfiguration(sectionName)
                 .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee V2 API key is missing");
