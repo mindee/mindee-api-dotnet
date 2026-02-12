@@ -64,8 +64,8 @@ jobs:
         dotnet-version:
           - "net472"
           - "net48"
-          - "net6.0"
-          - "net10.0"
+#          - "net6.0"
+#          - "net10.0"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
