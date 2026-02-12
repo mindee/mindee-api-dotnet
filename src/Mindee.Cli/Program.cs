@@ -1,10 +1,8 @@
 using System.CommandLine;
-using System.CommandLine.Builder;
-using System.CommandLine.Hosting;
-using System.CommandLine.Parsing;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Mindee;
 using Mindee.Cli.Commands;
-// ReSharper disable once RedundantUsingDirective
 using Mindee.Extensions.DependencyInjection;
 using PredictBankAccountDetailsCommand = Mindee.Cli.Commands.PredictCommand<
     Mindee.Product.Fr.BankAccountDetails.BankAccountDetailsV2,
@@ -82,98 +80,125 @@ using PredictReceiptCommand = Mindee.Cli.Commands.PredictCommand<
     Mindee.Product.Receipt.ReceiptV5Document
 >;
 
-var runner = BuildCommandLine()
-    .UseHost(_ => Host.CreateDefaultBuilder(args), builder =>
+// Setup dependency injection
+var host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((_, services) =>
     {
-        builder
-            .ConfigureServices((_, services) =>
-            {
-                services.AddMindeeClient();
-                services.AddMindeeClientV2();
-            })
-            .UseCommandHandler<PredictBarcodeReaderCommand, PredictBarcodeReaderCommand.Handler>()
-            .UseCommandHandler<PredictCropperCommand, PredictCropperCommand.Handler>()
-            .UseCommandHandler<PredictFinancialDocumentCommand, PredictFinancialDocumentCommand.Handler>()
-            .UseCommandHandler<PredictBankAccountDetailsCommand, PredictBankAccountDetailsCommand.Handler>()
-            .UseCommandHandler<PredictCarteGriseCommand, PredictCarteGriseCommand.Handler>()
-            .UseCommandHandler<PredictHealthCardCommand, PredictHealthCardCommand.Handler>()
-            .UseCommandHandler<PredictIdCardCommand, PredictIdCardCommand.Handler>()
-            .UseCommandHandler<PredictPayslipCommand, PredictPayslipCommand.Handler>()
-            .UseCommandHandler<PredictInternationalIdCommand, PredictInternationalIdCommand.Handler>()
-            .UseCommandHandler<PredictInvoiceCommand, PredictInvoiceCommand.Handler>()
-            .UseCommandHandler<PredictInvoiceSplitterCommand, PredictInvoiceSplitterCommand.Handler>()
-            .UseCommandHandler<PredictMultiReceiptsDetectorCommand, PredictMultiReceiptsDetectorCommand.Handler>()
-            .UseCommandHandler<PredictPassportCommand, PredictPassportCommand.Handler>()
-            .UseCommandHandler<PredictReceiptCommand, PredictReceiptCommand.Handler>()
-            .UseCommandHandler<PredictBankCheckCommand, PredictBankCheckCommand.Handler>()
-            ;
+        services.AddMindeeClient();
+        services.AddMindeeClientV2();
     })
-    .UseHelp()
-    .UseParseErrorReporting()
-    .CancelOnProcessTermination()
-    .UseEnvironmentVariableDirective()
-    .UseParseDirective()
-    .UseSuggestDirective()
-    .UseTypoCorrections()
-    .UseExceptionHandler()
     .Build();
 
-return await runner.InvokeAsync(args);
+var root = BuildCommandLine(host.Services);
 
-static CommandLineBuilder BuildCommandLine()
+return await root.Parse(args).InvokeAsync();
+
+static RootCommand BuildCommandLine(IServiceProvider services)
 {
     var root = new RootCommand();
-    root.AddCommand(new PredictBarcodeReaderCommand(new CommandOptions(
-        "barcode-reader", "Barcode Reader",
-        false, false, true, false)));
-    root.AddCommand(new PredictCropperCommand(new CommandOptions(
-        "cropper", "Cropper",
-        false, false, true, false)));
-    root.AddCommand(new PredictFinancialDocumentCommand(new CommandOptions(
-        "financial-document", "Financial Document",
-        true, false, true, true)));
-    root.AddCommand(new PredictBankAccountDetailsCommand(new CommandOptions(
-        "fr-bank-account-details", "FR Bank Account Details",
-        false, false, true, false)));
-    root.AddCommand(new PredictCarteGriseCommand(new CommandOptions(
-        "fr-carte-grise", "FR Carte Grise",
-        false, false, true, false)));
-    root.AddCommand(new PredictHealthCardCommand(new CommandOptions(
-        "fr-health-card", "FR Health Card",
-        false, false, false, true)));
-    root.AddCommand(new PredictIdCardCommand(new CommandOptions(
-        "fr-carte-nationale-d-identite", "FR Carte Nationale d'Identité",
-        false, false, true, false)));
-    root.AddCommand(new PredictPayslipCommand(new CommandOptions(
-        "fr-payslip", "FR Payslip",
-        false, false, false, true)));
-    root.AddCommand(new PredictInternationalIdCommand(new CommandOptions(
-        "international-id", "International ID",
-        false, true, false, true)));
-    root.AddCommand(new PredictInvoiceCommand(new CommandOptions(
-        "invoice", "Invoice",
-        true, false, true, true)));
-    root.AddCommand(new PredictInvoiceSplitterCommand(new CommandOptions(
-        "invoice-splitter", "Invoice Splitter",
-        false, false, false, true)));
-    root.AddCommand(new PredictMultiReceiptsDetectorCommand(new CommandOptions(
-        "multi-receipts-detector", "Multi Receipts Detector",
-        false, false, true, false)));
-    root.AddCommand(new PredictPassportCommand(new CommandOptions(
-        "passport", "Passport",
-        false, false, true, false)));
-    root.AddCommand(new PredictReceiptCommand(new CommandOptions(
-        "receipt", "Receipt",
-        true, false, true, true)));
-    root.AddCommand(new PredictBankCheckCommand(new CommandOptions(
-        "us-bank-check", "US Bank Check",
-        false, false, true, false)));
+    var mindeeClient = services.GetRequiredService<MindeeClient>();
 
-    root.AddGlobalOption(new Option<bool>("--silent", "Disables diagnostics output"));
-    root.SetHandler(() =>
+    var barcodeReaderCmd = new PredictBarcodeReaderCommand(new CommandOptions(
+        "barcode-reader", "Barcode Reader",
+        false, false, true, false));
+    barcodeReaderCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(barcodeReaderCmd);
+
+    var cropperCmd = new PredictCropperCommand(new CommandOptions(
+        "cropper", "Cropper",
+        false, false, true, false));
+    cropperCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(cropperCmd);
+
+    var financialDocumentCmd = new PredictFinancialDocumentCommand(new CommandOptions(
+        "financial-document", "Financial Document",
+        true, false, true, true));
+    financialDocumentCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(financialDocumentCmd);
+
+    var bankAccountDetailsCmd = new PredictBankAccountDetailsCommand(new CommandOptions(
+        "fr-bank-account-details", "FR Bank Account Details",
+        false, false, true, false));
+    bankAccountDetailsCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(bankAccountDetailsCmd);
+
+    var carteGriseCmd = new PredictCarteGriseCommand(new CommandOptions(
+        "fr-carte-grise", "FR Carte Grise",
+        false, false, true, false));
+    carteGriseCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(carteGriseCmd);
+
+    var healthCardCmd = new PredictHealthCardCommand(new CommandOptions(
+        "fr-health-card", "FR Health Card",
+        false, false, false, true));
+    healthCardCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(healthCardCmd);
+
+    var idCardCmd = new PredictIdCardCommand(new CommandOptions(
+        "fr-carte-nationale-d-identite", "FR Carte Nationale d'Identité",
+        false, false, true, false));
+    idCardCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(idCardCmd);
+
+    var payslipCmd = new PredictPayslipCommand(new CommandOptions(
+        "fr-payslip", "FR Payslip",
+        false, false, false, true));
+    payslipCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(payslipCmd);
+
+    var internationalIdCmd = new PredictInternationalIdCommand(new CommandOptions(
+        "international-id", "International ID",
+        false, true, false, true));
+    internationalIdCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(internationalIdCmd);
+
+    var invoiceCmd = new PredictInvoiceCommand(new CommandOptions(
+        "invoice", "Invoice",
+        true, false, true, true));
+    invoiceCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(invoiceCmd);
+
+    var invoiceSplitterCmd = new PredictInvoiceSplitterCommand(new CommandOptions(
+        "invoice-splitter", "Invoice Splitter",
+        false, false, false, true));
+    invoiceSplitterCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(invoiceSplitterCmd);
+
+    var multiReceiptsDetectorCmd = new PredictMultiReceiptsDetectorCommand(new CommandOptions(
+        "multi-receipts-detector", "Multi Receipts Detector",
+        false, false, true, false));
+    multiReceiptsDetectorCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(multiReceiptsDetectorCmd);
+
+    var passportCmd = new PredictPassportCommand(new CommandOptions(
+        "passport", "Passport",
+        false, false, true, false));
+    passportCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(passportCmd);
+
+    var receiptCmd = new PredictReceiptCommand(new CommandOptions(
+        "receipt", "Receipt",
+        true, false, true, true));
+    receiptCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(receiptCmd);
+
+    var bankCheckCmd = new PredictBankCheckCommand(new CommandOptions(
+        "us-bank-check", "US Bank Check",
+        false, false, true, false));
+    bankCheckCmd.ConfigureAction(mindeeClient);
+    root.Subcommands.Add(bankCheckCmd);
+
+    var silentOption = new Option<bool>("--silent")
     {
-        root.InvokeAsync("--help");
+        Description = "Disables diagnostics output"
+    };
+    root.Options.Add(silentOption);
+
+    root.SetAction(parseResult =>
+    {
+        Console.WriteLine("Please specify a subcommand. Use --help for more information.");
+        return 1;
     });
 
-    return new CommandLineBuilder(root);
+    return root;
 }

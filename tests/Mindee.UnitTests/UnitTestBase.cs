@@ -59,11 +59,16 @@ namespace Mindee.UnitTests
                 options.RequestTimeoutSeconds = 120;
             });
 
-            services.AddSingleton(new RestClient(new RestClientOptions
+            var restClient = new RestClient(new RestClientOptions
             {
                 BaseUrl = new Uri("https://api.mindee.net"),
                 ConfigureMessageHandler = _ => mockHttpMessageHandler.Object
-            }));
+            });
+#if NET6_0_OR_GREATER
+            services.AddSingleton(restClient);
+#else
+            services.AddSingleton(new MindeeV1RestClientWrapper(restClient));
+#endif
 
             return services.BuildServiceProvider();
         }
@@ -98,12 +103,16 @@ namespace Mindee.UnitTests
                 options.RequestTimeoutSeconds = 120;
             });
 
-            services.AddKeyedSingleton("MindeeV2RestClient",
-                new RestClient(new RestClientOptions
-                {
-                    BaseUrl = new Uri("https://api.mindee.net"),
-                    ConfigureMessageHandler = _ => mockHttpMessageHandler.Object
-                }));
+            var restClient = new RestClient(new RestClientOptions
+            {
+                BaseUrl = new Uri("https://api.mindee.net"),
+                ConfigureMessageHandler = _ => mockHttpMessageHandler.Object
+            });
+#if NET6_0_OR_GREATER
+            services.AddKeyedSingleton("MindeeV2RestClient", restClient);
+#else
+            services.AddSingleton(new MindeeV2RestClientWrapper(restClient));
+#endif
 
             return services.BuildServiceProvider();
         }
