@@ -17,6 +17,19 @@ namespace Mindee.Extensions.DependencyInjection
 {
 #if !NET6_0_OR_GREATER
     /// <summary>
+    /// Wrapper for V1 RestClient to work around lack of keyed services in .NET Framework
+    /// </summary>
+    internal sealed class MindeeV1RestClientWrapper
+    {
+        public RestClient Client { get; }
+
+        public MindeeV1RestClientWrapper(RestClient client)
+        {
+            Client = client;
+        }
+    }
+
+    /// <summary>
     /// Wrapper for V2 RestClient to work around lack of keyed services in .NET Framework
     /// </summary>
     internal sealed class MindeeV2RestClientWrapper
@@ -53,7 +66,11 @@ namespace Mindee.Extensions.DependencyInjection
             services.AddSingleton(serviceProvider =>
             {
                 var settings = serviceProvider.GetRequiredService<IOptions<MindeeSettings>>();
-                var restClient = serviceProvider.GetRequiredService<RestClient>();
+#if NET6_0_OR_GREATER
+                    var restClient = serviceProvider.GetRequiredService<RestClient>();
+#else
+                var restClient = serviceProvider.GetRequiredService<MindeeV1RestClientWrapper>().Client;
+#endif
                 var logger = serviceProvider.GetService<ILoggerFactory>()?.CreateLogger<MindeeApi>();
                 return new MindeeApi(settings, restClient, logger);
             });
@@ -101,6 +118,7 @@ namespace Mindee.Extensions.DependencyInjection
 
         private static void RegisterV1RestSharpClient(IServiceCollection services, bool throwOnError)
         {
+#if NET6_0_OR_GREATER
             services.AddSingleton(provider =>
             {
                 var settings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
@@ -131,6 +149,38 @@ namespace Mindee.Extensions.DependencyInjection
                 };
                 return new RestClient(clientOptions);
             });
+#else
+            services.AddSingleton(provider =>
+            {
+                var settings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
+                settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("Mindee__BaseUrl");
+                if (string.IsNullOrEmpty(settings.MindeeBaseUrl))
+                {
+                    settings.MindeeBaseUrl = "https://api.mindee.net";
+                }
+
+                if (settings.RequestTimeoutSeconds <= 0)
+                {
+                    settings.RequestTimeoutSeconds = 120;
+                }
+
+                if (string.IsNullOrEmpty(settings.ApiKey))
+                {
+                    settings.ApiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
+                }
+
+                var clientOptions = new RestClientOptions(settings.MindeeBaseUrl)
+                {
+                    FollowRedirects = false,
+                    Timeout = TimeSpan.FromSeconds(settings.RequestTimeoutSeconds),
+                    UserAgent = BuildUserAgent(),
+                    Expect100Continue = false,
+                    CachePolicy = new CacheControlHeaderValue { NoCache = true, NoStore = true },
+                    ThrowOnAnyError = throwOnError
+                };
+                return new MindeeV1RestClientWrapper(new RestClient(clientOptions));
+            });
+#endif
         }
 
         private static void RegisterV2RestSharpClient(IServiceCollection services, bool throwOnError)
