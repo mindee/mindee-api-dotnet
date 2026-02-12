@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
 using Mindee.Product.Invoice;
+using System.Threading;
 
 namespace Mindee.IntegrationTests
 {
@@ -41,7 +42,15 @@ namespace Mindee.IntegrationTests
 
         public async Task DisposeAsync()
         {
-            await _host.StopAsync();
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            try
+            {
+                await _host.StopAsync(cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                Console.WriteLine("DependencyInjectionTest teardown: StopAsync timed out after 10s.");
+            }
             _host.Dispose();
         }
 
