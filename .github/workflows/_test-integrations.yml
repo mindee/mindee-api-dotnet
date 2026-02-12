@@ -13,45 +13,45 @@ env:
   MindeeV2__Failure__Webhook__Id: ${{ secrets.MINDEE_V2_SE_TESTS_FAILURE_WEBHOOK_ID }}
 
 jobs:
-#  test-nix:
-#    name: Integration Test on *NIX
-#    timeout-minutes: 35
-#    strategy:
-#      max-parallel: 6
-#      matrix:
-#        os:
-#          - "ubuntu-22.04"
-#          # needs looking into
-#          # - "macos-14"
-#        dotnet-version:
-#          - "net6.0"
-#          - "net8.0"
-#    runs-on: ${{ matrix.os }}
-#    steps:
-#      - uses: actions/checkout@v4
-#        with:
-#          submodules: recursive
-#
-#      - name: Set up .NET
-#        uses: actions/setup-dotnet@v4
-#        with:
-#          dotnet-version: |
-#            6.0.x
-#            8.0.x
-#            10.0.x
-#
-#      - name: Install dependencies
-#        run: |
-#          dotnet restore
-#
-#      - name: Build
-#        run: |
-#          dotnet build -f ${{ matrix.dotnet-version }}
-#
-#      - name: Test
-#        run: |
-#          dotnet test -f ${{ matrix.dotnet-version }} --verbosity normal "tests\Mindee.IntegrationTests"
-#
+  test-nix:
+    name: Integration Test on *NIX
+    timeout-minutes: 35
+    strategy:
+      max-parallel: 6
+      matrix:
+        os:
+          - "ubuntu-22.04"
+          # needs looking into
+          # - "macos-14"
+        dotnet-version:
+          - "net6.0"
+          - "net8.0"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
+            10.0.x
+
+      - name: Install dependencies
+        run: |
+          dotnet restore
+
+      - name: Build
+        run: |
+          dotnet build -f ${{ matrix.dotnet-version }}
+
+      - name: Test
+        run: |
+          dotnet test -f ${{ matrix.dotnet-version }} --verbosity normal "tests\Mindee.IntegrationTests"
+
 
   test-windows:
     name: Integration Test on Windows
@@ -64,8 +64,8 @@ jobs:
         dotnet-version:
           - "net472"
           - "net48"
-#          - "net6.0"
-#          - "net10.0"
+          - "net6.0"
+          - "net10.0"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4

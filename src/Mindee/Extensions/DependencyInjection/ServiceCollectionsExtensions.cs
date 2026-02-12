@@ -19,7 +19,7 @@ namespace Mindee.Extensions.DependencyInjection
     /// <summary>
     /// Wrapper for V1 RestClient to work around lack of keyed services in .NET Framework
     /// </summary>
-    internal sealed class MindeeV1RestClientWrapper: IDisposable
+    internal sealed class MindeeV1RestClientWrapper : IDisposable
     {
         public RestClient Client { get; }
 
@@ -37,7 +37,7 @@ namespace Mindee.Extensions.DependencyInjection
     /// <summary>
     /// Wrapper for V2 RestClient to work around lack of keyed services in .NET Framework
     /// </summary>
-    internal sealed class MindeeV2RestClientWrapper: IDisposable
+    internal sealed class MindeeV2RestClientWrapper : IDisposable
     {
         public RestClient Client { get; }
 
