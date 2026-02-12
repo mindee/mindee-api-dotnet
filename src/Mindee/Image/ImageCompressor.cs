@@ -19,8 +19,9 @@ namespace Mindee.Image
         {
             using var image = SKImage.FromBitmap(original);
             using var compressedBitmap = SKBitmap.FromImage(image);
+            var samplingOptions = new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.None);
             using var finalImage =
-                compressedBitmap.Resize(new SKImageInfo(finalWidth, finalHeight), SKFilterQuality.Low);
+                compressedBitmap.Resize(new SKImageInfo(finalWidth, finalHeight), samplingOptions);
             return finalImage.Encode(SKEncodedImageFormat.Jpeg, quality).ToArray();
         }
 
