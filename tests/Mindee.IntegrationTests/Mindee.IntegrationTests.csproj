@@ -4,11 +4,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net472' Or '$(TargetFramework)' == 'net48'">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6"/>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6"/>
-  </ItemGroup>
-
   <ItemGroup>
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
