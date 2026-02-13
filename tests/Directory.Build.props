@@ -37,4 +37,8 @@
     </Folder>
     <Folder Include="V1\Parsing\"/>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)TestTimeouts.cs" />
+  </ItemGroup>
 </Project>

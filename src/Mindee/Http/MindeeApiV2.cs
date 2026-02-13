@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 #if NET6_0_OR_GREATER
 using Microsoft.Extensions.DependencyInjection;
@@ -51,7 +52,8 @@ namespace Mindee.Http
 
             Logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
 
-            var response = await _httpClient.ExecutePostAsync(request);
+            using var cts = HttpTimeouts.CreateHardTimeoutCts();
+            var response = await _httpClient.ExecutePostAsync(request, cts.Token);
             return ResponseHandler<JobResponse>(response);
         }
 
@@ -59,7 +61,8 @@ namespace Mindee.Http
         {
             var request = new RestRequest($"v2/jobs/{jobId}");
             Logger?.LogInformation("HTTP GET to {RequestResource}...", _baseUrl + request.Resource);
-            var response = await _httpClient.ExecuteGetAsync(request);
+            using var cts = HttpTimeouts.CreateHardTimeoutCts();
+            var response = await _httpClient.ExecuteGetAsync(request, cts.Token);
             Logger?.LogDebug("HTTP response: {ResponseContent}", response.Content);
             var handledResponse = ResponseHandler<JobResponse>(response);
             return handledResponse;
@@ -70,7 +73,8 @@ namespace Mindee.Http
         {
             var request = new RestRequest($"v2/inferences/{inferenceId}");
             Logger?.LogInformation("HTTP GET to {RequestResource}...", _baseUrl + request.Resource);
-            var queueResponse = await _httpClient.ExecuteGetAsync(request);
+            using var cts = HttpTimeouts.CreateHardTimeoutCts();
+            var queueResponse = await _httpClient.ExecuteGetAsync(request, cts.Token);
             var handledResponse = ResponseHandler<InferenceResponse>(queueResponse);
             return handledResponse;
         }

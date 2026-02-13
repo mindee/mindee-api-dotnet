@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Mindee.Exceptions;
+using Mindee.Http;
 using RestSharp;
 using RestSharp.Authenticators;
 
@@ -94,7 +95,8 @@ namespace Mindee.Input
 
             restClient ??= new RestClient(options);
             var request = new RestRequest(FileUrl);
-            var response = await restClient.ExecuteAsync(request);
+            using var cts = HttpTimeouts.CreateHardTimeoutCts();
+            var response = await restClient.ExecuteAsync(request, cts.Token);
 
             // Note: response.IsSuccessful can't be mocked as easily, so this is a better solution at the moment.
             if (response.IsSuccessStatusCode)

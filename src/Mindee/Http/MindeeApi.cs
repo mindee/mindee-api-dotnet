@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -67,7 +68,8 @@ namespace Mindee.Http
 
             _logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
 
-            var response = await _httpClient.ExecutePostAsync(request);
+            using var cts = HttpTimeouts.CreateHardTimeoutCts();
+            var response = await _httpClient.ExecutePostAsync(request, cts.Token);
             return ResponseHandler<AsyncPredictResponse<TModel>>(response);
         }
 
@@ -89,7 +91,8 @@ namespace Mindee.Http
 
             _logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
 
-            var response = await _httpClient.ExecutePostAsync(request);
+            using var cts = HttpTimeouts.CreateHardTimeoutCts();
+            var response = await _httpClient.ExecutePostAsync(request, cts.Token);
             return ResponseHandler<PredictResponse<TModel>>(response);
         }
 
@@ -108,7 +111,8 @@ namespace Mindee.Http
 
             _logger?.LogInformation("HTTP GET to {QueueRequestResource} ...", _baseUrl + queueRequest.Resource);
 
-            var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest);
+            using var queueCts = HttpTimeouts.CreateHardTimeoutCts();
+            var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest, queueCts.Token);
 
             _logger?.LogDebug("HTTP response: {QueueResponseContent}", queueResponse.Content);
 
@@ -119,7 +123,8 @@ namespace Mindee.Http
                 var docRequest = new RestRequest(locationHeader.Value);
 
                 _logger?.LogInformation("HTTP GET to {DocRequestResource} ...", _baseUrl + docRequest.Resource);
-                var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
+                using var docCts = HttpTimeouts.CreateHardTimeoutCts();
+                var docResponse = await _httpClient.ExecuteGetAsync(docRequest, docCts.Token);
                 return ResponseHandler<AsyncPredictResponse<TModel>>(docResponse);
             }
 
@@ -145,7 +150,8 @@ namespace Mindee.Http
 
             _logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
 
-            var response = await _httpClient.ExecutePostAsync(request);
+            using var cts = HttpTimeouts.CreateHardTimeoutCts();
+            var response = await _httpClient.ExecutePostAsync(request, cts.Token);
             return ResponseHandler<WorkflowResponse<TModel>>(response);
         }
 
