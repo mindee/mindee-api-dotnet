@@ -21,7 +21,7 @@ namespace Mindee.IntegrationTests.V1.Extraction
             return rstRefLines;
         }
 
-        [Fact]
+        [Fact(Timeout = 120000)]
         public async Task GivenAPdf_ShouldExtractInvoicesStrict_MustSucceed()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");

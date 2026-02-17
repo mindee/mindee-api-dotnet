@@ -55,7 +55,7 @@ namespace Mindee.IntegrationTests
         }
 
 
-        [Fact]
+        [Fact(Timeout = 120000)]
         public void ShouldInitBothClients()
         {
             var clientV1 = _services.GetRequiredService<MindeeClient>();
@@ -64,7 +64,7 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(clientV2);
         }
 
-        [Fact]
+        [Fact(Timeout = 120000)]
         public async Task ShouldMaintainAuthenticationAcrossMultipleRequests()
         {
             var instance1ClientV1 = _services.GetRequiredService<MindeeClient>();

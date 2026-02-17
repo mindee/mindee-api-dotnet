@@ -7,7 +7,7 @@ namespace Mindee.IntegrationTests.V1.Input
     [Trait("Category", "Send URL")]
     public class UrlInputSourceTest
     {
-        [Fact]
+        [Fact(Timeout = 120000)]
         public async Task GivenARemoteFile_MustRetrieveResponse()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
