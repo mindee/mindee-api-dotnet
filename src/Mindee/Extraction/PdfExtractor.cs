@@ -55,8 +55,11 @@ namespace Mindee.Extraction
         /// <returns>The number of pages in the file.</returns>
         public int GetPageCount()
         {
-            var docInstance = DocLib.Instance.GetDocReader(SourcePdf, new PageDimensions(1, 1));
-            return docInstance.GetPageCount();
+            lock (DocLib.Instance)
+            {
+                var docInstance = DocLib.Instance.GetDocReader(SourcePdf, new PageDimensions(1, 1));
+                return docInstance.GetPageCount();
+            }
         }
 
         /// <summary>
@@ -84,9 +87,12 @@ namespace Mindee.Extraction
                 var splitQuery = new SplitQuery(
                     SourcePdf,
                     new PageOptions(pageIndexElem.ConvertAll(item => (short)item).ToArray()));
-                var pdfOperation = new DocNetApi(new NullLogger<DocNetApi>());
-                var mergedPdfBytes = pdfOperation.Split(splitQuery).File;
-                extractedPdfs.Add(new ExtractedPdf(mergedPdfBytes, fieldFilename));
+                lock (DocLib.Instance)
+                {
+                    var pdfOperation = new DocNetApi(new NullLogger<DocNetApi>());
+                    var mergedPdfBytes = pdfOperation.Split(splitQuery).File;
+                    extractedPdfs.Add(new ExtractedPdf(mergedPdfBytes, fieldFilename));
+                }
             }
 
             return extractedPdfs;
