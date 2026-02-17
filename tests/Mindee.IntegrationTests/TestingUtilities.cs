@@ -14,6 +14,11 @@ namespace Mindee.IntegrationTests
 #if NET472 || NET48
         static TestingUtilities()
         {
+            const string envVar = "MINDEE_TEST_HARD_TIMEOUT_SECONDS";
+            if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(envVar)))
+            {
+                Environment.SetEnvironmentVariable(envVar, "180");
+            }
             ServicePointManager.DefaultConnectionLimit = 50;
             ServicePointManager.Expect100Continue = false;
             WebRequest.DefaultWebProxy = null;
