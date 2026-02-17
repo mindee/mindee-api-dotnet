@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Product.FinancialDocument;
+using Mindee.V1.Product.FinancialDocument;
 
 namespace Mindee.UnitTests.V1.Product.FinancialDocument
 {

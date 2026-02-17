@@ -8,7 +8,7 @@ using Docnet.Core.Models;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Input;
 using Mindee.Pdf;
-using Mindee.Product.InvoiceSplitter;
+using Mindee.V1.Product.InvoiceSplitter;
 using SkiaSharp;
 
 namespace Mindee.Extraction

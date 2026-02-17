@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Product.Fr.HealthCard;
+using Mindee.V1.Product.Fr.HealthCard;
 
 namespace Mindee.UnitTests.V1.Product.Fr.HealthCard
 {

@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Product.Us.BankCheck;
+using Mindee.V1.Product.Us.BankCheck;
 
 namespace Mindee.UnitTests.V1.Product.Us.BankCheck
 {

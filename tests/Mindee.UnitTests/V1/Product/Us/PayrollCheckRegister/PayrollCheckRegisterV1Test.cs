@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Product.Us.PayrollCheckRegister;
+using Mindee.V1.Product.Us.PayrollCheckRegister;
 
 namespace Mindee.UnitTests.V1.Product.Us.PayrollCheckRegister
 {

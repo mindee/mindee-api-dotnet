@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Product.InvoiceSplitter;
+using Mindee.V1.Product.InvoiceSplitter;
 
 namespace Mindee.UnitTests.V1.Product.InvoiceSplitter
 {

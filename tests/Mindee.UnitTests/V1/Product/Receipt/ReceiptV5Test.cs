@@ -1,6 +1,6 @@
 using Mindee.Parsing.Common;
 using Mindee.Parsing.Standard;
-using Mindee.Product.Receipt;
+using Mindee.V1.Product.Receipt;
 
 namespace Mindee.UnitTests.V1.Product.Receipt
 {

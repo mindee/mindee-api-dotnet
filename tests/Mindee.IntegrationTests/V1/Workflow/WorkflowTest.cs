@@ -1,8 +1,8 @@
 using Mindee.Http;
 using Mindee.Input;
-using Mindee.Product.FinancialDocument;
-using Mindee.Product.Generated;
 using Mindee.V1;
+using Mindee.V1.Product.FinancialDocument;
+using Mindee.V1.Product.Generated;
 
 namespace Mindee.IntegrationTests.V1.Workflow
 {

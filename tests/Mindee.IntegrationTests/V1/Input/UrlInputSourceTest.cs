@@ -1,5 +1,5 @@
 using Mindee.Input;
-using Mindee.Product.Invoice;
+using Mindee.V1.Product.Invoice;
 
 namespace Mindee.IntegrationTests.V1.Input
 {

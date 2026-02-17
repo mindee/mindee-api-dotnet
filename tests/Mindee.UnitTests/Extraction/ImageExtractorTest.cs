@@ -1,8 +1,8 @@
 using Mindee.Extraction;
 using Mindee.Input;
 using Mindee.Parsing.Common;
-using Mindee.Product.BarcodeReader;
-using Mindee.Product.MultiReceiptsDetector;
+using Mindee.V1.Product.BarcodeReader;
+using Mindee.V1.Product.MultiReceiptsDetector;
 
 namespace Mindee.UnitTests.Extraction
 {

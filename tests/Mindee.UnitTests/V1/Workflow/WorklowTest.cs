@@ -3,8 +3,8 @@ using Mindee.Http;
 using Mindee.Input;
 using Mindee.Parsing.Common;
 using Mindee.Pdf;
-using Mindee.Product.Generated;
 using Mindee.V1;
+using Mindee.V1.Product.Generated;
 using Moq;
 
 namespace Mindee.UnitTests.V1.Workflow

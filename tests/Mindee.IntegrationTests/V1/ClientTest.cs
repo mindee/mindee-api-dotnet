@@ -1,13 +1,13 @@
 using Mindee.Exceptions;
 using Mindee.Http;
 using Mindee.Input;
-using Mindee.Product.Cropper;
-using Mindee.Product.Generated;
-using Mindee.Product.InternationalId;
-using Mindee.Product.Invoice;
-using Mindee.Product.InvoiceSplitter;
-using Mindee.Product.Receipt;
 using Mindee.V1;
+using Mindee.V1.Product.Cropper;
+using Mindee.V1.Product.Generated;
+using Mindee.V1.Product.InternationalId;
+using Mindee.V1.Product.Invoice;
+using Mindee.V1.Product.InvoiceSplitter;
+using Mindee.V1.Product.Receipt;
 
 namespace Mindee.IntegrationTests.V1
 {

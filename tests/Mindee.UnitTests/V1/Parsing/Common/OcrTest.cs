@@ -1,6 +1,6 @@
 using System.Text.Json;
 using Mindee.Parsing.Common;
-using Mindee.Product.Receipt;
+using Mindee.V1.Product.Receipt;
 
 namespace Mindee.UnitTests.V1.Parsing.Common
 {

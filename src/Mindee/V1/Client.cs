@@ -9,7 +9,8 @@ using Mindee.Http;
 using Mindee.Input;
 using Mindee.Parsing.Common;
 using Mindee.Pdf;
-using Mindee.Product.Generated;
+using Mindee.V1.Product.Generated;
+
 // ReSharper disable once RedundantUsingDirective
 
 namespace Mindee.V1

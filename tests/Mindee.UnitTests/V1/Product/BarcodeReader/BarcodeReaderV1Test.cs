@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Product.BarcodeReader;
+using Mindee.V1.Product.BarcodeReader;
 
 namespace Mindee.UnitTests.V1.Product.BarcodeReader
 {

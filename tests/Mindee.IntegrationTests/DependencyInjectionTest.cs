@@ -6,8 +6,8 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable once RedundantUsingDirective
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
-using Mindee.Product.Invoice;
 using Mindee.V1;
+using Mindee.V1.Product.Invoice;
 using Mindee.V2;
 using Client = Mindee.V2.Client;
 

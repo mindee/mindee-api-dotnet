@@ -1,6 +1,6 @@
 using Mindee.Http;
 using Mindee.Parsing.Common;
-using Mindee.Product.Generated;
+using Mindee.V1.Product.Generated;
 
 namespace Mindee.UnitTests.V1.Product.Generated
 {

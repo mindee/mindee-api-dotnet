@@ -1,5 +1,5 @@
 using Mindee.Parsing.Common;
-using Mindee.Product.Fr.Payslip;
+using Mindee.V1.Product.Fr.Payslip;
 
 namespace Mindee.UnitTests.V1.Product.Fr.Payslip
 {
