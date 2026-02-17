@@ -22,7 +22,7 @@ namespace Mindee.IntegrationTests.V1
             _mindeeClient = TestingUtilities.GetOrGenerateMindeeClient(apiKey);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Parse_File_Standard_MultiplePages_MustSucceed()
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/multipage_cut-2.pdf");
@@ -37,7 +37,7 @@ namespace Mindee.IntegrationTests.V1
             Assert.Equal(2, response.Document.Inference.Pages.Count);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Parse_File_Standard_SinglePage_MustSucceed()
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg");
@@ -52,7 +52,7 @@ namespace Mindee.IntegrationTests.V1
             Assert.Null(response.Document.Inference.Pages.First().Extras);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Parse_Url_Standard_SinglePage_MustSucceed()
         {
             var inputSource =
@@ -69,14 +69,14 @@ namespace Mindee.IntegrationTests.V1
             Assert.Null(response.Document.Inference.Pages.First().Extras);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Parse_Url_Standard_InvalidUrl_MustFail()
         {
             var inputSource = new UrlInputSource("https://bad-domain.test/invalid-file.ext");
             await Assert.ThrowsAsync<Mindee400Exception>(() => _mindeeClient.ParseAsync<ReceiptV5>(inputSource));
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Parse_File_Cropper_MustSucceed()
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg");
@@ -93,7 +93,7 @@ namespace Mindee.IntegrationTests.V1
             Assert.Single(response.Document.Inference.Pages.First().Extras.Cropper.Cropping);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Parse_File_Standard_AllWords_MustSucceed()
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg");
@@ -111,7 +111,7 @@ namespace Mindee.IntegrationTests.V1
             Assert.Null(response.Document.Inference.Pages.First().Extras);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Parse_File_Standard_FullText_MustSucceed()
         {
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "international_id/default_sample.jpg");
@@ -127,7 +127,7 @@ namespace Mindee.IntegrationTests.V1
             Assert.True(response.Document.Inference.Extras.FullTextOcr.Replace(" ", "").Length > 100);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Parse_File_Standard_AllWords_And_Cropper_MustSucceed()
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg");
@@ -147,14 +147,14 @@ namespace Mindee.IntegrationTests.V1
             Assert.Single(response.Document.Inference.Pages.First().Extras.Cropper.Cropping);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Enqueue_File_Standard_SyncOnly_Async_MustFail()
         {
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "passport/default_sample.jpg");
             await Assert.ThrowsAsync<Mindee403Exception>(() => _mindeeClient.EnqueueAsync<CropperV1>(inputSource));
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Enqueue_File_Standard_AsyncOnly_Async_MustSucceed()
         {
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
@@ -173,7 +173,7 @@ namespace Mindee.IntegrationTests.V1
             Assert.Null(response.Job.AvailableAt);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Enqueue_File_Standard_AsyncOnly_Sync_MustFail()
         {
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
@@ -181,7 +181,7 @@ namespace Mindee.IntegrationTests.V1
                 _mindeeClient.ParseAsync<InvoiceSplitterV1>(inputSource));
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task EnqueueAndParse_File_Standard_AsyncOnly_Async_MustSucceed()
         {
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
@@ -205,7 +205,7 @@ namespace Mindee.IntegrationTests.V1
         }
 
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task EnqueueAndParse_File_Standard_AsyncOnly_Async_UrlSource_MustSucceed()
         {
             var inputSource =
@@ -230,7 +230,7 @@ namespace Mindee.IntegrationTests.V1
             Assert.NotNull(response.Document.Inference.Prediction.InvoicePageGroups);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task EnqueueAndParse_File_Standard_AsyncOnly_Async_UrlSource_CustomEndpoint_MustSucceed()
         {
             var inputSource =
@@ -257,7 +257,7 @@ namespace Mindee.IntegrationTests.V1
         }
 
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task ParseQueued_Standard_InvalidJob_MustFail()
         {
             var jobId = RandomString(15);
@@ -265,7 +265,7 @@ namespace Mindee.IntegrationTests.V1
                 _mindeeClient.ParseQueuedAsync<InvoiceSplitterV1>(jobId));
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Enqueue_File_Generated_AsyncOnly_Sync_MustFail()
         {
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
@@ -274,7 +274,7 @@ namespace Mindee.IntegrationTests.V1
                 _mindeeClient.ParseAsync<GeneratedV1>(inputSource, endpoint));
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task EnqueueAndParse_File_Generated_AsyncOnly_Async_MustSucceed()
         {
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
@@ -296,7 +296,7 @@ namespace Mindee.IntegrationTests.V1
             Assert.NotNull(response.Document.Inference.Prediction.Fields);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task ParseQueued_Generated_InvalidJob_MustFail()
         {
             var jobId = RandomString(15);

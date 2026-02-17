@@ -24,7 +24,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
             _workflowId = Environment.GetEnvironmentVariable("Workflow__ID") ?? "";
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Given_AWorkflowIdUpload_ShouldReturnACorrectWorkflowObject()
         {
             var currentDateTime = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
@@ -37,7 +37,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
             Assert.Equal(alias, response.Execution.File.Alias);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Given_AWorkflowIdPredictCustom_ShouldPollAndMatchRag()
         {
             var endpoint = new CustomEndpoint("financial_document", "mindee");
@@ -52,7 +52,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
             Assert.NotEmpty(response.Document.Inference.Extras.Rag.MatchingDocumentId);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Given_AWorkflowIdPredictOTS_ShouldPollAndMatchRag()
         {
             var options = new PredictOptions(
@@ -65,7 +65,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
             Assert.NotEmpty(response.Document.Inference.Extras.Rag.MatchingDocumentId);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Given_AWorkflowIdPredictOTS_ShouldPollAndNotMatchRag()
         {
             var options = new PredictOptions(
@@ -78,7 +78,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
             Assert.Null(response.Document.Inference.Extras.Rag.MatchingDocumentId);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Given_AWorkflowIdPredictCustom_ShouldPollWithoutRag()
         {
             var endpoint = new CustomEndpoint("financial_document", "mindee");
@@ -93,7 +93,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
             Assert.Null(response.Document.Inference.Extras.Rag);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Given_AWorkflowIdPredictOTS_ShouldPollWithoutRag()
         {
             var options = new PredictOptions(

@@ -107,7 +107,7 @@ namespace Mindee.IntegrationTests.V2
             }
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Parse_File_Filled_SinglePage_MustSucceed()
         {
             var inputSource = new LocalInputSource(
@@ -143,7 +143,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.Empty(supplierName.Locations);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task FailedWebhook_Retrieve_Job_MustSucceed()
         {
             var webhookId = Environment.GetEnvironmentVariable("MindeeV2__Failure__Webhook__Id");
@@ -198,7 +198,7 @@ namespace Mindee.IntegrationTests.V2
             throw new Exception("Did not receive a failed webhook.");
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Invalid_Model_MustThrowError()
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/multipage_cut-2.pdf");
@@ -211,7 +211,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.StartsWith("422-", ex.Code);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task NotFound_Job_MustThrowError()
         {
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
@@ -220,7 +220,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.StartsWith("404-", ex.Code);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task NotFound_Inference_MustThrowError()
         {
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
@@ -229,7 +229,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.StartsWith("404-", ex.Code);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task Url_InputSource_MustNotRaiseErrors()
         {
             var url = Environment.GetEnvironmentVariable("MindeeV2__Blank__Pdf__Url");
@@ -244,7 +244,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.NotNull(response.Inference);
         }
 
-        [Fact(Timeout = 120000)]
+        [Fact(Timeout = 180000)]
         public async Task DataSchemaOverride_OverridesTheDataSchemaSuccessfully()
         {
             var inputSource = new LocalInputSource(
