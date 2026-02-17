@@ -15,7 +15,7 @@ namespace Mindee.V2
     /// <summary>
     ///     The entry point to use the Mindee V2 API features.
     /// </summary>
-    public sealed class MindeeClientV2
+    public sealed class Client
     {
         private readonly ILogger _logger;
         private readonly HttpApiV2 _mindeeApi;
@@ -24,13 +24,13 @@ namespace Mindee.V2
         /// </summary>
         /// <param name="apiKey">The required API key to use the Mindee V2 API.</param>
         /// <param name="loggerFactory">Factory for the logger.</param>
-        public MindeeClientV2(string apiKey, ILoggerFactory loggerFactory = null)
+        public Client(string apiKey, ILoggerFactory loggerFactory = null)
         {
             var loggerFactory1 = loggerFactory ?? LoggerFactory.Create(builder =>
             {
                 builder.SetMinimumLevel(LogLevel.Debug);
             });
-            _logger = loggerFactory1.CreateLogger<MindeeClientV2>();
+            _logger = loggerFactory1.CreateLogger<Client>();
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddMindeeApiV2(options =>
@@ -49,7 +49,7 @@ namespace Mindee.V2
         ///     <see cref="MindeeSettingsV2" />
         /// </param>
         /// <param name="logger"></param>
-        public MindeeClientV2(MindeeSettingsV2 mindeeSettings, ILoggerFactory logger = null)
+        public Client(MindeeSettingsV2 mindeeSettings, ILoggerFactory logger = null)
         {
             var loggerFactory = logger ?? NullLoggerFactory.Instance;
             var serviceCollection = new ServiceCollection();
@@ -76,11 +76,11 @@ namespace Mindee.V2
         ///     <see cref="IHttpApi" />
         /// </param>
         /// <param name="logger"></param>
-        public MindeeClientV2(HttpApiV2 httpApi, ILoggerFactory logger = null)
+        public Client(HttpApiV2 httpApi, ILoggerFactory logger = null)
         {
             _mindeeApi = httpApi;
             var loggerFactory = logger ?? NullLoggerFactory.Instance;
-            _logger = loggerFactory.CreateLogger<MindeeClientV2>();
+            _logger = loggerFactory.CreateLogger<Client>();
         }
 
         /// <summary>

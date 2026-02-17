@@ -13,21 +13,21 @@ namespace Mindee.IntegrationTests.V1
 {
     [Trait("Category", "V1")]
     [Trait("Category", "Integration")]
-    public class MindeeClientTest
+    public class ClientTest
     {
-        private readonly MindeeClient _mindeeClient;
+        private readonly Client _client;
 
-        public MindeeClientTest()
+        public ClientTest()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            _mindeeClient = TestingUtilities.GetOrGenerateMindeeClient(apiKey);
+            _client = TestingUtilities.GetOrGenerateMindeeClient(apiKey);
         }
 
         [Fact(Timeout = 180000)]
         public async Task Parse_File_Standard_MultiplePages_MustSucceed()
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/multipage_cut-2.pdf");
-            var response = await _mindeeClient.ParseAsync<InvoiceV4>(inputSource);
+            var response = await _client.ParseAsync<InvoiceV4>(inputSource);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
@@ -42,7 +42,7 @@ namespace Mindee.IntegrationTests.V1
         public async Task Parse_File_Standard_SinglePage_MustSucceed()
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg");
-            var response = await _mindeeClient.ParseAsync<ReceiptV5>(inputSource);
+            var response = await _client.ParseAsync<ReceiptV5>(inputSource);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
@@ -59,7 +59,7 @@ namespace Mindee.IntegrationTests.V1
             var inputSource =
                 new UrlInputSource(
                     "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/v1/products/expense_receipts/default_sample.jpg");
-            var response = await _mindeeClient.ParseAsync<ReceiptV5>(inputSource);
+            var response = await _client.ParseAsync<ReceiptV5>(inputSource);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
@@ -74,7 +74,7 @@ namespace Mindee.IntegrationTests.V1
         public async Task Parse_Url_Standard_InvalidUrl_MustFail()
         {
             var inputSource = new UrlInputSource("https://bad-domain.test/invalid-file.ext");
-            await Assert.ThrowsAsync<Mindee400Exception>(() => _mindeeClient.ParseAsync<ReceiptV5>(inputSource));
+            await Assert.ThrowsAsync<Mindee400Exception>(() => _client.ParseAsync<ReceiptV5>(inputSource));
         }
 
         [Fact(Timeout = 180000)]
@@ -82,7 +82,7 @@ namespace Mindee.IntegrationTests.V1
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg");
             var predictOptions = new PredictOptions(cropper: true);
-            var response = await _mindeeClient.ParseAsync<ReceiptV5>(inputSource, predictOptions);
+            var response = await _client.ParseAsync<ReceiptV5>(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
@@ -99,7 +99,7 @@ namespace Mindee.IntegrationTests.V1
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg");
             var predictOptions = new PredictOptions(true);
-            var response = await _mindeeClient.ParseAsync<InvoiceV4>(inputSource, predictOptions);
+            var response = await _client.ParseAsync<InvoiceV4>(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(201, response.ApiRequest.StatusCode);
@@ -117,7 +117,7 @@ namespace Mindee.IntegrationTests.V1
         {
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "international_id/default_sample.jpg");
             var predictOptions = new PredictOptions(fullText: true);
-            var response = await _mindeeClient.EnqueueAndParseAsync<InternationalIdV2>(inputSource, predictOptions);
+            var response = await _client.EnqueueAndParseAsync<InternationalIdV2>(inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(200, response.ApiRequest.StatusCode);
@@ -133,7 +133,7 @@ namespace Mindee.IntegrationTests.V1
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg");
             var predictOptions = new PredictOptions(true, cropper: true);
-            var response = await _mindeeClient.ParseAsync<InvoiceV4>(
+            var response = await _client.ParseAsync<InvoiceV4>(
                 inputSource, predictOptions);
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
@@ -152,14 +152,14 @@ namespace Mindee.IntegrationTests.V1
         public async Task Enqueue_File_Standard_SyncOnly_Async_MustFail()
         {
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "passport/default_sample.jpg");
-            await Assert.ThrowsAsync<Mindee403Exception>(() => _mindeeClient.EnqueueAsync<CropperV1>(inputSource));
+            await Assert.ThrowsAsync<Mindee403Exception>(() => _client.EnqueueAsync<CropperV1>(inputSource));
         }
 
         [Fact(Timeout = 180000)]
         public async Task Enqueue_File_Standard_AsyncOnly_Async_MustSucceed()
         {
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
-            var response = await _mindeeClient.EnqueueAsync<InvoiceSplitterV1>(inputSource);
+            var response = await _client.EnqueueAsync<InvoiceSplitterV1>(inputSource);
 
             Assert.NotNull(response);
             Assert.NotNull(response.ApiRequest);
@@ -179,7 +179,7 @@ namespace Mindee.IntegrationTests.V1
         {
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
             await Assert.ThrowsAsync<Mindee403Exception>(() =>
-                _mindeeClient.ParseAsync<InvoiceSplitterV1>(inputSource));
+                _client.ParseAsync<InvoiceSplitterV1>(inputSource));
         }
 
         [Fact(Timeout = 180000)]
@@ -187,7 +187,7 @@ namespace Mindee.IntegrationTests.V1
         {
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
             var pollingOptions = new AsyncPollingOptions();
-            var response = await _mindeeClient.EnqueueAndParseAsync<InvoiceSplitterV1>(
+            var response = await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(
                 inputSource, pollingOptions: pollingOptions);
 
             Assert.NotNull(response);
@@ -213,7 +213,7 @@ namespace Mindee.IntegrationTests.V1
                 new UrlInputSource(
                     "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/v1/products/invoice_splitter/default_sample.pdf");
             var pollingOptions = new AsyncPollingOptions();
-            var response = await _mindeeClient.EnqueueAndParseAsync<InvoiceSplitterV1>(
+            var response = await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(
                 inputSource, pollingOptions: pollingOptions);
 
             Assert.NotNull(response);
@@ -239,7 +239,7 @@ namespace Mindee.IntegrationTests.V1
                     "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/v1/products/international_id/default_sample.jpg");
             var pollingOptions = new AsyncPollingOptions();
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
-            var response = await _mindeeClient.EnqueueAndParseAsync<GeneratedV1>(
+            var response = await _client.EnqueueAndParseAsync<GeneratedV1>(
                 inputSource, endpoint, pollingOptions: pollingOptions);
 
             Assert.NotNull(response);
@@ -263,7 +263,7 @@ namespace Mindee.IntegrationTests.V1
         {
             var jobId = RandomString(15);
             await Assert.ThrowsAsync<Mindee404Exception>(() =>
-                _mindeeClient.ParseQueuedAsync<InvoiceSplitterV1>(jobId));
+                _client.ParseQueuedAsync<InvoiceSplitterV1>(jobId));
         }
 
         [Fact(Timeout = 180000)]
@@ -272,7 +272,7 @@ namespace Mindee.IntegrationTests.V1
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "international_id/default_sample.jpg");
             await Assert.ThrowsAsync<Mindee403Exception>(() =>
-                _mindeeClient.ParseAsync<GeneratedV1>(inputSource, endpoint));
+                _client.ParseAsync<GeneratedV1>(inputSource, endpoint));
         }
 
         [Fact(Timeout = 180000)]
@@ -280,7 +280,7 @@ namespace Mindee.IntegrationTests.V1
         {
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "international_id/default_sample.jpg");
-            var response = await _mindeeClient.EnqueueAndParseAsync<GeneratedV1>(inputSource, endpoint);
+            var response = await _client.EnqueueAndParseAsync<GeneratedV1>(inputSource, endpoint);
 
             Assert.NotNull(response);
             Assert.NotNull(response.ApiRequest);
@@ -303,7 +303,7 @@ namespace Mindee.IntegrationTests.V1
             var jobId = RandomString(15);
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
             await Assert.ThrowsAsync<Mindee404Exception>(() =>
-                _mindeeClient.ParseQueuedAsync<GeneratedV1>(endpoint, jobId));
+                _client.ParseQueuedAsync<GeneratedV1>(endpoint, jobId));
         }
 
         private static string RandomString(int length)

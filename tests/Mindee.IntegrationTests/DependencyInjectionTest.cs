@@ -9,6 +9,7 @@ using Mindee.Input;
 using Mindee.Product.Invoice;
 using Mindee.V1;
 using Mindee.V2;
+using Client = Mindee.V2.Client;
 
 namespace Mindee.IntegrationTests
 {
@@ -60,28 +61,28 @@ namespace Mindee.IntegrationTests
         [Fact]
         public void ShouldInitBothClients()
         {
-            var clientV1 = _services.GetRequiredService<MindeeClient>();
+            var clientV1 = _services.GetRequiredService<Mindee.V1.Client>();
             Assert.NotNull(clientV1);
-            var clientV2 = _services.GetRequiredService<MindeeClientV2>();
+            var clientV2 = _services.GetRequiredService<Client>();
             Assert.NotNull(clientV2);
         }
 
         [Fact(Timeout = 180000)]
         public async Task ShouldMaintainAuthenticationAcrossMultipleRequests()
         {
-            var instance1ClientV1 = _services.GetRequiredService<MindeeClient>();
+            var instance1ClientV1 = _services.GetRequiredService<Mindee.V1.Client>();
             var inputSource1 = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
             var response1 = await instance1ClientV1.ParseAsync<InvoiceV4>(inputSource1);
             Assert.NotNull(response1);
             Assert.True(response1.Document != null, "First V1 request should return a valid document");
 
-            var instance2ClientV1 = _services.GetRequiredService<MindeeClient>();
+            var instance2ClientV1 = _services.GetRequiredService<Mindee.V1.Client>();
             var inputSource2 = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
             var response2 = await instance2ClientV1.ParseAsync<InvoiceV4>(inputSource2);
             Assert.NotNull(response2);
             Assert.True(response2.Document != null, "Second V1 request should return a valid document");
 
-            var instance1ClientV2 = _services.GetRequiredService<MindeeClientV2>();
+            var instance1ClientV2 = _services.GetRequiredService<Client>();
             var inputSource3 = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
             var response3 = await instance1ClientV2.EnqueueInferenceAsync(
                 inputSource3,
@@ -94,7 +95,7 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(response4);
             Assert.True(response4.Document != null, "Third V1 request should return a valid document");
 
-            var instance2ClientV2 = _services.GetRequiredService<MindeeClientV2>();
+            var instance2ClientV2 = _services.GetRequiredService<Client>();
             var inputSource5 = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
             var response5 = await instance2ClientV2.EnqueueInferenceAsync(
                 inputSource5,

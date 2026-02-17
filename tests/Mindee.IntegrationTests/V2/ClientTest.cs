@@ -7,15 +7,15 @@ namespace Mindee.IntegrationTests.V2
 {
     [Trait("Category", "V2")]
     [Trait("Category", "Integration")]
-    public class MindeeClientV2Test
+    public class ClientTest
     {
         private readonly string? _findocModelId;
-        private readonly MindeeClientV2 _mindeeClientV2;
+        private readonly Client _client;
 
-        public MindeeClientV2Test()
+        public ClientTest()
         {
             var apiKey = Environment.GetEnvironmentVariable("MindeeV2__ApiKey");
-            _mindeeClientV2 = TestingUtilities.GetOrGenerateMindeeClientV2(apiKey);
+            _client = TestingUtilities.GetOrGenerateMindeeClientV2(apiKey);
             _findocModelId = Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id");
         }
 
@@ -53,7 +53,7 @@ namespace Mindee.IntegrationTests.V2
                 polygon: polygon,
                 confidence: confidence);
 
-            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
+            var response = await _client.EnqueueAndGetInferenceAsync(
                 inputSource, inferenceParams);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -117,7 +117,7 @@ namespace Mindee.IntegrationTests.V2
                 _findocModelId,
                 textContext: "this is an invoice.");
 
-            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
+            var response = await _client.EnqueueAndGetInferenceAsync(
                 inputSource, inferenceParams);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -153,7 +153,7 @@ namespace Mindee.IntegrationTests.V2
             var inferenceParams = new InferenceParameters(
                 _findocModelId, webhookIds: new List<string?> { webhookId });
 
-            var enqueueResponse = await _mindeeClientV2.EnqueueInferenceAsync(inputSource, inferenceParams);
+            var enqueueResponse = await _client.EnqueueInferenceAsync(inputSource, inferenceParams);
             Assert.NotNull(enqueueResponse);
             Assert.NotNull(enqueueResponse.Job);
             Assert.NotNull(enqueueResponse.Job.Webhooks);
@@ -163,7 +163,7 @@ namespace Mindee.IntegrationTests.V2
 
             await Task.Delay(200);
 
-            var jobResponse = await _mindeeClientV2.GetJobAsync(jobId);
+            var jobResponse = await _client.GetJobAsync(jobId);
             Assert.NotNull(jobResponse);
 
             var job = jobResponse.Job;
@@ -179,7 +179,7 @@ namespace Mindee.IntegrationTests.V2
             {
                 await Task.Delay(1000);
 
-                var loopJobResponse = await _mindeeClientV2.GetJobAsync(jobId);
+                var loopJobResponse = await _client.GetJobAsync(jobId);
                 var loopWebhook = loopJobResponse.Job.Webhooks.First();
                 Assert.NotNull(loopWebhook);
                 Assert.Equal(webhookId, loopWebhook.Id);
@@ -207,7 +207,7 @@ namespace Mindee.IntegrationTests.V2
                 "INVALID MODEL ID",
                 textContext: "hello my name is mud");
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
-                _mindeeClientV2.EnqueueInferenceAsync(inputSource, inferenceParams));
+                _client.EnqueueInferenceAsync(inputSource, inferenceParams));
             Assert.Equal(422, ex.Status);
             Assert.StartsWith("422-", ex.Code);
         }
@@ -216,7 +216,7 @@ namespace Mindee.IntegrationTests.V2
         public async Task NotFound_Job_MustThrowError()
         {
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
-                _mindeeClientV2.GetJobAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
+                _client.GetJobAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
             Assert.Equal(404, ex.Status);
             Assert.StartsWith("404-", ex.Code);
         }
@@ -225,7 +225,7 @@ namespace Mindee.IntegrationTests.V2
         public async Task NotFound_Inference_MustThrowError()
         {
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
-                _mindeeClientV2.GetInferenceAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
+                _client.GetInferenceAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
             Assert.Equal(404, ex.Status);
             Assert.StartsWith("404-", ex.Code);
         }
@@ -239,7 +239,7 @@ namespace Mindee.IntegrationTests.V2
 
             var inputSource = new UrlInputSource(new Uri(url));
             var inferenceParams = new InferenceParameters(_findocModelId);
-            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(inputSource, inferenceParams);
+            var response = await _client.EnqueueAndGetInferenceAsync(inputSource, inferenceParams);
 
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -256,7 +256,7 @@ namespace Mindee.IntegrationTests.V2
                 _findocModelId,
                 dataSchema: dataSchemaContents);
 
-            var response = await _mindeeClientV2.EnqueueAndGetInferenceAsync(
+            var response = await _client.EnqueueAndGetInferenceAsync(
                 inputSource, inferenceParams);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);

@@ -9,7 +9,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
     [Trait("Category", "Integration")]
     public class WorkflowTest
     {
-        private readonly MindeeClient _client;
+        private readonly Client _client;
         private readonly LocalInputSource _ragMatchInputSource;
         private readonly LocalInputSource _ragNoMatchInputSource;
         private readonly string _workflowId;

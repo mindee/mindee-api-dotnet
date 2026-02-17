@@ -1,7 +1,6 @@
 using System.CommandLine;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Mindee;
 using Mindee.Cli.Commands;
 using Mindee.Extensions.DependencyInjection;
 using PredictBankAccountDetailsCommand = Mindee.Cli.Commands.PredictCommand<
@@ -96,7 +95,7 @@ return await root.Parse(args).InvokeAsync();
 static RootCommand BuildCommandLine(IServiceProvider services)
 {
     var root = new RootCommand();
-    var mindeeClient = services.GetRequiredService<MindeeClient>();
+    var mindeeClient = services.GetRequiredService<Mindee.V1.Client>();
 
     var barcodeReaderCmd = new PredictBarcodeReaderCommand(new CommandOptions(
         "barcode-reader", "Barcode Reader",
@@ -194,7 +193,7 @@ static RootCommand BuildCommandLine(IServiceProvider services)
     };
     root.Options.Add(silentOption);
 
-    root.SetAction(parseResult =>
+    root.SetAction(_ =>
     {
         Console.WriteLine("Please specify a subcommand. Use --help for more information.");
         return 1;

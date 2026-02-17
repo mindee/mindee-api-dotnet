@@ -8,9 +8,9 @@ namespace Mindee.UnitTests.V2
 {
     [Trait("Category", "V2")]
     [Trait("Category", "Mindee client")]
-    public class MindeeClientTest
+    public class ClientTest
     {
-        private MindeeClientV2 MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
+        private Client MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
         {
             predictable.Setup(x => x.ReqPostEnqueueInferenceAsync(It.IsAny<InferencePostParameters>())
             ).ReturnsAsync(new JobResponse());
@@ -21,7 +21,7 @@ namespace Mindee.UnitTests.V2
             predictable.Setup(x => x.ReqGetJobAsync(It.IsAny<string>())
             ).ReturnsAsync(new JobResponse());
 
-            return new MindeeClientV2(predictable.Object);
+            return new Client(predictable.Object);
         }
 
         [Fact]
