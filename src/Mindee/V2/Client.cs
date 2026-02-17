@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Mindee.ClientOptions;
 using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
@@ -11,6 +12,7 @@ using Mindee.V2.Http;
 using Mindee.V2.Parsing;
 using Mindee.V2.Product.Extraction.Params;
 using SettingsV2 = Mindee.V2.Http.Settings;
+// ReSharper disable once RedundantUsingDirective
 
 namespace Mindee.V2
 {
@@ -48,7 +50,7 @@ namespace Mindee.V2
         /// <summary>
         /// </summary>
         /// <param name="settings">
-        ///     <see cref="V2.Http.Settings" />
+        ///     <see cref="SettingsV2" />
         /// </param>
         /// <param name="logger"></param>
         public Client(SettingsV2 settings, ILoggerFactory logger = null)

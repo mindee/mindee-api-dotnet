@@ -91,7 +91,7 @@ namespace Mindee.V2.Http
                     request.AddParameter("url", urlInputSource.FileUrl.ToString());
                     break;
                 case null:
-                    throw new MindeeInputException($"Input source cannot be null");
+                    throw new MindeeInputException("Input source cannot be null");
                 default:
                     throw new MindeeInputException($"Unsupported input source type '{inputSource.GetType()}'");
             }
