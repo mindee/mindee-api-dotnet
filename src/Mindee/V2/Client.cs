@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Mindee.ClientOptions;
 using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
