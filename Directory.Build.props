@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
-    <VersionPrefix>3.38.0</VersionPrefix>
-    <VersionSuffix>strongname</VersionSuffix>
+    <VersionPrefix>4.0.0</VersionPrefix>
+    <VersionSuffix>alpha1</VersionSuffix>
     <Authors>Mindee</Authors>
     <PackageProjectUrl>https://github.com/mindee/mindee-api-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mindee/mindee-api-dotnet</RepositoryUrl>
