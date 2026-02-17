@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 // ReSharper disable once RedundantUsingDirective
@@ -9,6 +10,15 @@ namespace Mindee.IntegrationTests
     {
         private static MindeeClient? _mindeeClient;
         private static MindeeClientV2? _mindeeClientV2;
+
+#if NET472 || NET48
+        static TestingUtilities()
+        {
+            ServicePointManager.DefaultConnectionLimit = 50;
+            ServicePointManager.Expect100Continue = false;
+            WebRequest.DefaultWebProxy = null;
+        }
+#endif
 
         /// <summary>
         ///     g
