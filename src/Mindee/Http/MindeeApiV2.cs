@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
 using Mindee.Parsing.V2;
+using Mindee.V2;
 using RestSharp;
 
 namespace Mindee.Http
@@ -18,7 +19,7 @@ namespace Mindee.Http
         private readonly RestClient _httpClient;
 
         public MindeeApiV2(
-            IOptions<MindeeSettingsV2> mindeeSettings,
+            IOptions<SettingsV2> mindeeSettings,
 #if NET6_0_OR_GREATER
             [FromKeyedServices("MindeeV2RestClient")]
 #endif

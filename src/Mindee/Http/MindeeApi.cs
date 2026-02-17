@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
 using Mindee.Parsing.Common;
+using Mindee.V1;
 using RestSharp;
 
 namespace Mindee.Http
@@ -19,7 +20,7 @@ namespace Mindee.Http
         private readonly ILogger<MindeeApi> _logger;
 
         public MindeeApi(
-            IOptions<MindeeSettings> mindeeSettings,
+            IOptions<Settings> mindeeSettings,
             RestClient httpClient,
             ILogger<MindeeApi> logger = null)
         {

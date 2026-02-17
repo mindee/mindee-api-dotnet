@@ -49,20 +49,20 @@ namespace Mindee.V1
 
         /// <summary>
         /// </summary>
-        /// <param name="mindeeSettings">
-        ///     <see cref="MindeeSettings" />
+        /// <param name="settings">
+        ///     <see cref="Settings" />
         /// </param>
         /// <param name="logger"></param>
-        public Client(MindeeSettings mindeeSettings, ILoggerFactory logger = null)
+        public Client(Settings settings, ILoggerFactory logger = null)
         {
             var serviceCollection = new ServiceCollection();
             _pdfOperation = new DocNetApi();
 
             serviceCollection.AddMindeeApi(options =>
             {
-                options.ApiKey = mindeeSettings.ApiKey;
-                options.MindeeBaseUrl = mindeeSettings.MindeeBaseUrl;
-                options.RequestTimeoutSeconds = mindeeSettings.RequestTimeoutSeconds;
+                options.ApiKey = settings.ApiKey;
+                options.MindeeBaseUrl = settings.MindeeBaseUrl;
+                options.RequestTimeoutSeconds = settings.RequestTimeoutSeconds;
             });
             var serviceProvider = serviceCollection.BuildServiceProvider();
 

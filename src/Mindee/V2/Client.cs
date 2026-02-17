@@ -45,19 +45,19 @@ namespace Mindee.V2
 
         /// <summary>
         /// </summary>
-        /// <param name="mindeeSettings">
-        ///     <see cref="MindeeSettingsV2" />
+        /// <param name="settings">
+        ///     <see cref="SettingsV2" />
         /// </param>
         /// <param name="logger"></param>
-        public Client(MindeeSettingsV2 mindeeSettings, ILoggerFactory logger = null)
+        public Client(SettingsV2 settings, ILoggerFactory logger = null)
         {
             var loggerFactory = logger ?? NullLoggerFactory.Instance;
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddMindeeApiV2(options =>
             {
-                options.ApiKey = mindeeSettings.ApiKey;
-                options.MindeeBaseUrl = mindeeSettings.MindeeBaseUrl;
-                options.RequestTimeoutSeconds = mindeeSettings.RequestTimeoutSeconds;
+                options.ApiKey = settings.ApiKey;
+                options.MindeeBaseUrl = settings.MindeeBaseUrl;
+                options.RequestTimeoutSeconds = settings.RequestTimeoutSeconds;
             }, loggerFactory);
             var serviceProvider = serviceCollection.BuildServiceProvider();
 

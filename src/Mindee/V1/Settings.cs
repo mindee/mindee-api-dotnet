@@ -1,9 +1,9 @@
-namespace Mindee
+namespace Mindee.V1
 {
     /// <summary>
     ///     Mindee settings.
     /// </summary>
-    public class MindeeSettings
+    public class Settings
     {
         /// <summary>
         ///     The API key.

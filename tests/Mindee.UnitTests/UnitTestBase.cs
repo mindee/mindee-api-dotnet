@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Http;
 using Mindee.Input;
+using Mindee.V1;
 using Moq;
 using Moq.Protected;
 using RestSharp;
@@ -34,7 +35,7 @@ namespace Mindee.UnitTests
         {
             var services = new ServiceCollection();
             services.AddOptions();
-            services.Configure<MindeeSettings>(options =>
+            services.Configure<Settings>(options =>
             {
                 options.ApiKey = "MyKey";
                 options.MindeeBaseUrl = "https://api.mindee.net";
@@ -77,7 +78,7 @@ namespace Mindee.UnitTests
         {
             var services = new ServiceCollection();
             services.AddOptions();
-            services.Configure<MindeeSettings>(options =>
+            services.Configure<Settings>(options =>
             {
                 options.ApiKey = "MyKey";
                 options.MindeeBaseUrl = "https://api-v2.mindee.com";
