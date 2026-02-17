@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
 using Mindee.Product.Invoice;
+using Mindee.V1;
+using Mindee.V2;
 
 namespace Mindee.IntegrationTests
 {

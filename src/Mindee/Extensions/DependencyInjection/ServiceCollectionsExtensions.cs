@@ -11,6 +11,8 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Mindee.Http;
 using Mindee.Pdf;
+using Mindee.V1;
+using Mindee.V2;
 using RestSharp;
 
 namespace Mindee.Extensions.DependencyInjection

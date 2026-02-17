@@ -4,13 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Exceptions;
-// ReSharper disable once RedundantUsingDirective
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Http;
 using Mindee.Input;
 using Mindee.Parsing.V2;
+// ReSharper disable once RedundantUsingDirective
 
-namespace Mindee
+namespace Mindee.V2
 {
     /// <summary>
     ///     The entry point to use the Mindee V2 API features.

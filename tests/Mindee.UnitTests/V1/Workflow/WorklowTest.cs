@@ -4,6 +4,7 @@ using Mindee.Input;
 using Mindee.Parsing.Common;
 using Mindee.Pdf;
 using Mindee.Product.Generated;
+using Mindee.V1;
 using Moq;
 
 namespace Mindee.UnitTests.V1.Workflow

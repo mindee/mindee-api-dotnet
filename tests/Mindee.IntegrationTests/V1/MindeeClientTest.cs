@@ -7,6 +7,7 @@ using Mindee.Product.InternationalId;
 using Mindee.Product.Invoice;
 using Mindee.Product.InvoiceSplitter;
 using Mindee.Product.Receipt;
+using Mindee.V1;
 
 namespace Mindee.IntegrationTests.V1
 {

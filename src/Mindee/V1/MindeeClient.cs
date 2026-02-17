@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
-// ReSharper disable once RedundantUsingDirective
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Http;
 using Mindee.Input;
 using Mindee.Parsing.Common;
 using Mindee.Pdf;
 using Mindee.Product.Generated;
+// ReSharper disable once RedundantUsingDirective
 
-namespace Mindee
+namespace Mindee.V1
 {
     /// <summary>
     ///     The entry point to use the Mindee API legacy features.

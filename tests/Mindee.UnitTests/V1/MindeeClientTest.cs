@@ -6,6 +6,7 @@ using Mindee.Pdf;
 using Mindee.Product.Generated;
 using Mindee.Product.InternationalId;
 using Mindee.Product.Invoice;
+using Mindee.V1;
 using Moq;
 
 namespace Mindee.UnitTests.V1
