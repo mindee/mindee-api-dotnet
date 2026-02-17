@@ -55,7 +55,7 @@ namespace Mindee.IntegrationTests
         }
 
 
-        [Fact(Timeout = 120000)]
+        [Fact]
         public void ShouldInitBothClients()
         {
             var clientV1 = _services.GetRequiredService<MindeeClient>();
