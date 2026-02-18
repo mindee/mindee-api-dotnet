@@ -160,7 +160,7 @@ namespace Mindee.IntegrationTests.V2
             var jobId = enqueueResponse.Job.Id;
             Assert.NotNull(jobId);
 
-            Thread.Sleep(200);
+            await Task.Delay(200);
 
             var jobResponse = await _mindeeClientV2.GetJobAsync(jobId);
             Assert.NotNull(jobResponse);
@@ -176,7 +176,7 @@ namespace Mindee.IntegrationTests.V2
 
             for (var i = 0; i < 10; i++)
             {
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
 
                 var loopJobResponse = await _mindeeClientV2.GetJobAsync(jobId);
                 var loopWebhook = loopJobResponse.Job.Webhooks.First();

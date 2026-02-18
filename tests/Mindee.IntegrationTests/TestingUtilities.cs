@@ -11,7 +11,7 @@ namespace Mindee.IntegrationTests
         private static MindeeClient? _mindeeClient;
         private static MindeeClientV2? _mindeeClientV2;
 
-#if NET472 || NET48
+#if !NET6_0_OR_GREATER
         static TestingUtilities()
         {
             const string envVar = "MINDEE_TEST_HARD_TIMEOUT_SECONDS";

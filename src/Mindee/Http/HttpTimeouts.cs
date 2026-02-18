@@ -6,13 +6,12 @@ namespace Mindee.Http
     internal static class HttpTimeouts
     {
         private const string HardTimeoutEnvVar = "MINDEE_TEST_HARD_TIMEOUT_SECONDS";
+        private static readonly TimeSpan DefaultHardTimeout = TimeSpan.FromSeconds(300);
 
         internal static CancellationTokenSource CreateHardTimeoutCts()
         {
-            var hardTimeout = ReadHardTimeout();
-            return hardTimeout.HasValue
-                ? new CancellationTokenSource(hardTimeout.Value)
-                : new CancellationTokenSource();
+            var hardTimeout = ReadHardTimeout() ?? DefaultHardTimeout;
+            return new CancellationTokenSource(hardTimeout);
         }
 
         private static TimeSpan? ReadHardTimeout()
