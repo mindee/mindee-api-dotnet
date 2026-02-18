@@ -162,6 +162,7 @@ namespace Mindee.Extensions.DependencyInjection
 #else
             services.AddSingleton(provider =>
             {
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 var settings = provider.GetRequiredService<IOptions<MindeeSettings>>().Value;
                 settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("Mindee__BaseUrl");
                 if (string.IsNullOrEmpty(settings.MindeeBaseUrl))
@@ -230,6 +231,7 @@ namespace Mindee.Extensions.DependencyInjection
             // For .NET Framework, register as a named singleton using a wrapper approach
             services.AddSingleton(provider =>
             {
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 var settings = provider.GetRequiredService<IOptions<MindeeSettingsV2>>().Value;
                 settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("MindeeV2__BaseUrl");
                 if (string.IsNullOrEmpty(settings.MindeeBaseUrl))

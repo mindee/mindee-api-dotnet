@@ -19,6 +19,7 @@ namespace Mindee.IntegrationTests
             {
                 Environment.SetEnvironmentVariable(envVar, "180");
             }
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ServicePointManager.DefaultConnectionLimit = 50;
             ServicePointManager.Expect100Continue = false;
             WebRequest.DefaultWebProxy = null;
