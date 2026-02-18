@@ -17,9 +17,9 @@ namespace Mindee.IntegrationTests.V1.Input
                 new UrlInputSource(
                     blankUrl);
             var localInput = await remoteInput.AsLocalInputSource();
-            Assert.Equal("invoice_5p.pdf", localInput.Filename);
+            Assert.Equal("blank_1.pdf", localInput.Filename);
             var result = await client.ParseAsync<InvoiceV4>(localInput);
-            Assert.Equal(5, result.Document.NPages);
+            Assert.Equal(1, result.Document.NPages);
         }
     }
 }
