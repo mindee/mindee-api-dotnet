@@ -31,7 +31,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.Equal(dataSchemaReplace, activeOptions.DataSchema.Replace);
         }
 
-        [Theory]
+        [Theory(Timeout = 180000)]
         [InlineData(false, false, false)]
         [InlineData(true, false, false)]
         [InlineData(false, true, false)]
