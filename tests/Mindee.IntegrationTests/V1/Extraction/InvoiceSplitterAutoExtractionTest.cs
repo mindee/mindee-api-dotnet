@@ -26,7 +26,9 @@ namespace Mindee.IntegrationTests.V1.Extraction
         public async Task GivenAPdf_ShouldExtractInvoicesStrict_MustSucceed()
         {
             var sw = Stopwatch.StartNew();
-            void Log(string message) => Console.WriteLine($"[InvoiceSplitterAutoExtractionTest +{sw.Elapsed}] {message}");
+            var stderr = new StreamWriter(Console.OpenStandardError()) { AutoFlush = true };
+            void Log(string message) =>
+                stderr.WriteLine($"[InvoiceSplitterAutoExtractionTest +{sw.Elapsed}] {message}");
 
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var client = TestingUtilities.GetOrGenerateMindeeClient(apiKey);
