@@ -9,10 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
-using Mindee.Http;
 using Mindee.Pdf;
 using Mindee.V1;
+using Mindee.V1.Http;
 using Mindee.V2;
+using Mindee.V2.Http;
 using RestSharp;
 using Client = Mindee.V2.Client;
 

@@ -6,12 +6,13 @@ using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Models;
 using Microsoft.Extensions.Logging.Abstractions;
+using Mindee.Extraction;
 using Mindee.Input;
 using Mindee.Pdf;
 using Mindee.V1.Product.InvoiceSplitter;
 using SkiaSharp;
 
-namespace Mindee.Extraction
+namespace Mindee.V1.Extraction
 {
     /// <summary>
     ///     PDF extraction class.

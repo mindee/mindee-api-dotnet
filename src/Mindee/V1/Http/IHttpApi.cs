@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Mindee.V1.Parsing.Common;
 
-namespace Mindee.Http
+namespace Mindee.V1.Http
 {
     /// <summary>
     ///     Communicate with the Mindee API V2.

@@ -1,6 +1,6 @@
 using Mindee.Input;
 
-namespace Mindee.Http
+namespace Mindee.V1.Http
 {
     /// <summary>
     ///     Parameter required to use the workflow feature.

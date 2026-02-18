@@ -1,7 +1,7 @@
 using Mindee.Exceptions;
 using Mindee.Input;
 
-namespace Mindee.Http
+namespace Mindee.V1.Http
 {
     /// <summary>
     ///     Generic prediction parameters.

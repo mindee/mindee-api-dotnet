@@ -1,6 +1,6 @@
-using Mindee.Http;
 using Mindee.Input;
 using Mindee.V1;
+using Mindee.V1.Http;
 using Mindee.V1.Product.FinancialDocument;
 using Mindee.V1.Product.Generated;
 

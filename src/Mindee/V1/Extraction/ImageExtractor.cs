@@ -4,13 +4,14 @@ using System.IO;
 using Docnet.Core;
 using Docnet.Core.Models;
 using Mindee.Exceptions;
+using Mindee.Extraction;
 using Mindee.Geometry;
 using Mindee.Image;
 using Mindee.Input;
 using Mindee.V1.Parsing.Standard;
 using SkiaSharp;
 
-namespace Mindee.Extraction
+namespace Mindee.V1.Extraction
 {
     /// <summary>
     ///     Extract sub-images from an image.

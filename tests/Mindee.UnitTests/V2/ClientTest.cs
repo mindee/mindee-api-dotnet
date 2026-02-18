@@ -1,6 +1,6 @@
-using Mindee.Http;
 using Mindee.Input;
 using Mindee.V2;
+using Mindee.V2.Http;
 using Mindee.V2.Parsing;
 using Moq;
 

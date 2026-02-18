@@ -1,6 +1,6 @@
 using System;
 
-namespace Mindee.Http
+namespace Mindee.V1.Http
 {
     /// <summary>
     ///     Is used to parameterize the associated endpoint on a model.

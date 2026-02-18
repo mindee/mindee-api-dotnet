@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Mindee.Input;
 
-namespace Mindee.Http
+namespace Mindee.V2.Http
 {
     /// <summary>
     ///     Parameter required to use the predict feature on the API V2.

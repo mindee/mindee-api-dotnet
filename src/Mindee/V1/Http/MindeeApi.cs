@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
-using Mindee.V1;
 using Mindee.V1.Parsing.Common;
 using RestSharp;
 
-namespace Mindee.Http
+namespace Mindee.V1.Http
 {
     internal sealed class MindeeApi : IHttpApi
     {

@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using Mindee.Http;
+using Mindee.V1.Http;
 using Mindee.V1.Parsing.Common;
 
 namespace Mindee.V1.Product.BarcodeReader

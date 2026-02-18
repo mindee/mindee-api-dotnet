@@ -1,6 +1,6 @@
 using System;
 
-namespace Mindee.Http
+namespace Mindee.V1.Http
 {
     /// <summary>
     ///     Define a Mindee V1 API endpoint.

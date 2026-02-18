@@ -1,17 +1,16 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-#if NET6_0_OR_GREATER
-using Microsoft.Extensions.DependencyInjection;
-#endif
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
-using Mindee.V2;
 using Mindee.V2.Parsing;
 using RestSharp;
+#if NET6_0_OR_GREATER
+using Microsoft.Extensions.DependencyInjection;
+#endif
 
-namespace Mindee.Http
+namespace Mindee.V2.Http
 {
     internal sealed class MindeeApiV2 : HttpApiV2
     {

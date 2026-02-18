@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Mindee.Http;
 using Mindee.Input;
+using Mindee.V2.Http;
 
 namespace Mindee
 {

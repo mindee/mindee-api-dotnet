@@ -5,7 +5,7 @@ using Mindee.Input;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Field;
 
-namespace Mindee.Http
+namespace Mindee.V2.Http
 {
     /// <summary>
     ///     Parameters for running an inference.

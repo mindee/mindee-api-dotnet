@@ -5,8 +5,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
-using Mindee.Http;
 using Mindee.Input;
+using Mindee.V1.Http;
+using Mindee.V2.Http;
 using Mindee.V2.Parsing;
 
 // ReSharper disable once RedundantUsingDirective

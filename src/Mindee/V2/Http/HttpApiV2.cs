@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 using Mindee.V2.Parsing;
 
-namespace Mindee.Http
+namespace Mindee.V2.Http
 {
     /// <summary>
     ///     Communicate with the Mindee HTTP API V2.

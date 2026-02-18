@@ -1,4 +1,4 @@
-using Mindee.Http;
+using Mindee.V1.Http;
 using Mindee.V1.Parsing.Common;
 
 namespace Mindee.V1.Product.Us.PayrollCheckRegister

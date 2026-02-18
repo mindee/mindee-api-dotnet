@@ -6,9 +6,10 @@ using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 // ReSharper disable once RedundantUsingDirective
 using Mindee.Extensions.DependencyInjection;
-using Mindee.Http;
 using Mindee.Input;
 using Mindee.V1;
+using Mindee.V1.Http;
+using Mindee.V2.Http;
 using Moq;
 using Moq.Protected;
 using RestSharp;
