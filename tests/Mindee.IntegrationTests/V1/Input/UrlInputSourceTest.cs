@@ -11,7 +11,7 @@ namespace Mindee.IntegrationTests.V1.Input
         public async Task GivenARemoteFile_MustRetrieveResponse()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            var blankUrl = Environment.GetEnvironmentVariable("Mindee__V2__Se__Tests__Blank__Pdf__Url");
+            var blankUrl = Environment.GetEnvironmentVariable("MindeeV2__Se__Tests__Blank__Pdf__Url");
             var client = TestingUtilities.GetOrGenerateMindeeClient(apiKey);
             var remoteInput =
                 new UrlInputSource(
