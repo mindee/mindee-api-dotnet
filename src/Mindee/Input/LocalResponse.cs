@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using Mindee.Parsing.V2;
+using Mindee.V2.Parsing;
 
 namespace Mindee.Input
 {

@@ -1,5 +1,5 @@
-using Mindee.Parsing.Common;
-using Mindee.Parsing.Standard;
+using Mindee.V1.Parsing.Common;
+using Mindee.V1.Parsing.Standard;
 using Mindee.V1.Product.Fr.IdCard;
 
 namespace Mindee.UnitTests.V1.Product.Fr.IdCard

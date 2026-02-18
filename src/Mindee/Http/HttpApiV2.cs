@@ -4,7 +4,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
-using Mindee.Parsing.V2;
+using Mindee.V2.Parsing;
 
 namespace Mindee.Http
 {

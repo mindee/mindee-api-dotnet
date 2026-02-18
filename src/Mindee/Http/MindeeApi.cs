@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
-using Mindee.Parsing.Common;
 using Mindee.V1;
+using Mindee.V1.Parsing.Common;
 using RestSharp;
 
 namespace Mindee.Http

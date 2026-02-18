@@ -1,4 +1,4 @@
-using Mindee.Parsing.Common;
+using Mindee.V1.Parsing.Common;
 using Mindee.V1.Product.Fr.Payslip;
 
 namespace Mindee.UnitTests.V1.Product.Fr.Payslip

@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Mindee.Parsing.Common;
+using Mindee.V1.Parsing.Common;
 
 namespace Mindee.Http
 {

@@ -1,5 +1,5 @@
 using System.Text.Json;
-using Mindee.Parsing.Common;
+using Mindee.V1.Parsing.Common;
 using Mindee.V1.Product.Receipt;
 
 namespace Mindee.UnitTests.V1.Parsing.Common

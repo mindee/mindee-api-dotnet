@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using Mindee.Parsing.Generated;
+using Mindee.V1.Parsing.Generated;
 
 namespace Mindee.V1.Product.Generated
 {

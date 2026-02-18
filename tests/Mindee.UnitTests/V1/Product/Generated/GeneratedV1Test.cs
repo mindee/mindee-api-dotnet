@@ -1,5 +1,5 @@
 using Mindee.Http;
-using Mindee.Parsing.Common;
+using Mindee.V1.Parsing.Common;
 using Mindee.V1.Product.Generated;
 
 namespace Mindee.UnitTests.V1.Product.Generated

@@ -1,4 +1,4 @@
-using Mindee.Parsing;
+using Mindee.V1.Parsing;
 
 namespace Mindee.V1.Product.Cropper
 {

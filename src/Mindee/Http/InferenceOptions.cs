@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Mindee.Exceptions;
 using Mindee.Input;
-using Mindee.Parsing.V2;
-using Mindee.Parsing.V2.Field;
+using Mindee.V2.Parsing;
+using Mindee.V2.Parsing.Field;
 
 namespace Mindee.Http
 {

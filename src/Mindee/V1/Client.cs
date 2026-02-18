@@ -7,8 +7,8 @@ using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Http;
 using Mindee.Input;
-using Mindee.Parsing.Common;
 using Mindee.Pdf;
+using Mindee.V1.Parsing.Common;
 using Mindee.V1.Product.Generated;
 
 // ReSharper disable once RedundantUsingDirective

@@ -7,7 +7,8 @@ using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Http;
 using Mindee.Input;
-using Mindee.Parsing.V2;
+using Mindee.V2.Parsing;
+
 // ReSharper disable once RedundantUsingDirective
 
 namespace Mindee.V2

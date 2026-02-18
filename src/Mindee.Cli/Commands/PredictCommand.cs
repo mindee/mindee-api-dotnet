@@ -1,8 +1,8 @@
 using System.CommandLine;
 using System.Text.Json;
 using Mindee.Input;
-using Mindee.Parsing;
-using Mindee.Parsing.Common;
+using Mindee.V1.Parsing;
+using Mindee.V1.Parsing.Common;
 
 namespace Mindee.Cli.Commands
 {

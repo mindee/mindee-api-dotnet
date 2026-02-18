@@ -1,7 +1,7 @@
 using Mindee.Exceptions;
 using Mindee.Input;
-using Mindee.Parsing.V2;
 using Mindee.V2;
+using Mindee.V2.Parsing;
 
 namespace Mindee.IntegrationTests.V2
 {
