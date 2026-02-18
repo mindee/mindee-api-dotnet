@@ -36,13 +36,14 @@ namespace Mindee.Extraction
             else
             {
                 var memoryStream = new MemoryStream();
-                var image = SKImage.FromEncodedData(localInput.FileBytes);
-                var bmp = SKBitmap.FromImage(image);
+                using var image = SKImage.FromEncodedData(localInput.FileBytes);
+                using var bmp = SKBitmap.FromImage(image);
                 var pageSize = new SKSize(bmp.Width, bmp.Height);
                 using (var document = SKDocument.CreatePdf(memoryStream))
                 {
                     var canvas = document.BeginPage(pageSize.Width, pageSize.Height);
                     canvas.DrawBitmap(bmp, SKPoint.Empty);
+                    document.EndPage();
                 }
 
                 SourcePdf = memoryStream.ToArray();
@@ -57,7 +58,7 @@ namespace Mindee.Extraction
         {
             lock (DocLib.Instance)
             {
-                var docInstance = DocLib.Instance.GetDocReader(SourcePdf, new PageDimensions(1, 1));
+                using var docInstance = DocLib.Instance.GetDocReader(SourcePdf, new PageDimensions(1, 1));
                 return docInstance.GetPageCount();
             }
         }
