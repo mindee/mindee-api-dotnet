@@ -2,8 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 // ReSharper disable once RedundantUsingDirective
 using Mindee.Extensions.DependencyInjection;
-using Mindee.V1;
-using Mindee.V2;
 using Client = Mindee.V2.Client;
 
 namespace Mindee.IntegrationTests
