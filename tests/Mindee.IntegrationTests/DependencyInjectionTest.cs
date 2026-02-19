@@ -1,3 +1,4 @@
+using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,7 +11,7 @@ using Mindee.Product.Invoice;
 namespace Mindee.IntegrationTests
 {
     [Trait("Category", "DI")]
-    public class DependencyInjectionTest : IDisposable
+    public class DependencyInjectionTest : IAsyncLifetime
     {
         private readonly IHost _host;
         private readonly IServiceProvider _services;
@@ -37,12 +38,22 @@ namespace Mindee.IntegrationTests
             _host = builder.Build();
             _services = _host.Services;
         }
+        public Task InitializeAsync() => Task.CompletedTask;
 
-        public void Dispose()
+        public async Task DisposeAsync()
         {
-            _host.StopAsync().GetAwaiter().GetResult();
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(120));
+            try
+            {
+                await _host.StopAsync(cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                Console.WriteLine("DependencyInjectionTest teardown: StopAsync timed out after 120s.");
+            }
             _host.Dispose();
         }
+
 
         [Fact]
         public void ShouldInitBothClients()
@@ -53,7 +64,7 @@ namespace Mindee.IntegrationTests
             Assert.NotNull(clientV2);
         }
 
-        [Fact]
+        [Fact(Timeout = 180000)]
         public async Task ShouldMaintainAuthenticationAcrossMultipleRequests()
         {
             var instance1ClientV1 = _services.GetRequiredService<MindeeClient>();

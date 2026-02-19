@@ -11,7 +11,6 @@ namespace Mindee.IntegrationTests
         private static MindeeClientV2? _mindeeClientV2;
 
         /// <summary>
-        ///     g
         ///     Gets the API version from an RST output
         /// </summary>
         /// <param name="rstStr">The RST output of a prediction.</param>

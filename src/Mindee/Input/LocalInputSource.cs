@@ -152,7 +152,7 @@ namespace Mindee.Input
 
             lock (DocLib.Instance)
             {
-                var docInstance = DocLib.Instance.GetDocReader(FileBytes, new PageDimensions(1, 1));
+                using var docInstance = DocLib.Instance.GetDocReader(FileBytes, new PageDimensions(1, 1));
                 return docInstance.GetPageCount();
             }
         }
