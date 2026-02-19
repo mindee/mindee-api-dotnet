@@ -1,4 +1,4 @@
-namespace Mindee.V1
+namespace Mindee.V1.Http
 {
     /// <summary>
     ///     Mindee settings.

@@ -1,6 +1,6 @@
-using Mindee.V1;
+using Mindee.V1.Http;
 
-namespace Mindee.V2
+namespace Mindee.V2.Http
 {
     /// <summary>
     ///     Mindee V2 settings.

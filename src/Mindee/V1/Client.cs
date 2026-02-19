@@ -12,8 +12,6 @@ using Mindee.V1.Http;
 using Mindee.V1.Parsing.Common;
 using Mindee.V1.Product.Generated;
 
-// ReSharper disable once RedundantUsingDirective
-
 namespace Mindee.V1
 {
     /// <summary>

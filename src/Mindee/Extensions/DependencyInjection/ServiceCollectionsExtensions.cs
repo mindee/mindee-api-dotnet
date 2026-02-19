@@ -1,6 +1,4 @@
 using System;
-// ReSharper disable once RedundantUsingDirective
-// Note: Necessary for .NET 4.7.2/4.8.2
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection;
