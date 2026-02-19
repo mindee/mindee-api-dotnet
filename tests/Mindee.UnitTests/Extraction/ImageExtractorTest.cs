@@ -7,6 +7,7 @@ using Mindee.Product.MultiReceiptsDetector;
 namespace Mindee.UnitTests.Extraction
 {
     [Trait("Category", "ImageExtractor")]
+    [Collection("Docnet")]
     public class ImageExtractorTest
     {
         [Fact]

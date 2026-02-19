@@ -71,8 +71,7 @@ namespace Mindee.Http
             var request = new RestRequest($"v2/inferences/{inferenceId}");
             Logger?.LogInformation("HTTP GET to {RequestResource}...", _baseUrl + request.Resource);
             var queueResponse = await _httpClient.ExecuteGetAsync(request);
-            var handledResponse = ResponseHandler<InferenceResponse>(queueResponse);
-            return handledResponse;
+            return ResponseHandler<InferenceResponse>(queueResponse);
         }
 
         private static void AddPredictRequestParameters(InferencePostParameters predictParameter, RestRequest request)

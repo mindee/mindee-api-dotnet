@@ -5,6 +5,7 @@ using Mindee.Pdf;
 
 namespace Mindee.UnitTests.Pdf
 {
+    [Collection("Docnet")]
     public class PdfOperationTest
     {
         private readonly IPdfOperation _pdfOperation;

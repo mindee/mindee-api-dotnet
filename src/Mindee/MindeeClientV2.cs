@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -270,12 +269,12 @@ namespace Mindee
             _logger?.LogInformation(
                 "Waiting {} seconds before attempting to retrieve the document...",
                 pollingOptions.InitialDelaySec);
-            Thread.Sleep(pollingOptions.InitialDelayMilliSec);
+            await Task.Delay(pollingOptions.InitialDelayMilliSec);
             var retryCount = 1;
             var response = enqueueResponse; // First init is only for error handling purposes.
             while (retryCount < maxRetries)
             {
-                Thread.Sleep(pollingOptions.IntervalMilliSec);
+                await Task.Delay(pollingOptions.IntervalMilliSec);
                 _logger?.LogInformation(
                     "Attempting to retrieve: {RetryCount} of {MaxRetries}",
                     retryCount,
