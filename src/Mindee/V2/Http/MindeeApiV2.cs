@@ -18,7 +18,7 @@ namespace Mindee.V2.Http
         private readonly RestClient _httpClient;
 
         public MindeeApiV2(
-            IOptions<SettingsV2> mindeeSettings,
+            IOptions<SettingsV2> settings,
 #if NET6_0_OR_GREATER
             [FromKeyedServices("MindeeV2RestClient")]
 #endif
@@ -28,14 +28,14 @@ namespace Mindee.V2.Http
             Logger = logger ?? NullLogger<MindeeApiV2>.Instance;
             _httpClient = httpClient;
 
-            if (!string.IsNullOrWhiteSpace(mindeeSettings.Value.MindeeBaseUrl))
+            if (!string.IsNullOrWhiteSpace(settings.Value.MindeeBaseUrl))
             {
-                _baseUrl = mindeeSettings.Value.MindeeBaseUrl;
+                _baseUrl = settings.Value.MindeeBaseUrl;
             }
 
             var defaultHeaders = new Dictionary<string, string>
             {
-                { "Authorization", $"{mindeeSettings.Value.ApiKey}" }, { "Connection", "close" }
+                { "Authorization", $"{settings.Value.ApiKey}" }, { "Connection", "close" }
             };
             _httpClient.AddDefaultHeaders(defaultHeaders);
         }

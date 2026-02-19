@@ -19,21 +19,21 @@ namespace Mindee.V1.Http
         private readonly ILogger<MindeeApi> _logger;
 
         public MindeeApi(
-            IOptions<Settings> mindeeSettings,
+            IOptions<Settings> settings,
             RestClient httpClient,
             ILogger<MindeeApi> logger = null)
         {
             _logger = logger;
             _httpClient = httpClient;
 
-            if (!string.IsNullOrWhiteSpace(mindeeSettings.Value.MindeeBaseUrl))
+            if (!string.IsNullOrWhiteSpace(settings.Value.MindeeBaseUrl))
             {
-                _baseUrl = mindeeSettings.Value.MindeeBaseUrl;
+                _baseUrl = settings.Value.MindeeBaseUrl;
             }
 
             var defaultHeaders = new Dictionary<string, string>
             {
-                { "Authorization", $"Token {mindeeSettings.Value.ApiKey}" }, { "Connection", "close" }
+                { "Authorization", $"Token {settings.Value.ApiKey}" }, { "Connection", "close" }
             };
             _httpClient.AddDefaultHeaders(defaultHeaders);
         }

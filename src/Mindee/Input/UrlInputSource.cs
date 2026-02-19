@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Mindee.Exceptions;
-using Mindee.Http;
 using RestSharp;
 using RestSharp.Authenticators;
 
