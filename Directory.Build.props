@@ -13,7 +13,6 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>CHANGELOG.md</PackageReleaseNotes>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
 
   <PropertyGroup>
