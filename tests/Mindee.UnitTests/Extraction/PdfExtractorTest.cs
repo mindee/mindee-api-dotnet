@@ -5,6 +5,7 @@ using Mindee.Product.InvoiceSplitter;
 
 namespace Mindee.UnitTests.Extraction
 {
+    [Collection("Docnet")]
     public class PdfExtractorTest
     {
         [Fact]

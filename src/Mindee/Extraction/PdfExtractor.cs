@@ -36,13 +36,14 @@ namespace Mindee.Extraction
             else
             {
                 var memoryStream = new MemoryStream();
-                var image = SKImage.FromEncodedData(localInput.FileBytes);
-                var bmp = SKBitmap.FromImage(image);
+                using var image = SKImage.FromEncodedData(localInput.FileBytes);
+                using var bmp = SKBitmap.FromImage(image);
                 var pageSize = new SKSize(bmp.Width, bmp.Height);
                 using (var document = SKDocument.CreatePdf(memoryStream))
                 {
                     var canvas = document.BeginPage(pageSize.Width, pageSize.Height);
                     canvas.DrawBitmap(bmp, SKPoint.Empty);
+                    document.EndPage();
                 }
 
                 SourcePdf = memoryStream.ToArray();
@@ -55,8 +56,11 @@ namespace Mindee.Extraction
         /// <returns>The number of pages in the file.</returns>
         public int GetPageCount()
         {
-            var docInstance = DocLib.Instance.GetDocReader(SourcePdf, new PageDimensions(1, 1));
-            return docInstance.GetPageCount();
+            lock (DocLib.Instance)
+            {
+                using var docInstance = DocLib.Instance.GetDocReader(SourcePdf, new PageDimensions(1, 1));
+                return docInstance.GetPageCount();
+            }
         }
 
         /// <summary>
@@ -84,9 +88,12 @@ namespace Mindee.Extraction
                 var splitQuery = new SplitQuery(
                     SourcePdf,
                     new PageOptions(pageIndexElem.ConvertAll(item => (short)item).ToArray()));
-                var pdfOperation = new DocNetApi(new NullLogger<DocNetApi>());
-                var mergedPdfBytes = pdfOperation.Split(splitQuery).File;
-                extractedPdfs.Add(new ExtractedPdf(mergedPdfBytes, fieldFilename));
+                lock (DocLib.Instance)
+                {
+                    var pdfOperation = new DocNetApi(new NullLogger<DocNetApi>());
+                    var mergedPdfBytes = pdfOperation.Split(splitQuery).File;
+                    extractedPdfs.Add(new ExtractedPdf(mergedPdfBytes, fieldFilename));
+                }
             }
 
             return extractedPdfs;
