@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
 using Mindee.V1.Product.Invoice;
+using Mindee.V2.Product.Extraction;
+using Mindee.V2.Product.Extraction.Params;
 using Client = Mindee.V2.Client;
 
 namespace Mindee.IntegrationTests

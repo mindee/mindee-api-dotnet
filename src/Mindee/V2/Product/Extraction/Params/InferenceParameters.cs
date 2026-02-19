@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using Mindee.Input;
+using Mindee.V1;
 using Mindee.V2.Http;
-using Mindee.V2.Product.Extraction.Params;
 
-namespace Mindee
+namespace Mindee.V2.Product.Extraction.Params
 {
     /// <summary>
     ///     ResultOptions to pass when calling methods using the predict API V2.

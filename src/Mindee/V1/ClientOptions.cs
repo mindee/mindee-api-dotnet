@@ -1,9 +1,8 @@
 using System;
 using Mindee.Exceptions;
-using Mindee.Input;
 using Mindee.V1.Parsing.Common;
 
-namespace Mindee
+namespace Mindee.V1
 {
     /// <summary>
     ///     ResultOptions to pass when calling methods using the predict API.
