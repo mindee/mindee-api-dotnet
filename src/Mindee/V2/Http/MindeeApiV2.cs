@@ -18,7 +18,7 @@ namespace Mindee.V2.Http
         private readonly RestClient _httpClient;
 
         public MindeeApiV2(
-            IOptions<SettingsV2> settings,
+            IOptions<Settings> settings,
 #if NET6_0_OR_GREATER
             [FromKeyedServices("MindeeV2RestClient")]
 #endif

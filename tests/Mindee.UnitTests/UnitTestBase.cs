@@ -13,6 +13,7 @@ using Mindee.V2.Http;
 using Moq;
 using Moq.Protected;
 using RestSharp;
+using Settings = Mindee.V1.Http.Settings;
 
 namespace Mindee.UnitTests
 {
