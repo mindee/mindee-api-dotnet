@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
+using Mindee.Parsing;
 using Mindee.Pdf;
 using Mindee.V1.Http;
 using Mindee.V1.Parsing.Common;

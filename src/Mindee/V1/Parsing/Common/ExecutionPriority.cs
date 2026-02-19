@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Mindee.Input
+namespace Mindee.V1.Parsing.Common
 {
     /// <summary>
     ///     Priority for a workflow execution.

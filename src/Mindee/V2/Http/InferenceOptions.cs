@@ -4,6 +4,7 @@ using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Field;
+using Mindee.V2.Product.Extraction.Params;
 
 namespace Mindee.V2.Http
 {

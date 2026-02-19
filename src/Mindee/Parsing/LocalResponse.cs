@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using Mindee.V2.Parsing;
 
-namespace Mindee.Input
+namespace Mindee.Parsing
 {
     /// <summary>
     ///     A Mindee response saved locally.

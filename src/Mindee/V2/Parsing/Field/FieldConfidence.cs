@@ -1,6 +1,7 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Mindee.Input;
+using Mindee.V1.Parsing.Common;
 
 namespace Mindee.V2.Parsing.Field
 {

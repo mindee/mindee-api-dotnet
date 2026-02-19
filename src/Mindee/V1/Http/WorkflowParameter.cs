@@ -1,4 +1,5 @@
 using Mindee.Input;
+using Mindee.V1.Parsing.Common;
 
 namespace Mindee.V1.Http
 {

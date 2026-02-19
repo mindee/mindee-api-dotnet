@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Mindee.Input;
+using Mindee.V2.Product.Extraction.Params;
 
 namespace Mindee.V2.Http
 {
