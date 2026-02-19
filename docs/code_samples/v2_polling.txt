@@ -1,13 +1,13 @@
 using Mindee;
 using Mindee.Input;
-using Mindee.V2.Client;
+using Mindee.V2;
 
 string filePath = "/path/to/the/file.ext";
 string apiKey = "MY_API_KEY";
 string modelId = "MY_MODEL_ID";
 
 // Construct a new client
-Client mindeeClient = new Client(apiKey);
+V2.Client mindeeClient = new V2.Client(apiKey);
 
 // Set inference parameters
 var inferenceParams = new InferenceParameters(

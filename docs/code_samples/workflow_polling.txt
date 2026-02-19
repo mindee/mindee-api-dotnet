@@ -1,14 +1,14 @@
 using Mindee;
 using Mindee.Http;
 using Mindee.Input;
-using Mindee.Product.Generated;
+using Mindee.V1.Product.Generated;
 
 string apiKey = "my-api-key";
 string filePath = "/path/to/the/file.ext";
 string workflowId = "workflow-id";
 
 // Construct a new client
-Client mindeeClient = new Client(apiKey);
+V1.Client mindeeClient = new V1.Client(apiKey);
 
 // Load an input source as a path string
 // Other input types can be used, as mentioned in the docs
