@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Mindee.V1;
 using Mindee.V2.ClientOptions;
 using Mindee.V2.Http;
-using Mindee.V2.Product.Extraction.Params;
 
 namespace Mindee.V2.Product.Extraction.Params
 {

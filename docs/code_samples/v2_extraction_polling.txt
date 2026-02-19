@@ -1,5 +1,4 @@
 using Mindee;
-using Mindee.Input;
 using Mindee.V2;
 using Mindee.V2.Product.Extraction.Params;
 
