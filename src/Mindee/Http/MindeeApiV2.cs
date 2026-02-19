@@ -52,8 +52,7 @@ namespace Mindee.Http
 
             Logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
 
-            using var cts = HttpTimeouts.CreateHardTimeoutCts();
-            var response = await _httpClient.ExecutePostAsync(request, cts.Token);
+            var response = await _httpClient.ExecutePostAsync(request);
             return ResponseHandler<JobResponse>(response);
         }
 
@@ -61,8 +60,7 @@ namespace Mindee.Http
         {
             var request = new RestRequest($"v2/jobs/{jobId}");
             Logger?.LogInformation("HTTP GET to {RequestResource}...", _baseUrl + request.Resource);
-            using var cts = HttpTimeouts.CreateHardTimeoutCts();
-            var response = await _httpClient.ExecuteGetAsync(request, cts.Token);
+            var response = await _httpClient.ExecuteGetAsync(request);
             Logger?.LogDebug("HTTP response: {ResponseContent}", response.Content);
             var handledResponse = ResponseHandler<JobResponse>(response);
             return handledResponse;
@@ -73,10 +71,8 @@ namespace Mindee.Http
         {
             var request = new RestRequest($"v2/inferences/{inferenceId}");
             Logger?.LogInformation("HTTP GET to {RequestResource}...", _baseUrl + request.Resource);
-            using var cts = HttpTimeouts.CreateHardTimeoutCts();
-            var queueResponse = await _httpClient.ExecuteGetAsync(request, cts.Token);
-            var handledResponse = ResponseHandler<InferenceResponse>(queueResponse);
-            return handledResponse;
+            var queueResponse = await _httpClient.ExecuteGetAsync(request);
+            return ResponseHandler<InferenceResponse>(queueResponse);
         }
 
         private static void AddPredictRequestParameters(InferencePostParameters predictParameter, RestRequest request)

@@ -95,8 +95,7 @@ namespace Mindee.Input
 
             restClient ??= new RestClient(options);
             var request = new RestRequest(FileUrl);
-            using var cts = HttpTimeouts.CreateHardTimeoutCts();
-            var response = await restClient.ExecuteAsync(request, cts.Token);
+            var response = await restClient.ExecuteAsync(request);
 
             // Note: response.IsSuccessful can't be mocked as easily, so this is a better solution at the moment.
             if (response.IsSuccessStatusCode)

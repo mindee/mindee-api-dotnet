@@ -31,14 +31,4 @@
       <Link>Resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="resources\async">
-      <Link>Resources\async</Link>
-    </Folder>
-    <Folder Include="V1\Parsing\"/>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)TestTimeouts.cs" />
-  </ItemGroup>
 </Project>

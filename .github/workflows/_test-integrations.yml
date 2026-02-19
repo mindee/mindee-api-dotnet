@@ -90,7 +90,4 @@ jobs:
 
       - name: Test
         run: |
-          dotnet test -f ${{ matrix.dotnet-version }} --no-restore --verbosity normal "tests\Mindee.IntegrationTests" `
-            --blame-hang --blame-hang-timeout 5m `
-            --diag .\\vstest.diag.txt `
-            --logger "console;verbosity=detailed"
+          dotnet test -f ${{ matrix.dotnet-version }} --no-restore --verbosity normal "tests\Mindee.IntegrationTests"

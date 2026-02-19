@@ -1,4 +1,3 @@
-using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 // ReSharper disable once RedundantUsingDirective
@@ -11,23 +10,7 @@ namespace Mindee.IntegrationTests
         private static MindeeClient? _mindeeClient;
         private static MindeeClientV2? _mindeeClientV2;
 
-#if !NET6_0_OR_GREATER
-        static TestingUtilities()
-        {
-            const string envVar = "MINDEE_TEST_HARD_TIMEOUT_SECONDS";
-            if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(envVar)))
-            {
-                Environment.SetEnvironmentVariable(envVar, "180");
-            }
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            ServicePointManager.DefaultConnectionLimit = 50;
-            ServicePointManager.Expect100Continue = false;
-            WebRequest.DefaultWebProxy = null;
-        }
-#endif
-
         /// <summary>
-        ///     g
         ///     Gets the API version from an RST output
         /// </summary>
         /// <param name="rstStr">The RST output of a prediction.</param>

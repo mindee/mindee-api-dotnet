@@ -42,14 +42,14 @@ namespace Mindee.IntegrationTests
 
         public async Task DisposeAsync()
         {
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(120));
             try
             {
                 await _host.StopAsync(cts.Token);
             }
             catch (OperationCanceledException)
             {
-                Console.WriteLine("DependencyInjectionTest teardown: StopAsync timed out after 10s.");
+                Console.WriteLine("DependencyInjectionTest teardown: StopAsync timed out after 120s.");
             }
             _host.Dispose();
         }
