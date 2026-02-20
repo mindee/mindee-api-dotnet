@@ -1,5 +1,5 @@
+using Mindee.ClientOptions;
 using Mindee.Exceptions;
-using Mindee.V1;
 
 namespace Mindee.UnitTests.V1
 {

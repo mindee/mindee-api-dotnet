@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Mindee.ClientOptions;
 using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;

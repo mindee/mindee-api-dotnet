@@ -1,5 +1,6 @@
 using System.CommandLine;
 using System.Text.Json;
+using Mindee.ClientOptions;
 using Mindee.Input;
 using Mindee.V1;
 using Mindee.V1.Parsing;
