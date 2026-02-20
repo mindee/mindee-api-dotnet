@@ -2,7 +2,6 @@ using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V2;
 using Mindee.V2.Parsing;
-using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
 
 namespace Mindee.IntegrationTests.V2
@@ -48,7 +47,7 @@ namespace Mindee.IntegrationTests.V2
         {
             var inputSource = new LocalInputSource(
                 Constants.RootDir + "file_types/pdf/multipage_cut-2.pdf");
-            var inferenceParams = new InferenceParameters(
+            var inferenceParams = new ExtractionParameters(
                 _findocModelId,
                 rag: false,
                 rawText: rawText,
@@ -115,7 +114,7 @@ namespace Mindee.IntegrationTests.V2
         {
             var inputSource = new LocalInputSource(
                 Constants.V1ProductDir + "financial_document/default_sample.jpg");
-            var inferenceParams = new InferenceParameters(
+            var inferenceParams = new ExtractionParameters(
                 _findocModelId,
                 textContext: "this is an invoice.");
 
@@ -152,10 +151,10 @@ namespace Mindee.IntegrationTests.V2
             var webhookId = Environment.GetEnvironmentVariable("MindeeV2__Failure__Webhook__Id");
 
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/multipage_cut-1.pdf");
-            var inferenceParams = new InferenceParameters(
+            var inferenceParams = new ExtractionParameters(
                 _findocModelId, webhookIds: new List<string?> { webhookId });
 
-            var enqueueResponse = await _client.EnqueueInferenceAsync(inputSource, inferenceParams);
+            var enqueueResponse = await _client.EnqueueAsync(inputSource, inferenceParams);
             Assert.NotNull(enqueueResponse);
             Assert.NotNull(enqueueResponse.Job);
             Assert.NotNull(enqueueResponse.Job.Webhooks);
@@ -205,11 +204,11 @@ namespace Mindee.IntegrationTests.V2
         public async Task Invalid_Model_MustThrowError()
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/multipage_cut-2.pdf");
-            var inferenceParams = new InferenceParameters(
+            var inferenceParams = new ExtractionParameters(
                 "INVALID MODEL ID",
                 textContext: "hello my name is mud");
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
-                _client.EnqueueInferenceAsync(inputSource, inferenceParams));
+                _client.EnqueueAsync(inputSource, inferenceParams));
             Assert.Equal(422, ex.Status);
             Assert.StartsWith("422-", ex.Code);
         }
@@ -227,7 +226,7 @@ namespace Mindee.IntegrationTests.V2
         public async Task NotFound_Inference_MustThrowError()
         {
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
-                _client.GetInferenceAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
+                _client.GetResultAsync<Mindee.V2.Product.Extraction.Extraction>("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
             Assert.Equal(404, ex.Status);
             Assert.StartsWith("404-", ex.Code);
         }
@@ -240,7 +239,7 @@ namespace Mindee.IntegrationTests.V2
                 "Environment variable MindeeV2__Blank__Pdf__Url must be set and contain a valid URL.");
 
             var inputSource = new UrlInputSource(new Uri(url));
-            var inferenceParams = new InferenceParameters(_findocModelId);
+            var inferenceParams = new ExtractionParameters(_findocModelId);
             var response = await _client.EnqueueAndGetInferenceAsync(inputSource, inferenceParams);
 
             Assert.NotNull(response);
@@ -254,7 +253,7 @@ namespace Mindee.IntegrationTests.V2
                 Constants.RootDir + "file_types/pdf/blank_1.pdf");
             var dataSchemaContents =
                 File.ReadAllText(Constants.V2RootDir + "products/extraction/data_schema_replace_param.json");
-            var inferenceParams = new InferenceParameters(
+            var inferenceParams = new ExtractionParameters(
                 _findocModelId,
                 dataSchema: dataSchemaContents);
 

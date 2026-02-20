@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.InternationalId
     /// International ID API version 2 inference prediction.
     /// </summary>
     [Endpoint("international_id", "2")]
-    public sealed class InternationalIdV2 : Inference<InternationalIdV2Document, InternationalIdV2Document>
+    public sealed class InternationalIdV2 : ExtractionInference<InternationalIdV2Document, InternationalIdV2Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.

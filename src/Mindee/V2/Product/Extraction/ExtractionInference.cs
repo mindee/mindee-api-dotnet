@@ -1,16 +1,17 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.V1.Parsing;
+using Mindee.V2.Parsing;
 
-namespace Mindee.V2.Parsing
+namespace Mindee.V2.Product.Extraction
 {
     /// <summary>
-    ///     Inference object for the V2 API.
+    ///     ExtractionInference object for the V2 API.
     /// </summary>
-    public class Inference
+    public class ExtractionInference
     {
         /// <summary>
-        ///     UUID of the Inference.
+        ///     UUID of the ExtractionInference.
         /// </summary>
         [JsonPropertyName("id")]
         public string Id { get; set; }

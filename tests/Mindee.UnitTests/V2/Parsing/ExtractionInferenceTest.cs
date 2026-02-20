@@ -1,12 +1,13 @@
 using Mindee.Geometry;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Field;
+using Mindee.V2.Product.Extraction;
 
 namespace Mindee.UnitTests.V2.Parsing
 {
     [Trait("Category", "V2")]
-    [Trait("Category", "Inference")]
-    public class InferenceTest
+    [Trait("Category", "ExtractionInference")]
+    public class ExtractionInferenceTest
     {
         [Fact]
         public void FinancialDocument_WhenEmpty_MustHaveValidProperties()
@@ -379,14 +380,14 @@ namespace Mindee.UnitTests.V2.Parsing
         }
 
 
-        private static InferenceResponse GetInference(string path)
+        private static ExtractionResponse GetInference(string path)
         {
             var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2RootDir + path));
-            return localResponse.DeserializeResponse<InferenceResponse>();
+            return localResponse.DeserializeResponse<Mindee.V2.Product.Extraction.Extraction, ExtractionResponse>();
         }
 
-        private void AssertInferenceResponse(InferenceResponse response)
+        private void AssertInferenceResponse(ExtractionResponse response)
         {
             Assert.NotNull(response.Inference);
             Assert.NotNull(response.Inference.Id);

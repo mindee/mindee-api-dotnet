@@ -49,7 +49,7 @@ namespace Mindee.V2.Parsing
         public DataSchemaActiveOptions DataSchema { get; set; }
 
         /// <summary>
-        ///     Pretty-prints the file section exactly as expected by Inference.ToString().
+        ///     Pretty-prints the file section exactly as expected by ExtractionInference.ToString().
         /// </summary>
         public override string ToString()
         {

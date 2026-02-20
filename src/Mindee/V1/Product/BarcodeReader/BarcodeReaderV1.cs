@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.BarcodeReader
     /// Barcode Reader API version 1 inference prediction.
     /// </summary>
     [Endpoint("barcode_reader", "1")]
-    public sealed class BarcodeReaderV1 : Inference<BarcodeReaderV1Document, BarcodeReaderV1Document>
+    public sealed class BarcodeReaderV1 : ExtractionInference<BarcodeReaderV1Document, BarcodeReaderV1Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.

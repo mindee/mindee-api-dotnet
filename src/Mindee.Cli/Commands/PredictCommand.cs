@@ -1,6 +1,5 @@
 using System.CommandLine;
 using System.Text.Json;
-using Mindee.ClientOptions;
 using Mindee.Input;
 using Mindee.V1;
 using Mindee.V1.ClientOptions;
@@ -30,7 +29,7 @@ namespace Mindee.Cli.Commands
     class PredictCommand<TInferenceModel, TDoc, TPage> : Command
         where TDoc : IPrediction, new()
         where TPage : IPrediction, new()
-        where TInferenceModel : Inference<TDoc, TPage>, new()
+        where TInferenceModel : ExtractionInference<TDoc, TPage>, new()
     {
         private readonly Option<OutputType> _outputOption;
         private readonly Option<bool>? _allWordsOption;
@@ -96,7 +95,7 @@ namespace Mindee.Cli.Commands
             Arguments.Add(_pathArgument);
         }
 
-        public void ConfigureAction(V1.Client mindeeClient)
+        public void ConfigureAction(Client mindeeClient)
         {
             this.SetAction(parseResult =>
             {
@@ -111,7 +110,7 @@ namespace Mindee.Cli.Commands
             });
         }
 
-        public class Handler(V1.Client mindeeClient)
+        public class Handler(Client mindeeClient)
         {
             private readonly JsonSerializerOptions _jsonSerializerOptions = new()
             {

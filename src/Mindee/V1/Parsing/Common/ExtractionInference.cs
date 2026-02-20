@@ -9,7 +9,7 @@ namespace Mindee.V1.Parsing.Common
     /// </summary>
     /// <typeparam name="TPagePrediction">Page prediction (could be the same that TDocumentPrediction).</typeparam>
     /// <typeparam name="TDocumentPrediction">Document prediction (could be the same that TPagePrediction).</typeparam>
-    public abstract class Inference<TPagePrediction, TDocumentPrediction>
+    public abstract class ExtractionInference<TPagePrediction, TDocumentPrediction>
         where TPagePrediction : IPrediction, new()
         where TDocumentPrediction : IPrediction, new()
     {

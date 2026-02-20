@@ -83,9 +83,9 @@ namespace Mindee.IntegrationTests
 
             var instance1ClientV2 = _services.GetRequiredService<ClientV2>();
             var inputSource3 = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
-            var response3 = await instance1ClientV2.EnqueueInferenceAsync(
+            var response3 = await instance1ClientV2.EnqueueAsync(
                 inputSource3,
-                new InferenceParameters(Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id")));
+                new ExtractionParameters(Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id")));
             Assert.NotNull(response3);
             Assert.True(response3.Job != null, "First V2 request should return a valid job");
 
@@ -96,9 +96,9 @@ namespace Mindee.IntegrationTests
 
             var instance2ClientV2 = _services.GetRequiredService<ClientV2>();
             var inputSource5 = new LocalInputSource(new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
-            var response5 = await instance2ClientV2.EnqueueInferenceAsync(
+            var response5 = await instance2ClientV2.EnqueueAsync(
                 inputSource5,
-                new InferenceParameters(Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id")));
+                new ExtractionParameters(Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id")));
             Assert.NotNull(response5);
             Assert.True(response5.Job != null, "Second V2 request should return a valid job");
         }

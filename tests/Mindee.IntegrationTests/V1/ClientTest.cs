@@ -1,4 +1,3 @@
-using Mindee.ClientOptions;
 using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V1;

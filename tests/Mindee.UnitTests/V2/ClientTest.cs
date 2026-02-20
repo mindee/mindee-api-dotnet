@@ -1,8 +1,8 @@
 using Mindee.Input;
-using Mindee.Parsing;
 using Mindee.V2;
 using Mindee.V2.Http;
 using Mindee.V2.Parsing;
+using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
 using Moq;
 
@@ -14,11 +14,11 @@ namespace Mindee.UnitTests.V2
     {
         private Client MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
         {
-            predictable.Setup(x => x.ReqPostEnqueueInferenceAsync(It.IsAny<InputSource>(), It.IsAny<InferenceParameters>())
+            predictable.Setup(x => x.ReqPostEnqueueAsync(It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>())
             ).ReturnsAsync(new JobResponse());
 
-            predictable.Setup(x => x.ReqGetInferenceAsync(It.IsAny<string>())
-            ).ReturnsAsync(new InferenceResponse());
+            predictable.Setup(x => x.ReqGetInferenceAsync<Mindee.V2.Product.Extraction.Extraction>(It.IsAny<string>())
+            ).ReturnsAsync(new ExtractionResponse());
 
             predictable.Setup(x => x.ReqGetJobAsync(It.IsAny<string>())
             ).ReturnsAsync(new JobResponse());
@@ -34,15 +34,15 @@ namespace Mindee.UnitTests.V2
 
             var inputSource = new LocalInputSource(
                 new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
-            var inferenceParams = new InferenceParameters(
+            var inferenceParams = new ExtractionParameters(
                 "dummy-model-id",
                 rawText: false,
                 textContext: "Hello my name is mud.");
-            var response = await mindeeClient.EnqueueInferenceAsync(
+            var response = await mindeeClient.EnqueueAsync(
                 inputSource, inferenceParams);
 
             Assert.NotNull(response);
-            predictable.Verify(p => p.ReqPostEnqueueInferenceAsync(It.IsAny<InputSource>(), It.IsAny<InferenceParameters>()),
+            predictable.Verify(p => p.ReqPostEnqueueAsync(It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>()),
                 Times.AtMostOnce());
         }
 
@@ -51,11 +51,11 @@ namespace Mindee.UnitTests.V2
         {
             var predictable = new Mock<HttpApiV2>();
             var mindeeClient = MakeCustomMindeeClientV2(predictable);
-            var response = await mindeeClient.GetInferenceAsync("dummy-id");
+            var response = await mindeeClient.GetResultAsync<Mindee.V2.Product.Extraction.Extraction>("dummy-id");
             Assert.NotNull(response);
 
             predictable.Verify(
-                p => p.ReqGetInferenceAsync(It.IsAny<string>()),
+                p => p.ReqGetInferenceAsync<Mindee.V2.Product.Extraction.Extraction>(It.IsAny<string>()),
                 Times.AtMostOnce());
         }
         // NOTE: The EnqueueAndGetInferenceAsync() method is covered in the integration tests.
@@ -78,7 +78,7 @@ namespace Mindee.UnitTests.V2
         {
             var localResponse = new LocalResponse(
                 new FileInfo(Constants.V2RootDir + "products/extraction/financial_document/complete.json"));
-            var locallyLoadedResponse = localResponse.DeserializeResponse<InferenceResponse>();
+            ExtractionResponse locallyLoadedResponse = localResponse.DeserializeResponse<Mindee.V2.Product.Extraction.Extraction, ExtractionResponse>();
             Assert.NotNull(locallyLoadedResponse);
             Assert.Equal("12345678-1234-1234-1234-123456789abc", locallyLoadedResponse.Inference.Model.Id);
             Assert.Equal("John Smith",

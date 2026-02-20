@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.Cropper
     /// Cropper API version 1 inference prediction.
     /// </summary>
     [Endpoint("cropper", "1")]
-    public sealed class CropperV1 : Inference<CropperV1Page, CropperV1Document>
+    public sealed class CropperV1 : ExtractionInference<CropperV1Page, CropperV1Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.

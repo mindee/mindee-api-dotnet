@@ -58,7 +58,7 @@ namespace Mindee.UnitTests.V2.Parsing
         {
             var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2RootDir + path));
-            return localResponse.DeserializeResponse<JobResponse>();
+            return localResponse.DeserializeJobResponse();
         }
     }
 }

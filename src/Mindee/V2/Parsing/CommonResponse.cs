@@ -1,14 +1,16 @@
+using System;
+using Mindee.V2.Product;
+
 namespace Mindee.V2.Parsing
 {
     /// <summary>
     ///     Common response information from Mindee API V2.
     /// </summary>
-    public abstract class CommonResponse
+    public abstract class CommonResponse<TProduct> : BaseResponse where TProduct : BaseProduct, new()
     {
         /// <summary>
-        ///     The raw server response.
-        ///     This is not formatted in any way by the library and may contain newline and tab characters.
+        /// Type of product returned by this response
         /// </summary>
-        public string RawResponse { get; set; }
+        public static Type ReturnType => typeof(TProduct);
     }
 }
