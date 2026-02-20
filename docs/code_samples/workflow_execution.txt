@@ -6,7 +6,7 @@ string filePath = "/path/to/the/file.ext";
 string workflowId = "workflow-id";
 
 // Construct a new client
-V1.Client mindeeClient = new V1.Client(apiKey);
+Client mindeeClient = new Client(apiKey);
 
 // Load an input source as a path string
 // Other input types can be used, as mentioned in the docs
