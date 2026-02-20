@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.MultiReceiptsDetector
     /// Multi Receipts Detector API version 1 inference prediction.
     /// </summary>
     [Endpoint("multi_receipts_detector", "1")]
-    public sealed class MultiReceiptsDetectorV1 : Inference<MultiReceiptsDetectorV1Document, MultiReceiptsDetectorV1Document>
+    public sealed class MultiReceiptsDetectorV1 : ExtractionInference<MultiReceiptsDetectorV1Document, MultiReceiptsDetectorV1Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.

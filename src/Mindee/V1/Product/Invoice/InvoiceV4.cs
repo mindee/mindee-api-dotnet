@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.Invoice
     /// Invoice API version 4 inference prediction.
     /// </summary>
     [Endpoint("invoices", "4")]
-    public sealed class InvoiceV4 : Inference<InvoiceV4Document, InvoiceV4Document>
+    public sealed class InvoiceV4 : ExtractionInference<InvoiceV4Document, InvoiceV4Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.

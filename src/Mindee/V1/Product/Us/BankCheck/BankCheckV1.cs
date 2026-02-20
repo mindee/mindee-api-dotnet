@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.Us.BankCheck
     /// Bank Check API version 1 inference prediction.
     /// </summary>
     [Endpoint("bank_check", "1")]
-    public sealed class BankCheckV1 : Inference<BankCheckV1Page, BankCheckV1Document>
+    public sealed class BankCheckV1 : ExtractionInference<BankCheckV1Page, BankCheckV1Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.

@@ -25,8 +25,9 @@ namespace Mindee.V2.Parsing
         ///     Typically used when wanting to load a V2 webhook callback.
         /// </summary>
         /// <returns></returns>
-        public TResponse DeserializeResponse<TResponse>()
-            where TResponse : BaseResponse, new()
+        public TResponse DeserializeResponse<TProduct, TResponse>()
+            where TProduct : BaseProduct, new()
+            where TResponse : CommonResponse<TProduct>, new()
         {
             var model = JsonSerializer.Deserialize<TResponse>(FileBytes);
 

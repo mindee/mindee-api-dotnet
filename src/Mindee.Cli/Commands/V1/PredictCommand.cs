@@ -1,6 +1,5 @@
 using System.CommandLine;
 using System.Text.Json;
-using Mindee.ClientOptions;
 using Mindee.Input;
 using Mindee.V1;
 using Mindee.V1.ClientOptions;
@@ -31,7 +30,7 @@ namespace Mindee.Cli.Commands.V1
     class PredictCommand<TInferenceModel, TDoc, TPage> : Command
         where TDoc : IPrediction, new()
         where TPage : IPrediction, new()
-        where TInferenceModel : Inference<TDoc, TPage>, new()
+        where TInferenceModel : ExtractionInference<TDoc, TPage>, new()
     {
         private readonly Option<OutputType> _outputOption;
         private readonly Option<bool>? _allWordsOption;

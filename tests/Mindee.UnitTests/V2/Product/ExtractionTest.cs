@@ -7,7 +7,7 @@ namespace Mindee.UnitTests.V2.Product
 {
     [Trait("Category", "V2")]
     [Trait("Category", "ExtractionInference")]
-    public class ExtractionTest
+    public class ExtractionInferenceTest
     {
         [Fact]
         public void FinancialDocument_WhenEmpty_MustHaveValidProperties()
@@ -382,8 +382,8 @@ namespace Mindee.UnitTests.V2.Product
         private static ExtractionResponse GetInference(string path)
         {
             var localResponse = new LocalResponse(
-                File.ReadAllText(Constants.V2ProductDir + path));
-            return localResponse.DeserializeResponse<ExtractionResponse>();
+                File.ReadAllText(Constants.V2RootDir + path));
+            return localResponse.DeserializeResponse<Mindee.V2.Product.Extraction.Extraction, ExtractionResponse>();
         }
 
         private void AssertInferenceResponse(ExtractionResponse response)

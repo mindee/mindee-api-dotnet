@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.InvoiceSplitter
     /// Invoice Splitter API version 1 inference prediction.
     /// </summary>
     [Endpoint("invoice_splitter", "1")]
-    public sealed class InvoiceSplitterV1 : Inference<InvoiceSplitterV1Document, InvoiceSplitterV1Document>
+    public sealed class InvoiceSplitterV1 : ExtractionInference<InvoiceSplitterV1Document, InvoiceSplitterV1Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.

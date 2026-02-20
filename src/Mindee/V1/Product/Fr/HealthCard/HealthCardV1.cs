@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.Fr.HealthCard
     /// Health Card API version 1 inference prediction.
     /// </summary>
     [Endpoint("french_healthcard", "1")]
-    public sealed class HealthCardV1 : Inference<HealthCardV1Document, HealthCardV1Document>
+    public sealed class HealthCardV1 : ExtractionInference<HealthCardV1Document, HealthCardV1Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.
