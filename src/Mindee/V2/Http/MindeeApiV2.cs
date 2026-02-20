@@ -4,7 +4,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
+using Mindee.Input;
 using Mindee.V2.Parsing;
+using Mindee.V2.Product.Extraction.Params;
 using RestSharp;
 #if NET6_0_OR_GREATER
 using Microsoft.Extensions.DependencyInjection;
@@ -41,13 +43,14 @@ namespace Mindee.V2.Http
         }
 
         public override async Task<JobResponse> ReqPostEnqueueInferenceAsync(
-            InferencePostParameters predictParameter
+            InputSource InputSource,
+            InferenceParameters predictParameter
         )
         {
             var request = new RestRequest("v2/inferences/enqueue", Method.Post);
 
             request.AddParameter("model_id", predictParameter.ModelId);
-            AddPredictRequestParameters(predictParameter, request);
+            AddPredictRequestParameters(InputSource, predictParameter, request);
 
             Logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
 
@@ -74,18 +77,23 @@ namespace Mindee.V2.Http
             return ResponseHandler<InferenceResponse>(queueResponse);
         }
 
-        private static void AddPredictRequestParameters(InferencePostParameters predictParameter, RestRequest request)
+        private static void AddPredictRequestParameters(InputSource inputSource, InferenceParameters predictParameter, RestRequest request)
         {
-            if (predictParameter.LocalSource != null)
+            switch (inputSource)
             {
-                request.AddFile(
-                    "file",
-                    predictParameter.LocalSource.FileBytes,
-                    predictParameter.LocalSource.Filename);
-            }
-            else if (predictParameter.UrlSource != null)
-            {
-                request.AddParameter("url", predictParameter.UrlSource.FileUrl.ToString());
+                case LocalInputSource localInputSource:
+                    request.AddFile(
+                        "file",
+                        localInputSource.FileBytes,
+                        localInputSource.Filename);
+                    break;
+                case UrlInputSource urlInputSource:
+                    request.AddParameter("url", urlInputSource.FileUrl.ToString());
+                    break;
+                case null:
+                    throw new MindeeInputException($"Input source cannot be null");
+                default:
+                    throw new MindeeInputException($"Unsupported input source type '{inputSource.GetType()}'");
             }
 
             if (!string.IsNullOrWhiteSpace(predictParameter.Alias))

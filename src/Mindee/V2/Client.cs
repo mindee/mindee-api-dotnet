@@ -107,19 +107,7 @@ namespace Mindee.V2
         {
             _logger?.LogInformation("Enqueuing: local source");
 
-            return await _mindeeApi.ReqPostEnqueueInferenceAsync(
-                new InferencePostParameters(
-                    localSource: inputSource,
-                    modelId: inferenceParameters.ModelId,
-                    alias: inferenceParameters.Alias,
-                    webhookIds: inferenceParameters.WebhookIds,
-                    rag: inferenceParameters.Rag,
-                    rawText: inferenceParameters.RawText,
-                    polygon: inferenceParameters.Polygon,
-                    confidence: inferenceParameters.Confidence,
-                    textContext: inferenceParameters.TextContext,
-                    dataSchema: inferenceParameters.DataSchema
-                ));
+            return await _mindeeApi.ReqPostEnqueueInferenceAsync(inputSource, inferenceParameters);
         }
 
         /// <summary>
@@ -141,19 +129,7 @@ namespace Mindee.V2
         {
             _logger?.LogInformation("Enqueuing: URL source");
 
-            return await _mindeeApi.ReqPostEnqueueInferenceAsync(
-                new InferencePostParameters(
-                    urlSource: inputSource,
-                    modelId: inferenceParameters.ModelId,
-                    alias: inferenceParameters.Alias,
-                    webhookIds: inferenceParameters.WebhookIds,
-                    rag: inferenceParameters.Rag,
-                    rawText: inferenceParameters.RawText,
-                    polygon: inferenceParameters.Polygon,
-                    confidence: inferenceParameters.Confidence,
-                    textContext: inferenceParameters.TextContext,
-                    dataSchema: inferenceParameters.DataSchema
-                ));
+            return await _mindeeApi.ReqPostEnqueueInferenceAsync(inputSource, inferenceParameters);
         }
 
         /// <summary>

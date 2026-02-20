@@ -15,7 +15,7 @@ namespace Mindee.UnitTests.V2
     {
         private Client MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
         {
-            predictable.Setup(x => x.ReqPostEnqueueInferenceAsync(It.IsAny<InferencePostParameters>())
+            predictable.Setup(x => x.ReqPostEnqueueInferenceAsync(It.IsAny<InputSource>(), It.IsAny<InferenceParameters>())
             ).ReturnsAsync(new JobResponse());
 
             predictable.Setup(x => x.ReqGetInferenceAsync(It.IsAny<string>())
@@ -43,8 +43,7 @@ namespace Mindee.UnitTests.V2
                 inputSource, inferenceParams);
 
             Assert.NotNull(response);
-            predictable.Verify(
-                p => p.ReqPostEnqueueInferenceAsync(It.IsAny<InferencePostParameters>()),
+            predictable.Verify(p => p.ReqPostEnqueueInferenceAsync(It.IsAny<InputSource>(), It.IsAny<InferenceParameters>()),
                 Times.AtMostOnce());
         }
 

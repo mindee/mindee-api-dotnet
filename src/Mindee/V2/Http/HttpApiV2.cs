@@ -4,7 +4,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
+using Mindee.Input;
 using Mindee.V2.Parsing;
+using Mindee.V2.Product.Extraction.Params;
 
 namespace Mindee.V2.Http
 {
@@ -26,9 +28,13 @@ namespace Mindee.V2.Http
         ///     Do a prediction according parameters for a custom model defined in the Studio.
         /// </summary>
         /// <param name="predictParameter">
-        ///     <see cref="InferencePostParameters" />
+        ///     <see cref="InferenceParameters" />
         /// </param>
-        public abstract Task<JobResponse> ReqPostEnqueueInferenceAsync(InferencePostParameters predictParameter);
+        /// <param name="inputSource">
+        ///     <see cref="LocalInputSource" />
+        ///     <see cref="UrlInputSource" />
+        /// </param>
+        public abstract Task<JobResponse> ReqPostEnqueueInferenceAsync(InputSource inputSource, InferenceParameters predictParameter);
 
         /// <summary>
         ///     Get a job for an enqueued document.
