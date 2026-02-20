@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.Fr.Payslip
     /// Payslip API version 3 inference prediction.
     /// </summary>
     [Endpoint("payslip_fra", "3")]
-    public sealed class PayslipV3 : Inference<PayslipV3Document, PayslipV3Document>
+    public sealed class PayslipV3 : ExtractionInference<PayslipV3Document, PayslipV3Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.

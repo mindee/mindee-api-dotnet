@@ -1,5 +1,6 @@
 #nullable enable
 
+using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -7,6 +8,7 @@ using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V2.ClientOptions;
 using Mindee.V2.Parsing;
+using Mindee.V2.Product;
 
 namespace Mindee.V2.Http
 {
@@ -40,25 +42,13 @@ namespace Mindee.V2.Http
         ///     Get a job for an enqueued document.
         /// </summary>
         /// <param name="pollingUrl">The job ID as returned by the predict_async route.</param>
-        public abstract Task<JobResponse> ReqGetJobFromUrlAsync(string pollingUrl);
-
-        /// <summary>
-        ///     Get a job for an enqueued document.
-        /// </summary>
-        /// <param name="jobId">The job ID as returned by the predict_async route.</param>
-        public abstract Task<JobResponse> ReqGetJobAsync(string jobId);
-
-        /// <summary>
-        ///     Get a document inference.
-        /// </summary>
-        /// <param name="inferenceId">Url to poll.</param>
-        public abstract Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId) where TResponse : CommonInferenceResponse, new();
+        public abstract Task<JobResponse> ReqGetJobAsync(string pollingUrl);
 
         /// <summary>
         ///     Get a document inference.
         /// </summary>
         /// <param name="resultUrl">Url to poll.</param>
-        public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl) where TResponse : CommonInferenceResponse, new();
+        public abstract Task<CommonResponse<TProduct>> ReqGetInferenceAsync<TProduct>(string resultUrl) where TProduct : BaseProduct, new();
 
         /// <summary>
         ///     Get the error from the server return.
@@ -89,10 +79,11 @@ namespace Mindee.V2.Http
         ///     Attempt to deserialize a response from the server.
         /// </summary>
         /// <param name="responseContent"></param>
-        /// <typeparam name="TResponse"></typeparam>
+        /// <param name="responseType"></param>
+        /// <typeparam name="TProduct"></typeparam>
         /// <returns></returns>
-        protected TResponse DeserializeResponse<TResponse>(string? responseContent)
-            where TResponse : CommonInferenceResponse, new()
+        protected CommonResponse<TProduct> DeserializeResponse<TProduct>(string? responseContent, Type responseType)
+            where TProduct : BaseProduct, new()
         {
             Logger?.LogInformation("Parsing HTTP 2xx response ...");
 
@@ -100,9 +91,9 @@ namespace Mindee.V2.Http
             {
                 throw new MindeeException("Empty response from server.");
             }
-            var deserializedResult = JsonSerializer.Deserialize<TResponse>(responseContent);
+            var deserializedResult = JsonSerializer.Deserialize(responseContent, responseType);
 
-            if (deserializedResult is CommonInferenceResponse model)
+            if (deserializedResult is CommonResponse<TProduct> model)
             {
                 model.RawResponse = responseContent;
                 return (TResponse)model;

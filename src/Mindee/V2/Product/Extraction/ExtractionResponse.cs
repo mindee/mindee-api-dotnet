@@ -4,10 +4,9 @@ using Mindee.V2.Parsing;
 namespace Mindee.V2.Product.Extraction
 {
     /// <summary>
-    ///     Response for an extraction inference.
+    ///     Represent an extraction response from Mindee V2 API.
     /// </summary>
-    [EndpointSlug("extraction")]
-    public class ExtractionResponse : CommonInferenceResponse
+    public class ExtractionResponse : CommonResponse<Extraction>
     {
         /// <summary>
         ///     Contents of the inference.

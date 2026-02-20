@@ -1,14 +1,15 @@
 using System;
 using System.Text;
 using System.Text.Json.Serialization;
-using Mindee.Parsing;
+using Mindee.V1.Parsing;
+using Mindee.V2.Parsing;
 
-namespace Mindee.V2.Parsing
+namespace Mindee.V2.Product.Extraction
 {
     /// <summary>
-    /// Base for all inference-based V2 products.
+    ///     ExtractionInference object for the V2 API.
     /// </summary>
-    public abstract class BaseInference
+    public class ExtractionInference
     {
 
         /// <summary>

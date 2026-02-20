@@ -7,7 +7,7 @@ using Mindee.V2.Parsing.Field;
 namespace Mindee.V2.Product.Extraction.Params
 {
     /// <summary>
-    ///     Parameters for an extraction inference.
+    ///     ResultOptions to pass when calling methods using the predict API V2.
     /// </summary>
     public class ExtractionParameters : BaseParameters
     {
@@ -50,7 +50,7 @@ namespace Mindee.V2.Product.Extraction.Params
         public sealed override string Slug { get; protected set; }
 
         /// <summary>
-        ///     Extraction parameters to set when sending a file.
+        ///     ExtractionInference parameters to set when sending a file.
         /// </summary>
         /// <param name="modelId">
         ///     <see cref="BaseParameters.ModelId" />

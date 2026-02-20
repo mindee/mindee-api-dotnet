@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.Fr.IdCard
     /// Carte Nationale d'Identité API version 2 inference prediction.
     /// </summary>
     [Endpoint("idcard_fr", "2")]
-    public sealed class IdCardV2 : Inference<IdCardV2Page, IdCardV2Document>
+    public sealed class IdCardV2 : ExtractionInference<IdCardV2Page, IdCardV2Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.
