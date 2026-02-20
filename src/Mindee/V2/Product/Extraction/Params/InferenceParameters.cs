@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Mindee.V1;
+using Mindee.V2.ClientOptions;
 using Mindee.V2.Http;
 
 namespace Mindee.V2.Product.Extraction.Params
@@ -7,34 +8,34 @@ namespace Mindee.V2.Product.Extraction.Params
     /// <summary>
     ///     ResultOptions to pass when calling methods using the predict API V2.
     /// </summary>
-    public class InferenceParameters : InferenceOptions
+    public class InferenceParameters : BaseParameters
     {
         /// <summary>
         ///     Inference parameters to set when sending a file.
         /// </summary>
         /// <param name="modelId">
-        ///     <see cref="InferenceOptions.ModelId" />
+        ///     <see cref="BaseParameters.ModelId" />
         /// </param>
         /// <param name="alias">
-        ///     <see cref="InferenceOptions.Alias" />
+        ///     <see cref="BaseParameters.Alias" />
         /// </param>
         /// <param name="webhookIds">
-        ///     <see cref="InferenceOptions.WebhookIds" />
+        ///     <see cref="BaseParameters.WebhookIds" />
         /// </param>
         /// <param name="rag">
-        ///     <see cref="InferenceOptions.Rag" />
+        ///     <see cref="BaseParameters.Rag" />
         /// </param>
         /// <param name="rawText">
-        ///     <see cref="InferenceOptions.RawText" />
+        ///     <see cref="BaseParameters.RawText" />
         /// </param>
         /// <param name="polygon">
-        ///     <see cref="InferenceOptions.Polygon" />
+        ///     <see cref="BaseParameters.Polygon" />
         /// </param>
         /// <param name="confidence">
-        ///     <see cref="InferenceOptions.Confidence" />
+        ///     <see cref="BaseParameters.Confidence" />
         /// </param>
         /// <param name="textContext">
-        ///     <see cref="InferenceOptions.TextContext" />
+        ///     <see cref="BaseParameters.TextContext" />
         /// </param>
         /// <param name="pollingOptions">
         ///     <see cref="PollingOptions" />

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Mindee.Input;
+using Mindee.V2.ClientOptions;
 using Mindee.V2.Product.Extraction.Params;
 
 namespace Mindee.V2.Http
@@ -8,7 +9,7 @@ namespace Mindee.V2.Http
     /// <summary>
     ///     Parameter required to use the predict feature on the API V2.
     /// </summary>
-    public sealed class InferencePostParameters : InferenceOptions
+    public sealed class InferencePostParameters : BaseParameters
     {
         /// <summary>
         ///     Result parameters for requests.
@@ -16,31 +17,31 @@ namespace Mindee.V2.Http
         /// <param name="localSource">Local input source containing the file.<see cref="LocalSource" /></param>
         /// <param name="urlSource">Remote input source containing the file.<see cref="UrlInputSource" /></param>
         /// <param name="modelId">
-        ///     <see cref="InferenceOptions.ModelId" />
+        ///     <see cref="BaseParameters.ModelId" />
         /// </param>
         /// <param name="rag">
-        ///     <see cref="InferenceOptions.Rag" />
+        ///     <see cref="BaseParameters.Rag" />
         /// </param>
         /// <param name="rawText">
-        ///     <see cref="InferenceOptions.RawText" />
+        ///     <see cref="BaseParameters.RawText" />
         /// </param>
         /// <param name="polygon">
-        ///     <see cref="InferenceOptions.Polygon" />
+        ///     <see cref="BaseParameters.Polygon" />
         /// </param>
         /// <param name="confidence">
-        ///     <see cref="InferenceOptions.Confidence" />
+        ///     <see cref="BaseParameters.Confidence" />
         /// </param>
         /// <param name="alias">
-        ///     <see cref="InferenceOptions.Alias" />
+        ///     <see cref="BaseParameters.Alias" />
         /// </param>
         /// <param name="webhookIds">
-        ///     <see cref="InferenceOptions.WebhookIds" />
+        ///     <see cref="BaseParameters.WebhookIds" />
         /// </param>
         /// <param name="textContext">
-        ///     <see cref="InferenceOptions.TextContext" />
+        ///     <see cref="BaseParameters.TextContext" />
         /// </param>
         /// <param name="dataSchema">
-        ///     <see cref="InferenceOptions.DataSchema" />
+        ///     <see cref="BaseParameters.DataSchema" />
         /// </param>
         public InferencePostParameters(
             string modelId,

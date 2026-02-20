@@ -1,17 +1,16 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Mindee.Exceptions;
-using Mindee.Input;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Field;
 using Mindee.V2.Product.Extraction.Params;
 
-namespace Mindee.V2.Http
+namespace Mindee.V2.ClientOptions
 {
     /// <summary>
     ///     Parameters for running an inference.
     /// </summary>
-    public class InferenceOptions
+    public class BaseParameters
     {
         /// <summary>
         /// </summary>
@@ -40,7 +39,7 @@ namespace Mindee.V2.Http
         /// <param name="dataSchema">
         ///     <see cref="DataSchema" />
         /// </param>
-        public InferenceOptions(
+        public BaseParameters(
             string modelId,
             bool? rag,
             bool? rawText,
