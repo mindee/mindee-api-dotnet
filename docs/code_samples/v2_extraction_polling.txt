@@ -1,0 +1,38 @@
+using Mindee;
+using Mindee.Input;
+using Mindee.V2;
+using Mindee.V2.Product.Extraction.Params;
+
+string filePath = "/path/to/the/file.ext";
+string apiKey = "MY_API_KEY";
+string modelId = "MY_MODEL_ID";
+
+// Construct a new client
+Client mindeeClient = new Client(apiKey);
+
+// Set inference parameters
+var inferenceParams = new InferenceParameters(
+    modelId: modelId
+
+    // Options: set to `true` or `false` to override defaults
+
+    // Enhance extraction accuracy with Retrieval-Augmented Generation.
+    , rag: null
+    // Extract the full text content from the document as strings.
+    , rawText: null
+    // Calculate bounding box polygons for all fields.
+    , polygon: null
+    // Boost the precision and accuracy of all extractions.
+    // Calculate confidence scores for all fields.
+    , confidence: null
+);
+
+// Load a file from disk
+var inputSource = new LocalInputSource(filePath);
+
+// Upload the file
+var response = await mindeeClient.EnqueueAndGetInferenceAsync(
+    inputSource, inferenceParams);
+
+// Print a summary of the response
+System.Console.WriteLine(response.Inference.ToString());

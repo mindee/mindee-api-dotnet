@@ -1,6 +1,8 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Mindee.Input;
+using Mindee.V2.Product.Extraction;
+using Mindee.V2.Product.Extraction.Params;
 
 namespace Mindee.UnitTests.V2.Input
 {

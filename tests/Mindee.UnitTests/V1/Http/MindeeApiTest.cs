@@ -1,9 +1,9 @@
 using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Mindee.Exceptions;
-using Mindee.Http;
-using Mindee.Product.Invoice;
-using Mindee.Product.Receipt;
+using Mindee.V1.Http;
+using Mindee.V1.Product.Invoice;
+using Mindee.V1.Product.Receipt;
 
 namespace Mindee.UnitTests.V1.Http
 {

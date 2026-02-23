@@ -1,5 +1,5 @@
-using Mindee.Parsing.Common;
-using Mindee.Product.Cropper;
+using Mindee.V1.Parsing.Common;
+using Mindee.V1.Product.Cropper;
 
 namespace Mindee.UnitTests.V1.Product.Cropper
 {
