@@ -11,8 +11,10 @@ using Mindee.Pdf;
 using Mindee.V1.Http;
 using Mindee.V2.Http;
 using RestSharp;
-using Client = Mindee.V2.Client;
-using Settings = Mindee.V2.Http.Settings;
+using ClientV1 = Mindee.V1.Client;
+using ClientV2 = Mindee.V2.Client;
+using SettingsV1 = Mindee.V1.Http.Settings;
+using SettingsV2 = Mindee.V2.Http.Settings;
 
 namespace Mindee.Extensions.DependencyInjection
 {
@@ -68,7 +70,7 @@ namespace Mindee.Extensions.DependencyInjection
         /// <returns></returns>
         public static void AddMindeeApi(
             this IServiceCollection services,
-            Action<V1.Http.Settings> configureOptions,
+            Action<SettingsV1> configureOptions,
             bool throwOnError = false)
         {
             services.Configure(configureOptions);
@@ -76,7 +78,7 @@ namespace Mindee.Extensions.DependencyInjection
 
             services.AddSingleton(serviceProvider =>
             {
-                var settings = serviceProvider.GetRequiredService<IOptions<V1.Http.Settings>>();
+                var settings = serviceProvider.GetRequiredService<IOptions<SettingsV1>>();
 #if NET6_0_OR_GREATER
                     var restClient = serviceProvider.GetRequiredService<RestClient>();
 #else
@@ -97,7 +99,7 @@ namespace Mindee.Extensions.DependencyInjection
         /// <returns></returns>
         public static void AddMindeeApiV2(
             this IServiceCollection services,
-            Action<Settings> configureOptions,
+            Action<SettingsV2> configureOptions,
             ILoggerFactory loggerFactory = null,
             bool throwOnError = false)
         {
@@ -116,7 +118,7 @@ namespace Mindee.Extensions.DependencyInjection
 
             services.AddSingleton(serviceProvider =>
             {
-                var settings = serviceProvider.GetRequiredService<IOptions<Settings>>();
+                var settings = serviceProvider.GetRequiredService<IOptions<SettingsV2>>();
 #if NET6_0_OR_GREATER
                 var restClient = serviceProvider.GetRequiredKeyedService<RestClient>("MindeeV2RestClient");
 #else
@@ -132,7 +134,7 @@ namespace Mindee.Extensions.DependencyInjection
 #if NET6_0_OR_GREATER
             services.AddSingleton(provider =>
             {
-                var settings = provider.GetRequiredService<IOptions<V1.Http.Settings>>().Value;
+                var settings = provider.GetRequiredService<IOptions<SettingsV1>>().Value;
                 settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("Mindee__BaseUrl");
                 if (string.IsNullOrEmpty(settings.MindeeBaseUrl))
                 {
@@ -164,7 +166,7 @@ namespace Mindee.Extensions.DependencyInjection
             services.AddSingleton(provider =>
             {
                 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-                var settings = provider.GetRequiredService<IOptions<V1.Http.Settings>>().Value;
+                var settings = provider.GetRequiredService<IOptions<SettingsV1>>().Value;
                 settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("Mindee__BaseUrl");
                 if (string.IsNullOrEmpty(settings.MindeeBaseUrl))
                 {
@@ -200,7 +202,7 @@ namespace Mindee.Extensions.DependencyInjection
 #if NET6_0_OR_GREATER
             services.AddKeyedSingleton("MindeeV2RestClient", (provider, _) =>
             {
-                var settings = provider.GetRequiredService<IOptions<Settings>>().Value;
+                var settings = provider.GetRequiredService<IOptions<SettingsV2>>().Value;
                 settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("MindeeV2__BaseUrl");
                 if (string.IsNullOrEmpty(settings.MindeeBaseUrl))
                 {
@@ -233,7 +235,7 @@ namespace Mindee.Extensions.DependencyInjection
             services.AddSingleton(provider =>
             {
                 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-                var settings = provider.GetRequiredService<IOptions<Settings>>().Value;
+                var settings = provider.GetRequiredService<IOptions<SettingsV2>>().Value;
                 settings.MindeeBaseUrl = Environment.GetEnvironmentVariable("MindeeV2__BaseUrl");
                 if (string.IsNullOrEmpty(settings.MindeeBaseUrl))
                 {
@@ -302,10 +304,10 @@ namespace Mindee.Extensions.DependencyInjection
             this IServiceCollection services,
             string sectionName = "Mindee")
         {
-            services.AddSingleton<V1.Client>();
+            services.AddSingleton<ClientV1>();
             services.AddSingleton<IHttpApi>(provider =>
             {
-                var settings = provider.GetRequiredService<IOptions<V1.Http.Settings>>();
+                var settings = provider.GetRequiredService<IOptions<SettingsV1>>();
 #if NET6_0_OR_GREATER
                     var restClient = provider.GetRequiredService<RestClient>();
 #else
@@ -314,7 +316,7 @@ namespace Mindee.Extensions.DependencyInjection
                 var logger = provider.GetService<ILoggerFactory>()?.CreateLogger<MindeeApi>();
                 return new MindeeApi(settings, restClient, logger);
             });
-            services.AddOptions<V1.Http.Settings>()
+            services.AddOptions<SettingsV1>()
                 .BindConfiguration(sectionName)
                 .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee V1 API key is missing");
             RegisterV1RestSharpClient(services, false);
@@ -336,10 +338,10 @@ namespace Mindee.Extensions.DependencyInjection
             this IServiceCollection services,
             string sectionName = "MindeeV2")
         {
-            services.AddSingleton<Client>();
+            services.AddSingleton<ClientV2>();
             services.AddSingleton<HttpApiV2>(provider =>
             {
-                var settings = provider.GetRequiredService<IOptions<Settings>>();
+                var settings = provider.GetRequiredService<IOptions<SettingsV2>>();
 #if NET6_0_OR_GREATER
                     var restClient = provider.GetRequiredKeyedService<RestClient>("MindeeV2RestClient");
 #else
@@ -348,7 +350,7 @@ namespace Mindee.Extensions.DependencyInjection
                 var logger = provider.GetService<ILoggerFactory>()?.CreateLogger<MindeeApiV2>();
                 return new MindeeApiV2(settings, restClient, logger);
             });
-            services.AddOptions<Settings>()
+            services.AddOptions<SettingsV2>()
                 .BindConfiguration(sectionName)
                 .Validate(settings => !string.IsNullOrEmpty(settings.ApiKey), "The Mindee V2 API key is missing");
             RegisterV2RestSharpClient(services, false);
@@ -367,7 +369,7 @@ namespace Mindee.Extensions.DependencyInjection
             this IServiceCollection services)
             where TPdfOperationImplementation : class, IPdfOperation, new()
         {
-            services.AddSingleton<V1.Client>();
+            services.AddSingleton<ClientV1>();
             services.AddSingleton<IPdfOperation, TPdfOperationImplementation>();
 
             return services;
@@ -382,7 +384,7 @@ namespace Mindee.Extensions.DependencyInjection
             this IServiceCollection services)
             where TPdfOperationImplementation : class, IPdfOperation, new()
         {
-            services.AddSingleton<Client>();
+            services.AddSingleton<ClientV2>();
             services.AddSingleton<IPdfOperation, TPdfOperationImplementation>();
 
             return services;

@@ -10,9 +10,8 @@ using Mindee.V1;
 using Mindee.V1.Http;
 using Mindee.V2.Http;
 using Mindee.V2.Parsing;
-using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
-using Settings = Mindee.V2.Http.Settings;
+using SettingsV2 = Mindee.V2.Http.Settings;
 
 // ReSharper disable once RedundantUsingDirective
 
@@ -52,10 +51,10 @@ namespace Mindee.V2
         /// <summary>
         /// </summary>
         /// <param name="settings">
-        ///     <see cref="Http.Settings" />
+        ///     <see cref="V2.Http.Settings" />
         /// </param>
         /// <param name="logger"></param>
-        public Client(Settings settings, ILoggerFactory logger = null)
+        public Client(SettingsV2 settings, ILoggerFactory logger = null)
         {
             var loggerFactory = logger ?? NullLoggerFactory.Instance;
             var serviceCollection = new ServiceCollection();

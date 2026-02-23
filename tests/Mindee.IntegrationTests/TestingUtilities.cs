@@ -2,14 +2,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 // ReSharper disable once RedundantUsingDirective
 using Mindee.Extensions.DependencyInjection;
-using Client = Mindee.V2.Client;
+using ClientV1 = Mindee.V1.Client;
+using ClientV2 = Mindee.V2.Client;
 
 namespace Mindee.IntegrationTests
 {
     public static class TestingUtilities
     {
-        private static Mindee.V1.Client? _mindeeClient;
-        private static Client? _mindeeClientV2;
+        private static ClientV1? _mindeeClient;
+        private static ClientV2? _mindeeClientV2;
 
         /// <summary>
         ///     Gets the API version from an RST output
@@ -58,7 +59,7 @@ namespace Mindee.IntegrationTests
         /// </summary>
         /// <param name="apiKey">The API key for mindee.</param>
         /// <returns>A valid Mindee client instance.</returns>
-        public static Mindee.V1.Client GetOrGenerateMindeeClient(string? apiKey)
+        public static ClientV1 GetOrGenerateMindeeClient(string? apiKey)
         {
             if (_mindeeClient != null)
             {
@@ -70,7 +71,7 @@ namespace Mindee.IntegrationTests
             {
                 options.ApiKey = apiKey;
             }, true);
-            return _mindeeClient ??= new Mindee.V1.Client(apiKey);
+            return _mindeeClient ??= new ClientV1(apiKey);
         }
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace Mindee.IntegrationTests
         /// </summary>
         /// <param name="apiKey">The API key for mindee.</param>
         /// <returns>A valid Mindee client V2 instance.</returns>
-        public static Client GetOrGenerateMindeeClientV2(string? apiKey)
+        public static ClientV2 GetOrGenerateMindeeClientV2(string? apiKey)
         {
             if (_mindeeClientV2 != null)
             {
@@ -91,7 +92,7 @@ namespace Mindee.IntegrationTests
             {
                 options.ApiKey = apiKey;
             }, logger, true);
-            return _mindeeClientV2 ??= new Client(apiKey);
+            return _mindeeClientV2 ??= new ClientV2(apiKey);
         }
 
         /// <summary>
