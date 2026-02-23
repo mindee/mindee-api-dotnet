@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
@@ -21,6 +22,11 @@ namespace Mindee.V2.Product.Extraction
         /// </summary>
         [JsonPropertyName("result")]
         public ExtractionResult Result { get; set; }
+
+        /// <summary>
+        /// Type of the product's response.
+        /// </summary>
+        public static new Type ResponseType => typeof(ExtractionResponse);
 
         /// <summary>
         ///     A prettier representation.

@@ -3,7 +3,7 @@ using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Field;
 using Mindee.V2.Product.Extraction;
 
-namespace Mindee.UnitTests.V2.Parsing
+namespace Mindee.UnitTests.V2.Product
 {
     [Trait("Category", "V2")]
     [Trait("Category", "ExtractionInference")]
@@ -384,7 +384,7 @@ namespace Mindee.UnitTests.V2.Parsing
         {
             var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2RootDir + path));
-            return localResponse.DeserializeResponse<Mindee.V2.Product.Extraction.Extraction, ExtractionResponse>();
+            return localResponse.DeserializeResponse<ExtractionResponse>();
         }
 
         private void AssertInferenceResponse(ExtractionResponse response)

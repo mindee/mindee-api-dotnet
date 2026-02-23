@@ -6,11 +6,12 @@ namespace Mindee.V2.Parsing
     /// <summary>
     ///     Common response information from Mindee API V2.
     /// </summary>
-    public abstract class CommonResponse<TProduct> : BaseResponse where TProduct : BaseProduct, new()
+    public abstract class CommonInferenceResponse : BaseResponse
     {
         /// <summary>
-        /// Type of product returned by this response
+        /// Slug of the product.
         /// </summary>
-        public static Type ReturnType => typeof(TProduct);
+        public virtual string Slug { get; }
     }
+
 }

@@ -2,6 +2,7 @@ using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V2;
 using Mindee.V2.Parsing;
+using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
 
 namespace Mindee.IntegrationTests.V2
@@ -226,7 +227,7 @@ namespace Mindee.IntegrationTests.V2
         public async Task NotFound_Inference_MustThrowError()
         {
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
-                _client.GetResultAsync<Mindee.V2.Product.Extraction.Extraction>("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
+                _client.GetResultAsync<ExtractionResponse>("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
             Assert.Equal(404, ex.Status);
             Assert.StartsWith("404-", ex.Code);
         }

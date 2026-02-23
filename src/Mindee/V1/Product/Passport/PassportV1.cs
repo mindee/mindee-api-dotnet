@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.Passport
     /// Passport API version 1 inference prediction.
     /// </summary>
     [Endpoint("passport", "1")]
-    public sealed class PassportV1 : ExtractionInference<PassportV1Document, PassportV1Document>
+    public sealed class PassportV1 : Inference<PassportV1Document, PassportV1Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.

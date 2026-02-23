@@ -9,7 +9,6 @@ using Mindee.Input;
 using Mindee.V2.ClientOptions;
 using Mindee.V2.Http;
 using Mindee.V2.Parsing;
-using Mindee.V2.Product;
 using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
 using SettingsV2 = Mindee.V2.Http.Settings;
@@ -95,7 +94,7 @@ namespace Mindee.V2
         ///     <see cref="LocalInputSource" />
         ///     <see cref="UrlInputSource" />
         /// </param>
-        /// <param name="extractionParameters">
+        /// <param name="parameters">
         ///     <see cref="ExtractionParameters" />
         /// </param>
         /// <returns>
@@ -104,7 +103,7 @@ namespace Mindee.V2
         /// <exception cref="MindeeException"></exception>
         public async Task<JobResponse> EnqueueAsync(
             InputSource inputSource
-            , ExtractionParameters extractionParameters)
+            , BaseParameters parameters)
         {
             switch (inputSource)
             {
@@ -120,7 +119,7 @@ namespace Mindee.V2
                     throw new MindeeInputException($"Unsupported input source {inputSource.GetType().Name}");
             }
 
-            return await _mindeeApi.ReqPostEnqueueAsync(inputSource, extractionParameters);
+            return await _mindeeApi.ReqPostEnqueueAsync(inputSource, parameters);
         }
 
         /// <summary>
@@ -131,7 +130,7 @@ namespace Mindee.V2
         /// <returns>
         ///     <see cref="JobResponse" />
         /// </returns>
-        public async Task<JobResponse> GetJobAsync(string pollingUrl)
+        public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl)
         {
             _logger?.LogInformation("Getting Job at: {}", pollingUrl);
 
@@ -140,7 +139,7 @@ namespace Mindee.V2
                 throw new ArgumentNullException(pollingUrl);
             }
 
-            return await _mindeeApi.ReqGetJobAsync(pollingUrl);
+            return await _mindeeApi.ReqGetJobFromUrlAsync(pollingUrl);
         }
 
         /// <summary>
@@ -151,8 +150,8 @@ namespace Mindee.V2
         /// <returns>
         ///     <see cref="ExtractionResponse" />
         /// </returns>
-        public async Task<CommonResponse<TProduct>> GetResultAsync<TProduct>(string pollingUrl)
-            where TProduct : BaseProduct, new()
+        private async Task<TResponse> GetResultFromUrlAsync<TResponse>(string pollingUrl)
+            where TResponse : CommonInferenceResponse, new()
         {
             _logger?.LogInformation("Polling: {}", pollingUrl);
 
@@ -160,7 +159,46 @@ namespace Mindee.V2
             {
                 throw new ArgumentNullException(pollingUrl);
             }
-            return await _mindeeApi.ReqGetInferenceAsync<TProduct>(pollingUrl);
+            return await _mindeeApi.ReqGetResultFromUrlAsync<TResponse>(pollingUrl);
+        }
+
+        /// <summary>
+        ///     Get the status of an inference that was previously enqueued.
+        ///     Can be used for polling.
+        /// </summary>
+        /// <param name="jobId">The job id.</param>
+        /// <returns>
+        ///     <see cref="ExtractionResponse" />
+        /// </returns>
+        public async Task<TResponse> GetResultAsync<TResponse>(string jobId)
+            where TResponse : CommonInferenceResponse, new()
+        {
+            _logger?.LogInformation("Polling: {}", jobId);
+
+            if (string.IsNullOrWhiteSpace(jobId))
+            {
+                throw new ArgumentNullException(jobId);
+            }
+            return await _mindeeApi.ReqGetResultAsync<TResponse>(jobId);
+        }
+
+        /// <summary>
+        ///     Get the status of an inference that was previously enqueued.
+        ///     Can be used for polling.
+        /// </summary>
+        /// <param name="jobId">The job id.</param>
+        /// <returns>
+        ///     <see cref="ExtractionResponse" />
+        /// </returns>
+        public async Task<JobResponse> GetJobAsync(string jobId)
+        {
+            _logger?.LogInformation("Getting job {}", jobId);
+
+            if (string.IsNullOrWhiteSpace(jobId))
+            {
+                throw new ArgumentNullException(jobId);
+            }
+            return await _mindeeApi.ReqGetJobAsync(jobId);
         }
 
         /// <summary>
@@ -181,13 +219,7 @@ namespace Mindee.V2
             InputSource inputSource
             , ExtractionParameters extractionParameters)
         {
-            var response =
-                await EnqueueAndGetResultAsync<Product.Extraction.Extraction>(inputSource, extractionParameters);
-            if (response is ExtractionResponse extractionResponse)
-            {
-                return extractionResponse;
-            }
-            throw new MindeeException($"Unexpected response type '{response.GetType().Name}'.");
+            return await EnqueueAndGetResultAsync<ExtractionResponse>(inputSource, extractionParameters);
         }
 
         /// <summary>
@@ -204,10 +236,10 @@ namespace Mindee.V2
         ///     <see cref="ExtractionResponse" />
         /// </returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<CommonResponse<TProduct>> EnqueueAndGetResultAsync<TProduct>(
+        public async Task<TResponse> EnqueueAndGetResultAsync<TResponse>(
             InputSource inputSource
-            , ExtractionParameters extractionParameters)
-            where TProduct : BaseProduct, new()
+            , BaseParameters extractionParameters)
+            where TResponse : CommonInferenceResponse, new()
         {
             switch (inputSource)
             {
@@ -228,7 +260,7 @@ namespace Mindee.V2
             var enqueueResponse = await EnqueueAsync(
                 inputSource,
                 extractionParameters);
-            return await PollForResultsAsync<TProduct>(enqueueResponse, extractionParameters.PollingOptions);
+            return await PollForResultsAsync<TResponse>(enqueueResponse, extractionParameters.PollingOptions);
         }
 
         /// <summary>
@@ -244,9 +276,9 @@ namespace Mindee.V2
         ///     <see cref="ExtractionResponse" />
         /// </returns>
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
-        private async Task<CommonResponse<TProduct>> PollForResultsAsync<TProduct>(
+        private async Task<TResponse> PollForResultsAsync<TResponse>(
             JobResponse enqueueResponse,
-            PollingOptions pollingOptions) where TProduct : BaseProduct, new()
+            PollingOptions pollingOptions) where TResponse : CommonInferenceResponse, new()
         {
             var maxRetries = pollingOptions.MaxRetries + 1;
             var pollingUrl = enqueueResponse.Job.PollingUrl;
@@ -265,7 +297,7 @@ namespace Mindee.V2
                     retryCount,
                     maxRetries);
 
-                response = await GetJobAsync(pollingUrl);
+                response = await GetJobFromUrlAsync(pollingUrl);
                 if (response.Job.Error != null)
                 {
                     break;
@@ -274,7 +306,7 @@ namespace Mindee.V2
                 if (response.Job.Status.Equals("Processed"))
                 {
                     var resultUrl = response.Job.ResultUrl;
-                    return await GetResultAsync<TProduct>(resultUrl);
+                    return await GetResultFromUrlAsync<TResponse>(resultUrl);
                 }
 
                 retryCount++;

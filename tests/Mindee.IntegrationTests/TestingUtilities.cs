@@ -87,12 +87,15 @@ namespace Mindee.IntegrationTests
             }
 
             var serviceCollection = new ServiceCollection();
-            var logger = NullLoggerFactory.Instance;
+            var loggerFactory = NullLoggerFactory.Instance; // Use the factory
+
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = apiKey;
-            }, logger, true);
-            return _mindeeClientV2 ??= new ClientV2(apiKey);
+            }, loggerFactory, true);
+
+            // Pass the loggerFactory as the second parameter to the ClientV2 constructor
+            return _mindeeClientV2 ??= new ClientV2(apiKey, loggerFactory);
         }
 
         /// <summary>

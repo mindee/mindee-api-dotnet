@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.Fr.CarteGrise
     /// Carte Grise API version 1 inference prediction.
     /// </summary>
     [Endpoint("carte_grise", "1")]
-    public sealed class CarteGriseV1 : ExtractionInference<CarteGriseV1Document, CarteGriseV1Document>
+    public sealed class CarteGriseV1 : Inference<CarteGriseV1Document, CarteGriseV1Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.
