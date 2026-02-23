@@ -17,7 +17,7 @@ namespace Mindee.UnitTests.V2
             predictable.Setup(x => x.ReqPostEnqueueAsync(It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>())
             ).ReturnsAsync(new JobResponse());
 
-            predictable.Setup(x => x.ReqGetInferenceAsync<Mindee.V2.Product.Extraction.Extraction>(It.IsAny<string>())
+            predictable.Setup(x => x.ReqGetResultAsync<ExtractionResponse>(It.IsAny<string>())
             ).ReturnsAsync(new ExtractionResponse());
 
             predictable.Setup(x => x.ReqGetJobAsync(It.IsAny<string>())
@@ -51,11 +51,11 @@ namespace Mindee.UnitTests.V2
         {
             var predictable = new Mock<HttpApiV2>();
             var mindeeClient = MakeCustomMindeeClientV2(predictable);
-            var response = await mindeeClient.GetResultAsync<Mindee.V2.Product.Extraction.Extraction>("dummy-id");
+            var response = await mindeeClient.GetResultAsync<ExtractionResponse>("dummy-id");
             Assert.NotNull(response);
 
             predictable.Verify(
-                p => p.ReqGetInferenceAsync<Mindee.V2.Product.Extraction.Extraction>(It.IsAny<string>()),
+                p => p.ReqGetResultAsync<ExtractionResponse>(It.IsAny<string>()),
                 Times.AtMostOnce());
         }
 
@@ -77,7 +77,7 @@ namespace Mindee.UnitTests.V2
         {
             var localResponse = new LocalResponse(
                 new FileInfo(Constants.V2RootDir + "products/extraction/financial_document/complete.json"));
-            ExtractionResponse locallyLoadedResponse = localResponse.DeserializeResponse<Mindee.V2.Product.Extraction.Extraction, ExtractionResponse>();
+            ExtractionResponse locallyLoadedResponse = localResponse.DeserializeResponse<ExtractionResponse>();
             Assert.NotNull(locallyLoadedResponse);
             Assert.Equal("12345678-1234-1234-1234-123456789abc", locallyLoadedResponse.Inference.Model.Id);
             Assert.Equal("John Smith",

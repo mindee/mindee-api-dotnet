@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,6 @@ using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V2.ClientOptions;
 using Mindee.V2.Parsing;
-using Mindee.V2.Product;
 using Mindee.V2.Product.Extraction.Params;
 using RestSharp;
 #if NET6_0_OR_GREATER
@@ -62,9 +62,9 @@ namespace Mindee.V2.Http
             return HandleJobResponse(response);
         }
 
-        public override async Task<JobResponse> ReqGetJobAsync(string pollingUrl)
+        public override async Task<JobResponse> ReqGetJobAsync(string jobId)
         {
-            var request = new RestRequest(new Uri(pollingUrl));
+            var request = new RestRequest($"v2/jobs/{jobId}");
             Logger?.LogInformation("HTTP GET to {RequestResource}...", _baseUrl + request.Resource);
             var response = await _httpClient.ExecuteGetAsync(request);
             Logger?.LogDebug("HTTP response: {ResponseContent}", response.Content);
@@ -72,14 +72,34 @@ namespace Mindee.V2.Http
             return handledResponse;
         }
 
+        public override async Task<JobResponse> ReqGetJobFromUrlAsync(string pollingUrl)
+        {
+            var request = new RestRequest(new Uri(pollingUrl));
+            Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
+            var response = await _httpClient.ExecuteGetAsync(request);
+            Logger?.LogDebug("HTTP response: {ResponseContent}", response.Content);
+            var handledResponse = HandleJobResponse(response);
+            return handledResponse;
+        }
 
-        public override async Task<CommonResponse<TProduct>> ReqGetInferenceAsync<TProduct>(string resultUrl)
+
+        public override async Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId)
+        {
+            var slug = typeof(TResponse).GetCustomAttribute<EndpointSlugAttribute>();
+            var request = new RestRequest($"v2/products/{slug}/results/{inferenceId}");
+            Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
+            var queueResponse = await _httpClient.ExecuteGetAsync(request);
+            return HandleProductResponse<TResponse>(queueResponse);
+        }
+
+        public override async Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl)
         {
             var request = new RestRequest(new Uri(resultUrl));
             Logger?.LogInformation("HTTP GET to {RequestResource}...", resultUrl);
             var queueResponse = await _httpClient.ExecuteGetAsync(request);
-            return HandleProductResponse<TProduct>(queueResponse);
+            return HandleProductResponse<TResponse>(queueResponse);
         }
+
 
         private static void AddPredictRequestParameters(InputSource inputSource, BaseParameters parameters, RestRequest request)
         {
@@ -188,8 +208,8 @@ namespace Mindee.V2.Http
             return model ?? throw new MindeeException("Couldn't deserialize JobResponse.");
         }
 
-        private CommonResponse<TProduct> HandleProductResponse<TProduct>(RestResponse restResponse)
-            where TProduct : BaseProduct, new()
+        private TResponse HandleProductResponse<TResponse>(RestResponse restResponse)
+            where TResponse : CommonInferenceResponse, new()
         {
             Logger?.LogDebug("HTTP response: {RestResponseContent}", restResponse.Content);
 
@@ -201,9 +221,7 @@ namespace Mindee.V2.Http
                     GetErrorFromContent((int)restResponse.StatusCode, restResponse.Content));
             }
 
-            var responseType = typeof(TProduct).GetProperty("ResponseType")?.GetValue(null) as Type
-                               ?? typeof(CommonResponse<TProduct>);
-            return DeserializeResponse<TProduct>(restResponse.Content, responseType);
+            return DeserializeResponse<TResponse>(restResponse.Content);
 
         }
     }

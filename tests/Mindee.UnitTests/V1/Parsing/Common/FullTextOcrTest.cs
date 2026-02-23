@@ -9,7 +9,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
     {
         private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
 
-        private ExtractionInference<InternationalIdV2Document, InternationalIdV2Document> LoadInference()
+        private Inference<InternationalIdV2Document, InternationalIdV2Document> LoadInference()
         {
             var json = File.ReadAllText(Constants.V1RootDir + "extras/full_text_ocr/complete.json");
             var prediction = JsonSerializer.Deserialize<AsyncPredictResponse<InternationalIdV2>>(json, JsonOptions);

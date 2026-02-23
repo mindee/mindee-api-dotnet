@@ -1,7 +1,7 @@
+using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
-using Mindee.V1.Parsing;
 
 namespace Mindee.V2.Parsing
 {
@@ -34,6 +34,11 @@ namespace Mindee.V2.Parsing
         /// </summary>
         [JsonPropertyName("job")]
         public InferenceJob Job { get; set; }
+
+        /// <summary>
+        /// Type of the product's response.
+        /// </summary>
+        public virtual Type ResponseType { get; set; }
 
         /// <summary>
         ///

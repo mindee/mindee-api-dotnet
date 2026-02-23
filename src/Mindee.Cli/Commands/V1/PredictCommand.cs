@@ -30,7 +30,7 @@ namespace Mindee.Cli.Commands.V1
     class PredictCommand<TInferenceModel, TDoc, TPage> : Command
         where TDoc : IPrediction, new()
         where TPage : IPrediction, new()
-        where TInferenceModel : ExtractionInference<TDoc, TPage>, new()
+        where TInferenceModel : Inference<TDoc, TPage>, new()
     {
         private readonly Option<OutputType> _outputOption;
         private readonly Option<bool>? _allWordsOption;

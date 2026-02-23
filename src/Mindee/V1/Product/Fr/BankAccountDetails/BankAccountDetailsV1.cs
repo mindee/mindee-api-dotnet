@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.Fr.BankAccountDetails
     /// Bank Account Details API version 1 inference prediction.
     /// </summary>
     [Endpoint("bank_account_details", "1")]
-    public sealed class BankAccountDetailsV1 : ExtractionInference<BankAccountDetailsV1Document, BankAccountDetailsV1Document>
+    public sealed class BankAccountDetailsV1 : Inference<BankAccountDetailsV1Document, BankAccountDetailsV1Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.
