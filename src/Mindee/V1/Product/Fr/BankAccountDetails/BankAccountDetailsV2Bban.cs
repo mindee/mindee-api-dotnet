@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Mindee.Parsing;
 using Mindee.V1.Parsing;
 
 namespace Mindee.V1.Product.Fr.BankAccountDetails

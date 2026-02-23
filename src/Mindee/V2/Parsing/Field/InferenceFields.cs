@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Mindee.Parsing;
 using Mindee.V1.Parsing;
 
 namespace Mindee.V2.Parsing.Field

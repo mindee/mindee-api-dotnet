@@ -1,6 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using Mindee.V1.Parsing;
+using Mindee.Parsing;
 using Mindee.V2.Parsing;
 
 namespace Mindee.V2.Product.Extraction
@@ -8,32 +8,8 @@ namespace Mindee.V2.Product.Extraction
     /// <summary>
     ///     ExtractionInference object for the V2 API.
     /// </summary>
-    public class ExtractionInference
+    public sealed class ExtractionInference : BaseInference
     {
-        /// <summary>
-        ///     UUID of the ExtractionInference.
-        /// </summary>
-        [JsonPropertyName("id")]
-        public string Id { get; set; }
-
-        /// <summary>
-        ///     Job the inference belongs to.
-        /// </summary>
-        [JsonPropertyName("job")]
-        public InferenceJob Job { get; set; }
-
-        /// <summary>
-        ///     Model used for the inference.
-        /// </summary>
-        [JsonPropertyName("model")]
-        public InferenceModel Model { get; set; }
-
-        /// <summary>
-        ///     File used for the inference.
-        /// </summary>
-        [JsonPropertyName("file")]
-        public InferenceFile File { get; set; }
-
         /// <summary>
         ///     Options which were activated during the inference.
         /// </summary>
@@ -44,20 +20,14 @@ namespace Mindee.V2.Product.Extraction
         ///     Result of the inference.
         /// </summary>
         [JsonPropertyName("result")]
-        public InferenceResult Result { get; set; }
+        public ExtractionResult Result { get; set; }
 
         /// <summary>
         ///     A prettier representation.
         /// </summary>
         public override string ToString()
         {
-            var stringBuilder = new StringBuilder("Inference\n#########\n");
-            stringBuilder.Append(Job);
-            stringBuilder.Append("\n\n");
-            stringBuilder.Append(Model);
-            stringBuilder.Append("\n\n");
-            stringBuilder.Append(File);
-            stringBuilder.Append("\n\n");
+            var stringBuilder = new StringBuilder(base.ToString());
             stringBuilder.Append(ActiveOptions);
             stringBuilder.Append("\n\n");
             stringBuilder.Append(Result);
