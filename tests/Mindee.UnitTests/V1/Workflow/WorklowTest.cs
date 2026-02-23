@@ -1,9 +1,10 @@
 using System.Text.Json;
-using Mindee.Http;
 using Mindee.Input;
-using Mindee.Parsing.Common;
 using Mindee.Pdf;
-using Mindee.Product.Generated;
+using Mindee.V1;
+using Mindee.V1.Http;
+using Mindee.V1.Parsing.Common;
+using Mindee.V1.Product.Generated;
 using Moq;
 
 namespace Mindee.UnitTests.V1.Workflow
@@ -12,16 +13,16 @@ namespace Mindee.UnitTests.V1.Workflow
     [Trait("Category", "Workflow")]
     public abstract class WorklowTest
     {
-        private readonly MindeeClient client;
+        private readonly Client client;
         private readonly Mock<IHttpApi> mindeeApi;
-        private readonly Mock<MindeeClient> mockedClient;
+        private readonly Mock<Client> mockedClient;
 
         protected WorklowTest()
         {
             mindeeApi = new Mock<IHttpApi>();
             var pdfOperation = new Mock<IPdfOperation>();
-            client = new MindeeClient(pdfOperation.Object, mindeeApi.Object);
-            mockedClient = new Mock<MindeeClient>();
+            client = new Client(pdfOperation.Object, mindeeApi.Object);
+            mockedClient = new Mock<Client>();
         }
 
         [Fact]

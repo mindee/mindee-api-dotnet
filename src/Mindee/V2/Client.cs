@@ -1,0 +1,284 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using Mindee.Exceptions;
+using Mindee.Extensions.DependencyInjection;
+using Mindee.Input;
+using Mindee.V2.ClientOptions;
+using Mindee.V2.Http;
+using Mindee.V2.Parsing;
+using Mindee.V2.Product.Extraction.Params;
+using SettingsV2 = Mindee.V2.Http.Settings;
+
+namespace Mindee.V2
+{
+    /// <summary>
+    ///     The entry point to use the Mindee V2 API features.
+    /// </summary>
+    public sealed class Client
+    {
+        private readonly ILogger _logger;
+        private readonly HttpApiV2 _mindeeApi;
+
+        /// <summary>
+        /// </summary>
+        /// <param name="apiKey">The required API key to use the Mindee V2 API.</param>
+        /// <param name="loggerFactory">Factory for the logger.</param>
+        public Client(string apiKey, ILoggerFactory loggerFactory = null)
+        {
+            var loggerFactory1 = loggerFactory ?? LoggerFactory.Create(builder =>
+            {
+                builder.SetMinimumLevel(LogLevel.Debug);
+            });
+            _logger = loggerFactory1.CreateLogger<Client>();
+
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddMindeeApiV2(options =>
+            {
+                options.ApiKey = apiKey;
+            }, loggerFactory1);
+
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            _mindeeApi = serviceProvider.GetRequiredService<MindeeApiV2>();
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="settings">
+        ///     <see cref="V2.Http.Settings" />
+        /// </param>
+        /// <param name="logger"></param>
+        public Client(SettingsV2 settings, ILoggerFactory logger = null)
+        {
+            var loggerFactory = logger ?? NullLoggerFactory.Instance;
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddMindeeApiV2(options =>
+            {
+                options.ApiKey = settings.ApiKey;
+                options.MindeeBaseUrl = settings.MindeeBaseUrl;
+                options.RequestTimeoutSeconds = settings.RequestTimeoutSeconds;
+            }, loggerFactory);
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            if (logger != null)
+            {
+                MindeeLogger.Assign(logger);
+                _logger = MindeeLogger.GetLogger();
+            }
+
+            _mindeeApi = serviceProvider.GetRequiredService<MindeeApiV2>();
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="httpApi">
+        ///     <see cref="HttpApiV2" />
+        /// </param>
+        /// <param name="logger"></param>
+        public Client(HttpApiV2 httpApi, ILoggerFactory logger = null)
+        {
+            _mindeeApi = httpApi;
+            var loggerFactory = logger ?? NullLoggerFactory.Instance;
+            _logger = loggerFactory.CreateLogger<Client>();
+        }
+
+        /// <summary>
+        ///     Add a local input source to a Generated async queue.
+        /// </summary>
+        /// <param name="inputSource">
+        ///     <see cref="LocalInputSource" />
+        /// </param>
+        /// <param name="inferenceParameters">
+        ///     <see cref="InferenceParameters" />
+        /// </param>
+        /// <returns>
+        ///     <see cref="JobResponse" />
+        /// </returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<JobResponse> EnqueueInferenceAsync(
+            LocalInputSource inputSource
+            , InferenceParameters inferenceParameters)
+        {
+            _logger?.LogInformation("Enqueuing: local source");
+
+            return await _mindeeApi.ReqPostEnqueueInferenceAsync(inputSource, inferenceParameters);
+        }
+
+        /// <summary>
+        ///     Add a remote input source to a Generated async queue.
+        /// </summary>
+        /// <param name="inputSource">
+        ///     <see cref="LocalInputSource" />
+        /// </param>
+        /// <param name="inferenceParameters">
+        ///     <see cref="InferenceParameters" />
+        /// </param>
+        /// <returns>
+        ///     <see cref="JobResponse" />
+        /// </returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<JobResponse> EnqueueInferenceAsync(
+            UrlInputSource inputSource
+            , InferenceParameters inferenceParameters)
+        {
+            _logger?.LogInformation("Enqueuing: URL source");
+
+            return await _mindeeApi.ReqPostEnqueueInferenceAsync(inputSource, inferenceParameters);
+        }
+
+        /// <summary>
+        ///     Get the status of an inference that was previously enqueued.
+        ///     Can be used for polling.
+        /// </summary>
+        /// <param name="jobId">The job id.</param>
+        /// <returns>
+        ///     <see cref="JobResponse" />
+        /// </returns>
+        public async Task<JobResponse> GetJobAsync(string jobId)
+        {
+            _logger?.LogInformation("Getting Job: {}", jobId);
+
+            if (string.IsNullOrWhiteSpace(jobId))
+            {
+                throw new ArgumentNullException(jobId);
+            }
+
+            return await _mindeeApi.ReqGetJobAsync(jobId);
+        }
+
+        /// <summary>
+        ///     Get the status of an inference that was previously enqueued.
+        ///     Can be used for polling.
+        /// </summary>
+        /// <param name="inferenceId">The job id.</param>
+        /// <returns>
+        ///     <see cref="InferenceResponse" />
+        /// </returns>
+        public async Task<InferenceResponse> GetInferenceAsync(string inferenceId)
+        {
+            _logger?.LogInformation("Getting Inference: {}", inferenceId);
+
+            if (string.IsNullOrWhiteSpace(inferenceId))
+            {
+                throw new ArgumentNullException(inferenceId);
+            }
+
+            return await _mindeeApi.ReqGetInferenceAsync(inferenceId);
+        }
+
+
+        /// <summary>
+        ///     Add the URL source to an async queue, poll, and parse when complete.
+        /// </summary>
+        /// <param name="inputSource">
+        ///     <see cref="LocalInputSource" />
+        /// </param>
+        /// <param name="inferenceParameters">
+        ///     <see cref="InferenceParameters" />
+        /// </param>
+        /// <returns>
+        ///     <see cref="InferenceResponse" />
+        /// </returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<InferenceResponse> EnqueueAndGetInferenceAsync(
+            UrlInputSource inputSource
+            , InferenceParameters inferenceParameters)
+        {
+            _logger?.LogInformation("Enqueue and poll: URL source");
+
+            inferenceParameters.PollingOptions ??= new PollingOptions();
+
+            var enqueueResponse = await EnqueueInferenceAsync(
+                inputSource,
+                inferenceParameters);
+            return await PollForResultsAsync(enqueueResponse, inferenceParameters.PollingOptions);
+        }
+
+        /// <summary>
+        ///     Add the document to an async queue, poll, and parse when complete.
+        /// </summary>
+        /// <param name="inputSource">
+        ///     <see cref="LocalInputSource" />
+        /// </param>
+        /// <param name="inferenceParameters">
+        ///     <see cref="InferenceParameters" />
+        /// </param>
+        /// <returns>
+        ///     <see cref="InferenceResponse" />
+        /// </returns>
+        /// <exception cref="MindeeException"></exception>
+        public async Task<InferenceResponse> EnqueueAndGetInferenceAsync(
+            LocalInputSource inputSource
+            , InferenceParameters inferenceParameters)
+        {
+            _logger?.LogInformation("Enqueue and poll: local source");
+
+            inferenceParameters.PollingOptions ??= new PollingOptions();
+
+            var enqueueResponse = await EnqueueInferenceAsync(
+                inputSource,
+                inferenceParameters);
+            return await PollForResultsAsync(enqueueResponse, inferenceParameters.PollingOptions);
+        }
+
+        /// <summary>
+        ///     Poll for results until the prediction is retrieved or the max amount of attempts is reached.
+        /// </summary>
+        /// <param name="enqueueResponse">
+        ///     <see cref="JobResponse" />
+        /// </param>
+        /// <param name="pollingOptions">
+        ///     <see cref="PollingOptions" />
+        /// </param>
+        /// <returns>
+        ///     <see cref="InferenceResponse" />
+        /// </returns>
+        /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
+        private async Task<InferenceResponse> PollForResultsAsync(
+            JobResponse enqueueResponse,
+            PollingOptions pollingOptions)
+        {
+            var maxRetries = pollingOptions.MaxRetries + 1;
+            var jobId = enqueueResponse.Job.Id;
+            _logger?.LogInformation("Enqueued with job ID: {}", jobId);
+            _logger?.LogInformation(
+                "Waiting {} seconds before attempting to retrieve the document...",
+                pollingOptions.InitialDelaySec);
+            await Task.Delay(pollingOptions.InitialDelayMilliSec);
+            var retryCount = 1;
+            var response = enqueueResponse; // First init is only for error handling purposes.
+            while (retryCount < maxRetries)
+            {
+                await Task.Delay(pollingOptions.IntervalMilliSec);
+                _logger?.LogInformation(
+                    "Attempting to retrieve: {RetryCount} of {MaxRetries}",
+                    retryCount,
+                    maxRetries);
+
+                response = await GetJobAsync(jobId);
+                if (response.Job.Error != null)
+                {
+                    break;
+                }
+
+                if (response.Job.Status.Equals("Processed"))
+                {
+                    return await GetInferenceAsync(response.Job.Id);
+                }
+
+                retryCount++;
+            }
+
+            var error = response.Job.Error;
+            if (error != null)
+            {
+                throw new MindeeHttpExceptionV2(error);
+            }
+
+            throw new MindeeException($"Could not complete after {retryCount} attempts.");
+        }
+    }
+}

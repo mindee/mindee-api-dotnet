@@ -1,5 +1,5 @@
-using Mindee.Parsing.Common;
-using Mindee.Product.Fr.CarteGrise;
+using Mindee.V1.Parsing.Common;
+using Mindee.V1.Product.Fr.CarteGrise;
 
 namespace Mindee.UnitTests.V1.Product.Fr.CarteGrise
 {

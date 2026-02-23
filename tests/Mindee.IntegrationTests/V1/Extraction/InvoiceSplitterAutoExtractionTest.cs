@@ -1,8 +1,9 @@
 using Mindee.Extraction;
 using Mindee.Input;
-using Mindee.Parsing.Common;
-using Mindee.Product.Invoice;
-using Mindee.Product.InvoiceSplitter;
+using Mindee.V1.Extraction;
+using Mindee.V1.Parsing.Common;
+using Mindee.V1.Product.Invoice;
+using Mindee.V1.Product.InvoiceSplitter;
 
 namespace Mindee.IntegrationTests.V1.Extraction
 {

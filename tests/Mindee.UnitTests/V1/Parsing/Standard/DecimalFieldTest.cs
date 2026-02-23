@@ -1,4 +1,4 @@
-using Mindee.Parsing.Standard;
+using Mindee.V1.Parsing.Standard;
 
 namespace Mindee.UnitTests.V1.Parsing.Standard
 {

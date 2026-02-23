@@ -1,5 +1,4 @@
-using Mindee.Input;
-using Mindee.Parsing.V2;
+using Mindee.V2.Parsing;
 
 namespace Mindee.UnitTests.V2.Input
 {
