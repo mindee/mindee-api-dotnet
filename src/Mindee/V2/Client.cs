@@ -54,7 +54,7 @@ namespace Mindee.V2
         ///     <see cref="V2.Http.Settings" />
         /// </param>
         /// <param name="logger"></param>
-        public Client(Settings settings, ILoggerFactory logger = null)
+        public Client(SettingsV2 settings, ILoggerFactory logger = null)
         {
             var loggerFactory = logger ?? NullLoggerFactory.Instance;
             var serviceCollection = new ServiceCollection();
