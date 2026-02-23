@@ -337,7 +337,7 @@ namespace Mindee.V1
         /// <param name="pageOptions">
         ///     <see cref="PageOptions" />
         /// </param>
-        /// <param name="asyncPollingOptions">
+        /// <param name="pollingOptions">
         ///     <see cref="AsyncPollingOptions" />
         /// </param>
         /// <typeparam name="TInferenceModel">
@@ -353,14 +353,14 @@ namespace Mindee.V1
             , CustomEndpoint endpoint
             , PredictOptions predictOptions = null
             , PageOptions pageOptions = null
-            , AsyncPollingOptions asyncPollingOptions = null)
+            , AsyncPollingOptions pollingOptions = null)
             where TInferenceModel : GeneratedV1, new()
         {
             _logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
 
-            if (asyncPollingOptions == null)
+            if (pollingOptions == null)
             {
-                asyncPollingOptions = new AsyncPollingOptions();
+                pollingOptions = new AsyncPollingOptions();
             }
 
             var enqueueResponse = await EnqueueAsync<TInferenceModel>(
@@ -369,7 +369,7 @@ namespace Mindee.V1
                 predictOptions,
                 pageOptions);
 
-            return await PollForResultsAsync(enqueueResponse, endpoint, asyncPollingOptions);
+            return await PollForResultsAsync(enqueueResponse, endpoint, pollingOptions);
         }
 
 
@@ -385,7 +385,7 @@ namespace Mindee.V1
         /// <param name="predictOptions">
         ///     <see cref="PredictOptions" />
         /// </param>
-        /// <param name="asyncPollingOptions">
+        /// <param name="pollingOptions">
         ///     <see cref="AsyncPollingOptions" />
         /// </param>
         /// <typeparam name="TInferenceModel">
@@ -400,14 +400,14 @@ namespace Mindee.V1
             UrlInputSource inputSource
             , CustomEndpoint endpoint
             , PredictOptions predictOptions = null
-            , AsyncPollingOptions asyncPollingOptions = null)
+            , AsyncPollingOptions pollingOptions = null)
             where TInferenceModel : GeneratedV1, new()
         {
             _logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
 
-            if (asyncPollingOptions == null)
+            if (pollingOptions == null)
             {
-                asyncPollingOptions = new AsyncPollingOptions();
+                pollingOptions = new AsyncPollingOptions();
             }
 
             var enqueueResponse = await EnqueueAsync<TInferenceModel>(
@@ -415,7 +415,7 @@ namespace Mindee.V1
                 endpoint,
                 predictOptions);
 
-            return await PollForResultsAsync(enqueueResponse, endpoint, asyncPollingOptions);
+            return await PollForResultsAsync(enqueueResponse, endpoint, pollingOptions);
         }
 
         /// <summary>
@@ -634,7 +634,7 @@ namespace Mindee.V1
         /// <param name="pageOptions">
         ///     <see cref="PageOptions" />
         /// </param>
-        /// <param name="asyncPollingOptions">
+        /// <param name="pollingOptions">
         ///     <see cref="AsyncPollingOptions" />
         /// </param>
         /// <typeparam name="TInferenceModel">
@@ -649,14 +649,14 @@ namespace Mindee.V1
             LocalInputSource inputSource
             , PredictOptions predictOptions = null
             , PageOptions pageOptions = null
-            , AsyncPollingOptions asyncPollingOptions = null)
+            , AsyncPollingOptions pollingOptions = null)
             where TInferenceModel : class, new()
         {
             _logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
 
-            if (asyncPollingOptions == null)
+            if (pollingOptions == null)
             {
-                asyncPollingOptions = new AsyncPollingOptions();
+                pollingOptions = new AsyncPollingOptions();
             }
 
             var enqueueResponse = await EnqueueAsync<TInferenceModel>(
@@ -664,7 +664,7 @@ namespace Mindee.V1
                 predictOptions,
                 pageOptions);
 
-            return await PollForResultsAsync(enqueueResponse, asyncPollingOptions);
+            return await PollForResultsAsync(enqueueResponse, pollingOptions);
         }
 
 
@@ -677,7 +677,7 @@ namespace Mindee.V1
         /// <param name="predictOptions">
         ///     <see cref="PredictOptions" />
         /// </param>
-        /// <param name="asyncPollingOptions">
+        /// <param name="pollingOptions">
         ///     <see cref="AsyncPollingOptions" />
         /// </param>
         /// <typeparam name="TInferenceModel">
@@ -691,21 +691,21 @@ namespace Mindee.V1
         public async Task<AsyncPredictResponse<TInferenceModel>> EnqueueAndParseAsync<TInferenceModel>(
             UrlInputSource inputSource
             , PredictOptions predictOptions = null
-            , AsyncPollingOptions asyncPollingOptions = null)
+            , AsyncPollingOptions pollingOptions = null)
             where TInferenceModel : class, new()
         {
             _logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
 
-            if (asyncPollingOptions == null)
+            if (pollingOptions == null)
             {
-                asyncPollingOptions = new AsyncPollingOptions();
+                pollingOptions = new AsyncPollingOptions();
             }
 
             var enqueueResponse = await EnqueueAsync<TInferenceModel>(
                 inputSource,
                 predictOptions);
 
-            return await PollForResultsAsync(enqueueResponse, asyncPollingOptions);
+            return await PollForResultsAsync(enqueueResponse, pollingOptions);
         }
 
         /// <summary>
@@ -821,7 +821,7 @@ namespace Mindee.V1
         /// <param name="endpoint">
         ///     <see cref="CustomEndpoint" />
         /// </param>
-        /// <param name="asyncPollingOptions">
+        /// <param name="pollingOptions">
         ///     <see cref="AsyncPollingOptions" />
         /// </param>
         /// <returns>
@@ -831,21 +831,21 @@ namespace Mindee.V1
         private async Task<AsyncPredictResponse<TInferenceModel>> PollForResultsAsync<TInferenceModel>(
             AsyncPredictResponse<TInferenceModel> enqueueResponse,
             CustomEndpoint endpoint,
-            AsyncPollingOptions asyncPollingOptions)
+            AsyncPollingOptions pollingOptions)
             where TInferenceModel : GeneratedV1, new()
         {
-            var maxRetries = asyncPollingOptions.MaxRetries + 1;
+            var maxRetries = pollingOptions.MaxRetries + 1;
             var jobId = enqueueResponse.Job.Id;
             _logger?.LogInformation("Enqueued with job ID: {}", jobId);
             _logger?.LogInformation(
                 "Waiting {} seconds before attempting to retrieve the document...",
-                asyncPollingOptions.InitialDelaySec);
-            await Task.Delay(asyncPollingOptions.InitialDelayMilliSec);
+                pollingOptions.InitialDelaySec);
+            await Task.Delay(pollingOptions.InitialDelayMilliSec);
             var retryCount = 1;
             AsyncPredictResponse<TInferenceModel> response;
             while (retryCount < maxRetries)
             {
-                await Task.Delay(asyncPollingOptions.IntervalMilliSec);
+                await Task.Delay(pollingOptions.IntervalMilliSec);
                 _logger?.LogInformation("Attempting to retrieve: {RetryCount} of {MaxRetries}", retryCount, maxRetries);
                 response = await ParseQueuedAsync<TInferenceModel>(endpoint, jobId);
                 if (response.Document != null)
@@ -869,7 +869,7 @@ namespace Mindee.V1
         /// <param name="enqueueResponse">
         ///     <see cref="AsyncPredictResponse{TInferenceModel}" />
         /// </param>
-        /// <param name="asyncPollingOptions">
+        /// <param name="pollingOptions">
         ///     <see cref="AsyncPollingOptions" />
         /// </param>
         /// <returns>
@@ -878,21 +878,21 @@ namespace Mindee.V1
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
         private async Task<AsyncPredictResponse<TInferenceModel>> PollForResultsAsync<TInferenceModel>(
             AsyncPredictResponse<TInferenceModel> enqueueResponse,
-            AsyncPollingOptions asyncPollingOptions)
+            AsyncPollingOptions pollingOptions)
             where TInferenceModel : class, new()
         {
-            var maxRetries = asyncPollingOptions.MaxRetries + 1;
+            var maxRetries = pollingOptions.MaxRetries + 1;
             var jobId = enqueueResponse.Job.Id;
             _logger?.LogInformation("Enqueued with job ID: {}", jobId);
             _logger?.LogInformation(
                 "Waiting {} seconds before attempting to retrieve the document...",
-                asyncPollingOptions.InitialDelaySec);
-            await Task.Delay(asyncPollingOptions.InitialDelayMilliSec);
+                pollingOptions.InitialDelaySec);
+            await Task.Delay(pollingOptions.InitialDelayMilliSec);
             var retryCount = 1;
             AsyncPredictResponse<TInferenceModel> response;
             while (retryCount < maxRetries)
             {
-                await Task.Delay(asyncPollingOptions.IntervalMilliSec);
+                await Task.Delay(pollingOptions.IntervalMilliSec);
                 _logger?.LogInformation("Attempting to retrieve: {RetryCount} of {MaxRetries}", retryCount, maxRetries);
                 response = await ParseQueuedAsync<TInferenceModel>(jobId);
                 if (response.Document != null)
