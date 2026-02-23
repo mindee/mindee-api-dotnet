@@ -1,11 +1,11 @@
-using Mindee.ClientOptions;
 using Mindee.Exceptions;
+using Mindee.V1.ClientOptions;
 
 namespace Mindee.UnitTests.V1
 {
     [Trait("Category", "V1")]
     [Trait("Category", "Mindee client options")]
-    public class PollingOptionsTest
+    public class AsyncPollingOptionsTest
     {
         [Fact]
         public void InvalidPollingOptions_MustFail()

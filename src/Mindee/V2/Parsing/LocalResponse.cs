@@ -4,7 +4,7 @@ using System.Text.Json;
 namespace Mindee.V2.Parsing
 {
     /// <summary>
-    /// Implementation of BaseLocalResponse for V1.
+    /// Implementation of BaseLocalResponse for V2.
     /// </summary>
     public class LocalResponse : Mindee.Parsing.BaseLocalResponse
     {

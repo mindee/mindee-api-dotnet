@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Mindee.ClientOptions;
 
 namespace Mindee.V2.ClientOptions
 {
@@ -26,7 +25,7 @@ namespace Mindee.V2.ClientOptions
         /// <summary>
         ///     Options for polling. Set only if having timeout issues.
         /// </summary>
-        public AsyncPollingOptions PollingOptions { get; set; }
+        public PollingOptions PollingOptions { get; set; }
 
         /// <summary>
         /// </summary>
@@ -44,7 +43,7 @@ namespace Mindee.V2.ClientOptions
             string modelId,
             string alias,
             List<string> webhookIds,
-            AsyncPollingOptions pollingOptions
+            PollingOptions pollingOptions
         )
         {
             ModelId = modelId;

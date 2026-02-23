@@ -1,7 +1,7 @@
-using Mindee.ClientOptions;
 using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V1;
+using Mindee.V1.ClientOptions;
 using Mindee.V1.Http;
 using Mindee.V1.Product.Cropper;
 using Mindee.V1.Product.Generated;
@@ -189,7 +189,7 @@ namespace Mindee.IntegrationTests.V1
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
             var pollingOptions = new AsyncPollingOptions();
             var response = await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(
-                inputSource, pollingOptions: pollingOptions);
+                inputSource, asyncPollingOptions: pollingOptions);
 
             Assert.NotNull(response);
             Assert.NotNull(response.ApiRequest);
@@ -215,7 +215,7 @@ namespace Mindee.IntegrationTests.V1
                     "https://raw.githubusercontent.com/mindee/client-lib-test-data/main/v1/products/invoice_splitter/default_sample.pdf");
             var pollingOptions = new AsyncPollingOptions();
             var response = await _client.EnqueueAndParseAsync<InvoiceSplitterV1>(
-                inputSource, pollingOptions: pollingOptions);
+                inputSource, asyncPollingOptions: pollingOptions);
 
             Assert.NotNull(response);
             Assert.NotNull(response.ApiRequest);
@@ -241,7 +241,7 @@ namespace Mindee.IntegrationTests.V1
             var pollingOptions = new AsyncPollingOptions();
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
             var response = await _client.EnqueueAndParseAsync<GeneratedV1>(
-                inputSource, endpoint, pollingOptions: pollingOptions);
+                inputSource, endpoint, asyncPollingOptions: pollingOptions);
 
             Assert.NotNull(response);
             Assert.NotNull(response.ApiRequest);

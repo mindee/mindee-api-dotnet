@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Mindee.ClientOptions;
 using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
-using Mindee.V1.Http;
+using Mindee.V2.ClientOptions;
 using Mindee.V2.Http;
 using Mindee.V2.Parsing;
 using Mindee.V2.Product.Extraction.Params;
@@ -76,7 +75,7 @@ namespace Mindee.V2
         /// <summary>
         /// </summary>
         /// <param name="httpApi">
-        ///     <see cref="IHttpApi" />
+        ///     <see cref="HttpApiV2" />
         /// </param>
         /// <param name="logger"></param>
         public Client(HttpApiV2 httpApi, ILoggerFactory logger = null)
@@ -190,7 +189,7 @@ namespace Mindee.V2
         {
             _logger?.LogInformation("Enqueue and poll: URL source");
 
-            inferenceParameters.PollingOptions ??= new AsyncPollingOptions();
+            inferenceParameters.PollingOptions ??= new PollingOptions();
 
             var enqueueResponse = await EnqueueInferenceAsync(
                 inputSource,
@@ -217,7 +216,7 @@ namespace Mindee.V2
         {
             _logger?.LogInformation("Enqueue and poll: local source");
 
-            inferenceParameters.PollingOptions ??= new AsyncPollingOptions();
+            inferenceParameters.PollingOptions ??= new PollingOptions();
 
             var enqueueResponse = await EnqueueInferenceAsync(
                 inputSource,
@@ -232,7 +231,7 @@ namespace Mindee.V2
         ///     <see cref="JobResponse" />
         /// </param>
         /// <param name="pollingOptions">
-        ///     <see cref="AsyncPollingOptions" />
+        ///     <see cref="PollingOptions" />
         /// </param>
         /// <returns>
         ///     <see cref="InferenceResponse" />
@@ -240,7 +239,7 @@ namespace Mindee.V2
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
         private async Task<InferenceResponse> PollForResultsAsync(
             JobResponse enqueueResponse,
-            AsyncPollingOptions pollingOptions)
+            PollingOptions pollingOptions)
         {
             var maxRetries = pollingOptions.MaxRetries + 1;
             var jobId = enqueueResponse.Job.Id;

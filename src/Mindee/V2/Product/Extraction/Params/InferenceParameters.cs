@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text.Json;
-using Mindee.ClientOptions;
 using Mindee.Exceptions;
 using Mindee.V2.ClientOptions;
 using Mindee.V2.Parsing.Field;
@@ -73,7 +72,7 @@ namespace Mindee.V2.Product.Extraction.Params
         ///     <see cref="TextContext" />
         /// </param>
         /// <param name="pollingOptions">
-        ///     <see cref="AsyncPollingOptions" />
+        ///     <see cref="PollingOptions" />
         /// </param>
         /// <param name="dataSchema">
         ///     <see cref="DataSchema" />
@@ -87,7 +86,7 @@ namespace Mindee.V2.Product.Extraction.Params
             bool? polygon = null,
             bool? confidence = null,
             string textContext = null,
-            AsyncPollingOptions pollingOptions = null,
+            PollingOptions pollingOptions = null,
             object dataSchema = null
         ) : base(
             modelId,
