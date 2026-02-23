@@ -7,7 +7,7 @@ namespace Mindee.UnitTests.V2.Product
 {
     [Trait("Category", "V2")]
     [Trait("Category", "ExtractionInference")]
-    public class ExtractionInferenceTest
+    public class ExtractionTest
     {
         [Fact]
         public void FinancialDocument_WhenEmpty_MustHaveValidProperties()

@@ -50,7 +50,7 @@ namespace Mindee.V2.Product.Extraction.Params
         public sealed override string Slug { get; protected set; }
 
         /// <summary>
-        ///     ExtractionInference parameters to set when sending a file.
+        ///     Extraction parameters to set when sending a file.
         /// </summary>
         /// <param name="modelId">
         ///     <see cref="BaseParameters.ModelId" />

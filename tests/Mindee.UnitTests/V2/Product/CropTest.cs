@@ -11,19 +11,22 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Crop_WhenSingle_MustHaveValidProperties()
         {
-            var response = GetInference("crop/crop_single.json");
+            var response = GetInference("products/crop/crop_single.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
 
+            // Validate inference metadata
             Assert.Equal("12345678-1234-1234-1234-123456789abc", inference.Id);
             Assert.Equal("test-model-id", inference.Model.Id);
             Assert.Equal("12345678-1234-1234-1234-jobid1234567", inference.Job.Id);
 
+            // Validate file metadata
             Assert.Equal("sample.jpeg", inference.File.Name);
             Assert.Equal(1, inference.File.PageCount);
             Assert.Equal("image/jpeg", inference.File.MimeType);
 
+            // Validate crops
             var crops = inference.Result.Crops;
             Assert.NotNull(crops);
             Assert.Single(crops);
@@ -43,7 +46,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Crop_WhenMultiple_MustHaveValidProperties()
         {
-            var response = GetInference("crop/crop_multiple.json");
+            var response = GetInference("products/crop/crop_multiple.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -51,9 +54,11 @@ namespace Mindee.UnitTests.V2.Product
             var job = inference.Job;
             Assert.Equal("12345678-1234-1234-1234-jobid1234567", job.Id);
 
+            // Validate inference metadata
             Assert.Equal("12345678-1234-1234-1234-123456789abc", inference.Id);
             Assert.Equal("test-model-id", inference.Model.Id);
 
+            // Validate file metadata
             Assert.Equal("default_sample.jpg", inference.File.Name);
             Assert.Equal(1, inference.File.PageCount);
             Assert.Equal("image/jpeg", inference.File.MimeType);
@@ -62,6 +67,7 @@ namespace Mindee.UnitTests.V2.Product
             Assert.NotNull(crops);
             Assert.Equal(2, crops.Count);
 
+            // Validate first crop item
             var firstCrop = crops[0];
             Assert.Equal("invoice", firstCrop.ObjectType);
             Assert.Equal(0, firstCrop.Location.Page);
@@ -73,6 +79,7 @@ namespace Mindee.UnitTests.V2.Product
             Assert.Equal(new Point(0.476, 0.979), firstPolygon[2]);
             Assert.Equal(new Point(0.214, 0.979), firstPolygon[3]);
 
+            // Validate second crop item
             var secondCrop = crops[1];
             Assert.Equal("invoice", secondCrop.ObjectType);
             Assert.Equal(0, secondCrop.Location.Page);
@@ -88,9 +95,10 @@ namespace Mindee.UnitTests.V2.Product
         [Fact(DisplayName = "crop_single.rst – RST display must be parsed and exposed")]
         public void RstDisplay_MustBeAccessible()
         {
-            var resp = GetInference("crop/crop_single.json");
+            // Arrange
+            var resp = GetInference("products/crop/crop_single.json");
             var rstReference = File.ReadAllText(
-                Constants.V2ProductDir + "crop/crop_single.rst");
+                Constants.V2RootDir + "products/crop/crop_single.rst");
 
             var inf = resp.Inference;
 
@@ -114,8 +122,8 @@ namespace Mindee.UnitTests.V2.Product
         private static CropResponse GetInference(string path)
         {
             var localResponse = new LocalResponse(
-                File.ReadAllText(Constants.V2ProductDir + path));
-            return localResponse.DeserializeResponse<CropResponse>();
+                File.ReadAllText(Constants.V2RootDir + path));
+            return localResponse.DeserializeResponse<Crop, CropResponse>();
         }
 
         private void AssertInferenceResponse(CropResponse response)

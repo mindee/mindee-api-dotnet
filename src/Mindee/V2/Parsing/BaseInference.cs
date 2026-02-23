@@ -1,15 +1,14 @@
-using System;
 using System.Text;
 using System.Text.Json.Serialization;
+using Mindee.Parsing;
 using Mindee.V1.Parsing;
-using Mindee.V2.Parsing;
 
-namespace Mindee.V2.Product.Extraction
+namespace Mindee.V2.Parsing
 {
     /// <summary>
-    ///     ExtractionInference object for the V2 API.
+    /// Base for all inference-based V2 products.
     /// </summary>
-    public class ExtractionInference
+    public abstract class BaseInference
     {
 
         /// <summary>
@@ -35,11 +34,6 @@ namespace Mindee.V2.Product.Extraction
         /// </summary>
         [JsonPropertyName("job")]
         public InferenceJob Job { get; set; }
-
-        /// <summary>
-        /// Type of the product's response.
-        /// </summary>
-        public virtual Type ResponseType { get; set; }
 
         /// <summary>
         ///

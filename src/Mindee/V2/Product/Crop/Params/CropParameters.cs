@@ -9,7 +9,7 @@ namespace Mindee.V2.Product.Crop.Params
     public class CropParameters : BaseParameters
     {
         /// <summary>
-        /// Slug for the crop product.
+        /// Slug for the extraction product.
         /// </summary>
         public sealed override string Slug { get; protected set; }
 
@@ -22,7 +22,7 @@ namespace Mindee.V2.Product.Crop.Params
         /// <param name="pollingOptions"></param>
         public CropParameters(
             string modelId,
-            string alias = null,
+            string alias,
             List<string> webhookIds = null,
             PollingOptions pollingOptions = null) : base(modelId, alias, webhookIds, pollingOptions)
         {
