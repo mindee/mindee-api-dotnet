@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.V1.Parsing;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Inference;
 using Mindee.V2.Parsing.Inference.Field;
