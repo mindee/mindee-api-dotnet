@@ -1,9 +1,7 @@
 using Mindee.Input;
-using Mindee.Parsing;
 using Mindee.V2;
 using Mindee.V2.Http;
 using Mindee.V2.Parsing;
-using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
 using Moq;
 

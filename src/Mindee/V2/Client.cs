@@ -7,14 +7,11 @@ using Mindee.ClientOptions;
 using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
-using Mindee.V1;
 using Mindee.V1.Http;
 using Mindee.V2.Http;
 using Mindee.V2.Parsing;
 using Mindee.V2.Product.Extraction.Params;
 using SettingsV2 = Mindee.V2.Http.Settings;
-
-// ReSharper disable once RedundantUsingDirective
 
 namespace Mindee.V2
 {

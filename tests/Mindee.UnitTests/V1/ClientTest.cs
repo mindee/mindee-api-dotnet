@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Input;
-using Mindee.Parsing;
 using Mindee.Pdf;
 using Mindee.V1;
 using Mindee.V1.Http;
+using Mindee.V1.Parsing;
 using Mindee.V1.Parsing.Common;
 using Mindee.V1.Product.Generated;
 using Mindee.V1.Product.InternationalId;

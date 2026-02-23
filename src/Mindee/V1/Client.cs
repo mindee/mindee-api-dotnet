@@ -799,7 +799,7 @@ namespace Mindee.V1
         /// <typeparam name="TInferenceModel"></typeparam>
         /// <returns></returns>
         public AsyncPredictResponse<TInferenceModel> LoadPrediction<TInferenceModel>(
-            LocalResponse localResponse)
+            BaseLocalResponse localResponse)
             where TInferenceModel : class, new()
         {
             var model = JsonSerializer.Deserialize<AsyncPredictResponse<TInferenceModel>>(localResponse.FileBytes);

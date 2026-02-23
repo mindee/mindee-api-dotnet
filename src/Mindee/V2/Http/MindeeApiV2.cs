@@ -43,14 +43,14 @@ namespace Mindee.V2.Http
         }
 
         public override async Task<JobResponse> ReqPostEnqueueInferenceAsync(
-            InputSource InputSource,
+            InputSource inputSource,
             InferenceParameters predictParameter
         )
         {
             var request = new RestRequest("v2/inferences/enqueue", Method.Post);
 
             request.AddParameter("model_id", predictParameter.ModelId);
-            AddPredictRequestParameters(InputSource, predictParameter, request);
+            AddPredictRequestParameters(inputSource, predictParameter, request);
 
             Logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
 
