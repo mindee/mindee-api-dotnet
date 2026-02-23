@@ -1,8 +1,10 @@
 using System.CommandLine;
 using System.Text.Json;
 using Mindee.Input;
-using Mindee.Parsing;
-using Mindee.Parsing.Common;
+using Mindee.V1;
+using Mindee.V1.ClientOptions;
+using Mindee.V1.Parsing;
+using Mindee.V1.Parsing.Common;
 
 namespace Mindee.Cli.Commands
 {
@@ -93,7 +95,7 @@ namespace Mindee.Cli.Commands
             Arguments.Add(_pathArgument);
         }
 
-        public void ConfigureAction(MindeeClient mindeeClient)
+        public void ConfigureAction(V1.Client mindeeClient)
         {
             this.SetAction(parseResult =>
             {
@@ -108,7 +110,7 @@ namespace Mindee.Cli.Commands
             });
         }
 
-        public class Handler(MindeeClient mindeeClient)
+        public class Handler(V1.Client mindeeClient)
         {
             private readonly JsonSerializerOptions _jsonSerializerOptions = new()
             {

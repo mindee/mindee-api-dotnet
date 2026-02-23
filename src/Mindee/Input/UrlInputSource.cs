@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Mindee.Exceptions;
-using Mindee.Http;
 using RestSharp;
 using RestSharp.Authenticators;
 
@@ -11,7 +10,7 @@ namespace Mindee.Input
     /// <summary>
     ///     Represent a document to parse.
     /// </summary>
-    public sealed class UrlInputSource
+    public sealed class UrlInputSource : InputSource
     {
         /// <summary>
         ///     Construct from string.

@@ -13,7 +13,7 @@ namespace Mindee.Input
     /// <summary>
     ///     Represent a document to parse.
     /// </summary>
-    public sealed class LocalInputSource
+    public sealed class LocalInputSource : InputSource
     {
         private static readonly string[] AuthorizedFileExtensions =
         [

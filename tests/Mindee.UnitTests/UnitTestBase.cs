@@ -6,11 +6,13 @@ using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 // ReSharper disable once RedundantUsingDirective
 using Mindee.Extensions.DependencyInjection;
-using Mindee.Http;
 using Mindee.Input;
+using Mindee.V1.Http;
+using Mindee.V2.Http;
 using Moq;
 using Moq.Protected;
 using RestSharp;
+using SettingsV1 = Mindee.V1.Http.Settings;
 
 namespace Mindee.UnitTests
 {
@@ -34,7 +36,7 @@ namespace Mindee.UnitTests
         {
             var services = new ServiceCollection();
             services.AddOptions();
-            services.Configure<MindeeSettings>(options =>
+            services.Configure<SettingsV1>(options =>
             {
                 options.ApiKey = "MyKey";
                 options.MindeeBaseUrl = "https://api.mindee.net";
@@ -77,7 +79,7 @@ namespace Mindee.UnitTests
         {
             var services = new ServiceCollection();
             services.AddOptions();
-            services.Configure<MindeeSettings>(options =>
+            services.Configure<SettingsV1>(options =>
             {
                 options.ApiKey = "MyKey";
                 options.MindeeBaseUrl = "https://api-v2.mindee.com";

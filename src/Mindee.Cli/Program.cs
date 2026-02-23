@@ -1,83 +1,82 @@
 using System.CommandLine;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Mindee;
 using Mindee.Cli.Commands;
 using Mindee.Extensions.DependencyInjection;
 using PredictBankAccountDetailsCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.Fr.BankAccountDetails.BankAccountDetailsV2,
-    Mindee.Product.Fr.BankAccountDetails.BankAccountDetailsV2Document,
-    Mindee.Product.Fr.BankAccountDetails.BankAccountDetailsV2Document
+    Mindee.V1.Product.Fr.BankAccountDetails.BankAccountDetailsV2,
+    Mindee.V1.Product.Fr.BankAccountDetails.BankAccountDetailsV2Document,
+    Mindee.V1.Product.Fr.BankAccountDetails.BankAccountDetailsV2Document
 >;
 using PredictBankCheckCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.Us.BankCheck.BankCheckV1,
-    Mindee.Product.Us.BankCheck.BankCheckV1Page,
-    Mindee.Product.Us.BankCheck.BankCheckV1Document
+    Mindee.V1.Product.Us.BankCheck.BankCheckV1,
+    Mindee.V1.Product.Us.BankCheck.BankCheckV1Page,
+    Mindee.V1.Product.Us.BankCheck.BankCheckV1Document
 >;
 using PredictBarcodeReaderCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.BarcodeReader.BarcodeReaderV1,
-    Mindee.Product.BarcodeReader.BarcodeReaderV1Document,
-    Mindee.Product.BarcodeReader.BarcodeReaderV1Document
+    Mindee.V1.Product.BarcodeReader.BarcodeReaderV1,
+    Mindee.V1.Product.BarcodeReader.BarcodeReaderV1Document,
+    Mindee.V1.Product.BarcodeReader.BarcodeReaderV1Document
 >;
 using PredictCarteGriseCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.Fr.CarteGrise.CarteGriseV1,
-    Mindee.Product.Fr.CarteGrise.CarteGriseV1Document,
-    Mindee.Product.Fr.CarteGrise.CarteGriseV1Document
+    Mindee.V1.Product.Fr.CarteGrise.CarteGriseV1,
+    Mindee.V1.Product.Fr.CarteGrise.CarteGriseV1Document,
+    Mindee.V1.Product.Fr.CarteGrise.CarteGriseV1Document
 >;
 using PredictCropperCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.Cropper.CropperV1,
-    Mindee.Product.Cropper.CropperV1Page,
-    Mindee.Product.Cropper.CropperV1Document
+    Mindee.V1.Product.Cropper.CropperV1,
+    Mindee.V1.Product.Cropper.CropperV1Page,
+    Mindee.V1.Product.Cropper.CropperV1Document
 >;
 using PredictFinancialDocumentCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.FinancialDocument.FinancialDocumentV1,
-    Mindee.Product.FinancialDocument.FinancialDocumentV1Document,
-    Mindee.Product.FinancialDocument.FinancialDocumentV1Document
+    Mindee.V1.Product.FinancialDocument.FinancialDocumentV1,
+    Mindee.V1.Product.FinancialDocument.FinancialDocumentV1Document,
+    Mindee.V1.Product.FinancialDocument.FinancialDocumentV1Document
 >;
 using PredictHealthCardCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.Fr.HealthCard.HealthCardV1,
-    Mindee.Product.Fr.HealthCard.HealthCardV1Document,
-    Mindee.Product.Fr.HealthCard.HealthCardV1Document
+    Mindee.V1.Product.Fr.HealthCard.HealthCardV1,
+    Mindee.V1.Product.Fr.HealthCard.HealthCardV1Document,
+    Mindee.V1.Product.Fr.HealthCard.HealthCardV1Document
 >;
 using PredictIdCardCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.Fr.IdCard.IdCardV2,
-    Mindee.Product.Fr.IdCard.IdCardV2Page,
-    Mindee.Product.Fr.IdCard.IdCardV2Document
+    Mindee.V1.Product.Fr.IdCard.IdCardV2,
+    Mindee.V1.Product.Fr.IdCard.IdCardV2Page,
+    Mindee.V1.Product.Fr.IdCard.IdCardV2Document
 >;
 using PredictInternationalIdCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.InternationalId.InternationalIdV2,
-    Mindee.Product.InternationalId.InternationalIdV2Document,
-    Mindee.Product.InternationalId.InternationalIdV2Document
+    Mindee.V1.Product.InternationalId.InternationalIdV2,
+    Mindee.V1.Product.InternationalId.InternationalIdV2Document,
+    Mindee.V1.Product.InternationalId.InternationalIdV2Document
 >;
 using PredictInvoiceCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.Invoice.InvoiceV4,
-    Mindee.Product.Invoice.InvoiceV4Document,
-    Mindee.Product.Invoice.InvoiceV4Document
+    Mindee.V1.Product.Invoice.InvoiceV4,
+    Mindee.V1.Product.Invoice.InvoiceV4Document,
+    Mindee.V1.Product.Invoice.InvoiceV4Document
 >;
 using PredictInvoiceSplitterCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.InvoiceSplitter.InvoiceSplitterV1,
-    Mindee.Product.InvoiceSplitter.InvoiceSplitterV1Document,
-    Mindee.Product.InvoiceSplitter.InvoiceSplitterV1Document
+    Mindee.V1.Product.InvoiceSplitter.InvoiceSplitterV1,
+    Mindee.V1.Product.InvoiceSplitter.InvoiceSplitterV1Document,
+    Mindee.V1.Product.InvoiceSplitter.InvoiceSplitterV1Document
 >;
 using PredictMultiReceiptsDetectorCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.MultiReceiptsDetector.MultiReceiptsDetectorV1,
-    Mindee.Product.MultiReceiptsDetector.MultiReceiptsDetectorV1Document,
-    Mindee.Product.MultiReceiptsDetector.MultiReceiptsDetectorV1Document
+    Mindee.V1.Product.MultiReceiptsDetector.MultiReceiptsDetectorV1,
+    Mindee.V1.Product.MultiReceiptsDetector.MultiReceiptsDetectorV1Document,
+    Mindee.V1.Product.MultiReceiptsDetector.MultiReceiptsDetectorV1Document
 >;
 using PredictPassportCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.Passport.PassportV1,
-    Mindee.Product.Passport.PassportV1Document,
-    Mindee.Product.Passport.PassportV1Document
+    Mindee.V1.Product.Passport.PassportV1,
+    Mindee.V1.Product.Passport.PassportV1Document,
+    Mindee.V1.Product.Passport.PassportV1Document
 >;
 using PredictPayslipCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.Fr.Payslip.PayslipV3,
-    Mindee.Product.Fr.Payslip.PayslipV3Document,
-    Mindee.Product.Fr.Payslip.PayslipV3Document
+    Mindee.V1.Product.Fr.Payslip.PayslipV3,
+    Mindee.V1.Product.Fr.Payslip.PayslipV3Document,
+    Mindee.V1.Product.Fr.Payslip.PayslipV3Document
 >;
 using PredictReceiptCommand = Mindee.Cli.Commands.PredictCommand<
-    Mindee.Product.Receipt.ReceiptV5,
-    Mindee.Product.Receipt.ReceiptV5Document,
-    Mindee.Product.Receipt.ReceiptV5Document
+    Mindee.V1.Product.Receipt.ReceiptV5,
+    Mindee.V1.Product.Receipt.ReceiptV5Document,
+    Mindee.V1.Product.Receipt.ReceiptV5Document
 >;
 
 // Setup dependency injection
@@ -96,7 +95,7 @@ return await root.Parse(args).InvokeAsync();
 static RootCommand BuildCommandLine(IServiceProvider services)
 {
     var root = new RootCommand();
-    var mindeeClient = services.GetRequiredService<MindeeClient>();
+    var mindeeClient = services.GetRequiredService<Mindee.V1.Client>();
 
     var barcodeReaderCmd = new PredictBarcodeReaderCommand(new CommandOptions(
         "barcode-reader", "Barcode Reader",
@@ -194,7 +193,7 @@ static RootCommand BuildCommandLine(IServiceProvider services)
     };
     root.Options.Add(silentOption);
 
-    root.SetAction(parseResult =>
+    root.SetAction(_ =>
     {
         Console.WriteLine("Please specify a subcommand. Use --help for more information.");
         return 1;

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Mindee.Parsing.V2;
+using Mindee.V2.Parsing;
 
 namespace Mindee.Exceptions
 {
