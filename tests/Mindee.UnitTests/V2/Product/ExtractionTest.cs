@@ -383,7 +383,7 @@ namespace Mindee.UnitTests.V2.Product
         {
             var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2RootDir + path));
-            return localResponse.DeserializeResponse<Mindee.V2.Product.Extraction.Extraction, ExtractionResponse>();
+            return localResponse.DeserializeResponse<ExtractionResponse>();
         }
 
         private void AssertInferenceResponse(ExtractionResponse response)

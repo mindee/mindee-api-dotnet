@@ -8,7 +8,7 @@ namespace Mindee.V1.Product.FinancialDocument
     /// Financial Document API version 1 inference prediction.
     /// </summary>
     [Endpoint("financial_document", "1")]
-    public sealed class FinancialDocumentV1 : ExtractionInference<FinancialDocumentV1Document, FinancialDocumentV1Document>
+    public sealed class FinancialDocumentV1 : Inference<FinancialDocumentV1Document, FinancialDocumentV1Document>
     {
         /// <summary>
         /// The pages and the associated values which were detected on the document.

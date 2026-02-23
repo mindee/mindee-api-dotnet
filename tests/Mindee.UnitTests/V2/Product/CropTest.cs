@@ -123,7 +123,7 @@ namespace Mindee.UnitTests.V2.Product
         {
             var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2RootDir + path));
-            return localResponse.DeserializeResponse<Crop, CropResponse>();
+            return localResponse.DeserializeResponse<CropResponse>();
         }
 
         private void AssertInferenceResponse(CropResponse response)

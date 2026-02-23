@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json.Serialization;
 using Mindee.V2.Parsing;
 
@@ -13,6 +14,11 @@ namespace Mindee.V2.Product.Crop
         /// </summary>
         [JsonPropertyName("result")]
         public CropResult Result { get; set; }
+
+        /// <summary>
+        /// Type of the product's response.
+        /// </summary>
+        public static new Type ResponseType => typeof(CropResponse);
 
         /// <summary>
         /// String representation of the crop inference.

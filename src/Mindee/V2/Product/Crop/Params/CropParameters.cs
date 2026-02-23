@@ -22,7 +22,7 @@ namespace Mindee.V2.Product.Crop.Params
         /// <param name="pollingOptions"></param>
         public CropParameters(
             string modelId,
-            string alias,
+            string alias = null,
             List<string> webhookIds = null,
             PollingOptions pollingOptions = null) : base(modelId, alias, webhookIds, pollingOptions)
         {

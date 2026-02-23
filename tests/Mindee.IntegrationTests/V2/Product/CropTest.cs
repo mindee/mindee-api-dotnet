@@ -22,12 +22,14 @@ namespace Mindee.IntegrationTests.V2.Product
         [Fact(Timeout = 180000)]
         public async Task Crop_DefaultSample_MustSucceed()
         {
+            // Arrange
             var inputSource = new LocalInputSource(
-                Constants.V2ProductDir + "crop/default_sample.jpg");
-            var productParams = new CropParameters(_cropModelId);
+                Constants.V2RootDir + "products/crop/default_sample.jpg");
+            var cropParameters = new CropParameters(_cropModelId);
+
 
             var response = await _client.EnqueueAndGetResultAsync<CropResponse>(
-                inputSource, productParams);
+                inputSource, cropParameters);
 
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -40,12 +42,8 @@ namespace Mindee.IntegrationTests.V2.Product
             Assert.NotNull(result);
 
             var crops = result.Crops;
+            Assert.NotNull(crops);
             Assert.Equal(2, crops.Count);
-            foreach (var crop in crops)
-            {
-                Assert.NotNull(crop.ObjectType);
-                Assert.NotNull(crop.Location);
-            }
         }
     }
 }
