@@ -24,10 +24,11 @@ namespace Mindee.IntegrationTests.V2.Product
         {
             var inputSource = new LocalInputSource(
                 Constants.V2RootDir + "products/split/default_sample.pdf");
-            var productParams = new SplitParameters(_splitModelId);
+            var splitParameters = new SplitParameters(_splitModelId);
+
 
             var response = await _client.EnqueueAndGetResultAsync<SplitResponse>(
-                inputSource, productParams);
+                inputSource, splitParameters);
 
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
