@@ -1,35 +1,35 @@
 using Mindee.Input;
 using Mindee.V2;
-using Mindee.V2.Product.Extraction;
-using Mindee.V2.Product.Extraction.Params;
+using Mindee.V2.Product.Classification;
+using Mindee.V2.Product.Classification.Params;
 
 namespace Mindee.IntegrationTests.V2.Product
 {
     [Trait("Category", "V2")]
     [Trait("Category", "Integration")]
-    public class ExtractionTest
+    public class ClassificationTest
     {
-        private readonly string? _extractionModelId;
+        private readonly string? _classificationModelId;
         private readonly Client _client;
 
-        public ExtractionTest()
+        public ClassificationTest()
         {
             var apiKey = Environment.GetEnvironmentVariable("MindeeV2__ApiKey");
             _client = TestingUtilities.GetOrGenerateMindeeClientV2(apiKey);
-            _extractionModelId = Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id");
+            _classificationModelId = Environment.GetEnvironmentVariable("MindeeV2__Classification__Model__Id");
         }
 
         [Fact(Timeout = 180000)]
-        public async Task Extraction_DefaultSample_MustSucceed()
+        public async Task Classification_DefaultSample_MustSucceed()
         {
             // Arrange
             var inputSource = new LocalInputSource(
-                Constants.V2RootDir + "products/extraction/default_sample.jpg");
-            var extractionParameters = new ExtractionParameters(_extractionModelId);
+                Constants.V2RootDir + "products/classification/default_sample.jpg");
+            var classificationParameters = new ClassificationParameters(_classificationModelId);
 
 
-            var response = await _client.EnqueueAndGetResultAsync<ExtractionResponse>(
-                inputSource, extractionParameters);
+            var response = await _client.EnqueueAndGetResultAsync<ClassificationResponse>(
+                inputSource, classificationParameters);
 
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -41,8 +41,8 @@ namespace Mindee.IntegrationTests.V2.Product
             var result = response.Inference.Result;
             Assert.NotNull(result);
 
-            var fields = result.Fields;
-            Assert.NotNull(fields);
+            var classifications = result.Classification;
+            Assert.NotNull(classifications);
         }
     }
 }

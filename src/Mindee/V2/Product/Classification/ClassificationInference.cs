@@ -1,27 +1,20 @@
-using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
 using Mindee.V2.Parsing;
 
-namespace Mindee.V2.Product.Extraction
+namespace Mindee.V2.Product.Classification
 {
     /// <summary>
-    ///     ExtractionInference object for the V2 API.
+    ///   Classification inference for the V2 API.
     /// </summary>
-    public sealed class ExtractionInference : BaseInference
+    public sealed class ClassificationInference : BaseInference
     {
-        /// <summary>
-        ///     Options which were activated during the inference.
-        /// </summary>
-        [JsonPropertyName("active_options")]
-        public InferenceActiveOptions ActiveOptions { get; set; }
-
         /// <summary>
         ///     Result of the inference.
         /// </summary>
         [JsonPropertyName("result")]
-        public ExtractionResult Result { get; set; }
+        public ClassificationResult Result { get; set; }
 
         /// <summary>
         ///     A prettier representation.
@@ -29,10 +22,8 @@ namespace Mindee.V2.Product.Extraction
         public override string ToString()
         {
             var stringBuilder = new StringBuilder(base.ToString());
-            stringBuilder.Append(ActiveOptions);
-            stringBuilder.Append("\n\n");
             stringBuilder.Append(Result);
-            stringBuilder.Append("\n");
+            stringBuilder.Append('\n');
 
             return SummaryHelper.Clean(stringBuilder.ToString());
         }
