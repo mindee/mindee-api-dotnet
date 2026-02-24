@@ -1,34 +1,33 @@
 using Mindee.Input;
 using Mindee.V2;
-using Mindee.V2.Product.Crop;
-using Mindee.V2.Product.Crop.Params;
+using Mindee.V2.Product.Ocr;
+using Mindee.V2.Product.Ocr.Params;
 
 namespace Mindee.IntegrationTests.V2.Product
 {
     [Trait("Category", "V2")]
     [Trait("Category", "Integration")]
-    public class CropTest
+    public class OcrTest
     {
-        private readonly string? _cropModelId;
+        private readonly string? _ocrModelId;
         private readonly Client _client;
 
-        public CropTest()
+        public OcrTest()
         {
             var apiKey = Environment.GetEnvironmentVariable("MindeeV2__ApiKey");
             _client = TestingUtilities.GetOrGenerateMindeeClientV2(apiKey);
-            _cropModelId = Environment.GetEnvironmentVariable("MindeeV2__Crop__Model__Id");
+            _ocrModelId = Environment.GetEnvironmentVariable("MindeeV2__Ocr__Model__Id");
         }
 
         [Fact(Timeout = 180000)]
-        public async Task Crop_DefaultSample_MustSucceed()
+        public async Task Ocr_DefaultSample_MustSucceed()
         {
             var inputSource = new LocalInputSource(
-                Constants.V2RootDir + "products/crop/default_sample.jpg");
-            var cropParameters = new CropParameters(_cropModelId);
+                Constants.V2ProductDir + "ocr/default_sample.jpg");
+            var ocrParameters = new OcrParameters(_ocrModelId);
 
-
-            var response = await _client.EnqueueAndGetResultAsync<CropResponse>(
-                inputSource, cropParameters);
+            var response = await _client.EnqueueAndGetResultAsync<OcrResponse>(
+                inputSource, ocrParameters);
 
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -40,9 +39,8 @@ namespace Mindee.IntegrationTests.V2.Product
             var result = response.Inference.Result;
             Assert.NotNull(result);
 
-            var crops = result.Crops;
-            Assert.NotNull(crops);
-            Assert.Single(crops);
+            var pages = result.Pages;
+            Assert.Single(pages);
         }
     }
 }

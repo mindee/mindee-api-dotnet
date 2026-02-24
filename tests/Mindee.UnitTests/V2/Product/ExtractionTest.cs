@@ -290,7 +290,6 @@ namespace Mindee.UnitTests.V2.Product
         [Fact(DisplayName = "standard_field_types.rst – RST display must be parsed and exposed")]
         public void RstDisplay_mustBeAccessible()
         {
-            // Arrange
             var resp = GetInference("products/extraction/standard_field_types.json");
             var rstReference = File.ReadAllText(
                 Constants.V2RootDir + "products/extraction/standard_field_types.rst");
