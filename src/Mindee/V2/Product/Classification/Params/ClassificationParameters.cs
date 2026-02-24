@@ -9,7 +9,7 @@ namespace Mindee.V2.Product.Classification.Params
     public class ClassificationParameters : BaseParameters
     {
         /// <summary>
-        /// Slug for the extraction product.
+        /// Slug for the classification product.
         /// </summary>
         public sealed override string Slug { get; protected set; }
 

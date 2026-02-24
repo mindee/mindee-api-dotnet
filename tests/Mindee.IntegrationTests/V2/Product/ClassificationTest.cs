@@ -24,7 +24,7 @@ namespace Mindee.IntegrationTests.V2.Product
         {
             // Arrange
             var inputSource = new LocalInputSource(
-                Constants.V2RootDir + "products/classification/default_sample.jpg");
+                Constants.V2ProductDir + "classification/default_invoice.jpg");
             var classificationParameters = new ClassificationParameters(_classificationModelId);
 
 
@@ -36,7 +36,7 @@ namespace Mindee.IntegrationTests.V2.Product
 
             var file = response.Inference.File;
             Assert.NotNull(file);
-            Assert.Equal("default_sample.jpg", file.Name);
+            Assert.Equal("default_invoice.jpg", file.Name);
 
             var result = response.Inference.Result;
             Assert.NotNull(result);

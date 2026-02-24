@@ -227,7 +227,7 @@ namespace Mindee.IntegrationTests.V2
         public async Task NotFound_Inference_MustThrowError()
         {
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>
-                _client.GetResultAsync<ExtractionResponse>("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
+                _client.GetJobAsync("fc405e37-4ba4-4d03-aeba-533a8d1f0f21"));
             Assert.Equal(404, ex.Status);
             Assert.StartsWith("404-", ex.Code);
         }

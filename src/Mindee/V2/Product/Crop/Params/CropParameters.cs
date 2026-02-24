@@ -9,7 +9,7 @@ namespace Mindee.V2.Product.Crop.Params
     public class CropParameters : BaseParameters
     {
         /// <summary>
-        /// Slug for the extraction product.
+        /// Slug for the crop product.
         /// </summary>
         public sealed override string Slug { get; protected set; }
 
