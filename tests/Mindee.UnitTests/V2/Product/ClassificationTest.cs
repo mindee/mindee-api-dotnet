@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Classification_WhenSingle_MustHaveValidProperties()
         {
-            var response = GetInference("classification/classification_single.json");
+            var response = GetInference("products/classification/classification_single.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -26,11 +26,10 @@ namespace Mindee.UnitTests.V2.Product
             var classification = inference.Result.Classification;
             Assert.Equal("invoice", classification.DocumentType);
         }
-
         private static ClassificationResponse GetInference(string path)
         {
             var localResponse = new LocalResponse(
-                File.ReadAllText(Constants.V2ProductDir + path));
+                File.ReadAllText(Constants.V2RootDir + path));
             return localResponse.DeserializeResponse<ClassificationResponse>();
         }
 
