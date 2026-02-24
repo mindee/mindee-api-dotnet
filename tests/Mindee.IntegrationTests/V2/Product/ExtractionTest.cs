@@ -22,9 +22,8 @@ namespace Mindee.IntegrationTests.V2.Product
         [Fact(Timeout = 180000)]
         public async Task Extraction_DefaultSample_MustSucceed()
         {
-            // Arrange
             var inputSource = new LocalInputSource(
-                Constants.V2RootDir + "products/extraction/default_sample.jpg");
+                Constants.V2ProductDir + "extraction/financial_document/default_sample.jpg");
             var extractionParameters = new ExtractionParameters(_extractionModelId);
 
 
