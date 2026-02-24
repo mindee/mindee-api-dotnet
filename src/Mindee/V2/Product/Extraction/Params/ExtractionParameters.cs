@@ -8,7 +8,7 @@ using Mindee.V2.Parsing.Inference.Field;
 namespace Mindee.V2.Product.Extraction.Params
 {
     /// <summary>
-    ///     ResultOptions to pass when calling methods using the predict API V2.
+    ///     Parameters for an extraction inference.
     /// </summary>
     public class ExtractionParameters : BaseParameters
     {

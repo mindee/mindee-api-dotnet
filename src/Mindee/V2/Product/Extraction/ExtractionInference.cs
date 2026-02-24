@@ -25,11 +25,6 @@ namespace Mindee.V2.Product.Extraction
         public ExtractionResult Result { get; set; }
 
         /// <summary>
-        /// Type of the product's response.
-        /// </summary>
-        public static new Type ResponseType => typeof(ExtractionResponse);
-
-        /// <summary>
         ///     A prettier representation.
         /// </summary>
         public override string ToString()
