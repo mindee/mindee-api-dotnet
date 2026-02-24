@@ -22,7 +22,6 @@ namespace Mindee.IntegrationTests.V2.Product
         [Fact(Timeout = 180000)]
         public async Task Classification_DefaultSample_MustSucceed()
         {
-            // Arrange
             var inputSource = new LocalInputSource(
                 Constants.V2ProductDir + "classification/default_invoice.jpg");
             var classificationParameters = new ClassificationParameters(_classificationModelId);

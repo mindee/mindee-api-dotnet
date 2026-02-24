@@ -22,7 +22,6 @@ namespace Mindee.IntegrationTests.V2.Product
         [Fact(Timeout = 180000)]
         public async Task Crop_DefaultSample_MustSucceed()
         {
-            // Arrange
             var inputSource = new LocalInputSource(
                 Constants.V2RootDir + "products/crop/default_sample.jpg");
             var cropParameters = new CropParameters(_cropModelId);
@@ -43,7 +42,7 @@ namespace Mindee.IntegrationTests.V2.Product
 
             var crops = result.Crops;
             Assert.NotNull(crops);
-            Assert.Equal(2, crops.Count);
+            Assert.Single(crops);
         }
     }
 }

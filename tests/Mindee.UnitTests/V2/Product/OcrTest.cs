@@ -15,11 +15,9 @@ namespace Mindee.UnitTests.V2.Product
 
             var inference = response.Inference;
 
-            // Validate inference metadata
             Assert.Equal("12345678-1234-1234-1234-123456789abc", inference.Id);
             Assert.Equal("test-model-id", inference.Model.Id);
 
-            // Validate file metadata
             Assert.Equal("default_sample.jpg", inference.File.Name);
             Assert.Equal(1, inference.File.PageCount);
             Assert.Equal("image/jpeg", inference.File.MimeType);
@@ -40,6 +38,31 @@ namespace Mindee.UnitTests.V2.Product
             Assert.Equal(4, fifthWord.Polygon.Count);
         }
 
+        [Fact]
+        public void Ocr_WhenMultiple_MustHaveValidProperties()
+        {
+            var response = GetInference("products/ocr/ocr_multiple.json");
+            AssertInferenceResponse(response);
+
+            var inference = response.Inference;
+
+            var job = inference.Job;
+            Assert.Equal("12345678-1234-1234-1234-jobid1234567", job.Id);
+
+            var model = inference.Model;
+            Assert.NotNull(model);
+
+            var pages = inference.Result.Pages;
+            Assert.NotNull(pages);
+            Assert.Equal(3, pages.Count);
+
+            foreach (var page in pages)
+            {
+                Assert.NotNull(page.Words);
+                Assert.NotNull(page.Content);
+                Assert.IsType<string>(page.Content);
+            }
+        }
 
         private static OcrResponse GetInference(string path)
         {
