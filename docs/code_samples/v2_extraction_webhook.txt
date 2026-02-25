@@ -11,7 +11,7 @@ string modelId = "MY_MODEL_ID";
 Client mindeeClient = new Client(apiKey);
 
 // Set inference parameters
-var inferenceParams = new InferenceParameters(
+var productParams = new ExtractionParameters(
     modelId: modelId
 
     // Add any number of webhook IDs here.
@@ -34,8 +34,8 @@ var inferenceParams = new InferenceParameters(
 var inputSource = new LocalInputSource(filePath);
 
 // Send for processing
-var response = await mindeeClient.EnqueueInferenceAsync(
-    inputSource, inferenceParams);
+var response = await mindeeClient.EnqueueAsync(
+    inputSource, productParams);
 
 string jobId = response.Job.Id;
 

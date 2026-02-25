@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Crop_WhenSingle_MustHaveValidProperties()
         {
-            var response = GetInference("products/crop/crop_single.json");
+            var response = GetInference("crop/crop_single.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -43,7 +43,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Crop_WhenMultiple_MustHaveValidProperties()
         {
-            var response = GetInference("products/crop/crop_multiple.json");
+            var response = GetInference("crop/crop_multiple.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -88,9 +88,9 @@ namespace Mindee.UnitTests.V2.Product
         [Fact(DisplayName = "crop_single.rst – RST display must be parsed and exposed")]
         public void RstDisplay_MustBeAccessible()
         {
-            var resp = GetInference("products/crop/crop_single.json");
+            var resp = GetInference("crop/crop_single.json");
             var rstReference = File.ReadAllText(
-                Constants.V2RootDir + "products/crop/crop_single.rst");
+                Constants.V2ProductDir + "crop/crop_single.rst");
 
             var inf = resp.Inference;
 
@@ -114,7 +114,7 @@ namespace Mindee.UnitTests.V2.Product
         private static CropResponse GetInference(string path)
         {
             var localResponse = new LocalResponse(
-                File.ReadAllText(Constants.V2RootDir + path));
+                File.ReadAllText(Constants.V2ProductDir + path));
             return localResponse.DeserializeResponse<CropResponse>();
         }
 

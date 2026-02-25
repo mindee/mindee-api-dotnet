@@ -24,11 +24,10 @@ namespace Mindee.IntegrationTests.V2.Product
         {
             var inputSource = new LocalInputSource(
                 Constants.V2ProductDir + "extraction/financial_document/default_sample.jpg");
-            var extractionParameters = new ExtractionParameters(_extractionModelId);
-
+            var productParams = new ExtractionParameters(_extractionModelId);
 
             var response = await _client.EnqueueAndGetResultAsync<ExtractionResponse>(
-                inputSource, extractionParameters);
+                inputSource, productParams);
 
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);

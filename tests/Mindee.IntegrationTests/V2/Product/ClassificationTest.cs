@@ -24,11 +24,10 @@ namespace Mindee.IntegrationTests.V2.Product
         {
             var inputSource = new LocalInputSource(
                 Constants.V2ProductDir + "classification/default_invoice.jpg");
-            var classificationParameters = new ClassificationParameters(_classificationModelId);
-
+            var productParams = new ClassificationParameters(_classificationModelId);
 
             var response = await _client.EnqueueAndGetResultAsync<ClassificationResponse>(
-                inputSource, classificationParameters);
+                inputSource, productParams);
 
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
