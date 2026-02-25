@@ -24,10 +24,10 @@ namespace Mindee.IntegrationTests.V2.Product
         {
             var inputSource = new LocalInputSource(
                 Constants.V2ProductDir + "ocr/default_sample.jpg");
-            var ocrParameters = new OcrParameters(_ocrModelId);
+            var productParams = new OcrParameters(_ocrModelId);
 
             var response = await _client.EnqueueAndGetResultAsync<OcrResponse>(
-                inputSource, ocrParameters);
+                inputSource, productParams);
 
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);

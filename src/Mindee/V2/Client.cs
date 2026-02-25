@@ -229,8 +229,8 @@ namespace Mindee.V2
         ///     <see cref="LocalInputSource" />
         ///     <see cref="UrlInputSource" />
         /// </param>
-        /// <param name="extractionParameters">
-        ///     <see cref="ExtractionParameters" />
+        /// <param name="parameters">
+        ///     <see cref="BaseParameters" />
         /// </param>
         /// <returns>
         ///     <see cref="ExtractionResponse" />
@@ -238,7 +238,7 @@ namespace Mindee.V2
         /// <exception cref="MindeeException"></exception>
         public async Task<TResponse> EnqueueAndGetResultAsync<TResponse>(
             InputSource inputSource
-            , BaseParameters extractionParameters)
+            , BaseParameters parameters)
             where TResponse : CommonInferenceResponse, new()
         {
             switch (inputSource)
@@ -255,12 +255,12 @@ namespace Mindee.V2
                     throw new MindeeInputException($"Unsupported input source {inputSource.GetType().Name}");
             }
 
-            extractionParameters.PollingOptions ??= new PollingOptions();
+            parameters.PollingOptions ??= new PollingOptions();
 
             var enqueueResponse = await EnqueueAsync(
                 inputSource,
-                extractionParameters);
-            return await PollForResultsAsync<TResponse>(enqueueResponse, extractionParameters.PollingOptions);
+                parameters);
+            return await PollForResultsAsync<TResponse>(enqueueResponse, parameters.PollingOptions);
         }
 
         /// <summary>
