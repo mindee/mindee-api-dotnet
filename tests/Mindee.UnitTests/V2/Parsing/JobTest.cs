@@ -14,6 +14,7 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.NotNull(response.Job);
             Assert.NotNull(response.Job.Id);
             Assert.Equal(2025, response.Job.CreatedAt.Year);
+            Assert.Null(response.Job.CompletedAt);
             Assert.StartsWith("https", response.Job.PollingUrl);
             Assert.Null(response.Job.ResultUrl);
             Assert.Null(response.Job.Error);
@@ -26,6 +27,7 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.NotNull(response.Job);
             Assert.NotNull(response.Job.Id);
             Assert.Equal(2026, response.Job.CreatedAt.Year);
+            Assert.Equal(2026, response.Job.CompletedAt?.Year);
             Assert.StartsWith("https", response.Job.PollingUrl);
             Assert.StartsWith("https", response.Job.ResultUrl);
             Assert.Null(response.Job.Error);
@@ -44,6 +46,7 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.NotNull(response.Job);
             Assert.NotNull(response.Job.Id);
             Assert.Equal(2025, response.Job.CreatedAt.Year);
+            Assert.Equal(2025, response.Job.CompletedAt?.Year);
             var error = response.Job.Error;
             Assert.NotNull(error);
             Assert.Equal(422, error.Status);

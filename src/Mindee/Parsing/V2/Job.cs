@@ -10,13 +10,6 @@ namespace Mindee.Parsing.V2
     public class Job
     {
         /// <summary>
-        ///     Date and time of the Job creation.
-        /// </summary>
-        [JsonPropertyName("created_at")]
-        [JsonConverter(typeof(DateTimeJsonConverter))]
-        public DateTime CreatedAt { get; set; }
-
-        /// <summary>
         ///     UUID of the Job.
         /// </summary>
         [JsonPropertyName("id")]
@@ -27,6 +20,20 @@ namespace Mindee.Parsing.V2
         /// </summary>
         [JsonPropertyName("status")]
         public string Status { get; set; }
+
+        /// <summary>
+        ///     Date and time of the Job creation.
+        /// </summary>
+        [JsonPropertyName("created_at")]
+        [JsonConverter(typeof(DateTimeJsonConverter))]
+        public DateTime CreatedAt { get; set; }
+
+        /// <summary>
+        ///     Date and time of the Job completion. Filled once processing is finished.
+        /// </summary>
+        [JsonPropertyName("completed_at")]
+        [JsonConverter(typeof(DateTimeJsonConverter))]
+        public DateTime? CompletedAt { get; set; }
 
         /// <summary>
         ///     If an error occurred during processing, contains the problem details.

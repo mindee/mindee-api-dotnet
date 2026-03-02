@@ -15,6 +15,12 @@ namespace Mindee.Parsing.V2
         public string Id { get; set; }
 
         /// <summary>
+        ///     Job the inference belongs to.
+        /// </summary>
+        [JsonPropertyName("job")]
+        public InferenceJob Job { get; set; }
+
+        /// <summary>
         ///     Model used for the inference.
         /// </summary>
         [JsonPropertyName("model")]
@@ -44,6 +50,8 @@ namespace Mindee.Parsing.V2
         public override string ToString()
         {
             var stringBuilder = new StringBuilder("Inference\n#########\n");
+            stringBuilder.Append(Job);
+            stringBuilder.Append("\n\n");
             stringBuilder.Append(Model);
             stringBuilder.Append("\n\n");
             stringBuilder.Append(File);
