@@ -1,5 +1,11 @@
 # Mindee .NET Client Library Changelog
 
+
+## v3.39.0 - 2026-03-02
+### Changes
+* :sparkles: add job information to inference
+
+
 ## v3.38.0 - 2026-02-11
 ### Changes
 * :sparkles: add missing accessors & fix broken simplefields accessors
