@@ -1,7 +1,7 @@
 using Mindee;
 using Mindee.Input;
 using Mindee.V2;
-using Mindee.V2.Product.Split.Params;
+using Mindee.V2.Product.Ocr.Params;
 
 string filePath = "/path/to/the/file.ext";
 string apiKey = "MY_API_KEY";
@@ -11,7 +11,7 @@ string modelId = "MY_MODEL_ID";
 Client mindeeClient = new Client(apiKey);
 
 // Set inference parameters
-var productParams = new SplitParameters(
+var productParams = new OcrParameters(
     modelId: modelId
 );
 
@@ -24,3 +24,6 @@ var response = await mindeeClient.EnqueueAndGetInferenceAsync(
 
 // Print a summary of the response
 System.Console.WriteLine(response.Inference.ToString());
+
+// Access the OCR result pages
+// List<OcrPage> ocrPages = response.Inference.Result.Pages;

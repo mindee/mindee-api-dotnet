@@ -36,3 +36,6 @@ var response = await mindeeClient.EnqueueAndGetInferenceAsync(
 
 // Print a summary of the response
 System.Console.WriteLine(response.Inference.ToString());
+
+// Access the extracted fields
+// InferenceFields extractedFields = response.Inference.Result.Fields;

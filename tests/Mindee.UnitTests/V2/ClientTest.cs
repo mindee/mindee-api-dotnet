@@ -58,7 +58,6 @@ namespace Mindee.UnitTests.V2
                 p => p.ReqGetResultAsync<ExtractionResponse>(It.IsAny<string>()),
                 Times.AtMostOnce());
         }
-        // NOTE: The EnqueueAndGetInferenceAsync() method is covered in the integration tests.
 
         [Fact]
         public async Task Document_GetJob_Async()

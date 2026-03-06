@@ -55,7 +55,7 @@ namespace Mindee.IntegrationTests.V2
                 polygon: polygon,
                 confidence: confidence);
 
-            var response = await _client.EnqueueAndGetInferenceAsync(
+            var response = await _client.EnqueueAndGetResultAsync<ExtractionResponse>(
                 inputSource, inferenceParams);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -119,7 +119,7 @@ namespace Mindee.IntegrationTests.V2
                 _findocModelId,
                 textContext: "this is an invoice.");
 
-            var response = await _client.EnqueueAndGetInferenceAsync(
+            var response = await _client.EnqueueAndGetResultAsync<ExtractionResponse>(
                 inputSource, inferenceParams);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -241,7 +241,7 @@ namespace Mindee.IntegrationTests.V2
 
             var inputSource = new UrlInputSource(new Uri(url));
             var inferenceParams = new ExtractionParameters(_findocModelId);
-            var response = await _client.EnqueueAndGetInferenceAsync(inputSource, inferenceParams);
+            var response = await _client.EnqueueAndGetResultAsync<ExtractionResponse>(inputSource, inferenceParams);
 
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
@@ -258,7 +258,7 @@ namespace Mindee.IntegrationTests.V2
                 _findocModelId,
                 dataSchema: dataSchemaContents);
 
-            var response = await _client.EnqueueAndGetInferenceAsync(
+            var response = await _client.EnqueueAndGetResultAsync<ExtractionResponse>(
                 inputSource, inferenceParams);
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
