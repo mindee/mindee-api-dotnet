@@ -10,7 +10,7 @@ namespace Mindee.Input
     /// <summary>
     ///     Represent a document to parse.
     /// </summary>
-    public sealed class UrlInputSource
+    public sealed class UrlInputSource : InputSource
     {
         /// <summary>
         ///     Construct from string.

@@ -1,0 +1,33 @@
+using System;
+using System.Globalization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace Mindee.V1.Parsing.Standard
+{
+    /// <summary>
+    /// </summary>
+    public class DecimalJsonConverter : JsonConverter<decimal?>
+    {
+        /// <summary>
+        /// </summary>
+        public override decimal? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var valueString = reader.GetString();
+            if (string.IsNullOrEmpty(valueString))
+            {
+                return null;
+            }
+
+            return decimal.Parse(valueString, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        ///     <see cref="Write(Utf8JsonWriter, decimal?, JsonSerializerOptions)" />
+        /// </summary>
+        public override void Write(Utf8JsonWriter writer, decimal? value, JsonSerializerOptions options)
+        {
+            throw new NotSupportedException();
+        }
+    }
+}

@@ -1,10 +1,11 @@
-using Mindee.Extraction;
 using Mindee.Input;
-using Mindee.Parsing.Common;
-using Mindee.Product.InvoiceSplitter;
+using Mindee.V1.Extraction;
+using Mindee.V1.Parsing.Common;
+using Mindee.V1.Product.InvoiceSplitter;
 
 namespace Mindee.UnitTests.Extraction
 {
+    [Collection("Docnet")]
     public class PdfExtractorTest
     {
         [Fact]

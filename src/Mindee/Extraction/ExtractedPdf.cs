@@ -60,7 +60,7 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        ///     Return the file in a format suitable for sending to MindeeClient for parsing.
+        ///     Return the file in a format suitable for sending to Mindee Client for parsing.
         /// </summary>
         /// <returns>an instance of <see cref="ExtractedPdf" /></returns>
         public LocalInputSource AsInputSource()

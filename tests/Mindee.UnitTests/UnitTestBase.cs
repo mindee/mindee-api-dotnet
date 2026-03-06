@@ -6,11 +6,13 @@ using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 // ReSharper disable once RedundantUsingDirective
 using Mindee.Extensions.DependencyInjection;
-using Mindee.Http;
 using Mindee.Input;
+using Mindee.V1.Http;
+using Mindee.V2.Http;
 using Moq;
 using Moq.Protected;
 using RestSharp;
+using SettingsV1 = Mindee.V1.Http.Settings;
 
 namespace Mindee.UnitTests
 {
@@ -34,7 +36,7 @@ namespace Mindee.UnitTests
         {
             var services = new ServiceCollection();
             services.AddOptions();
-            services.Configure<MindeeSettings>(options =>
+            services.Configure<SettingsV1>(options =>
             {
                 options.ApiKey = "MyKey";
                 options.MindeeBaseUrl = "https://api.mindee.net";
@@ -59,11 +61,16 @@ namespace Mindee.UnitTests
                 options.RequestTimeoutSeconds = 120;
             });
 
-            services.AddSingleton(new RestClient(new RestClientOptions
+            var restClient = new RestClient(new RestClientOptions
             {
                 BaseUrl = new Uri("https://api.mindee.net"),
                 ConfigureMessageHandler = _ => mockHttpMessageHandler.Object
-            }));
+            });
+#if NET6_0_OR_GREATER
+            services.AddSingleton(restClient);
+#else
+            services.AddSingleton(new MindeeV1RestClientWrapper(restClient));
+#endif
 
             return services.BuildServiceProvider();
         }
@@ -72,7 +79,7 @@ namespace Mindee.UnitTests
         {
             var services = new ServiceCollection();
             services.AddOptions();
-            services.Configure<MindeeSettings>(options =>
+            services.Configure<SettingsV1>(options =>
             {
                 options.ApiKey = "MyKey";
                 options.MindeeBaseUrl = "https://api-v2.mindee.com";
@@ -98,12 +105,16 @@ namespace Mindee.UnitTests
                 options.RequestTimeoutSeconds = 120;
             });
 
-            services.AddKeyedSingleton("MindeeV2RestClient",
-                new RestClient(new RestClientOptions
-                {
-                    BaseUrl = new Uri("https://api.mindee.net"),
-                    ConfigureMessageHandler = _ => mockHttpMessageHandler.Object
-                }));
+            var restClient = new RestClient(new RestClientOptions
+            {
+                BaseUrl = new Uri("https://api.mindee.net"),
+                ConfigureMessageHandler = _ => mockHttpMessageHandler.Object
+            });
+#if NET6_0_OR_GREATER
+            services.AddKeyedSingleton("MindeeV2RestClient", restClient);
+#else
+            services.AddSingleton(new MindeeV2RestClientWrapper(restClient));
+#endif
 
             return services.BuildServiceProvider();
         }

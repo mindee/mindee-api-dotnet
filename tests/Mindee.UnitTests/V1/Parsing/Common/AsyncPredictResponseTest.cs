@@ -1,6 +1,6 @@
 using System.Text.Json;
-using Mindee.Parsing.Common;
-using Mindee.Product.InvoiceSplitter;
+using Mindee.V1.Parsing.Common;
+using Mindee.V1.Product.InvoiceSplitter;
 
 namespace Mindee.UnitTests.V1.Parsing.Common
 {

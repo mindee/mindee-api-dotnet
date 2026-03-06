@@ -1,14 +1,16 @@
-using Mindee.Http;
 using Mindee.Input;
-using Mindee.Product.FinancialDocument;
-using Mindee.Product.Generated;
+using Mindee.V1;
+using Mindee.V1.Http;
+using Mindee.V1.Parsing.Common;
+using Mindee.V1.Product.FinancialDocument;
+using Mindee.V1.Product.Generated;
 
 namespace Mindee.IntegrationTests.V1.Workflow
 {
     [Trait("Category", "Integration")]
     public class WorkflowTest
     {
-        private readonly MindeeClient _client;
+        private readonly Client _client;
         private readonly LocalInputSource _ragMatchInputSource;
         private readonly LocalInputSource _ragNoMatchInputSource;
         private readonly string _workflowId;
@@ -24,7 +26,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
             _workflowId = Environment.GetEnvironmentVariable("Workflow__ID") ?? "";
         }
 
-        [Fact]
+        [Fact(Timeout = 180000)]
         public async Task Given_AWorkflowIdUpload_ShouldReturnACorrectWorkflowObject()
         {
             var currentDateTime = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
@@ -37,7 +39,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
             Assert.Equal(alias, response.Execution.File.Alias);
         }
 
-        [Fact]
+        [Fact(Timeout = 180000)]
         public async Task Given_AWorkflowIdPredictCustom_ShouldPollAndMatchRag()
         {
             var endpoint = new CustomEndpoint("financial_document", "mindee");
@@ -52,7 +54,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
             Assert.NotEmpty(response.Document.Inference.Extras.Rag.MatchingDocumentId);
         }
 
-        [Fact]
+        [Fact(Timeout = 180000)]
         public async Task Given_AWorkflowIdPredictOTS_ShouldPollAndMatchRag()
         {
             var options = new PredictOptions(
@@ -65,7 +67,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
             Assert.NotEmpty(response.Document.Inference.Extras.Rag.MatchingDocumentId);
         }
 
-        [Fact]
+        [Fact(Timeout = 180000)]
         public async Task Given_AWorkflowIdPredictOTS_ShouldPollAndNotMatchRag()
         {
             var options = new PredictOptions(
@@ -78,7 +80,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
             Assert.Null(response.Document.Inference.Extras.Rag.MatchingDocumentId);
         }
 
-        [Fact]
+        [Fact(Timeout = 180000)]
         public async Task Given_AWorkflowIdPredictCustom_ShouldPollWithoutRag()
         {
             var endpoint = new CustomEndpoint("financial_document", "mindee");
@@ -93,7 +95,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
             Assert.Null(response.Document.Inference.Extras.Rag);
         }
 
-        [Fact]
+        [Fact(Timeout = 180000)]
         public async Task Given_AWorkflowIdPredictOTS_ShouldPollWithoutRag()
         {
             var options = new PredictOptions(
