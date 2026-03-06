@@ -1,7 +1,6 @@
 using Mindee;
 using Mindee.Input;
 using Mindee.V2;
-using Mindee.V2.Product.Ocr;
 using Mindee.V2.Product.Ocr.Params;
 
 string filePath = "/path/to/the/file.ext";
@@ -20,7 +19,7 @@ var productParams = new OcrParameters(
 var inputSource = new LocalInputSource(filePath);
 
 // Upload the file
-var response = await mindeeClient.EnqueueAndGetResultAsync<OcrResponse>(
+var response = await mindeeClient.EnqueueAndGetInferenceAsync(
     inputSource, productParams);
 
 // Print a summary of the response

@@ -208,27 +208,6 @@ namespace Mindee.V2
         ///     <see cref="LocalInputSource" />
         ///     <see cref="UrlInputSource" />
         /// </param>
-        /// <param name="extractionParameters">
-        ///     <see cref="ExtractionParameters" />
-        /// </param>
-        /// <returns>
-        ///     <see cref="ExtractionResponse" />
-        /// </returns>
-        /// <exception cref="MindeeException"></exception>
-        public async Task<ExtractionResponse> EnqueueAndGetInferenceAsync(
-            InputSource inputSource
-            , ExtractionParameters extractionParameters)
-        {
-            return await EnqueueAndGetResultAsync<ExtractionResponse>(inputSource, extractionParameters);
-        }
-
-        /// <summary>
-        ///     Add the document to an async queue, poll, and parse when complete.
-        /// </summary>
-        /// <param name="inputSource">
-        ///     <see cref="LocalInputSource" />
-        ///     <see cref="UrlInputSource" />
-        /// </param>
         /// <param name="parameters">
         ///     <see cref="BaseParameters" />
         /// </param>
