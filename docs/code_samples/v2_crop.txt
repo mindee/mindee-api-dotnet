@@ -19,7 +19,7 @@ var productParams = new CropParameters(
 var inputSource = new LocalInputSource(filePath);
 
 // Upload the file
-var response = await mindeeClient.EnqueueAndGetInferenceAsync(
+var response = await mindeeClient.EnqueueAndGetResultAsync<CropResponse>(
     inputSource, productParams);
 
 // Print a summary of the response
