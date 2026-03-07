@@ -1,6 +1,7 @@
 using Mindee;
 using Mindee.Input;
 using Mindee.V2;
+using Mindee.V2.Product.Split;
 using Mindee.V2.Product.Split.Params;
 
 string filePath = "/path/to/the/file.ext";
