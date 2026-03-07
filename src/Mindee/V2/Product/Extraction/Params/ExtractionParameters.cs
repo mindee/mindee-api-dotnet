@@ -7,9 +7,9 @@ using Mindee.V2.Parsing.Field;
 namespace Mindee.V2.Product.Extraction.Params
 {
     /// <summary>
-    ///     ResultOptions to pass when calling methods using the predict API V2.
+    ///     Parameters for an extraction inference.
     /// </summary>
-    public class InferenceParameters : BaseParameters
+    public class ExtractionParameters : BaseParameters
     {
         /// <summary>
         ///     Enhance extraction accuracy with Retrieval-Augmented Generation.
@@ -45,7 +45,12 @@ namespace Mindee.V2.Product.Extraction.Params
         public DataSchema DataSchema { get; }
 
         /// <summary>
-        ///     Inference parameters to set when sending a file.
+        /// Slug for the extraction product.
+        /// </summary>
+        public sealed override string Slug { get; protected set; }
+
+        /// <summary>
+        ///     Extraction parameters to set when sending a file.
         /// </summary>
         /// <param name="modelId">
         ///     <see cref="BaseParameters.ModelId" />
@@ -77,7 +82,7 @@ namespace Mindee.V2.Product.Extraction.Params
         /// <param name="dataSchema">
         ///     <see cref="DataSchema" />
         /// </param>
-        public InferenceParameters(
+        public ExtractionParameters(
             string modelId,
             string alias = null,
             List<string> webhookIds = null,
@@ -114,6 +119,7 @@ namespace Mindee.V2.Product.Extraction.Params
                 null => null,
                 _ => throw new MindeeInputException("Invalid Data Schema format.")
             };
+            Slug = "extraction";
         }
     }
 }

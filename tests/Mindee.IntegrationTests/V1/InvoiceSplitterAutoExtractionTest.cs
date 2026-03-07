@@ -1,11 +1,11 @@
-using Mindee.Extraction;
 using Mindee.Input;
+using Mindee.Pdf;
 using Mindee.V1.Extraction;
 using Mindee.V1.Parsing.Common;
 using Mindee.V1.Product.Invoice;
 using Mindee.V1.Product.InvoiceSplitter;
 
-namespace Mindee.IntegrationTests.V1.Extraction
+namespace Mindee.IntegrationTests.V1
 {
     [Trait("Category", "Integration")]
     public class InvoiceSplitterAutoExtractionTest

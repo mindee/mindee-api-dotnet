@@ -1,5 +1,4 @@
 using System;
-using Mindee.ClientOptions;
 using Mindee.Exceptions;
 
 namespace Mindee.V2.ClientOptions

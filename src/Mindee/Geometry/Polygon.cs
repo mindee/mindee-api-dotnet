@@ -95,12 +95,7 @@ namespace Mindee.Geometry
         /// </summary>
         public override string ToString()
         {
-            if (Count > 0)
-            {
-                return $"Polygon with {Count} points.";
-            }
-
-            return "";
+            return $"({string.Join(", ", this.Select(p => $"({p.X},{p.Y})"))})";
         }
 
         /// <summary>

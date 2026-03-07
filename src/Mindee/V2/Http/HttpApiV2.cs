@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 using Mindee.Input;
+using Mindee.V2.ClientOptions;
 using Mindee.V2.Parsing;
-using Mindee.V2.Product.Extraction.Params;
 
 namespace Mindee.V2.Http
 {
@@ -27,14 +27,20 @@ namespace Mindee.V2.Http
         /// <summary>
         ///     Do a prediction according parameters for a custom model defined in the Studio.
         /// </summary>
-        /// <param name="predictParameter">
-        ///     <see cref="InferenceParameters" />
+        /// <param name="parameters">
+        ///     <see cref="BaseParameters" />
         /// </param>
         /// <param name="inputSource">
         ///     <see cref="LocalInputSource" />
         ///     <see cref="UrlInputSource" />
         /// </param>
-        public abstract Task<JobResponse> ReqPostEnqueueInferenceAsync(InputSource inputSource, InferenceParameters predictParameter);
+        public abstract Task<JobResponse> ReqPostEnqueueAsync(InputSource inputSource, BaseParameters parameters);
+
+        /// <summary>
+        ///     Get a job for an enqueued document.
+        /// </summary>
+        /// <param name="pollingUrl">The job ID as returned by the predict_async route.</param>
+        public abstract Task<JobResponse> ReqGetJobFromUrlAsync(string pollingUrl);
 
         /// <summary>
         ///     Get a job for an enqueued document.
@@ -45,8 +51,14 @@ namespace Mindee.V2.Http
         /// <summary>
         ///     Get a document inference.
         /// </summary>
-        /// <param name="inferenceId">The inference ID as given by the job.</param>
-        public abstract Task<InferenceResponse> ReqGetInferenceAsync(string inferenceId);
+        /// <param name="inferenceId">Url to poll.</param>
+        public abstract Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId) where TResponse : CommonInferenceResponse, new();
+
+        /// <summary>
+        ///     Get a document inference.
+        /// </summary>
+        /// <param name="resultUrl">Url to poll.</param>
+        public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl) where TResponse : CommonInferenceResponse, new();
 
         /// <summary>
         ///     Get the error from the server return.
@@ -80,7 +92,7 @@ namespace Mindee.V2.Http
         /// <typeparam name="TResponse"></typeparam>
         /// <returns></returns>
         protected TResponse DeserializeResponse<TResponse>(string? responseContent)
-            where TResponse : CommonResponse, new()
+            where TResponse : CommonInferenceResponse, new()
         {
             Logger?.LogInformation("Parsing HTTP 2xx response ...");
 
@@ -88,12 +100,12 @@ namespace Mindee.V2.Http
             {
                 throw new MindeeException("Empty response from server.");
             }
+            var deserializedResult = JsonSerializer.Deserialize<TResponse>(responseContent);
 
-            var model = JsonSerializer.Deserialize<TResponse>(responseContent);
-            if (model != null)
+            if (deserializedResult is CommonInferenceResponse model)
             {
                 model.RawResponse = responseContent;
-                return model;
+                return (TResponse)model;
             }
 
             var jobErrorResponse = JsonSerializer.Deserialize<JobResponse>(responseContent);

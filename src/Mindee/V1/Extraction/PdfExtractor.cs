@@ -6,7 +6,6 @@ using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Models;
 using Microsoft.Extensions.Logging.Abstractions;
-using Mindee.Extraction;
 using Mindee.Input;
 using Mindee.Pdf;
 using Mindee.V1.Product.InvoiceSplitter;

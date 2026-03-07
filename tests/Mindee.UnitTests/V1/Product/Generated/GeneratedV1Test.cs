@@ -107,7 +107,7 @@ namespace Mindee.UnitTests.V1.Product.Generated
             Assert.Equal(0.87, customerName.First()["confidence"].GetDouble());
             Assert.Equal(1, customerName.First()["page_id"].GetInt16());
             Assert.Equal(
-                "Polygon with 4 points.",
+                "((0.037,0.284), (0.099,0.284), (0.099,0.297), (0.037,0.297))",
                 customerName.First().TryGetPolygon("polygon").ToString());
 
             // Access as a StringField with raw_value
@@ -123,7 +123,7 @@ namespace Mindee.UnitTests.V1.Product.Generated
             Assert.Null(supplierAddressField.RawValue);
             Assert.Equal(0.53, supplierAddressField.Confidence);
             Assert.Equal(1, supplierAddressField.PageId);
-            Assert.Equal("Polygon with 4 points.", supplierAddressField.Polygon.ToString());
+            Assert.Equal("((0.757,0.129), (0.963,0.129), (0.963,0.162), (0.757,0.162))", supplierAddressField.Polygon.ToString());
 
             // Access as an AmountField
             var totalAmountField = features["total_amount"].AsAmountField();
