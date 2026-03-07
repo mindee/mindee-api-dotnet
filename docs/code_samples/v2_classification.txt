@@ -19,7 +19,7 @@ var productParams = new ClassificationParameters(
 var inputSource = new LocalInputSource(filePath);
 
 // Upload the file
-var response = await mindeeClient.EnqueueAndGetInferenceAsync(
+var response = await mindeeClient.EnqueueAndGetResultAsync<ClassificationResponse>(
     inputSource, productParams);
 
 // Print a summary of the response
