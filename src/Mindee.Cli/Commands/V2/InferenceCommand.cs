@@ -1,6 +1,7 @@
 using System.CommandLine;
 using System.Text.Json;
 using Mindee.Input;
+using Mindee.V2;
 using Mindee.V2.Parsing;
 using Mindee.V2.Product.Classification;
 using Mindee.V2.Product.Classification.Params;
@@ -12,7 +13,6 @@ using Mindee.V2.Product.Ocr;
 using Mindee.V2.Product.Ocr.Params;
 using Mindee.V2.Product.Split;
 using Mindee.V2.Product.Split.Params;
-using V2Client = Mindee.V2.Client;
 
 namespace Mindee.Cli.Commands.V2
 {
@@ -69,18 +69,12 @@ namespace Mindee.Cli.Commands.V2
         private readonly Option<bool>? _confidenceOption;
         private readonly Option<bool>? _polygonsOption;
         private readonly Option<string?>? _textContextOption;
-        private readonly Option<string> _modelIdOption;
+        private readonly Argument<string> _modelIdArgument;
         private readonly Argument<string> _pathArgument;
 
         public InferenceCommand(InferenceCommandOptions options)
             : base(options.Name, options.Description)
         {
-            _modelIdOption =
-                new Option<string>("--model-id", "-m") { Description = "ID of the model to use", Required = true };
-            Options.Add(_modelIdOption);
-            var apiKeyOption = new Option<string>("--api-key", "-k") { Description = "Mindee V2 API key." };
-            Options.Add(apiKeyOption); // Will not be used at this step, only here for help display purposes.
-
             _productName = options.Name;
             _aliasOption = new Option<string?>("--alias", "-a")
             {
@@ -91,7 +85,7 @@ namespace Mindee.Cli.Commands.V2
 
             if (options.Rag)
             {
-                _ragOption = new Option<bool>("--rag", "-g")
+                _ragOption = new Option<bool>("--rag")
                 {
                     Description = "Enable RAG context. Only valid for 'extraction' product.",
                     DefaultValueFactory = _ => false
@@ -99,11 +93,13 @@ namespace Mindee.Cli.Commands.V2
                 Options.Add(_ragOption);
             }
 
+            _modelIdArgument = new Argument<string>("model ID") { Description = "ID of the model to use" };
+            Arguments.Add(_modelIdArgument);
+
             _outputOption = new Option<OutputType>("--output", "-o")
             {
                 Description = "Specify how to output the data. \n" +
                               "- summary: a basic summary (default)\n" +
-                              "- full: detail extraction results, including options\n" +
                               "- raw: full JSON object\n",
                 DefaultValueFactory = _ => OutputType.Summary
             };
@@ -114,7 +110,7 @@ namespace Mindee.Cli.Commands.V2
                 _rawTextOption = new Option<bool>("--raw-text", "-r")
                 {
                     Description =
-                        "To get all the words in the current document. False by default.",
+                        "To get all the words in the current document. Only supported in some plans. False by default.",
                     DefaultValueFactory = _ => false
                 };
                 Options.Add(_rawTextOption);
@@ -125,7 +121,7 @@ namespace Mindee.Cli.Commands.V2
                 _confidenceOption = new Option<bool>("--confidence", "-c")
                 {
                     Description =
-                        "To retrieve confidence scores from the extraction. False by default.",
+                        "To retrieve confidence scores from the extraction. Only supported in some plans. False by default.",
                     DefaultValueFactory = _ => false
                 };
                 Options.Add(_confidenceOption);
@@ -136,7 +132,7 @@ namespace Mindee.Cli.Commands.V2
                 _polygonsOption = new Option<bool>("--polygon", "-p")
                 {
                     Description =
-                        "To retrieve bounding boxes from the extraction. False by default.",
+                        "To retrieve bounding boxes from the extraction. Only supported in some plans. False by default.",
                     DefaultValueFactory = _ => false
                 };
                 Options.Add(_polygonsOption);
@@ -147,7 +143,7 @@ namespace Mindee.Cli.Commands.V2
                 _textContextOption = new Option<string?>("--text-context", "-t")
                 {
                     Description =
-                        "To add text context to your API call. False by default.",
+                        "To add text context to your API call. Only supported in some plans. False by default.",
                     DefaultValueFactory = _ => null
                 };
                 Options.Add(_textContextOption);
@@ -157,12 +153,12 @@ namespace Mindee.Cli.Commands.V2
             Arguments.Add(_pathArgument);
         }
 
-        public void ConfigureAction(V2Client mindeeClientV2)
+        public void ConfigureAction(Client mindeeClient)
         {
             this.SetAction(parseResult =>
             {
                 var path = parseResult.GetValue(_pathArgument)!;
-                var modelId = parseResult.GetValue(_modelIdOption)!;
+                var modelId = parseResult.GetValue(_modelIdArgument)!;
                 var rag = _ragOption != null && parseResult.GetValue(_ragOption);
                 string? alias = null;
                 if (_aliasOption != null)
@@ -181,15 +177,14 @@ namespace Mindee.Cli.Commands.V2
 
                 var output = parseResult.GetValue(_outputOption);
 
-                var handler = new Handler(mindeeClientV2);
+                var handler = new Handler(mindeeClient);
                 return handler
-                    .InvokeAsync(_productName, modelId, path, alias, rag, rawText, confidence, polygon, textContext,
-                        output)
+                    .InvokeAsync(_productName, modelId, path, alias, rag, rawText, confidence, polygon, textContext, output)
                     .GetAwaiter().GetResult();
             });
         }
 
-        public class Handler(V2Client mindeeClient)
+        public class Handler(Client mindeeClient)
         {
             private readonly JsonSerializerOptions _jsonSerializerOptions = new()
             {
@@ -208,7 +203,7 @@ namespace Mindee.Cli.Commands.V2
             private async Task<int> EnqueueAndGetResultAsync(InferenceOptions options, string productName)
             {
                 var inputSource = new LocalInputSource(options.Path);
-                BaseResponse response = productName switch
+                CommonInferenceResponse response = productName switch
                 {
                     "classification" => await mindeeClient.EnqueueAndGetResultAsync<ClassificationResponse>(
                         inputSource, new ClassificationParameters(options.ModelId, options.Alias)),
@@ -233,49 +228,53 @@ namespace Mindee.Cli.Commands.V2
             private void PrintToConsole(
                 TextWriter console,
                 InferenceOptions options,
-                BaseResponse response)
+                CommonInferenceResponse response)
             {
-                var validTypes = new[]
+                if (options.Output == OutputType.Raw)
                 {
-                    typeof(ClassificationResponse), typeof(CropResponse), typeof(OcrResponse),
-                    typeof(SplitResponse), typeof(ExtractionResponse)
-                };
-
-                if (!validTypes.Contains(response.GetType()))
-                {
-                    return;
+                    console.Write(JsonSerializer.Serialize(response, _jsonSerializerOptions));
                 }
-
-                dynamic dynResponse = response;
-
-                switch (options.Output)
+                else
                 {
-                    case OutputType.Full:
+                    var validTypes = new[]
+                    {
+                        typeof(ClassificationResponse), typeof(CropResponse), typeof(OcrResponse),
+                        typeof(SplitResponse), typeof(ExtractionResponse)
+                    };
+
+                    if (validTypes.Contains(response.GetType()))
+                    {
+                        dynamic dynResponse = response;
+
                         if (options.RawText && dynResponse.Inference.ActiveOptions.RawText)
                         {
-                            console.Write("#############\nRaw Text\n#############\n::\n");
-                            var rawText = dynResponse.Inference.Result.RawText.ToString().Replace("\n", "\n  ");
-                            console.Write("  " + rawText + "\n\n");
+                            if (options.RawText && dynResponse.Inference.ActiveOptions.RawText)
+                            {
+                                console.Write("#############\nDocument Text\n#############\n::\n");
+                                var rawText = dynResponse.Inference.Result.RawText.ToString().Replace("\n", "\n  ");
+                                console.Write("  " + rawText + "\n\n");
+                            }
+                            else if (options.Rag && dynResponse.Inference.ActiveOptions.Rag)
+                            {
+                                console.Write("#############\nDocument Text\n#############\n::\n");
+                                var rawText = dynResponse.Inference.Result.Rag.ToString().Replace("\n", "\n  ");
+                                console.Write("  " + rawText + "\n\n");
+                            }
+
+                            switch (options.Output)
+                            {
+                                case OutputType.Full:
+                                    console.Write(dynResponse.Inference.ToString());
+                                    break;
+                                case OutputType.Summary:
+                                    console.Write(dynResponse.Inference.Result.ToString());
+                                    break;
+                                case OutputType.Raw:
+                                    console.Write(response.RawResponse);
+                                    break;
+                            }
                         }
-                        if (options.Rag && dynResponse.Inference.ActiveOptions.Rag)
-                        {
-                            console.Write("#############\nRetrieval-Augmented Generation\n#############\n::\n");
-                            var rawText = dynResponse.Inference.Result.Rag.ToString().Replace("\n", "\n  ");
-                            console.Write("  " + rawText + "\n\n");
-                        }
-                        console.Write(dynResponse.Inference.ToString());
-                        break;
-                    case OutputType.Summary:
-                        console.Write(dynResponse.Inference.Result.ToString());
-                        break;
-                    case OutputType.Raw:
-                        using (var jsonDocument = JsonDocument.Parse(response.RawResponse))
-                        {
-                            console.WriteLine(JsonSerializer.Serialize(jsonDocument, _jsonSerializerOptions));
-                        }
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException($"Unknown output type: {options.Output}.");
+                    }
                 }
             }
         }
