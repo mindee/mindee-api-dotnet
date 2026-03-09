@@ -6,7 +6,7 @@ using Mindee.V1.ClientOptions;
 using Mindee.V1.Parsing;
 using Mindee.V1.Parsing.Common;
 
-namespace Mindee.Cli.Commands
+namespace Mindee.Cli.Commands.V1
 {
     internal struct CommandOptions(string name, string description, bool allWords, bool fullText, bool sync, bool async)
     {
@@ -190,7 +190,7 @@ namespace Mindee.Cli.Commands
                             console.Write(response.Document.Inference.Prediction.ToString());
                             break;
                         case OutputType.Raw:
-                        default:
+                            console.Write(response.RawResponse);
                             break;
                     }
                 }
