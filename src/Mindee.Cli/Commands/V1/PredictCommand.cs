@@ -1,10 +1,12 @@
 using System.CommandLine;
 using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
 using Mindee.Input;
 using Mindee.V1;
 using Mindee.V1.ClientOptions;
 using Mindee.V1.Parsing;
 using Mindee.V1.Parsing.Common;
+using V1Client = Mindee.V1.Client;
 
 namespace Mindee.Cli.Commands.V1
 {
@@ -95,17 +97,18 @@ namespace Mindee.Cli.Commands.V1
             Arguments.Add(_pathArgument);
         }
 
-        public void ConfigureAction(Client mindeeClient)
+        public void ConfigureAction(IServiceProvider services)
         {
             this.SetAction(parseResult =>
             {
+                var mindeeClientV1 = services.GetRequiredService<V1Client>();
                 var path = parseResult.GetValue(_pathArgument)!;
                 var allWords = _allWordsOption != null && parseResult.GetValue(_allWordsOption);
                 var fullText = _fullTextOption != null && parseResult.GetValue(_fullTextOption);
                 var output = parseResult.GetValue(_outputOption);
                 var isAsync = _asyncOption != null && parseResult.GetValue(_asyncOption);
 
-                var handler = new Handler(mindeeClient);
+                var handler = new Handler(mindeeClientV1);
                 return handler.InvokeAsync(path, allWords, fullText, output, isAsync).GetAwaiter().GetResult();
             });
         }

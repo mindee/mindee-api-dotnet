@@ -1,5 +1,6 @@
 using System.CommandLine;
 using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
 using Mindee.Input;
 using Mindee.V2;
 using Mindee.V2.Parsing;
@@ -13,6 +14,7 @@ using Mindee.V2.Product.Ocr;
 using Mindee.V2.Product.Ocr.Params;
 using Mindee.V2.Product.Split;
 using Mindee.V2.Product.Split.Params;
+using V2Client = Mindee.V2.Client;
 
 namespace Mindee.Cli.Commands.V2
 {
@@ -85,7 +87,7 @@ namespace Mindee.Cli.Commands.V2
 
             if (options.Rag)
             {
-                _ragOption = new Option<bool>("--rag")
+                _ragOption = new Option<bool>("--rag", "-g")
                 {
                     Description = "Enable RAG context. Only valid for 'extraction' product.",
                     DefaultValueFactory = _ => false
@@ -153,10 +155,11 @@ namespace Mindee.Cli.Commands.V2
             Arguments.Add(_pathArgument);
         }
 
-        public void ConfigureAction(Client mindeeClient)
+        public void ConfigureAction(IServiceProvider services)
         {
             this.SetAction(parseResult =>
             {
+                var mindeeClientV2 = services.GetRequiredService<V2Client>();
                 var path = parseResult.GetValue(_pathArgument)!;
                 var modelId = parseResult.GetValue(_modelIdArgument)!;
                 var rag = _ragOption != null && parseResult.GetValue(_ragOption);
@@ -177,7 +180,7 @@ namespace Mindee.Cli.Commands.V2
 
                 var output = parseResult.GetValue(_outputOption);
 
-                var handler = new Handler(mindeeClient);
+                var handler = new Handler(mindeeClientV2);
                 return handler
                     .InvokeAsync(_productName, modelId, path, alias, rag, rawText, confidence, polygon, textContext, output)
                     .GetAwaiter().GetResult();
