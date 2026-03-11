@@ -1,9 +1,9 @@
 namespace Mindee.V2.Parsing
 {
     /// <summary>
-    ///     Common response information from Mindee API V2.
+    /// Base class for all responses from the V2 API.
     /// </summary>
-    public abstract class CommonResponse
+    public abstract class BaseResponse
     {
         /// <summary>
         ///     The raw server response.

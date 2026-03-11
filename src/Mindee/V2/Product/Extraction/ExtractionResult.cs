@@ -1,14 +1,15 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using Mindee.V1.Parsing;
+using Mindee.Parsing;
+using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Field;
 
-namespace Mindee.V2.Parsing
+namespace Mindee.V2.Product.Extraction
 {
     /// <summary>
     ///     A generic feature which can represent any OTS Mindee return prediction.
     /// </summary>
-    public class InferenceResult
+    public class ExtractionResult
     {
         /// <summary>
         ///     ResultModel fields..

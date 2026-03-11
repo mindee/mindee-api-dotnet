@@ -1,6 +1,7 @@
 using Mindee;
 using Mindee.Input;
 using Mindee.V2;
+using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
 
 string filePath = "/path/to/the/file.ext";
@@ -11,7 +12,7 @@ string modelId = "MY_MODEL_ID";
 Client mindeeClient = new Client(apiKey);
 
 // Set inference parameters
-var inferenceParams = new InferenceParameters(
+var productParams = new ExtractionParameters(
     modelId: modelId
 
     // Add any number of webhook IDs here.
@@ -34,8 +35,8 @@ var inferenceParams = new InferenceParameters(
 var inputSource = new LocalInputSource(filePath);
 
 // Send for processing
-var response = await mindeeClient.EnqueueInferenceAsync(
-    inputSource, inferenceParams);
+var response = await mindeeClient.EnqueueAsync(
+    inputSource, productParams);
 
 string jobId = response.Job.Id;
 

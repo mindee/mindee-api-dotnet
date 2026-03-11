@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Mindee.V1.Parsing.Standard;
 
-namespace Mindee.V1.Parsing
+namespace Mindee.Parsing
 {
     internal static class SummaryHelper
     {

@@ -95,7 +95,7 @@ namespace Mindee.Cli.Commands
             Arguments.Add(_pathArgument);
         }
 
-        public void ConfigureAction(V1.Client mindeeClient)
+        public void ConfigureAction(Client mindeeClient)
         {
             this.SetAction(parseResult =>
             {
@@ -110,7 +110,7 @@ namespace Mindee.Cli.Commands
             });
         }
 
-        public class Handler(V1.Client mindeeClient)
+        public class Handler(Client mindeeClient)
         {
             private readonly JsonSerializerOptions _jsonSerializerOptions = new()
             {

@@ -9,8 +9,10 @@ using Mindee.Input;
 using Mindee.V2.ClientOptions;
 using Mindee.V2.Http;
 using Mindee.V2.Parsing;
+using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
 using SettingsV2 = Mindee.V2.Http.Settings;
+// ReSharper disable once RedundantUsingDirective
 
 namespace Mindee.V2
 {
@@ -48,7 +50,7 @@ namespace Mindee.V2
         /// <summary>
         /// </summary>
         /// <param name="settings">
-        ///     <see cref="V2.Http.Settings" />
+        ///     <see cref="SettingsV2" />
         /// </param>
         /// <param name="logger"></param>
         public Client(SettingsV2 settings, ILoggerFactory logger = null)
@@ -86,47 +88,78 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        ///     Add a local input source to a Generated async queue.
+        ///     Send a document to the Mindee API for inference.
         /// </summary>
         /// <param name="inputSource">
         ///     <see cref="LocalInputSource" />
+        ///     <see cref="UrlInputSource" />
         /// </param>
-        /// <param name="inferenceParameters">
-        ///     <see cref="InferenceParameters" />
+        /// <param name="parameters">
+        ///     <see cref="ExtractionParameters" />
         /// </param>
         /// <returns>
         ///     <see cref="JobResponse" />
         /// </returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<JobResponse> EnqueueInferenceAsync(
-            LocalInputSource inputSource
-            , InferenceParameters inferenceParameters)
+        public async Task<JobResponse> EnqueueAsync(
+            InputSource inputSource
+            , BaseParameters parameters)
         {
-            _logger?.LogInformation("Enqueuing: local source");
+            switch (inputSource)
+            {
+                case LocalInputSource:
+                    _logger?.LogInformation("Enqueuing: local source");
+                    break;
+                case UrlInputSource:
+                    _logger?.LogInformation("Enqueuing: URL source");
+                    break;
+                case null:
+                    throw new ArgumentNullException(nameof(inputSource));
+                default:
+                    throw new MindeeInputException($"Unsupported input source {inputSource.GetType().Name}");
+            }
 
-            return await _mindeeApi.ReqPostEnqueueInferenceAsync(inputSource, inferenceParameters);
+            return await _mindeeApi.ReqPostEnqueueAsync(inputSource, parameters);
         }
 
         /// <summary>
-        ///     Add a remote input source to a Generated async queue.
+        ///     Get the status of an inference that was previously enqueued.
+        ///     Can be used for polling.
         /// </summary>
-        /// <param name="inputSource">
-        ///     <see cref="LocalInputSource" />
-        /// </param>
-        /// <param name="inferenceParameters">
-        ///     <see cref="InferenceParameters" />
-        /// </param>
+        /// <param name="pollingUrl">The URL to poll to retrieve the job.</param>
         /// <returns>
         ///     <see cref="JobResponse" />
         /// </returns>
-        /// <exception cref="MindeeException"></exception>
-        public async Task<JobResponse> EnqueueInferenceAsync(
-            UrlInputSource inputSource
-            , InferenceParameters inferenceParameters)
+        public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl)
         {
-            _logger?.LogInformation("Enqueuing: URL source");
+            _logger?.LogInformation("Getting Job at: {}", pollingUrl);
 
-            return await _mindeeApi.ReqPostEnqueueInferenceAsync(inputSource, inferenceParameters);
+            if (string.IsNullOrWhiteSpace(pollingUrl))
+            {
+                throw new ArgumentNullException(pollingUrl);
+            }
+
+            return await _mindeeApi.ReqGetJobFromUrlAsync(pollingUrl);
+        }
+
+        /// <summary>
+        ///     Get the status of an inference that was previously enqueued.
+        ///     Can be used for polling.
+        /// </summary>
+        /// <param name="pollingUrl">The job id.</param>
+        /// <returns>
+        ///     <see cref="ExtractionResponse" />
+        /// </returns>
+        private async Task<TResponse> GetResultFromUrlAsync<TResponse>(string pollingUrl)
+            where TResponse : CommonInferenceResponse, new()
+        {
+            _logger?.LogInformation("Polling: {}", pollingUrl);
+
+            if (string.IsNullOrWhiteSpace(pollingUrl))
+            {
+                throw new ArgumentNullException(pollingUrl);
+            }
+            return await _mindeeApi.ReqGetResultFromUrlAsync<TResponse>(pollingUrl);
         }
 
         /// <summary>
@@ -135,66 +168,37 @@ namespace Mindee.V2
         /// </summary>
         /// <param name="jobId">The job id.</param>
         /// <returns>
-        ///     <see cref="JobResponse" />
+        ///     <see cref="ExtractionResponse" />
         /// </returns>
-        public async Task<JobResponse> GetJobAsync(string jobId)
+        public async Task<TResponse> GetResultAsync<TResponse>(string jobId)
+            where TResponse : CommonInferenceResponse, new()
         {
-            _logger?.LogInformation("Getting Job: {}", jobId);
+            _logger?.LogInformation("Polling: {}", jobId);
 
             if (string.IsNullOrWhiteSpace(jobId))
             {
                 throw new ArgumentNullException(jobId);
             }
-
-            return await _mindeeApi.ReqGetJobAsync(jobId);
+            return await _mindeeApi.ReqGetResultAsync<TResponse>(jobId);
         }
 
         /// <summary>
         ///     Get the status of an inference that was previously enqueued.
         ///     Can be used for polling.
         /// </summary>
-        /// <param name="inferenceId">The job id.</param>
+        /// <param name="jobId">The job id.</param>
         /// <returns>
-        ///     <see cref="InferenceResponse" />
+        ///     <see cref="ExtractionResponse" />
         /// </returns>
-        public async Task<InferenceResponse> GetInferenceAsync(string inferenceId)
+        public async Task<JobResponse> GetJobAsync(string jobId)
         {
-            _logger?.LogInformation("Getting Inference: {}", inferenceId);
+            _logger?.LogInformation("Getting job {}", jobId);
 
-            if (string.IsNullOrWhiteSpace(inferenceId))
+            if (string.IsNullOrWhiteSpace(jobId))
             {
-                throw new ArgumentNullException(inferenceId);
+                throw new ArgumentNullException(jobId);
             }
-
-            return await _mindeeApi.ReqGetInferenceAsync(inferenceId);
-        }
-
-
-        /// <summary>
-        ///     Add the URL source to an async queue, poll, and parse when complete.
-        /// </summary>
-        /// <param name="inputSource">
-        ///     <see cref="LocalInputSource" />
-        /// </param>
-        /// <param name="inferenceParameters">
-        ///     <see cref="InferenceParameters" />
-        /// </param>
-        /// <returns>
-        ///     <see cref="InferenceResponse" />
-        /// </returns>
-        /// <exception cref="MindeeException"></exception>
-        public async Task<InferenceResponse> EnqueueAndGetInferenceAsync(
-            UrlInputSource inputSource
-            , InferenceParameters inferenceParameters)
-        {
-            _logger?.LogInformation("Enqueue and poll: URL source");
-
-            inferenceParameters.PollingOptions ??= new PollingOptions();
-
-            var enqueueResponse = await EnqueueInferenceAsync(
-                inputSource,
-                inferenceParameters);
-            return await PollForResultsAsync(enqueueResponse, inferenceParameters.PollingOptions);
+            return await _mindeeApi.ReqGetJobAsync(jobId);
         }
 
         /// <summary>
@@ -202,26 +206,40 @@ namespace Mindee.V2
         /// </summary>
         /// <param name="inputSource">
         ///     <see cref="LocalInputSource" />
+        ///     <see cref="UrlInputSource" />
         /// </param>
-        /// <param name="inferenceParameters">
-        ///     <see cref="InferenceParameters" />
+        /// <param name="parameters">
+        ///     <see cref="BaseParameters" />
         /// </param>
         /// <returns>
-        ///     <see cref="InferenceResponse" />
+        ///     <see cref="ExtractionResponse" />
         /// </returns>
         /// <exception cref="MindeeException"></exception>
-        public async Task<InferenceResponse> EnqueueAndGetInferenceAsync(
-            LocalInputSource inputSource
-            , InferenceParameters inferenceParameters)
+        public async Task<TResponse> EnqueueAndGetResultAsync<TResponse>(
+            InputSource inputSource
+            , BaseParameters parameters)
+            where TResponse : CommonInferenceResponse, new()
         {
-            _logger?.LogInformation("Enqueue and poll: local source");
+            switch (inputSource)
+            {
+                case LocalInputSource:
+                    _logger?.LogInformation("Enqueuing: local source");
+                    break;
+                case UrlInputSource:
+                    _logger?.LogInformation("Enqueuing: URL source");
+                    break;
+                case null:
+                    throw new ArgumentNullException(nameof(inputSource));
+                default:
+                    throw new MindeeInputException($"Unsupported input source {inputSource.GetType().Name}");
+            }
 
-            inferenceParameters.PollingOptions ??= new PollingOptions();
+            parameters.PollingOptions ??= new PollingOptions();
 
-            var enqueueResponse = await EnqueueInferenceAsync(
+            var enqueueResponse = await EnqueueAsync(
                 inputSource,
-                inferenceParameters);
-            return await PollForResultsAsync(enqueueResponse, inferenceParameters.PollingOptions);
+                parameters);
+            return await PollForResultsAsync<TResponse>(enqueueResponse, parameters.PollingOptions);
         }
 
         /// <summary>
@@ -234,16 +252,16 @@ namespace Mindee.V2
         ///     <see cref="PollingOptions" />
         /// </param>
         /// <returns>
-        ///     <see cref="InferenceResponse" />
+        ///     <see cref="ExtractionResponse" />
         /// </returns>
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
-        private async Task<InferenceResponse> PollForResultsAsync(
+        private async Task<TResponse> PollForResultsAsync<TResponse>(
             JobResponse enqueueResponse,
-            PollingOptions pollingOptions)
+            PollingOptions pollingOptions) where TResponse : CommonInferenceResponse, new()
         {
             var maxRetries = pollingOptions.MaxRetries + 1;
-            var jobId = enqueueResponse.Job.Id;
-            _logger?.LogInformation("Enqueued with job ID: {}", jobId);
+            var pollingUrl = enqueueResponse.Job.PollingUrl;
+            _logger?.LogInformation("Enqueued with job ID: {}", enqueueResponse.Job.Id);
             _logger?.LogInformation(
                 "Waiting {} seconds before attempting to retrieve the document...",
                 pollingOptions.InitialDelaySec);
@@ -258,7 +276,7 @@ namespace Mindee.V2
                     retryCount,
                     maxRetries);
 
-                response = await GetJobAsync(jobId);
+                response = await GetJobFromUrlAsync(pollingUrl);
                 if (response.Job.Error != null)
                 {
                     break;
@@ -266,7 +284,8 @@ namespace Mindee.V2
 
                 if (response.Job.Status.Equals("Processed"))
                 {
-                    return await GetInferenceAsync(response.Job.Id);
+                    var resultUrl = response.Job.ResultUrl;
+                    return await GetResultFromUrlAsync<TResponse>(resultUrl);
                 }
 
                 retryCount++;

@@ -1,6 +1,5 @@
 using System;
 using System.Text.Json.Serialization;
-using Mindee.Input;
 using Mindee.V1.Product.Generated;
 
 namespace Mindee.V1.Parsing.Common

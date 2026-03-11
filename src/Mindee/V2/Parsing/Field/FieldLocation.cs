@@ -28,7 +28,7 @@ namespace Mindee.V2.Parsing.Field
         /// <returns></returns>
         public override string ToString()
         {
-            return Polygon.ToString();
+            return Polygon + " on page " + Page;
         }
     }
 }
