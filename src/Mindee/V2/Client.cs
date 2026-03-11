@@ -128,7 +128,7 @@ namespace Mindee.V2
         /// </summary>
         /// <param name="pollingUrl">The URL to poll to retrieve the job.</param>
         /// <returns>
-        ///     <see cref="ExtractionResponse" />
+        ///     <see cref="JobResponse" />
         /// </returns>
         public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl)
         {
