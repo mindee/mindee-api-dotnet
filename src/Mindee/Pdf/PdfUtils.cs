@@ -60,12 +60,8 @@ namespace Mindee.Pdf
 
                 var compressedImage = ImageCompressor.CompressImage(initialBitmap, imageQuality, width, height);
 
-                var colorType = SKColorType.Argb4444;
                 using var compressedBitmap = SKBitmap.Decode(compressedImage);
-                if (imageQuality > 85)
-                {
-                    colorType = SKColorType.Rgb565;
-                }
+                const SKColorType colorType = SKColorType.Rgb565;
 
                 using var surface = SKSurface.Create(new SKImageInfo(width, height, colorType));
 
@@ -93,26 +89,25 @@ namespace Mindee.Pdf
         private static void WriteTextToCanvas(SKBitmap bitmap, Character character, SKCanvas canvas)
         {
             using var paint = new SKPaint();
+            using var font = new SKFont();
             var textColor = ImageUtils.InferTextColor(bitmap, character.Box);
-            paint.TextSize = (float)character.FontSize * (72f / 96f);
+            font.Size = (float)character.FontSize * (72f / 96f);
             paint.Color = textColor;
 
             var fontManager = SKFontManager.Default;
-            string[] preferredFonts = ["Lucida Grande", "Arial", "Liberation Sans"];
+            var preferredFonts = new[] { "Lucida Grande", "Arial", "Liberation Sans" };
 
             var fontName = preferredFonts.FirstOrDefault(tmpFontName =>
                 fontManager.MatchFamily(tmpFontName) != null &&
                 string.Equals(fontManager.MatchFamily(tmpFontName).FamilyName, tmpFontName,
                     StringComparison.OrdinalIgnoreCase)
             ) ?? "Liberation Sans";
-            paint.Typeface = SKTypeface.FromFamilyName(fontName);
-
-            paint.TextAlign = SKTextAlign.Left;
+            font.Typeface = SKTypeface.FromFamilyName(fontName);
 
             var text = character.Char.ToString();
             var lines = text.Split(["\r\n", "\n"], StringSplitOptions.None);
 
-            var lineHeight = paint.FontSpacing;
+            var lineHeight = font.Spacing;
             var boxCenterX = (character.Box.Left + character.Box.Right) / 2f;
             float boxBottom = character.Box.Bottom;
 
@@ -124,8 +119,7 @@ namespace Mindee.Pdf
                     continue;
                 }
 
-                var lineBounds = new SKRect();
-                paint.MeasureText(line, ref lineBounds);
+                font.MeasureText(line, out var lineBounds);
 
                 var x = boxCenterX - (lineBounds.Width / 2f);
                 var y = boxBottom - ((lines.Length - i) * lineHeight);
@@ -134,13 +128,13 @@ namespace Mindee.Pdf
                 {
                     if (char.IsControl(c))
                     {
-                        // Necessary, otherwise it prints a ￾ at line returns (not quite sure why).
+                        // Necessary, otherwise it prints a ￾ at line returns due to SkiaSharp rendering issues.
                         continue;
                     }
 
                     var charString = c.ToString();
-                    canvas.DrawText(charString, x, y, paint);
-                    x += paint.MeasureText(charString);
+                    canvas.DrawText(charString, x, y, font, paint);
+                    x += font.MeasureText(charString);
                 }
             }
         }

@@ -1,5 +1,4 @@
-using Mindee.Input;
-using Mindee.Parsing.V2;
+using Mindee.V2.Parsing;
 
 namespace Mindee.UnitTests.V2.Parsing
 {
@@ -17,6 +16,7 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.Null(response.Job.CompletedAt);
             Assert.StartsWith("https", response.Job.PollingUrl);
             Assert.Null(response.Job.ResultUrl);
+            Assert.Null(response.Job.CompletedAt);
             Assert.Null(response.Job.Error);
         }
 
@@ -30,6 +30,9 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.Equal(2026, response.Job.CompletedAt?.Year);
             Assert.StartsWith("https", response.Job.PollingUrl);
             Assert.StartsWith("https", response.Job.ResultUrl);
+            Assert.NotNull(response.Job.CompletedAt);
+            var completedAt = Assert.IsType<DateTime>(response.Job.CompletedAt);
+            Assert.Equal(2026, completedAt.Year);
             Assert.Null(response.Job.Error);
             Assert.NotEmpty(response.Job.Webhooks);
             var webhook = response.Job.Webhooks.First();
@@ -59,7 +62,7 @@ namespace Mindee.UnitTests.V2.Parsing
         {
             var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2RootDir + path));
-            return localResponse.DeserializeResponse<JobResponse>();
+            return localResponse.DeserializeJobResponse();
         }
     }
 }

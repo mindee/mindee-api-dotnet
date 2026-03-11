@@ -1,0 +1,20 @@
+using System.Text.Json.Serialization;
+using Mindee.V1.Http;
+using Mindee.V1.Parsing.Common;
+
+namespace Mindee.V1.Product.InternationalId
+{
+    /// <summary>
+    /// International ID API version 2 inference prediction.
+    /// </summary>
+    [Endpoint("international_id", "2")]
+    public sealed class InternationalIdV2 : Inference<InternationalIdV2Document, InternationalIdV2Document>
+    {
+        /// <summary>
+        /// The pages and the associated values which were detected on the document.
+        /// </summary>
+        [JsonPropertyName("pages")]
+        [JsonConverter(typeof(PagesJsonConverter<InternationalIdV2Document>))]
+        public override Pages<InternationalIdV2Document> Pages { get; set; }
+    }
+}

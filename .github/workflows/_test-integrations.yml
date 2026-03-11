@@ -9,8 +9,13 @@ env:
   Workflow__ID: ${{ secrets.WORKFLOW_ID_SE_TESTS }}
   MindeeV2__ApiKey: ${{ secrets.MINDEE_V2_SE_TESTS_API_KEY }}
   MindeeV2__Findoc__Model__Id: ${{ secrets.MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID }}
+  MindeeV2__Classification__Model__Id: ${{ secrets.MINDEE_V2_SE_TESTS_CLASSIFICATION_MODEL_ID }}
+  MindeeV2__Crop__Model__Id: ${{ secrets.MINDEE_V2_SE_TESTS_CROP_MODEL_ID }}
+  MindeeV2__Ocr__Model__Id: ${{ secrets.MINDEE_V2_SE_TESTS_OCR_MODEL_ID }}
+  MindeeV2__Split__Model__Id: ${{ secrets.MINDEE_V2_SE_TESTS_SPLIT_MODEL_ID }}
   MindeeV2__Blank__Pdf__Url: ${{ secrets.MINDEE_V2_SE_TESTS_BLANK_PDF_URL }}
   MindeeV2__Failure__Webhook__Id: ${{ secrets.MINDEE_V2_SE_TESTS_FAILURE_WEBHOOK_ID }}
+  MindeeV2__Se__Tests__Blank__Pdf__Url: ${{ secrets.MINDEE_V2_SE_TESTS_BLANK_PDF_URL }}
 
 jobs:
   test-nix:
@@ -62,7 +67,8 @@ jobs:
         os:
           - "windows-2022"
         dotnet-version:
-          - "net482"
+          - "net472"
+          - "net48"
           - "net6.0"
           - "net10.0"
     runs-on: ${{ matrix.os }}

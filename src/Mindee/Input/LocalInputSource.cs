@@ -13,12 +13,12 @@ namespace Mindee.Input
     /// <summary>
     ///     Represent a document to parse.
     /// </summary>
-    public sealed class LocalInputSource
+    public sealed class LocalInputSource : InputSource
     {
-        private static readonly string[] _authorizedFileExtensions =
-        {
+        private static readonly string[] AuthorizedFileExtensions =
+        [
             ".heic", ".jpg", ".jpga", ".jpeg", ".pdf", ".png", ".tiff", ".tif", ".webp"
-        };
+        ];
 
         private DocNetApi _pdfOperation;
 
@@ -127,7 +127,7 @@ namespace Mindee.Input
         /// </summary>
         public bool IsExtensionValid()
         {
-            return _authorizedFileExtensions.Any(f => f.Equals(Extension, StringComparison.InvariantCultureIgnoreCase)
+            return AuthorizedFileExtensions.Any(f => f.Equals(Extension, StringComparison.InvariantCultureIgnoreCase)
             );
         }
 
@@ -152,7 +152,7 @@ namespace Mindee.Input
 
             lock (DocLib.Instance)
             {
-                var docInstance = DocLib.Instance.GetDocReader(FileBytes, new PageDimensions(1, 1));
+                using var docInstance = DocLib.Instance.GetDocReader(FileBytes, new PageDimensions(1, 1));
                 return docInstance.GetPageCount();
             }
         }

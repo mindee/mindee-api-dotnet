@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using Mindee.Parsing.Standard;
+using Mindee.V1.Parsing.Standard;
 
 namespace Mindee.Parsing
 {

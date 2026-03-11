@@ -2,10 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net6.0;net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>net472;net48;net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mindee\Mindee.csproj"/>
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="appsettings.Development.json">
@@ -28,21 +32,13 @@
   </Choose>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="9.0.6"/>
+    <PackageReference Include="System.CommandLine" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472' Or '$(TargetFramework)' == 'net48'">
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6"/>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6"/>
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.6"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.6"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.6"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.6"/>
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1"/>
-    <PackageReference Include="System.CommandLine.Hosting" Version="0.4.0-alpha.22272.1"/>
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Mindee\Mindee.csproj"/>
-  </ItemGroup>
-
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
 
   <ItemGroup>

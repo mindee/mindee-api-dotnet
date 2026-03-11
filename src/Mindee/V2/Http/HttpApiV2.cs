@@ -1,0 +1,131 @@
+#nullable enable
+
+using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Mindee.Exceptions;
+using Mindee.Input;
+using Mindee.V2.ClientOptions;
+using Mindee.V2.Parsing;
+
+namespace Mindee.V2.Http
+{
+    /// <summary>
+    ///     Communicate with the Mindee HTTP API V2.
+    ///     <p>
+    ///         You may use this base class to make your own custom class.
+    ///         However, we may introduce breaking changes in minor versions as needed.
+    ///     </p>
+    /// </summary>
+    public abstract class HttpApiV2
+    {
+        /// <summary>
+        ///     Set this to your logger.
+        /// </summary>
+        protected ILogger<HttpApiV2>? Logger;
+
+        /// <summary>
+        ///     Do a prediction according parameters for a custom model defined in the Studio.
+        /// </summary>
+        /// <param name="parameters">
+        ///     <see cref="BaseParameters" />
+        /// </param>
+        /// <param name="inputSource">
+        ///     <see cref="LocalInputSource" />
+        ///     <see cref="UrlInputSource" />
+        /// </param>
+        public abstract Task<JobResponse> ReqPostEnqueueAsync(InputSource inputSource, BaseParameters parameters);
+
+        /// <summary>
+        ///     Get a job for an enqueued document.
+        /// </summary>
+        /// <param name="pollingUrl">The job ID as returned by the predict_async route.</param>
+        public abstract Task<JobResponse> ReqGetJobFromUrlAsync(string pollingUrl);
+
+        /// <summary>
+        ///     Get a job for an enqueued document.
+        /// </summary>
+        /// <param name="jobId">The job ID as returned by the predict_async route.</param>
+        public abstract Task<JobResponse> ReqGetJobAsync(string jobId);
+
+        /// <summary>
+        ///     Get a document inference.
+        /// </summary>
+        /// <param name="inferenceId">Url to poll.</param>
+        public abstract Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId) where TResponse : CommonInferenceResponse, new();
+
+        /// <summary>
+        ///     Get a document inference.
+        /// </summary>
+        /// <param name="resultUrl">Url to poll.</param>
+        public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl) where TResponse : CommonInferenceResponse, new();
+
+        /// <summary>
+        ///     Get the error from the server return.
+        /// </summary>
+        /// <param name="responseContent">HTTP Status of the response</param>
+        /// <param name="statusCode">String content of the response</param>
+        /// <exception cref="MindeeHttpExceptionV2"></exception>
+        protected ErrorResponse GetErrorFromContent(int statusCode, string? responseContent)
+        {
+            Logger?.LogInformation("Parsing error response ...");
+            try
+            {
+                if (responseContent == null || !responseContent.Contains("\"status\":"))
+                {
+                    return MakeUnknownError(statusCode, responseContent);
+                }
+
+                var error = JsonSerializer.Deserialize<ErrorResponse>(responseContent);
+                return error ?? MakeUnknownError(statusCode, responseContent);
+            }
+            catch (JsonException)
+            {
+                return MakeUnknownError(statusCode, responseContent);
+            }
+        }
+
+        /// <summary>
+        ///     Attempt to deserialize a response from the server.
+        /// </summary>
+        /// <param name="responseContent"></param>
+        /// <typeparam name="TResponse"></typeparam>
+        /// <returns></returns>
+        protected TResponse DeserializeResponse<TResponse>(string? responseContent)
+            where TResponse : CommonInferenceResponse, new()
+        {
+            Logger?.LogInformation("Parsing HTTP 2xx response ...");
+
+            if (responseContent == null || string.IsNullOrWhiteSpace(responseContent))
+            {
+                throw new MindeeException("Empty response from server.");
+            }
+            var deserializedResult = JsonSerializer.Deserialize<TResponse>(responseContent);
+
+            if (deserializedResult is CommonInferenceResponse model)
+            {
+                model.RawResponse = responseContent;
+                return (TResponse)model;
+            }
+
+            var jobErrorResponse = JsonSerializer.Deserialize<JobResponse>(responseContent);
+            if (jobErrorResponse?.Job?.Error != null)
+            {
+                throw new Mindee500Exception(jobErrorResponse.Job.Error.Detail);
+            }
+
+            throw new MindeeException(
+                "Couldn't deserialize response either as a polling error or a valid model response.");
+        }
+
+        private static ErrorResponse MakeUnknownError(int statusCode, string? responseContent)
+        {
+            return new ErrorResponse(
+                statusCode,
+                "Unknown Error",
+                code: "000-000",
+                detail: responseContent ?? "An unknown error occurred.",
+                errors: null);
+        }
+    }
+}

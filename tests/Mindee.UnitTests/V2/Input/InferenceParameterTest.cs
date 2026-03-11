@@ -1,10 +1,10 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Mindee.Input;
+using Mindee.V2.Product.Extraction.Params;
 
 namespace Mindee.UnitTests.V2.Input
 {
-    [Trait("Category", "Inference Parameter")]
+    [Trait("Category", "ExtractionInference Parameter")]
     [Trait("Category", "V2")]
     public class InferenceParameterTest
     {
@@ -30,28 +30,28 @@ namespace Mindee.UnitTests.V2.Input
         [Fact]
         public void DataSchemaNull_ShouldInitializeWithoutIssues()
         {
-            var inferenceParameters = new InferenceParameters("test");
+            var inferenceParameters = new ExtractionParameters("test");
             Assert.Null(inferenceParameters.DataSchema);
         }
 
         [Fact]
         public void DataSchemaStr_ShouldInitialize()
         {
-            var inferenceParameters = new InferenceParameters("test", dataSchema: DataSchemaString);
+            var inferenceParameters = new ExtractionParameters("test", dataSchema: DataSchemaString);
             Assert.Equal(DataSchemaString, inferenceParameters.DataSchema.ToString());
         }
 
         [Fact]
         public void DataSchemaDict_ShouldInitialize()
         {
-            var inferenceParameters = new InferenceParameters("test", dataSchema: DataSchemaDict);
+            var inferenceParameters = new ExtractionParameters("test", dataSchema: DataSchemaDict);
             Assert.Equal(DataSchemaString, inferenceParameters.DataSchema.ToString());
         }
 
         [Fact]
         public void DataSchemaInstance_ShouldInitialize()
         {
-            var inferenceParameters = new InferenceParameters("test", dataSchema: DataSchemaInstance);
+            var inferenceParameters = new ExtractionParameters("test", dataSchema: DataSchemaInstance);
             Assert.Equal(DataSchemaString, inferenceParameters.DataSchema.ToString());
         }
     }

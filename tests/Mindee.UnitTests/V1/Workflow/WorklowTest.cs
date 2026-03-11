@@ -1,9 +1,10 @@
 using System.Text.Json;
-using Mindee.Http;
 using Mindee.Input;
-using Mindee.Parsing.Common;
 using Mindee.Pdf;
-using Mindee.Product.Generated;
+using Mindee.V1;
+using Mindee.V1.Http;
+using Mindee.V1.Parsing.Common;
+using Mindee.V1.Product.Generated;
 using Moq;
 
 namespace Mindee.UnitTests.V1.Workflow
@@ -12,22 +13,21 @@ namespace Mindee.UnitTests.V1.Workflow
     [Trait("Category", "Workflow")]
     public abstract class WorklowTest
     {
-        private readonly MindeeClient client;
+        private readonly Client client;
         private readonly Mock<IHttpApi> mindeeApi;
-        private readonly Mock<MindeeClient> mockedClient;
+        private readonly Mock<Client> mockedClient;
 
         protected WorklowTest()
         {
             mindeeApi = new Mock<IHttpApi>();
             var pdfOperation = new Mock<IPdfOperation>();
-            client = new MindeeClient(pdfOperation.Object, mindeeApi.Object);
-            mockedClient = new Mock<MindeeClient>();
+            client = new Client(pdfOperation.Object, mindeeApi.Object);
+            mockedClient = new Mock<Client>();
         }
 
         [Fact]
         public async Task GivenAWorkflowMockFileShouldReturnAValidWorkflowObject()
         {
-            // Arrange
             var file = new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf");
             var workflowResponse =
                 new WorkflowResponse<GeneratedV1> { Execution = new Execution<GeneratedV1>(), ApiRequest = null };
@@ -52,7 +52,6 @@ namespace Mindee.UnitTests.V1.Workflow
         [Fact]
         public async Task SendingADocumentToAnExecutionShouldDeserializeResponseCorrectly()
         {
-            // Arrange
             var jsonFile = File.ReadAllText(Constants.V1RootDir + "workflows/success.json");
             var mockResponse = JsonSerializer.Deserialize<WorkflowResponse<GeneratedV1>>(jsonFile);
 
@@ -98,7 +97,6 @@ namespace Mindee.UnitTests.V1.Workflow
         [Fact]
         public async Task SendingADocumentToAnExecutionWithPriorityAndAliasShouldDeserializeResponseCorrectly()
         {
-            // Arrange
             var jsonFile = File.ReadAllText(Constants.V1RootDir + "workflows/success_low_priority.json");
             var mockResponse = JsonSerializer.Deserialize<WorkflowResponse<GeneratedV1>>(jsonFile);
 

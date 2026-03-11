@@ -1,5 +1,5 @@
-using Mindee.Input;
-using Mindee.Parsing.V2;
+using Mindee.V2.Parsing;
+using Mindee.V2.Product.Extraction;
 
 namespace Mindee.UnitTests.V2.Input
 {
@@ -22,9 +22,9 @@ namespace Mindee.UnitTests.V2.Input
             Assert.Equal(signature, localResponse.GetHmacSignature(secretKey));
             Assert.True(localResponse.IsValidHmacSignature(
                 secretKey, signature));
-            var inferenceResponse = localResponse.DeserializeResponse<InferenceResponse>();
-            Assert.NotNull(inferenceResponse);
-            Assert.NotNull(inferenceResponse.Inference);
+            ExtractionResponse extractionResponse = localResponse.DeserializeResponse<ExtractionResponse>();
+            Assert.NotNull(extractionResponse);
+            Assert.NotNull(extractionResponse.Inference);
         }
 
         [Fact]
