@@ -1,5 +1,4 @@
 using System.CommandLine;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mindee.Cli.Commands.V2;
 using Mindee.Extensions.DependencyInjection;
@@ -79,8 +78,6 @@ using PredictReceiptCommand = Mindee.Cli.Commands.V1.PredictCommand<
     Mindee.V1.Product.Receipt.ReceiptV5Document,
     Mindee.V1.Product.Receipt.ReceiptV5Document
 >;
-using V1Client = Mindee.V1.Client;
-using V2Client = Mindee.V2.Client;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureLogging((_, logging) =>
@@ -100,7 +97,7 @@ var root = BuildCommandLine(host.Services, args);
 
 return await root.Parse(args).InvokeAsync();
 
-static void BuildV1Commands(Command v1Command, V1Client mindeeClient)
+static void BuildV1Commands(Command v1Command, IServiceProvider services)
 {
 
     var apiKeyOption = new Option<string>("--api-key", "-k") { Description = "Mindee V2 API key." };
@@ -131,123 +128,125 @@ static void BuildV1Commands(Command v1Command, V1Client mindeeClient)
     var barcodeReaderCmd = new PredictBarcodeReaderCommand(new CommandOptions(
         "barcode-reader", "Barcode Reader",
         false, false, true, false));
-    barcodeReaderCmd.ConfigureAction(mindeeClient);
+    barcodeReaderCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(barcodeReaderCmd);
 
     var cropperCmd = new PredictCropperCommand(new CommandOptions(
         "cropper", "Cropper",
         false, false, true, false));
-    cropperCmd.ConfigureAction(mindeeClient);
+    cropperCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(cropperCmd);
 
     var financialDocumentCmd = new PredictFinancialDocumentCommand(new CommandOptions(
         "financial-document", "Financial Document",
         true, false, true, true));
-    financialDocumentCmd.ConfigureAction(mindeeClient);
+    financialDocumentCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(financialDocumentCmd);
 
     var bankAccountDetailsCmd = new PredictBankAccountDetailsCommand(new CommandOptions(
         "fr-bank-account-details", "FR Bank Account Details",
         false, false, true, false));
-    bankAccountDetailsCmd.ConfigureAction(mindeeClient);
+    bankAccountDetailsCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(bankAccountDetailsCmd);
 
     var carteGriseCmd = new PredictCarteGriseCommand(new CommandOptions(
         "fr-carte-grise", "FR Carte Grise",
         false, false, true, false));
-    carteGriseCmd.ConfigureAction(mindeeClient);
+    carteGriseCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(carteGriseCmd);
 
     var healthCardCmd = new PredictHealthCardCommand(new CommandOptions(
         "fr-health-card", "FR Health Card",
         false, false, false, true));
-    healthCardCmd.ConfigureAction(mindeeClient);
+    healthCardCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(healthCardCmd);
 
     var idCardCmd = new PredictIdCardCommand(new CommandOptions(
         "fr-carte-nationale-d-identite", "FR Carte Nationale d'Identité",
         false, false, true, false));
-    idCardCmd.ConfigureAction(mindeeClient);
+    idCardCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(idCardCmd);
 
     var payslipCmd = new PredictPayslipCommand(new CommandOptions(
         "fr-payslip", "FR Payslip",
         false, false, false, true));
-    payslipCmd.ConfigureAction(mindeeClient);
+    payslipCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(payslipCmd);
 
     var internationalIdCmd = new PredictInternationalIdCommand(new CommandOptions(
         "international-id", "International ID",
         false, true, false, true));
-    internationalIdCmd.ConfigureAction(mindeeClient);
+    internationalIdCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(internationalIdCmd);
 
     var invoiceCmd = new PredictInvoiceCommand(new CommandOptions(
         "invoice", "Invoice",
         true, false, true, true));
-    invoiceCmd.ConfigureAction(mindeeClient);
+    invoiceCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(invoiceCmd);
 
     var invoiceSplitterCmd = new PredictInvoiceSplitterCommand(new CommandOptions(
         "invoice-splitter", "Invoice Splitter",
         false, false, false, true));
-    invoiceSplitterCmd.ConfigureAction(mindeeClient);
+    invoiceSplitterCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(invoiceSplitterCmd);
 
     var multiReceiptsDetectorCmd = new PredictMultiReceiptsDetectorCommand(new CommandOptions(
         "multi-receipts-detector", "Multi Receipts Detector",
         false, false, true, false));
-    multiReceiptsDetectorCmd.ConfigureAction(mindeeClient);
+    multiReceiptsDetectorCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(multiReceiptsDetectorCmd);
 
     var passportCmd = new PredictPassportCommand(new CommandOptions(
         "passport", "Passport",
         false, false, true, false));
-    passportCmd.ConfigureAction(mindeeClient);
+    passportCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(passportCmd);
 
     var receiptCmd = new PredictReceiptCommand(new CommandOptions(
         "receipt", "Receipt",
         true, false, true, true));
-    receiptCmd.ConfigureAction(mindeeClient);
+    receiptCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(receiptCmd);
 
     var bankCheckCmd = new PredictBankCheckCommand(new CommandOptions(
         "us-bank-check", "US Bank Check",
         false, false, true, false));
-    bankCheckCmd.ConfigureAction(mindeeClient);
+    bankCheckCmd.ConfigureAction(services);
     v1Command.Subcommands.Add(bankCheckCmd);
 }
 
-static void BuildV2Commands(Command v2Command, V2Client mindeeClient)
+static void BuildV2Commands(Command v2Command, IServiceProvider services)
 {
+    var apiKeyOption = new Option<string>("--api-key", "-k") { Description = "Mindee V2 API key.", };
+    v2Command.Add(apiKeyOption);
     var classificationCmd = new InferenceCommand(new InferenceCommandOptions("classification", "Classification utility.", false, false, false, false, false));
     v2Command.Subcommands.Add(classificationCmd);
-    classificationCmd.ConfigureAction(mindeeClient);
+    classificationCmd.ConfigureAction(services);
     var cropCmd = new InferenceCommand(new InferenceCommandOptions("crop", "Crop utility.", false, false, false, false, false));
     v2Command.Subcommands.Add(cropCmd);
-    cropCmd.ConfigureAction(mindeeClient);
+    cropCmd.ConfigureAction(services);
     var extractionCmd = new InferenceCommand(new InferenceCommandOptions("extraction",
         "Generic all-purpose extraction.", true, true, true, true, true));
     v2Command.Subcommands.Add(extractionCmd);
-    extractionCmd.ConfigureAction(mindeeClient);
+    extractionCmd.ConfigureAction(services);
     var ocrCmd = new InferenceCommand(new InferenceCommandOptions("ocr", "OCR utility.", false, false, false, false, false));
     v2Command.Subcommands.Add(ocrCmd);
-    ocrCmd.ConfigureAction(mindeeClient);
+    ocrCmd.ConfigureAction(services);
     var splitCmd = new InferenceCommand(new InferenceCommandOptions("split", "Split utility.", false, false, false, false, false));
     v2Command.Subcommands.Add(splitCmd);
-    splitCmd.ConfigureAction(mindeeClient);
+    splitCmd.ConfigureAction(services);
 }
 
 static RootCommand BuildCommandLine(IServiceProvider services)
 {
     var root = new RootCommand();
-    var v1Command = new Command("v1", "Mindee V1 product commands");
-    var mindeeClientV1 = services.GetRequiredService<V1Client>();
-    BuildV1Commands(v1Command, mindeeClientV1);
-    var v2Command = new Command("v2", "Mindee V2 product commands");
-    var mindeeClientV2 = services.GetRequiredService<V2Client>();
-    BuildV2Commands(v2Command, mindeeClientV2);
+    var v1Command = new Command("v1", "Mindee V1 product commands.");
+    BuildV1Commands(v1Command, services);
+    var v2Command = new Command("v2", "Mindee V2 product commands.");
+    BuildV2Commands(v2Command, services);
+    root.Add(v1Command);
+    root.Add(v2Command);
 
     var silentOption = new Option<bool>("--silent")
     {
