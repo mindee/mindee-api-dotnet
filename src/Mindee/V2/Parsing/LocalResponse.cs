@@ -1,5 +1,7 @@
+using System;
 using System.IO;
 using System.Text.Json;
+using Mindee.V2.Product;
 
 namespace Mindee.V2.Parsing
 {
@@ -18,17 +20,34 @@ namespace Mindee.V2.Parsing
         {
         }
 
+
         /// <summary>
         ///     Load a local inference.
         ///     Typically used when wanting to load a V2 webhook callback.
         /// </summary>
         /// <returns></returns>
-        public TInferenceModel DeserializeResponse<TInferenceModel>() where TInferenceModel : CommonResponse, new()
+        public TResponse DeserializeResponse<TResponse>()
+            where TResponse : CommonInferenceResponse, new()
         {
-            var model = JsonSerializer.Deserialize<TInferenceModel>(FileBytes);
-            model.RawResponse = ToString();
+            var model = JsonSerializer.Deserialize<TResponse>(FileBytes);
 
+            if (model == null)
+            {
+                throw new InvalidOperationException(
+                    "Could not deserialize the local file into the expected response type.");
+            }
+
+            model.RawResponse = ToString();
             return model;
+        }
+
+        /// <summary>
+        /// Deserializes a Job Response.
+        /// </summary>
+        /// <returns></returns>
+        public JobResponse DeserializeJobResponse()
+        {
+            return JsonSerializer.Deserialize<JobResponse>(FileBytes);
         }
     }
 }

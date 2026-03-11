@@ -28,7 +28,6 @@ namespace Mindee.UnitTests.V1.Workflow
         [Fact]
         public async Task GivenAWorkflowMockFileShouldReturnAValidWorkflowObject()
         {
-            // Arrange
             var file = new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf");
             var workflowResponse =
                 new WorkflowResponse<GeneratedV1> { Execution = new Execution<GeneratedV1>(), ApiRequest = null };
@@ -53,7 +52,6 @@ namespace Mindee.UnitTests.V1.Workflow
         [Fact]
         public async Task SendingADocumentToAnExecutionShouldDeserializeResponseCorrectly()
         {
-            // Arrange
             var jsonFile = File.ReadAllText(Constants.V1RootDir + "workflows/success.json");
             var mockResponse = JsonSerializer.Deserialize<WorkflowResponse<GeneratedV1>>(jsonFile);
 
@@ -99,7 +97,6 @@ namespace Mindee.UnitTests.V1.Workflow
         [Fact]
         public async Task SendingADocumentToAnExecutionWithPriorityAndAliasShouldDeserializeResponseCorrectly()
         {
-            // Arrange
             var jsonFile = File.ReadAllText(Constants.V1RootDir + "workflows/success_low_priority.json");
             var mockResponse = JsonSerializer.Deserialize<WorkflowResponse<GeneratedV1>>(jsonFile);
 

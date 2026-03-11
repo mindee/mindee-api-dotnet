@@ -8,5 +8,6 @@ namespace Mindee.UnitTests
         public const string V1ProductDir = V1RootDir + "products/";
 
         public const string V2RootDir = RootDir + "v2/";
+        public const string V2ProductDir = V2RootDir + "products/";
     }
 }

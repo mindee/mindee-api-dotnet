@@ -4,19 +4,23 @@ set -e
 OUTPUT_FILE='_test_v1.csx'
 ACCOUNT=$1
 ENDPOINT=$2
-API_KEY=$3
 
 if [ -z "${ACCOUNT}" ]; then echo "ACCOUNT is required"; exit 1; fi
 if [ -z "${ENDPOINT}" ]; then echo "ENDPOINT is required"; exit 1; fi
 
-for f in $(find docs/code_samples -maxdepth 1 -name "*.txt" -not -name "workflow_*.txt" -not -name "v2_*.txt" | sort -h)
+for f in $(
+  find docs/code_samples -maxdepth 1 -name "*.txt" -not -name "workflow_*.txt" -not -name "v2_*.txt" | sort -h
+)
 do
-  echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+  echo "###############################################"
   echo "${f}"
-  echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+  echo "###############################################"
   echo
 
   cat docs/code_samples/base.csx "${f}" > $OUTPUT_FILE
+
+  sed -i "s/my-api-key/${MINDEE_API_KEY}/" $OUTPUT_FILE
+  sed -i "s/\/path\/to\/the\/file.ext/tests\/resources\/file_types\/pdf\/blank_1.pdf/" $OUTPUT_FILE
 
   if echo "${f}" | grep -q "custom_v1.txt"
   then
@@ -37,9 +41,6 @@ do
     sed -i "s/my-endpoint/invoice_splitter/" $OUTPUT_FILE
     sed -i "s/my-version/1/" $OUTPUT_FILE
   fi
-
-  sed -i "s/my-api-key/$API_KEY/" $OUTPUT_FILE
-  sed -i "s/\/path\/to\/the\/file.ext/tests\/resources\/file_types\/pdf\/blank_1.pdf/" $OUTPUT_FILE
 
   dotnet-script $OUTPUT_FILE
 done

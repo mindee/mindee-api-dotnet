@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.V2.Parsing.Field;
+using Mindee.V2.Product.Extraction;
 
 namespace Mindee.V2.Parsing
 {
@@ -16,7 +17,7 @@ namespace Mindee.V2.Parsing
         public bool Rag { get; set; }
 
         /// <summary>
-        ///     Extract the full text content from the document as strings, and fill the <see cref="InferenceResult.RawText" />
+        ///     Extract the full text content from the document as strings, and fill the <see cref="ExtractionResult.RawText" />
         ///     attribute.
         /// </summary>
         [JsonPropertyName("raw_text")]
@@ -49,7 +50,7 @@ namespace Mindee.V2.Parsing
         public DataSchemaActiveOptions DataSchema { get; set; }
 
         /// <summary>
-        ///     Pretty-prints the file section exactly as expected by Inference.ToString().
+        ///     Pretty-prints the file section exactly as expected by ExtractionInference.ToString().
         /// </summary>
         public override string ToString()
         {

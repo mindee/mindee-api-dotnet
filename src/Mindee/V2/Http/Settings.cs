@@ -1,5 +1,3 @@
-using Mindee.V1.Http;
-
 namespace Mindee.V2.Http
 {
     /// <summary>

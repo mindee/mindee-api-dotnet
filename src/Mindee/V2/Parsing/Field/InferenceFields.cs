@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Mindee.Parsing;
 using Mindee.V1.Parsing;
 
 namespace Mindee.V2.Parsing.Field
 {
     /// <summary>
-    ///     Inference fields dict.
+    ///     ExtractionInference fields dict.
     /// </summary>
     public class InferenceFields : Dictionary<string, DynamicField>
     {

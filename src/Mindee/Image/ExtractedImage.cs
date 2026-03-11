@@ -2,7 +2,7 @@ using System.IO;
 using Mindee.Input;
 using SkiaSharp;
 
-namespace Mindee.Extraction
+namespace Mindee.Image
 {
     /// <summary>
     ///     An extracted sub-image.

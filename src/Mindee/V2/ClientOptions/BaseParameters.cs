@@ -28,10 +28,15 @@ namespace Mindee.V2.ClientOptions
         public PollingOptions PollingOptions { get; set; }
 
         /// <summary>
+        ///     Slug of the product.
+        /// </summary>
+        public virtual string Slug { get; protected set; }
+
+        /// <summary>
         /// </summary>
         /// <param name="modelId">ID of the model<see cref="ModelId" /></param>
         /// <param name="alias">
-        ///    <see cref="Alias" />
+        /// <see cref="Alias" />
         /// </param>
         /// <param name="webhookIds">
         ///     <see cref="WebhookIds" />

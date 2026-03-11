@@ -4,6 +4,16 @@ on:
   workflow_call:
   workflow_dispatch:
 
+env:
+  MINDEE_API_KEY: ${{ secrets.MINDEE_API_KEY_SE_TESTS }}
+  MINDEE_V2_API_KEY: ${{ secrets.MINDEE_V2_SE_TESTS_API_KEY }}
+  MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID }}
+  MINDEE_V2_SE_TESTS_CLASSIFICATION_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_CLASSIFICATION_MODEL_ID }}
+  MINDEE_V2_SE_TESTS_CROP_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_CROP_MODEL_ID }}
+  MINDEE_V2_SE_TESTS_SPLIT_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_SPLIT_MODEL_ID }}
+  MINDEE_V2_SE_TESTS_OCR_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_OCR_MODEL_ID }}
+  MINDEE_V2_SE_TESTS_FAILURE_WEBHOOK_ID: ${{ secrets.MINDEE_V2_SE_TESTS_FAILURE_WEBHOOK_ID }}
+
 jobs:
   test:
     name: Run tests
@@ -47,8 +57,8 @@ jobs:
 
     - name: Test V2 sample code
       run: |
-        ./tests/test_v2_code_samples.sh ${{ secrets.MINDEE_V2_SE_TESTS_API_KEY }} ${{ secrets.MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID }} ${{ secrets.MINDEE_V2_SE_TESTS_FAILURE_WEBHOOK_ID }}
+        ./tests/test_v2_code_samples.sh
 
     - name: Test V1 sample code
       run: |
-        ./tests/test_v1_code_samples.sh ${{ secrets.MINDEE_ACCOUNT_SE_TESTS }} ${{ secrets.MINDEE_ENDPOINT_SE_TESTS }} ${{ secrets.MINDEE_API_KEY_SE_TESTS }}
+        ./tests/test_v1_code_samples.sh ${{ secrets.MINDEE_ACCOUNT_SE_TESTS }} ${{ secrets.MINDEE_ENDPOINT_SE_TESTS }}

@@ -3,7 +3,7 @@ using Docnet.Core;
 using Docnet.Core.Models;
 using Mindee.Input;
 
-namespace Mindee.Extraction
+namespace Mindee.Pdf
 {
     /// <summary>
     ///     An extracted sub-Pdf.
