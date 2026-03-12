@@ -2,7 +2,8 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
 using Mindee.V2.Parsing;
-using Mindee.V2.Parsing.Field;
+using Mindee.V2.Parsing.Inference;
+using Mindee.V2.Parsing.Inference.Field;
 
 namespace Mindee.V2.Product.Extraction
 {

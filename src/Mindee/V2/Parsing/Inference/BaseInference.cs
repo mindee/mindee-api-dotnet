@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
 
-namespace Mindee.V2.Parsing
+namespace Mindee.V2.Parsing.Inference
 {
     /// <summary>
     /// Base for all inference-based V2 products.

@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Mindee.Geometry;
 
-namespace Mindee.V2.Parsing.Field
+namespace Mindee.V2.Parsing.Inference.Field
 {
     /// <summary>
     ///     Location for fields.
