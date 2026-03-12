@@ -247,7 +247,7 @@ namespace Mindee.V2
         /// Returns a list of models matching a criteria for the given API key.
         /// </summary>
         /// <returns></returns>
-        public async Task<SearchResponse> SearchModels(string name=null, string modelType=null)
+        public async Task<SearchResponse> SearchModels(string name = null, string modelType = null)
         {
             return await _mindeeApi.SearchModels(name, modelType);
         }
