@@ -18,7 +18,7 @@ namespace Mindee.V2.Parsing.Search
                 return "\n";
             }
             StringBuilder stringBuilder = new StringBuilder();
-            foreach (SearchModel model in this)
+            foreach(SearchModel model in this)
             {
                 stringBuilder.Append($"* :Name: {model.Name}");
                 stringBuilder.Append('\n');

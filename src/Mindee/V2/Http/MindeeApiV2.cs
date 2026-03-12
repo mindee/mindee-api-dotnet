@@ -10,6 +10,8 @@ using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V2.ClientOptions;
 using Mindee.V2.Parsing;
+using Mindee.V2.Parsing.Search;
+using Mindee.V2.Product;
 using Mindee.V2.Product.Extraction.Params;
 using RestSharp;
 #if NET6_0_OR_GREATER
@@ -62,6 +64,26 @@ namespace Mindee.V2.Http
             return HandleJobResponse(response);
         }
 
+        public override async Task<SearchResponse> SearchModels(string name, string modelType)
+        {
+            var request = new RestRequest("v2/search/models");
+            Logger?.LogInformation("Fetching models...");
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                Logger?.LogInformation("Models matching name like {Name}", name);
+                request.AddParameter("name", name);
+            }
+
+            if (!string.IsNullOrWhiteSpace(modelType))
+            {
+                Logger?.LogInformation("Models matching model_type={ModelType}", modelType);
+                request.AddParameter("model_type", modelType);
+            }
+
+            var response = await _httpClient.ExecuteGetAsync(request);
+            return handleSearchResponse(response);
+        }
+
         public override async Task<JobResponse> ReqGetJobAsync(string jobId)
         {
             var request = new RestRequest($"v2/jobs/{jobId}");
@@ -85,7 +107,7 @@ namespace Mindee.V2.Http
 
         public override async Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId)
         {
-            var slug = typeof(TResponse).GetCustomAttribute<EndpointSlugAttribute>();
+            var slug = typeof(TResponse).GetCustomAttribute<ProductSlugAttribute>();
             var request = new RestRequest($"v2/products/{slug}/results/{inferenceId}");
             Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
             var queueResponse = await _httpClient.ExecuteGetAsync(request);
@@ -209,7 +231,7 @@ namespace Mindee.V2.Http
         }
 
         private TResponse HandleProductResponse<TResponse>(RestResponse restResponse)
-            where TResponse : CommonInferenceResponse, new()
+            where TResponse : BaseResponse, new()
         {
             Logger?.LogDebug("HTTP response: {RestResponseContent}", restResponse.Content);
 

@@ -26,7 +26,7 @@ namespace Mindee.V2.Parsing
         /// </summary>
         /// <returns></returns>
         public TResponse DeserializeResponse<TResponse>()
-            where TResponse : CommonInferenceResponse, new()
+            where TResponse : BaseResponse, new()
         {
             var model = JsonSerializer.Deserialize<TResponse>(FileBytes);
 

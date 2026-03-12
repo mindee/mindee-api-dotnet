@@ -7,6 +7,7 @@ using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V2.ClientOptions;
 using Mindee.V2.Parsing;
+using Mindee.V2.Parsing.Search;
 
 namespace Mindee.V2.Http
 {
@@ -52,13 +53,21 @@ namespace Mindee.V2.Http
         ///     Get a document inference.
         /// </summary>
         /// <param name="inferenceId">Url to poll.</param>
-        public abstract Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId) where TResponse : CommonInferenceResponse, new();
+        public abstract Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId) where TResponse : BaseResponse, new();
 
         /// <summary>
         ///     Get a document inference.
         /// </summary>
         /// <param name="resultUrl">Url to poll.</param>
-        public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl) where TResponse : CommonInferenceResponse, new();
+        public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl) where TResponse : BaseResponse, new();
+
+        /// <summary>
+        /// Retrieves a list of models available for a given API key.
+        /// </summary>
+        /// <param name="name">Name of the model to search for.</param>
+        /// <param name="modelType">Type of the model to search for.</param>
+        /// <returns></returns>
+        public abstract Task<SearchResponse> SearchModels(string? name, string? modelType);
 
         /// <summary>
         ///     Get the error from the server return.
@@ -92,7 +101,7 @@ namespace Mindee.V2.Http
         /// <typeparam name="TResponse"></typeparam>
         /// <returns></returns>
         protected TResponse DeserializeResponse<TResponse>(string? responseContent)
-            where TResponse : CommonInferenceResponse, new()
+            where TResponse : BaseResponse, new()
         {
             Logger?.LogInformation("Parsing HTTP 2xx response ...");
 
@@ -102,7 +111,7 @@ namespace Mindee.V2.Http
             }
             var deserializedResult = JsonSerializer.Deserialize<TResponse>(responseContent);
 
-            if (deserializedResult is CommonInferenceResponse model)
+            if (deserializedResult is BaseResponse model)
             {
                 model.RawResponse = responseContent;
                 return (TResponse)model;

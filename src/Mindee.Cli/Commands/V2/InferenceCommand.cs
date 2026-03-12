@@ -1,6 +1,5 @@
 using System.CommandLine;
 using System.Text.Json;
-using Microsoft.Extensions.DependencyInjection;
 using Mindee.Input;
 using Mindee.V2;
 using Mindee.V2.Parsing;
@@ -71,12 +70,18 @@ namespace Mindee.Cli.Commands.V2
         private readonly Option<bool>? _confidenceOption;
         private readonly Option<bool>? _polygonsOption;
         private readonly Option<string?>? _textContextOption;
-        private readonly Argument<string> _modelIdArgument;
+        private readonly Option<string> _modelIdOption;
         private readonly Argument<string> _pathArgument;
 
         public InferenceCommand(InferenceCommandOptions options)
             : base(options.Name, options.Description)
         {
+
+            _modelIdOption = new Option<string>("--model-id", "-m") { Description = "ID of the model to use", Required = true };
+            Options.Add(_modelIdOption);
+            var apiKeyOption = new Option<string>("--api-key", "-k") { Description = "Mindee V2 API key." };
+            Options.Add(apiKeyOption);// Will not be used at this step, only here for help display purposes.
+
             _productName = options.Name;
             _aliasOption = new Option<string?>("--alias", "-a")
             {
@@ -94,9 +99,6 @@ namespace Mindee.Cli.Commands.V2
                 };
                 Options.Add(_ragOption);
             }
-
-            _modelIdArgument = new Argument<string>("model ID") { Description = "ID of the model to use" };
-            Arguments.Add(_modelIdArgument);
 
             _outputOption = new Option<OutputType>("--output", "-o")
             {
@@ -155,13 +157,12 @@ namespace Mindee.Cli.Commands.V2
             Arguments.Add(_pathArgument);
         }
 
-        public void ConfigureAction(IServiceProvider services)
+        public void ConfigureAction(V2Client mindeeClientV2)
         {
             this.SetAction(parseResult =>
             {
-                var mindeeClientV2 = services.GetRequiredService<V2Client>();
                 var path = parseResult.GetValue(_pathArgument)!;
-                var modelId = parseResult.GetValue(_modelIdArgument)!;
+                var modelId = parseResult.GetValue(_modelIdOption)!;
                 var rag = _ragOption != null && parseResult.GetValue(_ragOption);
                 string? alias = null;
                 if (_aliasOption != null)
@@ -187,7 +188,7 @@ namespace Mindee.Cli.Commands.V2
             });
         }
 
-        public class Handler(Client mindeeClient)
+        public class Handler(V2Client mindeeClient)
         {
             private readonly JsonSerializerOptions _jsonSerializerOptions = new()
             {
@@ -206,7 +207,7 @@ namespace Mindee.Cli.Commands.V2
             private async Task<int> EnqueueAndGetResultAsync(InferenceOptions options, string productName)
             {
                 var inputSource = new LocalInputSource(options.Path);
-                CommonInferenceResponse response = productName switch
+                BaseResponse response = productName switch
                 {
                     "classification" => await mindeeClient.EnqueueAndGetResultAsync<ClassificationResponse>(
                         inputSource, new ClassificationParameters(options.ModelId, options.Alias)),
@@ -231,7 +232,7 @@ namespace Mindee.Cli.Commands.V2
             private void PrintToConsole(
                 TextWriter console,
                 InferenceOptions options,
-                CommonInferenceResponse response)
+                BaseResponse response)
             {
                 if (options.Output == OutputType.Raw)
                 {
