@@ -5,8 +5,8 @@ on:
   workflow_dispatch:
 
 env:
-  Mindee__ApiKey: ${{ secrets.MINDEE_API_KEY_SE_TESTS }}
-  MindeeV2__ApiKey: ${{ secrets.MINDEE_V2_SE_TESTS_API_KEY }}
+  MINDEE_API_KEY: ${{ secrets.MINDEE_API_KEY_SE_TESTS }}
+  MINDEE_V2_API_KEY: ${{ secrets.MINDEE_V2_SE_TESTS_API_KEY }}
   MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID }}
   MINDEE_V2_SE_TESTS_CLASSIFICATION_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_CLASSIFICATION_MODEL_ID }}
   MINDEE_V2_SE_TESTS_CROP_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_CROP_MODEL_ID }}
@@ -18,7 +18,7 @@ jobs:
     name: Run CLI tests
     timeout-minutes: 30
     strategy:
-      max-parallel: 4
+      max-parallel: 3
       matrix:
         os_config:
           - os: "ubuntu-22.04"
@@ -28,6 +28,7 @@ jobs:
           - os: "windows-latest"
             rid: "win-x64"
         dotnet:
+          - "net6.0"
           - "net8.0"
           - "net10.0"
         include:
@@ -64,24 +65,18 @@ jobs:
       run: |
         dotnet tool install -g dotnet-script
 
-    - name: Publish Locally (.NET Framework)
-      if: startsWith(matrix.dotnet, 'net4')
+    - name: Publish Locally
       run: |
         cd src/Mindee.Cli
-        dotnet publish -f ${{ matrix.dotnet }} -c Release -r ${{ matrix.os_config.rid }} -o ./bin/Release/${{ matrix.dotnet }}/${{ matrix.os_config.rid }}
-
-    - name: Publish Locally (.NET 6+)
-      if: ${{ !startsWith(matrix.dotnet, 'net4') }}
-      run: |
-        cd src/Mindee.Cli
-        dotnet publish -f ${{ matrix.dotnet }} -c Release -r ${{ matrix.os_config.rid }} --self-contained true -p:PublishSingleFile=true -o ./bin/Release/${{ matrix.dotnet }}/${{ matrix.os_config.rid }}
+        dotnet publish -f ${{ matrix.dotnet }} -c Release -r ${{ matrix.os_config.rid }} --self-contained true -p:PublishSingleFile=true
 
     - name: Test V1 CLI
       shell: bash
       run: |
-        ./tests/test_v1_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}
+        ./src/Mindee.Cli/tests/test_v1_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}
 
     - name: Test V2 CLI
       shell: bash
       run: |
-        ./tests/test_v2_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}
+        ./src/Mindee.Cli/tests/test_v2_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}
+

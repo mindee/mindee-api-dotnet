@@ -123,7 +123,7 @@ static void BuildV1Commands(Command v1Command, IServiceProvider services, string
     var apiKey = parseResult.GetValue(apiKeyOption);
     V1Client mindeeV1Client;
 
-    if (apiKey == null)
+    if (apiKey != null)
     {
         mindeeV1Client = new V1Client(apiKey);
     }
@@ -241,7 +241,7 @@ static void BuildV2Commands(Command v2Command, IServiceProvider services, string
     var apiKey = parseResult.GetValue(apiKeyOption);
     V2Client mindeeV2Client;
 
-    if (apiKey == null)
+    if (apiKey != null)
     {
         mindeeV2Client = new V2Client(apiKey);
     }
