@@ -12,7 +12,6 @@ env:
   MINDEE_V2_SE_TESTS_CROP_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_CROP_MODEL_ID }}
   MINDEE_V2_SE_TESTS_SPLIT_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_SPLIT_MODEL_ID }}
   MINDEE_V2_SE_TESTS_OCR_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_OCR_MODEL_ID }}
-  Logging__EventLog__LogLevel__Default: "None"
 
 jobs:
   test:

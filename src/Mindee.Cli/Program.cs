@@ -1,6 +1,7 @@
 using System.CommandLine;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Cli.Commands.V2;
 using Mindee.Extensions.DependencyInjection;
@@ -86,11 +87,12 @@ using V1Client = Mindee.V1.Client;
 using V2Client = Mindee.V2.Client;
 
 var host = Host.CreateDefaultBuilder(args)
-    .ConfigureLogging((_, logging) =>
+    .ConfigureLogging(logging =>
     {
-        logging.ClearProviders();
-        logging.AddConsole();
-        logging.AddDebug();
+        if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+        {
+            logging.AddFilter("Microsoft.Extensions.Logging.EventLog", LogLevel.None);
+        }
     })
     .ConfigureServices((_, services) =>
     {
