@@ -87,11 +87,13 @@ using V1Client = Mindee.V1.Client;
 using V2Client = Mindee.V2.Client;
 
 var host = Host.CreateDefaultBuilder(args)
-    .ConfigureLogging(logging =>
+    .ConfigureLogging((_, logging) =>
     {
         if (Environment.OSVersion.Platform != PlatformID.Win32NT)
         {
-            logging.AddFilter("Microsoft.Extensions.Logging.EventLog", LogLevel.None);
+            logging.ClearProviders();
+            logging.AddConsole();
+            logging.AddDebug();
         }
     })
     .ConfigureServices((_, services) =>
