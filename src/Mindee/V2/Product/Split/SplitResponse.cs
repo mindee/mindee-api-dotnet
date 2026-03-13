@@ -6,8 +6,8 @@ namespace Mindee.V2.Product.Split
     /// <summary>
     ///     Represent a split response from Mindee V2 API.
     /// </summary>
-    [EndpointSlug("split")]
-    public class SplitResponse : CommonInferenceResponse
+    [ProductSlug("split")]
+    public class SplitResponse : BaseResponse
     {
         /// <summary>
         ///     Contents of the inference.

@@ -1,6 +1,6 @@
 using Mindee.Geometry;
 using Mindee.V2.Parsing;
-using Mindee.V2.Parsing.Field;
+using Mindee.V2.Parsing.Inference.Field;
 using Mindee.V2.Product.Extraction;
 
 namespace Mindee.UnitTests.V2.Product

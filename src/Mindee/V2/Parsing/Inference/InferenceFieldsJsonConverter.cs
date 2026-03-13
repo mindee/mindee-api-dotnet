@@ -2,9 +2,9 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using Mindee.V2.Parsing.Field;
+using Mindee.V2.Parsing.Inference.Field;
 
-namespace Mindee.V2.Parsing
+namespace Mindee.V2.Parsing.Inference
 {
     /// <summary>
     ///     Custom deserializer for <see cref="InferenceFields" />

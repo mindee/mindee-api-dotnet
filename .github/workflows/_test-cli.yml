@@ -1,0 +1,82 @@
+name: Test Command Line Interface
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+env:
+  Mindee__ApiKey: ${{ secrets.MINDEE_API_KEY_SE_TESTS }}
+  MindeeV2__ApiKey: ${{ secrets.MINDEE_V2_SE_TESTS_API_KEY }}
+  MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID }}
+  MINDEE_V2_SE_TESTS_CLASSIFICATION_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_CLASSIFICATION_MODEL_ID }}
+  MINDEE_V2_SE_TESTS_CROP_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_CROP_MODEL_ID }}
+  MINDEE_V2_SE_TESTS_SPLIT_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_SPLIT_MODEL_ID }}
+  MINDEE_V2_SE_TESTS_OCR_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_OCR_MODEL_ID }}
+
+jobs:
+  test:
+    name: Run CLI tests
+    timeout-minutes: 30
+    strategy:
+      max-parallel: 4
+      matrix:
+        os_config:
+          - os: "ubuntu-22.04"
+            rid: "linux-x64"
+#          - os: "macos-latest"
+#            rid: "osx-x64"
+          - os: "windows-latest"
+            rid: "win-x64"
+        dotnet:
+          - "net6.0"
+          - "net8.0"
+          - "net10.0"
+        include:
+          - os_config:
+              os: "windows-latest"
+              rid: "win-x64"
+            dotnet: "net472"
+          - os_config:
+              os: "windows-latest"
+              rid: "win-x64"
+            dotnet: "net48"
+    runs-on: ${{ matrix.os_config.os }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          6.0.x
+          8.0.x
+          10.0.x
+
+    - uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Install dotnet-script
+      run: |
+        dotnet tool install -g dotnet-script
+
+    - name: Publish Locally
+      run: |
+        cd src/Mindee.Cli
+        dotnet publish -f ${{ matrix.dotnet }} -c Release -r ${{ matrix.os_config.rid }} --self-contained true -p:PublishSingleFile=true
+
+    - name: Test V1 CLI
+      shell: bash
+      run: |
+        ./tests/test_v1_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}
+
+    - name: Test V2 CLI
+      shell: bash
+      run: |
+        ./tests/test_v2_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}
+

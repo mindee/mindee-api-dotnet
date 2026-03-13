@@ -6,8 +6,8 @@ namespace Mindee.V2.Product.Classification
     /// <summary>
     ///   Response for a classification utility inference.
     /// </summary>
-    [EndpointSlug("classification")]
-    public class ClassificationResponse : CommonInferenceResponse
+    [ProductSlug("classification")]
+    public class ClassificationResponse : BaseResponse
     {
         /// <summary>
         ///

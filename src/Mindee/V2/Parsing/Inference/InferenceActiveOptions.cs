@@ -1,9 +1,9 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using Mindee.V2.Parsing.Field;
+using Mindee.V2.Parsing.Inference.Field;
 using Mindee.V2.Product.Extraction;
 
-namespace Mindee.V2.Parsing
+namespace Mindee.V2.Parsing.Inference
 {
     /// <summary>
     ///     Optional information about the document.

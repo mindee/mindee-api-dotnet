@@ -9,6 +9,7 @@ using Mindee.Input;
 using Mindee.V2.ClientOptions;
 using Mindee.V2.Http;
 using Mindee.V2.Parsing;
+using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
 using SettingsV2 = Mindee.V2.Http.Settings;
@@ -151,7 +152,7 @@ namespace Mindee.V2
         ///     <see cref="ExtractionResponse" />
         /// </returns>
         private async Task<TResponse> GetResultFromUrlAsync<TResponse>(string pollingUrl)
-            where TResponse : CommonInferenceResponse, new()
+            where TResponse : BaseResponse, new()
         {
             _logger?.LogInformation("Polling: {}", pollingUrl);
 
@@ -171,7 +172,7 @@ namespace Mindee.V2
         ///     <see cref="ExtractionResponse" />
         /// </returns>
         public async Task<TResponse> GetResultAsync<TResponse>(string jobId)
-            where TResponse : CommonInferenceResponse, new()
+            where TResponse : BaseResponse, new()
         {
             _logger?.LogInformation("Polling: {}", jobId);
 
@@ -218,7 +219,7 @@ namespace Mindee.V2
         public async Task<TResponse> EnqueueAndGetResultAsync<TResponse>(
             InputSource inputSource
             , BaseParameters parameters)
-            where TResponse : CommonInferenceResponse, new()
+            where TResponse : BaseResponse, new()
         {
             switch (inputSource)
             {
@@ -243,6 +244,15 @@ namespace Mindee.V2
         }
 
         /// <summary>
+        /// Returns a list of models matching a criteria for the given API key.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<SearchResponse> SearchModels(string name = null, string modelType = null)
+        {
+            return await _mindeeApi.SearchModels(name, modelType);
+        }
+
+        /// <summary>
         ///     Poll for results until the prediction is retrieved or the max amount of attempts is reached.
         /// </summary>
         /// <param name="enqueueResponse">
@@ -257,7 +267,7 @@ namespace Mindee.V2
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
         private async Task<TResponse> PollForResultsAsync<TResponse>(
             JobResponse enqueueResponse,
-            PollingOptions pollingOptions) where TResponse : CommonInferenceResponse, new()
+            PollingOptions pollingOptions) where TResponse : BaseResponse, new()
         {
             var maxRetries = pollingOptions.MaxRetries + 1;
             var pollingUrl = enqueueResponse.Job.PollingUrl;

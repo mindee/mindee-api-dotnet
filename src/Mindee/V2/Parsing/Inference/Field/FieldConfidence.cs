@@ -2,7 +2,7 @@ using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Mindee.V1.Parsing.Common;
 
-namespace Mindee.V2.Parsing.Field
+namespace Mindee.V2.Parsing.Inference.Field
 {
     /// <summary>
     ///     Confidence level of a field as returned by the V2 API.
