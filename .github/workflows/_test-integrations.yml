@@ -22,7 +22,7 @@ jobs:
     name: Integration Test on *NIX
     timeout-minutes: 35
     strategy:
-      max-parallel: 6
+      max-parallel: 4
       matrix:
         os:
           - "ubuntu-22.04"
