@@ -23,7 +23,7 @@ namespace Mindee.V2.Product.Split
         {
             string splits = string.Join("\n", this.Splits.Select(item => item.ToString()));
 
-            return $"Splits\n=====\n{splits}";
+            return $"Splits\n======\n{splits}";
         }
     }
 }
