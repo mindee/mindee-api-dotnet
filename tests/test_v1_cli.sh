@@ -37,6 +37,9 @@ if [ "$WD" = "tests" ]; then
 else
   CLI_PATH="./src/Mindee.Cli/bin/Release/$NET_VERSION/$RID/Mindee.Cli"
 fi
+if [[ "$RID" == "win-x64" ]]; then
+  CLI_PATH="${CLI_PATH}.exe"
+fi
 
 if [ "$RID" = "win-x64" ]; then
   CLI_PATH="${CLI_PATH}.exe"
