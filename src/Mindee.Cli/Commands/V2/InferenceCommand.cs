@@ -1,7 +1,6 @@
 using System.CommandLine;
 using System.Text.Json;
 using Mindee.Input;
-using Mindee.V2;
 using Mindee.V2.Parsing;
 using Mindee.V2.Product.Classification;
 using Mindee.V2.Product.Classification.Params;
@@ -76,11 +75,11 @@ namespace Mindee.Cli.Commands.V2
         public InferenceCommand(InferenceCommandOptions options)
             : base(options.Name, options.Description)
         {
-
-            _modelIdOption = new Option<string>("--model-id", "-m") { Description = "ID of the model to use", Required = true };
+            _modelIdOption =
+                new Option<string>("--model-id", "-m") { Description = "ID of the model to use", Required = true };
             Options.Add(_modelIdOption);
             var apiKeyOption = new Option<string>("--api-key", "-k") { Description = "Mindee V2 API key." };
-            Options.Add(apiKeyOption);// Will not be used at this step, only here for help display purposes.
+            Options.Add(apiKeyOption); // Will not be used at this step, only here for help display purposes.
 
             _productName = options.Name;
             _aliasOption = new Option<string?>("--alias", "-a")
@@ -104,6 +103,7 @@ namespace Mindee.Cli.Commands.V2
             {
                 Description = "Specify how to output the data. \n" +
                               "- summary: a basic summary (default)\n" +
+                              "- full: detail extraction results, including options\n" +
                               "- raw: full JSON object\n",
                 DefaultValueFactory = _ => OutputType.Summary
             };
@@ -183,7 +183,8 @@ namespace Mindee.Cli.Commands.V2
 
                 var handler = new Handler(mindeeClientV2);
                 return handler
-                    .InvokeAsync(_productName, modelId, path, alias, rag, rawText, confidence, polygon, textContext, output)
+                    .InvokeAsync(_productName, modelId, path, alias, rag, rawText, confidence, polygon, textContext,
+                        output)
                     .GetAwaiter().GetResult();
             });
         }
@@ -234,51 +235,47 @@ namespace Mindee.Cli.Commands.V2
                 InferenceOptions options,
                 BaseResponse response)
             {
-                if (options.Output == OutputType.Raw)
+                var validTypes = new[]
                 {
-                    console.Write(JsonSerializer.Serialize(response, _jsonSerializerOptions));
+                    typeof(ClassificationResponse), typeof(CropResponse), typeof(OcrResponse),
+                    typeof(SplitResponse), typeof(ExtractionResponse)
+                };
+
+                if (!validTypes.Contains(response.GetType()))
+                {
+                    return;
                 }
-                else
+
+                dynamic dynResponse = response;
+
+                switch (options.Output)
                 {
-                    var validTypes = new[]
-                    {
-                        typeof(ClassificationResponse), typeof(CropResponse), typeof(OcrResponse),
-                        typeof(SplitResponse), typeof(ExtractionResponse)
-                    };
-
-                    if (validTypes.Contains(response.GetType()))
-                    {
-                        dynamic dynResponse = response;
-
+                    case OutputType.Full:
                         if (options.RawText && dynResponse.Inference.ActiveOptions.RawText)
                         {
-                            if (options.RawText && dynResponse.Inference.ActiveOptions.RawText)
-                            {
-                                console.Write("#############\nDocument Text\n#############\n::\n");
-                                var rawText = dynResponse.Inference.Result.RawText.ToString().Replace("\n", "\n  ");
-                                console.Write("  " + rawText + "\n\n");
-                            }
-                            else if (options.Rag && dynResponse.Inference.ActiveOptions.Rag)
-                            {
-                                console.Write("#############\nDocument Text\n#############\n::\n");
-                                var rawText = dynResponse.Inference.Result.Rag.ToString().Replace("\n", "\n  ");
-                                console.Write("  " + rawText + "\n\n");
-                            }
-
-                            switch (options.Output)
-                            {
-                                case OutputType.Full:
-                                    console.Write(dynResponse.Inference.ToString());
-                                    break;
-                                case OutputType.Summary:
-                                    console.Write(dynResponse.Inference.Result.ToString());
-                                    break;
-                                case OutputType.Raw:
-                                    console.Write(response.RawResponse);
-                                    break;
-                            }
+                            console.Write("#############\nRaw Text\n#############\n::\n");
+                            var rawText = dynResponse.Inference.Result.RawText.ToString().Replace("\n", "\n  ");
+                            console.Write("  " + rawText + "\n\n");
                         }
-                    }
+                        if (options.Rag && dynResponse.Inference.ActiveOptions.Rag)
+                        {
+                            console.Write("#############\nRetrieval-Augmented Generation\n#############\n::\n");
+                            var rawText = dynResponse.Inference.Result.Rag.ToString().Replace("\n", "\n  ");
+                            console.Write("  " + rawText + "\n\n");
+                        }
+                        console.Write(dynResponse.Inference.ToString());
+                        break;
+                    case OutputType.Summary:
+                        console.Write(dynResponse.Inference.Result.ToString());
+                        break;
+                    case OutputType.Raw:
+                        using (var jsonDocument = JsonDocument.Parse(response.RawResponse))
+                        {
+                            console.WriteLine(JsonSerializer.Serialize(jsonDocument, _jsonSerializerOptions));
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException($"Unknown output type: {options.Output}.");
                 }
             }
         }
