@@ -163,35 +163,32 @@ namespace Mindee.Cli.Commands.V1
             {
                 switch (options.Output)
                 {
-                    console.Write(JsonSerializer.Serialize(response, _jsonSerializerOptions));
-                }
-                else
-                {
-                    if (options.AllWords && response.Document.Ocr != null)
-                    {
-                        console.Write("#############\nDocument Text\n#############\n::\n");
-                        var ocr = response.Document.Ocr.ToString().Replace("\n", "\n  ");
-                        console.Write("  " + ocr + "\n\n");
-                    }
-                    else if (options.FullText && response.Document.Inference.Extras.FullTextOcr != null)
-                    {
-                        console.Write("#############\nDocument Text\n#############\n::\n");
-                        var ocr = response.Document.Inference.Extras.FullTextOcr.Replace("\n", "\n  ");
-                        console.Write("  " + ocr + "\n\n");
-                    }
-
-                    switch (options.Output)
-                    {
-                        case OutputType.Full:
-                            console.Write(response.Document.ToString());
-                            break;
-                        case OutputType.Summary:
-                            console.Write(response.Document.Inference.Prediction.ToString());
-                            break;
-                        case OutputType.Raw:
-                            console.Write(response.RawResponse);
-                            break;
-                    }
+                    case OutputType.Full:
+                        if (options.AllWords && response.Document.Ocr != null)
+                        {
+                            console.Write("#############\nDocument Text\n#############\n::\n");
+                            var ocr = response.Document.Ocr.ToString().Replace("\n", "\n  ");
+                            console.Write("  " + ocr + "\n\n");
+                        }
+                        else if (options.FullText && response.Document.Inference.Extras.FullTextOcr != null)
+                        {
+                            console.Write("#############\nDocument Text\n#############\n::\n");
+                            var ocr = response.Document.Inference.Extras.FullTextOcr.Replace("\n", "\n  ");
+                            console.Write("  " + ocr + "\n\n");
+                        }
+                        console.Write(response.Document.ToString());
+                        break;
+                    case OutputType.Summary:
+                        console.Write(response.Document.Inference.Prediction.ToString());
+                        break;
+                    case OutputType.Raw:
+                        using (var jsonDocument = JsonDocument.Parse(response.RawResponse))
+                        {
+                            console.WriteLine(JsonSerializer.Serialize(jsonDocument, _jsonSerializerOptions));
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException($"Unknown output type: {options.Output}.");
                 }
             }
         }
