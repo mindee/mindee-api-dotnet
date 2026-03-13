@@ -38,6 +38,17 @@ else
   CLI_PATH="./src/Mindee.Cli/bin/Release/$NET_VERSION/$RID/Mindee.Cli"
 fi
 
+echo "--- Test model list retrieval"
+MODELS=$("$CLI_PATH" v2 search-models)
+if [[ -z "${MODELS}" ]]; then
+  echo "Error: no models found"
+  exit 1
+else
+  echo "Models retrieval OK"
+fi
+
+declare -A MODEL_MAP
+
 if [ "$RID" = "win-x64" ]; then
   CLI_PATH="${CLI_PATH}.exe"
 fi
