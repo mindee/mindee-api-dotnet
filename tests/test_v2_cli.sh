@@ -36,6 +36,16 @@ if [[ "$WD" == "tests" ]]; then
 else
   CLI_PATH="./src/Mindee.Cli/bin/Release/$NET_VERSION/$RID/Mindee.Cli"
 fi
+
+echo "--- Test model list retrieval"
+MODELS=$("$CLI_PATH" v2 search-models)
+if [[ -z "${MODELS}" ]]; then
+  echo "Error: no models found"
+  exit 1
+else
+  echo "Models retrieval OK"
+fi
+
 declare -A MODEL_MAP
 
 MODEL_MAP=(
