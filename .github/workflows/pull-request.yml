@@ -48,7 +48,3 @@ jobs:
     uses: ./.github/workflows/_test-cli.yml
     needs: test-units
     secrets: inherit
-  test-cli:
-    uses: ./.github/workflows/_test-cli.yml
-    needs: test-smoke
-    secrets: inherit
