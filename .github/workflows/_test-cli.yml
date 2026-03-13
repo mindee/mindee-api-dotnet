@@ -73,10 +73,10 @@ jobs:
     - name: Test V1 CLI
       shell: bash
       run: |
-        ./src/Mindee.Cli/tests/test_v1_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}
+        ./tests/test_v1_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}
 
     - name: Test V2 CLI
       shell: bash
       run: |
-        ./src/Mindee.Cli/tests/test_v2_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}
+        ./tests/test_v2_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}
 

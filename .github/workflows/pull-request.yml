@@ -29,8 +29,6 @@ jobs:
       actions: read
       security-events: write
       contents: read
-  test-cli:
-    uses: ./.github/workflows/_test-cli.yml
   test-units:
     uses: ./.github/workflows/_test-units.yml
     needs:
@@ -45,4 +43,8 @@ jobs:
   test-smoke:
     uses: ./.github/workflows/_test-smoke.yml
     needs: test-integrations
+    secrets: inherit
+  test-cli:
+    uses: ./.github/workflows/_test-cli.yml
+    needs: test-smoke
     secrets: inherit
