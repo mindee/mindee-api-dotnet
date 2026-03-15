@@ -65,10 +65,17 @@ jobs:
       run: |
         dotnet tool install -g dotnet-script
 
-    - name: Publish Locally
+    - name: Publish Locally (.NET Framework)
+      if: startsWith(matrix.dotnet, 'net4')
       run: |
         cd src/Mindee.Cli
-        dotnet publish -f ${{ matrix.dotnet }} -c Release -r ${{ matrix.os_config.rid }} --self-contained true -p:PublishSingleFile=true
+        dotnet publish -f ${{ matrix.dotnet }} -c Release -r ${{ matrix.os_config.rid }} -o ./bin/Release/${{ matrix.dotnet }}/${{ matrix.os_config.rid }}
+
+    - name: Publish Locally (.NET 6+)
+      if: ${{ !startsWith(matrix.dotnet, 'net4') }}
+      run: |
+        cd src/Mindee.Cli
+        dotnet publish -f ${{ matrix.dotnet }} -c Release -r ${{ matrix.os_config.rid }} --self-contained true -p:PublishSingleFile=true -o ./bin/Release/${{ matrix.dotnet }}/${{ matrix.os_config.rid }}
 
     - name: Test V1 CLI
       shell: bash
@@ -79,4 +86,3 @@ jobs:
       shell: bash
       run: |
         ./tests/test_v2_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}
-
