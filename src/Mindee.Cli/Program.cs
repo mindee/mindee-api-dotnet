@@ -89,12 +89,9 @@ using V2Client = Mindee.V2.Client;
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureLogging((_, logging) =>
     {
-        if (Environment.OSVersion.Platform != PlatformID.Win32NT)
-        {
-            logging.ClearProviders();
-            logging.AddConsole();
-            logging.AddDebug();
-        }
+        logging.ClearProviders();
+        logging.AddConsole();
+        logging.AddDebug();
     })
     .ConfigureServices((_, services) =>
     {
