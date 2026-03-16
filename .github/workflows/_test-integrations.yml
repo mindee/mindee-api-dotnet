@@ -27,8 +27,8 @@ jobs:
           - "ubuntu-24.04"
           - "macos-15"
         dotnet-version:
-          - "net6.0"
           - "net8.0"
+          - "net10.0"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
