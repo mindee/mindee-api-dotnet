@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Mindee.V2.Parsing.Field
+namespace Mindee.V2.Parsing.Inference.Field
 {
     /// <summary>
     ///     Field having a list of fields.

@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Text.Json;
-using Mindee.V2.Product;
 
 namespace Mindee.V2.Parsing
 {
@@ -27,7 +26,7 @@ namespace Mindee.V2.Parsing
         /// </summary>
         /// <returns></returns>
         public TResponse DeserializeResponse<TResponse>()
-            where TResponse : CommonInferenceResponse, new()
+            where TResponse : BaseResponse, new()
         {
             var model = JsonSerializer.Deserialize<TResponse>(FileBytes);
 

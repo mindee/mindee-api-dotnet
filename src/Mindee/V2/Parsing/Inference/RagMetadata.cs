@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Mindee.V2.Parsing
+namespace Mindee.V2.Parsing.Inference
 {
     /// <summary>
     ///     Metadata about the RAG operation.

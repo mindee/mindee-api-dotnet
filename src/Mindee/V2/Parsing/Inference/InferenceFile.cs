@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Mindee.V2.Parsing
+namespace Mindee.V2.Parsing.Inference
 {
     /// <summary>
     ///     ResultFile info for V2 API.

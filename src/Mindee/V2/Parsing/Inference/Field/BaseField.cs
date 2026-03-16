@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Mindee.V2.Parsing.Field
+namespace Mindee.V2.Parsing.Inference.Field
 {
     /// <summary>
     ///     Base class for V2 fields.
