@@ -114,7 +114,7 @@ namespace Mindee.Cli.Commands.V2
                 _rawTextOption = new Option<bool>("--raw-text", "-r")
                 {
                     Description =
-                        "To get all the words in the current document. Only supported in some plans. False by default.",
+                        "To get all the words in the current document. False by default.",
                     DefaultValueFactory = _ => false
                 };
                 Options.Add(_rawTextOption);
@@ -125,7 +125,7 @@ namespace Mindee.Cli.Commands.V2
                 _confidenceOption = new Option<bool>("--confidence", "-c")
                 {
                     Description =
-                        "To retrieve confidence scores from the extraction. Only supported in some plans. False by default.",
+                        "To retrieve confidence scores from the extraction. False by default.",
                     DefaultValueFactory = _ => false
                 };
                 Options.Add(_confidenceOption);
@@ -136,7 +136,7 @@ namespace Mindee.Cli.Commands.V2
                 _polygonsOption = new Option<bool>("--polygon", "-p")
                 {
                     Description =
-                        "To retrieve bounding boxes from the extraction. Only supported in some plans. False by default.",
+                        "To retrieve bounding boxes from the extraction. False by default.",
                     DefaultValueFactory = _ => false
                 };
                 Options.Add(_polygonsOption);
@@ -147,7 +147,7 @@ namespace Mindee.Cli.Commands.V2
                 _textContextOption = new Option<string?>("--text-context", "-t")
                 {
                     Description =
-                        "To add text context to your API call. Only supported in some plans. False by default.",
+                        "To add text context to your API call. False by default.",
                     DefaultValueFactory = _ => null
                 };
                 Options.Add(_textContextOption);
