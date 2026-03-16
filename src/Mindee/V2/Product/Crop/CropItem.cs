@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using Mindee.V2.Parsing.Field;
+using Mindee.V2.Parsing.Inference.Field;
 
 namespace Mindee.V2.Product.Crop
 {

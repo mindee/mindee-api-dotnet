@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Mindee.Exceptions;
 using Mindee.V2.ClientOptions;
-using Mindee.V2.Parsing.Field;
+using Mindee.V2.Parsing.Inference;
+using Mindee.V2.Parsing.Inference.Field;
 
 namespace Mindee.V2.Product.Extraction.Params
 {
@@ -18,7 +19,7 @@ namespace Mindee.V2.Product.Extraction.Params
 
         /// <summary>
         ///     Extract the full text content from the document as strings, and fill the
-        ///     <see cref="Parsing.RawText" /> attribute.
+        ///     <see cref="Parsing.Inference.RawText" /> attribute.
         /// </summary>
         public bool? RawText { get; }
 
@@ -65,7 +66,7 @@ namespace Mindee.V2.Product.Extraction.Params
         ///     <see cref="V1.Parsing.Common.Rag" />
         /// </param>
         /// <param name="rawText">
-        ///     <see cref="Parsing.RawText" />
+        ///     <see cref="Parsing.Inference.RawText" />
         /// </param>
         /// <param name="polygon">
         ///     <see cref="Geometry.Polygon" />

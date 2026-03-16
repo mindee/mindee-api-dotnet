@@ -6,8 +6,8 @@ namespace Mindee.V2.Product.Crop
     /// <summary>
     ///     Represent a crop response from Mindee V2 API.
     /// </summary>
-    [EndpointSlug("crop")]
-    public class CropResponse : CommonInferenceResponse
+    [ProductSlug("crop")]
+    public class CropResponse : BaseResponse
     {
         /// <summary>
         ///     Contents of the inference.

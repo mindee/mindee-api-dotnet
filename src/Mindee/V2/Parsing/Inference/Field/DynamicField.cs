@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Mindee.V2.Parsing.Field
+namespace Mindee.V2.Parsing.Inference.Field
 {
     /// <summary>
     ///     Possible field types.
