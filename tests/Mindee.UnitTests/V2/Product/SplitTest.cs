@@ -47,7 +47,7 @@ namespace Mindee.UnitTests.V2.Product
             Assert.Equal(3, splits.Count);
 
             var firstSplit = splits[0];
-            Assert.Equal("invoice", firstSplit.DocumentType);
+            Assert.Equal("passport", firstSplit.DocumentType);
 
             Assert.NotNull(firstSplit.PageRange);
             Assert.Equal(2, firstSplit.PageRange.Count);

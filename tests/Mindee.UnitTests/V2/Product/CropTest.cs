@@ -74,7 +74,7 @@ namespace Mindee.UnitTests.V2.Product
             Assert.Equal(new Point(0.214, 0.979), firstPolygon[3]);
 
             var secondCrop = crops[1];
-            Assert.Equal("invoice", secondCrop.ObjectType);
+            Assert.Equal("receipt", secondCrop.ObjectType);
             Assert.Equal(0, secondCrop.Location.Page);
 
             var secondPolygon = secondCrop.Location.Polygon;
