@@ -1,7 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
-using Mindee.V1.Parsing;
 using Mindee.V1.Parsing.Standard;
 
 namespace Mindee.V1.Product.Fr.IdCard
