@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Mindee.V1.Parsing.Common
 {
     /// <summary>
-    ///     Cropping result.
+    ///     Full text OCR result.
     /// </summary>
     public sealed class FullTextOcr
     {
