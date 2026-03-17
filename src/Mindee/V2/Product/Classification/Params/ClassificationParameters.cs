@@ -14,7 +14,7 @@ namespace Mindee.V2.Product.Classification.Params
         public sealed override string Slug { get; protected set; }
 
         /// <summary>
-        /// Crop parameters to set when sending a file.
+        /// Classification parameters to set when sending a file.
         /// </summary>
         /// <param name="modelId"></param>
         /// <param name="alias"></param>

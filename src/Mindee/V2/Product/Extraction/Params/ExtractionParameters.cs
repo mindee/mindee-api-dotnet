@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Mindee.Exceptions;
 using Mindee.V2.ClientOptions;
-using Mindee.V2.Parsing.Inference;
 using Mindee.V2.Parsing.Inference.Field;
 
 namespace Mindee.V2.Product.Extraction.Params
