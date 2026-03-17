@@ -1,5 +1,8 @@
+using System.Reflection;
 using Mindee.V2.Parsing;
+using Mindee.V2.Product;
 using Mindee.V2.Product.Classification;
+using Mindee.V2.Product.Classification.Params;
 
 namespace Mindee.UnitTests.V2.Product
 {
@@ -7,6 +10,16 @@ namespace Mindee.UnitTests.V2.Product
     [Trait("Category", "ClassificationInference")]
     public class ClassificationTest
     {
+        [Fact]
+        public void Parameters_MustInit()
+        {
+            var productParams = new ClassificationParameters("invalid-model-id");
+            Assert.Equal("invalid-model-id", productParams.ModelId);
+
+            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttributes>();
+            Assert.Equal("classification", productAttributes?.Slug);
+        }
+
         [Fact]
         public void Classification_WhenSingle_MustHaveValidProperties()
         {

@@ -6,7 +6,7 @@ namespace Mindee.V2.Product.Ocr
     /// <summary>
     /// Response for an OCR utility inference.
     /// </summary>
-    [ProductSlug("ocr")]
+    [ProductAttributes("ocr")]
     public class OcrResponse : BaseResponse
     {
         /// <summary>

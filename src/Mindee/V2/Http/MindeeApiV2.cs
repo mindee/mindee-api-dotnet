@@ -53,8 +53,11 @@ namespace Mindee.V2.Http
             BaseParameters parameters
         )
         {
-            var slug = parameters.Slug;
-            var request = new RestRequest($"v2/products/{slug}/enqueue", Method.Post);
+            var productAttributes = parameters.GetType().GetCustomAttribute<ProductAttributes>();
+            if (productAttributes == null)
+                throw new Exception($"ProductAttributes must be set for class: {parameters.GetType().Name}");
+            var request = new RestRequest(
+                $"v2/products/{productAttributes.Slug}/enqueue", Method.Post);
 
             request.AddParameter("model_id", parameters.ModelId);
             AddPredictRequestParameters(inputSource, parameters, request);
@@ -104,11 +107,13 @@ namespace Mindee.V2.Http
             return handledResponse;
         }
 
-
         public override async Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId)
         {
-            var slug = typeof(TResponse).GetCustomAttribute<ProductSlugAttribute>();
-            var request = new RestRequest($"v2/products/{slug}/results/{inferenceId}");
+            var productAttributes = typeof(TResponse).GetCustomAttribute<ProductAttributes>();
+            if (productAttributes == null)
+                throw new Exception($"ProductAttributes must be set for class: {typeof(TResponse).Name}");
+            var request = new RestRequest(
+                $"v2/products/{productAttributes.Slug}/results/{inferenceId}");
             Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
             var queueResponse = await _httpClient.ExecuteGetAsync(request);
             return HandleProductResponse<TResponse>(queueResponse);
@@ -121,7 +126,6 @@ namespace Mindee.V2.Http
             var queueResponse = await _httpClient.ExecuteGetAsync(request);
             return HandleProductResponse<TResponse>(queueResponse);
         }
-
 
         private static void AddPredictRequestParameters(InputSource inputSource, BaseParameters parameters, RestRequest request)
         {

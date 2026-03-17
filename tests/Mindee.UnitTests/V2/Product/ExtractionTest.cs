@@ -1,7 +1,10 @@
+using System.Reflection;
 using Mindee.Geometry;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Inference.Field;
+using Mindee.V2.Product;
 using Mindee.V2.Product.Extraction;
+using Mindee.V2.Product.Extraction.Params;
 
 namespace Mindee.UnitTests.V2.Product
 {
@@ -9,6 +12,16 @@ namespace Mindee.UnitTests.V2.Product
     [Trait("Category", "ExtractionInference")]
     public class ExtractionTest
     {
+        [Fact]
+        public void Parameters_MustInit()
+        {
+            var productParams = new ExtractionParameters("invalid-model-id");
+            Assert.Equal("invalid-model-id", productParams.ModelId);
+
+            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttributes>();
+            Assert.Equal("extraction", productAttributes?.Slug);
+        }
+
         [Fact]
         public void FinancialDocument_WhenEmpty_MustHaveValidProperties()
         {

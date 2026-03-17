@@ -6,7 +6,7 @@ namespace Mindee.V2.Product.Split
     /// <summary>
     ///     Represent a split response from Mindee V2 API.
     /// </summary>
-    [ProductSlug("split")]
+    [ProductAttributes("split")]
     public class SplitResponse : BaseResponse
     {
         /// <summary>

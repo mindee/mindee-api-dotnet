@@ -6,7 +6,7 @@ namespace Mindee.V2.Product.Extraction
     /// <summary>
     ///     Response for an extraction inference.
     /// </summary>
-    [ProductSlug("extraction")]
+    [ProductAttributes("extraction")]
     public class ExtractionResponse : BaseResponse
     {
         /// <summary>

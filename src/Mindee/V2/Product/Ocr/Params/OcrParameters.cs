@@ -6,12 +6,9 @@ namespace Mindee.V2.Product.Ocr.Params
     /// <summary>
     ///     Parameters accepted by the OCR utility v2 endpoint.
     /// </summary>
+    [ProductAttributes("ocr")]
     public class OcrParameters : BaseParameters
     {
-        /// <summary>
-        /// Slug for the OCR product.
-        /// </summary>
-        public sealed override string Slug { get; protected set; }
 
         /// <summary>
         /// OCR parameters to set when sending a file.
@@ -24,9 +21,6 @@ namespace Mindee.V2.Product.Ocr.Params
             string modelId,
             string alias = null,
             List<string> webhookIds = null,
-            PollingOptions pollingOptions = null) : base(modelId, alias, webhookIds, pollingOptions)
-        {
-            Slug = "ocr";
-        }
+            PollingOptions pollingOptions = null) : base(modelId, alias, webhookIds, pollingOptions) { }
     }
 }

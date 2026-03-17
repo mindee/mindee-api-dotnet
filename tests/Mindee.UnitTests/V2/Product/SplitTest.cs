@@ -1,5 +1,8 @@
+using System.Reflection;
 using Mindee.V2.Parsing;
+using Mindee.V2.Product;
 using Mindee.V2.Product.Split;
+using Mindee.V2.Product.Split.Params;
 
 namespace Mindee.UnitTests.V2.Product
 {
@@ -7,6 +10,16 @@ namespace Mindee.UnitTests.V2.Product
     [Trait("Category", "SplitInference")]
     public class SplitTest
     {
+        [Fact]
+        public void Parameters_MustInit()
+        {
+            var productParams = new SplitParameters("invalid-model-id");
+            Assert.Equal("invalid-model-id", productParams.ModelId);
+
+            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttributes>();
+            Assert.Equal("split", productAttributes?.Slug);
+        }
+
         [Fact]
         public void Split_WhenSingle_MustHaveValidProperties()
         {
