@@ -84,7 +84,7 @@ namespace Mindee.V2.Http
             }
 
             var response = await _httpClient.ExecuteGetAsync(request);
-            return handleSearchResponse(response);
+            return HandleSearchResponse(response);
         }
 
         public override async Task<JobResponse> ReqGetJobAsync(string jobId)
@@ -127,7 +127,8 @@ namespace Mindee.V2.Http
             return HandleProductResponse<TResponse>(queueResponse);
         }
 
-        private static void AddPredictRequestParameters(InputSource inputSource, BaseParameters parameters, RestRequest request)
+        private static void AddPredictRequestParameters(
+            InputSource inputSource, BaseParameters parameters, RestRequest request)
         {
             switch (inputSource)
             {
@@ -146,56 +147,13 @@ namespace Mindee.V2.Http
                     throw new MindeeInputException($"Unsupported input source type '{inputSource.GetType()}'");
             }
 
-            if (!string.IsNullOrWhiteSpace(parameters.Alias))
+            foreach (KeyValuePair<string, string> entry in parameters.GetRequestParameters())
             {
-                request.AddParameter("alias", parameters.Alias);
-            }
-
-            if (parameters is ExtractionParameters extractionParameters)
-            {
-                AssignExtractionParameters(request, extractionParameters);
-            }
-
-            if (parameters.WebhookIds is { Count: > 0 })
-            {
-                request.AddParameter("webhook_ids", string.Join(",", parameters.WebhookIds));
+                request.AddParameter(entry.Key, entry.Value);
             }
         }
 
-        private static void AssignExtractionParameters(RestRequest request, ExtractionParameters parameters)
-        {
-            if (parameters.Rag != null)
-            {
-                request.AddParameter("rag", parameters.Rag.Value.ToString());
-            }
-
-            if (parameters.RawText != null)
-            {
-                request.AddParameter("raw_text", parameters.RawText.Value.ToString());
-            }
-
-            if (parameters.Polygon != null)
-            {
-                request.AddParameter("polygon", parameters.Polygon.Value.ToString());
-            }
-
-            if (parameters.Confidence != null)
-            {
-                request.AddParameter("confidence", parameters.Confidence.Value.ToString());
-            }
-
-            if (parameters.TextContext != null)
-            {
-                request.AddParameter("text_context", parameters.TextContext);
-            }
-
-            if (parameters.DataSchema != null)
-            {
-                request.AddParameter("data_schema", parameters.DataSchema.ToString());
-            }
-        }
-
-        private SearchResponse handleSearchResponse(RestResponse restResponse)
+        private SearchResponse HandleSearchResponse(RestResponse restResponse)
         {
             Logger?.LogDebug("HTTP response: {RestResponseContent}", restResponse.Content);
             var statusCode = (int)restResponse.StatusCode;
