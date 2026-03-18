@@ -6,13 +6,9 @@ namespace Mindee.V2.Product.Crop.Params
     /// <summary>
     /// Parameters accepted by the crop utility v2 endpoint.
     /// </summary>
+    [ProductAttributes("crop")]
     public class CropParameters : BaseParameters
     {
-        /// <summary>
-        /// Slug for the crop product.
-        /// </summary>
-        public sealed override string Slug { get; protected set; }
-
         /// <summary>
         /// Crop parameters to set when sending a file.
         /// </summary>
@@ -24,9 +20,6 @@ namespace Mindee.V2.Product.Crop.Params
             string modelId,
             string alias = null,
             List<string> webhookIds = null,
-            PollingOptions pollingOptions = null) : base(modelId, alias, webhookIds, pollingOptions)
-        {
-            Slug = "crop";
-        }
+            PollingOptions pollingOptions = null) : base(modelId, alias, webhookIds, pollingOptions) { }
     }
 }

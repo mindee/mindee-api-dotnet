@@ -6,13 +6,9 @@ namespace Mindee.V2.Product.Classification.Params
     /// <summary>
     ///   Parameters for a classification utility inference.
     /// </summary>
+    [ProductAttributes("classification")]
     public class ClassificationParameters : BaseParameters
     {
-        /// <summary>
-        /// Slug for the classification product.
-        /// </summary>
-        public sealed override string Slug { get; protected set; }
-
         /// <summary>
         /// Classification parameters to set when sending a file.
         /// </summary>
@@ -24,9 +20,6 @@ namespace Mindee.V2.Product.Classification.Params
             string modelId,
             string alias = null,
             List<string> webhookIds = null,
-            PollingOptions pollingOptions = null) : base(modelId, alias, webhookIds, pollingOptions)
-        {
-            Slug = "classification";
-        }
+            PollingOptions pollingOptions = null) : base(modelId, alias, webhookIds, pollingOptions) { }
     }
 }

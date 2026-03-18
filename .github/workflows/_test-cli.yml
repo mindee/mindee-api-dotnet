@@ -41,7 +41,7 @@ jobs:
             dotnet: "net48"
     runs-on: ${{ matrix.os_config.os }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
 

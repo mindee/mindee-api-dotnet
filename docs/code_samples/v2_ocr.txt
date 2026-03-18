@@ -27,4 +27,4 @@ var response = await mindeeClient.EnqueueAndGetResultAsync<OcrResponse>(
 System.Console.WriteLine(response.Inference.ToString());
 
 // Access the OCR result pages
-// List<OcrPage> ocrPages = response.Inference.Result.Pages;
+var ocrPages = response.Inference.Result.Pages;

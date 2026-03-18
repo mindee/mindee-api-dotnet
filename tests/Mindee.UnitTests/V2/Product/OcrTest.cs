@@ -1,5 +1,8 @@
+using System.Reflection;
 using Mindee.V2.Parsing;
+using Mindee.V2.Product;
 using Mindee.V2.Product.Ocr;
+using Mindee.V2.Product.Ocr.Params;
 
 namespace Mindee.UnitTests.V2.Product
 {
@@ -7,6 +10,16 @@ namespace Mindee.UnitTests.V2.Product
     [Trait("Category", "OcrInference")]
     public class OcrTest
     {
+        [Fact]
+        public void Parameters_MustInit()
+        {
+            var productParams = new OcrParameters("invalid-model-id");
+            Assert.Equal("invalid-model-id", productParams.ModelId);
+
+            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttributes>();
+            Assert.Equal("ocr", productAttributes?.Slug);
+        }
+
         [Fact]
         public void Ocr_WhenSingle_MustHaveValidProperties()
         {

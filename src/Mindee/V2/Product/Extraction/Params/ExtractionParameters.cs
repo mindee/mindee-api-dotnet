@@ -9,6 +9,7 @@ namespace Mindee.V2.Product.Extraction.Params
     /// <summary>
     ///     Parameters for an extraction inference.
     /// </summary>
+    [ProductAttributes("extraction")]
     public class ExtractionParameters : BaseParameters
     {
         /// <summary>
@@ -43,11 +44,6 @@ namespace Mindee.V2.Product.Extraction.Params
         ///     Not recommended, for specific use only.
         /// </summary>
         public DataSchema DataSchema { get; }
-
-        /// <summary>
-        /// Slug for the extraction product.
-        /// </summary>
-        public sealed override string Slug { get; protected set; }
 
         /// <summary>
         ///     Extraction parameters to set when sending a file.
@@ -119,7 +115,6 @@ namespace Mindee.V2.Product.Extraction.Params
                 null => null,
                 _ => throw new MindeeInputException("Invalid Data Schema format.")
             };
-            Slug = "extraction";
         }
     }
 }

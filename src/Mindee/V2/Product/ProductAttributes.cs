@@ -3,20 +3,20 @@ using System;
 namespace Mindee.V2.Product
 {
     /// <summary>
-    /// Attribute to specify the slug for a product endpoint.
+    /// Attribute to specify various product metadata.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public sealed class ProductSlugAttribute : Attribute
+    public sealed class ProductAttributes : Attribute
     {
         /// <summary>
-        /// Slug of the endpoint
+        /// URL slug of the product.
         /// </summary>
         public string Slug;
 
         /// <summary>
-        /// Attribute to specify the slug for a product endpoint.
+        /// Attribute to specify various product metadata.
         /// </summary>
-        public ProductSlugAttribute(string slug)
+        public ProductAttributes(string slug)
         {
             Slug = slug;
         }

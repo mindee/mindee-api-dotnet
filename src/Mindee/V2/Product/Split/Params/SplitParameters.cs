@@ -6,13 +6,9 @@ namespace Mindee.V2.Product.Split.Params
     /// <summary>
     /// Parameters accepted by the split utility v2 endpoint.
     /// </summary>
+    [ProductAttributes("split")]
     public class SplitParameters : BaseParameters
     {
-        /// <summary>
-        /// Slug for the split product.
-        /// </summary>
-        public sealed override string Slug { get; protected set; }
-
         /// <summary>
         /// Split parameters to set when sending a file.
         /// </summary>
@@ -24,9 +20,6 @@ namespace Mindee.V2.Product.Split.Params
             string modelId,
             string alias = null,
             List<string> webhookIds = null,
-            PollingOptions pollingOptions = null) : base(modelId, alias, webhookIds, pollingOptions)
-        {
-            Slug = "split";
-        }
+            PollingOptions pollingOptions = null) : base(modelId, alias, webhookIds, pollingOptions) { }
     }
 }

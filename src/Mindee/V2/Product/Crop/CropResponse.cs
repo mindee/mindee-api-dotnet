@@ -6,7 +6,7 @@ namespace Mindee.V2.Product.Crop
     /// <summary>
     ///     Represent a crop response from Mindee V2 API.
     /// </summary>
-    [ProductSlug("crop")]
+    [ProductAttributes("crop")]
     public class CropResponse : BaseResponse
     {
         /// <summary>

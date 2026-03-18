@@ -33,8 +33,6 @@ jobs:
     uses: ./.github/workflows/_test-units.yml
     needs:
       - static-analysis
-      - codeql
-#      - qodana-code-quality
     secrets: inherit
   test-integrations:
     uses: ./.github/workflows/_test-integrations.yml

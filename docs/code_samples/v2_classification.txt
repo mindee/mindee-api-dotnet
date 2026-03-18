@@ -27,4 +27,4 @@ var response = await mindeeClient.EnqueueAndGetResultAsync<ClassificationRespons
 System.Console.WriteLine(response.Inference.ToString());
 
 // Access the classification results
-// ClassificationClassifier classification = response.Inference.Result.Classification;
+var classification = response.Inference.Result.Classification;
