@@ -39,4 +39,4 @@ var response = await mindeeClient.EnqueueAndGetResultAsync<ExtractionResponse>(
 System.Console.WriteLine(response.Inference.ToString());
 
 // Access the extracted fields
-// InferenceFields extractedFields = response.Inference.Result.Fields;
+var fields = response.Inference.Result.Fields;

@@ -27,4 +27,4 @@ var response = await mindeeClient.EnqueueAndGetResultAsync<CropResponse>(
 System.Console.WriteLine(response.Inference.ToString());
 
 // Access the crop results
-// List<CropItems> crops = response.Inference.Result.Crops;
+var crops = response.Inference.Result.Crops;
