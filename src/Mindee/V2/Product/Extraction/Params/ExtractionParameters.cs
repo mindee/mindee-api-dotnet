@@ -116,5 +116,31 @@ namespace Mindee.V2.Product.Extraction.Params
                 _ => throw new MindeeInputException("Invalid Data Schema format.")
             };
         }
+
+        /// <inheritdoc />
+        public override Dictionary<string, string> GetRequestParameters()
+        {
+            var parameters = base.GetRequestParameters();
+
+            if (Rag != null)
+                parameters.Add("rag", Rag.Value.ToString());
+
+            if (RawText != null)
+                parameters.Add("raw_text", RawText.Value.ToString());
+
+            if (Polygon != null)
+                parameters.Add("polygon", Polygon.Value.ToString());
+
+            if (Confidence != null)
+                parameters.Add("confidence", Confidence.Value.ToString());
+
+            if (TextContext != null)
+                parameters.Add("text_context", TextContext);
+
+            if (DataSchema != null)
+                parameters.Add("data_schema", DataSchema.ToString());
+
+            return parameters;
+        }
     }
 }

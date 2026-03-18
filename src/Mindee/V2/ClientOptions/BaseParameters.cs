@@ -51,5 +51,22 @@ namespace Mindee.V2.ClientOptions
             WebhookIds = webhookIds;
             PollingOptions = pollingOptions;
         }
+
+        /// <summary>
+        /// Gets the request parameters for the POST enqueue request.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Dictionary<string, string> GetRequestParameters()
+        {
+            var parameters = new Dictionary<string, string>();
+
+            if (!string.IsNullOrWhiteSpace(Alias))
+                parameters.Add("alias", Alias);
+
+            if (WebhookIds is { Count: > 0 })
+                parameters.Add("webhook_ids", string.Join(",", WebhookIds));
+
+            return parameters;
+        }
     }
 }
