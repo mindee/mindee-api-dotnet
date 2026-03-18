@@ -16,11 +16,9 @@ namespace Mindee.V2.Product.Ocr.Params
         /// <param name="modelId"></param>
         /// <param name="alias"></param>
         /// <param name="webhookIds"></param>
-        /// <param name="pollingOptions"></param>
         public OcrParameters(
             string modelId,
             string alias = null,
-            List<string> webhookIds = null,
-            PollingOptions pollingOptions = null) : base(modelId, alias, webhookIds, pollingOptions) { }
+            List<string> webhookIds = null) : base(modelId, alias, webhookIds) { }
     }
 }

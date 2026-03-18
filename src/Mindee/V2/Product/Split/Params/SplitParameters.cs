@@ -15,11 +15,9 @@ namespace Mindee.V2.Product.Split.Params
         /// <param name="modelId"></param>
         /// <param name="alias"></param>
         /// <param name="webhookIds"></param>
-        /// <param name="pollingOptions"></param>
         public SplitParameters(
             string modelId,
             string alias = null,
-            List<string> webhookIds = null,
-            PollingOptions pollingOptions = null) : base(modelId, alias, webhookIds, pollingOptions) { }
+            List<string> webhookIds = null) : base(modelId, alias, webhookIds) { }
     }
 }

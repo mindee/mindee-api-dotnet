@@ -212,13 +212,17 @@ namespace Mindee.V2
         /// <param name="parameters">
         ///     <see cref="BaseParameters" />
         /// </param>
+        /// <param name="pollingOptions">
+        ///     <see cref="PollingOptions" />
+        /// </param>
         /// <returns>
         ///     <see cref="ExtractionResponse" />
         /// </returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<TResponse> EnqueueAndGetResultAsync<TResponse>(
             InputSource inputSource
-            , BaseParameters parameters)
+            , BaseParameters parameters
+            , PollingOptions pollingOptions = null)
             where TResponse : BaseResponse, new()
         {
             switch (inputSource)
@@ -235,12 +239,12 @@ namespace Mindee.V2
                     throw new MindeeInputException($"Unsupported input source {inputSource.GetType().Name}");
             }
 
-            parameters.PollingOptions ??= new PollingOptions();
+            pollingOptions ??= new PollingOptions();
 
             var enqueueResponse = await EnqueueAsync(
                 inputSource,
                 parameters);
-            return await PollForResultsAsync<TResponse>(enqueueResponse, parameters.PollingOptions);
+            return await PollForResultsAsync<TResponse>(enqueueResponse, pollingOptions);
         }
 
         /// <summary>
