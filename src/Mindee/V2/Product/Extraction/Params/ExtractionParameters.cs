@@ -72,9 +72,6 @@ namespace Mindee.V2.Product.Extraction.Params
         /// <param name="textContext">
         ///     <see cref="TextContext" />
         /// </param>
-        /// <param name="pollingOptions">
-        ///     <see cref="PollingOptions" />
-        /// </param>
         /// <param name="dataSchema">
         ///     <see cref="DataSchema" />
         /// </param>
@@ -87,13 +84,11 @@ namespace Mindee.V2.Product.Extraction.Params
             bool? polygon = null,
             bool? confidence = null,
             string textContext = null,
-            PollingOptions pollingOptions = null,
             object dataSchema = null
         ) : base(
             modelId,
             alias,
-            webhookIds,
-            pollingOptions)
+            webhookIds)
         {
             Rag = rag;
             RawText = rawText;
