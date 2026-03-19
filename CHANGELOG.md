@@ -1,5 +1,11 @@
 # Mindee .NET Client Library Changelog
 
+## v4.0.0-rc1 - 2026-03-19
+### Changes
+* :boom: :refactor: move polling options outside product parameters
+* :recycle: harmonize v1 and v2 polling options
+
+
 ## v4.0.0-beta1 - 2026-03-16
 ### Changes
 * :sparkles: Add support for `Classification`, `Crop`, `OCR` and `Split` utilities.
