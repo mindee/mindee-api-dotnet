@@ -1,5 +1,10 @@
 # Mindee .NET Client Library Changelog
 
+## v4.0.0-rc2 - 2026-03-23
+### Changes
+* :recycle: mutualize framework targeting
+
+
 ## v4.0.0-rc1 - 2026-03-19
 ### Changes
 * :boom: :refactor: move polling options outside product parameters
