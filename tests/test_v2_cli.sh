@@ -6,14 +6,14 @@ NET_VERSION=$2
 RID=$3
 
 if [ -z "$TEST_FILE" ]; then
-  echo "Error: no sample file provided"
-  exit 1
+  TEST_FILE='./tests/resources/file_types/pdf/blank_1.pdf'
 fi
+echo "TEST_FILE: ${TEST_FILE}"
 
 if [ -z "$NET_VERSION" ]; then
   NET_VERSION="net8.0"
-  echo "Warning: no .NET version provided, defaulting to '$NET_VERSION'"
 fi
+echo "NET_VERSION: ${NET_VERSION}"
 
 if [ -z "$RID" ]; then
   OS_NAME="$(uname -s)"
@@ -28,22 +28,17 @@ if [ -z "$RID" ]; then
       exit 1
       ;;
   esac
-  echo "Warning: Runtime Identifier (RID) not provided, defaulting to $RID"
 fi
+echo "RID: ${RID}"
 
-WD="$(basename "$PWD")"
-if [ "$WD" = "tests" ]; then
-  CLI_PATH="../src/Mindee.Cli/bin/Release/$NET_VERSION/$RID/Mindee.Cli"
-else
-  CLI_PATH="./src/Mindee.Cli/bin/Release/$NET_VERSION/$RID/Mindee.Cli"
-fi
-
+CLI_PATH="./src/Mindee.Cli/bin/Release/$NET_VERSION/$RID/Mindee.Cli"
 if [ "$RID" = "win-x64" ]; then
   CLI_PATH="${CLI_PATH}.exe"
 fi
+echo "CLI_PATH: ${CLI_PATH}"
 
 echo "--- Test model list retrieval"
-MODELS=$("$CLI_PATH" v2 search-models)
+MODELS=$("$CLI_PATH" search-models)
 if [ -z "$MODELS" ]; then
   echo "Error: no models found"
   exit 1
@@ -51,21 +46,16 @@ else
   echo "Models retrieval OK"
 fi
 
-MODELS_SIZE=5
-i=1
-
 run_test() {
   model_id="$1"
   model_type="$2"
 
-  echo "--- Test $model_type (ID: $model_id) with Summary Output ($i/$MODELS_SIZE) ---"
-  SUMMARY_OUTPUT=$("$CLI_PATH" v2 "$model_type" -m "$model_id" "$TEST_FILE")
+  echo "--- Test $model_type ID: $model_id"
+  SUMMARY_OUTPUT=$("$CLI_PATH" "$model_type" -m "$model_id" "$TEST_FILE")
   echo "$SUMMARY_OUTPUT"
   echo ""
   echo ""
   sleep 0.5
-
-  i=$((i + 1))
 }
 
 run_test "$MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID" "extraction"

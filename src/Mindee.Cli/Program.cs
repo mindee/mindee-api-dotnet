@@ -106,8 +106,7 @@ return await root.Parse(args).InvokeAsync();
 
 static void BuildV1Commands(Command v1Command, IServiceProvider services, string[] args)
 {
-
-    var apiKeyOption = new Option<string>("--api-key", "-k") { Description = "Mindee V2 API key." };
+    var apiKeyOption = new Option<string>("--api-key", "-k") { Description = "Mindee V1 API key." };
     v1Command.Validators.Add(commandResult =>
     {
         try
@@ -116,7 +115,9 @@ static void BuildV1Commands(Command v1Command, IServiceProvider services, string
         }
         catch (OptionsValidationException)
         {
-            commandResult.AddError("Mindee V2 API key is missing. Please provide it via the '--api-key' option or your configured environment variable.");
+            commandResult.AddError(
+                "The Mindee V1 API key is missing. " +
+                "Please provide it via the '--api-key' option or your configured environment variable.");
         }
     });
     v1Command.Add(apiKeyOption);
@@ -234,7 +235,9 @@ static void BuildV2Commands(Command v2Command, IServiceProvider services, string
         }
         catch (OptionsValidationException)
         {
-            commandResult.AddError("Mindee V2 API key is missing. Please provide it via the '--api-key' option or your configured environment variable.");
+            commandResult.AddError(
+                "The Mindee V2 API key is missing. " +
+                "Please provide it via the '--api-key' option or your configured environment variable.");
         }
     });
     v2Command.Add(apiKeyOption);
@@ -253,20 +256,57 @@ static void BuildV2Commands(Command v2Command, IServiceProvider services, string
     var searchModelsCmd = new SearchModelsCommand();
     searchModelsCmd.ConfigureAction(mindeeV2Client);
     v2Command.Add(searchModelsCmd);
-    var classificationCmd = new InferenceCommand(new InferenceCommandOptions("classification", "Classification utility.", false, false, false, false, false));
+    var classificationCmd = new InferenceCommand(
+        new InferenceCommandOptions(
+            "classification",
+            "Classification utility.",
+            false,
+            false,
+            false,
+            false,
+            false));
     v2Command.Subcommands.Add(classificationCmd);
     classificationCmd.ConfigureAction(mindeeV2Client);
-    var cropCmd = new InferenceCommand(new InferenceCommandOptions("crop", "Crop utility.", false, false, false, false, false));
+    var cropCmd = new InferenceCommand(
+        new InferenceCommandOptions(
+            "crop",
+            "Crop utility.",
+            false,
+            false,
+            false,
+            false,
+            false));
     v2Command.Subcommands.Add(cropCmd);
     cropCmd.ConfigureAction(mindeeV2Client);
-    var extractionCmd = new InferenceCommand(new InferenceCommandOptions("extraction",
-        "Generic all-purpose extraction.", true, true, true, true, true));
+    var extractionCmd = new InferenceCommand(
+        new InferenceCommandOptions("extraction",
+        "Generic all-purpose extraction.",
+        true,
+        true,
+        true,
+        true,
+        true));
     v2Command.Subcommands.Add(extractionCmd);
     extractionCmd.ConfigureAction(mindeeV2Client);
-    var ocrCmd = new InferenceCommand(new InferenceCommandOptions("ocr", "OCR utility.", false, false, false, false, false));
+    var ocrCmd = new InferenceCommand(
+        new InferenceCommandOptions(
+            "ocr", "OCR utility.",
+            false,
+            false,
+            false,
+            false,
+            false));
     v2Command.Subcommands.Add(ocrCmd);
     ocrCmd.ConfigureAction(mindeeV2Client);
-    var splitCmd = new InferenceCommand(new InferenceCommandOptions("split", "Split utility.", false, false, false, false, false));
+    var splitCmd = new InferenceCommand(
+        new InferenceCommandOptions(
+            "split",
+            "Split utility.",
+            false,
+            false,
+            false,
+            false,
+            false));
     v2Command.Subcommands.Add(splitCmd);
     splitCmd.ConfigureAction(mindeeV2Client);
 }
@@ -275,11 +315,10 @@ static RootCommand BuildCommandLine(IServiceProvider services, string[] args)
 {
     var root = new RootCommand();
     var v1Command = new Command("v1", "Mindee V1 product commands.");
+    BuildV2Commands(root, services, args);
+
     BuildV1Commands(v1Command, services, args);
-    var v2Command = new Command("v2", "Mindee V2 product commands.");
-    BuildV2Commands(v2Command, services, args);
     root.Add(v1Command);
-    root.Add(v2Command);
 
     var silentOption = new Option<bool>("--silent")
     {

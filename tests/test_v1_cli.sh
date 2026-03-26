@@ -6,14 +6,14 @@ NET_VERSION=$2
 RID=$3
 
 if [ -z "$TEST_FILE" ]; then
-  echo "Error: no sample file provided"
-  exit 1
+  TEST_FILE='./tests/resources/file_types/pdf/blank_1.pdf'
 fi
+echo "TEST_FILE: ${TEST_FILE}"
 
 if [ -z "$NET_VERSION" ]; then
   NET_VERSION="net8.0"
-  echo "Warning: no .NET version provided, defaulting to '$NET_VERSION'"
 fi
+echo "NET_VERSION: ${NET_VERSION}"
 
 if [ -z "$RID" ]; then
   OS_NAME="$(uname -s)"
@@ -28,19 +28,14 @@ if [ -z "$RID" ]; then
       exit 1
       ;;
   esac
-  echo "Warning: Runtime Identifier (RID) not provided, defaulting to $RID"
 fi
+echo "RID: ${RID}"
 
-WD="$(basename "$PWD")"
-if [ "$WD" = "tests" ]; then
-  CLI_PATH="../src/Mindee.Cli/bin/Release/$NET_VERSION/$RID/Mindee.Cli"
-else
-  CLI_PATH="./src/Mindee.Cli/bin/Release/$NET_VERSION/$RID/Mindee.Cli"
-fi
-
+CLI_PATH="./src/Mindee.Cli/bin/Release/$NET_VERSION/$RID/Mindee.Cli"
 if [ "$RID" = "win-x64" ]; then
   CLI_PATH="${CLI_PATH}.exe"
 fi
+echo "CLI_PATH: ${CLI_PATH}"
 
 PRODUCTS="financial-document receipt invoice invoice-splitter"
 PRODUCTS_SIZE=4
