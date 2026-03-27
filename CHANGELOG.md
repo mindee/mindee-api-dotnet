@@ -9,7 +9,7 @@
     * :arrow_up: add support for .NET 4.7.2/4.8
 * :sparkles: Add ability to search for models through Client and CLI
 * :recycle: Make proper classes & methods static and/or private
-* :arrow_up: Mutualize and bump most
+* :arrow_up: Mutualize and bump most dependencies
 * :recycle: mutualize framework targeting
 ### Fixes
 * :bug: Fix V1 CLI
