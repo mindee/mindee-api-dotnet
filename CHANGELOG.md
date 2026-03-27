@@ -1,5 +1,41 @@
 # Mindee .NET Client Library Changelog
 
+
+## v4.0.0 - 2026-03-27
+### Changes
+* :sparkles: Add support for `Classification`, `Crop`, `OCR` and `Split` utilities.
+* :sparkles: Add Strong Name support
+* :sparkles: Add full CLI support for V1 & V2
+    * :arrow_up: add support for .NET 4.7.2/4.8
+* :sparkles: Add ability to search for models through Client and CLI
+* :recycle: Make proper classes & methods static and/or private
+* :arrow_up: Mutualize and bump most dependencies
+* :recycle: mutualize framework targeting
+### Fixes
+* :bug: Fix V1 CLI
+* :recycle: Fix Logging using improper syntax
+* :bug: Fix dependency injections not functioning properly for .NET versions 4.7.2 and 4.8
+### ¡Breaking Changes!
+* :boom: :recycle: Refactor V1
+    * :recycle: move V1-exclusive internals to dedicated V1 namespace
+    * :coffin: Remove support for deprecated products:
+        * `CustomV1`
+        * `Bill of Lading`
+        * `Business Card`
+        * `Delivery Notes`
+        * `Driver License`
+        * `FR Energy Bill`
+        * `Indian Passport`
+        * `Nutrition Facts`
+        * `Resume`
+        * `US Healthcare Card`
+        * `US Mail`
+* :boom: :recycle: Refactor V2
+    * :recycle: move V2-exclusive internals to dedicated V2 namespace
+    * :recycle: rename `Inference` V2 product to `Extraction`
+* :boom: :refactor: move polling options outside product parameters
+
+
 ## v4.0.0-rc2 - 2026-03-23
 ### Changes
 * :recycle: mutualize framework targeting
