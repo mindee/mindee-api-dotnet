@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V2.ClientOptions;
+using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 
@@ -120,7 +121,7 @@ namespace Mindee.V2.Http
             var jobErrorResponse = JsonSerializer.Deserialize<JobResponse>(responseContent);
             if (jobErrorResponse?.Job?.Error != null)
             {
-                throw new Mindee500Exception(jobErrorResponse.Job.Error.Detail);
+                throw new MindeeHttpExceptionV2(jobErrorResponse.Job.Error);
             }
 
             throw new MindeeException(

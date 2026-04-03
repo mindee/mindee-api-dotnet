@@ -9,10 +9,10 @@ using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V2.ClientOptions;
+using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product;
-using Mindee.V2.Product.Extraction.Params;
 using RestSharp;
 #if NET6_0_OR_GREATER
 using Microsoft.Extensions.DependencyInjection;

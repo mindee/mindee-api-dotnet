@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
+using Mindee.V1.Exceptions;
 using Mindee.V1.Parsing.Common;
 using RestSharp;
 
@@ -126,7 +127,13 @@ namespace Mindee.V1.Http
             var handledResponse = ResponseHandler<AsyncPredictResponse<TModel>>(queueResponse);
             if (handledResponse.Job?.Error?.Code != null)
             {
-                throw new Mindee500Exception(handledResponse.Job.Error.Message);
+                Int32.TryParse(handledResponse.Job.Error.Code, out var statusCode);
+                throw new MindeeHttpExceptionV1(
+                    "MindeeHttpError",
+                    handledResponse.Job.Error.Message,
+                    handledResponse.Job.Error.Details,
+                    statusCode
+                );
             }
 
             return handledResponse;
@@ -274,16 +281,12 @@ namespace Mindee.V1.Http
 
             _logger?.LogError("{ErrorMessage}", errorMessage);
 
-            throw restResponse.StatusCode switch
-            {
-                HttpStatusCode.InternalServerError => new Mindee500Exception(errorMessage),
-                HttpStatusCode.BadRequest => new Mindee400Exception(errorMessage),
-                HttpStatusCode.Unauthorized => new Mindee401Exception(errorMessage),
-                HttpStatusCode.Forbidden => new Mindee403Exception(errorMessage),
-                HttpStatusCode.NotFound => new Mindee404Exception(errorMessage),
-                (HttpStatusCode)429 => new Mindee429Exception(errorMessage),
-                _ => new MindeeException(restResponse.ErrorMessage)
-            };
+            throw new MindeeHttpExceptionV1(
+                "MindeeHttpError",
+                errorMessage,
+                model?.ApiRequest.Error.Details,
+                (int)restResponse.StatusCode
+            );
         }
     }
 }
