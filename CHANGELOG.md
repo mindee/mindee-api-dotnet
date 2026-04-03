@@ -1,5 +1,9 @@
 # Mindee .NET Client Library Changelog
 
+## v.4.0.1 - 2026-04-03
+### Changes
+:recycle: uniformize Mindee HTTP errors with other libs
+
 
 ## v4.0.0 - 2026-03-27
 ### Changes
