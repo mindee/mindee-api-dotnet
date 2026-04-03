@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Mindee.V2.Parsing;
 
-namespace Mindee.Exceptions
+namespace Mindee.V2.Exceptions
 {
     /// <summary>
     ///     Representation of a Mindee API V2 exception.

@@ -1,6 +1,7 @@
 using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Mindee.Exceptions;
+using Mindee.V1.Exceptions;
 using Mindee.V1.Http;
 using Mindee.V1.Product.Invoice;
 using Mindee.V1.Product.Receipt;

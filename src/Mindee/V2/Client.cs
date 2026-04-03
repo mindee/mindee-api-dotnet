@@ -7,6 +7,7 @@ using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
 using Mindee.V2.ClientOptions;
+using Mindee.V2.Exceptions;
 using Mindee.V2.Http;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;

@@ -1,7 +1,8 @@
 using System.Text.Json.Nodes;
+using Mindee.Exceptions;
 using Mindee.V1.Parsing.Common;
 
-namespace Mindee.Exceptions
+namespace Mindee.V1.Exceptions
 {
     /// <summary>
     ///     Error sub-object.

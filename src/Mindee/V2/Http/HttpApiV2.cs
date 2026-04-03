@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V2.ClientOptions;
+using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 

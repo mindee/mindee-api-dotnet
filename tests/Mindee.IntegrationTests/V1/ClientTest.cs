@@ -2,6 +2,7 @@ using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V1;
 using Mindee.V1.ClientOptions;
+using Mindee.V1.Exceptions;
 using Mindee.V1.Http;
 using Mindee.V1.Product.Cropper;
 using Mindee.V1.Product.Generated;

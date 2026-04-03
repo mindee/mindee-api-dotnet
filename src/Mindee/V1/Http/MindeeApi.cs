@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mindee.Exceptions;
+using Mindee.V1.Exceptions;
 using Mindee.V1.Parsing.Common;
 using RestSharp;
 
