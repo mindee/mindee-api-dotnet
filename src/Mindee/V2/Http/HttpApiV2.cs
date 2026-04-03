@@ -120,7 +120,7 @@ namespace Mindee.V2.Http
             var jobErrorResponse = JsonSerializer.Deserialize<JobResponse>(responseContent);
             if (jobErrorResponse?.Job?.Error != null)
             {
-                throw new Mindee500Exception(jobErrorResponse.Job.Error.Detail);
+                throw new MindeeHttpExceptionV2(jobErrorResponse.Job.Error);
             }
 
             throw new MindeeException(

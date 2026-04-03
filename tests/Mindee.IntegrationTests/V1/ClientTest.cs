@@ -75,7 +75,7 @@ namespace Mindee.IntegrationTests.V1
         public async Task Parse_Url_Standard_InvalidUrl_MustFail()
         {
             var inputSource = new UrlInputSource("https://bad-domain.test/invalid-file.ext");
-            await Assert.ThrowsAsync<Mindee400Exception>(() => _client.ParseAsync<ReceiptV5>(inputSource));
+            await Assert.ThrowsAsync<MindeeHttpExceptionV1>(() => _client.ParseAsync<ReceiptV5>(inputSource));
         }
 
         [Fact(Timeout = 180000)]
@@ -153,7 +153,7 @@ namespace Mindee.IntegrationTests.V1
         public async Task Enqueue_File_Standard_SyncOnly_Async_MustFail()
         {
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "passport/default_sample.jpg");
-            await Assert.ThrowsAsync<Mindee403Exception>(() => _client.EnqueueAsync<CropperV1>(inputSource));
+            await Assert.ThrowsAsync<MindeeHttpExceptionV1>(() => _client.EnqueueAsync<CropperV1>(inputSource));
         }
 
         [Fact(Timeout = 180000)]
@@ -179,7 +179,7 @@ namespace Mindee.IntegrationTests.V1
         public async Task Enqueue_File_Standard_AsyncOnly_Sync_MustFail()
         {
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "invoice_splitter/default_sample.pdf");
-            await Assert.ThrowsAsync<Mindee403Exception>(() =>
+            await Assert.ThrowsAsync<MindeeHttpExceptionV1>(() =>
                 _client.ParseAsync<InvoiceSplitterV1>(inputSource));
         }
 
@@ -263,7 +263,7 @@ namespace Mindee.IntegrationTests.V1
         public async Task ParseQueued_Standard_InvalidJob_MustFail()
         {
             var jobId = RandomString(15);
-            await Assert.ThrowsAsync<Mindee404Exception>(() =>
+            await Assert.ThrowsAsync<MindeeHttpExceptionV1>(() =>
                 _client.ParseQueuedAsync<InvoiceSplitterV1>(jobId));
         }
 
@@ -272,7 +272,7 @@ namespace Mindee.IntegrationTests.V1
         {
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "international_id/default_sample.jpg");
-            await Assert.ThrowsAsync<Mindee403Exception>(() =>
+            await Assert.ThrowsAsync<MindeeHttpExceptionV1>(() =>
                 _client.ParseAsync<GeneratedV1>(inputSource, endpoint));
         }
 
@@ -303,7 +303,7 @@ namespace Mindee.IntegrationTests.V1
         {
             var jobId = RandomString(15);
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
-            await Assert.ThrowsAsync<Mindee404Exception>(() =>
+            await Assert.ThrowsAsync<MindeeHttpExceptionV1>(() =>
                 _client.ParseQueuedAsync<GeneratedV1>(endpoint, jobId));
         }
 
