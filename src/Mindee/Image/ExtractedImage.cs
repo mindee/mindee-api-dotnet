@@ -42,17 +42,24 @@ namespace Mindee.Image
         ///     Uses the default image format and filename.
         /// </summary>
         /// <param name="outputPath">The output directory (must exist).</param>
-        public void WriteToFile(string outputPath)
+        /// <param name="fileFormat"></param>
+        public void WriteToFile(string outputPath, string fileFormat = null)
         {
-            var imagePath = Path.Combine(outputPath, Filename);
-            var format = GetEncodedImageFormat(_saveFormat);
+            var targetFormat = fileFormat ?? _saveFormat;
+            var format = GetEncodedImageFormat(targetFormat);
 
-            using (var image = SKImage.FromBitmap(Image))
-            using (var data = image.Encode(format, 100))
-            using (var stream = File.OpenWrite(imagePath))
+            var finalFilename = Filename;
+            if (!string.IsNullOrWhiteSpace(fileFormat))
             {
-                data.SaveTo(stream);
+                var nameWithoutExtension = Path.GetFileNameWithoutExtension(Filename);
+                finalFilename = $"{nameWithoutExtension}.{targetFormat.ToLower()}";
             }
+            var imagePath = Path.Combine(outputPath, finalFilename);
+
+            using var image = SKImage.FromBitmap(Image);
+            using var data = image.Encode(format, 100);
+            using var stream = File.OpenWrite(imagePath);
+            data.SaveTo(stream);
         }
 
         /// <summary>
@@ -61,19 +68,18 @@ namespace Mindee.Image
         /// <returns>An instance of <see cref="LocalInputSource" />.</returns>
         public LocalInputSource AsInputSource()
         {
-            using (var image = SKImage.FromBitmap(Image))
-            using (var data = image.Encode(GetEncodedImageFormat(_saveFormat), 100))
-            using (var output = new MemoryStream())
-            {
-                data.SaveTo(output);
-                return new LocalInputSource(output.ToArray(), Filename);
-            }
+            using var image = SKImage.FromBitmap(Image);
+            using var data = image.Encode(GetEncodedImageFormat(_saveFormat), 100);
+            using var output = new MemoryStream();
+            data.SaveTo(output);
+            return new LocalInputSource(output.ToArray(), Filename);
         }
 
-        private SKEncodedImageFormat GetEncodedImageFormat(string saveFormat)
+        private static SKEncodedImageFormat GetEncodedImageFormat(string saveFormat)
         {
             return saveFormat.ToLower() switch
             {
+                "jpg" or "jpeg" => SKEncodedImageFormat.Jpeg,
                 "png" => SKEncodedImageFormat.Png,
                 "bmp" => SKEncodedImageFormat.Bmp,
                 "gif" => SKEncodedImageFormat.Gif,
