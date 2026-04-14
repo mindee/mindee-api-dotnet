@@ -160,11 +160,13 @@ namespace Mindee.Extraction
         {
             var filename = this.LocalInput.Filename;
             var extractedImages = new List<ExtractedImage>();
+            int i = 0;
             foreach (var polygon in polygons)
             {
                 var bbox = Utils.BboxFromPolygon(polygon);
-                var fieldFilename = $"{filename}_{pageId:D3}_{polygons.IndexOf(polygon):D3}.{SaveFormat}";
-                extractedImages.Add(new ExtractedImage(ExtractImage(bbox, pageId), fieldFilename, SaveFormat));
+                var fieldFilename = $"{filename}_page{pageId}-{polygons.IndexOf(polygon)}.{SaveFormat}";
+                extractedImages.Add(new ExtractedImage(ExtractImage(bbox, pageId), fieldFilename, SaveFormat, pageId, i));
+                i++;
             }
             return extractedImages;
         }

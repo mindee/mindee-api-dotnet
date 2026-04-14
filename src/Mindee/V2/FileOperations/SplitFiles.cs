@@ -10,6 +10,21 @@ namespace Mindee.V2.FileOperations
     public sealed class SplitFiles : List<ExtractedPdf>
     {
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="collection"></param>
+        public SplitFiles(IEnumerable<ExtractedPdf> collection) : base(collection)
+        {
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public SplitFiles() : base()
+        {
+        }
+
+        /// <summary>
         /// Saves all the extracted pages to disk.
         /// </summary>
         /// <param name="path">Path for all files</param>

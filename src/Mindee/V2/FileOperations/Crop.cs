@@ -48,8 +48,7 @@ namespace Mindee.V2.FileOperations
         {
             var imageExtractor = new ImageExtractor(this._localInput);
             var extractedImages = imageExtractor.ExtractMultipleImagesFromSource(crops[0].Location.Page, crops.Select(c => c.Location.Polygon).ToList());
-
-            return (CropFiles)extractedImages;
+            return new CropFiles(extractedImages);
         }
     }
 }

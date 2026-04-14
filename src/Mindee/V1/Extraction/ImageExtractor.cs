@@ -160,7 +160,7 @@ namespace Mindee.V1.Extraction
 
             var bbox = Utils.BboxFromPolygon(boundingBox);
             var fieldFilename = $"{splitName[0]}_{index:D3}.{SaveFormat}";
-            return new ExtractedImage(ExtractImage(bbox, pageIndex), fieldFilename, SaveFormat);
+            return new ExtractedImage(ExtractImage(bbox, pageIndex), fieldFilename, SaveFormat, pageIndex, index);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace Mindee.V1.Extraction
 
             var bbox = Utils.BboxFromPolygon(boundingBox);
             var fieldFilename = $"{splitName[0]}_{index:D3}.{SaveFormat}";
-            return new ExtractedImage(ExtractImage(bbox, pageIndex), fieldFilename, SaveFormat);
+            return new ExtractedImage(ExtractImage(bbox, pageIndex), fieldFilename, SaveFormat, pageIndex, index);
         }
     }
 }

@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Mindee.Exceptions;
 using Mindee.Extraction;
 using Mindee.Input;
+using Mindee.Pdf;
 
 namespace Mindee.V2.FileOperations
 {
@@ -35,12 +37,22 @@ namespace Mindee.V2.FileOperations
         }
 
         /// <summary>
-        ///
+        /// Initializes an instance of a Split operation.
+        /// Transforms images to PDFs if necessary.
         /// </summary>
         /// <param name="inputSource"></param>
         public Split(LocalInputSource inputSource)
         {
-            this._localInput = inputSource;
+            if (inputSource.IsPdf())
+            {
+                _localInput = inputSource;
+            }
+            else
+            {
+                byte[] pdfBytes = PdfUtils.ConvertImageToPdf(inputSource.FileBytes, inputSource.Filename);
+                string newFilename = Path.ChangeExtension(inputSource.Filename, ".pdf");
+                _localInput = new LocalInputSource(pdfBytes, newFilename);
+            }
         }
 
         /// <summary>
@@ -58,7 +70,7 @@ namespace Mindee.V2.FileOperations
 
             List<List<int>> expandedPageIndexes = [];
             expandedPageIndexes.AddRange(splits.Select(split => ExpandRange(split[0], split[1])));
-            return (SplitFiles)pdfExtractor.ExtractSubDocuments(expandedPageIndexes);
+            return new SplitFiles(pdfExtractor.ExtractSubDocuments(expandedPageIndexes));
         }
     }
 }

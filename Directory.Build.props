@@ -46,7 +46,7 @@
 
   <!-- Common packages for all frameworks -->
   <ItemGroup>
-    <PackageReference Include="SkiaSharp" Version="3.119.1" />
+    <PackageReference Include="SkiaSharp" Version="3.119.2" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" />
     <PackageReference Include="Docnet.Core" Version="2.6.0" />
   </ItemGroup>
