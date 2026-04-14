@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Docnet.Core;
 using Microsoft.Extensions.Logging.Abstractions;
+using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.Pdf;
 using SkiaSharp;
@@ -89,7 +90,7 @@ namespace Mindee.Extraction
             {
                 if (pageIndexElem.Count == 0)
                 {
-                    throw new ArgumentException("Empty indexes not allowed for extraction.");
+                    throw new MindeeInputException("Empty indexes not allowed for extraction.");
                 }
 
                 var extension = Path.GetExtension(LocalInput.Filename);
