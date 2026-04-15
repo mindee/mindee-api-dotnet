@@ -10,7 +10,7 @@ namespace Mindee.Pdf
     public class ExtractedPdf
     {
         /// <summary>
-        /// Loca
+        /// Local input source.
         /// </summary>
         public readonly LocalInputSource LocalInput;
 
