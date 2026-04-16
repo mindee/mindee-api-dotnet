@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Mindee.Input;
+using Mindee.Pdf;
 
 namespace Mindee.V2.Product.Split
 {
@@ -28,6 +30,17 @@ namespace Mindee.V2.Product.Split
         {
             string pageRange = string.Join(",", PageRange);
             return $"* :Page Range: {pageRange}\n  :Document Type: {DocumentType}";
+        }
+
+        /// <summary>
+        /// Extracts the split from the source document.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <returns></returns>
+        public ExtractedPdf ExtractFromFile(LocalInputSource inputSource)
+        {
+            var split = new FileOperations.Split(inputSource);
+            return split.ExtractSingleSplit(this);
         }
     }
 }

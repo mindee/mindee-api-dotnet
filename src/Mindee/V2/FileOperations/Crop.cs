@@ -34,7 +34,7 @@ namespace Mindee.V2.FileOperations
         /// <returns></returns>
         public ExtractedImage ExtractSingleCrop(CropItem crop)
         {
-            var polygons = new List<Polygon>() { crop.Location.Polygon };
+            var polygons = new List<Polygon> { crop.Location.Polygon };
             var imageExtractor = new ImageExtractor(this._localInput);
             return imageExtractor.ExtractMultipleImagesFromSource(crop.Location.Page, polygons)[0];
         }

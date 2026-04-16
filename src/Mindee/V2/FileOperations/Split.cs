@@ -5,6 +5,7 @@ using Mindee.Exceptions;
 using Mindee.Extraction;
 using Mindee.Input;
 using Mindee.Pdf;
+using Mindee.V2.Product.Split;
 
 namespace Mindee.V2.FileOperations
 {
@@ -53,6 +54,16 @@ namespace Mindee.V2.FileOperations
                 string newFilename = Path.ChangeExtension(inputSource.Filename, ".pdf");
                 _localInput = new LocalInputSource(pdfBytes, newFilename);
             }
+        }
+
+        /// <summary>
+        /// Extracts a single split from the input file.
+        /// </summary>
+        /// <param name="splitRange"></param>
+        /// <returns></returns>
+        public ExtractedPdf ExtractSingleSplit(SplitRange splitRange)
+        {
+            return ExtractSplits([splitRange.PageRange])[0];
         }
 
         /// <summary>

@@ -1,4 +1,9 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Mindee.Extraction;
+using Mindee.Geometry;
+using Mindee.Image;
+using Mindee.Input;
 using Mindee.V2.Parsing.Inference.Field;
 
 namespace Mindee.V2.Product.Crop
@@ -27,6 +32,17 @@ namespace Mindee.V2.Product.Crop
         public override string ToString()
         {
             return $"* :Location: {Location}\n  :Object Type: {ObjectType}";
+        }
+
+        /// <summary>
+        /// Extract the crop from the source document.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <returns></returns>
+        public ExtractedImage ExtractFromFile(LocalInputSource inputSource)
+        {
+            var crop = new FileOperations.Crop(inputSource);
+            return crop.ExtractSingleCrop(this);
         }
     }
 }
