@@ -282,7 +282,9 @@ namespace Mindee.IntegrationTests.V1
         {
             var endpoint = new CustomEndpoint("international_id", "mindee", "2");
             var inputSource = new LocalInputSource(Constants.V1ProductDir + "international_id/default_sample.jpg");
-            var response = await _client.EnqueueAndParseAsync<GeneratedV1>(inputSource, endpoint);
+            var predictOptions = new PredictOptions(fullText: true);
+            var response = await _client.EnqueueAndParseAsync<GeneratedV1>(
+                inputSource, endpoint, predictOptions);
 
             Assert.NotNull(response);
             Assert.NotNull(response.ApiRequest);
@@ -297,6 +299,8 @@ namespace Mindee.IntegrationTests.V1
 
             Assert.NotNull(response.Document);
             Assert.NotNull(response.Document.Inference.Prediction.Fields);
+
+            Assert.NotNull(response.Document.Inference.Extras.FullTextOcr);
         }
 
         [Fact(Timeout = 180000)]
