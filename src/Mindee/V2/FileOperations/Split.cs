@@ -74,10 +74,6 @@ namespace Mindee.V2.FileOperations
         public SplitFiles ExtractSplits(List<List<int>> splits)
         {
             var pdfExtractor = new PdfExtractor(this._localInput);
-            if (splits.Count == 0)
-            {
-                throw new MindeeInputException("No splits provided for extraction.");
-            }
 
             List<List<int>> expandedPageIndexes = [];
             expandedPageIndexes.AddRange(splits.Select(split => ExpandRange(split[0], split[1])));
