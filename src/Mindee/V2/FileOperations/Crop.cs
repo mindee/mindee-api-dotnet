@@ -14,7 +14,7 @@ namespace Mindee.V2.FileOperations
     public sealed class Crop
     {
         /// <summary>
-        ///     LocalInputSource object used by the ImageExtractor.
+        ///     LocalInputSource object.
         /// </summary>
         private readonly LocalInputSource _localInput;
 
@@ -28,7 +28,7 @@ namespace Mindee.V2.FileOperations
         }
 
         /// <summary>
-        ///
+        /// Extract a single crop item from a file.
         /// </summary>
         /// <param name="crop"></param>
         /// <returns></returns>
@@ -40,15 +40,20 @@ namespace Mindee.V2.FileOperations
         }
 
         /// <summary>
-        /// Extracts multiple crop zones from an image.
+        /// Extracts multiple crop zones from a file.
         /// </summary>
         /// <param name="crops">List of crops.</param>
         /// <returns></returns>
         public CropFiles ExtractCrops(List<CropItem> crops)
         {
             var imageExtractor = new ImageExtractor(this._localInput);
-            var extractedImages = imageExtractor.ExtractMultipleImagesFromSource(crops[0].Location.Page, crops.Select(c => c.Location.Polygon).ToList());
-            return new CropFiles(extractedImages);
+            CropFiles extractedImages = [];
+            var cropsPerPage = crops.GroupBy(c => c.Location.Page).ToList();
+            foreach (var pageCrops in cropsPerPage)
+            {
+                extractedImages.AddRange(imageExtractor.ExtractMultipleImagesFromSource(pageCrops.Key, pageCrops.Select(c => c.Location.Polygon).ToList()));
+            }
+            return extractedImages;
         }
     }
 }

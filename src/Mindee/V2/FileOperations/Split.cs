@@ -16,7 +16,7 @@ namespace Mindee.V2.FileOperations
     {
 
         /// <summary>
-        ///     LocalInputSource object used by the ImageExtractor.
+        ///     LocalInputSource object.
         /// </summary>
         private readonly LocalInputSource _localInput;
 

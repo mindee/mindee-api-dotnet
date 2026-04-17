@@ -52,8 +52,8 @@ namespace Mindee.IntegrationTests.V2.FileOperations
         [Fact(Timeout = 180000)]
         public async Task Extract_Crops_From_Image_Correctly()
         {
-            var inputSource = new LocalInputSource(
-                Constants.V2ProductDir + "crop/default_sample.jpg");
+            var inputSource = new LocalInputSource(Path.Combine(
+                Constants.V2ProductDir, "crop/default_sample.jpg"));
             var cropParams = new CropParameters(_cropModelId);
 
             var response = await _client.EnqueueAndGetResultAsync<CropResponse>(
@@ -84,6 +84,25 @@ namespace Mindee.IntegrationTests.V2.FileOperations
 
             var file2Info = new FileInfo(Path.Combine(_outputDir, "crop_002.jpg"));
             Assert.InRange(file2Info.Length, 100000, 110000);
+        }
+
+        [Fact(Timeout = 180000)]
+        public async Task Extract_Crops_From_Each_Pdf_Page_Correctly()
+        {
+
+            var inputSource = new LocalInputSource(
+                new FileInfo(Path.Combine(Constants.V2ProductDir, "multipage_sample.pdf")));
+
+            var cropParams = new CropParameters(_cropModelId);
+
+            var response = await _client.EnqueueAndGetResultAsync<CropResponse>(
+                inputSource, cropParams);
+            var cropOperation = new Crop(inputSource);
+            var extractedImages = cropOperation.ExtractCrops(response.Inference.Result.Crops);
+
+            Assert.Equal(2, extractedImages.Count);
+            Assert.Equal("default_sample.jpg_page0-0.jpg", extractedImages[0].Filename);
+            Assert.Equal("default_sample.jpg_page1-0.jpg", extractedImages[1].Filename);
         }
     }
 }
