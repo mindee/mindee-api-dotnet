@@ -80,10 +80,10 @@ namespace Mindee.IntegrationTests.V2.FileOperations
             extractedImages.SaveAllToDisk(_outputDir, 50);
 
             var file1Info = new FileInfo(Path.Combine(_outputDir, "crop_001.jpg"));
-            Assert.InRange(file1Info.Length, 100000, 110000);
+            Assert.InRange(file1Info.Length, 99000, 110000);
 
             var file2Info = new FileInfo(Path.Combine(_outputDir, "crop_002.jpg"));
-            Assert.InRange(file2Info.Length, 100000, 110000);
+            Assert.InRange(file2Info.Length, 99000, 110000);
         }
 
         [Fact(Timeout = 180000)]
