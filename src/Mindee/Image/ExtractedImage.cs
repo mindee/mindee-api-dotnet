@@ -15,16 +15,30 @@ namespace Mindee.Image
         private readonly string _saveFormat;
 
         /// <summary>
+        /// Page number the image was extracted from.
+        /// </summary>
+        public int PageId;
+
+        /// <summary>
+        /// ID of the image.
+        /// </summary>
+        public int ElementId;
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="ExtractedImage" /> class.
         /// </summary>
         /// <param name="image">The extracted image.</param>
         /// <param name="filename">The filename for the image.</param>
         /// <param name="saveFormat">The format to save the image.</param>
-        public ExtractedImage(SKBitmap image, string filename, string saveFormat)
+        /// <param name="pageId">The page number the image was extracted from.</param>
+        /// <param name="elementId">The ID of the image.</param>
+        public ExtractedImage(SKBitmap image, string filename, string saveFormat, int pageId, int elementId)
         {
             Image = image;
             Filename = filename;
             _saveFormat = saveFormat;
+            PageId = pageId;
+            ElementId = elementId;
         }
 
         /// <summary>
@@ -35,45 +49,71 @@ namespace Mindee.Image
         /// <summary>
         ///     Name of the file.
         /// </summary>
-        private string Filename { get; }
+        public string Filename { get; }
 
         /// <summary>
         ///     Writes the image to a file.
-        ///     Uses the default image format and filename.
+        ///     If outputPath has an extension, it is treated as a full file path.
+        ///     Otherwise, it is treated as a directory and uses the default filename.
         /// </summary>
-        /// <param name="outputPath">The output directory (must exist).</param>
-        public void WriteToFile(string outputPath)
+        /// <param name="outputPath">The output directory (must exist) or full file path.</param>
+        /// <param name="quality">The quality of the image. Defaults to 100.</param>
+        /// <param name="fileFormat">The desired format. If null, inferred from extension or default.</param>
+        public void WriteToFile(string outputPath, int quality = 100, string fileFormat = null)
         {
-            var imagePath = Path.Combine(outputPath, Filename);
-            var format = GetEncodedImageFormat(_saveFormat);
+            string imagePath;
+            var targetFormat = fileFormat ?? _saveFormat;
 
-            using (var image = SKImage.FromBitmap(Image))
-            using (var data = image.Encode(format, 100))
-            using (var stream = File.OpenWrite(imagePath))
+            if (Path.HasExtension(outputPath))
             {
-                data.SaveTo(stream);
+                imagePath = outputPath;
+                if (string.IsNullOrWhiteSpace(fileFormat))
+                {
+                    var extension = Path.GetExtension(outputPath).TrimStart('.');
+                    if (!string.IsNullOrWhiteSpace(extension))
+                    {
+                        targetFormat = extension.ToLower();
+                    }
+                }
             }
+            else
+            {
+                var finalFilename = Filename;
+                if (!string.IsNullOrWhiteSpace(fileFormat))
+                {
+                    var nameWithoutExtension = Path.GetFileNameWithoutExtension(Filename);
+                    finalFilename = $"{nameWithoutExtension}.{targetFormat.ToLower()}";
+                }
+                imagePath = Path.Combine(outputPath, finalFilename);
+            }
+
+            var format = GetEncodedImageFormat(targetFormat);
+
+            using var image = SKImage.FromBitmap(Image);
+            using var data = image.Encode(format, quality);
+            using var stream = File.OpenWrite(imagePath);
+            data.SaveTo(stream);
         }
 
         /// <summary>
         ///     Returns the image in a format suitable for sending to a client for parsing.
         /// </summary>
+        /// <param name="quality">The quality of the image. Defaults to 100.</param>
         /// <returns>An instance of <see cref="LocalInputSource" />.</returns>
-        public LocalInputSource AsInputSource()
+        public LocalInputSource AsInputSource(int quality = 100)
         {
-            using (var image = SKImage.FromBitmap(Image))
-            using (var data = image.Encode(GetEncodedImageFormat(_saveFormat), 100))
-            using (var output = new MemoryStream())
-            {
-                data.SaveTo(output);
-                return new LocalInputSource(output.ToArray(), Filename);
-            }
+            using var image = SKImage.FromBitmap(Image);
+            using var data = image.Encode(GetEncodedImageFormat(_saveFormat), quality);
+            using var output = new MemoryStream();
+            data.SaveTo(output);
+            return new LocalInputSource(output.ToArray(), Filename);
         }
 
-        private SKEncodedImageFormat GetEncodedImageFormat(string saveFormat)
+        private static SKEncodedImageFormat GetEncodedImageFormat(string saveFormat)
         {
             return saveFormat.ToLower() switch
             {
+                "jpg" or "jpeg" => SKEncodedImageFormat.Jpeg,
                 "png" => SKEncodedImageFormat.Png,
                 "bmp" => SKEncodedImageFormat.Bmp,
                 "gif" => SKEncodedImageFormat.Gif,

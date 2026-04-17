@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using Docnet.Core;
 using Docnet.Core.Models;
@@ -177,6 +178,35 @@ namespace Mindee.Pdf
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Converts an image to a PDF.
+        /// </summary>
+        /// <param name="imageBytes">Raw image bytes.</param>
+        /// <param name="filename">Name of the file.</param>
+        /// <returns></returns>
+        /// <exception cref="MindeeInputException"></exception>
+        public static byte[] ConvertImageToPdf(byte[] imageBytes, string filename)
+        {
+            using var ms = new MemoryStream();
+            using var bitmap = SKBitmap.Decode(imageBytes);
+            if (bitmap == null)
+            {
+                throw new MindeeInputException($"The file {filename} is not a valid image.");
+            }
+
+            using (var document = SKDocument.CreatePdf(ms))
+            {
+                using (var canvas = document.BeginPage(bitmap.Width, bitmap.Height))
+                {
+                    canvas.DrawBitmap(bitmap, 0, 0);
+                    document.EndPage();
+                }
+                document.Close();
+            }
+
+            return ms.ToArray();
         }
     }
 }

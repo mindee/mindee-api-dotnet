@@ -1,6 +1,5 @@
 using System.IO;
-using Docnet.Core;
-using Docnet.Core.Models;
+using Mindee.Exceptions;
 using Mindee.Input;
 
 namespace Mindee.Pdf
@@ -11,24 +10,55 @@ namespace Mindee.Pdf
     public class ExtractedPdf
     {
         /// <summary>
-        ///     Name of the original file.
+        /// Local input source.
+        /// </summary>
+        public readonly LocalInputSource LocalInput;
+
+        /// <summary>
+        /// Page count.
+        /// </summary>
+        public int PageCount { get; set; }
+
+        /// <summary>
+        /// Original filename.
         /// </summary>
         public readonly string Filename;
 
         /// <summary>
-        ///     File object for an ExtractedPdf.
+        ///     Initializes a new instance of the <see cref="ExtractedPdf" /> class.
         /// </summary>
-        public readonly byte[] PdfBytes;
+        /// <param name="fileBytes">A byte array representation of the Pdf.</param>
+        /// <param name="filename">Name of the original file.</param>
+        public ExtractedPdf(byte[] fileBytes, string filename)
+        {
+            var tmpInput = new LocalInputSource(fileBytes, filename);
+            if (tmpInput.IsPdf())
+            {
+                LocalInput = tmpInput;
+            }
+            else
+            {
+                byte[] pdfBytes = PdfUtils.ConvertImageToPdf(fileBytes, filename);
+                string newFilename = Path.ChangeExtension(filename, ".pdf");
+                LocalInput = new LocalInputSource(pdfBytes, newFilename);
+            }
+            PageCount = LocalInput.GetPageCount();
+            Filename = LocalInput.Filename;
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ExtractedPdf" /> class.
         /// </summary>
-        /// <param name="pdfBytes">A byte array representation of the Pdf.</param>
-        /// <param name="filename">Name of the original file.</param>
-        public ExtractedPdf(byte[] pdfBytes, string filename)
+        /// <param name="localInput">LocalInputSource containing the Pdf bytes and filename.</param>
+        public ExtractedPdf(LocalInputSource localInput)
         {
-            PdfBytes = pdfBytes;
-            Filename = filename;
+            LocalInput = localInput;
+            if (!localInput.IsPdf())
+            {
+                throw new MindeeInputException("The input file is not a PDF.");
+            }
+            PageCount = LocalInput.GetPageCount();
+            Filename = LocalInput.Filename;
         }
 
         /// <summary>
@@ -37,11 +67,7 @@ namespace Mindee.Pdf
         /// <returns>The number of pages in the file.</returns>
         public int GetPageCount()
         {
-            lock (DocLib.Instance)
-            {
-                using var docInstance = DocLib.Instance.GetDocReader(PdfBytes, new PageDimensions(1, 1));
-                return docInstance.GetPageCount();
-            }
+            return LocalInput.GetPageCount();
         }
 
         /// <summary>
@@ -50,13 +76,13 @@ namespace Mindee.Pdf
         /// <param name="outputPath">the output directory (must exist).</param>
         public void WriteToFile(string outputPath)
         {
-            var pdfPath = Path.Combine(outputPath, Filename);
+            var pdfPath = Path.Combine(outputPath, LocalInput.Filename);
             if (Path.GetFileName(outputPath) != string.Empty)
             {
                 pdfPath = Path.GetFullPath(outputPath);
             }
 
-            File.WriteAllBytes(pdfPath, PdfBytes);
+            File.WriteAllBytes(pdfPath, LocalInput.FileBytes);
         }
 
         /// <summary>
@@ -65,7 +91,7 @@ namespace Mindee.Pdf
         /// <returns>an instance of <see cref="ExtractedPdf" /></returns>
         public LocalInputSource AsInputSource()
         {
-            return new LocalInputSource(PdfBytes, Filename);
+            return LocalInput;
         }
     }
 }
