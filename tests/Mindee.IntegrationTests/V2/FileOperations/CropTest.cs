@@ -100,9 +100,9 @@ namespace Mindee.IntegrationTests.V2.FileOperations
             var cropOperation = new Crop(inputSource);
             var extractedImages = cropOperation.ExtractCrops(response.Inference.Result.Crops);
 
-            Assert.Equal(2, extractedImages.Count);
-            Assert.Equal("default_sample.jpg_page0-0.jpg", extractedImages[0].Filename);
-            Assert.Equal("default_sample.jpg_page1-0.jpg", extractedImages[1].Filename);
+            Assert.Equal(5, extractedImages.Count);
+            Assert.Equal("multipage_sample.pdf_page0-0.jpg", extractedImages[0].Filename);
+            Assert.Equal("multipage_sample.pdf_page1-0.jpg", extractedImages[3].Filename);
         }
     }
 }
