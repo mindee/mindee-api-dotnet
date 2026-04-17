@@ -91,7 +91,7 @@ namespace Mindee.IntegrationTests.V2.FileOperations
         {
 
             var inputSource = new LocalInputSource(
-                new FileInfo(Path.Combine(Constants.V2ProductDir, "multipage_sample.pdf")));
+                new FileInfo(Path.Combine(Constants.V2ProductDir, "crop/multipage_sample.pdf")));
 
             var cropParams = new CropParameters(_cropModelId);
 
