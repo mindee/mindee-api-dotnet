@@ -6,7 +6,7 @@ using Mindee.Image;
 using Mindee.Input;
 using Mindee.V1.Parsing.Standard;
 
-namespace Mindee.V1.Extraction
+namespace Mindee.V1.Image
 {
     /// <summary>
     ///     Legacy V1 Wrapper for ImageExtractor.

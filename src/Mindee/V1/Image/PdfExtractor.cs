@@ -6,7 +6,7 @@ using Mindee.Input;
 using Mindee.Pdf;
 using Mindee.V1.Product.InvoiceSplitter;
 
-namespace Mindee.V1.Extraction
+namespace Mindee.V1.Image
 {
     /// <summary>
     ///     V1 wrapper for the PDF extraction class.

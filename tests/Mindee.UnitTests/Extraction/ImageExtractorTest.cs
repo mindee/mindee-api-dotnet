@@ -1,5 +1,5 @@
 using Mindee.Input;
-using Mindee.V1.Extraction;
+using Mindee.V1.Image;
 using Mindee.V1.Parsing.Common;
 using Mindee.V1.Product.BarcodeReader;
 using Mindee.V1.Product.MultiReceiptsDetector;
