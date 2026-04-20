@@ -1,5 +1,12 @@
 # Mindee .NET Client Library Changelog
 
+## v4.1.0 - 2026-04-20
+### Changes
+* :sparkles: add support for V2 crop and split file operations
+### Fixes
+* :memo: fix a few typos in changelog
+
+
 ## v4.0.1 - 2026-04-03
 ### Changes
 :recycle: uniformize Mindee HTTP errors with other libs
