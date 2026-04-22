@@ -1,4 +1,5 @@
 using System.CommandLine;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -85,6 +86,13 @@ using SettingsV1 = Mindee.V1.Http.Settings;
 using V1Client = Mindee.V1.Client;
 
 var host = Host.CreateDefaultBuilder(args)
+    .ConfigureHostConfiguration(configuration =>
+    {
+        configuration.AddInMemoryCollection(new Dictionary<string, string?>
+        {
+            ["hostBuilder:reloadConfigOnChange"] = "false"
+        });
+    })
     .ConfigureLogging((_, logging) =>
     {
         logging.ClearProviders();
