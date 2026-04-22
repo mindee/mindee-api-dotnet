@@ -1,5 +1,7 @@
 using System.CommandLine;
 using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Mindee.Input;
 using Mindee.V2.Parsing;
 using Mindee.V2.Product.Classification;
@@ -12,6 +14,7 @@ using Mindee.V2.Product.Ocr;
 using Mindee.V2.Product.Ocr.Params;
 using Mindee.V2.Product.Split;
 using Mindee.V2.Product.Split.Params;
+using SettingsV2 = Mindee.V2.Http.Settings;
 using V2Client = Mindee.V2.Client;
 
 namespace Mindee.Cli.Commands.V2
@@ -71,6 +74,7 @@ namespace Mindee.Cli.Commands.V2
         private readonly Option<string?>? _textContextOption;
         private readonly Option<string> _modelIdOption;
         private readonly Argument<string> _pathArgument;
+        private readonly Option<string?> _apiKeyOption;
 
         public InferenceCommand(InferenceCommandOptions options)
             : base(options.Name, options.Description)
@@ -78,8 +82,8 @@ namespace Mindee.Cli.Commands.V2
             _modelIdOption =
                 new Option<string>("--model-id", "-m") { Description = "ID of the model to use", Required = true };
             Options.Add(_modelIdOption);
-            var apiKeyOption = new Option<string>("--api-key", "-k") { Description = "Mindee V2 API key." };
-            Options.Add(apiKeyOption); // Will not be used at this step, only here for help display purposes.
+            _apiKeyOption = new Option<string?>("--api-key", "-k") { Description = "Mindee V2 API key." };
+            Options.Add(_apiKeyOption);
 
             _productName = options.Name;
             _aliasOption = new Option<string?>("--alias", "-a")
@@ -157,8 +161,28 @@ namespace Mindee.Cli.Commands.V2
             Arguments.Add(_pathArgument);
         }
 
-        public void ConfigureAction(V2Client mindeeClientV2)
+        public void ConfigureAction(IServiceProvider services)
         {
+            Validators.Add(commandResult =>
+            {
+                var apiKey = commandResult.GetValue(_apiKeyOption);
+                if (!string.IsNullOrWhiteSpace(apiKey))
+                {
+                    return;
+                }
+
+                try
+                {
+                    _ = services.GetRequiredService<IOptions<SettingsV2>>().Value;
+                }
+                catch (OptionsValidationException)
+                {
+                    commandResult.AddError(
+                        "The Mindee V2 API key is missing. " +
+                        "Please provide it via the '--api-key' option or your configured environment variable.");
+                }
+            });
+
             this.SetAction(parseResult =>
             {
                 var path = parseResult.GetValue(_pathArgument)!;
@@ -180,6 +204,21 @@ namespace Mindee.Cli.Commands.V2
                 }
 
                 var output = parseResult.GetValue(_outputOption);
+                var apiKey = parseResult.GetValue(_apiKeyOption);
+                V2Client mindeeClientV2;
+                try
+                {
+                    mindeeClientV2 = !string.IsNullOrWhiteSpace(apiKey)
+                        ? new V2Client(apiKey)
+                        : services.GetRequiredService<V2Client>();
+                }
+                catch (OptionsValidationException)
+                {
+                    Console.Error.WriteLine(
+                        "The Mindee V2 API key is missing. " +
+                        "Please provide it via the '--api-key' option or your configured environment variable.");
+                    return 1;
+                }
 
                 var handler = new Handler(mindeeClientV2);
                 return handler

@@ -370,3 +370,5 @@ _site
 # StrongName files
 *.snk
 *.snk.b64
+# Local CLI publish.
+dotnet-tools.json
