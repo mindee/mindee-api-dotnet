@@ -1,5 +1,13 @@
 # Mindee .NET Client Library Changelog
 
+## v4.2.0 - 2026-04-22
+### Changes
+* :sparkles: add nuGet support for CLI
+### Fixes
+* :bug: fix CLI sometimes crashing if V2 key wasn't provided
+* :bug: fix CLI loading slowly
+
+
 ## v4.2.0-rc1 - 2026-04-22
 ### Changes
 * :sparkles: add nuGet support for CLI
