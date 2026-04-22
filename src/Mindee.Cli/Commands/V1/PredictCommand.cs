@@ -1,5 +1,6 @@
 using System.CommandLine;
 using System.Text.Json;
+using Microsoft.Extensions.Options;
 using Mindee.Input;
 using Mindee.V1;
 using Mindee.V1.ClientOptions;
@@ -93,7 +94,7 @@ namespace Mindee.Cli.Commands.V1
             Arguments.Add(_pathArgument);
         }
 
-        public void ConfigureAction(V1Client mindeeClientV1)
+        public void ConfigureAction(Func<V1Client> clientFactory)
         {
             this.SetAction(parseResult =>
             {
@@ -102,6 +103,18 @@ namespace Mindee.Cli.Commands.V1
                 var fullText = _fullTextOption != null && parseResult.GetValue(_fullTextOption);
                 var output = parseResult.GetValue(_outputOption);
                 var isAsync = _asyncOption != null && parseResult.GetValue(_asyncOption);
+                V1Client mindeeClientV1;
+                try
+                {
+                    mindeeClientV1 = clientFactory();
+                }
+                catch (OptionsValidationException)
+                {
+                    Console.Error.WriteLine(
+                        "The Mindee V1 API key is missing. " +
+                        "Please provide it via the '--api-key' option or your configured environment variable.");
+                    return 1;
+                }
 
                 var handler = new Handler(mindeeClientV1);
                 return handler.InvokeAsync(path, allWords, fullText, output, isAsync).GetAwaiter().GetResult();

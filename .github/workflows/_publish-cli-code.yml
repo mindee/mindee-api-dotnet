@@ -1,0 +1,49 @@
+name: Publish CLI to NuGet
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish CLI release to NuGet
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore strong-name key from secret
+        run: |
+          echo "${{ secrets.MINDEE_SNK_B64 }}" | base64 -d > /tmp/Mindee.snk
+          chmod 600 /tmp/Mindee.snk
+
+      - name: Install dependencies
+        run: dotnet restore "src/Mindee.Cli" -p:TargetFrameworks=net8.0
+
+      - name: Build (strong-name signed)
+        run: dotnet build "src/Mindee.Cli" --configuration Release --no-restore -p:TargetFrameworks=net8.0 -p:MindeeStrongNameKeyFile=/tmp/Mindee.snk
+
+      - name: Pack
+        run: dotnet pack "src/Mindee.Cli" -c Release -p:PackAsTool=true -p:TargetFrameworks=net8.0 -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --no-restore --output nuget
+
+      - name: Verify strong-name (PublicKeyToken)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mono-devel unzip
+          DLL_PATH=$(unzip -Z -1 nuget/*.nupkg | grep -m1 '/Mindee.dll$')
+          if [ -z "$DLL_PATH" ]; then
+            echo "Mindee.dll not found in packaged CLI tool."
+            exit 1
+          fi
+          unzip -p nuget/*.nupkg "$DLL_PATH" > /tmp/Mindee.dll
+          sn -T /tmp/Mindee.dll
+          sn -vf /tmp/Mindee.dll
+
+      - name: Publish NuGet packages to NuGet
+        run: dotnet nuget push nuget/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source "nuget.org" --skip-duplicate

@@ -15,3 +15,6 @@ jobs:
   publish_code:
     uses: mindee/mindee-api-dotnet/.github/workflows/_publish-code.yml@main
     secrets: inherit
+  publish_cli_code:
+    uses: mindee/mindee-api-dotnet/.github/workflows/_publish-cli-code.yml@main
+    secrets: inherit
