@@ -30,7 +30,7 @@ jobs:
         run: dotnet build "src/Mindee.Cli" --configuration Release --no-restore -p:TargetFrameworks=net8.0 -p:MindeeStrongNameKeyFile=/tmp/Mindee.snk
 
       - name: Pack
-        run: dotnet pack "src/Mindee.Cli" -c Release -p:PackAsTool=true -p:TargetFrameworks=net8.0 -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg --no-build --no-restore --output nuget
+        run: dotnet pack "src/Mindee.Cli" -c Release -p:PackAsTool=true -p:TargetFrameworks=net8.0 --no-build --no-restore --output nuget
 
       - name: Verify strong-name (PublicKeyToken)
         run: |
@@ -46,4 +46,4 @@ jobs:
           sn -vf /tmp/Mindee.dll
 
       - name: Publish NuGet packages to NuGet
-        run: dotnet nuget push nuget/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source "nuget.org" --skip-duplicate
+        run: dotnet nuget push nuget/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source "nuget.org" --no-symbols --skip-duplicate
