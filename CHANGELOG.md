@@ -1,5 +1,10 @@
 # Mindee .NET Client Library Changelog
 
+## v4.2.1 - 2026-04-28
+### Fixes
+* :bug: fix package symbol errors when publishing CLI NuGet (#400)
+
+
 ## v4.2.0 - 2026-04-22
 ### Changes
 * :sparkles: add nuGet support for CLI
