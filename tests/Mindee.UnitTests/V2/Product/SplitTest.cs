@@ -76,6 +76,48 @@ namespace Mindee.UnitTests.V2.Product
             Assert.Equal(3, secondSplit.PageRange[1]);
         }
 
+        [Fact]
+        public void Split_WithExtraction_MustHaveValidProperties()
+        {
+            var response = GetInference("split/default_sample_extraction.json");
+            Assert.NotNull(response.Inference);
+
+            var splits = response.Inference.Result.Splits;
+            Assert.Equal(2, splits.Count);
+
+            var split0 = splits[0];
+            Assert.Equal("invoice", split0.DocumentType);
+            Assert.Equal(0, split0.PageRange[0]);
+
+            var extractionResponse0 = split0.ExtractionResponse;
+            Assert.NotNull(extractionResponse0);
+            Assert.Equal(
+                "05 05 44 44 90",
+                extractionResponse0
+                    .Inference
+                    .Result
+                    .Fields["supplier_phone_number"]
+                    .SimpleField
+                    .Value
+            );
+
+            var split1 = splits[1];
+            Assert.Equal("invoice", split1.DocumentType);
+            Assert.Equal(1, split1.PageRange[0]);
+
+            var extractionResponse1 = split1.ExtractionResponse;
+            Assert.NotNull(extractionResponse1);
+            Assert.Equal(
+                "416-555-1212",
+                extractionResponse1
+                    .Inference
+                    .Result
+                    .Fields["supplier_phone_number"]
+                    .SimpleField
+                    .Value
+            );
+        }
+
         private static SplitResponse GetInference(string path)
         {
             var localResponse = new LocalResponse(

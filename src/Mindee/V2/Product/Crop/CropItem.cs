@@ -5,6 +5,7 @@ using Mindee.Geometry;
 using Mindee.Image;
 using Mindee.Input;
 using Mindee.V2.Parsing.Inference.Field;
+using Mindee.V2.Product.Extraction;
 
 namespace Mindee.V2.Product.Crop
 {
@@ -24,6 +25,12 @@ namespace Mindee.V2.Product.Crop
         /// </summary>
         [JsonPropertyName("location")]
         public FieldLocation Location { get; set; }
+
+        /// <summary>
+        /// The extraction response associated with the crop.
+        /// </summary>
+        [JsonPropertyName("extraction_response")]
+        public ExtractionResponse ExtractionResponse { get; set; }
 
         /// <summary>
         /// String representation of the crop item.

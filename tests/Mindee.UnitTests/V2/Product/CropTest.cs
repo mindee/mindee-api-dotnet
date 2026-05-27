@@ -98,6 +98,50 @@ namespace Mindee.UnitTests.V2.Product
             Assert.Equal(new Point(0.547, 0.97), secondPolygon[3]);
         }
 
+        [Fact(DisplayName = "extraction properties must be valid")]
+        public void Crop_WithExtraction_MustHaveValidProperties()
+        {
+            var response = GetInference("crop/default_sample_extraction.json");
+            Assert.NotNull(response.Inference);
+
+            var crops = response.Inference.Result.Crops;
+            Assert.Equal(2, crops.Count);
+
+            var crop0 = crops[0];
+            Assert.Equal("receipt", crop0.ObjectType);
+            Assert.NotNull(crop0.Location.Polygon);
+            Assert.Equal(0, crop0.Location.Page);
+
+            var extractionResponse0 = crop0.ExtractionResponse;
+            Assert.NotNull(extractionResponse0);
+            Assert.Equal(
+                "CHEZ ALAIN MIAM MIAM",
+                extractionResponse0
+                    .Inference
+                    .Result
+                    .Fields["supplier_name"]
+                    .SimpleField
+                    .Value
+            );
+
+            var crop1 = crops[1];
+            Assert.Equal("receipt", crop1.ObjectType);
+            Assert.NotNull(crop1.Location.Polygon);
+            Assert.Equal(0, crop1.Location.Page);
+
+            var extractionResponse1 = crop1.ExtractionResponse;
+            Assert.NotNull(extractionResponse1);
+            Assert.Equal(
+                "La cerise sur la pizza",
+                extractionResponse1
+                    .Inference
+                    .Result
+                    .Fields["supplier_name"]
+                    .SimpleField
+                    .Value
+            );
+        }
+
         [Fact(DisplayName = "crop_single.rst – RST display must be parsed and exposed")]
         public void RstDisplay_MustBeAccessible()
         {

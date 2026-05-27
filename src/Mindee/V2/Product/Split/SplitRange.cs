@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Mindee.Input;
 using Mindee.Pdf;
+using Mindee.V2.Product.Extraction;
 
 namespace Mindee.V2.Product.Split
 {
@@ -21,6 +22,12 @@ namespace Mindee.V2.Product.Split
         /// </summary>
         [JsonPropertyName("document_type")]
         public string DocumentType { get; set; }
+
+        /// <summary>
+        /// The extraction response associated with the split.
+        /// </summary>
+        [JsonPropertyName("extraction_response")]
+        public ExtractionResponse ExtractionResponse { get; set; }
 
         /// <summary>
         /// String representation of the split item.
