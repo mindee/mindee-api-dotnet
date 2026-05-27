@@ -3,6 +3,7 @@ using Mindee.V2.Parsing;
 using Mindee.V2.Product;
 using Mindee.V2.Product.Classification;
 using Mindee.V2.Product.Classification.Params;
+using Mindee.V2.Product.Extraction;
 
 namespace Mindee.UnitTests.V2.Product
 {
@@ -23,7 +24,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Classification_WhenSingle_MustHaveValidProperties()
         {
-            var response = GetInference("classification/classification_single.json");
+            var response = GetInference("classification/default_sample.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -38,6 +39,33 @@ namespace Mindee.UnitTests.V2.Product
 
             var classification = inference.Result.Classification;
             Assert.Equal("invoice", classification.DocumentType);
+        }
+
+        [Fact]
+        public void Classification_WithExtraction_MustHaveValidProperties()
+        {
+            var response = GetInference("classification/default_sample_extraction.json");
+            Assert.NotNull(response.Inference);
+            Assert.Equal(
+                "invoice",
+                response.Inference.Result.Classification.DocumentType
+            );
+
+            ExtractionResponse extractionResponse = response
+                .Inference
+                .Result
+                .Classification
+                .ExtractionResponse;
+            Assert.NotNull(extractionResponse);
+            Assert.Equal(
+                "Jiro Doi",
+                extractionResponse
+                    .Inference
+                    .Result
+                    .Fields["customer_name"]
+                    .SimpleField
+                    .Value
+            );
         }
 
         private static ClassificationResponse GetInference(string path)

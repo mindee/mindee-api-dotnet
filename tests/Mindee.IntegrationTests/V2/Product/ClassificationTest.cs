@@ -23,7 +23,7 @@ namespace Mindee.IntegrationTests.V2.Product
         public async Task Classification_DefaultSample_MustSucceed()
         {
             var inputSource = new LocalInputSource(
-                Constants.V2ProductDir + "classification/default_invoice.jpg");
+                Constants.V2ProductDir + "classification/default_sample.jpg");
             var productParams = new ClassificationParameters(_classificationModelId);
 
             var response = await _client.EnqueueAndGetResultAsync<ClassificationResponse>(
@@ -34,7 +34,7 @@ namespace Mindee.IntegrationTests.V2.Product
 
             var file = response.Inference.File;
             Assert.NotNull(file);
-            Assert.Equal("default_invoice.jpg", file.Name);
+            Assert.Equal("default_sample.jpg", file.Name);
 
             var result = response.Inference.Result;
             Assert.NotNull(result);

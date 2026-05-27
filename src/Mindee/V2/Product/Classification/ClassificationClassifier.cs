@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Mindee.V2.Product.Extraction;
 
 namespace Mindee.V2.Product.Classification
 {
@@ -12,6 +13,12 @@ namespace Mindee.V2.Product.Classification
         /// </summary>
         [JsonPropertyName("document_type")]
         public string DocumentType { get; set; }
+
+        /// <summary>
+        /// The extraction response associated with the classification.
+        /// </summary>
+        [JsonPropertyName("extraction_response")]
+        public ExtractionResponse ExtractionResponse { get; set; }
 
         /// <summary>
         ///     A prettier representation of the feature values.
