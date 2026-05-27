@@ -1,5 +1,10 @@
 # Mindee .NET Client Library Changelog
 
+## v4.3.0 - 2026-05-27
+### Changes
+* :sparkles: Add support for extraction in crop, split, and classify
+
+
 ## v4.2.1 - 2026-04-28
 ### Fixes
 * :bug: fix package symbol errors when publishing CLI NuGet (#400)
