@@ -27,7 +27,7 @@ namespace Mindee.V2.Parsing.Search
         public string ModelType { get; set; }
 
         /// <summary>
-        /// Webhooks associated with the model.
+        /// List of webhooks associated with the model.
         /// </summary>
         [JsonPropertyName("webhooks")]
         public List<ModelWebhook> Webhooks { get; set; }

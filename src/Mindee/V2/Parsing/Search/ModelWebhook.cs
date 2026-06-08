@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Mindee.V2.Parsing.Search
 {
     /// <summary>
-    ///  Model webhook information.
+    ///  Information about a model's webhook.
     /// </summary>
     public class ModelWebhook
     {
