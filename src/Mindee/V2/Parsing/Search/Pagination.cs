@@ -4,10 +4,11 @@ using System.Text.Json.Serialization;
 namespace Mindee.V2.Parsing.Search
 {
     /// <summary>
-    /// PaginationMetadata data associated with model search.
+    /// Pagination metadata associated with model search.
     /// </summary>
-    public class PaginationMetadata
+    public class Pagination
     {
+
         /// <summary>
         /// Number of items per page.
         /// </summary>
