@@ -23,7 +23,7 @@ namespace Mindee.V2.Parsing.Search
         /// </summary>
         [JsonIgnore]
         [Obsolete("Use Pagination instead.")]
-        public Pagination PaginationMetadata
+        public PaginationMetadata PaginationMetadata
         {
             get => Pagination;
             set => Pagination = value;
@@ -33,7 +33,7 @@ namespace Mindee.V2.Parsing.Search
         /// Pagination metadata.
         /// </summary>
         [JsonPropertyName("pagination")]
-        public Pagination Pagination { get; set; }
+        public PaginationMetadata Pagination { get; set; }
 
 
         /// <summary>

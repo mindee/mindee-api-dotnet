@@ -6,7 +6,7 @@ namespace Mindee.V2.Parsing.Search
     /// <summary>
     /// Pagination metadata associated with model search.
     /// </summary>
-    public class Pagination
+    public class PaginationMetadata
     {
 
         /// <summary>
