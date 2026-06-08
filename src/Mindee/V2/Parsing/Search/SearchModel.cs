@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Mindee.V2.Parsing.Search
@@ -24,6 +25,12 @@ namespace Mindee.V2.Parsing.Search
         /// </summary>
         [JsonPropertyName("model_type")]
         public string ModelType { get; set; }
+
+        /// <summary>
+        /// List of webhooks associated with the model.
+        /// </summary>
+        [JsonPropertyName("webhooks")]
+        public List<ModelWebhook> Webhooks { get; set; }
 
         /// <summary>
         /// String representation of the model.

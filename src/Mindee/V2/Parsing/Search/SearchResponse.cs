@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
@@ -8,7 +9,7 @@ namespace Mindee.V2.Parsing.Search
     /// <summary>
     /// Models search response.
     /// </summary>
-    public class SearchResponse
+    public class SearchResponse : BaseResponse
     {
         /// <summary>
         /// List of all models matching the search query.
@@ -18,10 +19,21 @@ namespace Mindee.V2.Parsing.Search
         public SearchModels Models { get; set; }
 
         /// <summary>
-        /// PaginationMetadata metadata.
+        /// Pagination metadata (Obsolete).
+        /// </summary>
+        [JsonIgnore]
+        [Obsolete("Use Pagination instead.")]
+        public PaginationMetadata PaginationMetadata
+        {
+            get => Pagination;
+            set => Pagination = value;
+        }
+
+        /// <summary>
+        /// Pagination metadata.
         /// </summary>
         [JsonPropertyName("pagination")]
-        public PaginationMetadata PaginationMetadata { get; set; }
+        public PaginationMetadata Pagination { get; set; }
 
 
         /// <summary>
@@ -35,7 +47,7 @@ namespace Mindee.V2.Parsing.Search
             stringBuilder.Append('\n');
             stringBuilder.Append("Pagination Metadata\n");
             stringBuilder.Append("###################\n");
-            stringBuilder.Append(PaginationMetadata);
+            stringBuilder.Append(Pagination);
             stringBuilder.Append('\n');
 
             return SummaryHelper.Clean(stringBuilder.ToString());
