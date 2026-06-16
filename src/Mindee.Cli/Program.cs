@@ -85,6 +85,8 @@ using PredictReceiptCommand = Mindee.Cli.Commands.V1.PredictCommand<
 using SettingsV1 = Mindee.V1.Http.Settings;
 using V1Client = Mindee.V1.Client;
 
+var verbose = args.Contains("--verbose");
+
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureHostConfiguration(configuration =>
     {
@@ -93,11 +95,24 @@ var host = Host.CreateDefaultBuilder(args)
             ["hostBuilder:reloadConfigOnChange"] = "false"
         });
     })
+    .ConfigureAppConfiguration((_, config) =>
+    {
+        if (verbose)
+        {
+            config.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["Logging:LogLevel:Default"] = "Information"
+            });
+        }
+    })
     .ConfigureLogging((_, logging) =>
     {
         logging.ClearProviders();
-        logging.AddConsole();
-        logging.AddDebug();
+        if (verbose)
+        {
+            logging.AddConsole();
+            logging.AddDebug();
+        }
     })
     .ConfigureServices((_, services) =>
     {
@@ -298,11 +313,12 @@ static RootCommand BuildCommandLine(IServiceProvider services, string[] args)
     BuildV1Commands(v1Command, services, args);
     root.Add(v1Command);
 
-    var silentOption = new Option<bool>("--silent")
+    var verboseOption = new Option<bool>("--verbose")
     {
-        Description = "Disables diagnostics output"
+        Description = "Enables diagnostics output",
+        Recursive = true
     };
-    root.Options.Add(silentOption);
+    root.Options.Add(verboseOption);
 
     root.SetAction(_ =>
     {
