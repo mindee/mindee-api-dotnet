@@ -18,6 +18,7 @@ namespace Mindee.UnitTests.Input
             List<string> imageExtensions = new()
             {
                 ".heic",
+                ".heif",
                 ".jpg",
                 ".jpga",
                 ".png",
@@ -29,6 +30,7 @@ namespace Mindee.UnitTests.Input
             {
                 var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt" + extension);
                 Assert.True(inputSource.IsExtensionValid());
+                Assert.Equal(1, inputSource.GetPageCount());
                 Assert.False(inputSource.IsPdf());
             }
         }
@@ -69,7 +71,6 @@ namespace Mindee.UnitTests.Input
             var memoryStream = new MemoryStream(fileBytes);
             Assert.IsType<LocalInputSource>(new LocalInputSource(memoryStream, "receipt.jpg"));
         }
-
 
         [Fact]
         public void Can_Load_Using_Base64()
