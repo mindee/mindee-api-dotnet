@@ -12,25 +12,21 @@ namespace Mindee.UnitTests.Input
     [Collection("Docnet")]
     public class LocalInputSourceTest
     {
-        [Fact]
-        public void Can_Load_Type_ImageFiles()
+        [Theory]
+        [InlineData("heic")]
+        [InlineData("heif")]
+        [InlineData("jpg")]
+        [InlineData("jpga")]
+        [InlineData("png")]
+        [InlineData("tif")]
+        [InlineData("tiff")]
+        [InlineData("webp")]
+        public void Can_Load_Type_ImageFiles(string extension)
         {
-            List<string> imageExtensions = new()
-            {
-                ".heic",
-                ".jpg",
-                ".jpga",
-                ".png",
-                ".tif",
-                ".tiff",
-                ".webp"
-            };
-            foreach (var extension in imageExtensions)
-            {
-                var inputSource = new LocalInputSource(Constants.RootDir + "file_types/receipt" + extension);
-                Assert.True(inputSource.IsExtensionValid());
-                Assert.False(inputSource.IsPdf());
-            }
+            var inputSource = new LocalInputSource(Constants.RootDir + $"file_types/receipt.{extension}");
+            Assert.True(inputSource.IsExtensionValid());
+            Assert.False(inputSource.IsPdf());
+            Assert.Equal(1, inputSource.GetPageCount());
         }
 
         [Fact]
@@ -48,28 +44,51 @@ namespace Mindee.UnitTests.Input
                 new LocalInputSource(Constants.RootDir + "file_types/receipt.txt"));
         }
 
-        [Fact]
-        public void Can_Load_Using_FileInfo()
+        [Theory]
+        [InlineData("heic")]
+        [InlineData("heif")]
+        [InlineData("jpg")]
+        [InlineData("jpga")]
+        [InlineData("png")]
+        [InlineData("tif")]
+        [InlineData("tiff")]
+        [InlineData("webp")]
+        public void Can_Load_Using_FileInfo(string extension)
         {
-            var fileInfo = new FileInfo(Constants.RootDir + "file_types/receipt.jpg");
+            var fileInfo = new FileInfo(Constants.RootDir + $"file_types/receipt.{extension}");
             Assert.IsType<LocalInputSource>(new LocalInputSource(fileInfo));
         }
 
-        [Fact]
-        public void Can_Load_Using_FileStream()
+        [Theory]
+        [InlineData("heic")]
+        [InlineData("heif")]
+        [InlineData("jpg")]
+        [InlineData("jpga")]
+        [InlineData("png")]
+        [InlineData("tif")]
+        [InlineData("tiff")]
+        [InlineData("webp")]
+        public void Can_Load_Using_FileStream(string extension)
         {
-            Stream fileStream = File.OpenRead(Constants.RootDir + "file_types/receipt.jpg");
-            Assert.IsType<LocalInputSource>(new LocalInputSource(fileStream, "receipt.jpg"));
+            Stream fileStream = File.OpenRead(Constants.RootDir + $"file_types/receipt.{extension}");
+            Assert.IsType<LocalInputSource>(new LocalInputSource(fileStream, $"receipt.{extension}"));
         }
 
-        [Fact]
-        public void Can_Load_Using_MemoryStream()
+        [Theory]
+        [InlineData("heic")]
+        [InlineData("heif")]
+        [InlineData("jpg")]
+        [InlineData("jpga")]
+        [InlineData("png")]
+        [InlineData("tif")]
+        [InlineData("tiff")]
+        [InlineData("webp")]
+        public void Can_Load_Using_MemoryStream(string extension)
         {
-            var fileBytes = File.ReadAllBytes(Constants.RootDir + "file_types/receipt.jpg");
+            var fileBytes = File.ReadAllBytes(Constants.RootDir + $"file_types/receipt.{extension}");
             var memoryStream = new MemoryStream(fileBytes);
-            Assert.IsType<LocalInputSource>(new LocalInputSource(memoryStream, "receipt.jpg"));
+            Assert.IsType<LocalInputSource>(new LocalInputSource(memoryStream, $"receipt.{extension}"));
         }
-
 
         [Fact]
         public void Can_Load_Using_Base64()
@@ -97,15 +116,23 @@ namespace Mindee.UnitTests.Input
             Assert.False(hasNoSourceTextSinceItsImage.HasSourceText());
         }
 
-        [Fact]
-        public void Image_Quality_Compress_From_Input_Source()
+        [Theory]
+        // Not all extensions work!
+        [InlineData("heif")]
+        [InlineData("jpg")]
+        [InlineData("jpga")]
+        [InlineData("png")]
+        [InlineData("webp")]
+        public void Image_Quality_Compress_From_Input_Source(string extension)
         {
-            var receiptInput = new LocalInputSource(Constants.RootDir + "file_types/receipt.jpg");
+            var receiptInput = new LocalInputSource(Constants.RootDir + $"file_types/receipt.{extension}");
             receiptInput.Compress(40);
-            File.WriteAllBytes("Resources/output/compress_indirect.jpg", receiptInput.FileBytes);
-            Assert.True(true);
-            var initialFileInfo = new FileInfo(Constants.RootDir + "file_types/receipt.jpg");
-            var renderedFileInfo = new FileInfo("Resources/output/compress_indirect.jpg");
+
+            File.WriteAllBytes($"Resources/output/compress_indirect.{extension}", receiptInput.FileBytes);
+
+            var initialFileInfo = new FileInfo(Constants.RootDir + $"file_types/receipt.{extension}");
+            var renderedFileInfo = new FileInfo($"Resources/output/compress_indirect.{extension}");
+
             Assert.True(renderedFileInfo.Length < initialFileInfo.Length);
         }
 

@@ -17,7 +17,7 @@ namespace Mindee.Input
     {
         private static readonly string[] AuthorizedFileExtensions =
         [
-            ".heic", ".jpg", ".jpga", ".jpeg", ".pdf", ".png", ".tiff", ".tif", ".webp"
+            ".heic", ".heif", ".jpg", ".jpga", ".jpeg", ".pdf", ".png", ".tiff", ".tif", ".webp"
         ];
 
         private DocNetApi _pdfOperation;
