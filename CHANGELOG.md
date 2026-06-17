@@ -1,5 +1,13 @@
 # Mindee .NET Client Library Changelog
 
+## v4.4.0 - 2026-06-17
+### Changes
+* :sparkles: add webhook information for model search
+* :sparkles: add HEIF support
+### Fixes
+* :bug: CLI now displays logs only when applying the --verbose param
+
+
 ## v4.3.0 - 2026-05-27
 ### Changes
 * :sparkles: Add support for extraction in crop, split, and classify
