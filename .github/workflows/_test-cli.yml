@@ -30,15 +30,6 @@ jobs:
         dotnet:
           - "net8.0"
           - "net10.0"
-        include:
-          - os_config:
-              os: "windows-latest"
-              rid: "win-x64"
-            dotnet: "net472"
-          - os_config:
-              os: "windows-latest"
-              rid: "win-x64"
-            dotnet: "net48"
     runs-on: ${{ matrix.os_config.os }}
     steps:
     - uses: actions/checkout@v5
@@ -63,14 +54,7 @@ jobs:
       run: |
         dotnet tool install -g dotnet-script
 
-    - name: Publish Locally (.NET Framework)
-      if: startsWith(matrix.dotnet, 'net4')
-      run: |
-        cd src/Mindee.Cli
-        dotnet publish -f ${{ matrix.dotnet }} -c Release -r ${{ matrix.os_config.rid }} -o ./bin/Release/${{ matrix.dotnet }}/${{ matrix.os_config.rid }}
-
-    - name: Publish Locally (.NET 6+)
-      if: ${{ !startsWith(matrix.dotnet, 'net4') }}
+    - name: Publish Locally
       run: |
         cd src/Mindee.Cli
         dotnet publish -f ${{ matrix.dotnet }} -c Release -r ${{ matrix.os_config.rid }} --self-contained true -p:PublishSingleFile=true -o ./bin/Release/${{ matrix.dotnet }}/${{ matrix.os_config.rid }}
