@@ -1,5 +1,10 @@
 # Mindee .NET Client Library Changelog
 
+## v4.4.1 - 2026-02-22
+### Fixes
+* :bug: fix CLI not targeting correct .NET versions
+
+
 ## v4.4.0 - 2026-06-17
 ### Changes
 * :sparkles: add webhook information for model search
