@@ -44,10 +44,10 @@ namespace Mindee.V2.FileOperations
         /// </summary>
         /// <param name="crops">List of crops.</param>
         /// <returns></returns>
-        public CropFiles ExtractCrops(List<CropItem> crops)
+        public ExtractedImages ExtractCrops(List<CropItem> crops)
         {
             var imageExtractor = new ImageExtractor(this._localInput);
-            CropFiles extractedImages = [];
+            ExtractedImages extractedImages = [];
             var cropsPerPage = crops.GroupBy(c => c.Location.Page).ToList();
             foreach (var pageCrops in cropsPerPage)
             {

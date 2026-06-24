@@ -14,13 +14,13 @@ namespace Mindee.UnitTests.V2
     {
         private Client MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
         {
-            predictable.Setup(x => x.ReqPostEnqueueAsync(It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>())
+            predictable.Setup(x => x.ReqPostProductEnqueueAsync(It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>())
             ).ReturnsAsync(new JobResponse());
 
-            predictable.Setup(x => x.ReqGetResultAsync<ExtractionResponse>(It.IsAny<string>())
+            predictable.Setup(x => x.ReqGetProductResultByIdAsync<ExtractionResponse>(It.IsAny<string>())
             ).ReturnsAsync(new ExtractionResponse());
 
-            predictable.Setup(x => x.ReqGetJobAsync(It.IsAny<string>())
+            predictable.Setup(x => x.ReqGetJobByIdAsync(It.IsAny<string>())
             ).ReturnsAsync(new JobResponse());
 
             return new Client(predictable.Object);
@@ -42,7 +42,7 @@ namespace Mindee.UnitTests.V2
                 inputSource, inferenceParams);
 
             Assert.NotNull(response);
-            predictable.Verify(p => p.ReqPostEnqueueAsync(It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>()),
+            predictable.Verify(p => p.ReqPostProductEnqueueAsync(It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>()),
                 Times.AtMostOnce());
         }
 
@@ -55,7 +55,7 @@ namespace Mindee.UnitTests.V2
             Assert.NotNull(response);
 
             predictable.Verify(
-                p => p.ReqGetResultAsync<ExtractionResponse>(It.IsAny<string>()),
+                p => p.ReqGetProductResultByIdAsync<ExtractionResponse>(It.IsAny<string>()),
                 Times.AtMostOnce());
         }
 
@@ -68,7 +68,7 @@ namespace Mindee.UnitTests.V2
             Assert.NotNull(response);
 
             predictable.Verify(
-                p => p.ReqGetJobAsync(It.IsAny<string>()),
+                p => p.ReqGetJobByIdAsync(It.IsAny<string>()),
                 Times.AtMostOnce());
         }
 

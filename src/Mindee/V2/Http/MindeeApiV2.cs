@@ -48,7 +48,7 @@ namespace Mindee.V2.Http
             _httpClient.AddDefaultHeaders(defaultHeaders);
         }
 
-        public override async Task<JobResponse> ReqPostEnqueueAsync(
+        public override async Task<JobResponse> ReqPostProductEnqueueAsync(
             InputSource inputSource,
             BaseParameters parameters
         )
@@ -67,7 +67,7 @@ namespace Mindee.V2.Http
             return HandleJobResponse(response);
         }
 
-        public override async Task<SearchResponse> SearchModels(string name, string modelType)
+        public override async Task<SearchResponse> ReqGetSearchModelAsync(string name, string modelType)
         {
             var request = new RestRequest("v2/search/models");
             Logger?.LogInformation("Fetching models...");
@@ -87,17 +87,12 @@ namespace Mindee.V2.Http
             return HandleSearchResponse(response);
         }
 
-        public override async Task<JobResponse> ReqGetJobAsync(string jobId)
+        public override async Task<JobResponse> ReqGetJobByIdAsync(string jobId)
         {
-            var request = new RestRequest($"v2/jobs/{jobId}");
-            Logger?.LogInformation("HTTP GET to {RequestResource}...", _baseUrl + request.Resource);
-            var response = await _httpClient.ExecuteGetAsync(request);
-            Logger?.LogDebug("HTTP response: {ResponseContent}", response.Content);
-            var handledResponse = HandleJobResponse(response);
-            return handledResponse;
+            return await ReqGetJobByUrlAsync($"{_baseUrl}v2/jobs/{jobId}");
         }
 
-        public override async Task<JobResponse> ReqGetJobFromUrlAsync(string pollingUrl)
+        public override async Task<JobResponse> ReqGetJobByUrlAsync(string pollingUrl)
         {
             var request = new RestRequest(new Uri(pollingUrl));
             Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
@@ -107,24 +102,26 @@ namespace Mindee.V2.Http
             return handledResponse;
         }
 
-        public override async Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId)
+        public override async Task<TResponse> ReqGetProductResultByIdAsync<TResponse>(string inferenceId)
         {
             var productAttributes = typeof(TResponse).GetCustomAttribute<ProductAttributes>();
             if (productAttributes == null)
                 throw new Exception($"ProductAttributes must be set for class: {typeof(TResponse).Name}");
-            var request = new RestRequest(
-                $"v2/products/{productAttributes.Slug}/results/{inferenceId}");
-            Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
-            var queueResponse = await _httpClient.ExecuteGetAsync(request);
-            return HandleProductResponse<TResponse>(queueResponse);
+            return await ReqGetProductResultByUrlAsync<TResponse>(
+                $"{_baseUrl}v2/products/{productAttributes.Slug}/results/{inferenceId}");
         }
 
-        public override async Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl)
+        public override async Task<TResponse> ReqGetProductResultByUrlAsync<TResponse>(string resultUrl)
         {
+            var productAttributes = typeof(TResponse).GetCustomAttribute<ProductAttributes>();
+            if (productAttributes == null)
+                throw new Exception($"ProductAttributes must be set for class: {typeof(TResponse).Name}");
+            if (!resultUrl.Contains(productAttributes.Slug))
+                throw new Exception($"Mismatch for class and URL: {productAttributes.Slug}");
             var request = new RestRequest(new Uri(resultUrl));
             Logger?.LogInformation("HTTP GET to {RequestResource}...", resultUrl);
-            var queueResponse = await _httpClient.ExecuteGetAsync(request);
-            return HandleProductResponse<TResponse>(queueResponse);
+            var response = await _httpClient.ExecuteGetAsync(request);
+            return HandleProductResponse<TResponse>(response);
         }
 
         private static void AddPredictRequestParameters(

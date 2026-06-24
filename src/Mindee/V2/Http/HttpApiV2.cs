@@ -36,31 +36,33 @@ namespace Mindee.V2.Http
         ///     <see cref="LocalInputSource" />
         ///     <see cref="UrlInputSource" />
         /// </param>
-        public abstract Task<JobResponse> ReqPostEnqueueAsync(InputSource inputSource, BaseParameters parameters);
+        public abstract Task<JobResponse> ReqPostProductEnqueueAsync(InputSource inputSource, BaseParameters parameters);
 
         /// <summary>
         ///     Get a job for an enqueued document.
         /// </summary>
         /// <param name="pollingUrl">The job ID as returned by the predict_async route.</param>
-        public abstract Task<JobResponse> ReqGetJobFromUrlAsync(string pollingUrl);
+        public abstract Task<JobResponse> ReqGetJobByUrlAsync(string pollingUrl);
 
         /// <summary>
         ///     Get a job for an enqueued document.
         /// </summary>
         /// <param name="jobId">The job ID as returned by the predict_async route.</param>
-        public abstract Task<JobResponse> ReqGetJobAsync(string jobId);
+        public abstract Task<JobResponse> ReqGetJobByIdAsync(string jobId);
 
         /// <summary>
         ///     Get a document inference.
         /// </summary>
         /// <param name="inferenceId">Url to poll.</param>
-        public abstract Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId) where TResponse : BaseResponse, new();
+        public abstract Task<TResponse> ReqGetProductResultByIdAsync<TResponse>(
+            string inferenceId) where TResponse : BaseResponse, new();
 
         /// <summary>
         ///     Get a document inference.
         /// </summary>
         /// <param name="resultUrl">Url to poll.</param>
-        public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl) where TResponse : BaseResponse, new();
+        public abstract Task<TResponse> ReqGetProductResultByUrlAsync<TResponse>(
+            string resultUrl) where TResponse : BaseResponse, new();
 
         /// <summary>
         /// Retrieves a list of models available for a given API key.
@@ -68,7 +70,7 @@ namespace Mindee.V2.Http
         /// <param name="name">Name of the model to search for.</param>
         /// <param name="modelType">Type of the model to search for.</param>
         /// <returns></returns>
-        public abstract Task<SearchResponse> SearchModels(string? name, string? modelType);
+        public abstract Task<SearchResponse> ReqGetSearchModelAsync(string? name, string? modelType);
 
         /// <summary>
         ///     Get the error from the server return.

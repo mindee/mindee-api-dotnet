@@ -121,7 +121,7 @@ namespace Mindee.V2
                     throw new MindeeInputException($"Unsupported input source {inputSource.GetType().Name}");
             }
 
-            return await _mindeeApi.ReqPostEnqueueAsync(inputSource, parameters);
+            return await _mindeeApi.ReqPostProductEnqueueAsync(inputSource, parameters);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Mindee.V2
                 throw new ArgumentNullException(pollingUrl);
             }
 
-            return await _mindeeApi.ReqGetJobFromUrlAsync(pollingUrl);
+            return await _mindeeApi.ReqGetJobByUrlAsync(pollingUrl);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Mindee.V2
             {
                 throw new ArgumentNullException(pollingUrl);
             }
-            return await _mindeeApi.ReqGetResultFromUrlAsync<TResponse>(pollingUrl);
+            return await _mindeeApi.ReqGetProductResultByUrlAsync<TResponse>(pollingUrl);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace Mindee.V2
             {
                 throw new ArgumentNullException(jobId);
             }
-            return await _mindeeApi.ReqGetResultAsync<TResponse>(jobId);
+            return await _mindeeApi.ReqGetProductResultByIdAsync<TResponse>(jobId);
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace Mindee.V2
             {
                 throw new ArgumentNullException(jobId);
             }
-            return await _mindeeApi.ReqGetJobAsync(jobId);
+            return await _mindeeApi.ReqGetJobByIdAsync(jobId);
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace Mindee.V2
         /// <returns></returns>
         public async Task<SearchResponse> SearchModels(string name = null, string modelType = null)
         {
-            return await _mindeeApi.SearchModels(name, modelType);
+            return await _mindeeApi.ReqGetSearchModelAsync(name, modelType);
         }
 
         /// <summary>
