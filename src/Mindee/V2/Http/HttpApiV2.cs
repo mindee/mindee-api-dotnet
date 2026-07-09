@@ -75,7 +75,7 @@ namespace Mindee.V2.Http
         /// <param name="modelType">Type of the model to search for.</param>
         /// <param name="ct">Cancellation token.</param>
         /// <returns></returns>
-        public abstract Task<SearchResponse> SearchModels(string? name, string? modelType, CancellationToken ct = default);
+        public abstract Task<SearchResponse> SearchModelsAsync(string? name, string? modelType, CancellationToken ct = default);
 
         /// <summary>
         ///     Get the error from the server return.

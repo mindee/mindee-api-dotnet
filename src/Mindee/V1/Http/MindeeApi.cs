@@ -262,33 +262,73 @@ namespace Mindee.V1.Http
                 }
             }
 
-            // Always add the status code, this REALLY should be made a property of our HTTP error classes.
-            errorMessage += $"HTTP code {restResponse.StatusCode}: ";
+            var statusCode = (int)restResponse.StatusCode;
+            errorMessage += $"HTTP code {statusCode}: ";
 
-            // If the server JSON return is empty, try to dump the raw contents.
-            // If that STILL doesn't work, notify the user that the server response is empty.
             var apiErrorMessage = model?.ApiRequest.Error.ToString();
+            string errorName;
+            ErrorDetails errorDetails;
+
             if (!string.IsNullOrEmpty(apiErrorMessage))
             {
+                // JSON error body parsed successfully
                 errorMessage += apiErrorMessage;
-            }
-            else if (!string.IsNullOrEmpty(restResponse.Content))
-            {
-                errorMessage += restResponse.Content;
+                errorName = model.ApiRequest.Error.Code ?? "MindeeHttpError";
+                errorDetails = model.ApiRequest.Error.Details;
             }
             else
             {
-                errorMessage += "Empty response from server.";
+                // Non-JSON (likely HTML) — apply substring heuristics
+                var body = restResponse.Content ?? string.Empty;
+                errorName = ClassifyHtmlError(body);
+                errorMessage += string.IsNullOrEmpty(body) ? "Empty response from server." : body;
+                errorDetails = null;
             }
 
             _logger?.LogError("{ErrorMessage}", errorMessage);
 
-            throw new MindeeHttpExceptionV1(
-                "MindeeHttpError",
-                errorMessage,
-                model?.ApiRequest.Error.Details,
-                (int)restResponse.StatusCode
-            );
+            throw BuildHttpException(errorName, errorMessage, errorDetails, statusCode);
+        }
+
+        /// <summary>
+        ///     Classifies a non-JSON (HTML) error body into a meaningful error-name string,
+        ///     matching the heuristics used by sibling SDKs (Python / Node).
+        /// </summary>
+        private static string ClassifyHtmlError(string body)
+        {
+            if (body.Contains("Maximum pdf pages", StringComparison.OrdinalIgnoreCase))
+                return "TooManyPages";
+            if (body.Contains("Max file size is", StringComparison.OrdinalIgnoreCase))
+                return "FileTooLarge";
+            if (body.Contains("Invalid file type", StringComparison.OrdinalIgnoreCase))
+                return "InvalidFiletype";
+            if (body.Contains("Gateway timeout", StringComparison.OrdinalIgnoreCase))
+                return "RequestTimeout";
+            if (body.Contains("Bad gateway", StringComparison.OrdinalIgnoreCase))
+                return "BadRequest";
+            if (body.Contains("Too Many Requests", StringComparison.OrdinalIgnoreCase))
+                return "TooManyRequests";
+            return "UnknownError";
+        }
+
+        /// <summary>
+        ///     Constructs the most specific typed exception for the given HTTP status code.
+        /// </summary>
+        private static MindeeHttpExceptionV1 BuildHttpException(
+            string name, string message, ErrorDetails details, int statusCode)
+        {
+            return statusCode switch
+            {
+                400 => new MindeeHttp400ExceptionV1(name, message, details),
+                401 => new MindeeHttp401ExceptionV1(name, message, details),
+                403 => new MindeeHttp403ExceptionV1(name, message, details),
+                404 => new MindeeHttp404ExceptionV1(name, message, details),
+                413 => new MindeeHttp413ExceptionV1(name, message, details),
+                429 => new MindeeHttp429ExceptionV1(name, message, details),
+                500 => new MindeeHttp500ExceptionV1(name, message, details),
+                504 => new MindeeHttp504ExceptionV1(name, message, details),
+                _ => new MindeeHttpExceptionV1(name, message, details, statusCode),
+            };
         }
     }
 }

@@ -264,9 +264,24 @@ namespace Mindee.V2
         /// <param name="modelType">Model type filter.</param>
         /// <param name="ct">Cancellation token.</param>
         /// <returns></returns>
-        public async Task<SearchResponse> SearchModels(string name = null, string modelType = null, CancellationToken ct = default)
+        public async Task<SearchResponse> SearchModelsAsync(string name = null, string modelType = null, CancellationToken ct = default)
         {
-            return await _mindeeApi.SearchModels(name, modelType, ct);
+            return await _mindeeApi.SearchModelsAsync(name, modelType, ct);
+        }
+
+        /// <summary>
+        ///     Searches for models.
+        ///     (Deprecated: Please use <see cref="SearchModelsAsync"/> instead.)
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="modelType"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        [Obsolete("Please use SearchModelsAsync instead.")]
+        public async Task<SearchResponse> SearchModels(string name = null, string modelType = null,
+            CancellationToken ct = default)
+        {
+            return await SearchModelsAsync(name, modelType, ct);
         }
 
         /// <summary>

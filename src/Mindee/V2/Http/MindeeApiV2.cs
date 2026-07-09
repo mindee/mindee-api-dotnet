@@ -70,7 +70,7 @@ namespace Mindee.V2.Http
             return HandleJobResponse(response);
         }
 
-        public override async Task<SearchResponse> SearchModels(string name, string modelType, CancellationToken ct = default)
+        public override async Task<SearchResponse> SearchModelsAsync(string name, string modelType, CancellationToken ct = default)
         {
             var request = new RestRequest("v2/search/models");
             Logger?.LogInformation("Fetching models...");
