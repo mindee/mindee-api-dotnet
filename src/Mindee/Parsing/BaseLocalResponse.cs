@@ -55,7 +55,35 @@ namespace Mindee.Parsing
         /// <returns></returns>
         public bool IsValidHmacSignature(string secretKey, string signature)
         {
-            return GetHmacSignature(secretKey) == signature.ToLower();
+            if (string.IsNullOrEmpty(signature))
+            {
+                return false;
+            }
+
+            string expectedSignature = GetHmacSignature(secretKey);
+
+            byte[] expectedBytes = Encoding.UTF8.GetBytes(expectedSignature);
+            byte[] actualBytes = Encoding.UTF8.GetBytes(signature.ToLower());
+
+            return FixedTimeEquals(expectedBytes, actualBytes);
+        }
+
+        /// <summary>
+        /// Custom constant-time comparison method, since it doesn't exist in .NET472/48
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        private static bool FixedTimeEquals(byte[] a, byte[] b)
+        {
+            uint diff = (uint)a.Length ^ (uint)b.Length;
+
+            for (int i = 0; i < a.Length && i < b.Length; i++)
+            {
+                diff |= (uint)(a[i] ^ b[i]);
+            }
+
+            return diff == 0;
         }
 
         /// <summary>

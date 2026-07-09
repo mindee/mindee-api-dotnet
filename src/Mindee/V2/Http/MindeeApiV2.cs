@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -50,7 +51,8 @@ namespace Mindee.V2.Http
 
         public override async Task<JobResponse> ReqPostEnqueueAsync(
             InputSource inputSource,
-            BaseParameters parameters
+            BaseParameters parameters,
+            CancellationToken ct = default
         )
         {
             var productAttributes = parameters.GetType().GetCustomAttribute<ProductAttributes>();
@@ -63,11 +65,12 @@ namespace Mindee.V2.Http
             AddPredictRequestParameters(inputSource, parameters, request);
 
             Logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
-            var response = await _httpClient.ExecutePostAsync(request);
+            var response = await _httpClient.ExecutePostAsync(request, ct);
+            ct.ThrowIfCancellationRequested();
             return HandleJobResponse(response);
         }
 
-        public override async Task<SearchResponse> SearchModels(string name, string modelType)
+        public override async Task<SearchResponse> SearchModels(string name, string modelType, CancellationToken ct = default)
         {
             var request = new RestRequest("v2/search/models");
             Logger?.LogInformation("Fetching models...");
@@ -83,31 +86,34 @@ namespace Mindee.V2.Http
                 request.AddParameter("model_type", modelType);
             }
 
-            var response = await _httpClient.ExecuteGetAsync(request);
+            var response = await _httpClient.ExecuteGetAsync(request, ct);
+            ct.ThrowIfCancellationRequested();
             return HandleSearchResponse(response);
         }
 
-        public override async Task<JobResponse> ReqGetJobAsync(string jobId)
+        public override async Task<JobResponse> ReqGetJobAsync(string jobId, CancellationToken ct = default)
         {
             var request = new RestRequest($"v2/jobs/{jobId}");
             Logger?.LogInformation("HTTP GET to {RequestResource}...", _baseUrl + request.Resource);
-            var response = await _httpClient.ExecuteGetAsync(request);
+            var response = await _httpClient.ExecuteGetAsync(request, ct);
+            ct.ThrowIfCancellationRequested();
             Logger?.LogDebug("HTTP response: {ResponseContent}", response.Content);
             var handledResponse = HandleJobResponse(response);
             return handledResponse;
         }
 
-        public override async Task<JobResponse> ReqGetJobFromUrlAsync(string pollingUrl)
+        public override async Task<JobResponse> ReqGetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
         {
             var request = new RestRequest(new Uri(pollingUrl));
             Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
-            var response = await _httpClient.ExecuteGetAsync(request);
+            var response = await _httpClient.ExecuteGetAsync(request, ct);
+            ct.ThrowIfCancellationRequested();
             Logger?.LogDebug("HTTP response: {ResponseContent}", response.Content);
             var handledResponse = HandleJobResponse(response);
             return handledResponse;
         }
 
-        public override async Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId)
+        public override async Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId, CancellationToken ct = default)
         {
             var productAttributes = typeof(TResponse).GetCustomAttribute<ProductAttributes>();
             if (productAttributes == null)
@@ -115,15 +121,17 @@ namespace Mindee.V2.Http
             var request = new RestRequest(
                 $"v2/products/{productAttributes.Slug}/results/{inferenceId}");
             Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
-            var queueResponse = await _httpClient.ExecuteGetAsync(request);
+            var queueResponse = await _httpClient.ExecuteGetAsync(request, ct);
+            ct.ThrowIfCancellationRequested();
             return HandleProductResponse<TResponse>(queueResponse);
         }
 
-        public override async Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl)
+        public override async Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl, CancellationToken ct = default)
         {
             var request = new RestRequest(new Uri(resultUrl));
             Logger?.LogInformation("HTTP GET to {RequestResource}...", resultUrl);
-            var queueResponse = await _httpClient.ExecuteGetAsync(request);
+            var queueResponse = await _httpClient.ExecuteGetAsync(request, ct);
+            ct.ThrowIfCancellationRequested();
             return HandleProductResponse<TResponse>(queueResponse);
         }
 

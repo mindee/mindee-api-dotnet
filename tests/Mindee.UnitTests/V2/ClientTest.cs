@@ -1,5 +1,7 @@
+using System.Threading;
 using Mindee.Input;
 using Mindee.V2;
+using Mindee.V2.ClientOptions;
 using Mindee.V2.Http;
 using Mindee.V2.Parsing;
 using Mindee.V2.Product.Extraction;
@@ -14,13 +16,16 @@ namespace Mindee.UnitTests.V2
     {
         private Client MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
         {
-            predictable.Setup(x => x.ReqPostEnqueueAsync(It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>())
+            predictable.Setup(x => x.ReqPostEnqueueAsync(
+                It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>(), It.IsAny<CancellationToken>())
             ).ReturnsAsync(new JobResponse());
 
-            predictable.Setup(x => x.ReqGetResultAsync<ExtractionResponse>(It.IsAny<string>())
+            predictable.Setup(x => x.ReqGetResultAsync<ExtractionResponse>(
+                It.IsAny<string>(), It.IsAny<CancellationToken>())
             ).ReturnsAsync(new ExtractionResponse());
 
-            predictable.Setup(x => x.ReqGetJobAsync(It.IsAny<string>())
+            predictable.Setup(x => x.ReqGetJobAsync(
+                It.IsAny<string>(), It.IsAny<CancellationToken>())
             ).ReturnsAsync(new JobResponse());
 
             return new Client(predictable.Object);
@@ -42,7 +47,8 @@ namespace Mindee.UnitTests.V2
                 inputSource, inferenceParams);
 
             Assert.NotNull(response);
-            predictable.Verify(p => p.ReqPostEnqueueAsync(It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>()),
+            predictable.Verify(p => p.ReqPostEnqueueAsync(
+                It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>(), It.IsAny<CancellationToken>()),
                 Times.AtMostOnce());
         }
 
@@ -55,7 +61,7 @@ namespace Mindee.UnitTests.V2
             Assert.NotNull(response);
 
             predictable.Verify(
-                p => p.ReqGetResultAsync<ExtractionResponse>(It.IsAny<string>()),
+                p => p.ReqGetResultAsync<ExtractionResponse>(It.IsAny<string>(), It.IsAny<CancellationToken>()),
                 Times.AtMostOnce());
         }
 
@@ -68,8 +74,87 @@ namespace Mindee.UnitTests.V2
             Assert.NotNull(response);
 
             predictable.Verify(
-                p => p.ReqGetJobAsync(It.IsAny<string>()),
+                p => p.ReqGetJobAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
                 Times.AtMostOnce());
+        }
+
+        [Fact]
+        public async Task Enqueue_WithCancelledToken_ThrowsOperationCanceledException()
+        {
+            var predictable = new Mock<HttpApiV2>();
+            predictable.Setup(x => x.ReqPostEnqueueAsync(
+                It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>(), It.IsAny<CancellationToken>())
+            ).Returns<InputSource, ExtractionParameters, CancellationToken>(
+                (_, _, ct) => Task.FromCanceled<JobResponse>(ct));
+
+            var mindeeClient = new Client(predictable.Object);
+            var inputSource = new LocalInputSource(
+                new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
+            var inferenceParams = new ExtractionParameters("dummy-model-id");
+
+            using var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+                mindeeClient.EnqueueAsync(inputSource, inferenceParams, cts.Token));
+        }
+
+        [Fact]
+        public async Task GetJobAsync_WithCancelledToken_ThrowsOperationCanceledException()
+        {
+            var predictable = new Mock<HttpApiV2>();
+            predictable.Setup(x => x.ReqGetJobAsync(
+                It.IsAny<string>(), It.IsAny<CancellationToken>())
+            ).Returns<string, CancellationToken>(
+                (_, ct) => Task.FromCanceled<JobResponse>(ct));
+
+            var mindeeClient = new Client(predictable.Object);
+
+            using var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+                mindeeClient.GetJobAsync("dummy-id", cts.Token));
+        }
+
+        [Fact]
+        public async Task GetResultAsync_WithCancelledToken_ThrowsOperationCanceledException()
+        {
+            var predictable = new Mock<HttpApiV2>();
+            predictable.Setup(x => x.ReqGetResultAsync<ExtractionResponse>(
+                It.IsAny<string>(), It.IsAny<CancellationToken>())
+            ).Returns<string, CancellationToken>(
+                (_, ct) => Task.FromCanceled<ExtractionResponse>(ct));
+
+            var mindeeClient = new Client(predictable.Object);
+
+            using var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+                mindeeClient.GetResultAsync<ExtractionResponse>("dummy-id", cts.Token));
+        }
+
+        [Fact]
+        public async Task CancellationToken_IsForwardedToHttpApi()
+        {
+            CancellationToken capturedToken = default;
+            var predictable = new Mock<HttpApiV2>();
+            predictable.Setup(x => x.ReqPostEnqueueAsync(
+                It.IsAny<InputSource>(), It.IsAny<BaseParameters>(), It.IsAny<CancellationToken>())
+            ).Callback<InputSource, BaseParameters, CancellationToken>(
+                (_, _, ct) => capturedToken = ct)
+            .ReturnsAsync(new JobResponse());
+
+            var mindeeClient = new Client(predictable.Object);
+            var inputSource = new LocalInputSource(
+                new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
+            var inferenceParams = new ExtractionParameters("dummy-model-id");
+
+            using var cts = new CancellationTokenSource();
+            await mindeeClient.EnqueueAsync(inputSource, inferenceParams, cts.Token);
+
+            Assert.Equal(cts.Token, capturedToken);
         }
 
         [Fact]
