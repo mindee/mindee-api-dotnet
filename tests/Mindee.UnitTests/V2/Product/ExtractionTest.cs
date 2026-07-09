@@ -175,7 +175,7 @@ namespace Mindee.UnitTests.V2.Product
             Assert.Null(fieldSimpleString.IntegerValue);
             Assert.Equal(FieldConfidence.Certain, fieldSimpleString.Confidence);
             Assert.Equal(4, (int?)fieldSimpleString.Confidence);
-            Assert.True((int?)fieldSimpleString.Confidence >= (int)FieldConfidence.Medium);
+            Assert.True(fieldSimpleString.Confidence.GetValueOrDefault().GreaterThanOrEqual(FieldConfidence.Medium));
 
             Assert.NotNull(fields["field_simple_float"].SimpleField);
             var fieldSimpleFloat = fields["field_simple_float"].SimpleField;
