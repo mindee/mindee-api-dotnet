@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -99,13 +100,15 @@ namespace Mindee.V2
         /// <param name="parameters">
         ///     <see cref="ExtractionParameters" />
         /// </param>
+        /// <param name="ct">Cancellation token.</param>
         /// <returns>
         ///     <see cref="JobResponse" />
         /// </returns>
         /// <exception cref="MindeeException"></exception>
         public async Task<JobResponse> EnqueueAsync(
             InputSource inputSource
-            , BaseParameters parameters)
+            , BaseParameters parameters
+            , CancellationToken ct = default)
         {
             switch (inputSource)
             {
@@ -121,7 +124,7 @@ namespace Mindee.V2
                     throw new MindeeInputException($"Unsupported input source {inputSource.GetType().Name}");
             }
 
-            return await _mindeeApi.ReqPostEnqueueAsync(inputSource, parameters);
+            return await _mindeeApi.ReqPostEnqueueAsync(inputSource, parameters, ct);
         }
 
         /// <summary>
@@ -129,10 +132,11 @@ namespace Mindee.V2
         ///     Can be used for polling.
         /// </summary>
         /// <param name="pollingUrl">The URL to poll to retrieve the job.</param>
+        /// <param name="ct">Cancellation token.</param>
         /// <returns>
         ///     <see cref="JobResponse" />
         /// </returns>
-        public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl)
+        public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
         {
             _logger?.LogInformation("Getting Job at: {}", pollingUrl);
 
@@ -141,7 +145,7 @@ namespace Mindee.V2
                 throw new ArgumentNullException(pollingUrl);
             }
 
-            return await _mindeeApi.ReqGetJobFromUrlAsync(pollingUrl);
+            return await _mindeeApi.ReqGetJobFromUrlAsync(pollingUrl, ct);
         }
 
         /// <summary>
@@ -149,10 +153,11 @@ namespace Mindee.V2
         ///     Can be used for polling.
         /// </summary>
         /// <param name="pollingUrl">The job id.</param>
+        /// <param name="ct">Cancellation token.</param>
         /// <returns>
         ///     <see cref="ExtractionResponse" />
         /// </returns>
-        private async Task<TResponse> GetResultFromUrlAsync<TResponse>(string pollingUrl)
+        private async Task<TResponse> GetResultFromUrlAsync<TResponse>(string pollingUrl, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
             _logger?.LogInformation("Polling: {}", pollingUrl);
@@ -161,7 +166,7 @@ namespace Mindee.V2
             {
                 throw new ArgumentNullException(pollingUrl);
             }
-            return await _mindeeApi.ReqGetResultFromUrlAsync<TResponse>(pollingUrl);
+            return await _mindeeApi.ReqGetResultFromUrlAsync<TResponse>(pollingUrl, ct);
         }
 
         /// <summary>
@@ -169,10 +174,11 @@ namespace Mindee.V2
         ///     Can be used for polling.
         /// </summary>
         /// <param name="jobId">The job id.</param>
+        /// <param name="ct">Cancellation token.</param>
         /// <returns>
         ///     <see cref="ExtractionResponse" />
         /// </returns>
-        public async Task<TResponse> GetResultAsync<TResponse>(string jobId)
+        public async Task<TResponse> GetResultAsync<TResponse>(string jobId, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
             _logger?.LogInformation("Polling: {}", jobId);
@@ -181,7 +187,7 @@ namespace Mindee.V2
             {
                 throw new ArgumentNullException(jobId);
             }
-            return await _mindeeApi.ReqGetResultAsync<TResponse>(jobId);
+            return await _mindeeApi.ReqGetResultAsync<TResponse>(jobId, ct);
         }
 
         /// <summary>
@@ -189,10 +195,11 @@ namespace Mindee.V2
         ///     Can be used for polling.
         /// </summary>
         /// <param name="jobId">The job id.</param>
+        /// <param name="ct">Cancellation token.</param>
         /// <returns>
         ///     <see cref="ExtractionResponse" />
         /// </returns>
-        public async Task<JobResponse> GetJobAsync(string jobId)
+        public async Task<JobResponse> GetJobAsync(string jobId, CancellationToken ct = default)
         {
             _logger?.LogInformation("Getting job {}", jobId);
 
@@ -200,7 +207,7 @@ namespace Mindee.V2
             {
                 throw new ArgumentNullException(jobId);
             }
-            return await _mindeeApi.ReqGetJobAsync(jobId);
+            return await _mindeeApi.ReqGetJobAsync(jobId, ct);
         }
 
         /// <summary>
@@ -216,6 +223,7 @@ namespace Mindee.V2
         /// <param name="pollingOptions">
         ///     <see cref="PollingOptions" />
         /// </param>
+        /// <param name="ct">Cancellation token.</param>
         /// <returns>
         ///     <see cref="ExtractionResponse" />
         /// </returns>
@@ -223,7 +231,8 @@ namespace Mindee.V2
         public async Task<TResponse> EnqueueAndGetResultAsync<TResponse>(
             InputSource inputSource
             , BaseParameters parameters
-            , PollingOptions pollingOptions = null)
+            , PollingOptions pollingOptions = null
+            , CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
             switch (inputSource)
@@ -244,17 +253,21 @@ namespace Mindee.V2
 
             var enqueueResponse = await EnqueueAsync(
                 inputSource,
-                parameters);
-            return await PollForResultsAsync<TResponse>(enqueueResponse, pollingOptions);
+                parameters,
+                ct);
+            return await PollForResultsAsync<TResponse>(enqueueResponse, pollingOptions, ct);
         }
 
         /// <summary>
         /// Returns a list of models matching a criteria for the given API key.
         /// </summary>
+        /// <param name="name">Name filter.</param>
+        /// <param name="modelType">Model type filter.</param>
+        /// <param name="ct">Cancellation token.</param>
         /// <returns></returns>
-        public async Task<SearchResponse> SearchModels(string name = null, string modelType = null)
+        public async Task<SearchResponse> SearchModels(string name = null, string modelType = null, CancellationToken ct = default)
         {
-            return await _mindeeApi.SearchModels(name, modelType);
+            return await _mindeeApi.SearchModels(name, modelType, ct);
         }
 
         /// <summary>
@@ -266,13 +279,15 @@ namespace Mindee.V2
         /// <param name="pollingOptions">
         ///     <see cref="PollingOptions" />
         /// </param>
+        /// <param name="ct">Cancellation token.</param>
         /// <returns>
         ///     <see cref="ExtractionResponse" />
         /// </returns>
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
         private async Task<TResponse> PollForResultsAsync<TResponse>(
             JobResponse enqueueResponse,
-            PollingOptions pollingOptions) where TResponse : BaseResponse, new()
+            PollingOptions pollingOptions,
+            CancellationToken ct = default) where TResponse : BaseResponse, new()
         {
             var maxRetries = pollingOptions.MaxRetries + 1;
             var pollingUrl = enqueueResponse.Job.PollingUrl;
@@ -280,18 +295,18 @@ namespace Mindee.V2
             _logger?.LogInformation(
                 "Waiting {} seconds before attempting to retrieve the document...",
                 pollingOptions.InitialDelaySec);
-            await Task.Delay(pollingOptions.InitialDelayMilliSec);
+            await Task.Delay(pollingOptions.InitialDelayMilliSec, ct);
             var retryCount = 1;
             var response = enqueueResponse; // First init is only for error handling purposes.
             while (retryCount < maxRetries)
             {
-                await Task.Delay(pollingOptions.IntervalMilliSec);
+                await Task.Delay(pollingOptions.IntervalMilliSec, ct);
                 _logger?.LogInformation(
                     "Attempting to retrieve: {RetryCount} of {MaxRetries}",
                     retryCount,
                     maxRetries);
 
-                response = await GetJobFromUrlAsync(pollingUrl);
+                response = await GetJobFromUrlAsync(pollingUrl, ct);
                 if (response.Job.Error != null)
                 {
                     break;
@@ -300,7 +315,7 @@ namespace Mindee.V2
                 if (response.Job.Status.Equals("Processed"))
                 {
                     var resultUrl = response.Job.ResultUrl;
-                    return await GetResultFromUrlAsync<TResponse>(resultUrl);
+                    return await GetResultFromUrlAsync<TResponse>(resultUrl, ct);
                 }
 
                 retryCount++;

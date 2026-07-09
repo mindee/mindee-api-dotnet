@@ -1,6 +1,7 @@
 #nullable enable
 
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Mindee.Exceptions;
@@ -36,39 +37,45 @@ namespace Mindee.V2.Http
         ///     <see cref="LocalInputSource" />
         ///     <see cref="UrlInputSource" />
         /// </param>
-        public abstract Task<JobResponse> ReqPostEnqueueAsync(InputSource inputSource, BaseParameters parameters);
+        /// <param name="ct">Cancellation token.</param>
+        public abstract Task<JobResponse> ReqPostEnqueueAsync(InputSource inputSource, BaseParameters parameters, CancellationToken ct = default);
 
         /// <summary>
         ///     Get a job for an enqueued document.
         /// </summary>
         /// <param name="pollingUrl">The job ID as returned by the predict_async route.</param>
-        public abstract Task<JobResponse> ReqGetJobFromUrlAsync(string pollingUrl);
+        /// <param name="ct">Cancellation token.</param>
+        public abstract Task<JobResponse> ReqGetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default);
 
         /// <summary>
         ///     Get a job for an enqueued document.
         /// </summary>
         /// <param name="jobId">The job ID as returned by the predict_async route.</param>
-        public abstract Task<JobResponse> ReqGetJobAsync(string jobId);
+        /// <param name="ct">Cancellation token.</param>
+        public abstract Task<JobResponse> ReqGetJobAsync(string jobId, CancellationToken ct = default);
 
         /// <summary>
         ///     Get a document inference.
         /// </summary>
         /// <param name="inferenceId">Url to poll.</param>
-        public abstract Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId) where TResponse : BaseResponse, new();
+        /// <param name="ct">Cancellation token.</param>
+        public abstract Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId, CancellationToken ct = default) where TResponse : BaseResponse, new();
 
         /// <summary>
         ///     Get a document inference.
         /// </summary>
         /// <param name="resultUrl">Url to poll.</param>
-        public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl) where TResponse : BaseResponse, new();
+        /// <param name="ct">Cancellation token.</param>
+        public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl, CancellationToken ct = default) where TResponse : BaseResponse, new();
 
         /// <summary>
         /// Retrieves a list of models available for a given API key.
         /// </summary>
         /// <param name="name">Name of the model to search for.</param>
         /// <param name="modelType">Type of the model to search for.</param>
+        /// <param name="ct">Cancellation token.</param>
         /// <returns></returns>
-        public abstract Task<SearchResponse> SearchModels(string? name, string? modelType);
+        public abstract Task<SearchResponse> SearchModels(string? name, string? modelType, CancellationToken ct = default);
 
         /// <summary>
         ///     Get the error from the server return.

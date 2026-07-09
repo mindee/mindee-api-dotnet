@@ -1,6 +1,8 @@
+using System.Threading;
 using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V2;
+using Mindee.V2.ClientOptions;
 using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing.Inference;
 using Mindee.V2.Product.Extraction;
@@ -287,6 +289,36 @@ namespace Mindee.IntegrationTests.V2
             var fields = response.Inference.Result.Fields;
             Assert.NotNull(fields);
             Assert.Equal("a test value", fields["test_replace"].ToString());
+        }
+
+        [Fact(Timeout = 30000)]
+        public async Task EnqueueAsync_WithCancelledToken_ThrowsOperationCanceledException()
+        {
+            var inputSource = new LocalInputSource(
+                Constants.RootDir + "file_types/pdf/multipage_cut-1.pdf");
+            var inferenceParams = new ExtractionParameters(_findocModelId);
+
+            using var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+                _client.EnqueueAsync(inputSource, inferenceParams, cts.Token));
+        }
+
+        [Fact(Timeout = 30000)]
+        public async Task EnqueueAndGetResultAsync_CancelDuringPoll_ThrowsOperationCanceledException()
+        {
+            var inputSource = new LocalInputSource(
+                Constants.RootDir + "file_types/pdf/multipage_cut-1.pdf");
+            var inferenceParams = new ExtractionParameters(_findocModelId);
+
+            // Long initial delay so the cancellation fires before any poll attempt
+            var pollingOptions = new PollingOptions(initialDelaySec: 60, intervalSec: 10, maxRetries: 5);
+            using var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(500));
+
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+                _client.EnqueueAndGetResultAsync<ExtractionResponse>(
+                    inputSource, inferenceParams, pollingOptions, cts.Token));
         }
     }
 }

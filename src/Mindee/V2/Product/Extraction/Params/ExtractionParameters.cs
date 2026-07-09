@@ -118,16 +118,16 @@ namespace Mindee.V2.Product.Extraction.Params
             var parameters = base.GetRequestParameters();
 
             if (Rag != null)
-                parameters.Add("rag", Rag.Value.ToString());
+                parameters.Add("rag", Rag.Value.ToString().ToLower());
 
             if (RawText != null)
-                parameters.Add("raw_text", RawText.Value.ToString());
+                parameters.Add("raw_text", RawText.Value.ToString().ToLower());
 
             if (Polygon != null)
-                parameters.Add("polygon", Polygon.Value.ToString());
+                parameters.Add("polygon", Polygon.Value.ToString().ToLower());
 
             if (Confidence != null)
-                parameters.Add("confidence", Confidence.Value.ToString());
+                parameters.Add("confidence", Confidence.Value.ToString().ToLower());
 
             if (TextContext != null)
                 parameters.Add("text_context", TextContext);

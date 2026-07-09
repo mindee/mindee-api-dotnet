@@ -8,10 +8,9 @@ using System.Text.Json.Serialization;
 namespace Mindee.V2.Parsing.Inference.Field
 {
     /// <summary>
-    ///     Custom deserializer for <see cref="DynamicField" />
+    ///     Custom deserializer for <see cref="SimpleField" />
     /// </summary>
     [Serializable]
-    [JsonConverter(typeof(SimpleFieldJsonConverter))]
     public class SimpleFieldJsonConverter : JsonConverter<SimpleField>
     {
         /// <summary>
