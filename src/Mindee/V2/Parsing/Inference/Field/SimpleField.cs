@@ -36,6 +36,46 @@ namespace Mindee.V2.Parsing.Inference.Field
         public dynamic Value { get; set; }
 
         /// <summary>
+        ///     Field value cast as a string when available; otherwise <c>null</c>.
+        /// </summary>
+        [JsonIgnore]
+        public string StringValue => Value as string;
+
+        /// <summary>
+        ///     Field value cast as a boolean when available; otherwise <c>null</c>.
+        /// </summary>
+        [JsonIgnore]
+        public bool? BooleanValue => Value is bool b ? b : null;
+
+        /// <summary>
+        ///     Field value cast as a number when available; otherwise <c>null</c>.
+        /// </summary>
+        [JsonIgnore]
+        public double? DoubleValue => Value is double d ? d : null;
+
+        /// <summary>
+        ///     Field value cast as an integer when available; otherwise <c>null</c>.
+        /// </summary>
+        [JsonIgnore]
+        public int? IntegerValue
+        {
+            get
+            {
+                if (Value is int i)
+                {
+                    return i;
+                }
+
+                if (Value is double d && d % 1 == 0 && d >= int.MinValue && d <= int.MaxValue)
+                {
+                    return (int)d;
+                }
+
+                return null;
+            }
+        }
+
+        /// <summary>
         ///     String representation of the field.
         ///     Checks that integers get displayed with proper formatting.
         /// </summary>
