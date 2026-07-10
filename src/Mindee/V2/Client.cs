@@ -149,22 +149,21 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        ///     Get the status of an inference that was previously enqueued.
-        ///     Can be used for polling.
+        ///     Get a result directly from a polling URL.
         /// </summary>
-        /// <param name="pollingUrl">The job id.</param>
+        /// <param name="pollingUrl">The result's URL.</param>
         /// <param name="ct">Cancellation token.</param>
         /// <returns>
         ///     <see cref="ExtractionResponse" />
         /// </returns>
-        private async Task<TResponse> GetResultFromUrlAsync<TResponse>(string pollingUrl, CancellationToken ct = default)
+        public async Task<TResponse> GetResultFromUrlAsync<TResponse>(string pollingUrl, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
             _logger?.LogInformation("Polling: {}", pollingUrl);
 
             if (string.IsNullOrWhiteSpace(pollingUrl))
             {
-                throw new ArgumentNullException(pollingUrl);
+                throw new MindeeInputException(nameof(pollingUrl));
             }
             return await _mindeeApi.ReqGetResultFromUrlAsync<TResponse>(pollingUrl, ct);
         }

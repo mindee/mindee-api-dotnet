@@ -4,6 +4,7 @@ using Mindee.Input;
 using Mindee.V2;
 using Mindee.V2.ClientOptions;
 using Mindee.V2.Exceptions;
+using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Inference;
 using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
@@ -100,7 +101,8 @@ namespace Mindee.IntegrationTests.V2
             // the server sometimes returns a list of empty objects
             // Assert.Empty(taxes.ObjectItems);
 
-            Assert.Empty(supplierName.Locations);
+            // the server sometimes _also_ returns non-empty locations
+            // Assert.Empty(supplierName.Locations);
             if (confidence)
             {
                 Assert.NotNull(supplierName.Confidence);
@@ -312,13 +314,54 @@ namespace Mindee.IntegrationTests.V2
                 Constants.RootDir + "file_types/pdf/multipage_cut-1.pdf");
             var inferenceParams = new ExtractionParameters(_findocModelId);
 
-            // Long initial delay so the cancellation fires before any poll attempt
             var pollingOptions = new PollingOptions(initialDelaySec: 60, intervalSec: 10, maxRetries: 5);
             using var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(500));
 
             await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
                 _client.EnqueueAndGetResultAsync<ExtractionResponse>(
                     inputSource, inferenceParams, pollingOptions, cts.Token));
+        }
+
+        [Fact(Timeout = 180000)]
+        public async Task GetResultFromUrlAsync_AfterManualEnqueueAndPolling_MustSucceed()
+        {
+            var inputSource = new LocalInputSource(
+                Constants.V1ProductDir + "financial_document/default_sample.jpg");
+            var inferenceParams = new ExtractionParameters(_findocModelId);
+
+            var enqueueResponse = await _client.EnqueueAsync(inputSource, inferenceParams);
+            var pollingUrl = enqueueResponse.Job.PollingUrl;
+            Assert.False(string.IsNullOrWhiteSpace(pollingUrl));
+
+            string? resultUrl = null;
+            for (var i = 0; i < 90; i++)
+            {
+                await Task.Delay(1000);
+
+                var jobResponse = await _client.GetJobFromUrlAsync(pollingUrl);
+                var job = jobResponse.Job;
+                Assert.NotNull(job);
+
+                if (job.Error != null)
+                {
+                    throw new Exception($"Job failed while polling result URL. Code={job.Error.Code}");
+                }
+
+                if (job.ParsedStatus != JobStatus.Processed)
+                {
+                    continue;
+                }
+
+                resultUrl = job.ResultUrl;
+                break;
+            }
+
+            Assert.False(string.IsNullOrWhiteSpace(resultUrl));
+
+            var response = await _client.GetResultFromUrlAsync<ExtractionResponse>(resultUrl);
+            Assert.NotNull(response);
+            Assert.NotNull(response.Inference);
+            Assert.Equal(_findocModelId, response.Inference.Model.Id);
         }
     }
 }

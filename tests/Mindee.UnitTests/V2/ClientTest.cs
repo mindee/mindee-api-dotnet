@@ -66,6 +66,24 @@ namespace Mindee.UnitTests.V2
         }
 
         [Fact]
+        public async Task Document_GetInferenceFromUrl_Async()
+        {
+            var predictable = new Mock<HttpApiV2>();
+            predictable.Setup(x => x.ReqGetResultFromUrlAsync<ExtractionResponse>(
+                It.IsAny<string>(), It.IsAny<CancellationToken>())
+            ).ReturnsAsync(new ExtractionResponse());
+
+            var mindeeClient = new Client(predictable.Object);
+            var response = await mindeeClient.GetResultFromUrlAsync<ExtractionResponse>(
+                "https://api-v2.mindee.net/v2/inferences/dummy-id");
+            Assert.NotNull(response);
+
+            predictable.Verify(
+                p => p.ReqGetResultFromUrlAsync<ExtractionResponse>(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+                Times.AtMostOnce());
+        }
+
+        [Fact]
         public async Task Document_GetJob_Async()
         {
             var predictable = new Mock<HttpApiV2>();
