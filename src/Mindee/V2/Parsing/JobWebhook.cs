@@ -32,5 +32,11 @@ namespace Mindee.V2.Parsing
         /// </summary>
         [JsonPropertyName("status")]
         public string Status { get; set; }
+
+        /// <summary>
+        ///     Parsed webhook status.
+        /// </summary>
+        [JsonIgnore]
+        public JobStatus ParsedStatus => JobStatusParser.Parse(Status);
     }
 }

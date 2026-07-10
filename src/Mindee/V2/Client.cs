@@ -300,7 +300,8 @@ namespace Mindee.V2
             var response = enqueueResponse; // First init is only for error handling purposes.
             while (retryCount < maxRetries)
             {
-                await Task.Delay(pollingOptions.IntervalMilliSec, ct);
+                var retryDelayMilliSec = pollingOptions.GetRetryDelayMilliSec(retryCount);
+                await Task.Delay(retryDelayMilliSec, ct);
                 _logger?.LogInformation(
                     "Attempting to retrieve: {RetryCount} of {MaxRetries}",
                     retryCount,
@@ -312,10 +313,15 @@ namespace Mindee.V2
                     break;
                 }
 
-                if (response.Job.Status.Equals("Processed"))
+                switch (response.Job.ParsedStatus)
                 {
-                    var resultUrl = response.Job.ResultUrl;
-                    return await GetResultFromUrlAsync<TResponse>(resultUrl, ct);
+                    case JobStatus.Processed:
+                        {
+                            var resultUrl = response.Job.ResultUrl;
+                            return await GetResultFromUrlAsync<TResponse>(resultUrl, ct);
+                        }
+                    case JobStatus.Failed:
+                        throw new MindeeException("Job failed without an error payload.");
                 }
 
                 retryCount++;

@@ -24,6 +24,17 @@ namespace Mindee.ClientOptions
         public int MaxRetries { get; set; }
 
         /// <summary>
+        ///     Exponential backoff multiplier applied to polling interval after each attempt.
+        ///     <c>1.0</c> keeps a fixed interval.
+        /// </summary>
+        public double BackoffFactor { get; set; }
+
+        /// <summary>
+        ///     Upper bound for backoff-adjusted interval.
+        /// </summary>
+        public double MaxIntervalSec { get; set; }
+
+        /// <summary>
         ///     Wait this many milliseconds between each polling attempt.
         /// </summary>
         public int InitialDelayMilliSec { get; set; }
@@ -47,6 +58,11 @@ namespace Mindee.ClientOptions
         /// Minimum number of retries.
         /// </summary>
         protected readonly int MinRetries;
+
+        /// <summary>
+        /// Minimum supported backoff multiplier.
+        /// </summary>
+        protected readonly double MinBackoffFactor = 1.0;
 
         /// <summary>
         /// Default constructor.
@@ -78,6 +94,31 @@ namespace Mindee.ClientOptions
             {
                 throw new MindeeException($"Cannot set async retry to less than {MinRetries} attempts.");
             }
+            if (BackoffFactor < MinBackoffFactor)
+            {
+                throw new MindeeException("Cannot set polling backoff multiplier below 1.0.");
+            }
+            if (MaxIntervalSec < IntervalSec)
+            {
+                throw new MindeeException("Cannot set max polling interval below polling interval.");
+            }
+        }
+
+        /// <summary>
+        ///     Compute delay in milliseconds before the given polling attempt.
+        /// </summary>
+        /// <param name="attemptNumber">1-based polling attempt number.</param>
+        /// <returns>Delay in milliseconds.</returns>
+        public int GetRetryDelayMilliSec(int attemptNumber)
+        {
+            if (attemptNumber <= 1)
+            {
+                return IntervalMilliSec;
+            }
+
+            var exponentialInterval = IntervalSec * Math.Pow(BackoffFactor, attemptNumber - 1);
+            var boundedInterval = Math.Min(exponentialInterval, MaxIntervalSec);
+            return (int)Math.Floor(boundedInterval * 1000);
         }
     }
 }
