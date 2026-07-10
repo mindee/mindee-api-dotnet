@@ -8,12 +8,19 @@ namespace Mindee.V1.ClientOptions
     public class AsyncPollingOptions : Mindee.ClientOptions.BasePollingOptions
     {
         /// <inheritdoc />
-        public AsyncPollingOptions(double initialDelaySec = 2.0, double intervalSec = 1.5, int maxRetries = 80)
+        public AsyncPollingOptions(
+            double initialDelaySec = 2.0,
+            double intervalSec = 1.5,
+            int maxRetries = 80,
+            double backoffFactor = 1.0,
+            double maxIntervalSec = double.NaN)
         : base(1.0, 1.0, 2)
         {
             InitialDelaySec = initialDelaySec;
             IntervalSec = intervalSec;
             MaxRetries = maxRetries;
+            BackoffFactor = backoffFactor;
+            MaxIntervalSec = double.IsNaN(maxIntervalSec) ? intervalSec : maxIntervalSec;
             ValidateSettings();
 
             InitialDelayMilliSec = (int)Math.Floor(InitialDelaySec * 1000);

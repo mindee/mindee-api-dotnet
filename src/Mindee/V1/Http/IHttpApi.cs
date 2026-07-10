@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Mindee.V1.Parsing.Common;
 
@@ -49,9 +50,11 @@ namespace Mindee.V1.Http
         /// <param name="endpoint">
         ///     <see cref="CustomEndpoint" />
         /// </param>
+        /// <param name="ct">Cancellation token.</param>
         Task<AsyncPredictResponse<TModel>> DocumentQueueGetAsync<TModel>(
             string jobId
-            , CustomEndpoint endpoint = null)
+            , CustomEndpoint endpoint = null
+            , CancellationToken ct = default)
             where TModel : class, new();
 
         /// <summary>

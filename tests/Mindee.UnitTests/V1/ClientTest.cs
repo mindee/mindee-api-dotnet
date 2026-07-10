@@ -1,3 +1,4 @@
+using System.Threading;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Input;
 using Mindee.Pdf;
@@ -29,7 +30,7 @@ namespace Mindee.UnitTests.V1
             Assert.NotNull(response);
             Assert.Null(response.Document);
             predictable.Verify(p => p.DocumentQueueGetAsync<GeneratedV1>(
-                    It.IsAny<string>(), endpoint)
+                    It.IsAny<string>(), endpoint, It.IsAny<CancellationToken>())
                 , Times.AtMostOnce());
         }
 
@@ -189,8 +190,41 @@ namespace Mindee.UnitTests.V1
             Assert.NotNull(response);
             Assert.Null(response.Document);
             predictable.Verify(p => p.DocumentQueueGetAsync<InvoiceV4>(
-                    It.IsAny<string>(), null)
+                    It.IsAny<string>(), null, It.IsAny<CancellationToken>())
                 , Times.AtMostOnce());
+        }
+
+        [Fact]
+        public async Task ParseQueued_WithCancelledToken_ThrowsOperationCanceledException()
+        {
+            var predictable = new Mock<IHttpApi>();
+            predictable.Setup(x => x.DocumentQueueGetAsync<InvoiceV4>(
+                    It.IsAny<string>(), null, It.IsAny<CancellationToken>()))
+                .Returns<string, CustomEndpoint, CancellationToken>((_, _, ct) => Task.FromCanceled<AsyncPredictResponse<InvoiceV4>>(ct));
+            var mindeeClient = new Client(GetDefaultPdfOperation(), predictable.Object);
+
+            using var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+                mindeeClient.ParseQueuedAsync<InvoiceV4>("my-job-id", cts.Token));
+        }
+
+        [Fact]
+        public async Task ParseQueued_CancellationToken_IsForwardedToHttpApi()
+        {
+            CancellationToken capturedToken = default;
+            var predictable = new Mock<IHttpApi>();
+            predictable.Setup(x => x.DocumentQueueGetAsync<InvoiceV4>(
+                    It.IsAny<string>(), null, It.IsAny<CancellationToken>()))
+                .Callback<string, CustomEndpoint, CancellationToken>((_, _, ct) => capturedToken = ct)
+                .ReturnsAsync(new AsyncPredictResponse<InvoiceV4>());
+            var mindeeClient = new Client(GetDefaultPdfOperation(), predictable.Object);
+
+            using var cts = new CancellationTokenSource();
+            await mindeeClient.ParseQueuedAsync<InvoiceV4>("my-job-id", cts.Token);
+
+            Assert.Equal(cts.Token, capturedToken);
         }
 
         [Fact]
@@ -243,7 +277,8 @@ namespace Mindee.UnitTests.V1
                 .ReturnsAsync(new AsyncPredictResponse<GeneratedV1>());
             predictable.Setup(x => x.DocumentQueueGetAsync<GeneratedV1>(
                     It.IsAny<string>()
-                    , It.IsAny<CustomEndpoint>()))
+                    , It.IsAny<CustomEndpoint>()
+                    , It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new AsyncPredictResponse<GeneratedV1>());
             return new Client(GetDefaultPdfOperation(), predictable.Object);
         }
@@ -257,7 +292,7 @@ namespace Mindee.UnitTests.V1
                     It.IsAny<PredictParameter>(), null))
                 .ReturnsAsync(new AsyncPredictResponse<InvoiceV4>());
             predictable.Setup(x => x.DocumentQueueGetAsync<InvoiceV4>(
-                    It.IsAny<string>(), null))
+                    It.IsAny<string>(), null, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new AsyncPredictResponse<InvoiceV4>());
             return new Client(GetDefaultPdfOperation(), predictable.Object);
         }

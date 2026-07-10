@@ -18,6 +18,7 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.Null(response.Job.ResultUrl);
             Assert.Null(response.Job.CompletedAt);
             Assert.Null(response.Job.Error);
+            Assert.Equal(JobStatus.Processing, response.Job.ParsedStatus);
         }
 
         [Fact]
@@ -34,11 +35,13 @@ namespace Mindee.UnitTests.V2.Parsing
             var completedAt = Assert.IsType<DateTime>(response.Job.CompletedAt);
             Assert.Equal(2026, completedAt.Year);
             Assert.Null(response.Job.Error);
+            Assert.Equal(JobStatus.Processed, response.Job.ParsedStatus);
             Assert.NotEmpty(response.Job.Webhooks);
             var webhook = response.Job.Webhooks.First();
             Assert.NotNull(webhook.Id);
             Assert.Equal(2026, webhook.CreatedAt.Year);
             Assert.Equal("Processed", webhook.Status);
+            Assert.Equal(JobStatus.Processed, webhook.ParsedStatus);
             Assert.Null(webhook.Error);
         }
 
@@ -56,6 +59,19 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.StartsWith("422-", error.Code);
             Assert.Single(error.Errors);
             Assert.Contains("must be a valid", error.Errors.First().Detail);
+            Assert.Equal(JobStatus.Failed, response.Job.ParsedStatus);
+        }
+
+        [Fact]
+        public void ParsedStatus_UnknownOrCaseInsensitive_MustMapCorrectly()
+        {
+            var lowerCaseProcessed = new Job { Status = "processed" };
+            var unknown = new Job { Status = "done" };
+            var empty = new Job { Status = "" };
+
+            Assert.Equal(JobStatus.Processed, lowerCaseProcessed.ParsedStatus);
+            Assert.Equal(JobStatus.Unknown, unknown.ParsedStatus);
+            Assert.Equal(JobStatus.Unknown, empty.ParsedStatus);
         }
 
         private static JobResponse GetJob(string path)

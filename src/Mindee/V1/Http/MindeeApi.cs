@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -96,7 +97,8 @@ namespace Mindee.V1.Http
 
         public async Task<AsyncPredictResponse<TModel>> DocumentQueueGetAsync<TModel>(
             string jobId
-            , CustomEndpoint endpoint = null)
+            , CustomEndpoint endpoint = null
+            , CancellationToken ct = default)
             where TModel : class, new()
         {
             if (endpoint is null)
@@ -109,7 +111,7 @@ namespace Mindee.V1.Http
 
             _logger?.LogInformation("HTTP GET to {QueueRequestResource} ...", _baseUrl + queueRequest.Resource);
 
-            var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest);
+            var queueResponse = await _httpClient.ExecuteGetAsync(queueRequest, ct);
 
             _logger?.LogDebug("HTTP response: {QueueResponseContent}", queueResponse.Content);
 
@@ -120,7 +122,7 @@ namespace Mindee.V1.Http
                 var docRequest = new RestRequest(locationHeader.Value);
 
                 _logger?.LogInformation("HTTP GET to {DocRequestResource} ...", _baseUrl + docRequest.Resource);
-                var docResponse = await _httpClient.ExecuteGetAsync(docRequest);
+                var docResponse = await _httpClient.ExecuteGetAsync(docRequest, ct);
                 return ResponseHandler<AsyncPredictResponse<TModel>>(docResponse);
             }
 
