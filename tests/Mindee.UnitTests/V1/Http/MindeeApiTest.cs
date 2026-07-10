@@ -24,10 +24,11 @@ namespace Mindee.UnitTests.V1.Http
 
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
-            await Assert.ThrowsAsync<MindeeHttpExceptionV1>(() => _ = mindeeApi.PredictPostAsync<ReceiptV4>(
+            var ex = await Assert.ThrowsAnyAsync<MindeeHttpExceptionV1>(() => _ = mindeeApi.PredictPostAsync<ReceiptV4>(
                     UnitTestBase.GetFakePredictParameter()
                 )
             );
+            Assert.IsType<MindeeHttp400ExceptionV1>(ex);
         }
 
         [Fact]
@@ -61,9 +62,10 @@ namespace Mindee.UnitTests.V1.Http
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
-            await Assert.ThrowsAsync<MindeeHttpExceptionV1>(() => mindeeApi.PredictPostAsync<ReceiptV4>(
+            var ex = await Assert.ThrowsAnyAsync<MindeeHttpExceptionV1>(() => mindeeApi.PredictPostAsync<ReceiptV4>(
                 UnitTestBase.GetFakePredictParameter())
             );
+            Assert.IsType<MindeeHttp400ExceptionV1>(ex);
         }
 
         [Fact]
@@ -74,9 +76,10 @@ namespace Mindee.UnitTests.V1.Http
                 File.ReadAllText(Constants.V1RootDir + "errors/error_500_inference_fail.json")
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
-            await Assert.ThrowsAsync<MindeeHttpExceptionV1>(() => mindeeApi.PredictPostAsync<ReceiptV4>(
+            var ex = await Assert.ThrowsAnyAsync<MindeeHttpExceptionV1>(() => mindeeApi.PredictPostAsync<ReceiptV4>(
                 UnitTestBase.GetFakePredictParameter())
             );
+            Assert.IsType<MindeeHttp500ExceptionV1>(ex);
         }
 
         [Fact]
@@ -88,9 +91,10 @@ namespace Mindee.UnitTests.V1.Http
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
-            await Assert.ThrowsAsync<MindeeHttpExceptionV1>(() => mindeeApi.PredictPostAsync<ReceiptV4>(
+            var ex = await Assert.ThrowsAnyAsync<MindeeHttpExceptionV1>(() => mindeeApi.PredictPostAsync<ReceiptV4>(
                 UnitTestBase.GetFakePredictParameter())
             );
+            Assert.IsType<MindeeHttp429ExceptionV1>(ex);
         }
 
         [Fact]
@@ -102,9 +106,10 @@ namespace Mindee.UnitTests.V1.Http
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
-            await Assert.ThrowsAsync<MindeeHttpExceptionV1>(() => mindeeApi.PredictPostAsync<ReceiptV4>(
+            var ex = await Assert.ThrowsAnyAsync<MindeeHttpExceptionV1>(() => mindeeApi.PredictPostAsync<ReceiptV4>(
                 UnitTestBase.GetFakePredictParameter())
             );
+            Assert.IsType<MindeeHttp401ExceptionV1>(ex);
         }
 
         [Fact]
@@ -116,9 +121,10 @@ namespace Mindee.UnitTests.V1.Http
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
-            await Assert.ThrowsAsync<MindeeHttpExceptionV1>(() => mindeeApi.PredictAsyncPostAsync<ReceiptV4>(
+            var ex = await Assert.ThrowsAnyAsync<MindeeHttpExceptionV1>(() => mindeeApi.PredictAsyncPostAsync<ReceiptV4>(
                 UnitTestBase.GetFakePredictParameter())
             );
+            Assert.IsType<MindeeHttp403ExceptionV1>(ex);
         }
 
         [Fact]
@@ -169,7 +175,7 @@ namespace Mindee.UnitTests.V1.Http
             );
             var mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
 
-            await Assert.ThrowsAsync<MindeeHttpExceptionV1>(() =>
+            var ex = await Assert.ThrowsAnyAsync<MindeeHttpExceptionV1>(() =>
                 mindeeApi.DocumentQueueGetAsync<InvoiceV4>("d88406ed-47bd-4db0-b3f3-145c8667a343")
             );
         }

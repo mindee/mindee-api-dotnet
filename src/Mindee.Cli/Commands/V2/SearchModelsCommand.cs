@@ -129,7 +129,7 @@ namespace Mindee.Cli.Commands.V2
             /// <returns></returns>
             public async Task<int> InvokeAsync(string? name, string? modelType, bool raw)
             {
-                var response = await mindeeClientV2.SearchModels(name, modelType);
+                var response = await mindeeClientV2.SearchModelsAsync(name, modelType);
                 PrintToConsole(Console.Out, raw, response);
                 return 0;
             }
