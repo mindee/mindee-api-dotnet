@@ -94,9 +94,17 @@ namespace Mindee.ClientOptions
             {
                 throw new MindeeException($"Cannot set async retry to less than {MinRetries} attempts.");
             }
+            if (double.IsNaN(BackoffFactor) || double.IsInfinity(BackoffFactor))
+            {
+                throw new MindeeException("Polling backoff multiplier must be a finite number.");
+            }
             if (BackoffFactor < MinBackoffFactor)
             {
                 throw new MindeeException("Cannot set polling backoff multiplier below 1.0.");
+            }
+            if (double.IsNaN(MaxIntervalSec) || double.IsInfinity(MaxIntervalSec))
+            {
+                throw new MindeeException("Max polling interval must be a finite number.");
             }
             if (MaxIntervalSec < IntervalSec)
             {
