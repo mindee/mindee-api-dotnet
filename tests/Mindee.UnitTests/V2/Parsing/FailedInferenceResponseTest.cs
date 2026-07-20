@@ -1,4 +1,5 @@
 using Mindee.V2.Parsing;
+using Mindee.V2.Parsing.Inference;
 
 namespace Mindee.UnitTests.V2.Parsing
 {

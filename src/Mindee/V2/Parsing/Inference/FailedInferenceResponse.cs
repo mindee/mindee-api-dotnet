@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace Mindee.V2.Parsing
+namespace Mindee.V2.Parsing.Inference
 {
     /// <summary>
     ///     Webhook payload returned when an inference fails before producing a result.
