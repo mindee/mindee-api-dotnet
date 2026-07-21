@@ -312,14 +312,14 @@ namespace Mindee.V2
                     break;
                 }
 
-                switch (response.Job.ParsedStatus)
+                switch (response.Job.Status)
                 {
-                    case JobStatus.Processed:
+                    case "Processed":
                         {
                             var resultUrl = response.Job.ResultUrl;
                             return await GetResultFromUrlAsync<TResponse>(resultUrl, ct);
                         }
-                    case JobStatus.Failed:
+                    case "Failed":
                         throw new MindeeException("Job failed without an error payload.");
                 }
 

@@ -347,7 +347,7 @@ namespace Mindee.IntegrationTests.V2
                     throw new Exception($"Job failed while polling result URL. Code={job.Error.Code}");
                 }
 
-                if (job.ParsedStatus != JobStatus.Processed)
+                if (job.Status != "Processed")
                 {
                     continue;
                 }

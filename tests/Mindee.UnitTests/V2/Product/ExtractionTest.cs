@@ -169,56 +169,31 @@ namespace Mindee.UnitTests.V2.Product
             Assert.NotNull(fieldSimpleString);
             string fieldSimpleStringValue = fieldSimpleString.Value;
             Assert.Equal("field_simple_string-value", fieldSimpleStringValue);
-            Assert.Equal("field_simple_string-value", fieldSimpleString.StringValue);
-            Assert.Null(fieldSimpleString.BooleanValue);
-            Assert.Null(fieldSimpleString.DoubleValue);
-            Assert.Null(fieldSimpleString.IntegerValue);
             Assert.Equal(FieldConfidence.Certain, fieldSimpleString.Confidence);
             Assert.Equal(4, (int?)fieldSimpleString.Confidence);
             Assert.True(fieldSimpleString.Confidence.GetValueOrDefault().GreaterThanOrEqual(FieldConfidence.Medium));
 
             Assert.NotNull(fields["field_simple_float"].SimpleField);
-            var fieldSimpleFloat = fields["field_simple_float"].SimpleField;
-            double fieldSimpleFloatValue = fieldSimpleFloat.Value;
+            double fieldSimpleFloatValue = fields["field_simple_float"].SimpleField.Value;
             Assert.Equal(1.1, fieldSimpleFloatValue);
-            Assert.Equal(1.1, fieldSimpleFloat.DoubleValue);
-            Assert.Null(fieldSimpleFloat.StringValue);
-            Assert.Null(fieldSimpleFloat.BooleanValue);
-            Assert.Null(fieldSimpleFloat.IntegerValue);
             Assert.Equal(FieldConfidence.High, fields["field_simple_float"].SimpleField.Confidence);
 
             Assert.NotNull(fields["field_simple_int"].SimpleField);
-            var fieldSimpleInt = fields["field_simple_int"].SimpleField;
-            double fieldSimpleIntValue = fieldSimpleInt.Value;
+            double fieldSimpleIntValue = fields["field_simple_int"].SimpleField.Value;
             Assert.Equal(12.0, fieldSimpleIntValue);
-            Assert.Equal(12.0, fieldSimpleInt.DoubleValue);
-            Assert.Equal(12, fieldSimpleInt.IntegerValue);
             Assert.Equal(FieldConfidence.Medium, fields["field_simple_int"].SimpleField.Confidence);
 
             Assert.NotNull(fields["field_simple_zero"].SimpleField);
-            var fieldSimpleZero = fields["field_simple_zero"].SimpleField;
-            Assert.Equal(0.0, fieldSimpleZero.Value);
-            Assert.Equal(0.0, fieldSimpleZero.DoubleValue);
-            Assert.Equal(0, fieldSimpleZero.IntegerValue);
+            Assert.Equal(0.0, fields["field_simple_zero"].SimpleField.Value);
             Assert.Equal(FieldConfidence.Low, fields["field_simple_zero"].SimpleField.Confidence);
 
             Assert.NotNull(fields["field_simple_bool"].SimpleField);
-            var fieldSimpleBool = fields["field_simple_bool"].SimpleField;
-            bool fieldSimpleBoolValue = fieldSimpleBool.Value;
+            bool fieldSimpleBoolValue = fields["field_simple_bool"].SimpleField.Value;
             Assert.True(fieldSimpleBoolValue);
-            Assert.True(fieldSimpleBool.BooleanValue);
-            Assert.Null(fieldSimpleBool.StringValue);
-            Assert.Null(fieldSimpleBool.DoubleValue);
-            Assert.Null(fieldSimpleBool.IntegerValue);
             Assert.Null(fields["field_simple_bool"].SimpleField.Confidence);
 
             Assert.NotNull(fields["field_simple_null"].SimpleField);
-            var fieldSimpleNull = fields["field_simple_null"].SimpleField;
-            Assert.Null(fieldSimpleNull.Value);
-            Assert.Null(fieldSimpleNull.StringValue);
-            Assert.Null(fieldSimpleNull.BooleanValue);
-            Assert.Null(fieldSimpleNull.DoubleValue);
-            Assert.Null(fieldSimpleNull.IntegerValue);
+            Assert.Null(fields["field_simple_null"].SimpleField.Value);
             Assert.Null(fields["field_simple_null"].SimpleField.Confidence);
         }
 
