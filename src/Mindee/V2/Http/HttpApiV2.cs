@@ -38,7 +38,8 @@ namespace Mindee.V2.Http
         ///     <see cref="UrlInputSource" />
         /// </param>
         /// <param name="ct">Cancellation token.</param>
-        public abstract Task<JobResponse> ReqPostEnqueueAsync(InputSource inputSource, BaseParameters parameters, CancellationToken ct = default);
+        public abstract Task<JobResponse> ReqPostEnqueueAsync(
+            InputSource inputSource, BaseParameters parameters, CancellationToken ct = default);
 
         /// <summary>
         ///     Get a job for an enqueued document.
@@ -59,14 +60,18 @@ namespace Mindee.V2.Http
         /// </summary>
         /// <param name="inferenceId">Url to poll.</param>
         /// <param name="ct">Cancellation token.</param>
-        public abstract Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId, CancellationToken ct = default) where TResponse : BaseResponse, new();
+        public abstract Task<TResponse> ReqGetResultAsync<TResponse>(
+            string inferenceId, CancellationToken ct = default)
+            where TResponse : BaseResponse, new();
 
         /// <summary>
         ///     Get a document inference.
         /// </summary>
         /// <param name="resultUrl">Url to poll.</param>
         /// <param name="ct">Cancellation token.</param>
-        public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl, CancellationToken ct = default) where TResponse : BaseResponse, new();
+        public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(
+            string resultUrl, CancellationToken ct = default)
+            where TResponse : BaseResponse, new();
 
         /// <summary>
         /// Retrieves a list of models available for a given API key.
@@ -75,7 +80,8 @@ namespace Mindee.V2.Http
         /// <param name="modelType">Type of the model to search for.</param>
         /// <param name="ct">Cancellation token.</param>
         /// <returns></returns>
-        public abstract Task<SearchResponse> SearchModels(string? name, string? modelType, CancellationToken ct = default);
+        public abstract Task<SearchResponse> SearchModels(
+            string? name, string? modelType, CancellationToken ct = default);
 
         /// <summary>
         ///     Get the error from the server return.

@@ -123,7 +123,6 @@ namespace Mindee.V2
                 default:
                     throw new MindeeInputException($"Unsupported input source {inputSource.GetType().Name}");
             }
-
             return await _mindeeApi.ReqPostEnqueueAsync(inputSource, parameters, ct);
         }
 
@@ -138,7 +137,7 @@ namespace Mindee.V2
         /// </returns>
         public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
         {
-            _logger?.LogInformation("Getting Job at: {}", pollingUrl);
+            _logger?.LogInformation("Getting Job by URL: {}", pollingUrl);
 
             if (string.IsNullOrWhiteSpace(pollingUrl))
             {
@@ -149,7 +148,7 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        ///     Get a result directly from a polling URL.
+        ///     Get a result directly from a URL.
         /// </summary>
         /// <param name="pollingUrl">The result's URL.</param>
         /// <param name="ct">Cancellation token.</param>
@@ -159,7 +158,7 @@ namespace Mindee.V2
         public async Task<TResponse> GetResultFromUrlAsync<TResponse>(string pollingUrl, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
-            _logger?.LogInformation("Polling: {}", pollingUrl);
+            _logger?.LogInformation("Getting result by URL: {}", pollingUrl);
 
             if (string.IsNullOrWhiteSpace(pollingUrl))
             {
@@ -180,7 +179,7 @@ namespace Mindee.V2
         public async Task<TResponse> GetResultAsync<TResponse>(string jobId, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
-            _logger?.LogInformation("Polling: {}", jobId);
+            _logger?.LogInformation("Getting result by ID: {}", jobId);
 
             if (string.IsNullOrWhiteSpace(jobId))
             {
@@ -200,7 +199,7 @@ namespace Mindee.V2
         /// </returns>
         public async Task<JobResponse> GetJobAsync(string jobId, CancellationToken ct = default)
         {
-            _logger?.LogInformation("Getting job {}", jobId);
+            _logger?.LogInformation("Getting job ID: {}", jobId);
 
             if (string.IsNullOrWhiteSpace(jobId))
             {
@@ -264,7 +263,8 @@ namespace Mindee.V2
         /// <param name="modelType">Model type filter.</param>
         /// <param name="ct">Cancellation token.</param>
         /// <returns></returns>
-        public async Task<SearchResponse> SearchModels(string name = null, string modelType = null, CancellationToken ct = default)
+        public async Task<SearchResponse> SearchModels(
+            string name = null, string modelType = null, CancellationToken ct = default)
         {
             return await _mindeeApi.SearchModels(name, modelType, ct);
         }
