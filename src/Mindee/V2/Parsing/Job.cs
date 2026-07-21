@@ -22,12 +22,6 @@ namespace Mindee.V2.Parsing
         public string Status { get; set; }
 
         /// <summary>
-        ///     Parsed status value used by polling logic.
-        /// </summary>
-        [JsonIgnore]
-        public JobStatus ParsedStatus => JobStatusParser.Parse(Status);
-
-        /// <summary>
         ///     Date and time of the Job creation.
         /// </summary>
         [JsonPropertyName("created_at")]

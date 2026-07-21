@@ -46,16 +46,6 @@ namespace Mindee.Input
         /// </summary>
         private void IsUriValid()
         {
-            if (FileUrl.IsLoopback)
-            {
-                throw new MindeeInputException("Local files are not supported, use `LocalInputSource` instead.");
-            }
-
-            if (!FileUrl.IsAbsoluteUri)
-            {
-                throw new MindeeInputException("The URI must be absolute.");
-            }
-
             if (FileUrl.Scheme != "https")
             {
                 throw new MindeeInputException("Only the HTTPS scheme is supported.");
