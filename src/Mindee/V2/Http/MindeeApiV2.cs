@@ -75,17 +75,11 @@ namespace Mindee.V2.Http
             ModelSearchParameters parameters, CancellationToken ct = default)
         {
             var request = new RestRequest("v2/search/models");
-            Logger?.LogInformation("Fetching models...");
-            if (!string.IsNullOrWhiteSpace(parameters.Name))
-            {
-                Logger?.LogInformation("Models matching name like {Name}", parameters.Name);
-                request.AddParameter("name", parameters.Name);
-            }
+            Logger?.LogInformation("Model search...");
 
-            if (!string.IsNullOrWhiteSpace(parameters.ModelType))
+            foreach (KeyValuePair<string, string> entry in parameters.GetRequestParameters())
             {
-                Logger?.LogInformation("Models matching model_type={ModelType}", parameters.ModelType);
-                request.AddParameter("model_type", parameters.ModelType);
+                request.AddParameter(entry.Key, entry.Value);
             }
 
             var response = await _httpClient.ExecuteGetAsync(request, ct);

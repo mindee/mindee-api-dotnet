@@ -3,6 +3,7 @@ using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Mindee.V2.Parsing.Search;
+using Mindee.V2.Search.Models;
 using SettingsV2 = Mindee.V2.Http.Settings;
 using V2Client = Mindee.V2.Client;
 
@@ -129,11 +130,11 @@ namespace Mindee.Cli.Commands.V2
             /// <returns></returns>
             public async Task<int> InvokeAsync(string? name, string? modelType, bool raw)
             {
-                var response = await mindeeClientV2.SearchModels(name, modelType);
+                var response = await mindeeClientV2.SearchModels(
+                    new ModelSearchParameters(name: name, modelType: modelType));
                 PrintToConsole(Console.Out, raw, response);
                 return 0;
             }
-
 
             private void PrintToConsole(
                 TextWriter console,

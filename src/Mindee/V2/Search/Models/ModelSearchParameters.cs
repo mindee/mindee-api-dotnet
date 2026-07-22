@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Mindee.V2.ClientOptions;
 
 namespace Mindee.V2.Search.Models
@@ -30,6 +31,17 @@ namespace Mindee.V2.Search.Models
         {
             Name = name;
             ModelType = modelType;
+        }
+
+        /// <inheritdoc />
+        public override Dictionary<string, string> GetRequestParameters()
+        {
+            var parameters = base.GetRequestParameters();
+            if (!string.IsNullOrEmpty(Name))
+                parameters.Add("name", Name);
+            if (!string.IsNullOrEmpty(ModelType))
+                parameters.Add("model_type", ModelType);
+            return parameters;
         }
     }
 }

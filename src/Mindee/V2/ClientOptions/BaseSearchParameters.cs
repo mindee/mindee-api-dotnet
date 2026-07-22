@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Mindee.V2.ClientOptions
 {
     /// <summary>
@@ -24,6 +26,23 @@ namespace Mindee.V2.ClientOptions
         {
             Page = page;
             PerPage = perPage;
+        }
+
+        /// <summary>
+        /// Gets the request parameters for the POST enqueue request.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Dictionary<string, string> GetRequestParameters()
+        {
+            var parameters = new Dictionary<string, string>();
+
+            if (Page != null && Page > 0)
+                parameters.Add("page", Page.ToString());
+
+            if (PerPage != null && PerPage > 0)
+                parameters.Add("per_page", PerPage.ToString());
+
+            return parameters;
         }
     }
 }

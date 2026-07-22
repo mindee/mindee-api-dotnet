@@ -258,6 +258,18 @@ namespace Mindee.V2
         }
 
         /// <summary>
+        /// Returns a list of models matching the given criteria.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<SearchResponse> SearchModels(
+            ModelSearchParameters parameters, CancellationToken ct = default)
+        {
+            return await _mindeeApi.SearchModels(parameters, ct);
+        }
+
+        /// <summary>
         ///     Poll for results until the prediction is retrieved or the max amount of attempts is reached.
         /// </summary>
         /// <param name="enqueueResponse">
