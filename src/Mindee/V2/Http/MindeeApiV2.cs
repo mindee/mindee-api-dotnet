@@ -93,13 +93,7 @@ namespace Mindee.V2.Http
 
         public override async Task<JobResponse> ReqGetJobAsync(string jobId, CancellationToken ct = default)
         {
-            var request = new RestRequest($"v2/jobs/{jobId}");
-            Logger?.LogInformation("HTTP GET to {RequestResource}...", _baseUrl + request.Resource);
-            var response = await _httpClient.ExecuteGetAsync(request, ct);
-            ct.ThrowIfCancellationRequested();
-            Logger?.LogDebug("HTTP response: {ResponseContent}", response.Content);
-            var handledResponse = HandleJobResponse(response);
-            return handledResponse;
+            return await ReqGetJobFromUrlAsync($"{_baseUrl}/v2/jobs/{jobId}", ct);
         }
 
         public override async Task<JobResponse> ReqGetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
