@@ -10,7 +10,7 @@ namespace Mindee.V2.Product.Extraction.Params
     ///     Parameters for an extraction inference.
     /// </summary>
     [ProductAttributes("extraction")]
-    public class ExtractionParameters : BaseParameters
+    public class ExtractionParameters : BaseProductParameters
     {
         /// <summary>
         ///     Enhance extraction accuracy with Retrieval-Augmented Generation.
@@ -49,13 +49,13 @@ namespace Mindee.V2.Product.Extraction.Params
         ///     Extraction parameters to set when sending a file.
         /// </summary>
         /// <param name="modelId">
-        ///     <see cref="BaseParameters.ModelId" />
+        ///     <see cref="BaseProductParameters.ModelId" />
         /// </param>
         /// <param name="alias">
-        ///     <see cref="BaseParameters.Alias" />
+        ///     <see cref="BaseProductParameters.Alias" />
         /// </param>
         /// <param name="webhookIds">
-        ///     <see cref="BaseParameters.WebhookIds" />
+        ///     <see cref="BaseProductParameters.WebhookIds" />
         /// </param>
         /// <param name="rag">
         ///     <see cref="V1.Parsing.Common.Rag" />

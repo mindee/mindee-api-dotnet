@@ -107,7 +107,7 @@ namespace Mindee.V2
         /// <exception cref="MindeeException"></exception>
         public async Task<JobResponse> EnqueueAsync(
             InputSource inputSource
-            , BaseParameters parameters
+            , BaseProductParameters parameters
             , CancellationToken ct = default)
         {
             switch (inputSource)
@@ -216,7 +216,7 @@ namespace Mindee.V2
         ///     <see cref="UrlInputSource" />
         /// </param>
         /// <param name="parameters">
-        ///     <see cref="BaseParameters" />
+        ///     <see cref="BaseProductParameters" />
         /// </param>
         /// <param name="pollingOptions">
         ///     <see cref="PollingOptions" />
@@ -228,7 +228,7 @@ namespace Mindee.V2
         /// <exception cref="MindeeException"></exception>
         public async Task<TResponse> EnqueueAndGetResultAsync<TResponse>(
             InputSource inputSource
-            , BaseParameters parameters
+            , BaseProductParameters parameters
             , PollingOptions pollingOptions = null
             , CancellationToken ct = default)
             where TResponse : BaseResponse, new()

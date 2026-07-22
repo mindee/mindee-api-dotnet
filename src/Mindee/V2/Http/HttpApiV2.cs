@@ -31,14 +31,14 @@ namespace Mindee.V2.Http
         ///     Do a prediction according parameters for a custom model defined in the Studio.
         /// </summary>
         /// <param name="parameters">
-        ///     <see cref="BaseParameters" />
+        ///     <see cref="BaseProductParameters" />
         /// </param>
         /// <param name="inputSource">
         ///     <see cref="LocalInputSource" />
         ///     <see cref="UrlInputSource" />
         /// </param>
         /// <param name="ct">Cancellation token.</param>
-        public abstract Task<JobResponse> ReqPostEnqueueAsync(InputSource inputSource, BaseParameters parameters, CancellationToken ct = default);
+        public abstract Task<JobResponse> ReqPostEnqueueAsync(InputSource inputSource, BaseProductParameters parameters, CancellationToken ct = default);
 
         /// <summary>
         ///     Get a job for an enqueued document.

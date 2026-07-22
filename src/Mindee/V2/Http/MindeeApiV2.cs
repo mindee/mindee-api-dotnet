@@ -51,7 +51,7 @@ namespace Mindee.V2.Http
 
         public override async Task<JobResponse> ReqPostEnqueueAsync(
             InputSource inputSource,
-            BaseParameters parameters,
+            BaseProductParameters parameters,
             CancellationToken ct = default
         )
         {
@@ -130,7 +130,7 @@ namespace Mindee.V2.Http
         }
 
         private static void AddPredictRequestParameters(
-            InputSource inputSource, BaseParameters parameters, RestRequest request)
+            InputSource inputSource, BaseProductParameters parameters, RestRequest request)
         {
             switch (inputSource)
             {

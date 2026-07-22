@@ -7,7 +7,7 @@ namespace Mindee.V2.Product.Crop.Params
     /// Parameters accepted by the crop utility v2 endpoint.
     /// </summary>
     [ProductAttributes("crop")]
-    public class CropParameters : BaseParameters
+    public class CropParameters : BaseProductParameters
     {
         /// <summary>
         /// Crop parameters to set when sending a file.

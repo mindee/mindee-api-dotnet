@@ -7,7 +7,7 @@ namespace Mindee.V2.Product.Split.Params
     /// Parameters accepted by the split utility v2 endpoint.
     /// </summary>
     [ProductAttributes("split")]
-    public class SplitParameters : BaseParameters
+    public class SplitParameters : BaseProductParameters
     {
         /// <summary>
         /// Split parameters to set when sending a file.
