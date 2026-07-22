@@ -163,58 +163,38 @@ namespace Mindee.V2.Http
 
         private SearchResponse HandleSearchResponse(RestResponse restResponse)
         {
-            Logger?.LogDebug("HTTP response: {RestResponseContent}", restResponse.Content);
-            var statusCode = (int)restResponse.StatusCode;
-
-            if (statusCode is <= 199 or >= 400)
-            {
-                throw new MindeeHttpExceptionV2(
-                    GetErrorFromContent(statusCode, restResponse.Content));
-            }
-
-            if (restResponse.Content == null)
-            {
-                throw new MindeeException("Couldn't deserialize SearchResponse.");
-            }
-            var model = JsonSerializer.Deserialize<SearchResponse>(restResponse.Content);
-            return model ?? throw new MindeeException("Couldn't deserialize SearchResponse.");
+            var response = JsonSerializer.Deserialize<SearchResponse>(GetResponseContent(restResponse));
+            return response ?? throw new MindeeException("Couldn't deserialize SearchResponse.");
         }
 
         private JobResponse HandleJobResponse(RestResponse restResponse)
         {
-            Logger?.LogDebug("HTTP response: {RestResponseContent}", restResponse.Content);
-            var statusCode = (int)restResponse.StatusCode;
-
-            if (statusCode is <= 199 or >= 400)
-            {
-                throw new MindeeHttpExceptionV2(
-                    GetErrorFromContent(statusCode, restResponse.Content));
-            }
-
-            if (restResponse.Content == null)
-            {
-                throw new MindeeException("Couldn't deserialize JobResponse.");
-            }
-
-            var model = JsonSerializer.Deserialize<JobResponse>(restResponse.Content);
-            return model ?? throw new MindeeException("Couldn't deserialize JobResponse.");
+            var response = JsonSerializer.Deserialize<JobResponse>(GetResponseContent(restResponse));
+            return response ?? throw new MindeeException("Couldn't deserialize JobResponse.");
         }
 
         private TResponse HandleProductResponse<TResponse>(RestResponse restResponse)
             where TResponse : BaseResponse, new()
         {
-            Logger?.LogDebug("HTTP response: {RestResponseContent}", restResponse.Content);
+            return DeserializeResponse<TResponse>(GetResponseContent(restResponse));
+        }
 
+        private string GetResponseContent(RestResponse restResponse)
+        {
+            Logger?.LogDebug("HTTP response: {RestResponseContent}", restResponse.Content);
             var statusCode = (int)restResponse.StatusCode;
 
             if (statusCode is <= 199 or >= 400)
             {
                 throw new MindeeHttpExceptionV2(
-                    GetErrorFromContent((int)restResponse.StatusCode, restResponse.Content));
+                    GetErrorFromContent(statusCode, restResponse.Content));
             }
 
-            return DeserializeResponse<TResponse>(restResponse.Content);
-
+            if (restResponse.Content == null)
+            {
+                throw new MindeeException("Empty response from server.");
+            }
+            return restResponse.Content;
         }
     }
 }

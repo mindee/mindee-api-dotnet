@@ -18,13 +18,13 @@ namespace Mindee.V2.Parsing.Search
                 return "\n";
             }
             StringBuilder stringBuilder = new StringBuilder();
-            foreach (SearchModel model in this)
+            foreach (SearchModel item in this)
             {
-                stringBuilder.Append($"* :Name: {model.Name}");
+                stringBuilder.Append($"* :Name: {item.Name}");
                 stringBuilder.Append('\n');
-                stringBuilder.Append($"  :ID: {model.Id}");
+                stringBuilder.Append($"  :ID: {item.Id}");
                 stringBuilder.Append('\n');
-                stringBuilder.Append($"  :Model Type: {model.ModelType}");
+                stringBuilder.Append($"  :Model Type: {item.ModelType}");
                 stringBuilder.Append('\n');
             }
             return stringBuilder.ToString();
