@@ -27,5 +27,7 @@ namespace Mindee.V2.Parsing.Inference.Field
 
         /// <summary>Low confidence.</summary>
         [EnumMember(Value = "Low")] Low = 1
+
     }
+
 }
