@@ -123,7 +123,6 @@ namespace Mindee.V2
                 default:
                     throw new MindeeInputException($"Unsupported input source {inputSource.GetType().Name}");
             }
-
             return await _mindeeApi.ReqPostEnqueueAsync(inputSource, parameters, ct);
         }
 
@@ -151,21 +150,21 @@ namespace Mindee.V2
         /// <summary>
         ///     Get a result directly from a polling URL.
         /// </summary>
-        /// <param name="pollingUrl">The result's URL.</param>
+        /// <param name="resultUrl">The result's URL.</param>
         /// <param name="ct">Cancellation token.</param>
         /// <returns>
         ///     <see cref="ExtractionResponse" />
         /// </returns>
-        public async Task<TResponse> GetResultFromUrlAsync<TResponse>(string pollingUrl, CancellationToken ct = default)
+        public async Task<TResponse> GetResultFromUrlAsync<TResponse>(string resultUrl, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
-            _logger?.LogInformation("Polling: {}", pollingUrl);
+            _logger?.LogInformation("Getting result at: {}", resultUrl);
 
-            if (string.IsNullOrWhiteSpace(pollingUrl))
+            if (string.IsNullOrWhiteSpace(resultUrl))
             {
-                throw new MindeeInputException(nameof(pollingUrl));
+                throw new MindeeInputException(nameof(resultUrl));
             }
-            return await _mindeeApi.ReqGetResultFromUrlAsync<TResponse>(pollingUrl, ct);
+            return await _mindeeApi.ReqGetResultFromUrlAsync<TResponse>(resultUrl, ct);
         }
 
         /// <summary>
@@ -180,7 +179,7 @@ namespace Mindee.V2
         public async Task<TResponse> GetResultAsync<TResponse>(string jobId, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
-            _logger?.LogInformation("Polling: {}", jobId);
+            _logger?.LogInformation("Getting result with ID: {}", jobId);
 
             if (string.IsNullOrWhiteSpace(jobId))
             {
@@ -200,7 +199,7 @@ namespace Mindee.V2
         /// </returns>
         public async Task<JobResponse> GetJobAsync(string jobId, CancellationToken ct = default)
         {
-            _logger?.LogInformation("Getting job {}", jobId);
+            _logger?.LogInformation("Getting job ID: {}", jobId);
 
             if (string.IsNullOrWhiteSpace(jobId))
             {
@@ -234,20 +233,6 @@ namespace Mindee.V2
             , CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
-            switch (inputSource)
-            {
-                case LocalInputSource:
-                    _logger?.LogInformation("Enqueuing: local source");
-                    break;
-                case UrlInputSource:
-                    _logger?.LogInformation("Enqueuing: URL source");
-                    break;
-                case null:
-                    throw new ArgumentNullException(nameof(inputSource));
-                default:
-                    throw new MindeeInputException($"Unsupported input source {inputSource.GetType().Name}");
-            }
-
             pollingOptions ??= new PollingOptions();
 
             var enqueueResponse = await EnqueueAsync(
@@ -264,7 +249,8 @@ namespace Mindee.V2
         /// <param name="modelType">Model type filter.</param>
         /// <param name="ct">Cancellation token.</param>
         /// <returns></returns>
-        public async Task<SearchResponse> SearchModels(string name = null, string modelType = null, CancellationToken ct = default)
+        public async Task<SearchResponse> SearchModels(
+            string name = null, string modelType = null, CancellationToken ct = default)
         {
             return await _mindeeApi.SearchModels(name, modelType, ct);
         }
