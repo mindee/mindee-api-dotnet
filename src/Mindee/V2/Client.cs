@@ -14,6 +14,7 @@ using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
+using Mindee.V2.Search.Models;
 using SettingsV2 = Mindee.V2.Http.Settings;
 // ReSharper disable once RedundantUsingDirective
 
@@ -252,7 +253,8 @@ namespace Mindee.V2
         public async Task<SearchResponse> SearchModels(
             string name = null, string modelType = null, CancellationToken ct = default)
         {
-            return await _mindeeApi.SearchModels(name, modelType, ct);
+            return await _mindeeApi.SearchModels(
+                new ModelSearchParameters(name, modelType), ct);
         }
 
         /// <summary>

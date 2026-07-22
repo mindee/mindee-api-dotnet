@@ -14,6 +14,7 @@ using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product;
+using Mindee.V2.Search.Models;
 using RestSharp;
 #if NET6_0_OR_GREATER
 using Microsoft.Extensions.DependencyInjection;
@@ -70,20 +71,21 @@ namespace Mindee.V2.Http
             return HandleJobResponse(response);
         }
 
-        public override async Task<SearchResponse> SearchModels(string name, string modelType, CancellationToken ct = default)
+        public override async Task<SearchResponse> SearchModels(
+            ModelSearchParameters parameters, CancellationToken ct = default)
         {
             var request = new RestRequest("v2/search/models");
             Logger?.LogInformation("Fetching models...");
-            if (!string.IsNullOrWhiteSpace(name))
+            if (!string.IsNullOrWhiteSpace(parameters.Name))
             {
-                Logger?.LogInformation("Models matching name like {Name}", name);
-                request.AddParameter("name", name);
+                Logger?.LogInformation("Models matching name like {Name}", parameters.Name);
+                request.AddParameter("name", parameters.Name);
             }
 
-            if (!string.IsNullOrWhiteSpace(modelType))
+            if (!string.IsNullOrWhiteSpace(parameters.ModelType))
             {
-                Logger?.LogInformation("Models matching model_type={ModelType}", modelType);
-                request.AddParameter("model_type", modelType);
+                Logger?.LogInformation("Models matching model_type={ModelType}", parameters.ModelType);
+                request.AddParameter("model_type", parameters.ModelType);
             }
 
             var response = await _httpClient.ExecuteGetAsync(request, ct);
