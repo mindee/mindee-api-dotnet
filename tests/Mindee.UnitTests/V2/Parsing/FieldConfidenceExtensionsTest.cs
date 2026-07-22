@@ -9,13 +9,22 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact]
         public void ComparisonHelpers_MustReturnExpectedOrdering()
         {
-            Assert.True(FieldConfidence.Certain.GreaterThan(FieldConfidence.High));
-            Assert.True(FieldConfidence.High.GreaterThanOrEqual(FieldConfidence.High));
-            Assert.True(FieldConfidence.Low.LessThan(FieldConfidence.Medium));
-            Assert.True(FieldConfidence.Medium.LessThanOrEqual(FieldConfidence.Certain));
+            Assert.True(FieldConfidence.Certain > FieldConfidence.High);
+            Assert.True(FieldConfidence.Certain >= FieldConfidence.High);
+            Assert.True(FieldConfidence.High > FieldConfidence.Medium);
+            Assert.True(FieldConfidence.High >= FieldConfidence.Medium);
+            Assert.True(FieldConfidence.Medium > FieldConfidence.Low);
+            Assert.True(FieldConfidence.Medium >= FieldConfidence.Low);
 
-            Assert.False(FieldConfidence.Low.GreaterThan(FieldConfidence.Certain));
-            Assert.False(FieldConfidence.High.LessThan(FieldConfidence.Medium));
+            Assert.True(FieldConfidence.High < FieldConfidence.Certain);
+            Assert.True(FieldConfidence.High <= FieldConfidence.Certain);
+            Assert.True(FieldConfidence.Medium < FieldConfidence.High);
+            Assert.True(FieldConfidence.Medium <= FieldConfidence.High);
+            Assert.True(FieldConfidence.Low < FieldConfidence.Medium);
+            Assert.True(FieldConfidence.Low <= FieldConfidence.Medium);
+
+            Assert.False(FieldConfidence.Low > FieldConfidence.Certain);
+            Assert.False(FieldConfidence.High < FieldConfidence.Medium);
         }
     }
 }
