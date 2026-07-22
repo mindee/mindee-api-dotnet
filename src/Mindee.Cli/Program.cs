@@ -249,6 +249,9 @@ static void BuildV2Commands(Command v2Command, IServiceProvider services)
     var searchModelsCmd = new SearchModelsCommand();
     searchModelsCmd.ConfigureAction(services);
     v2Command.Add(searchModelsCmd);
+    var searchRagDocsCmd = new SearchRagDocumentsCommand();
+    searchRagDocsCmd.ConfigureAction(services);
+    v2Command.Add(searchRagDocsCmd);
     var classificationCmd = new InferenceCommand(
         new InferenceCommandOptions(
             "classification",

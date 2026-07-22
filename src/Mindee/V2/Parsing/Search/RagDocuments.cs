@@ -20,9 +20,9 @@ namespace Mindee.V2.Parsing.Search
             StringBuilder stringBuilder = new StringBuilder();
             foreach (RagDocument item in this)
             {
-                stringBuilder.Append($"  :ID: {item.Id}");
+                stringBuilder.Append($"* :ID: {item.Id}");
                 stringBuilder.Append('\n');
-                stringBuilder.Append($"* :Model ID: {item.ModelId}");
+                stringBuilder.Append($"  :Model ID: {item.ModelId}");
                 stringBuilder.Append('\n');
                 stringBuilder.Append($"  :Filename: {item.Filename}");
                 stringBuilder.Append('\n');
