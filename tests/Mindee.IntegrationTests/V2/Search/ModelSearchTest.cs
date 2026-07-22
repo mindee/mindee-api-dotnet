@@ -18,7 +18,7 @@ namespace Mindee.IntegrationTests.V2.Search
         [Fact(Timeout = 180000)]
         public async Task ModelSearch_mustReturnModels()
         {
-            var response = await _client.SearchModels();
+            var response = await _client.SearchModels(new ModelSearchParameters());
             Assert.NotNull(response);
             Assert.NotNull(response.Models);
             Assert.NotEmpty(response.Models);
@@ -43,7 +43,10 @@ namespace Mindee.IntegrationTests.V2.Search
         [Fact(Timeout = 180000)]
         public async Task ModelSearch_mustReturnEmptyObsolete()
         {
+#pragma warning disable CS0618 // Remove this test when the obsolete method is removed.
             var response = await _client.SearchModels(name: "je n'existe pas tralala");
+#pragma warning restore CS0618
+
             Assert.NotNull(response);
             Assert.NotNull(response.Models);
             Assert.Empty(response.Models);

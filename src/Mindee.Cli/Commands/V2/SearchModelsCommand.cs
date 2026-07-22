@@ -139,7 +139,7 @@ namespace Mindee.Cli.Commands.V2
             private void PrintToConsole(
                 TextWriter console,
                 bool raw,
-                SearchResponse response)
+                ModelSearchResponse response)
             {
                 console.Write(raw ? JsonSerializer.Serialize(response, _jsonSerializerOptions) : response.ToString());
             }

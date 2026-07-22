@@ -10,6 +10,7 @@ using Mindee.V2.ClientOptions;
 using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
+using Mindee.V2.Search.Model;
 using Mindee.V2.Search.Models;
 
 namespace Mindee.V2.Http
@@ -73,12 +74,30 @@ namespace Mindee.V2.Http
             string resultUrl, CancellationToken ct = default) where TResponse : BaseResponse, new();
 
         /// <summary>
+        /// Retrieves a list of models with the given criteria.
+        /// </summary>
+        /// <param name="searchParameters"><see cref="ModelSearchParameters"/></param>
+        /// <param name="ct">Cancellation token.</param>
+        /// <returns></returns>
+        public abstract Task<ModelSearchResponse> SearchModels(
+            ModelSearchParameters searchParameters, CancellationToken ct = default);
+
+        /// <summary>
+        /// Retrieves a list of RAG documents with the given criteria.
+        /// </summary>
+        /// <param name="searchParameters"><see cref="RagDocumentSearchParameters"/></param>
+        /// <param name="ct">Cancellation token.</param>
+        /// <returns></returns>
+        public abstract Task<RagDocumentSearchResponse> SearchRagDocuments(
+            RagDocumentSearchParameters searchParameters, CancellationToken ct = default);
+
+        /// <summary>
         /// Retrieves a list of models available for a given API key.
         /// </summary>
         /// <param name="parameters"><see cref="ModelSearchParameters"/></param>
         /// <param name="ct">Cancellation token.</param>
         /// <returns></returns>
-        public abstract Task<SearchResponse> SearchModels(
+        public abstract Task<SearchResponse> SearchModelsObsolete(
             ModelSearchParameters parameters, CancellationToken ct = default);
 
         /// <summary>

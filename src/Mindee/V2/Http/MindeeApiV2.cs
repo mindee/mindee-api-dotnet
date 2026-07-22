@@ -14,6 +14,7 @@ using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product;
+using Mindee.V2.Search.Model;
 using Mindee.V2.Search.Models;
 using RestSharp;
 #if NET6_0_OR_GREATER
@@ -71,7 +72,44 @@ namespace Mindee.V2.Http
             return HandleJobResponse(response);
         }
 
-        public override async Task<SearchResponse> SearchModels(
+
+        public override async Task<ModelSearchResponse> SearchModels(
+            ModelSearchParameters searchParameters, CancellationToken ct = default)
+        {
+            var request = new RestRequest("v2/search/models");
+            Logger?.LogInformation("Model search...");
+
+            foreach (KeyValuePair<string, string> entry in searchParameters.GetRequestParameters())
+            {
+                request.AddParameter(entry.Key, entry.Value);
+            }
+
+            var restResponse = await _httpClient.ExecuteGetAsync(request, ct);
+            ct.ThrowIfCancellationRequested();
+
+            var response = JsonSerializer.Deserialize<ModelSearchResponse>(GetResponseContent(restResponse));
+            return response ?? throw new MindeeException("Couldn't deserialize ModelSearchResponse.");
+        }
+
+        public override async Task<RagDocumentSearchResponse> SearchRagDocuments(
+            RagDocumentSearchParameters searchParameters, CancellationToken ct = default)
+        {
+            var request = new RestRequest("v2/search/rag-documents");
+            Logger?.LogInformation("RAG Document search...");
+
+            foreach (KeyValuePair<string, string> entry in searchParameters.GetRequestParameters())
+            {
+                request.AddParameter(entry.Key, entry.Value);
+            }
+
+            var restResponse = await _httpClient.ExecuteGetAsync(request, ct);
+            ct.ThrowIfCancellationRequested();
+
+            var response = JsonSerializer.Deserialize<RagDocumentSearchResponse>(GetResponseContent(restResponse));
+            return response ?? throw new MindeeException("Couldn't deserialize RagDocumentSearchResponse.");
+        }
+
+        public override async Task<SearchResponse> SearchModelsObsolete(
             ModelSearchParameters parameters, CancellationToken ct = default)
         {
             var request = new RestRequest("v2/search/models");
@@ -82,9 +120,11 @@ namespace Mindee.V2.Http
                 request.AddParameter(entry.Key, entry.Value);
             }
 
-            var response = await _httpClient.ExecuteGetAsync(request, ct);
+            var restResponse = await _httpClient.ExecuteGetAsync(request, ct);
             ct.ThrowIfCancellationRequested();
-            return HandleSearchResponse(response);
+
+            var response = JsonSerializer.Deserialize<SearchResponse>(GetResponseContent(restResponse));
+            return response ?? throw new MindeeException("Couldn't deserialize SearchResponse.");
         }
 
         public override async Task<JobResponse> ReqGetJobAsync(string jobId, CancellationToken ct = default)
@@ -149,12 +189,6 @@ namespace Mindee.V2.Http
             {
                 request.AddParameter(entry.Key, entry.Value);
             }
-        }
-
-        private SearchResponse HandleSearchResponse(RestResponse restResponse)
-        {
-            var response = JsonSerializer.Deserialize<SearchResponse>(GetResponseContent(restResponse));
-            return response ?? throw new MindeeException("Couldn't deserialize SearchResponse.");
         }
 
         private JobResponse HandleJobResponse(RestResponse restResponse)
