@@ -44,7 +44,7 @@ namespace Mindee.V2.Parsing.Search
         /// </summary>
         [JsonPropertyName("last_match_at")]
         [JsonConverter(typeof(DateTimeJsonConverter))]
-        public DateTime LastMatchAt { get; set; }
+        public DateTime? LastMatchAt { get; set; }
 
         /// <summary>
         /// Current status of the RAG document.

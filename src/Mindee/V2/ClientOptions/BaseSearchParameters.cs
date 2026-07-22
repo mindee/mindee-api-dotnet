@@ -8,19 +8,19 @@ namespace Mindee.V2.ClientOptions
         /// <summary>
         /// 1-based page index.
         /// </summary>
-        public int Page { get; }
+        public int? Page { get; }
 
         /// <summary>
         /// Number of items per page.
         /// </summary>
-        public int PerPage { get; }
+        public int? PerPage { get; }
 
         /// <summary>
         /// Base constructor.
         /// </summary>
         /// <param name="page"><see cref="Page"/></param>
         /// <param name="perPage"><see cref="PerPage"/></param>
-        protected BaseSearchParameters(int page, int perPage)
+        protected BaseSearchParameters(int? page, int? perPage)
         {
             Page = page;
             PerPage = perPage;

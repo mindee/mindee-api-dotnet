@@ -6,7 +6,7 @@ namespace Mindee.V2.Parsing.Search
     /// <summary>
     /// Models search response.
     /// </summary>
-    public class SearchResponse : ModelsResponse
+    public class SearchResponse : ModelSearchResponse
     {
         /// <summary>
         /// Pagination metadata (Obsolete).

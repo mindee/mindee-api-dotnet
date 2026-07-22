@@ -7,7 +7,7 @@ namespace Mindee.V2.Parsing.Search
     /// <summary>
     /// Models search response.
     /// </summary>
-    public class ModelsResponse : BaseSearchResponse
+    public class ModelSearchResponse : BaseSearchResponse
     {
         /// <summary>
         /// List of all models matching the search query.
