@@ -1,5 +1,12 @@
 # Mindee .NET Client Library Changelog
 
+## v4.5.0 - 2026-07-22
+### Changes
+* :sparkles: add support for failed webhook responses
+* :sparkles: add public accessor for direct URl polling
+* :sparkles: add support for cancellation token
+
+
 ## v4.4.1 - 2026-02-22
 ### Fixes
 * :bug: fix CLI not targeting correct .NET versions
