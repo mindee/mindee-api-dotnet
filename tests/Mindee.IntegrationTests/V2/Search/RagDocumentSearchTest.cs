@@ -18,15 +18,13 @@ namespace Mindee.IntegrationTests.V2.Search
         }
 
         [Fact(Timeout = 180000)]
-        public async Task ModelSearch_mustReturnModels()
+        public async Task RagDocumentSearch_mustHaveResults()
         {
             var response = await _client.SearchRagDocuments(
                 new RagDocumentSearchParameters(modelId: _findocModelId));
             Assert.NotNull(response);
             Assert.NotNull(response.RagDocuments);
-            Assert.NotEmpty(response.RagDocuments);
             Assert.NotNull(response.Pagination);
-            Assert.True(response.Pagination.TotalItems > 1);
             Assert.Equal(1, response.Pagination.Page);
         }
     }

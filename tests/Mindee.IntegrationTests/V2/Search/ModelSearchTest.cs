@@ -16,7 +16,7 @@ namespace Mindee.IntegrationTests.V2.Search
         }
 
         [Fact(Timeout = 180000)]
-        public async Task ModelSearch_mustReturnModels()
+        public async Task ModelSearch_mustHaveResults()
         {
             var response = await _client.SearchModels(new ModelSearchParameters());
             Assert.NotNull(response);

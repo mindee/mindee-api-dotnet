@@ -12,9 +12,8 @@ namespace Mindee.Cli.Commands.V2
     /// <summary>
     /// Lists all models for a given API key.
     /// </summary>
-    public class SearchModelsCommand : Command
+    class SearchModelsCommand : BaseCommand
     {
-        private readonly Option<string?> _apiKeyOption;
         private readonly Option<string?>? _nameOption;
         private readonly Option<string?>? _modelTypeOption;
         private readonly Option<bool>? _rawOption;
@@ -24,9 +23,6 @@ namespace Mindee.Cli.Commands.V2
         /// </summary>
         public SearchModelsCommand() : base("search-models", "Search available models.")
         {
-            _apiKeyOption = new Option<string?>("--api-key", "-k") { Description = "Mindee V2 API key." };
-            Options.Add(_apiKeyOption);
-
             _nameOption = new Option<string?>("--name", "-n")
             {
                 Description = "Filter by model name partial match (case insensitive).",
@@ -61,32 +57,14 @@ namespace Mindee.Cli.Commands.V2
         /// <param name="services">Service provider for dependency resolution</param>
         public void ConfigureAction(IServiceProvider services)
         {
-            Validators.Add(commandResult =>
-            {
-                var apiKey = commandResult.GetValue(_apiKeyOption);
-                if (!string.IsNullOrWhiteSpace(apiKey))
-                {
-                    return;
-                }
-
-                try
-                {
-                    _ = services.GetRequiredService<IOptions<SettingsV2>>().Value;
-                }
-                catch (OptionsValidationException)
-                {
-                    commandResult.AddError(
-                        "The Mindee V2 API key is missing. " +
-                        "Please provide it via the '--api-key' option or your configured environment variable.");
-                }
-            });
+            base.ConfigureApiKey(services);
 
             this.SetAction(parseResult =>
             {
                 var name = _nameOption != null ? parseResult.GetValue(_nameOption) : null;
                 var modelType = _modelTypeOption != null ? parseResult.GetValue(_modelTypeOption) : null;
                 var raw = _rawOption != null && parseResult.GetValue(_rawOption);
-                var apiKey = parseResult.GetValue(_apiKeyOption);
+                var apiKey = parseResult.GetValue(ApiKeyOption);
                 V2Client mindeeClientV2;
                 try
                 {

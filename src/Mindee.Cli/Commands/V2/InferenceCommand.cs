@@ -62,7 +62,7 @@ namespace Mindee.Cli.Commands.V2
         public readonly OutputType Output = output;
     }
 
-    class InferenceCommand : Command
+    class InferenceCommand : BaseCommand
     {
         private readonly Option<OutputType> _outputOption;
         private readonly string _productName;
@@ -74,7 +74,6 @@ namespace Mindee.Cli.Commands.V2
         private readonly Option<string?>? _textContextOption;
         private readonly Option<string> _modelIdOption;
         private readonly Argument<string> _pathArgument;
-        private readonly Option<string?> _apiKeyOption;
 
         public InferenceCommand(InferenceCommandOptions options)
             : base(options.Name, options.Description)
@@ -82,8 +81,6 @@ namespace Mindee.Cli.Commands.V2
             _modelIdOption =
                 new Option<string>("--model-id", "-m") { Description = "ID of the model to use", Required = true };
             Options.Add(_modelIdOption);
-            _apiKeyOption = new Option<string?>("--api-key", "-k") { Description = "Mindee V2 API key." };
-            Options.Add(_apiKeyOption);
 
             _productName = options.Name;
             _aliasOption = new Option<string?>("--alias", "-a")
@@ -163,25 +160,7 @@ namespace Mindee.Cli.Commands.V2
 
         public void ConfigureAction(IServiceProvider services)
         {
-            Validators.Add(commandResult =>
-            {
-                var apiKey = commandResult.GetValue(_apiKeyOption);
-                if (!string.IsNullOrWhiteSpace(apiKey))
-                {
-                    return;
-                }
-
-                try
-                {
-                    _ = services.GetRequiredService<IOptions<SettingsV2>>().Value;
-                }
-                catch (OptionsValidationException)
-                {
-                    commandResult.AddError(
-                        "The Mindee V2 API key is missing. " +
-                        "Please provide it via the '--api-key' option or your configured environment variable.");
-                }
-            });
+            base.ConfigureApiKey(services);
 
             this.SetAction(parseResult =>
             {
@@ -204,7 +183,7 @@ namespace Mindee.Cli.Commands.V2
                 }
 
                 var output = parseResult.GetValue(_outputOption);
-                var apiKey = parseResult.GetValue(_apiKeyOption);
+                var apiKey = parseResult.GetValue(ApiKeyOption);
                 V2Client mindeeClientV2;
                 try
                 {
