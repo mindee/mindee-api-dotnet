@@ -59,12 +59,12 @@ jobs:
         cd src/Mindee.Cli
         dotnet publish -f ${{ matrix.dotnet }} -c Release -r ${{ matrix.os_config.rid }} --self-contained true -p:PublishSingleFile=true -o ./bin/Release/${{ matrix.dotnet }}/${{ matrix.os_config.rid }}
 
-    - name: Test V1 CLI
-      shell: sh
-      run: |
-        ./tests/test_v1_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}
-
     - name: Test V2 CLI
       shell: sh
       run: |
         ./tests/test_v2_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}
+
+    - name: Test V1 CLI
+      shell: sh
+      run: |
+        ./tests/test_v1_cli.sh ./tests/resources/file_types/pdf/blank_1.pdf ${{ matrix.dotnet }} ${{ matrix.os_config.rid }}

@@ -14,6 +14,8 @@ using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
+using Mindee.V2.Search.Model;
+using Mindee.V2.Search.Models;
 using SettingsV2 = Mindee.V2.Http.Settings;
 // ReSharper disable once RedundantUsingDirective
 
@@ -107,7 +109,7 @@ namespace Mindee.V2
         /// <exception cref="MindeeException"></exception>
         public async Task<JobResponse> EnqueueAsync(
             InputSource inputSource
-            , BaseParameters parameters
+            , BaseProductParameters parameters
             , CancellationToken ct = default)
         {
             switch (inputSource)
@@ -216,7 +218,7 @@ namespace Mindee.V2
         ///     <see cref="UrlInputSource" />
         /// </param>
         /// <param name="parameters">
-        ///     <see cref="BaseParameters" />
+        ///     <see cref="BaseProductParameters" />
         /// </param>
         /// <param name="pollingOptions">
         ///     <see cref="PollingOptions" />
@@ -228,7 +230,7 @@ namespace Mindee.V2
         /// <exception cref="MindeeException"></exception>
         public async Task<TResponse> EnqueueAndGetResultAsync<TResponse>(
             InputSource inputSource
-            , BaseParameters parameters
+            , BaseProductParameters parameters
             , PollingOptions pollingOptions = null
             , CancellationToken ct = default)
             where TResponse : BaseResponse, new()
@@ -243,16 +245,40 @@ namespace Mindee.V2
         }
 
         /// <summary>
+        /// Returns a list of models matching the given criteria.
+        /// </summary>
+        /// <param name="searchParameters"><see cref="ModelSearchParameters"/></param>
+        /// <param name="ct">Cancellation token.</param>
+        public async Task<ModelSearchResponse> SearchModels(
+            ModelSearchParameters searchParameters, CancellationToken ct = default)
+        {
+            var parameters = searchParameters ?? new ModelSearchParameters();
+            return await _mindeeApi.SearchModels(parameters, ct);
+        }
+
+        /// <summary>
+        /// Returns a list of RAG documents matching the given criteria.
+        /// </summary>
+        /// <param name="searchParameters"><see cref="RagDocumentSearchResponse"/></param>
+        /// <param name="ct">Cancellation token.</param>
+        public async Task<RagDocumentSearchResponse> SearchRagDocuments(
+            RagDocumentSearchParameters searchParameters, CancellationToken ct = default)
+        {
+            return await _mindeeApi.SearchRagDocuments(searchParameters, ct);
+        }
+
+        /// <summary>
         /// Returns a list of models matching a criteria for the given API key.
         /// </summary>
         /// <param name="name">Name filter.</param>
         /// <param name="modelType">Model type filter.</param>
         /// <param name="ct">Cancellation token.</param>
-        /// <returns></returns>
+        [Obsolete("Use SearchModels(ModelSearchParameters parameters)")]
         public async Task<SearchResponse> SearchModels(
             string name = null, string modelType = null, CancellationToken ct = default)
         {
-            return await _mindeeApi.SearchModels(name, modelType, ct);
+            return await _mindeeApi.SearchModelsObsolete(
+                new ModelSearchParameters(name, modelType), ct);
         }
 
         /// <summary>

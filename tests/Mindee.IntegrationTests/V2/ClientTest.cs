@@ -1,10 +1,7 @@
-using System.Threading;
-using Mindee.Exceptions;
 using Mindee.Input;
 using Mindee.V2;
 using Mindee.V2.ClientOptions;
 using Mindee.V2.Exceptions;
-using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Inference;
 using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
@@ -165,12 +162,12 @@ namespace Mindee.IntegrationTests.V2
             Assert.NotNull(enqueueResponse.Job);
             Assert.NotNull(enqueueResponse.Job.Webhooks);
 
-            var jobId = enqueueResponse.Job.Id;
-            Assert.NotNull(jobId);
+            var jobUrl = enqueueResponse.Job.PollingUrl;
+            Assert.NotNull(jobUrl);
 
             await Task.Delay(200);
 
-            var jobResponse = await _client.GetJobAsync(jobId);
+            var jobResponse = await _client.GetJobFromUrlAsync(jobUrl);
             Assert.NotNull(jobResponse);
 
             var job = jobResponse.Job;
@@ -182,11 +179,11 @@ namespace Mindee.IntegrationTests.V2
             Assert.Equal(webhookId, webhook.Id);
             Assert.Equal("Processing", webhook.Status);
 
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 15; i++)
             {
                 await Task.Delay(1000);
 
-                var loopJobResponse = await _client.GetJobAsync(jobId);
+                var loopJobResponse = await _client.GetJobFromUrlAsync(jobUrl);
                 var loopWebhook = loopJobResponse.Job.Webhooks.First();
                 Assert.NotNull(loopWebhook);
                 Assert.Equal(webhookId, loopWebhook.Id);

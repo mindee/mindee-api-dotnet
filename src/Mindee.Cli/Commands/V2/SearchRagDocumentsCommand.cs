@@ -3,6 +3,7 @@ using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Mindee.V2.Parsing.Search;
+using Mindee.V2.Search.Model;
 using Mindee.V2.Search.Models;
 using SettingsV2 = Mindee.V2.Http.Settings;
 using V2Client = Mindee.V2.Client;
@@ -12,36 +13,27 @@ namespace Mindee.Cli.Commands.V2
     /// <summary>
     /// Lists all models for a given API key.
     /// </summary>
-    class SearchModelsCommand : BaseCommand
+    class SearchRagDocumentsCommand : BaseCommand
     {
-        private readonly Option<string?>? _nameOption;
-        private readonly Option<string?>? _modelTypeOption;
+        private readonly Option<string?>? _filenameOption;
+        private readonly Option<string> _modelIdOption;
         private readonly Option<bool>? _rawOption;
 
         /// <summary>
         ///
         /// </summary>
-        public SearchModelsCommand() : base("search-models", "Search available models.")
+        public SearchRagDocumentsCommand() : base("search-rag-docs", "Search available RAG documents for a given model.")
         {
-            _nameOption = new Option<string?>("--name", "-n")
-            {
-                Description = "Filter by model name partial match (case insensitive).",
-                DefaultValueFactory = _ => null
-            };
-            Options.Add(_nameOption);
+            _modelIdOption =
+                new Option<string>("--model-id", "-m") { Description = "Filter by model ID", Required = true };
+            Options.Add(_modelIdOption);
 
-            var availableModels = new List<string> { "extraction", "crop", "classification", "ocr", "split" };
-            var modelTypeDescription = """
-                                       Filter by exact model type (case sensitive).
-                                       Available options:
-                                       """;
-            modelTypeDescription += string.Join("\n - ", availableModels);
-            _modelTypeOption = new Option<string?>("--model-type", "-m")
+            _filenameOption = new Option<string?>("--filename", "-f")
             {
-                Description = modelTypeDescription,
+                Description = "Filter by file name partial match (case insensitive).",
                 DefaultValueFactory = _ => null
             };
-            Options.Add(_modelTypeOption);
+            Options.Add(_filenameOption);
 
             _rawOption = new Option<bool>("--raw-json", "-r")
             {
@@ -61,8 +53,8 @@ namespace Mindee.Cli.Commands.V2
 
             this.SetAction(parseResult =>
             {
-                var name = _nameOption != null ? parseResult.GetValue(_nameOption) : null;
-                var modelType = _modelTypeOption != null ? parseResult.GetValue(_modelTypeOption) : null;
+                var modelId = _modelIdOption != null ? parseResult.GetValue(_modelIdOption) : null;
+                var filename = _filenameOption != null ? parseResult.GetValue(_filenameOption) : null;
                 var raw = _rawOption != null && parseResult.GetValue(_rawOption);
                 var apiKey = parseResult.GetValue(ApiKeyOption);
                 V2Client mindeeClientV2;
@@ -82,7 +74,7 @@ namespace Mindee.Cli.Commands.V2
 
                 var handler = new Handler(mindeeClientV2);
                 return handler
-                    .InvokeAsync(name, modelType, raw)
+                    .InvokeAsync(modelId, filename, raw)
                     .GetAwaiter().GetResult();
             });
         }
@@ -102,14 +94,14 @@ namespace Mindee.Cli.Commands.V2
             /// <summary>
             /// Invoke the command.
             /// </summary>
-            /// <param name="name"></param>
-            /// <param name="modelType"></param>
+            /// <param name="modelId"></param>
+            /// <param name="filename"></param>
             /// <param name="raw"></param>
             /// <returns></returns>
-            public async Task<int> InvokeAsync(string? name, string? modelType, bool raw)
+            public async Task<int> InvokeAsync(string? modelId, string? filename, bool raw)
             {
-                var response = await mindeeClientV2.SearchModels(
-                    new ModelSearchParameters(name: name, modelType: modelType));
+                var response = await mindeeClientV2.SearchRagDocuments(
+                    new RagDocumentSearchParameters(modelId: modelId, filename: filename));
                 PrintToConsole(Console.Out, raw, response);
                 return 0;
             }
@@ -117,7 +109,7 @@ namespace Mindee.Cli.Commands.V2
             private void PrintToConsole(
                 TextWriter console,
                 bool raw,
-                ModelSearchResponse response)
+                RagDocumentSearchResponse response)
             {
                 console.Write(raw ? JsonSerializer.Serialize(response, _jsonSerializerOptions) : response.ToString());
             }

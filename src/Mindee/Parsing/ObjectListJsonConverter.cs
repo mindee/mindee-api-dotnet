@@ -4,10 +4,10 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
-namespace Mindee.V1.Parsing
+namespace Mindee.Parsing
 {
     /// <summary>
-    ///     Custom de-serializer for custom lists of objects.
+    /// De-serializer for custom lists of objects.
     /// </summary>
     public class ObjectListJsonConverter<TList, TItem> : JsonConverter<TList>
         where TList : IList<TItem>, new()

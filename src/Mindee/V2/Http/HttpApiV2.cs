@@ -10,6 +10,8 @@ using Mindee.V2.ClientOptions;
 using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
+using Mindee.V2.Search.Model;
+using Mindee.V2.Search.Models;
 
 namespace Mindee.V2.Http
 {
@@ -31,14 +33,15 @@ namespace Mindee.V2.Http
         ///     Do a prediction according parameters for a custom model defined in the Studio.
         /// </summary>
         /// <param name="parameters">
-        ///     <see cref="BaseParameters" />
+        ///     <see cref="BaseProductParameters" />
         /// </param>
         /// <param name="inputSource">
         ///     <see cref="LocalInputSource" />
         ///     <see cref="UrlInputSource" />
         /// </param>
         /// <param name="ct">Cancellation token.</param>
-        public abstract Task<JobResponse> ReqPostEnqueueAsync(InputSource inputSource, BaseParameters parameters, CancellationToken ct = default);
+        public abstract Task<JobResponse> ReqPostEnqueueAsync(
+            InputSource inputSource, BaseProductParameters parameters, CancellationToken ct = default);
 
         /// <summary>
         ///     Get a job for an enqueued document.
@@ -59,23 +62,43 @@ namespace Mindee.V2.Http
         /// </summary>
         /// <param name="inferenceId">Url to poll.</param>
         /// <param name="ct">Cancellation token.</param>
-        public abstract Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId, CancellationToken ct = default) where TResponse : BaseResponse, new();
+        public abstract Task<TResponse> ReqGetResultAsync<TResponse>(
+            string inferenceId, CancellationToken ct = default) where TResponse : BaseResponse, new();
 
         /// <summary>
         ///     Get a document inference.
         /// </summary>
         /// <param name="resultUrl">Url to poll.</param>
         /// <param name="ct">Cancellation token.</param>
-        public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl, CancellationToken ct = default) where TResponse : BaseResponse, new();
+        public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(
+            string resultUrl, CancellationToken ct = default) where TResponse : BaseResponse, new();
+
+        /// <summary>
+        /// Retrieves a list of models with the given criteria.
+        /// </summary>
+        /// <param name="searchParameters"><see cref="ModelSearchParameters"/></param>
+        /// <param name="ct">Cancellation token.</param>
+        /// <returns></returns>
+        public abstract Task<ModelSearchResponse> SearchModels(
+            ModelSearchParameters searchParameters, CancellationToken ct = default);
+
+        /// <summary>
+        /// Retrieves a list of RAG documents with the given criteria.
+        /// </summary>
+        /// <param name="searchParameters"><see cref="RagDocumentSearchParameters"/></param>
+        /// <param name="ct">Cancellation token.</param>
+        /// <returns></returns>
+        public abstract Task<RagDocumentSearchResponse> SearchRagDocuments(
+            RagDocumentSearchParameters searchParameters, CancellationToken ct = default);
 
         /// <summary>
         /// Retrieves a list of models available for a given API key.
         /// </summary>
-        /// <param name="name">Name of the model to search for.</param>
-        /// <param name="modelType">Type of the model to search for.</param>
+        /// <param name="parameters"><see cref="ModelSearchParameters"/></param>
         /// <param name="ct">Cancellation token.</param>
         /// <returns></returns>
-        public abstract Task<SearchResponse> SearchModels(string? name, string? modelType, CancellationToken ct = default);
+        public abstract Task<SearchResponse> SearchModelsObsolete(
+            ModelSearchParameters parameters, CancellationToken ct = default);
 
         /// <summary>
         ///     Get the error from the server return.

@@ -159,8 +159,8 @@ namespace Mindee.UnitTests.V2
             CancellationToken capturedToken = default;
             var predictable = new Mock<HttpApiV2>();
             predictable.Setup(x => x.ReqPostEnqueueAsync(
-                It.IsAny<InputSource>(), It.IsAny<BaseParameters>(), It.IsAny<CancellationToken>())
-            ).Callback<InputSource, BaseParameters, CancellationToken>(
+                It.IsAny<InputSource>(), It.IsAny<BaseProductParameters>(), It.IsAny<CancellationToken>())
+            ).Callback<InputSource, BaseProductParameters, CancellationToken>(
                 (_, _, ct) => capturedToken = ct)
             .ReturnsAsync(new JobResponse());
 

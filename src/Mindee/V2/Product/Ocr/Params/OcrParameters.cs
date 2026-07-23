@@ -7,7 +7,7 @@ namespace Mindee.V2.Product.Ocr.Params
     ///     Parameters accepted by the OCR utility v2 endpoint.
     /// </summary>
     [ProductAttributes("ocr")]
-    public class OcrParameters : BaseParameters
+    public class OcrParameters : BaseProductParameters
     {
 
         /// <summary>

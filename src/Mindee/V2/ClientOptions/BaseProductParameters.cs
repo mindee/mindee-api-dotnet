@@ -3,9 +3,9 @@ using System.Collections.Generic;
 namespace Mindee.V2.ClientOptions
 {
     /// <summary>
-    ///     Parameters for running an inference.
+    ///     Base parameters for enqueueing a document.
     /// </summary>
-    public abstract class BaseParameters
+    public abstract class BaseProductParameters
     {
         /// <summary>
         ///     Optional alias for the file.
@@ -23,15 +23,12 @@ namespace Mindee.V2.ClientOptions
         public List<string> WebhookIds { get; }
 
         /// <summary>
+        /// Base constructor.
         /// </summary>
-        /// <param name="modelId">ID of the model<see cref="ModelId" /></param>
-        /// <param name="alias">
-        /// <see cref="Alias" />
-        /// </param>
-        /// <param name="webhookIds">
-        ///     <see cref="WebhookIds" />
-        /// </param>
-        protected BaseParameters(
+        /// <param name="modelId"><see cref="ModelId" /></param>
+        /// <param name="alias"> <see cref="Alias" /></param>
+        /// <param name="webhookIds"> <see cref="WebhookIds" /></param>
+        protected BaseProductParameters(
             string modelId,
             string alias,
             List<string> webhookIds
