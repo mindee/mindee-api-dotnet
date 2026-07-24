@@ -91,7 +91,7 @@ namespace Mindee.V2.Http
             return response ?? throw new MindeeException("Couldn't deserialize ModelSearchResponse.");
         }
 
-        public override async Task<RagDocumentSearchResponse> SearchRagDocuments(
+        public override async Task<RagDocumentSearchResponse> SearchRagDocumentsAsync(
             RagDocumentSearchParameters searchParameters, CancellationToken ct = default)
         {
             var request = new RestRequest("v2/search/rag-documents");

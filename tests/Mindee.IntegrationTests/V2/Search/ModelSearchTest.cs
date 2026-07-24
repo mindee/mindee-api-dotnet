@@ -18,7 +18,7 @@ namespace Mindee.IntegrationTests.V2.Search
         [Fact(Timeout = 180000)]
         public async Task ModelSearch_mustHaveResults()
         {
-            var response = await _client.SearchModels(new ModelSearchParameters());
+            var response = await _client.SearchModelsAsync(new ModelSearchParameters());
             Assert.NotNull(response);
             Assert.NotNull(response.Models);
             Assert.NotEmpty(response.Models);
@@ -30,7 +30,7 @@ namespace Mindee.IntegrationTests.V2.Search
         [Fact(Timeout = 180000)]
         public async Task ModelSearch_mustReturnEmpty()
         {
-            var response = await _client.SearchModels(
+            var response = await _client.SearchModelsAsync(
                 new ModelSearchParameters(name: "je n'existe pas tralala"));
             Assert.NotNull(response);
             Assert.NotNull(response.Models);

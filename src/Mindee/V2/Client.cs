@@ -14,6 +14,7 @@ using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
+using Mindee.V2.Product.Extraction.RagDocuments;
 using Mindee.V2.Search.Model;
 using Mindee.V2.Search.Models;
 using SettingsV2 = Mindee.V2.Http.Settings;
@@ -249,11 +250,51 @@ namespace Mindee.V2
         /// </summary>
         /// <param name="searchParameters"><see cref="ModelSearchParameters"/></param>
         /// <param name="ct">Cancellation token.</param>
-        public async Task<ModelSearchResponse> SearchModels(
+        public async Task<ModelSearchResponse> SearchModelsAsync(
             ModelSearchParameters searchParameters, CancellationToken ct = default)
         {
             var parameters = searchParameters ?? new ModelSearchParameters();
             return await _mindeeApi.SearchModels(parameters, ct);
+        }
+
+        /// <summary>
+        /// Add a document to the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="parameters"><see cref="RagDocumentUploadParameters"/></param>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<RagAnnotationResponse> UploadExtractionRagDocument(
+            RagDocumentUploadParameters parameters, LocalInputSource inputSource, CancellationToken ct = default)
+        {
+            return await _mindeeApi.UploadExtractionRagDocumentAsync(parameters, inputSource, ct);
+        }
+
+        /// <summary>
+        /// Get a document's info and annotations from the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<RagAnnotationResponse> GetExtractionRagDocument(
+            string documentId, CancellationToken ct = default)
+        {
+            return await _mindeeApi.GetExtractionRagAnnotationAsync(documentId, ct);
+        }
+
+        /// <summary>
+        /// Update a document's annotations in the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<RagAnnotationResponse> UpdateExtractionRagAnnotationAsync(
+            RagDocumentAnnotationParameters parameters, CancellationToken ct = default)
+        {
+            return await _mindeeApi.UpdateExtractionRagAnnotationAsync(parameters, ct);
         }
 
         /// <summary>
@@ -264,7 +305,7 @@ namespace Mindee.V2
         public async Task<RagDocumentSearchResponse> SearchRagDocuments(
             RagDocumentSearchParameters searchParameters, CancellationToken ct = default)
         {
-            return await _mindeeApi.SearchRagDocuments(searchParameters, ct);
+            return await _mindeeApi.SearchRagDocumentsAsync(searchParameters, ct);
         }
 
         /// <summary>

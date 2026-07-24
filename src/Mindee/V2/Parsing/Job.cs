@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Mindee.V2.Parsing
 {
     /// <summary>
-    ///     Information on the processing of a file sent to the Mindee API.
+    /// Information on the processing of a file sent to the Mindee API.
     /// </summary>
     public class Job
     {
