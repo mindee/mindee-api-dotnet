@@ -10,6 +10,8 @@ using Mindee.V2.ClientOptions;
 using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
+using Mindee.V2.Product.Extraction.RagDocuments;
+using Mindee.V2.Product.Extraction.RagDocuments.Params;
 using Mindee.V2.Search.Model;
 using Mindee.V2.Search.Models;
 
@@ -90,6 +92,48 @@ namespace Mindee.V2.Http
         /// <returns></returns>
         public abstract Task<RagDocumentSearchResponse> SearchRagDocumentsAsync(
             RagDocumentSearchParameters searchParameters, CancellationToken ct = default);
+
+        /// <summary>
+        /// Add a document to the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="localInputSource"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public abstract Task<RagAnnotationResponse> PostExtractionRagDocumentAsync(
+            RagDocumentUploadParameters parameters, LocalInputSource localInputSource, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get a document's info and annotations from the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public abstract Task<RagAnnotationResponse> GetExtractionRagAnnotationAsync(
+            string documentId, CancellationToken ct = default);
+
+        /// <summary>
+        /// Update a document's annotations in the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public abstract Task<RagAnnotationResponse> PatchExtractionRagAnnotationAsync(
+            RagDocumentAnnotationParameters parameters, CancellationToken ct = default);
+
+        /// <summary>
+        /// Deletes a document from the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public abstract Task<bool> DeleteExtractionRagDocumentAsync(
+            string documentId, CancellationToken ct = default);
+
 
         /// <summary>
         /// Retrieves a list of models available for a given API key.

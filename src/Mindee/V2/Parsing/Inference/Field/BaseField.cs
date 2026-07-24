@@ -9,6 +9,18 @@ namespace Mindee.V2.Parsing.Inference.Field
     public class BaseField
     {
         /// <summary>
+        ///     Confidence associated with the field.
+        /// </summary>
+        [JsonPropertyName("confidence")]
+        public FieldConfidence? Confidence { get; set; }
+
+        /// <summary>
+        ///     List of the location candidates for the value.
+        /// </summary>
+        [JsonPropertyName("locations")]
+        public List<FieldLocation> Locations { get; set; }
+
+        /// <summary>
         ///     Base field.
         /// </summary>
         /// <param name="confidence">
@@ -22,17 +34,5 @@ namespace Mindee.V2.Parsing.Inference.Field
             Confidence = confidence;
             Locations = locations;
         }
-
-        /// <summary>
-        ///     Confidence associated with the field.
-        /// </summary>
-        [JsonPropertyName("confidence")]
-        public FieldConfidence? Confidence { get; set; }
-
-        /// <summary>
-        ///     List of the location candidates for the value.
-        /// </summary>
-        [JsonPropertyName("locations")]
-        public List<FieldLocation> Locations { get; set; }
     }
 }

@@ -3,27 +3,6 @@ using System.Text.Json.Serialization;
 namespace Mindee.V2.Parsing.Inference.Field
 {
     /// <summary>
-    ///     Possible field types.
-    /// </summary>
-    public enum FieldType
-    {
-        /// <summary>
-        ///     Simple field.
-        /// </summary>
-        SimpleField,
-
-        /// <summary>
-        ///     Object field.
-        /// </summary>
-        ObjectField,
-
-        /// <summary>
-        ///     List field.
-        /// </summary>
-        ListField
-    }
-
-    /// <summary>
     ///     Return the field class dynamically.
     /// </summary>
     [JsonConverter(typeof(DynamicFieldJsonConverter))]

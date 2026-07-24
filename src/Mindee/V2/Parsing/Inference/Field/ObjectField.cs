@@ -13,7 +13,13 @@ namespace Mindee.V2.Parsing.Inference.Field
         private Dictionary<string, ObjectField> _objectFields;
 
         /// <summary>
-        ///     Object field.
+        /// Sub-fields of the field.
+        /// </summary>
+        [JsonPropertyName("fields")]
+        public InferenceFields Fields { get; set; }
+
+        /// <summary>
+        /// Default constructor.
         /// </summary>
         /// <param name="confidence">
         ///     <see cref="BaseField.Confidence" />
@@ -22,12 +28,6 @@ namespace Mindee.V2.Parsing.Inference.Field
         ///     <see cref="BaseField.Locations" />
         /// </param>
         public ObjectField(FieldConfidence? confidence, List<FieldLocation> locations) : base(confidence, locations) { }
-
-        /// <summary>
-        ///     Sub-fields of the field.
-        /// </summary>
-        [JsonPropertyName("fields")]
-        public InferenceFields Fields { get; set; }
 
         /// <summary>
         ///     Simple sub-fields of the field.

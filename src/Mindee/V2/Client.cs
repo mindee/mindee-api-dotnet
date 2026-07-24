@@ -14,6 +14,8 @@ using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
+using Mindee.V2.Product.Extraction.RagDocuments;
+using Mindee.V2.Product.Extraction.RagDocuments.Params;
 using Mindee.V2.Search.Model;
 using Mindee.V2.Search.Models;
 using SettingsV2 = Mindee.V2.Http.Settings;
@@ -257,6 +259,83 @@ namespace Mindee.V2
         }
 
         /// <summary>
+        /// Not recommended for general use, prefer UploadAndGetExtractionRagDocumentAsync.
+        /// Add a document to the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="parameters"><see cref="RagDocumentUploadParameters"/></param>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<RagAnnotationResponse> UploadExtractionRagDocumentAsync(
+            RagDocumentUploadParameters parameters, LocalInputSource inputSource, CancellationToken ct = default)
+        {
+            return await _mindeeApi.PostExtractionRagDocumentAsync(parameters, inputSource, ct);
+        }
+
+        /// <summary>
+        /// Add a document to the RAG database and return the initial annotation.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="parameters"><see cref="RagDocumentUploadParameters"/></param>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="pollingOptions"><see cref="PollingOptions"/></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<RagAnnotationResponse> UploadAndGetExtractionRagDocumentAsync(
+            RagDocumentUploadParameters parameters
+            , LocalInputSource inputSource
+            , PollingOptions pollingOptions
+            , CancellationToken ct = default)
+        {
+            pollingOptions ??= new PollingOptions();
+
+            var uploadResponse = await UploadExtractionRagDocumentAsync(
+                parameters, inputSource, ct);
+
+            return await PollForExtractionRagDocumentAsync(uploadResponse, pollingOptions, ct);
+        }
+
+        /// <summary>
+        /// Get a document's info and annotations from the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<RagAnnotationResponse> GetExtractionRagDocumentAsync(
+            string documentId, CancellationToken ct = default)
+        {
+            return await _mindeeApi.GetExtractionRagAnnotationAsync(documentId, ct);
+        }
+
+        /// <summary>
+        /// Update a document's annotations in the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<RagAnnotationResponse> UpdateExtractionRagAnnotationAsync(
+            RagDocumentAnnotationParameters parameters, CancellationToken ct = default)
+        {
+            return await _mindeeApi.PatchExtractionRagAnnotationAsync(parameters, ct);
+        }
+
+        /// <summary>
+        /// Get a document's info and annotations from the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteExtractionRagDocumentAsync(
+            string documentId, CancellationToken ct = default)
+        {
+            return await _mindeeApi.DeleteExtractionRagDocumentAsync(documentId, ct);
+        }
+
+        /// <summary>
         /// Returns a list of RAG documents matching the given criteria.
         /// </summary>
         /// <param name="searchParameters"><see cref="RagDocumentSearchResponse"/></param>
@@ -282,18 +361,45 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        ///     Poll for results until the prediction is retrieved or the max amount of attempts is reached.
+        /// Poll until the annotation results are ready or the max number of attempts is reached.
         /// </summary>
-        /// <param name="enqueueResponse">
-        ///     <see cref="JobResponse" />
-        /// </param>
-        /// <param name="pollingOptions">
-        ///     <see cref="PollingOptions" />
-        /// </param>
-        /// <param name="ct">Cancellation token.</param>
-        /// <returns>
-        ///     <see cref="ExtractionResponse" />
-        /// </returns>
+        /// <exception cref="MindeeException">Thrown when maxRetries is reached and the annotation isn't ready.</exception>
+        private async Task<RagAnnotationResponse> PollForExtractionRagDocumentAsync(
+            RagAnnotationResponse uploadResponse, PollingOptions pollingOptions, CancellationToken ct = default)
+        {
+            var maxRetries = pollingOptions.MaxRetries + 1;
+            await Task.Delay(pollingOptions.InitialDelayMilliSec, ct);
+            var documentId = uploadResponse.Id;
+
+            var retryCount = 1;
+            while (retryCount < maxRetries)
+            {
+                retryCount++;
+                var retryDelayMilliSec = pollingOptions.GetRetryDelayMilliSec(retryCount);
+                await Task.Delay(retryDelayMilliSec, ct);
+                _logger?.LogInformation(
+                    "Attempting to retrieve: {RetryCount} of {MaxRetries}",
+                    retryCount,
+                    maxRetries);
+
+                var response = await GetExtractionRagDocumentAsync(documentId, ct);
+
+                switch (response.Status)
+                {
+                    case "Processing":
+                        continue;
+                    case "Failed":
+                        throw new MindeeException("Job failed without an error payload.");
+                    default:
+                        return response;
+                }
+            }
+            throw new MindeeException($"Could not complete after {retryCount} attempts.");
+        }
+
+        /// <summary>
+        /// Poll until the inference results are retrieved or the max number of attempts is reached.
+        /// </summary>
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
         private async Task<TResponse> PollForResultsAsync<TResponse>(
             JobResponse enqueueResponse,

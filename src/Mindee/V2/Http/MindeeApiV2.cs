@@ -14,6 +14,8 @@ using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product;
+using Mindee.V2.Product.Extraction.RagDocuments;
+using Mindee.V2.Product.Extraction.RagDocuments.Params;
 using Mindee.V2.Search.Model;
 using Mindee.V2.Search.Models;
 using RestSharp;
@@ -63,7 +65,6 @@ namespace Mindee.V2.Http
             var request = new RestRequest(
                 $"v2/products/{productAttributes.Slug}/enqueue", Method.Post);
 
-            request.AddParameter("model_id", parameters.ModelId);
             AddPredictRequestParameters(inputSource, parameters, request);
 
             Logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
@@ -71,7 +72,6 @@ namespace Mindee.V2.Http
             ct.ThrowIfCancellationRequested();
             return HandleJobResponse(response);
         }
-
 
         public override async Task<ModelSearchResponse> SearchModelsAsync(
             ModelSearchParameters searchParameters, CancellationToken ct = default)
@@ -107,6 +107,66 @@ namespace Mindee.V2.Http
 
             var response = JsonSerializer.Deserialize<RagDocumentSearchResponse>(GetResponseContent(restResponse));
             return response ?? throw new MindeeException("Couldn't deserialize RagDocumentSearchResponse.");
+        }
+
+        public override async Task<RagAnnotationResponse> PostExtractionRagDocumentAsync(
+            RagDocumentUploadParameters parameters, LocalInputSource localInputSource, CancellationToken ct = default)
+        {
+            var request = new RestRequest("/v2/products/extraction/rag-documents", Method.Post);
+            request.AddFile(
+                "file",
+                localInputSource.FileBytes,
+                localInputSource.Filename);
+
+            foreach (KeyValuePair<string, string> entry in parameters.GetRequestParameters())
+            {
+                request.AddParameter(entry.Key, entry.Value);
+            }
+            var restResponse = await _httpClient.ExecuteGetAsync(request, ct);
+            ct.ThrowIfCancellationRequested();
+
+            var response = JsonSerializer.Deserialize<RagAnnotationResponse>(GetResponseContent(restResponse));
+            return response ?? throw new MindeeException("Couldn't deserialize RagDocumentSearchResponse.");
+        }
+
+        public override async Task<RagAnnotationResponse> GetExtractionRagAnnotationAsync(
+            string documentId, CancellationToken ct = default)
+        {
+            var request = new RestRequest($"/v2/products/extraction/rag-documents/{documentId}");
+
+            var restResponse = await _httpClient.ExecuteGetAsync(request, ct);
+            ct.ThrowIfCancellationRequested();
+
+            var response = JsonSerializer.Deserialize<RagAnnotationResponse>(GetResponseContent(restResponse));
+            return response ?? throw new MindeeException("Couldn't deserialize RagDocumentSearchResponse.");
+        }
+
+        public override async Task<RagAnnotationResponse> PatchExtractionRagAnnotationAsync(
+            RagDocumentAnnotationParameters parameters, CancellationToken ct = default)
+        {
+            var request = new RestRequest("/v2/products/extraction/rag-documents", Method.Patch);
+
+            foreach (KeyValuePair<string, string> entry in parameters.GetRequestParameters())
+            {
+                request.AddParameter(entry.Key, entry.Value);
+            }
+            var restResponse = await _httpClient.ExecuteGetAsync(request, ct);
+            ct.ThrowIfCancellationRequested();
+
+            var response = JsonSerializer.Deserialize<RagAnnotationResponse>(GetResponseContent(restResponse));
+            return response ?? throw new MindeeException("Couldn't deserialize RagDocumentSearchResponse.");
+        }
+
+        public override async Task<bool> DeleteExtractionRagDocumentAsync(
+            string documentId, CancellationToken ct = default)
+        {
+            var request = new RestRequest(
+                $"/v2/products/extraction/rag-documents/{documentId}", Method.Delete);
+
+            var restResponse = await _httpClient.ExecuteGetAsync(request, ct);
+            ct.ThrowIfCancellationRequested();
+
+            return restResponse.IsSuccessful;
         }
 
         public override async Task<SearchResponse> SearchModelsObsolete(
