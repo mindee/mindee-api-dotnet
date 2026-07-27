@@ -17,7 +17,7 @@ namespace Mindee.UnitTests.V1.Product.Us.BankCheck
             Assert.Null(docPrediction.RoutingNumber.Value);
             Assert.Null(docPrediction.AccountNumber.Value);
             Assert.Null(docPrediction.CheckNumber.Value);
-            var pagePrediction = response.Document.Inference.Pages.First().Prediction;
+            var pagePrediction = response.Document.Inference.Pages[0].Prediction;
             Assert.Null(pagePrediction.CheckPosition.Polygon);
             Assert.Null(pagePrediction.CheckPosition.BoundingBox);
             Assert.Empty(pagePrediction.SignaturesPositions);

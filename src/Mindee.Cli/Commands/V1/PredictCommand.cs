@@ -10,13 +10,13 @@ using V1Client = Mindee.V1.Client;
 
 namespace Mindee.Cli.Commands.V1
 {
-    internal struct CommandOptions(string name, string description, bool allWords, bool fullText, bool sync, bool async)
+    internal struct CommandOptions(string name, string description, bool allWords, bool fullText, bool sync, bool isAsync)
     {
         public readonly string Name = name;
         public readonly string Description = description;
         public readonly bool AllWords = allWords;
         public readonly bool FullText = fullText;
-        public readonly bool Async = async;
+        public readonly bool IsAsync = isAsync;
         public readonly bool Sync = sync;
     }
 
@@ -72,7 +72,7 @@ namespace Mindee.Cli.Commands.V1
                 Options.Add(_fullTextOption);
             }
 
-            switch (options.Async)
+            switch (options.IsAsync)
             {
                 case true when !options.Sync:
                     {

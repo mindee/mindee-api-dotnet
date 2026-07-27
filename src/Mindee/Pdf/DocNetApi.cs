@@ -101,7 +101,7 @@ namespace Mindee.Pdf
             }
         }
 
-        private ushort GetTotalPagesNumber(byte[] file)
+        private static ushort GetTotalPagesNumber(byte[] file)
         {
             try
             {

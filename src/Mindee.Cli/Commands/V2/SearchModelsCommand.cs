@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Search.Models;
-using SettingsV2 = Mindee.V2.Http.Settings;
 using V2Client = Mindee.V2.Client;
 
 namespace Mindee.Cli.Commands.V2
@@ -19,7 +18,7 @@ namespace Mindee.Cli.Commands.V2
         private readonly Option<bool>? _rawOption;
 
         /// <summary>
-        ///
+        /// Creates a new instance of <see cref="SearchModelsCommand"/>.
         /// </summary>
         public SearchModelsCommand() : base("search-models", "Search available models.")
         {
@@ -52,7 +51,7 @@ namespace Mindee.Cli.Commands.V2
         }
 
         /// <summary>
-        ///
+        /// Configures an action.
         /// </summary>
         /// <param name="services">Service provider for dependency resolution</param>
         public void ConfigureAction(IServiceProvider services)

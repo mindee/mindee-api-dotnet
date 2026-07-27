@@ -25,9 +25,6 @@ namespace Mindee.UnitTests.V1.Product.Us.PayrollCheckRegister
             var docPrediction = response.Document.Inference.Prediction;
             Assert.Equal(13, docPrediction.Payments.Count);
             Assert.Equal("Economists For Hire, LLC", docPrediction.CompanyName.Value);
-
-            // broken output, need to add recursive table support
-            // Console.Out.Write(response.Document.ToString());
         }
 
         [Fact]

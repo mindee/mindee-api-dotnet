@@ -9,6 +9,7 @@ namespace Mindee.V1.Parsing.Standard
     public abstract class BaseField
     {
         /// <summary>
+        /// Base for V1 fields.
         /// </summary>
         /// <param name="confidence">
         ///     <see cref="Confidence" />
@@ -27,6 +28,7 @@ namespace Mindee.V1.Parsing.Standard
         }
 
         /// <summary>
+        ///     Empty base field.
         /// </summary>
         protected BaseField() { }
 

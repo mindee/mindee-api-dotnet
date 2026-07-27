@@ -18,7 +18,7 @@ namespace Mindee.UnitTests.V2.Product
             var productParams = new ExtractionParameters("invalid-model-id");
             Assert.Equal("invalid-model-id", productParams.ModelId);
 
-            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttributes>();
+            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttribute>();
             Assert.Equal("extraction", productAttributes?.Slug);
         }
 
@@ -78,8 +78,8 @@ namespace Mindee.UnitTests.V2.Product
             Assert.Equal(21, fields.Count);
             Assert.Single(fields["taxes"].ListField.Items);
             Assert.NotNull(fields["taxes"].ToString());
-            Assert.Equal(3, fields["taxes"].ListField.Items.First().ObjectField.Fields.Count);
-            Assert.Equal(31.5, fields["taxes"].ListField.Items.First().ObjectField.Fields["base"].SimpleField.Value);
+            Assert.Equal(3, fields["taxes"].ListField.Items[0].ObjectField.Fields.Count);
+            Assert.Equal(31.5, fields["taxes"].ListField.Items[0].ObjectField.Fields["base"].SimpleField.Value);
             Assert.Equal(195.0, fields["total_net"].SimpleField.Value);
             Assert.Null(fields["tips_gratuity"].SimpleField.Value);
 
@@ -127,9 +127,9 @@ namespace Mindee.UnitTests.V2.Product
             var nestedList = lvl2["sub_object_object_sub_object_list"].ListField!;
             var items = nestedList.Items;
             Assert.NotEmpty(items);
-            Assert.NotNull(items.First().ObjectField);
+            Assert.NotNull(items[0].ObjectField);
 
-            var firstItem = items.First().ObjectField!;
+            var firstItem = items[0].ObjectField!;
             var deepSimple = firstItem.Fields["sub_object_object_sub_object_list_simple"].SimpleField!;
             Assert.Equal("value_9", deepSimple.Value);
         }
@@ -292,8 +292,8 @@ namespace Mindee.UnitTests.V2.Product
             Assert.NotNull(simpleField.Locations);
             List<FieldLocation> locations = simpleField.Locations;
             Assert.Single(locations);
-            Assert.Equal(0, locations.First().Page);
-            var polygon = locations.First().Polygon;
+            Assert.Equal(0, locations[0].Page);
+            var polygon = locations[0].Polygon;
             Assert.Equal(new Point(0, 0), polygon[0]);
             Assert.Equal(new Point(0, 0), polygon[1]);
             Assert.Equal(new Point(1, 1), polygon[2]);
@@ -399,7 +399,7 @@ namespace Mindee.UnitTests.V2.Product
             return localResponse.DeserializeResponse<ExtractionResponse>();
         }
 
-        private void AssertInferenceResponse(ExtractionResponse response)
+        private static void AssertInferenceResponse(ExtractionResponse response)
         {
             Assert.NotNull(response.Inference);
             Assert.NotNull(response.Inference.Id);

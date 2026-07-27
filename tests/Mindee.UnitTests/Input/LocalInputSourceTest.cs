@@ -291,10 +291,9 @@ namespace Mindee.UnitTests.Input
         public void ApplyPageOperation_KeepFirstPage_Should_Work()
         {
             var inputSource = new LocalInputSource(Constants.RootDir + "file_types/pdf/multipage.pdf");
-            var pageOptions = new PageOptions(
-                operation: PageOptionsOperation.KeepOnly
-                , pageIndexes: new short[] { 0 });
-            inputSource.ApplyPageOptions(pageOptions);
+            var pageOptions = new PageOptions(pageIndexes: [0], operation: PageOptionsOperation.KeepOnly);
+            var exception = Record.Exception(() => inputSource.ApplyPageOptions(pageOptions));
+            Assert.Null(exception);
         }
 
         [Fact]
@@ -306,10 +305,11 @@ namespace Mindee.UnitTests.Input
             var pageOptions = new PageOptions(
                 operation: PageOptionsOperation.Remove,
                 onMinPages: 10,
-                pageIndexes: new short[] { 0, 1, 2, 3, 4 }
+                pageIndexes: [0, 1, 2, 3, 4]
             );
 
-            initialWithText.ApplyPageOptions(pageOptions);
+            var exception = Record.Exception(() => initialWithText.ApplyPageOptions(pageOptions));
+            Assert.Null(exception);
         }
 
         [Fact]
@@ -322,9 +322,11 @@ namespace Mindee.UnitTests.Input
             var pageOptions = new PageOptions(
                 operation: PageOptionsOperation.KeepOnly,
                 onMinPages: 2,
-                pageIndexes: new short[] { 0, -2, -1 }
+                pageIndexes: [0, -2, -1]
             );
-            initialWithText.ApplyPageOptions(pageOptions);
+
+            var exception = Record.Exception(() => initialWithText.ApplyPageOptions(pageOptions));
+            Assert.Null(exception);
         }
     }
 }

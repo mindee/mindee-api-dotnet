@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Mindee.Exceptions;
 using Mindee.V1.Parsing.Standard;
@@ -39,7 +38,7 @@ namespace Mindee.V1.Parsing.Generated
                 throw new MindeeException("Cannot convert a list feature into a StringField.");
             }
 
-            return this.First().AsStringField();
+            return this[0].AsStringField();
         }
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace Mindee.V1.Parsing.Generated
                 throw new MindeeException("Cannot convert a list feature into an AmountField.");
             }
 
-            return this.First().AsAmountField();
+            return this[0].AsAmountField();
         }
 
         /// <summary>
@@ -69,7 +68,7 @@ namespace Mindee.V1.Parsing.Generated
                 throw new MindeeException("Cannot convert a list feature into a DecimalField.");
             }
 
-            return this.First().AsDecimalField();
+            return this[0].AsDecimalField();
         }
 
         /// <summary>
@@ -84,7 +83,7 @@ namespace Mindee.V1.Parsing.Generated
                 throw new MindeeException("Cannot convert a list feature into a DateField.");
             }
 
-            return this.First().AsDateField();
+            return this[0].AsDateField();
         }
 
         /// <summary>
@@ -99,7 +98,7 @@ namespace Mindee.V1.Parsing.Generated
                 throw new MindeeException("Cannot convert a list feature into a ClassificationField.");
             }
 
-            return this.First().AsClassificationField();
+            return this[0].AsClassificationField();
         }
 
         /// <summary>
@@ -114,7 +113,7 @@ namespace Mindee.V1.Parsing.Generated
                 throw new MindeeException("Cannot convert a list feature into a BooleanField.");
             }
 
-            return this.First().AsBooleanField();
+            return this[0].AsBooleanField();
         }
 
         /// <summary>
@@ -140,7 +139,7 @@ namespace Mindee.V1.Parsing.Generated
             }
             else
             {
-                result.Append($"\n{this.First().ToString(2)}");
+                result.Append($"\n{this[0].ToString(2)}");
             }
 
             return result.ToString();

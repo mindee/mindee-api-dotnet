@@ -14,7 +14,7 @@ namespace Mindee.Parsing
         ///     Load from a string.
         /// </summary>
         /// <param name="input">Will be decoded as UTF-8.</param>
-        public BaseLocalResponse(string input)
+        protected BaseLocalResponse(string input)
         {
             FileBytes = Encoding.UTF8.GetBytes(input.Replace("\r", "").Replace("\n", ""));
         }
@@ -23,7 +23,7 @@ namespace Mindee.Parsing
         ///     Load from a file.
         /// </summary>
         /// <param name="input">Will be decoded as UTF-8.</param>
-        public BaseLocalResponse(FileInfo input)
+        protected BaseLocalResponse(FileInfo input)
         {
             FileBytes = Encoding.UTF8.GetBytes(
                 File.ReadAllText(input.FullName).Replace("\r", "").Replace("\n", ""));

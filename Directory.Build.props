@@ -18,6 +18,13 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <!-- Obsolete warnings are more of a warning for users than for us. -->
+    <NoWarn>$(NoWarn);S1133</NoWarn>
+    <!-- Async file reads (incompatible with 472/48) -->
+    <NoWarn>$(NoWarn);S6966</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <AssemblyFileVersion>$(Version)</AssemblyFileVersion>
     <AssemblyProduct>Mindee API Helper Library.</AssemblyProduct>
@@ -91,4 +98,11 @@
     <PublicSign>false</PublicSign>
     <NoWarn>$(NoWarn);CS8002</NoWarn>
   </PropertyGroup>
+
+  <!-- Analyzers and Bug Spotters (DevDependencies) -->
+  <ItemGroup>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.30.0.144632" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.15.0" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="SecurityCodeScan.VS2019" Version="5.6.7" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+  </ItemGroup>
 </Project>

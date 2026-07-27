@@ -19,7 +19,7 @@ namespace Mindee.V2.FileOperations
         private readonly LocalInputSource _localInput;
 
         /// <summary>
-        ///
+        /// Crop object from an input source.
         /// </summary>
         /// <param name="inputSource"></param>
         public Crop(LocalInputSource inputSource)

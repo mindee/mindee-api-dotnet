@@ -57,7 +57,7 @@ namespace Mindee.UnitTests.V1.Product.FinancialDocument
                 File.ReadAllText(Constants.V1ProductDir + "financial_document/response_v1/summary_page0_invoice.rst");
             Assert.Equal(
                 expected,
-                response.Document.Inference.Pages.First().ToString());
+                response.Document.Inference.Pages[0].ToString());
         }
 
         [Fact]
@@ -79,7 +79,7 @@ namespace Mindee.UnitTests.V1.Product.FinancialDocument
                 File.ReadAllText(Constants.V1ProductDir + "financial_document/response_v1/summary_page0_receipt.rst");
             Assert.Equal(
                 expected,
-                response.Document.Inference.Pages.First().ToString());
+                response.Document.Inference.Pages[0].ToString());
         }
 
         private static async Task<PredictResponse<FinancialDocumentV1>> GetPrediction(string name)

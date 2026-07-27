@@ -31,7 +31,7 @@ namespace Mindee.UnitTests.V1.Product.Generated
                 }
                 else
                 {
-                    Assert.Null(field.Value.First()["value"].GetString());
+                    Assert.Null(field.Value[0]["value"].GetString());
                 }
             }
         }
@@ -46,22 +46,22 @@ namespace Mindee.UnitTests.V1.Product.Generated
             // Direct access to the dictionary
 
             Assert.False(features["address"].IsList);
-            Assert.Equal("AVDA DE MADRID S-N MADRID MADRID", features["address"].First()["value"].GetString());
+            Assert.Equal("AVDA DE MADRID S-N MADRID MADRID", features["address"][0]["value"].GetString());
 
             Assert.False(features["birth_date"].IsList);
-            Assert.Equal("1980-01-01", features["birth_date"].First()["value"].GetString());
+            Assert.Equal("1980-01-01", features["birth_date"][0]["value"].GetString());
 
             Assert.False(features["birth_place"].IsList);
-            Assert.Equal("MADRID", features["birth_place"].First()["value"].GetString());
+            Assert.Equal("MADRID", features["birth_place"][0]["value"].GetString());
 
             Assert.False(features["country_of_issue"].IsList);
-            Assert.Equal("ESP", features["country_of_issue"].First()["value"].GetString());
+            Assert.Equal("ESP", features["country_of_issue"][0]["value"].GetString());
 
             Assert.False(features["document_number"].IsList);
-            Assert.Equal("99999999R", features["document_number"].First()["value"].GetString());
+            Assert.Equal("99999999R", features["document_number"][0]["value"].GetString());
 
             Assert.True(features["given_names"].IsList);
-            Assert.Equal("CARMEN", features["given_names"].First()["value"].GetString());
+            Assert.Equal("CARMEN", features["given_names"][0]["value"].GetString());
 
             Assert.True(features["surnames"].IsList);
             Assert.Equal("ESPAÑOLA", features["surnames"][0]["value"].GetString());
@@ -100,15 +100,15 @@ namespace Mindee.UnitTests.V1.Product.Generated
             // Direct access to the dictionary
             var customerName = features["customer_name"];
             Assert.False(customerName.IsList);
-            Assert.Equal("JIRO DOI", customerName.First()["value"].ToString());
-            Assert.Equal("JIRO DOI", customerName.First().TryGetString("value"));
-            Assert.Equal("Jiro Doi", customerName.First()["raw_value"].ToString());
-            Assert.Equal("Jiro Doi", customerName.First()["raw_value"].GetString());
-            Assert.Equal(0.87, customerName.First()["confidence"].GetDouble());
-            Assert.Equal(1, customerName.First()["page_id"].GetInt16());
+            Assert.Equal("JIRO DOI", customerName[0]["value"].ToString());
+            Assert.Equal("JIRO DOI", customerName[0].TryGetString("value"));
+            Assert.Equal("Jiro Doi", customerName[0]["raw_value"].ToString());
+            Assert.Equal("Jiro Doi", customerName[0]["raw_value"].GetString());
+            Assert.Equal(0.87, customerName[0]["confidence"].GetDouble());
+            Assert.Equal(1, customerName[0]["page_id"].GetInt16());
             Assert.Equal(
                 "((0.037,0.284), (0.099,0.284), (0.099,0.297), (0.037,0.297))",
-                customerName.First().TryGetPolygon("polygon").ToString());
+                customerName[0].TryGetPolygon("polygon").ToString());
 
             // Access as a StringField with raw_value
             var customerNameField = customerName.AsStringField();
@@ -146,7 +146,7 @@ namespace Mindee.UnitTests.V1.Product.Generated
                 Assert.NotNull(lineItem["description"].GetString());
             }
 
-            var firstLineItem = lineItems.First();
+            var firstLineItem = lineItems[0];
             Assert.Equal(0.84, firstLineItem["confidence"].GetDouble());
             Assert.Equal("S)BOIE 5X500 FEUILLES A4", firstLineItem["description"].GetString());
             Assert.Equal(0, firstLineItem["page_id"].GetInt16());
@@ -160,7 +160,7 @@ namespace Mindee.UnitTests.V1.Product.Generated
         {
             var response = await GetReceiptsItemsClassifierPrediction();
             var features = response.Document.Inference.Prediction.Fields;
-            Assert.Equal(1.0, features["line_items"].First()["quantity"].GetDouble());
+            Assert.Equal(1.0, features["line_items"][0]["quantity"].GetDouble());
         }
 
         [Fact]

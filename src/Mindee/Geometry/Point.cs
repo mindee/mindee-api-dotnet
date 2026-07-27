@@ -10,6 +10,7 @@ namespace Mindee.Geometry
     public class Point : List<double>
     {
         /// <summary>
+        /// Point from x and y coordinates.
         /// </summary>
         /// <param name="x">
         ///     <see cref="X" />
@@ -26,12 +27,12 @@ namespace Mindee.Geometry
         /// <summary>
         ///     X coordinate.
         /// </summary>
-        public double X => this.First();
+        public double X => this[0];
 
         /// <summary>
         ///     Y coordinate.
         /// </summary>
-        public double Y => this.Last();
+        public double Y => this[1];
 
         /// <summary>
         ///     The default string representation.

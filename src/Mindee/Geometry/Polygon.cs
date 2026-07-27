@@ -10,6 +10,7 @@ namespace Mindee.Geometry
     public class Polygon : List<Point>
     {
         /// <summary>
+        /// Polygon from a list of coordinates.
         /// </summary>
         /// <param name="coordinates">List of points of coordinates on X and Y.</param>
         public Polygon(List<List<double>> coordinates)
@@ -21,11 +22,12 @@ namespace Mindee.Geometry
                     throw new InvalidOperationException("A point must have 2 coordinates.");
                 }
 
-                Add(new Point(point.First(), point.Last()));
+                Add(new Point(point[0], point[point.Count - 1]));
             }
         }
 
         /// <summary>
+        /// Polygon from coordinates as IEnumerable.
         /// </summary>
         /// <param name="coordinates">
         ///     <see cref="IEnumerable{Point}" />
@@ -40,7 +42,7 @@ namespace Mindee.Geometry
         /// </summary>
         public Point GetCentroid()
         {
-            var verticesCount = this.Count();
+            var verticesCount = this.Count;
 
             var xSum = this.Sum(c => c.X);
             var ySum = this.Sum(c => c.Y);

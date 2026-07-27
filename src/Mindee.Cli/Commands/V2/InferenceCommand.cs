@@ -14,7 +14,6 @@ using Mindee.V2.Product.Ocr;
 using Mindee.V2.Product.Ocr.Params;
 using Mindee.V2.Product.Split;
 using Mindee.V2.Product.Split.Params;
-using SettingsV2 = Mindee.V2.Http.Settings;
 using V2Client = Mindee.V2.Client;
 
 namespace Mindee.Cli.Commands.V2
@@ -240,7 +239,7 @@ namespace Mindee.Cli.Commands.V2
                         new OcrParameters(options.ModelId, options.Alias)),
                     "split" => await mindeeClient.EnqueueAndGetResultAsync<SplitResponse>(inputSource,
                         new SplitParameters(options.ModelId, options.Alias)),
-                    _ => throw new ArgumentOutOfRangeException(nameof(options.Product))
+                    _ => throw new ArgumentOutOfRangeException(productName)
                 };
 
                 PrintToConsole(Console.Out, options, response);

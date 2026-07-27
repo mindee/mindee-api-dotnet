@@ -7,6 +7,7 @@ namespace Mindee.Geometry
     public class Bbox
     {
         /// <summary>
+        /// BBox from 4 coordinates.
         /// </summary>
         /// <param name="minX">
         ///     <see cref="MinX" />

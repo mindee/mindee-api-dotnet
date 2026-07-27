@@ -8,6 +8,7 @@ namespace Mindee.Pdf
     public sealed class SplitQuery
     {
         /// <summary>
+        /// Split query from byte array.
         /// </summary>
         /// <param name="file">
         ///     <see cref="File" />

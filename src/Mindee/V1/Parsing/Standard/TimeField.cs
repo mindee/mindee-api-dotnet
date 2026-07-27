@@ -8,6 +8,7 @@ namespace Mindee.V1.Parsing.Standard
     public class TimeField : StringField
     {
         /// <summary>
+        /// Time representation.
         /// </summary>
         /// <param name="value">
         ///     <see cref="StringField.Value" />

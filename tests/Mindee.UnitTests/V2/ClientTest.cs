@@ -14,7 +14,7 @@ namespace Mindee.UnitTests.V2
     [Trait("Category", "Mindee client")]
     public class ClientTest
     {
-        private Client MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
+        private static Client MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
         {
             predictable.Setup(x => x.ReqPostEnqueueAsync(
                 It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>(), It.IsAny<CancellationToken>())

@@ -22,7 +22,7 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.Equal(50, response.Pagination.PerPage);
             Assert.Equal(1, response.Pagination.TotalPages);
 
-            var firstItem = response.Models.First();
+            var firstItem = response.Models[0];
             Assert.Equal("Extraction With Webhooks", firstItem.Name);
             Assert.Equal("afde5151-aa11-aa11-9289-fa04e50ca3b9", firstItem.Id);
             Assert.Equal("extraction", firstItem.ModelType);
@@ -32,7 +32,7 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.Equal("FAILURE", firstItem.Webhooks[0].Name);
             Assert.Equal("https://failure.mindee.com", firstItem.Webhooks[0].Url);
 
-            var lastItem = response.Models.Last();
+            var lastItem = response.Models[response.Models.Count - 1];
             Assert.Equal("Extraction Without Webhooks Key", lastItem.Name);
             Assert.Equal("e14e0923-ee55-ee55-a335-8d2110917d7b", lastItem.Id);
         }

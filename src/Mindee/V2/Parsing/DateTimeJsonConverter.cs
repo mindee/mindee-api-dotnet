@@ -25,7 +25,7 @@ namespace Mindee.V2.Parsing
             }
 
             // If the string ends with "Z", replace it with "+00:00" to represent UTC.
-            if (dateString.EndsWith("Z"))
+            if (dateString.EndsWith("Z", StringComparison.Ordinal))
             {
                 dateString = dateString.Substring(0, dateString.Length - 1) + "+00:00";
             }
@@ -38,7 +38,7 @@ namespace Mindee.V2.Parsing
                 }
             }
 
-            return DateTime.Parse(dateString, null, DateTimeStyles.RoundtripKind).ToUniversalTime();
+            return DateTime.Parse(dateString, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind).ToUniversalTime();
         }
 
         /// <summary>

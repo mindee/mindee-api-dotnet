@@ -24,7 +24,7 @@ namespace Mindee.V1.Parsing.Common
         /// <returns></returns>
         public bool HasPredictions()
         {
-            return Count > 0 && this.First().Prediction != null;
+            return Count > 0 && !object.Equals(this[0].Prediction, default(TPagePrediction));
         }
     }
 }

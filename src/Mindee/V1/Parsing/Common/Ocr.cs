@@ -151,7 +151,13 @@ namespace Mindee.V1.Parsing.Common
             return lines;
         }
 
-        private bool AreWordsOnSameLine(Word currentWord, Word nextWord)
+        /// <summary>
+        ///     Checks whether two words are on the same line.
+        /// </summary>
+        /// <param name="currentWord"></param>
+        /// <param name="nextWord"></param>
+        /// <returns></returns>
+        private static bool AreWordsOnSameLine(Word currentWord, Word nextWord)
         {
             var currentInNext = currentWord.Polygon.IsPointInY(nextWord.Polygon.GetCentroid());
             var nextInCurrent = nextWord.Polygon.IsPointInY(currentWord.Polygon.GetCentroid());

@@ -9,6 +9,7 @@ namespace Mindee.V1.Http
     public class GenericParameter
     {
         /// <summary>
+        /// Generic prediction parameters.
         /// </summary>
         /// <param name="localSource"></param>
         /// <param name="urlSource"></param>

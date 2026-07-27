@@ -17,7 +17,7 @@ namespace Mindee.UnitTests.V2.Product
             var productParams = new ClassificationParameters("invalid-model-id");
             Assert.Equal("invalid-model-id", productParams.ModelId);
 
-            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttributes>();
+            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttribute>();
             Assert.Equal("classification", productAttributes?.Slug);
         }
 
@@ -75,7 +75,7 @@ namespace Mindee.UnitTests.V2.Product
             return localResponse.DeserializeResponse<ClassificationResponse>();
         }
 
-        private void AssertInferenceResponse(ClassificationResponse response)
+        private static void AssertInferenceResponse(ClassificationResponse response)
         {
             Assert.NotNull(response.Inference);
             Assert.NotNull(response.Inference.Id);

@@ -9,7 +9,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
     {
         private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
 
-        private Inference<InternationalIdV2Document, InternationalIdV2Document> LoadInference()
+        private static Inference<InternationalIdV2Document, InternationalIdV2Document> LoadInference()
         {
             var json = File.ReadAllText(Constants.V1RootDir + "extras/full_text_ocr/complete.json");
             var prediction = JsonSerializer.Deserialize<AsyncPredictResponse<InternationalIdV2>>(json, JsonOptions);
@@ -21,16 +21,11 @@ namespace Mindee.UnitTests.V1.Parsing.Common
             return prediction.Document.Inference;
         }
 
-        private List<Page<InternationalIdV2Document>> LoadPages()
+        private static List<Page<InternationalIdV2Document>> LoadPages()
         {
             var json = File.ReadAllText(Constants.V1RootDir + "extras/full_text_ocr/complete.json");
             var prediction = JsonSerializer.Deserialize<AsyncPredictResponse<InternationalIdV2>>(json, JsonOptions);
-            if (prediction == null)
-            {
-                throw new Exception();
-            }
-
-            return prediction.Document.Inference.Pages;
+            return prediction == null ? throw new Exception() : prediction.Document.Inference.Pages;
         }
 
         [Fact]

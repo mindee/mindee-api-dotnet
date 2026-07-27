@@ -37,7 +37,7 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.Null(response.Job.Error);
             Assert.Equal("Processed", response.Job.Status);
             Assert.NotEmpty(response.Job.Webhooks);
-            var webhook = response.Job.Webhooks.First();
+            var webhook = response.Job.Webhooks[0];
             Assert.NotNull(webhook.Id);
             Assert.Equal(2026, webhook.CreatedAt.Year);
             Assert.Equal("Processed", webhook.Status);
@@ -58,7 +58,7 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.Equal(422, error.Status);
             Assert.StartsWith("422-", error.Code);
             Assert.Single(error.Errors);
-            Assert.Contains("must be a valid", error.Errors.First().Detail);
+            Assert.Contains("must be a valid", error.Errors[0].Detail);
             Assert.Equal("Failed", response.Job.Status);
         }
 
