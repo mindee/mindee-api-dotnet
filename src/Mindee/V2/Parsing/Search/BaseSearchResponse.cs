@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
@@ -21,6 +22,7 @@ namespace Mindee.V2.Parsing.Search
         /// <returns></returns>
         protected string ToString(StringBuilder stringBuilder)
         {
+            stringBuilder.Append(string.Join("\n", BodyLines()));
             stringBuilder.Append("\nPagination Metadata\n");
             stringBuilder.Append("###################\n");
             stringBuilder.Append(Pagination);
@@ -28,5 +30,11 @@ namespace Mindee.V2.Parsing.Search
 
             return SummaryHelper.Clean(stringBuilder.ToString());
         }
+
+        /// <summary>
+        /// Lines composing the response-specific body (header + items).
+        /// </summary>
+        /// <returns>An array of body lines.</returns>
+        protected abstract List<string> BodyLines();
     }
 }
