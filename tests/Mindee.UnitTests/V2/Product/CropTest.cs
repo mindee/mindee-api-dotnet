@@ -17,7 +17,7 @@ namespace Mindee.UnitTests.V2.Product
             var productParams = new CropParameters("invalid-model-id");
             Assert.Equal("invalid-model-id", productParams.ModelId);
 
-            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttributes>();
+            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttribute>();
             Assert.Equal("crop", productAttributes?.Slug);
         }
 
@@ -41,7 +41,7 @@ namespace Mindee.UnitTests.V2.Product
             Assert.NotNull(crops);
             Assert.Single(crops);
 
-            var firstCrop = crops.First();
+            var firstCrop = crops[0];
             Assert.Equal("invoice", firstCrop.ObjectType);
             Assert.Equal(0, firstCrop.Location.Page);
 
@@ -175,7 +175,7 @@ namespace Mindee.UnitTests.V2.Product
             return localResponse.DeserializeResponse<CropResponse>();
         }
 
-        private void AssertInferenceResponse(CropResponse response)
+        private static void AssertInferenceResponse(CropResponse response)
         {
             Assert.NotNull(response.Inference);
             Assert.NotNull(response.Inference.Id);

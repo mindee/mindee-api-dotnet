@@ -10,7 +10,7 @@ namespace Mindee.IntegrationTests.V2.FileOperations
 {
     [Trait("Category", "V2")]
     [Trait("Category", "FileOperations")]
-    public class SplitTest : IDisposable
+    public sealed class SplitTest : IDisposable
     {
         private readonly string? _splitModelId;
         private readonly string? _findocModelId;
@@ -40,7 +40,7 @@ namespace Mindee.IntegrationTests.V2.FileOperations
             if (File.Exists(file2)) File.Delete(file2);
         }
 
-        private void CheckFindocReturn(ExtractionResponse findocResponse)
+        private static void CheckFindocReturn(ExtractionResponse findocResponse)
         {
             Assert.True(findocResponse.Inference.Model.Id.Length > 0);
 

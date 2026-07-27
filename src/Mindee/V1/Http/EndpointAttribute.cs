@@ -13,12 +13,13 @@ namespace Mindee.V1.Http
         private readonly string _modelVersion;
 
         /// <summary>
+        /// Endpoint attribute to target model info.
         /// </summary>
-        /// <param name="modelName">The name of the product associated to the expected model.</param>
-        /// <param name="modelVersion">The version number of the API. Without the v (for example for the v1.2: 1.2).</param>
+        /// <param name="modelName">The name of the product associated with the expected model.</param>
+        /// <param name="modelVersion">The version number of the API. Without the v (for example, for the v1.2: 1.2).</param>
         /// <param name="accountName">
-        ///     The name of the organization wich hold the API. Usefull when using custom builder. By default
-        ///     to mindee.
+        ///     The name of the organization that holds the API. Useful when using custom builder.
+        /// Defaults to `mindee`.
         /// </param>
         public EndpointAttribute(
             string modelName

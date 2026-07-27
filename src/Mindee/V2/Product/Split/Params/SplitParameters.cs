@@ -6,7 +6,7 @@ namespace Mindee.V2.Product.Split.Params
     /// <summary>
     /// Parameters accepted by the split utility v2 endpoint.
     /// </summary>
-    [ProductAttributes("split")]
+    [Product("split")]
     public class SplitParameters : BaseProductParameters
     {
         /// <summary>

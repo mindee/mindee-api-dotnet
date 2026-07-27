@@ -17,12 +17,12 @@ namespace Mindee.Image
         /// <summary>
         /// Page number the image was extracted from.
         /// </summary>
-        public int PageId;
+        public int PageId { get; }
 
         /// <summary>
         /// ID of the image.
         /// </summary>
-        public int ElementId;
+        public int ElementId { get; }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ExtractedImage" /> class.

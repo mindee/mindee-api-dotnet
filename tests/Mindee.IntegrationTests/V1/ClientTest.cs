@@ -1,4 +1,4 @@
-using Mindee.Exceptions;
+using System.Diagnostics.CodeAnalysis;
 using Mindee.Input;
 using Mindee.V1;
 using Mindee.V1.ClientOptions;
@@ -36,7 +36,7 @@ namespace Mindee.IntegrationTests.V1
             Assert.Null(response.Document.Ocr);
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
-            Assert.Null(response.Document.Inference.Pages.First().Extras);
+            Assert.Null(response.Document.Inference.Pages[0].Extras);
             Assert.Equal(2, response.Document.Inference.Pages.Count);
         }
 
@@ -52,7 +52,7 @@ namespace Mindee.IntegrationTests.V1
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
             Assert.Single(response.Document.Inference.Pages);
-            Assert.Null(response.Document.Inference.Pages.First().Extras);
+            Assert.Null(response.Document.Inference.Pages[0].Extras);
         }
 
         [Fact(Timeout = 180000)]
@@ -69,7 +69,7 @@ namespace Mindee.IntegrationTests.V1
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
             Assert.Single(response.Document.Inference.Pages);
-            Assert.Null(response.Document.Inference.Pages.First().Extras);
+            Assert.Null(response.Document.Inference.Pages[0].Extras);
         }
 
         [Fact(Timeout = 180000)]
@@ -92,8 +92,8 @@ namespace Mindee.IntegrationTests.V1
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
             Assert.Single(response.Document.Inference.Pages);
-            Assert.NotNull(response.Document.Inference.Pages.First().Extras.Cropper);
-            Assert.Single(response.Document.Inference.Pages.First().Extras.Cropper.Cropping);
+            Assert.NotNull(response.Document.Inference.Pages[0].Extras.Cropper);
+            Assert.Single(response.Document.Inference.Pages[0].Extras.Cropper.Cropping);
         }
 
         [Fact(Timeout = 180000)]
@@ -107,11 +107,11 @@ namespace Mindee.IntegrationTests.V1
             Assert.Equal(201, response.ApiRequest.StatusCode);
             Assert.NotNull(response.Document.Ocr.ToString());
             Assert.Single(response.Document.Ocr.MvisionV1.Pages);
-            Assert.NotEmpty(response.Document.Ocr.MvisionV1.Pages.First().AllWords);
+            Assert.NotEmpty(response.Document.Ocr.MvisionV1.Pages[0].AllWords);
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
             Assert.Single(response.Document.Inference.Pages);
-            Assert.Null(response.Document.Inference.Pages.First().Extras);
+            Assert.Null(response.Document.Inference.Pages[0].Extras);
         }
 
         [Fact(Timeout = 180000)]
@@ -123,9 +123,9 @@ namespace Mindee.IntegrationTests.V1
             Assert.NotNull(response);
             Assert.Equal("success", response.ApiRequest.Status);
             Assert.Equal(200, response.ApiRequest.StatusCode);
-            Assert.NotNull(response.Document.Inference.Pages.First().Extras.FullTextOcr);
+            Assert.NotNull(response.Document.Inference.Pages[0].Extras.FullTextOcr);
             Assert.NotNull(response.Document.Inference.Extras.FullTextOcr);
-            Assert.Equal(response.Document.Inference.Pages.First().Extras.FullTextOcr.Content,
+            Assert.Equal(response.Document.Inference.Pages[0].Extras.FullTextOcr.Content,
                 response.Document.Inference.Extras.FullTextOcr);
             Assert.True(response.Document.Inference.Extras.FullTextOcr.Replace(" ", "").Length > 100);
         }
@@ -142,12 +142,12 @@ namespace Mindee.IntegrationTests.V1
             Assert.Equal(201, response.ApiRequest.StatusCode);
             Assert.NotNull(response.Document.Ocr);
             Assert.Single(response.Document.Ocr.MvisionV1.Pages);
-            Assert.NotEmpty(response.Document.Ocr.MvisionV1.Pages.First().AllWords);
+            Assert.NotEmpty(response.Document.Ocr.MvisionV1.Pages[0].AllWords);
             Assert.NotNull(response.Document.Inference);
             Assert.NotNull(response.Document.Inference.Prediction);
             Assert.Single(response.Document.Inference.Pages);
-            Assert.NotNull(response.Document.Inference.Pages.First().Extras.Cropper);
-            Assert.Single(response.Document.Inference.Pages.First().Extras.Cropper.Cropping);
+            Assert.NotNull(response.Document.Inference.Pages[0].Extras.Cropper);
+            Assert.Single(response.Document.Inference.Pages[0].Extras.Cropper.Cropping);
         }
 
         [Fact(Timeout = 180000)]
@@ -312,6 +312,8 @@ namespace Mindee.IntegrationTests.V1
                 _client.ParseQueuedAsync<GeneratedV1>(endpoint, jobId));
         }
 
+        [SuppressMessage("Minor Code Smell", "SCS0005: Weak random number generator.",
+            Justification = "Making this use proper RNG is really not worth the candle here...")]
         private static string RandomString(int length)
         {
             var random = new Random();

@@ -7,7 +7,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
     [Trait("Category", "OCR")]
     public class OcrTest
     {
-        private async Task<Ocr> LoadOcr()
+        private static async Task<Ocr> LoadOcr()
         {
             var response = await JsonSerializer.DeserializeAsync<PredictResponse<ReceiptV4>>(
                 new FileInfo(Constants.V1RootDir + "extras/ocr/complete.json").OpenRead());

@@ -27,10 +27,10 @@ namespace Mindee.V1.Product.Generated
             {
                 GeneratedFeature feature;
 
-                if (jsonNode.Value is JsonArray)
+                if (jsonNode.Value is JsonArray jsonArray)
                 {
                     feature = new GeneratedFeature(true);
-                    foreach (var featureValue in (JsonArray)jsonNode.Value)
+                    foreach (var featureValue in jsonArray)
                     {
                         feature.Add(featureValue.Deserialize<GeneratedObject>());
                     }

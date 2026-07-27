@@ -6,6 +6,7 @@ namespace Mindee.Pdf
     public sealed class SplitPdf
     {
         /// <summary>
+        /// Split PDF from byte array.
         /// </summary>
         /// <param name="file">
         ///     <see cref="File" />

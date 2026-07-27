@@ -3,12 +3,13 @@ using System.Text.Json.Serialization;
 namespace Mindee.V1.Parsing.Common
 {
     /// <summary>
-    ///     Represent an error information from the API response.
+    ///     Represent error information from the API response.
     /// </summary>
     [JsonConverter(typeof(ErrorDetailsJsonConverter))]
     public class ErrorDetails
     {
         /// <summary>
+        ///     Error details from string.
         /// </summary>
         /// <param name="value">
         ///     <see cref="Value" />

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Nodes;
 using Mindee.Exceptions;
 using Mindee.V1.Parsing.Common;
@@ -7,6 +8,8 @@ namespace Mindee.V1.Exceptions
     /// <summary>
     ///     Error sub-object.
     /// </summary>
+    [SuppressMessage("Minor Code Smell", "S3376:Classes should not be empty",
+        Justification = "Would be breaking to remove right now. TODO: remove it.")]
     public class MindeeHttpExceptionV1 : MindeeException
     {
         /// <summary>
@@ -55,5 +58,19 @@ namespace Mindee.V1.Exceptions
             Code = code;
         }
 
+        /// <inheritdoc />
+        public MindeeHttpExceptionV1()
+        {
+        }
+
+        /// <inheritdoc />
+        public MindeeHttpExceptionV1(string message) : base(message)
+        {
+        }
+
+        /// <inheritdoc />
+        public MindeeHttpExceptionV1(string message, System.Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }

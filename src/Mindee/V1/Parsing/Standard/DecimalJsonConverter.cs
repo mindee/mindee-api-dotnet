@@ -6,10 +6,12 @@ using System.Text.Json.Serialization;
 namespace Mindee.V1.Parsing.Standard
 {
     /// <summary>
+    /// Custom JSON converter for decimal values.
     /// </summary>
     public class DecimalJsonConverter : JsonConverter<decimal?>
     {
         /// <summary>
+        /// Read a decimal value from a JSON string.
         /// </summary>
         public override decimal? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

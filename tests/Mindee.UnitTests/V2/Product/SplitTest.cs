@@ -16,7 +16,7 @@ namespace Mindee.UnitTests.V2.Product
             var productParams = new SplitParameters("invalid-model-id");
             Assert.Equal("invalid-model-id", productParams.ModelId);
 
-            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttributes>();
+            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttribute>();
             Assert.Equal("split", productAttributes?.Slug);
         }
 
@@ -35,7 +35,7 @@ namespace Mindee.UnitTests.V2.Product
             Assert.NotNull(splits);
             Assert.Single(splits);
 
-            var firstSplit = splits.First();
+            var firstSplit = splits[0];
             Assert.Equal("receipt", firstSplit.DocumentType);
 
             Assert.NotNull(firstSplit.PageRange);
@@ -125,7 +125,7 @@ namespace Mindee.UnitTests.V2.Product
             return localResponse.DeserializeResponse<SplitResponse>();
         }
 
-        private void AssertInferenceResponse(SplitResponse response)
+        private static void AssertInferenceResponse(SplitResponse response)
         {
             Assert.NotNull(response.Inference);
             Assert.NotNull(response.Inference.Id);

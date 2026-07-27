@@ -10,6 +10,7 @@ namespace Mindee.V1.Parsing.Standard
     public class StringField : BaseField
     {
         /// <summary>
+        /// String field.
         /// </summary>
         /// <param name="value">
         ///     <see cref="Value" />

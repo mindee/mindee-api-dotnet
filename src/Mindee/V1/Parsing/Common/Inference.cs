@@ -45,7 +45,7 @@ namespace Mindee.V1.Parsing.Common
                 if (Pages.Count > 0 && _extras?.FullTextOcr == null)
                 {
                     _extras ??= new InferenceExtras();
-                    if (Pages.First().Extras is { FullTextOcr: not null })
+                    if (Pages[0].Extras is { FullTextOcr: not null })
                     {
                         _extras.FullTextOcr = string.Join("\n",
                             Pages.Select(page => page.Extras.FullTextOcr.Content));

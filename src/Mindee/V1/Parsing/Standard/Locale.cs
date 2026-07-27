@@ -78,6 +78,7 @@ namespace Mindee.V1.Parsing.Standard
         public string Value { get; set; }
 
         /// <summary>
+        /// String representation.
         /// </summary>
         /// <returns>A pretty summary of the value.</returns>
         public override string ToString()

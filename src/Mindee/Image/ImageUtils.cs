@@ -48,7 +48,7 @@ namespace Mindee.Image
         /// </summary>
         /// <param name="pixelArray">Raw array produce by DocLib's .GetImage() function.</param>
         /// <returns>A valid SKBitmap.</returns>
-        public static SKBitmap ArrayToImage(byte[,,] pixelArray)
+        internal static SKBitmap ArrayToImage(byte[,,] pixelArray)
         {
             var width = pixelArray.GetLength(1);
             var height = pixelArray.GetLength(0);

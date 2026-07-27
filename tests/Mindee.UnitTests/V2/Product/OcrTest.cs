@@ -16,7 +16,7 @@ namespace Mindee.UnitTests.V2.Product
             var productParams = new OcrParameters("invalid-model-id");
             Assert.Equal("invalid-model-id", productParams.ModelId);
 
-            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttributes>();
+            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttribute>();
             Assert.Equal("ocr", productAttributes?.Slug);
         }
 
@@ -39,7 +39,7 @@ namespace Mindee.UnitTests.V2.Product
             Assert.NotNull(pages);
             Assert.Single(pages);
 
-            var firstPage = pages.First();
+            var firstPage = pages[0];
             Assert.NotNull(firstPage.Words);
 
             var firstWord = firstPage.Words[0];
@@ -84,7 +84,7 @@ namespace Mindee.UnitTests.V2.Product
             return localResponse.DeserializeResponse<OcrResponse>();
         }
 
-        private void AssertInferenceResponse(OcrResponse response)
+        private static void AssertInferenceResponse(OcrResponse response)
         {
             Assert.NotNull(response.Inference);
             Assert.NotNull(response.Inference.Id);

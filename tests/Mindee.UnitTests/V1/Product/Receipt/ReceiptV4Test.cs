@@ -23,7 +23,7 @@ namespace Mindee.UnitTests.V1.Product.Receipt
             var expected = File.ReadAllText(Constants.V1ProductDir + "expense_receipts/response_v4/summary_page0.rst");
             Assert.Equal(
                 expected,
-                response.Document.Inference.Pages.First().ToString());
+                response.Document.Inference.Pages[0].ToString());
         }
 
         [Fact]
@@ -31,8 +31,8 @@ namespace Mindee.UnitTests.V1.Product.Receipt
         {
             var response = await GetPrediction();
 
-            Assert.Equal(0.94, response.Document.Inference.Pages.First().Prediction.Category.Confidence);
-            Assert.Equal("food", response.Document.Inference.Pages.First().Prediction.Category.Value);
+            Assert.Equal(0.94, response.Document.Inference.Pages[0].Prediction.Category.Confidence);
+            Assert.Equal("food", response.Document.Inference.Pages[0].Prediction.Category.Value);
         }
 
         [Fact]
@@ -40,9 +40,9 @@ namespace Mindee.UnitTests.V1.Product.Receipt
         {
             var response = await GetPrediction();
 
-            Assert.Equal(0.99, response.Document.Inference.Pages.First().Prediction.Date.Confidence);
-            Assert.Equal(0, response.Document.Inference.Pages.First().Id);
-            Assert.Equal("2014-07-07", response.Document.Inference.Pages.First().Prediction.Date.Value);
+            Assert.Equal(0.99, response.Document.Inference.Pages[0].Prediction.Date.Confidence);
+            Assert.Equal(0, response.Document.Inference.Pages[0].Id);
+            Assert.Equal("2014-07-07", response.Document.Inference.Pages[0].Prediction.Date.Value);
         }
 
         [Fact]
@@ -50,21 +50,21 @@ namespace Mindee.UnitTests.V1.Product.Receipt
         {
             var response = await GetPrediction();
 
-            Assert.Equal(0.99, response.Document.Inference.Pages.First().Prediction.Time.Confidence);
-            Assert.Equal(0, response.Document.Inference.Pages.First().Id);
-            Assert.Equal("20:20", response.Document.Inference.Pages.First().Prediction.Time.Value);
+            Assert.Equal(0.99, response.Document.Inference.Pages[0].Prediction.Time.Confidence);
+            Assert.Equal(0, response.Document.Inference.Pages[0].Id);
+            Assert.Equal("20:20", response.Document.Inference.Pages[0].Prediction.Time.Value);
             Assert.Equal(new List<List<double>>
                 {
                     new() { 0.635, 0.142 }, new() { 0.778, 0.142 }, new() { 0.778, 0.168 }, new() { 0.635, 0.168 }
                 }
-                , response.Document.Inference.Pages.First().Prediction.Time.Polygon);
+                , response.Document.Inference.Pages[0].Prediction.Time.Polygon);
         }
 
         [Fact]
         public async Task Predict_WithReceiptData_MustSuccessForOrientation()
         {
             var response = await GetPrediction();
-            Assert.Equal(0, response.Document.Inference.Pages.First().Orientation.Value);
+            Assert.Equal(0, response.Document.Inference.Pages[0].Orientation.Value);
         }
 
         [Fact]
@@ -74,25 +74,25 @@ namespace Mindee.UnitTests.V1.Product.Receipt
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             var response = await mindeeAPi.PredictPostAsync<ReceiptV4>(UnitTestBase.GetFakePredictParameter());
 
-            Assert.NotNull(response.Document.Inference.Pages.First().Extras.Cropper);
-            Assert.Single(response.Document.Inference.Pages.First().Extras.Cropper.Cropping);
+            Assert.NotNull(response.Document.Inference.Pages[0].Extras.Cropper);
+            Assert.Single(response.Document.Inference.Pages[0].Extras.Cropper.Cropping);
             Assert.Equal(new List<List<double>>
                 {
                     new() { 0.057, 0.008 }, new() { 0.846, 0.008 }, new() { 0.846, 1.0 }, new() { 0.057, 1.0 }
                 }
-                , response.Document.Inference.Pages.First().Extras.Cropper.Cropping.First().BoundingBox);
+                , response.Document.Inference.Pages[0].Extras.Cropper.Cropping[0].BoundingBox);
 
             Assert.Equal(new List<List<double>>
                 {
                     new() { 0.161, 0.016 }, new() { 0.744, 0.009 }, new() { 0.845, 0.996 }, new() { 0.058, 0.999 }
                 }
-                , response.Document.Inference.Pages.First().Extras.Cropper.Cropping.First().Quadrangle);
+                , response.Document.Inference.Pages[0].Extras.Cropper.Cropping[0].Quadrangle);
 
             Assert.Equal(new List<List<double>>
                 {
                     new() { 0.052, 0.011 }, new() { 0.839, 0.007 }, new() { 0.844, 0.994 }, new() { 0.057, 0.998 }
                 }
-                , response.Document.Inference.Pages.First().Extras.Cropper.Cropping.First().Rectangle);
+                , response.Document.Inference.Pages[0].Extras.Cropper.Cropping[0].Rectangle);
 
             Assert.Equal(new List<List<double>>
                 {
@@ -121,7 +121,7 @@ namespace Mindee.UnitTests.V1.Product.Receipt
                     new() { 0.086, 0.732 },
                     new() { 0.113, 0.514 }
                 }
-                , response.Document.Inference.Pages.First().Extras.Cropper.Cropping.First().Polygon);
+                , response.Document.Inference.Pages[0].Extras.Cropper.Cropping[0].Polygon);
         }
 
         private static async Task<PredictResponse<ReceiptV4>> GetPrediction()

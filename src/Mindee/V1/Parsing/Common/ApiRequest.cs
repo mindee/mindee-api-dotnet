@@ -15,6 +15,7 @@ namespace Mindee.V1.Parsing.Common
         public Error Error { get; set; }
 
         /// <summary>
+        ///     Resources used by the request.
         /// </summary>
         [JsonPropertyName("resources")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "CollectionNeverUpdated.Global")]

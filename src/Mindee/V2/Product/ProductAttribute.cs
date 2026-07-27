@@ -6,17 +6,17 @@ namespace Mindee.V2.Product
     /// Attribute to specify various product metadata.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public sealed class ProductAttributes : Attribute
+    public sealed class ProductAttribute : Attribute
     {
         /// <summary>
         /// URL slug of the product.
         /// </summary>
-        public string Slug;
+        public string Slug { get; }
 
         /// <summary>
         /// Attribute to specify various product metadata.
         /// </summary>
-        public ProductAttributes(string slug)
+        public ProductAttribute(string slug)
         {
             Slug = slug;
         }

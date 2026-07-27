@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Mindee.Geometry;
 
@@ -45,11 +46,11 @@ namespace Mindee.V1.Parsing.Standard
 
             try
             {
-                DateObject = DateTime.Parse(Value);
+                DateObject = DateTime.Parse(Value, CultureInfo.InvariantCulture);
             }
-            catch (FormatException)
+            catch (FormatException exc)
             {
-                logger?.LogWarning("Unable to parse the date: {}", Value);
+                logger?.LogWarning(exc, "Unable to parse the date: {Value}", Value);
             }
         }
 

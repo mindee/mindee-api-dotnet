@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -13,6 +14,8 @@ namespace Mindee.Geometry
         /// <summary>
         ///     <see cref="Read(ref Utf8JsonReader, Type, JsonSerializerOptions)" />
         /// </summary>
+        [SuppressMessage("Minor Code Smell", "S1168: Return an empty collection instead of null.",
+            Justification = "Would be breaking for end-users to right now. TODO: return [] instead of null")]
         public override Polygon Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var points = JsonSerializer.Deserialize<List<List<double>>>(ref reader, options);

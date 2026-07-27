@@ -10,6 +10,7 @@ namespace Mindee.V1.Parsing.Standard
     public class BooleanField : BaseField
     {
         /// <summary>
+        /// Boolean field.
         /// </summary>
         /// <param name="value">
         ///     <see cref="Value" />

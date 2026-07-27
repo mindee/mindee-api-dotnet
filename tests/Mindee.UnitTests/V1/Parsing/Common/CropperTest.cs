@@ -15,10 +15,10 @@ namespace Mindee.UnitTests.V1.Parsing.Common
 
             Assert.NotNull(response);
             Assert.NotEmpty(response.Document.Inference.Pages);
-            var page = response.Document.Inference.Pages.First();
+            var page = response.Document.Inference.Pages[0];
             Assert.NotNull(page.Extras);
             var cropping = page.Extras.Cropper.Cropping;
-            Assert.Equal("Polygon with 24 points.", cropping.First().ToString());
+            Assert.Equal("Polygon with 24 points.", cropping[0].ToString());
         }
     }
 }

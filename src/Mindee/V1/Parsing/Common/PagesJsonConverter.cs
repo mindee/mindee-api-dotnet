@@ -38,6 +38,7 @@ namespace Mindee.V1.Parsing.Common
         }
 
         /// <summary>
+        ///     Write the pages to the JSON writer.
         /// </summary>
         public override void Write(Utf8JsonWriter writer, Pages<TPage> value, JsonSerializerOptions options)
         {

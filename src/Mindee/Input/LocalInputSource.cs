@@ -20,8 +20,6 @@ namespace Mindee.Input
             ".heic", ".heif", ".jpg", ".jpga", ".jpeg", ".pdf", ".png", ".tiff", ".tif", ".webp"
         ];
 
-        private DocNetApi _pdfOperation;
-
         /// <summary>
         ///     Construct from bytes.
         /// </summary>
@@ -105,6 +103,9 @@ namespace Mindee.Input
         /// </summary>
         public string Extension { get; set; }
 
+        /// <summary>
+        ///     Sets the file name.
+        /// </summary>
         /// <param name="filename"></param>
         /// <exception cref="MindeeInputException"></exception>
         private void SetFileName(string filename)
@@ -190,16 +191,17 @@ namespace Mindee.Input
         {
             var serviceCollection = new ServiceCollection();
             var serviceProvider = serviceCollection.BuildServiceProvider();
-            _pdfOperation = serviceProvider.GetService<DocNetApi>();
-            if (_pdfOperation == null)
+
+            var pdfOperation = serviceProvider.GetService<DocNetApi>();
+            if (pdfOperation == null)
             {
-                _pdfOperation = new DocNetApi();
-                serviceCollection.AddSingleton(_pdfOperation);
+                pdfOperation = new DocNetApi();
+                serviceCollection.AddSingleton(pdfOperation);
             }
 
             if (pageOptions != null && IsPdf())
             {
-                FileBytes = _pdfOperation.Split(
+                FileBytes = pdfOperation.Split(
                     new SplitQuery(FileBytes, pageOptions)).File;
             }
         }
@@ -210,12 +212,7 @@ namespace Mindee.Input
         /// <returns>True if at least one character exists in one page.</returns>
         public bool HasSourceText()
         {
-            if (!IsPdf())
-            {
-                return false;
-            }
-
-            return PdfUtils.HasSourceText(FileBytes);
+            return IsPdf() && PdfUtils.HasSourceText(FileBytes);
         }
     }
 }

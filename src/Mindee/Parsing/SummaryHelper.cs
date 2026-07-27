@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Mindee.Parsing
     {
         public static string Clean(string summary)
         {
-            var cleanSpace = new Regex(" \n", RegexOptions.Multiline);
+            var cleanSpace = new Regex(" \n", RegexOptions.Multiline, TimeSpan.FromMilliseconds(1000));
             return cleanSpace.Replace(summary, "\n");
         }
 
@@ -24,14 +25,15 @@ namespace Mindee.Parsing
             return amount == null ? "" : amount.Value.ToString("0.00###", CultureInfo.InvariantCulture);
         }
 
-        public static string FormatString(string str)
-        {
-            return (str ?? "").Replace("\n", "\\n").Replace("\t", "\\t").Replace("\r", "\\r");
-        }
 
         public static string FormatBool(bool? value)
         {
             return value.ToString();
+        }
+
+        public static string FormatString(string str)
+        {
+            return (str ?? "").Replace("\n", "\\n").Replace("\t", "\\t").Replace("\r", "\\r");
         }
 
         public static string FormatString(string str, int maxLength)

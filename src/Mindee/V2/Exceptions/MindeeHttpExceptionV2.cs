@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Mindee.V2.Parsing;
 
 namespace Mindee.V2.Exceptions
@@ -7,6 +8,8 @@ namespace Mindee.V2.Exceptions
     /// <summary>
     ///     Representation of a Mindee API V2 exception.
     /// </summary>
+    [SuppressMessage("Minor Code Smell", "S3376:Classes should not be empty",
+        Justification = "Would be breaking to remove right now. TODO: remove it.")]
     public class MindeeHttpExceptionV2 : Exception, IErrorResponse
     {
         /// <summary>
@@ -21,6 +24,21 @@ namespace Mindee.V2.Exceptions
             Title = error.Title;
             Code = error.Code;
             Errors = error.Errors;
+        }
+
+        /// <inheritdoc />
+        public MindeeHttpExceptionV2()
+        {
+        }
+
+        /// <inheritdoc />
+        public MindeeHttpExceptionV2(string message) : base(message)
+        {
+        }
+
+        /// <inheritdoc />
+        public MindeeHttpExceptionV2(string message, Exception innerException) : base(message, innerException)
+        {
         }
 
         /// <inheritdoc />

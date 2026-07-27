@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
@@ -36,12 +35,7 @@ namespace Mindee.V2.Parsing.Inference
         public InferenceJob Job { get; set; }
 
         /// <summary>
-        /// Type of the product's response.
-        /// </summary>
-        public virtual Type ResponseType { get; set; }
-
-        /// <summary>
-        ///
+        /// String representation of the inference.
         /// </summary>
         /// <returns></returns>
         public override string ToString()

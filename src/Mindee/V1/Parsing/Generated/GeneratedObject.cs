@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.Json;
 using Mindee.Geometry;
@@ -185,14 +186,11 @@ namespace Mindee.V1.Parsing.Generated
         /// <summary>
         ///     Get the specified key as a <see cref="Mindee.Geometry.Polygon" /> object.
         /// </summary>
+        [SuppressMessage("Minor Code Smell", "S1168: Return an empty collection instead of null.",
+            Justification = "Would be breaking for end-users to right now. TODO: return [] instead of null")]
         public Polygon TryGetPolygon(string key)
         {
-            if (ContainsKey(key))
-            {
-                return ConvertElementToPolygon(this[key]);
-            }
-
-            return null;
+            return ContainsKey(key) ? ConvertElementToPolygon(this[key]) : null;
         }
 
         /// <summary>

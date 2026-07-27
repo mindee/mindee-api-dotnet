@@ -9,7 +9,7 @@ namespace Mindee.V2.Product.Extraction.Params
     /// <summary>
     ///     Parameters for an extraction inference.
     /// </summary>
-    [ProductAttributes("extraction")]
+    [Product("extraction")]
     public class ExtractionParameters : BaseProductParameters
     {
         /// <summary>

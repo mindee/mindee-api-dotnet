@@ -27,7 +27,7 @@ namespace Mindee.UnitTests.V1.Product.Fr.IdCard
             Assert.Null(docPrediction.Mrz3.Value);
             Assert.Null(docPrediction.IssueDate.Value);
             Assert.Null(docPrediction.Authority.Value);
-            var pagePrediction = response.Document.Inference.Pages.First().Prediction;
+            var pagePrediction = response.Document.Inference.Pages[0].Prediction;
             Assert.IsType<ClassificationField>(pagePrediction.DocumentType);
             Assert.IsType<ClassificationField>(pagePrediction.DocumentSide);
         }

@@ -10,7 +10,7 @@ namespace Mindee.V2.FileOperations
     public sealed class SplitFiles : List<ExtractedPdf>
     {
         /// <summary>
-        ///
+        /// Split files from a collection of extracted PDFs.
         /// </summary>
         /// <param name="collection"></param>
         public SplitFiles(IEnumerable<ExtractedPdf> collection) : base(collection)
@@ -18,9 +18,9 @@ namespace Mindee.V2.FileOperations
         }
 
         /// <summary>
-        ///
+        /// Empty split files.
         /// </summary>
-        public SplitFiles() : base()
+        public SplitFiles()
         {
         }
 

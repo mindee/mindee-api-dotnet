@@ -10,10 +10,6 @@ namespace Mindee.V2.Parsing.Inference.Field
     /// </summary>
     public class ListField : BaseField
     {
-        private List<ObjectField> _objectItems;
-
-        private List<SimpleField> _simpleItems;
-
         /// <summary>
         ///     List field.
         /// </summary>
@@ -35,21 +31,18 @@ namespace Mindee.V2.Parsing.Inference.Field
         {
             get
             {
-                if (_simpleItems != null)
+                if (field != null)
                 {
-                    return _simpleItems;
+                    return field;
                 }
 
-                _simpleItems = new List<SimpleField>();
-                foreach (var item in Items)
+                field = [];
+                foreach (var item in Items.Where(item => item.SimpleField != null))
                 {
-                    if (item.SimpleField != null)
-                    {
-                        _simpleItems.Add(item.SimpleField);
-                    }
+                    field.Add(item.SimpleField);
                 }
 
-                return _simpleItems;
+                return field;
             }
         }
 
@@ -60,18 +53,18 @@ namespace Mindee.V2.Parsing.Inference.Field
         {
             get
             {
-                if (_objectItems != null)
+                if (field != null)
                 {
-                    return _objectItems;
+                    return field;
                 }
 
-                _objectItems = [];
+                field = [];
                 foreach (var item in Items.Where(item => item.ObjectField != null))
                 {
-                    _objectItems.Add(item.ObjectField);
+                    field.Add(item.ObjectField);
                 }
 
-                return _objectItems;
+                return field;
             }
         }
 

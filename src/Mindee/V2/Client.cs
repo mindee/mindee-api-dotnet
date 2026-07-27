@@ -30,6 +30,7 @@ namespace Mindee.V2
         private readonly HttpApiV2 _mindeeApi;
 
         /// <summary>
+        /// Default Client constructor for V2.
         /// </summary>
         /// <param name="apiKey">The required API key to use the Mindee V2 API.</param>
         /// <param name="loggerFactory">Factory for the logger.</param>
@@ -53,6 +54,7 @@ namespace Mindee.V2
         }
 
         /// <summary>
+        /// API Key-less constructor for V2.
         /// </summary>
         /// <param name="settings">
         ///     <see cref="SettingsV2" />
@@ -80,6 +82,7 @@ namespace Mindee.V2
         }
 
         /// <summary>
+        /// Constructor with custom API module.
         /// </summary>
         /// <param name="httpApi">
         ///     <see cref="HttpApiV2" />
@@ -139,7 +142,7 @@ namespace Mindee.V2
         /// </returns>
         public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
         {
-            _logger?.LogInformation("Getting Job at: {}", pollingUrl);
+            _logger?.LogInformation("Getting Job at: {PollingUrl}", pollingUrl);
 
             if (string.IsNullOrWhiteSpace(pollingUrl))
             {
@@ -160,7 +163,7 @@ namespace Mindee.V2
         public async Task<TResponse> GetResultFromUrlAsync<TResponse>(string resultUrl, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
-            _logger?.LogInformation("Getting result at: {}", resultUrl);
+            _logger?.LogInformation("Getting result at: {ResultUrl}", resultUrl);
 
             if (string.IsNullOrWhiteSpace(resultUrl))
             {
@@ -181,7 +184,7 @@ namespace Mindee.V2
         public async Task<TResponse> GetResultAsync<TResponse>(string jobId, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
-            _logger?.LogInformation("Getting result with ID: {}", jobId);
+            _logger?.LogInformation("Getting result with ID: {JobId}", jobId);
 
             if (string.IsNullOrWhiteSpace(jobId))
             {
@@ -201,7 +204,7 @@ namespace Mindee.V2
         /// </returns>
         public async Task<JobResponse> GetJobAsync(string jobId, CancellationToken ct = default)
         {
-            _logger?.LogInformation("Getting job ID: {}", jobId);
+            _logger?.LogInformation("Getting job ID: {JobId}", jobId);
 
             if (string.IsNullOrWhiteSpace(jobId))
             {
@@ -245,6 +248,18 @@ namespace Mindee.V2
         }
 
         /// <summary>
+        /// Returns a list of RAG documents matching the given criteria.
+        /// </summary>
+        /// <param name="searchParameters"><see cref="RagDocumentSearchResponse"/></param>
+        /// <param name="ct">Cancellation token.</param>
+        public async Task<RagDocumentSearchResponse> SearchRagDocuments(
+            RagDocumentSearchParameters searchParameters, CancellationToken ct = default)
+        {
+            return await _mindeeApi.SearchRagDocuments(searchParameters, ct);
+        }
+
+
+        /// <summary>
         /// Returns a list of models matching the given criteria.
         /// </summary>
         /// <param name="searchParameters"><see cref="ModelSearchParameters"/></param>
@@ -254,17 +269,6 @@ namespace Mindee.V2
         {
             var parameters = searchParameters ?? new ModelSearchParameters();
             return await _mindeeApi.SearchModels(parameters, ct);
-        }
-
-        /// <summary>
-        /// Returns a list of RAG documents matching the given criteria.
-        /// </summary>
-        /// <param name="searchParameters"><see cref="RagDocumentSearchResponse"/></param>
-        /// <param name="ct">Cancellation token.</param>
-        public async Task<RagDocumentSearchResponse> SearchRagDocuments(
-            RagDocumentSearchParameters searchParameters, CancellationToken ct = default)
-        {
-            return await _mindeeApi.SearchRagDocuments(searchParameters, ct);
         }
 
         /// <summary>
@@ -302,9 +306,9 @@ namespace Mindee.V2
         {
             var maxRetries = pollingOptions.MaxRetries + 1;
             var pollingUrl = enqueueResponse.Job.PollingUrl;
-            _logger?.LogInformation("Enqueued with job ID: {}", enqueueResponse.Job.Id);
+            _logger?.LogInformation("Enqueued with job ID: {JobId}", enqueueResponse.Job.Id);
             _logger?.LogInformation(
-                "Waiting {} seconds before attempting to retrieve the document...",
+                "Waiting {InitialDelaySec} seconds before attempting to retrieve the document...",
                 pollingOptions.InitialDelaySec);
             await Task.Delay(pollingOptions.InitialDelayMilliSec, ct);
             var retryCount = 1;

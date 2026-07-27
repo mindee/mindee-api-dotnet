@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.Extraction
         [Fact]
         public void GivenAnImage_ShouldExtractAPDF()
         {
-            var jpg = Constants.V1ProductDir + "invoices/default_sample.jpg";
+            const string jpg = Constants.V1ProductDir + "invoices/default_sample.jpg";
             var localInput = new LocalInputSource(jpg);
             Assert.False(localInput.IsPdf());
             var extractor = new PdfExtractor(localInput);
@@ -57,7 +57,7 @@ namespace Mindee.UnitTests.Extraction
             Assert.Equal(4, extractedPDFStrict[1].GetPageCount());
         }
 
-        private async Task<AsyncPredictResponse<InvoiceSplitterV1>> GetPrediction()
+        private static async Task<AsyncPredictResponse<InvoiceSplitterV1>> GetPrediction()
         {
             const string fileName = Constants.V1ProductDir + "invoice_splitter/response_v1/complete.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);

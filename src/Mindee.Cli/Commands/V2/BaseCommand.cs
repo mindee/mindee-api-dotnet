@@ -9,7 +9,7 @@ namespace Mindee.Cli.Commands.V2
     {
         protected readonly Option<string?> ApiKeyOption;
 
-        public BaseCommand(string name, string description) : base(name, description)
+        protected BaseCommand(string name, string description) : base(name, description)
         {
             ApiKeyOption = new Option<string?>("--api-key", "-k") { Description = "Mindee V2 API key." };
             Options.Add(ApiKeyOption);

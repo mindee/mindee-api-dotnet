@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Mindee.Input;
 using Mindee.V2;
 using Mindee.V2.ClientOptions;
@@ -44,6 +45,8 @@ namespace Mindee.IntegrationTests.V2
         [InlineData(true, false, true)]
         [InlineData(false, true, true)]
         [InlineData(true, true, true)]
+        [SuppressMessage("Minor Code Smell", "S125: Remove this commented out code.",
+            Justification = "Keeping this since it might change in the future.")]
         public async Task Parse_File_Empty_MultiplePages_ParameterVariations_MustSucceed(
             bool rawText, bool polygon, bool confidence)
         {
@@ -174,7 +177,7 @@ namespace Mindee.IntegrationTests.V2
             Assert.Equal(_findocModelId, job.ModelId);
             Assert.NotNull(job.Webhooks);
 
-            var webhook = job.Webhooks.First();
+            var webhook = job.Webhooks[0];
             Assert.NotNull(webhook);
             Assert.Equal(webhookId, webhook.Id);
             Assert.Equal("Processing", webhook.Status);
@@ -184,7 +187,7 @@ namespace Mindee.IntegrationTests.V2
                 await Task.Delay(1000);
 
                 var loopJobResponse = await _client.GetJobFromUrlAsync(jobUrl);
-                var loopWebhook = loopJobResponse.Job.Webhooks.First();
+                var loopWebhook = loopJobResponse.Job.Webhooks[0];
                 Assert.NotNull(loopWebhook);
                 Assert.Equal(webhookId, loopWebhook.Id);
 
@@ -226,6 +229,9 @@ namespace Mindee.IntegrationTests.V2
         }
 
         [Fact(Timeout = 180000)]
+        [SuppressMessage("Minor Code Smell", "S4144: Update this method so that its implementation " +
+                                             "is not identical to 'NotFound_Job_MustThrowError'.",
+            Justification = "More of a sanity test.")]
         public async Task NotFound_Inference_MustThrowError()
         {
             var ex = await Assert.ThrowsAsync<MindeeHttpExceptionV2>(() =>

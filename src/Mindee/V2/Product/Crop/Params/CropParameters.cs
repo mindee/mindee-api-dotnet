@@ -6,7 +6,7 @@ namespace Mindee.V2.Product.Crop.Params
     /// <summary>
     /// Parameters accepted by the crop utility v2 endpoint.
     /// </summary>
-    [ProductAttributes("crop")]
+    [Product("crop")]
     public class CropParameters : BaseProductParameters
     {
         /// <summary>

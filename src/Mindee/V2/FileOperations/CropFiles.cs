@@ -10,7 +10,7 @@ namespace Mindee.V2.FileOperations
     public class CropFiles : List<ExtractedImage>
     {
         /// <summary>
-        ///
+        /// Crop files from a collection of extracted images.
         /// </summary>
         /// <param name="collection"></param>
         public CropFiles(IEnumerable<ExtractedImage> collection) : base(collection)
@@ -18,9 +18,9 @@ namespace Mindee.V2.FileOperations
         }
 
         /// <summary>
-        ///
+        /// Empty crop files.
         /// </summary>
-        public CropFiles() : base()
+        public CropFiles()
         {
         }
 

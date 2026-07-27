@@ -57,9 +57,9 @@ namespace Mindee.V2.Http
             CancellationToken ct = default
         )
         {
-            var productAttributes = parameters.GetType().GetCustomAttribute<ProductAttributes>();
+            var productAttributes = parameters.GetType().GetCustomAttribute<ProductAttribute>();
             if (productAttributes == null)
-                throw new Exception($"ProductAttributes must be set for class: {parameters.GetType().Name}");
+                throw new MindeeException($"ProductAttributes must be set for class: {parameters.GetType().Name}");
             var request = new RestRequest(
                 $"v2/products/{productAttributes.Slug}/enqueue", Method.Post);
 
@@ -145,9 +145,9 @@ namespace Mindee.V2.Http
 
         public override async Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId, CancellationToken ct = default)
         {
-            var productAttributes = typeof(TResponse).GetCustomAttribute<ProductAttributes>();
+            var productAttributes = typeof(TResponse).GetCustomAttribute<ProductAttribute>();
             if (productAttributes == null)
-                throw new Exception($"ProductAttributes must be set for class: {typeof(TResponse).Name}");
+                throw new MindeeException($"ProductAttributes must be set for class: {typeof(TResponse).Name}");
             var request = new RestRequest(
                 $"v2/products/{productAttributes.Slug}/results/{inferenceId}");
             Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);

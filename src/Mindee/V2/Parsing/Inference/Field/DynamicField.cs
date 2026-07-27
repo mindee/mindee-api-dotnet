@@ -29,6 +29,7 @@ namespace Mindee.V2.Parsing.Inference.Field
     [JsonConverter(typeof(DynamicFieldJsonConverter))]
     public class DynamicField
     {
+#pragma warning disable S1104 // TODO: Remove this if applicable.
         /// <summary>
         ///     Value as list field.
         /// </summary>
@@ -48,7 +49,7 @@ namespace Mindee.V2.Parsing.Inference.Field
         ///     The type of field.
         /// </summary>
         public FieldType Type;
-
+#pragma warning restore S1104
         /// <summary>
         ///     Return the field class dynamically.
         /// </summary>

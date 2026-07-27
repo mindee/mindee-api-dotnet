@@ -22,7 +22,7 @@ namespace Mindee.UnitTests.V1.Product.Fr.IdCard
             Assert.Null(docPrediction.Gender.Value);
             Assert.Null(docPrediction.Mrz1.Value);
             Assert.Null(docPrediction.Mrz2.Value);
-            var pagePrediction = response.Document.Inference.Pages.First().Prediction;
+            var pagePrediction = response.Document.Inference.Pages[0].Prediction;
             Assert.IsType<ClassificationField>(pagePrediction.DocumentSide);
         }
 

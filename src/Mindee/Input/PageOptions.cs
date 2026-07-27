@@ -6,6 +6,7 @@ namespace Mindee.Input
     public sealed class PageOptions
     {
         /// <summary>
+        /// Page options from indexes, operation and minimum pages.
         /// </summary>
         /// <param name="pageIndexes">
         ///     <see cref="PageIndexes" />

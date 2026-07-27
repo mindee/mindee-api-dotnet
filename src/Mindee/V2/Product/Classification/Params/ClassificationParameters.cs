@@ -6,7 +6,7 @@ namespace Mindee.V2.Product.Classification.Params
     /// <summary>
     ///   Parameters for a classification utility inference.
     /// </summary>
-    [ProductAttributes("classification")]
+    [Product("classification")]
     public class ClassificationParameters : BaseProductParameters
     {
         /// <summary>
