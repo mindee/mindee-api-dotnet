@@ -1,0 +1,30 @@
+{
+   "$schema": "https://alirezanet.github.io/Husky.Net/schema.json",
+   "tasks": [
+      {
+         "name": "dotnet-format-staged",
+         "group": "pre-commit",
+         "command": "dotnet",
+         "args": [ "format", "Mindee.sln", "--include", "${staged}", "--verify-no-changes", "--no-restore" ],
+         "include": [ "**/*.cs" ]
+      },
+      {
+         "name": "build",
+         "group": "pre-commit",
+         "command": "dotnet",
+         "args": [ "build", "Mindee.sln", "--nologo", "-clp:NoSummary", "-v:quiet" ]
+      },
+      {
+         "name": "license-check",
+         "group": "pre-push",
+         "command": "bash",
+         "args": [ ".husky/check-licenses.sh" ]
+      },
+      {
+         "name": "unit-tests",
+         "group": "pre-push",
+         "command": "bash",
+         "args": [ ".husky/run-unit-tests.sh" ]
+      }
+   ]
+}
