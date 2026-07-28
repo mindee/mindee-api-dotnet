@@ -70,7 +70,25 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
         /// </summary>
         public override void Write(Utf8JsonWriter writer, AnnotatedDynamicField value, JsonSerializerOptions options)
         {
-            throw new NotSupportedException();
+            if (value == null)
+            {
+                writer.WriteNullValue();
+                return;
+            }
+            switch (value.Type)
+            {
+                case FieldType.SimpleField:
+                    JsonSerializer.Serialize(writer, value.SimpleField, options);
+                    break;
+                case FieldType.ObjectField:
+                    JsonSerializer.Serialize(writer, value.ObjectField, options);
+                    break;
+                case FieldType.ListField:
+                    JsonSerializer.Serialize(writer, value.ListField, options);
+                    break;
+                default:
+                    throw new JsonException($"Unknown field type: {value.Type}");
+            }
         }
     }
 }

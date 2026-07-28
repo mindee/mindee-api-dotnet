@@ -56,7 +56,30 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
         /// </summary>
         public override void Write(Utf8JsonWriter writer, AnnotatedSimpleField value, JsonSerializerOptions options)
         {
-            throw new NotSupportedException();
+            if (value == null)
+            {
+                writer.WriteNullValue();
+                return;
+            }
+
+            writer.WriteStartObject();
+
+            writer.WriteBoolean("selected", value.Selected);
+
+            if (value.Guidelines == null)
+                writer.WriteNull("guidelines");
+            else
+                writer.WriteString("guidelines", value.Guidelines);
+
+            if (value.Value == null)
+                writer.WriteNull("value");
+            else
+            {
+                writer.WritePropertyName("value");
+                JsonSerializer.Serialize(writer, value.Value, options);
+            }
+
+            writer.WriteEndObject();
         }
     }
 }

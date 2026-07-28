@@ -7,7 +7,6 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
     /// <summary>
     /// A SimpleField with additional configuration for annotation.
     /// </summary>
-    [JsonConverter(typeof(AnnotatedSimpleFieldJsonConverter))]
     public class AnnotatedListField : AnnotatedBaseField
     {
         private List<AnnotatedObjectField> _objectItems;

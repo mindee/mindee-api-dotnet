@@ -268,7 +268,7 @@ namespace Mindee.V2
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<RagAnnotationResponse> UploadExtractionRagDocumentAsync(
-            RagDocumentUploadParameters parameters, LocalInputSource inputSource, CancellationToken ct = default)
+            LocalInputSource inputSource, RagDocumentUploadParameters parameters, CancellationToken ct = default)
         {
             return await _mindeeApi.PostExtractionRagDocumentAsync(parameters, inputSource, ct);
         }
@@ -283,15 +283,15 @@ namespace Mindee.V2
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<RagAnnotationResponse> UploadAndGetExtractionRagDocumentAsync(
-            RagDocumentUploadParameters parameters
-            , LocalInputSource inputSource
-            , PollingOptions pollingOptions
+            LocalInputSource inputSource
+            , RagDocumentUploadParameters parameters
+            , PollingOptions pollingOptions = null
             , CancellationToken ct = default)
         {
             pollingOptions ??= new PollingOptions();
 
             var uploadResponse = await UploadExtractionRagDocumentAsync(
-                parameters, inputSource, ct);
+                inputSource, parameters, ct);
 
             return await PollForExtractionRagDocumentAsync(uploadResponse, pollingOptions, ct);
         }

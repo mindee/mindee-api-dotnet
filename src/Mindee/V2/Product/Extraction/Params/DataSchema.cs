@@ -12,7 +12,13 @@ namespace Mindee.V2.Product.Extraction.Params
     public class DataSchema
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DataSchema" /> class from a dictionary.
+        ///     If set, completely replaces the data schema of the model.
+        /// </summary>
+        [JsonPropertyName("replace")]
+        public DataSchemaReplace Replace { get; set; }
+
+        /// <summary>
+        ///   Construct a new instance from a Dictionary.
         /// </summary>
         /// <param name="dataSchema">Dictionary containing the data schema configuration.</param>
         public DataSchema(Dictionary<string, object> dataSchema)
@@ -21,7 +27,7 @@ namespace Mindee.V2.Product.Extraction.Params
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DataSchema" /> class from a JSON string.
+        ///  Construct a new instance from a JSON string.
         /// </summary>
         /// <param name="jsonString">JSON string containing the data schema configuration.</param>
         public DataSchema(string jsonString)
@@ -29,12 +35,6 @@ namespace Mindee.V2.Product.Extraction.Params
             var dataSchema = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonString);
             Setup(dataSchema);
         }
-
-        /// <summary>
-        ///     If set, completely replaces the data schema of the model.
-        /// </summary>
-        [JsonPropertyName("replace")]
-        public DataSchemaReplace Replace { get; set; }
 
         /// <summary>
         ///     Initializes the Replace property.

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Text.Json;
+using Mindee.Exceptions;
 
 namespace Mindee.V2.Product.Extraction.RagDocuments.Params
 {
@@ -20,7 +22,7 @@ namespace Mindee.V2.Product.Extraction.RagDocuments.Params
         /// <summary>
         /// Field-level RAG annotation and guidelines configuration for the document.
         /// </summary>
-        public string Annotation { get; }
+        public RagAnnotation Annotation { get; }
 
         /// <summary>
         /// Default constructor.
@@ -29,11 +31,17 @@ namespace Mindee.V2.Product.Extraction.RagDocuments.Params
         /// <param name="status"><see cref="Status"/></param>
         /// <param name="annotation"><see cref="Annotation"/></param>
         public RagDocumentAnnotationParameters(
-            string documentId, string status = null, string annotation = null)
+            string documentId, string status = null, object annotation = null)
         {
             DocumentId = documentId;
             Status = status;
-            Annotation = annotation;
+            Annotation = annotation switch
+            {
+                RagAnnotation ragAnnotation => ragAnnotation,
+                string jsonString => JsonSerializer.Deserialize<RagAnnotation>(jsonString),
+                null => null,
+                _ => throw new MindeeInputException("Invalid RAG Annotation format.")
+            };
         }
 
         /// <summary>
@@ -42,16 +50,16 @@ namespace Mindee.V2.Product.Extraction.RagDocuments.Params
         /// <returns></returns>
         public virtual Dictionary<string, string> GetRequestParameters()
         {
+            if (string.IsNullOrEmpty(DocumentId))
+                throw new System.ArgumentException("DocumentId is required in RagDocumentsAnnotationParameters");
+
             var parameters = new Dictionary<string, string>();
 
-            if (!string.IsNullOrEmpty(DocumentId))
-            {
-                parameters.Add("document_id", DocumentId);
-            }
-            else
-            {
-                throw new System.ArgumentException("DocumentId is required in RagDocumentsAnnotationParameters");
-            }
+            if (!string.IsNullOrEmpty(Status))
+                parameters.Add("status", Status);
+
+            if (Annotation != null)
+                parameters.Add("annotation", JsonSerializer.Serialize(Annotation));
 
             return parameters;
         }

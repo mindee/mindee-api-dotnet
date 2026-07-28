@@ -3,7 +3,7 @@ using Mindee.V2;
 using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
 
-namespace Mindee.IntegrationTests.V2.Product
+namespace Mindee.IntegrationTests.V2.Product.Extraction
 {
     [Trait("Category", "V2")]
     [Trait("Category", "Integration")]
@@ -24,10 +24,10 @@ namespace Mindee.IntegrationTests.V2.Product
         {
             var inputSource = new LocalInputSource(
                 Constants.V2ProductDir + "extraction/financial_document/default_sample.jpg");
-            var productParams = new ExtractionParameters(_extractionModelId);
+            var parameters = new ExtractionParameters(_extractionModelId);
 
             var response = await _client.EnqueueAndGetResultAsync<ExtractionResponse>(
-                inputSource, productParams);
+                inputSource, parameters);
 
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);

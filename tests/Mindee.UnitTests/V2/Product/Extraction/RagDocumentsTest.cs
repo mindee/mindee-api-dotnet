@@ -19,9 +19,14 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void PatchParameters_MustInit()
         {
-            var parameters = new RagDocumentAnnotationParameters(documentId: "invalid-document-id");
+            var parameters = new RagDocumentAnnotationParameters(
+                documentId: "invalid-document-id"
+                , status: "Active"
+                , annotation: new RagAnnotation());
             var reqParams = parameters.GetRequestParameters();
-            Assert.Equal("invalid-document-id", reqParams["document_id"]);
+            Assert.Equal("invalid-document-id", parameters.DocumentId);
+            Assert.Equal("Active", reqParams["status"]);
+            Assert.Equal("{\"fields\":null}", reqParams["annotation"]);
         }
 
         [Fact]
