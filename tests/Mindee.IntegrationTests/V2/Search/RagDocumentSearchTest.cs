@@ -20,7 +20,7 @@ namespace Mindee.IntegrationTests.V2.Search
         [Fact(Timeout = 180000)]
         public async Task RagDocumentSearch_mustHaveResults()
         {
-            var response = await _client.SearchRagDocuments(
+            var response = await _client.SearchRagDocumentsAsync(
                 new RagDocumentSearchParameters(modelId: _findocModelId));
             Assert.NotNull(response);
             Assert.NotNull(response.RagDocuments);

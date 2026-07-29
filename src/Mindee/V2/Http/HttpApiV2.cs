@@ -79,7 +79,7 @@ namespace Mindee.V2.Http
         /// <param name="searchParameters"><see cref="ModelSearchParameters"/></param>
         /// <param name="ct">Cancellation token.</param>
         /// <returns></returns>
-        public abstract Task<ModelSearchResponse> SearchModels(
+        public abstract Task<ModelSearchResponse> SearchModelsAsync(
             ModelSearchParameters searchParameters, CancellationToken ct = default);
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Mindee.V2.Http
         /// <param name="searchParameters"><see cref="RagDocumentSearchParameters"/></param>
         /// <param name="ct">Cancellation token.</param>
         /// <returns></returns>
-        public abstract Task<RagDocumentSearchResponse> SearchRagDocuments(
+        public abstract Task<RagDocumentSearchResponse> SearchRagDocumentsAsync(
             RagDocumentSearchParameters searchParameters, CancellationToken ct = default);
 
         /// <summary>
