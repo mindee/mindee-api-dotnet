@@ -113,11 +113,16 @@ namespace Mindee.V2.Http
             {
                 if (responseContent == null || !responseContent.Contains("\"status\":"))
                 {
+                    Logger?.LogInformation("Empty response from server.");
                     return MakeUnknownError(statusCode, responseContent);
                 }
 
                 var error = JsonSerializer.Deserialize<ErrorResponse>(responseContent);
-                return error ?? MakeUnknownError(statusCode, responseContent);
+                if (error == null)
+                    return MakeUnknownError(statusCode, responseContent);
+
+                Logger?.LogInformation("{Response}", error);
+                return error;
             }
             catch (JsonException)
             {

@@ -22,7 +22,7 @@ namespace Mindee.IntegrationTests.V1
         public ClientTest()
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            _client = TestingUtilities.GetOrGenerateMindeeClient(apiKey);
+            _client = TestingUtilities.GetOrGenerateMindeeClientV1(apiKey);
         }
 
         [Fact(Timeout = 180000)]
