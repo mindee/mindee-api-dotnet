@@ -243,7 +243,7 @@ namespace Mindee.V2
                 inputSource,
                 parameters,
                 ct);
-            return await PollForResultsAsync<TResponse>(enqueueResponse, pollingOptions, ct);
+            return await PollForProductResultsAsync<TResponse>(enqueueResponse, pollingOptions, ct);
         }
 
         /// <summary>
@@ -254,12 +254,14 @@ namespace Mindee.V2
         public async Task<ModelSearchResponse> SearchModelsAsync(
             ModelSearchParameters searchParameters, CancellationToken ct = default)
         {
+            _logger?.LogInformation("Searching for models");
             var parameters = searchParameters ?? new ModelSearchParameters();
-            return await _mindeeApi.SearchModelsAsync(parameters, ct);
+            return await _mindeeApi.ReqGetSearchModelsAsync(parameters, ct);
         }
 
         /// <summary>
-        /// Not recommended for general use, prefer UploadAndGetExtractionRagDocumentAsync.
+        /// Not recommended for general use, prefer <see cref="UploadAndGetExtractionRagDocumentAsync"/>.
+        /// You will need to poll until the document is ready for use.
         /// Add a document to the RAG database.
         /// For extraction models only.
         /// </summary>
@@ -270,7 +272,8 @@ namespace Mindee.V2
         public async Task<RagAnnotationResponse> UploadExtractionRagDocumentAsync(
             LocalInputSource inputSource, RagDocumentUploadParameters parameters, CancellationToken ct = default)
         {
-            return await _mindeeApi.PostExtractionRagDocumentAsync(parameters, inputSource, ct);
+            _logger?.LogInformation("Adding a document to the RAG database");
+            return await _mindeeApi.ReqPostExtractionRagDocumentAsync(parameters, inputSource, ct);
         }
 
         /// <summary>
@@ -290,13 +293,15 @@ namespace Mindee.V2
         {
             pollingOptions ??= new PollingOptions();
 
-            var uploadResponse = await UploadExtractionRagDocumentAsync(
+            var initialResponse = await UploadExtractionRagDocumentAsync(
                 inputSource, parameters, ct);
 
-            return await PollForExtractionRagDocumentAsync(uploadResponse, pollingOptions, ct);
+            return await PollForExtractionRagDocumentAsync(initialResponse, pollingOptions, ct);
         }
 
         /// <summary>
+        /// Not recommended for general use, prefer <see cref="GetReadyExtractionRagDocumentAsync"/>.
+        /// You will need to poll until the document is ready for use.
         /// Get a document's info and annotations from the RAG database.
         /// For extraction models only.
         /// </summary>
@@ -306,7 +311,29 @@ namespace Mindee.V2
         public async Task<RagAnnotationResponse> GetExtractionRagDocumentAsync(
             string documentId, CancellationToken ct = default)
         {
-            return await _mindeeApi.GetExtractionRagAnnotationAsync(documentId, ct);
+            _logger?.LogInformation("Getting RAG document ID: {}", documentId);
+            return await _mindeeApi.ReqGetExtractionRagAnnotationAsync(documentId, ct);
+        }
+
+        /// <summary>
+        /// Get a document's info and annotations from the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="pollingOptions"/>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<RagAnnotationResponse> GetReadyExtractionRagDocumentAsync(
+            string documentId
+            , PollingOptions pollingOptions = null
+            , CancellationToken ct = default)
+        {
+            var initialResponse = await GetExtractionRagDocumentAsync(documentId, ct);
+            if (initialResponse.Status != "Processing")
+                return initialResponse;
+
+            pollingOptions ??= new PollingOptions();
+            return await PollForExtractionRagDocumentAsync(initialResponse, pollingOptions, ct);
         }
 
         /// <summary>
@@ -319,7 +346,8 @@ namespace Mindee.V2
         public async Task<RagAnnotationResponse> UpdateExtractionRagAnnotationAsync(
             RagDocumentAnnotationParameters parameters, CancellationToken ct = default)
         {
-            return await _mindeeApi.PatchExtractionRagAnnotationAsync(parameters, ct);
+            _logger?.LogInformation("Updating RAG document ID: {}", parameters.DocumentId);
+            return await _mindeeApi.ReqPatchExtractionRagAnnotationAsync(parameters, ct);
         }
 
         /// <summary>
@@ -332,7 +360,8 @@ namespace Mindee.V2
         public async Task<bool> DeleteExtractionRagDocumentAsync(
             string documentId, CancellationToken ct = default)
         {
-            return await _mindeeApi.DeleteExtractionRagDocumentAsync(documentId, ct);
+            _logger?.LogInformation("Deleting RAG document ID: {}", documentId);
+            return await _mindeeApi.ReqDeleteExtractionRagDocumentAsync(documentId, ct);
         }
 
         /// <summary>
@@ -343,7 +372,8 @@ namespace Mindee.V2
         public async Task<RagDocumentSearchResponse> SearchRagDocumentsAsync(
             RagDocumentSearchParameters searchParameters, CancellationToken ct = default)
         {
-            return await _mindeeApi.SearchRagDocumentsAsync(searchParameters, ct);
+            _logger?.LogInformation("Searching for RAG documents");
+            return await _mindeeApi.ReqGetSearchRagDocumentsAsync(searchParameters, ct);
         }
 
         /// <summary>
@@ -361,29 +391,36 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        /// Poll until the annotation results are ready or the max number of attempts is reached.
+        /// Poll until the document is finished processing or the max number of attempts is reached.
         /// </summary>
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the annotation isn't ready.</exception>
         private async Task<RagAnnotationResponse> PollForExtractionRagDocumentAsync(
-            RagAnnotationResponse uploadResponse, PollingOptions pollingOptions, CancellationToken ct = default)
+            RagAnnotationResponse initialResponse
+            , PollingOptions pollingOptions
+            , CancellationToken cancellationToken = default)
         {
+            _logger?.LogInformation("Polling for RAG document ID: {}", initialResponse.Id);
             var maxRetries = pollingOptions.MaxRetries + 1;
-            await Task.Delay(pollingOptions.InitialDelayMilliSec, ct);
-            var documentId = uploadResponse.Id;
+
+            _logger?.LogDebug(
+                "Waiting {} seconds before attempting to retrieve the result...",
+                pollingOptions.InitialDelaySec);
+            await Task.Delay(pollingOptions.InitialDelayMilliSec, cancellationToken);
+            var documentId = initialResponse.Id;
 
             var retryCount = 1;
             while (retryCount < maxRetries)
             {
-                retryCount++;
                 var retryDelayMilliSec = pollingOptions.GetRetryDelayMilliSec(retryCount);
-                await Task.Delay(retryDelayMilliSec, ct);
+                await Task.Delay(retryDelayMilliSec, cancellationToken);
                 _logger?.LogInformation(
-                    "Attempting to retrieve: {RetryCount} of {MaxRetries}",
+                    "Poll attempt {RetryCount} of {MaxRetries}",
                     retryCount,
                     maxRetries);
 
-                var response = await GetExtractionRagDocumentAsync(documentId, ct);
+                var response = await GetExtractionRagDocumentAsync(documentId, cancellationToken);
 
+                retryCount++;
                 switch (response.Status)
                 {
                     case "Processing":
@@ -394,37 +431,38 @@ namespace Mindee.V2
                         return response;
                 }
             }
-            throw new MindeeException($"Could not complete after {retryCount} attempts.");
+            throw new MindeeException($"RAG polling not complete after {retryCount} attempts.");
         }
 
         /// <summary>
         /// Poll until the inference results are retrieved or the max number of attempts is reached.
         /// </summary>
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
-        private async Task<TResponse> PollForResultsAsync<TResponse>(
+        private async Task<TResponse> PollForProductResultsAsync<TResponse>(
             JobResponse enqueueResponse,
             PollingOptions pollingOptions,
-            CancellationToken ct = default) where TResponse : BaseResponse, new()
+            CancellationToken cancellationToken = default)
+            where TResponse : BaseResponse, new()
         {
+            _logger?.LogInformation("Polling for results on job ID: {}", enqueueResponse.Job.Id);
             var maxRetries = pollingOptions.MaxRetries + 1;
             var pollingUrl = enqueueResponse.Job.PollingUrl;
-            _logger?.LogInformation("Enqueued with job ID: {}", enqueueResponse.Job.Id);
-            _logger?.LogInformation(
-                "Waiting {} seconds before attempting to retrieve the document...",
+            _logger?.LogDebug(
+                "Waiting {} seconds before attempting to retrieve the result...",
                 pollingOptions.InitialDelaySec);
-            await Task.Delay(pollingOptions.InitialDelayMilliSec, ct);
+            await Task.Delay(pollingOptions.InitialDelayMilliSec, cancellationToken);
             var retryCount = 1;
             var response = enqueueResponse; // First init is only for error handling purposes.
             while (retryCount < maxRetries)
             {
                 var retryDelayMilliSec = pollingOptions.GetRetryDelayMilliSec(retryCount);
-                await Task.Delay(retryDelayMilliSec, ct);
+                await Task.Delay(retryDelayMilliSec, cancellationToken);
                 _logger?.LogInformation(
-                    "Attempting to retrieve: {RetryCount} of {MaxRetries}",
+                    "Poll attempt {RetryCount} of {MaxRetries}",
                     retryCount,
                     maxRetries);
 
-                response = await GetJobFromUrlAsync(pollingUrl, ct);
+                response = await GetJobFromUrlAsync(pollingUrl, cancellationToken);
                 if (response.Job.Error != null)
                 {
                     break;
@@ -435,7 +473,7 @@ namespace Mindee.V2
                     case "Processed":
                         {
                             var resultUrl = response.Job.ResultUrl;
-                            return await GetResultFromUrlAsync<TResponse>(resultUrl, ct);
+                            return await GetResultFromUrlAsync<TResponse>(resultUrl, cancellationToken);
                         }
                     case "Failed":
                         throw new MindeeException("Job failed without an error payload.");
@@ -450,7 +488,7 @@ namespace Mindee.V2
                 throw new MindeeHttpExceptionV2(error);
             }
 
-            throw new MindeeException($"Could not complete after {retryCount} attempts.");
+            throw new MindeeException($"Result polling not complete after {retryCount} attempts.");
         }
     }
 }

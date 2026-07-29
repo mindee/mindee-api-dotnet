@@ -87,7 +87,7 @@ namespace Mindee.V2.Http
         /// <param name="searchParameters"><see cref="ModelSearchParameters"/></param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns></returns>
-        public abstract Task<ModelSearchResponse> SearchModelsAsync(
+        public abstract Task<ModelSearchResponse> ReqGetSearchModelsAsync(
             ModelSearchParameters searchParameters, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Mindee.V2.Http
         /// <param name="searchParameters"><see cref="RagDocumentSearchParameters"/></param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns></returns>
-        public abstract Task<RagDocumentSearchResponse> SearchRagDocumentsAsync(
+        public abstract Task<RagDocumentSearchResponse> ReqGetSearchRagDocumentsAsync(
             RagDocumentSearchParameters searchParameters, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Mindee.V2.Http
         /// <param name="localInputSource"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public abstract Task<RagAnnotationResponse> PostExtractionRagDocumentAsync(
+        public abstract Task<RagAnnotationResponse> ReqPostExtractionRagDocumentAsync(
             RagDocumentUploadParameters parameters
             , LocalInputSource localInputSource
             , CancellationToken cancellationToken = default);
@@ -119,7 +119,7 @@ namespace Mindee.V2.Http
         /// <param name="documentId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public abstract Task<RagAnnotationResponse> GetExtractionRagAnnotationAsync(
+        public abstract Task<RagAnnotationResponse> ReqGetExtractionRagAnnotationAsync(
             string documentId, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Mindee.V2.Http
         /// <param name="parameters"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public abstract Task<RagAnnotationResponse> PatchExtractionRagAnnotationAsync(
+        public abstract Task<RagAnnotationResponse> ReqPatchExtractionRagAnnotationAsync(
             RagDocumentAnnotationParameters parameters, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Mindee.V2.Http
         /// <param name="documentId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public abstract Task<bool> DeleteExtractionRagDocumentAsync(
+        public abstract Task<bool> ReqDeleteExtractionRagDocumentAsync(
             string documentId, CancellationToken cancellationToken = default);
 
 

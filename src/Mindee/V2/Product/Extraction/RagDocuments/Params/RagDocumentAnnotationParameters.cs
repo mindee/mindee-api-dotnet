@@ -48,18 +48,18 @@ namespace Mindee.V2.Product.Extraction.RagDocuments.Params
         /// Gets the request parameters for the upload request.
         /// </summary>
         /// <returns></returns>
-        public virtual Dictionary<string, string> GetRequestParameters()
+        public virtual Dictionary<string, object> GetRequestParameters()
         {
             if (string.IsNullOrEmpty(DocumentId))
                 throw new System.ArgumentException("DocumentId is required in RagDocumentsAnnotationParameters");
 
-            var parameters = new Dictionary<string, string>();
+            var parameters = new Dictionary<string, object>();
 
             if (!string.IsNullOrEmpty(Status))
                 parameters.Add("status", Status);
 
             if (Annotation != null)
-                parameters.Add("annotation", JsonSerializer.Serialize(Annotation));
+                parameters.Add("annotation", Annotation);
 
             return parameters;
         }

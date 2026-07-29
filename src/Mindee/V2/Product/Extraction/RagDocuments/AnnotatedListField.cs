@@ -28,10 +28,10 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
         {
         }
 
-
         /// <summary>
         ///     List of simple fields.
         /// </summary>
+        [JsonIgnore]
         public List<AnnotatedSimpleField> SimpleItems
         {
             get
@@ -57,6 +57,7 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
         /// <summary>
         ///     List of object fields.
         /// </summary>
+        [JsonIgnore]
         public List<AnnotatedObjectField> ObjectItems
         {
             get

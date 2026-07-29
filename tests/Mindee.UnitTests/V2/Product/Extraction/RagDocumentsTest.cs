@@ -2,7 +2,7 @@ using Mindee.V2.Parsing;
 using Mindee.V2.Product.Extraction.RagDocuments;
 using Mindee.V2.Product.Extraction.RagDocuments.Params;
 
-namespace Mindee.UnitTests.V2.Product
+namespace Mindee.UnitTests.V2.Product.Extraction
 {
     [Trait("Category", "V2")]
     [Trait("Category", "ExtractionRagDocuments")]
@@ -19,14 +19,15 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void PatchParameters_MustInit()
         {
+            var annotation = new RagAnnotation();
             var parameters = new RagDocumentAnnotationParameters(
                 documentId: "invalid-document-id"
                 , status: "Active"
-                , annotation: new RagAnnotation());
+                , annotation: annotation);
             var reqParams = parameters.GetRequestParameters();
             Assert.Equal("invalid-document-id", parameters.DocumentId);
             Assert.Equal("Active", reqParams["status"]);
-            Assert.Equal("{\"fields\":null}", reqParams["annotation"]);
+            Assert.Equal(annotation, reqParams["annotation"]);
         }
 
         [Fact]

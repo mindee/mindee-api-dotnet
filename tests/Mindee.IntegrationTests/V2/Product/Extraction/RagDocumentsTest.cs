@@ -22,7 +22,7 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
         public async Task RagDocument_Lifecycle_MustSucceed()
         {
             var inputSource = new LocalInputSource(
-                Constants.RootDir + "file_types/pdf/blank_1.pdf");
+                Constants.V2ProductDir + "extraction/financial_document/default_sample.jpg");
             var parameters = new RagDocumentUploadParameters(modelId: _extractionModelId);
 
             var postResponse = await _client.UploadAndGetExtractionRagDocumentAsync(inputSource, parameters);
@@ -41,15 +41,35 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
             postAnnotation.Fields["invoice_number"].SimpleField.Selected = true;
             postAnnotation.Fields["invoice_number"].SimpleField.Guidelines = "koo koo katchoo!";
 
-            var patchResponse = await _client.UpdateExtractionRagAnnotationAsync(
-                new RagDocumentAnnotationParameters(documentId: documentId, annotation: postAnnotation));
-            Assert.NotNull(patchResponse);
-            var patchAnnotation = patchResponse.Annotation;
-            Assert.NotNull(patchResponse);
+            var patchAnnotationResponse = await _client.UpdateExtractionRagAnnotationAsync(
+                new RagDocumentAnnotationParameters(
+                    documentId: documentId
+                    , annotation: postAnnotation));
+            Assert.NotNull(patchAnnotationResponse);
+            var patchAnnotation = patchAnnotationResponse.Annotation;
             Assert.Equal("I am the walrus!", patchAnnotation.Fields["supplier_name"].SimpleField.Guidelines);
             Assert.True(patchAnnotation.Fields["supplier_name"].SimpleField.Selected);
             Assert.Equal("koo koo katchoo!", patchAnnotation.Fields["invoice_number"].SimpleField.Guidelines);
             Assert.True(patchAnnotation.Fields["invoice_number"].SimpleField.Selected);
+
+            var getResponse = await _client.GetReadyExtractionRagDocumentAsync(documentId);
+            Assert.NotNull(getResponse);
+            var getAnnotation = getResponse.Annotation;
+            Assert.NotNull(getAnnotation);
+
+            Assert.Equal("Draft", getResponse.Status);
+
+            Assert.Equal("I am the walrus!", getAnnotation.Fields["supplier_name"].SimpleField.Guidelines);
+            Assert.True(getAnnotation.Fields["supplier_name"].SimpleField.Selected);
+            Assert.Equal("koo koo katchoo!", getAnnotation.Fields["invoice_number"].SimpleField.Guidelines);
+            Assert.True(getAnnotation.Fields["invoice_number"].SimpleField.Selected);
+
+            var patchStatusResponse = await _client.UpdateExtractionRagAnnotationAsync(
+                new RagDocumentAnnotationParameters(
+                    documentId: documentId
+                    , status: "Active"));
+            Assert.NotNull(patchStatusResponse);
+            Assert.Equal("Active", patchStatusResponse.Status);
 
             var deleteResponse = await _client.DeleteExtractionRagDocumentAsync(documentId);
             Assert.True(deleteResponse);

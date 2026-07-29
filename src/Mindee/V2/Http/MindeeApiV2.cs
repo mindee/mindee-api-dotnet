@@ -73,7 +73,7 @@ namespace Mindee.V2.Http
             return HandleJobResponse(response);
         }
 
-        public override async Task<ModelSearchResponse> SearchModelsAsync(
+        public override async Task<ModelSearchResponse> ReqGetSearchModelsAsync(
             ModelSearchParameters searchParameters, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest("v2/search/models");
@@ -91,7 +91,7 @@ namespace Mindee.V2.Http
             return response ?? throw new MindeeException("Couldn't deserialize ModelSearchResponse.");
         }
 
-        public override async Task<RagDocumentSearchResponse> SearchRagDocumentsAsync(
+        public override async Task<RagDocumentSearchResponse> ReqGetSearchRagDocumentsAsync(
             RagDocumentSearchParameters searchParameters, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest("v2/search/rag-documents");
@@ -109,7 +109,7 @@ namespace Mindee.V2.Http
             return response ?? throw new MindeeException("Couldn't deserialize RagDocumentSearchResponse.");
         }
 
-        public override async Task<RagAnnotationResponse> PostExtractionRagDocumentAsync(
+        public override async Task<RagAnnotationResponse> ReqPostExtractionRagDocumentAsync(
             RagDocumentUploadParameters parameters
             , LocalInputSource localInputSource
             , CancellationToken cancellationToken = default)
@@ -127,26 +127,24 @@ namespace Mindee.V2.Http
             return await ExecuteRagAnnotationRequest(request, cancellationToken);
         }
 
-        public override async Task<RagAnnotationResponse> GetExtractionRagAnnotationAsync(
+        public override async Task<RagAnnotationResponse> ReqGetExtractionRagAnnotationAsync(
             string documentId, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest($"/v2/products/extraction/rag-documents/{documentId}");
             return await ExecuteRagAnnotationRequest(request, cancellationToken);
         }
 
-        public override async Task<RagAnnotationResponse> PatchExtractionRagAnnotationAsync(
+        public override async Task<RagAnnotationResponse> ReqPatchExtractionRagAnnotationAsync(
             RagDocumentAnnotationParameters parameters, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest(
                 $"/v2/products/extraction/rag-documents/{parameters.DocumentId}", Method.Patch);
-            foreach (KeyValuePair<string, string> entry in parameters.GetRequestParameters())
-            {
-                request.AddParameter(entry.Key, entry.Value);
-            }
+            request.AddJsonBody(parameters.GetRequestParameters());
+
             return await ExecuteRagAnnotationRequest(request, cancellationToken);
         }
 
-        public override async Task<bool> DeleteExtractionRagDocumentAsync(
+        public override async Task<bool> ReqDeleteExtractionRagDocumentAsync(
             string documentId, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest(

@@ -6,7 +6,7 @@ using Mindee.V2.Product;
 using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
 
-namespace Mindee.UnitTests.V2.Product
+namespace Mindee.UnitTests.V2.Product.Extraction
 {
     [Trait("Category", "V2")]
     [Trait("Category", "ExtractionInference")]
