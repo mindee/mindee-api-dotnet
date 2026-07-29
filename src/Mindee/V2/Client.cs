@@ -249,11 +249,11 @@ namespace Mindee.V2
         /// </summary>
         /// <param name="searchParameters"><see cref="ModelSearchParameters"/></param>
         /// <param name="ct">Cancellation token.</param>
-        public async Task<ModelSearchResponse> SearchModels(
+        public async Task<ModelSearchResponse> SearchModelsAsync(
             ModelSearchParameters searchParameters, CancellationToken ct = default)
         {
             var parameters = searchParameters ?? new ModelSearchParameters();
-            return await _mindeeApi.SearchModels(parameters, ct);
+            return await _mindeeApi.SearchModelsAsync(parameters, ct);
         }
 
         /// <summary>
@@ -261,10 +261,10 @@ namespace Mindee.V2
         /// </summary>
         /// <param name="searchParameters"><see cref="RagDocumentSearchResponse"/></param>
         /// <param name="ct">Cancellation token.</param>
-        public async Task<RagDocumentSearchResponse> SearchRagDocuments(
+        public async Task<RagDocumentSearchResponse> SearchRagDocumentsAsync(
             RagDocumentSearchParameters searchParameters, CancellationToken ct = default)
         {
-            return await _mindeeApi.SearchRagDocuments(searchParameters, ct);
+            return await _mindeeApi.SearchRagDocumentsAsync(searchParameters, ct);
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace Mindee.V2
         /// <param name="name">Name filter.</param>
         /// <param name="modelType">Model type filter.</param>
         /// <param name="ct">Cancellation token.</param>
-        [Obsolete("Use SearchModels(ModelSearchParameters parameters)")]
+        [Obsolete("Use SearchModelsAsync(ModelSearchParameters parameters)")]
         public async Task<SearchResponse> SearchModels(
             string name = null, string modelType = null, CancellationToken ct = default)
         {

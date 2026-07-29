@@ -100,7 +100,7 @@ namespace Mindee.Cli.Commands.V2
             /// <returns></returns>
             public async Task<int> InvokeAsync(string? modelId, string? filename, bool raw)
             {
-                var response = await mindeeClientV2.SearchRagDocuments(
+                var response = await mindeeClientV2.SearchRagDocumentsAsync(
                     new RagDocumentSearchParameters(modelId: modelId, filename: filename));
                 PrintToConsole(Console.Out, raw, response);
                 return 0;
