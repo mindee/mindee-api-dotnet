@@ -25,7 +25,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void FinancialDocument_WhenEmpty_MustHaveValidProperties()
         {
-            var response = GetInference("extraction/financial_document/blank.json");
+            var response = GetResponse("extraction/financial_document/blank.json");
             AssertInferenceResponse(response);
 
             var fields = response.Inference.Result.Fields;
@@ -64,7 +64,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void FinancialDocument_WhenComplete_MustHaveValidProperties()
         {
-            var response = GetInference("extraction/financial_document/complete.json");
+            var response = GetResponse("extraction/financial_document/complete.json");
             AssertInferenceResponse(response);
 
             var activeOptions = response.Inference.ActiveOptions;
@@ -97,10 +97,10 @@ namespace Mindee.UnitTests.V2.Product
         }
 
 
-        [Fact(DisplayName = "deep_nested_fields.json – all nested structures must be typed correctly")]
+        [Fact]
         public void DeepNestedFields_mustExposeCorrectTypes()
         {
-            var response = GetInference("extraction/deep_nested_fields.json");
+            var response = GetResponse("extraction/deep_nested_fields.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -134,10 +134,10 @@ namespace Mindee.UnitTests.V2.Product
             Assert.Equal("value_9", deepSimple.Value);
         }
 
-        [Fact(DisplayName = "standard_field_types.json – file metadata must be recognised")]
+        [Fact]
         public void StandardFieldTypes_mustExposeFileValues()
         {
-            var response = GetInference("extraction/standard_field_types.json");
+            var response = GetResponse("extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -156,10 +156,10 @@ namespace Mindee.UnitTests.V2.Product
             Assert.Null(alias);
         }
 
-        [Fact(DisplayName = "standard_field_types.json – simple fields must be recognised")]
+        [Fact]
         public void StandardFieldTypes_mustExposeSimpleFieldValues()
         {
-            var response = GetInference("extraction/standard_field_types.json");
+            var response = GetResponse("extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -197,10 +197,10 @@ namespace Mindee.UnitTests.V2.Product
             Assert.Null(fields["field_simple_null"].SimpleField.Confidence);
         }
 
-        [Fact(DisplayName = "standard_field_types.json – simple list fields must be recognised")]
+        [Fact]
         public void StandardFieldTypes_mustExposeSimpleListFieldValues()
         {
-            var response = GetInference("extraction/standard_field_types.json");
+            var response = GetResponse("extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -219,10 +219,10 @@ namespace Mindee.UnitTests.V2.Product
             }
         }
 
-        [Fact(DisplayName = "standard_field_types.json – object fields must be recognised")]
+        [Fact]
         public void StandardFieldTypes_mustExposeObjectFieldValues()
         {
-            var response = GetInference("extraction/standard_field_types.json");
+            var response = GetResponse("extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -244,10 +244,10 @@ namespace Mindee.UnitTests.V2.Product
             }
         }
 
-        [Fact(DisplayName = "standard_field_types.json – simple list fields must be recognised")]
+        [Fact]
         public void StandardFieldTypes_mustExposeObjectListFieldValues()
         {
-            var response = GetInference("extraction/standard_field_types.json");
+            var response = GetResponse("extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -278,10 +278,10 @@ namespace Mindee.UnitTests.V2.Product
             }
         }
 
-        [Fact(DisplayName = "standard_field_types.json - locations must be recognised")]
+        [Fact]
         public void StandardFieldTypes_mustHaveLocations()
         {
-            var response = GetInference("extraction/standard_field_types.json");
+            var response = GetResponse("extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -300,27 +300,27 @@ namespace Mindee.UnitTests.V2.Product
             Assert.Equal(new Point(1, 1), polygon[3]);
         }
 
-        [Fact(DisplayName = "standard_field_types.rst – RST display must be parsed and exposed")]
-        public void RstDisplay_mustBeAccessible()
+        [Fact]
+        public void RstOutput_mustBeValid()
         {
-            var resp = GetInference("extraction/standard_field_types.json");
-            var rstReference = File.ReadAllText(
+            var response = GetResponse("extraction/standard_field_types.json");
+            var rstOutput = File.ReadAllText(
                 Constants.V2ProductDir + "extraction/standard_field_types.rst");
 
-            var inf = resp.Inference;
+            var inference = response.Inference;
 
-            Assert.NotNull(inf);
+            Assert.NotNull(inference);
 
             Assert.Equal(
-                NormalizeLineEndings(rstReference),
-                NormalizeLineEndings(inf.ToString())
+                UnitTestBase.NormalizeLineEndings(rstOutput),
+                UnitTestBase.NormalizeLineEndings(inference.ToString())
             );
         }
 
         [Fact]
         public void RawText_whenActivated_mustExposeProperties()
         {
-            var response = GetInference("extraction/raw_texts.json");
+            var response = GetResponse("extraction/raw_texts.json");
             AssertInferenceResponse(response);
 
             var activeOptions = response.Inference.ActiveOptions;
@@ -349,7 +349,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Rag_whenMatched_mustExposeProperties()
         {
-            var response = GetInference("extraction/rag_matched.json");
+            var response = GetResponse("extraction/rag_matched.json");
             AssertInferenceResponse(response);
 
             var activeOptions = response.Inference.ActiveOptions;
@@ -367,7 +367,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Rag_whenNotMatched_mustExposeProperties()
         {
-            var response = GetInference("extraction/rag_not_matched.json");
+            var response = GetResponse("extraction/rag_not_matched.json");
             AssertInferenceResponse(response);
 
             var activeOptions = response.Inference.ActiveOptions;
@@ -382,17 +382,7 @@ namespace Mindee.UnitTests.V2.Product
             Assert.Null(rag.RetrievedDocumentId);
         }
 
-        /// <summary>
-        ///     Ensures all line endings are identical before comparison so the test
-        ///     behaves the same on every platform (LF vs CRLF).
-        /// </summary>
-        private static string NormalizeLineEndings(string input)
-        {
-            return input.Replace("\r\n", "\n").Replace("\r", "\n");
-        }
-
-
-        private static ExtractionResponse GetInference(string path)
+        private static ExtractionResponse GetResponse(string path)
         {
             var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2ProductDir + path));

@@ -12,7 +12,7 @@ namespace Mindee.IntegrationTests.V1.Input
         {
             var apiKey = Environment.GetEnvironmentVariable("Mindee__ApiKey");
             var blankUrl = Environment.GetEnvironmentVariable("MindeeV2__Blank__Pdf__Url");
-            var client = TestingUtilities.GetOrGenerateMindeeClient(apiKey);
+            var client = TestingUtilities.GetOrGenerateMindeeClientV1(apiKey);
             var remoteInput =
                 new UrlInputSource(
                     blankUrl);

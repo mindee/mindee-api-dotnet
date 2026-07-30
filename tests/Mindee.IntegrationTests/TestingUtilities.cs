@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 // ReSharper disable once RedundantUsingDirective
 using Mindee.Extensions.DependencyInjection;
@@ -59,7 +60,7 @@ namespace Mindee.IntegrationTests
         /// </summary>
         /// <param name="apiKey">The API key for mindee.</param>
         /// <returns>A valid Mindee client instance.</returns>
-        public static ClientV1 GetOrGenerateMindeeClient(string? apiKey)
+        public static ClientV1 GetOrGenerateMindeeClientV1(string? apiKey)
         {
             if (_mindeeClient != null)
             {
@@ -71,7 +72,7 @@ namespace Mindee.IntegrationTests
             {
                 options.ApiKey = apiKey;
             }, true);
-            return _mindeeClient ??= new ClientV1(apiKey);
+            return _mindeeClient ??= new ClientV1(apiKey: apiKey);
         }
 
         /// <summary>
@@ -87,15 +88,18 @@ namespace Mindee.IntegrationTests
             }
 
             var serviceCollection = new ServiceCollection();
-            var loggerFactory = NullLoggerFactory.Instance; // Use the factory
+            var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.SetMinimumLevel(LogLevel.Information);
+                builder.AddConsole();
+            });
 
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = apiKey;
             }, loggerFactory, true);
 
-            // Pass the loggerFactory as the second parameter to the ClientV2 constructor
-            return _mindeeClientV2 ??= new ClientV2(apiKey, loggerFactory);
+            return _mindeeClientV2 ??= new ClientV2(apiKey: apiKey, loggerFactory: loggerFactory);
         }
 
         /// <summary>

@@ -32,6 +32,15 @@ namespace Mindee.UnitTests
                 rag: false);
         }
 
+        /// <summary>
+        ///     Ensures all line endings are identical before comparison so the test
+        ///     behaves the same on every platform (LF vs CRLF).
+        /// </summary>
+        public static string NormalizeLineEndings(string input)
+        {
+            return input.Replace("\r\n", "\n").Replace("\r", "\n");
+        }
+
         public static ServiceProvider InitServiceProviderV1(HttpStatusCode statusCode, string fileContent)
         {
             var services = new ServiceCollection();

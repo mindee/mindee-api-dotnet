@@ -18,7 +18,7 @@ namespace Mindee.IntegrationTests.V1.Workflow
         public WorkflowTest()
         {
             var apiKey1 = Environment.GetEnvironmentVariable("Mindee__ApiKey");
-            _client = TestingUtilities.GetOrGenerateMindeeClient(apiKey1);
+            _client = TestingUtilities.GetOrGenerateMindeeClientV1(apiKey1);
             _ragMatchInputSource = new LocalInputSource(
                 Constants.V1ProductDir + "financial_document/default_sample.jpg");
             _ragNoMatchInputSource = new LocalInputSource(
