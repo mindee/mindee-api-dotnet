@@ -109,7 +109,7 @@ namespace Mindee.V2.Http
             return response ?? throw new MindeeException("Couldn't deserialize RagDocumentSearchResponse.");
         }
 
-        public override async Task<RagAnnotationResponse> ReqPostExtractionRagDocumentAsync(
+        public override async Task<TAnnotationResponse> ReqPostRagDocumentAsync<TAnnotationResponse>(
             RagDocumentUploadParameters parameters
             , LocalInputSource localInputSource
             , CancellationToken cancellationToken = default)
@@ -124,24 +124,24 @@ namespace Mindee.V2.Http
             {
                 request.AddParameter(entry.Key, entry.Value);
             }
-            return await ExecuteRagAnnotationRequest(request, cancellationToken);
+            return await ExecuteRagAnnotationRequest<TAnnotationResponse>(request, cancellationToken);
         }
 
-        public override async Task<RagAnnotationResponse> ReqGetExtractionRagAnnotationAsync(
+        public override async Task<TAnnotationResponse> ReqGetRagAnnotationAsync<TAnnotationResponse>(
             string documentId, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest($"/v2/products/extraction/rag-documents/{documentId}");
-            return await ExecuteRagAnnotationRequest(request, cancellationToken);
+            return await ExecuteRagAnnotationRequest<TAnnotationResponse>(request, cancellationToken);
         }
 
-        public override async Task<RagAnnotationResponse> ReqPatchExtractionRagAnnotationAsync(
+        public override async Task<TAnnotationResponse> ReqPatchRagAnnotationAsync<TAnnotationResponse>(
             RagDocumentAnnotationParameters parameters, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest(
                 $"/v2/products/extraction/rag-documents/{parameters.DocumentId}", Method.Patch);
             request.AddJsonBody(parameters.GetRequestParameters());
 
-            return await ExecuteRagAnnotationRequest(request, cancellationToken);
+            return await ExecuteRagAnnotationRequest<TAnnotationResponse>(request, cancellationToken);
         }
 
         public override async Task<bool> ReqDeleteExtractionRagDocumentAsync(
@@ -241,13 +241,13 @@ namespace Mindee.V2.Http
             }
         }
 
-        private async Task<RagAnnotationResponse> ExecuteRagAnnotationRequest(
+        private async Task<TAnnotationResponse> ExecuteRagAnnotationRequest<TAnnotationResponse>(
             RestRequest request, CancellationToken cancellationToken)
         {
             var restResponse = await _httpClient.ExecuteAsync(request, cancellationToken);
             cancellationToken.ThrowIfCancellationRequested();
 
-            var response = JsonSerializer.Deserialize<RagAnnotationResponse>(GetResponseContent(restResponse));
+            var response = JsonSerializer.Deserialize<TAnnotationResponse>(GetResponseContent(restResponse));
             return response ?? throw new MindeeException("Couldn't deserialize RagAnnotationResponse.");
         }
 

@@ -86,7 +86,6 @@ namespace Mindee.V2.Http
         /// </summary>
         /// <param name="searchParameters"><see cref="ModelSearchParameters"/></param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns></returns>
         public abstract Task<ModelSearchResponse> ReqGetSearchModelsAsync(
             ModelSearchParameters searchParameters, CancellationToken cancellationToken = default);
 
@@ -95,7 +94,6 @@ namespace Mindee.V2.Http
         /// </summary>
         /// <param name="searchParameters"><see cref="RagDocumentSearchParameters"/></param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns></returns>
         public abstract Task<RagDocumentSearchResponse> ReqGetSearchRagDocumentsAsync(
             RagDocumentSearchParameters searchParameters, CancellationToken cancellationToken = default);
 
@@ -106,11 +104,11 @@ namespace Mindee.V2.Http
         /// <param name="parameters"></param>
         /// <param name="localInputSource"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public abstract Task<RagAnnotationResponse> ReqPostExtractionRagDocumentAsync(
+        public abstract Task<TAnnotationResponse> ReqPostRagDocumentAsync<TAnnotationResponse>(
             RagDocumentUploadParameters parameters
             , LocalInputSource localInputSource
-            , CancellationToken cancellationToken = default);
+            , CancellationToken cancellationToken = default)
+            where TAnnotationResponse : RagAnnotationResponse, new();
 
         /// <summary>
         /// Get a document's info and annotations from the RAG database.
@@ -118,9 +116,9 @@ namespace Mindee.V2.Http
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public abstract Task<RagAnnotationResponse> ReqGetExtractionRagAnnotationAsync(
-            string documentId, CancellationToken cancellationToken = default);
+        public abstract Task<TAnnotationResponse> ReqGetRagAnnotationAsync<TAnnotationResponse>(
+            string documentId, CancellationToken cancellationToken = default)
+            where TAnnotationResponse : RagAnnotationResponse, new();
 
         /// <summary>
         /// Update a document's annotations in the RAG database.
@@ -128,9 +126,9 @@ namespace Mindee.V2.Http
         /// </summary>
         /// <param name="parameters"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public abstract Task<RagAnnotationResponse> ReqPatchExtractionRagAnnotationAsync(
-            RagDocumentAnnotationParameters parameters, CancellationToken cancellationToken = default);
+        public abstract Task<TAnnotationResponse> ReqPatchRagAnnotationAsync<TAnnotationResponse>(
+            RagDocumentAnnotationParameters parameters, CancellationToken cancellationToken = default)
+            where TAnnotationResponse : RagAnnotationResponse, new();
 
         /// <summary>
         /// Deletes a document from the RAG database.
@@ -138,17 +136,14 @@ namespace Mindee.V2.Http
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public abstract Task<bool> ReqDeleteExtractionRagDocumentAsync(
             string documentId, CancellationToken cancellationToken = default);
-
 
         /// <summary>
         /// Retrieves a list of models available for a given API key.
         /// </summary>
         /// <param name="parameters"><see cref="ModelSearchParameters"/></param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns></returns>
         public abstract Task<SearchResponse> SearchModelsObsolete(
             ModelSearchParameters parameters, CancellationToken cancellationToken = default);
 
@@ -187,7 +182,6 @@ namespace Mindee.V2.Http
         /// </summary>
         /// <param name="responseContent"></param>
         /// <typeparam name="TResponse"></typeparam>
-        /// <returns></returns>
         protected TResponse DeserializeResponse<TResponse>(string? responseContent)
             where TResponse : BaseResponse, new()
         {

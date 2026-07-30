@@ -1,5 +1,6 @@
 using Mindee.Input;
 using Mindee.V2;
+using Mindee.V2.Product.Extraction.RagDocuments;
 using Mindee.V2.Product.Extraction.RagDocuments.Params;
 
 namespace Mindee.IntegrationTests.V2.Product.Extraction
@@ -25,7 +26,8 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
                 Constants.V2ProductDir + "extraction/financial_document/default_sample.jpg");
             var parameters = new RagDocumentUploadParameters(modelId: _extractionModelId);
 
-            var postResponse = await _client.UploadAndGetExtractionRagDocumentAsync(inputSource, parameters);
+            var postResponse = await _client.UploadAndGetRagDocumentPollAsync<RagAnnotationResponse>(
+                inputSource, parameters);
             Assert.NotNull(postResponse);
 
             var postAnnotation = postResponse.Annotation;
@@ -41,7 +43,7 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
             postAnnotation.Fields["invoice_number"].SimpleField.Selected = true;
             postAnnotation.Fields["invoice_number"].SimpleField.Guidelines = "koo koo katchoo!";
 
-            var patchAnnotationResponse = await _client.UpdateExtractionRagAnnotationAsync(
+            var patchAnnotationResponse = await _client.UpdateRagAnnotationAsync<RagAnnotationResponse>(
                 new RagDocumentAnnotationParameters(
                     documentId: documentId
                     , annotation: postAnnotation));
@@ -52,7 +54,8 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
             Assert.Equal("koo koo katchoo!", patchAnnotation.Fields["invoice_number"].SimpleField.Guidelines);
             Assert.True(patchAnnotation.Fields["invoice_number"].SimpleField.Selected);
 
-            var getResponse = await _client.GetReadyExtractionRagDocumentAsync(documentId);
+            var getResponse = await _client.GetReadyRagDocumentPollAsync<RagAnnotationResponse>(
+                documentId);
             Assert.NotNull(getResponse);
             var getAnnotation = getResponse.Annotation;
             Assert.NotNull(getAnnotation);
@@ -64,7 +67,7 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
             Assert.Equal("koo koo katchoo!", getAnnotation.Fields["invoice_number"].SimpleField.Guidelines);
             Assert.True(getAnnotation.Fields["invoice_number"].SimpleField.Selected);
 
-            var patchStatusResponse = await _client.UpdateExtractionRagAnnotationAsync(
+            var patchStatusResponse = await _client.UpdateRagAnnotationAsync<RagAnnotationResponse>(
                 new RagDocumentAnnotationParameters(
                     documentId: documentId
                     , status: "Active"));
@@ -76,7 +79,7 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
 
             await Assert.ThrowsAsync<Mindee.V2.Exceptions.MindeeHttpExceptionV2>(async () =>
             {
-                await _client.GetExtractionRagDocumentAsync(documentId);
+                await _client.GetRagDocumentAsync<RagAnnotationResponse>(documentId);
             });
         }
     }
