@@ -7,7 +7,7 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
     /// <summary>
     /// Response for a RAG document.
     /// </summary>
-    public class RagAnnotationResponse : BaseResponse
+    public class ExtractionRagAnnotationResponse : BaseResponse
     {
         /// <summary>
         /// Unique identifier of the RAG document.

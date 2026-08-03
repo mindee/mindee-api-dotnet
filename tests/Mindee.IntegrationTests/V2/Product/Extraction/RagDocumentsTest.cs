@@ -26,7 +26,7 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
                 Constants.V2ProductDir + "extraction/financial_document/default_sample.jpg");
             var parameters = new RagDocumentUploadParameters(modelId: _extractionModelId);
 
-            var postResponse = await _client.UploadAndGetRagDocumentPollAsync<RagAnnotationResponse>(
+            var postResponse = await _client.UploadAndGetRagDocumentPollAsync<ExtractionRagAnnotationResponse>(
                 inputSource, parameters);
             Assert.NotNull(postResponse);
 
@@ -43,7 +43,7 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
             postAnnotation.Fields["invoice_number"].SimpleField.Selected = true;
             postAnnotation.Fields["invoice_number"].SimpleField.Guidelines = "koo koo katchoo!";
 
-            var patchAnnotationResponse = await _client.UpdateRagAnnotationAsync<RagAnnotationResponse>(
+            var patchAnnotationResponse = await _client.UpdateRagAnnotationAsync<ExtractionRagAnnotationResponse>(
                 new RagDocumentAnnotationParameters(
                     documentId: documentId
                     , annotation: postAnnotation));
@@ -54,7 +54,7 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
             Assert.Equal("koo koo katchoo!", patchAnnotation.Fields["invoice_number"].SimpleField.Guidelines);
             Assert.True(patchAnnotation.Fields["invoice_number"].SimpleField.Selected);
 
-            var getResponse = await _client.GetReadyRagDocumentPollAsync<RagAnnotationResponse>(
+            var getResponse = await _client.GetReadyRagDocumentPollAsync<ExtractionRagAnnotationResponse>(
                 documentId);
             Assert.NotNull(getResponse);
             var getAnnotation = getResponse.Annotation;
@@ -67,7 +67,7 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
             Assert.Equal("koo koo katchoo!", getAnnotation.Fields["invoice_number"].SimpleField.Guidelines);
             Assert.True(getAnnotation.Fields["invoice_number"].SimpleField.Selected);
 
-            var patchStatusResponse = await _client.UpdateRagAnnotationAsync<RagAnnotationResponse>(
+            var patchStatusResponse = await _client.UpdateRagAnnotationAsync<ExtractionRagAnnotationResponse>(
                 new RagDocumentAnnotationParameters(
                     documentId: documentId
                     , status: "Active"));
@@ -79,7 +79,7 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
 
             await Assert.ThrowsAsync<Mindee.V2.Exceptions.MindeeHttpExceptionV2>(async () =>
             {
-                await _client.GetRagDocumentAsync<RagAnnotationResponse>(documentId);
+                await _client.GetRagDocumentAsync<ExtractionRagAnnotationResponse>(documentId);
             });
         }
     }

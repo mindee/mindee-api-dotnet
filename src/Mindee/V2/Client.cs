@@ -271,7 +271,7 @@ namespace Mindee.V2
         /// <returns></returns>
         public async Task<TAnnotationResponse> UploadRagDocumentAsync<TAnnotationResponse>(
             LocalInputSource inputSource, RagDocumentUploadParameters parameters, CancellationToken ct = default)
-            where TAnnotationResponse : RagAnnotationResponse, new()
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Adding a document to the RAG database");
             return await _mindeeApi.ReqPostRagDocumentAsync<TAnnotationResponse>(parameters, inputSource, ct);
@@ -291,7 +291,7 @@ namespace Mindee.V2
             , RagDocumentUploadParameters parameters
             , PollingOptions pollingOptions = null
             , CancellationToken ct = default)
-            where TAnnotationResponse : RagAnnotationResponse, new()
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
         {
             pollingOptions ??= new PollingOptions();
 
@@ -313,7 +313,7 @@ namespace Mindee.V2
         /// <returns></returns>
         public async Task<TAnnotationResponse> GetRagDocumentAsync<TAnnotationResponse>(
             string documentId, CancellationToken ct = default)
-            where TAnnotationResponse : RagAnnotationResponse, new()
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Getting RAG document ID: {}", documentId);
             return await _mindeeApi.ReqGetRagAnnotationAsync<TAnnotationResponse>(documentId, ct);
@@ -327,11 +327,11 @@ namespace Mindee.V2
         /// <param name="pollingOptions"/>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<RagAnnotationResponse> GetReadyRagDocumentPollAsync<TAnnotationResponse>(
+        public async Task<ExtractionRagAnnotationResponse> GetReadyRagDocumentPollAsync<TAnnotationResponse>(
             string documentId
             , PollingOptions pollingOptions = null
             , CancellationToken ct = default)
-            where TAnnotationResponse : RagAnnotationResponse, new()
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
         {
             var initialResponse = await GetRagDocumentAsync<TAnnotationResponse>(documentId, ct);
             if (initialResponse.Status != "Processing")
@@ -350,8 +350,8 @@ namespace Mindee.V2
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<TAnnotationResponse> UpdateRagAnnotationAsync<TAnnotationResponse>(
-            RagDocumentAnnotationParameters parameters, CancellationToken ct = default)
-            where TAnnotationResponse : RagAnnotationResponse, new()
+            BaseAnnotationParameters parameters, CancellationToken ct = default)
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Updating RAG document ID: {}", parameters.DocumentId);
             return await _mindeeApi.ReqPatchRagAnnotationAsync<TAnnotationResponse>(parameters, ct);
@@ -365,8 +365,8 @@ namespace Mindee.V2
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<TAnnotationResponse> UpdateAndGetExtractionRagAnnotationPollAsync<TAnnotationResponse>(
-            RagDocumentAnnotationParameters parameters, CancellationToken ct = default)
-            where TAnnotationResponse : RagAnnotationResponse, new()
+            BaseAnnotationParameters parameters, CancellationToken ct = default)
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Updating RAG document ID: {}", parameters.DocumentId);
             return await _mindeeApi.ReqPatchRagAnnotationAsync<TAnnotationResponse>(parameters, ct);
@@ -417,10 +417,10 @@ namespace Mindee.V2
         /// </summary>
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the annotation isn't ready.</exception>
         private async Task<TAnnotationResponse> PollForRagDocumentAsync<TAnnotationResponse>(
-            RagAnnotationResponse initialResponse
+            ExtractionRagAnnotationResponse initialResponse
             , PollingOptions pollingOptions
             , CancellationToken cancellationToken = default)
-        where TAnnotationResponse : RagAnnotationResponse, new()
+        where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Polling for RAG document ID: {}", initialResponse.Id);
             var maxRetries = pollingOptions.MaxRetries + 1;

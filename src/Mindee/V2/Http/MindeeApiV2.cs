@@ -135,7 +135,7 @@ namespace Mindee.V2.Http
         }
 
         public override async Task<TAnnotationResponse> ReqPatchRagAnnotationAsync<TAnnotationResponse>(
-            RagDocumentAnnotationParameters parameters, CancellationToken cancellationToken = default)
+            BaseAnnotationParameters parameters, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest(
                 $"/v2/products/extraction/rag-documents/{parameters.DocumentId}", Method.Patch);

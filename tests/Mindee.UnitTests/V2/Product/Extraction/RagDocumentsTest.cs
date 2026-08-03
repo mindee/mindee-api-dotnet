@@ -130,11 +130,11 @@ namespace Mindee.UnitTests.V2.Product.Extraction
             Assert.Null(lineITem2.Fields["unit_measure"].SimpleField.Value);
         }
 
-        private static RagAnnotationResponse GetResponse(string path)
+        private static ExtractionRagAnnotationResponse GetResponse(string path)
         {
             var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2ProductDir + path));
-            return localResponse.DeserializeResponse<RagAnnotationResponse>();
+            return localResponse.DeserializeResponse<ExtractionRagAnnotationResponse>();
         }
     }
 }

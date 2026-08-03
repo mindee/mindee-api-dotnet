@@ -1,19 +1,15 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Mindee.Exceptions;
+using Mindee.V2.ClientOptions;
 
 namespace Mindee.V2.Product.Extraction.RagDocuments.Params
 {
     /// <summary>
     /// Upload parameters for RAG documents.
     /// </summary>
-    public class RagDocumentAnnotationParameters
+    public class RagDocumentAnnotationParameters : BaseAnnotationParameters
     {
-        /// <summary>
-        /// UUID of the extraction model that the uploaded RAG document is linked to.
-        /// </summary>
-        public string DocumentId { get; }
-
         /// <summary>
         /// New public status to apply to the document (for example, to deactivate it).
         /// </summary>
@@ -27,13 +23,14 @@ namespace Mindee.V2.Product.Extraction.RagDocuments.Params
         /// <summary>
         /// Default constructor.
         /// </summary>
-        /// <param name="documentId"><see cref="DocumentId"/></param>
+        /// <param name="documentId"><see cref="BaseAnnotationParameters.DocumentId"/></param>
         /// <param name="status"><see cref="Status"/></param>
         /// <param name="annotation"><see cref="Annotation"/></param>
         public RagDocumentAnnotationParameters(
-            string documentId, string status = null, object annotation = null)
+            string documentId
+            , string status = null
+            , object annotation = null) : base(documentId)
         {
-            DocumentId = documentId;
             Status = status;
             Annotation = annotation switch
             {
@@ -45,10 +42,9 @@ namespace Mindee.V2.Product.Extraction.RagDocuments.Params
         }
 
         /// <summary>
-        /// Gets the request parameters for the upload request.
+        /// <inheritdoc/>
         /// </summary>
-        /// <returns></returns>
-        public virtual Dictionary<string, object> GetRequestParameters()
+        public override Dictionary<string, object> GetRequestParameters()
         {
             if (string.IsNullOrEmpty(DocumentId))
                 throw new System.ArgumentException("DocumentId is required in RagDocumentsAnnotationParameters");

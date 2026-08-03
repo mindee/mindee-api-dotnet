@@ -108,7 +108,7 @@ namespace Mindee.V2.Http
             RagDocumentUploadParameters parameters
             , LocalInputSource localInputSource
             , CancellationToken cancellationToken = default)
-            where TAnnotationResponse : RagAnnotationResponse, new();
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new();
 
         /// <summary>
         /// Get a document's info and annotations from the RAG database.
@@ -118,7 +118,7 @@ namespace Mindee.V2.Http
         /// <param name="cancellationToken"></param>
         public abstract Task<TAnnotationResponse> ReqGetRagAnnotationAsync<TAnnotationResponse>(
             string documentId, CancellationToken cancellationToken = default)
-            where TAnnotationResponse : RagAnnotationResponse, new();
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new();
 
         /// <summary>
         /// Update a document's annotations in the RAG database.
@@ -127,8 +127,8 @@ namespace Mindee.V2.Http
         /// <param name="parameters"></param>
         /// <param name="cancellationToken"></param>
         public abstract Task<TAnnotationResponse> ReqPatchRagAnnotationAsync<TAnnotationResponse>(
-            RagDocumentAnnotationParameters parameters, CancellationToken cancellationToken = default)
-            where TAnnotationResponse : RagAnnotationResponse, new();
+            BaseAnnotationParameters parameters, CancellationToken cancellationToken = default)
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new();
 
         /// <summary>
         /// Deletes a document from the RAG database.

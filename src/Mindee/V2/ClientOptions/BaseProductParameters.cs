@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Mindee.V2.ClientOptions
 {
     /// <summary>
-    ///     Base parameters for enqueueing a document.
+    ///     Base parameters for sending a document to a product.
     /// </summary>
     public abstract class BaseProductParameters
     {
