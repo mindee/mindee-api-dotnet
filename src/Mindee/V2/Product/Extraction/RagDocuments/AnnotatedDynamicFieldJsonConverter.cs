@@ -26,17 +26,8 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
                 jsonObject.TryGetPropertyValue("items", out var itemsNode) &&
                 itemsNode is JsonArray itemsArray)
             {
-                string guidelines;
-                if (jsonObject.TryGetPropertyValue("guidelines", out var confidenceNode))
-                    guidelines = confidenceNode.Deserialize<string>(options);
-                else
-                    guidelines = null;
-
-                bool selected;
-                if (jsonObject.TryGetPropertyValue("selected", out var selectedNode))
-                    selected = selectedNode.Deserialize<bool>(options);
-                else
-                    selected = false;
+                string guidelines = jsonObject["guidelines"]?.Deserialize<string>(options);
+                bool selected = jsonObject["selected"]?.Deserialize<bool>(options) ?? false;
 
                 var listField = new AnnotatedListField(selected, guidelines);
                 foreach (var item in itemsArray)
