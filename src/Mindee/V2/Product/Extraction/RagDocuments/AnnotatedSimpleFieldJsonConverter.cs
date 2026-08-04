@@ -20,17 +20,9 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
             // read the response JSON into an object
             var jsonObject = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
 
-            string guidelines;
-            if (jsonObject != null && jsonObject.TryGetPropertyValue("guidelines", out var confidenceNode))
-                guidelines = confidenceNode.Deserialize<string>(options);
-            else
-                guidelines = null;
+            string guidelines = jsonObject?["guidelines"]?.Deserialize<string>(options);
 
-            bool selected;
-            if (jsonObject != null && jsonObject.TryGetPropertyValue("selected", out var selectedNode))
-                selected = selectedNode.Deserialize<bool>(options);
-            else
-                selected = false;
+            bool selected = jsonObject?["selected"]?.Deserialize<bool>(options) ?? false;
 
             Debug.Assert(jsonObject != null, nameof(jsonObject) + " != null");
             jsonObject.TryGetPropertyValue("value", out var fieldValue);
