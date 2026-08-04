@@ -7,7 +7,7 @@ using Mindee.V2.Parsing.Inference.Field;
 namespace Mindee.V2.Product.Extraction.RagDocuments
 {
     /// <summary>
-    /// ustom deserializer for <see cref="AnnotatedDynamicField" />
+    /// Custom deserializer for <see cref="AnnotatedDynamicField" />
     /// </summary>
     [Serializable]
     [JsonConverter(typeof(DynamicAnnotationFieldJsonConverter))]
