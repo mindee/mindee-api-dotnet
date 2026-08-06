@@ -14,6 +14,8 @@ using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product;
+using Mindee.V2.Product.Extraction.RagDocuments;
+using Mindee.V2.Product.Extraction.RagDocuments.Params;
 using Mindee.V2.Search.Model;
 using Mindee.V2.Search.Models;
 using RestSharp;
@@ -52,9 +54,9 @@ namespace Mindee.V2.Http
         }
 
         public override async Task<JobResponse> ReqPostEnqueueAsync(
-            InputSource inputSource,
-            BaseProductParameters parameters,
-            CancellationToken ct = default
+            InputSource inputSource
+            , BaseProductParameters parameters
+            , CancellationToken cancellationToken = default
         )
         {
             var productAttributes = parameters.GetType().GetCustomAttribute<ProductAttributes>();
@@ -63,18 +65,16 @@ namespace Mindee.V2.Http
             var request = new RestRequest(
                 $"v2/products/{productAttributes.Slug}/enqueue", Method.Post);
 
-            request.AddParameter("model_id", parameters.ModelId);
             AddPredictRequestParameters(inputSource, parameters, request);
 
             Logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
-            var response = await _httpClient.ExecutePostAsync(request, ct);
-            ct.ThrowIfCancellationRequested();
+            var response = await _httpClient.ExecuteAsync(request, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
             return HandleJobResponse(response);
         }
 
-
-        public override async Task<ModelSearchResponse> SearchModelsAsync(
-            ModelSearchParameters searchParameters, CancellationToken ct = default)
+        public override async Task<ModelSearchResponse> ReqGetSearchModelsAsync(
+            ModelSearchParameters searchParameters, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest("v2/search/models");
             Logger?.LogInformation("Model search...");
@@ -84,15 +84,15 @@ namespace Mindee.V2.Http
                 request.AddParameter(entry.Key, entry.Value);
             }
 
-            var restResponse = await _httpClient.ExecuteGetAsync(request, ct);
-            ct.ThrowIfCancellationRequested();
+            var restResponse = await _httpClient.ExecuteAsync(request, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
 
             var response = JsonSerializer.Deserialize<ModelSearchResponse>(GetResponseContent(restResponse));
             return response ?? throw new MindeeException("Couldn't deserialize ModelSearchResponse.");
         }
 
-        public override async Task<RagDocumentSearchResponse> SearchRagDocumentsAsync(
-            RagDocumentSearchParameters searchParameters, CancellationToken ct = default)
+        public override async Task<RagDocumentSearchResponse> ReqGetSearchRagDocumentsAsync(
+            RagDocumentSearchParameters searchParameters, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest("v2/search/rag-documents");
             Logger?.LogInformation("RAG Document search...");
@@ -102,15 +102,62 @@ namespace Mindee.V2.Http
                 request.AddParameter(entry.Key, entry.Value);
             }
 
-            var restResponse = await _httpClient.ExecuteGetAsync(request, ct);
-            ct.ThrowIfCancellationRequested();
+            var restResponse = await _httpClient.ExecuteAsync(request, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
 
             var response = JsonSerializer.Deserialize<RagDocumentSearchResponse>(GetResponseContent(restResponse));
             return response ?? throw new MindeeException("Couldn't deserialize RagDocumentSearchResponse.");
         }
 
+        public override async Task<TAnnotationResponse> ReqPostRagDocumentAsync<TAnnotationResponse>(
+            RagDocumentUploadParameters parameters
+            , LocalInputSource localInputSource
+            , CancellationToken cancellationToken = default)
+        {
+            var request = new RestRequest("v2/products/extraction/rag-documents", Method.Post);
+            request.AddFile(
+                "file",
+                localInputSource.FileBytes,
+                localInputSource.Filename);
+
+            foreach (KeyValuePair<string, string> entry in parameters.GetRequestParameters())
+            {
+                request.AddParameter(entry.Key, entry.Value);
+            }
+            return await ExecuteRagAnnotationRequest<TAnnotationResponse>(request, cancellationToken);
+        }
+
+        public override async Task<TAnnotationResponse> ReqGetRagAnnotationAsync<TAnnotationResponse>(
+            string documentId, CancellationToken cancellationToken = default)
+        {
+            var request = new RestRequest($"/v2/products/extraction/rag-documents/{documentId}");
+            return await ExecuteRagAnnotationRequest<TAnnotationResponse>(request, cancellationToken);
+        }
+
+        public override async Task<TAnnotationResponse> ReqPatchRagAnnotationAsync<TAnnotationResponse>(
+            BaseAnnotationParameters parameters, CancellationToken cancellationToken = default)
+        {
+            var request = new RestRequest(
+                $"/v2/products/extraction/rag-documents/{parameters.DocumentId}", Method.Patch);
+            request.AddJsonBody(parameters.GetRequestParameters());
+
+            return await ExecuteRagAnnotationRequest<TAnnotationResponse>(request, cancellationToken);
+        }
+
+        public override async Task<bool> ReqDeleteExtractionRagDocumentAsync(
+            string documentId, CancellationToken cancellationToken = default)
+        {
+            var request = new RestRequest(
+                $"/v2/products/extraction/rag-documents/{documentId}", Method.Delete);
+
+            var restResponse = await _httpClient.ExecuteAsync(request, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return restResponse.IsSuccessful;
+        }
+
         public override async Task<SearchResponse> SearchModelsObsolete(
-            ModelSearchParameters parameters, CancellationToken ct = default)
+            ModelSearchParameters parameters, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest("v2/search/models");
             Logger?.LogInformation("Model search...");
@@ -120,24 +167,26 @@ namespace Mindee.V2.Http
                 request.AddParameter(entry.Key, entry.Value);
             }
 
-            var restResponse = await _httpClient.ExecuteGetAsync(request, ct);
-            ct.ThrowIfCancellationRequested();
+            var restResponse = await _httpClient.ExecuteAsync(request, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
 
             var response = JsonSerializer.Deserialize<SearchResponse>(GetResponseContent(restResponse));
             return response ?? throw new MindeeException("Couldn't deserialize SearchResponse.");
         }
 
-        public override async Task<JobResponse> ReqGetJobAsync(string jobId, CancellationToken ct = default)
+        public override async Task<JobResponse> ReqGetJobAsync(
+            string jobId, CancellationToken cancellationToken = default)
         {
-            return await ReqGetJobFromUrlAsync($"{_baseUrl}/v2/jobs/{jobId}", ct);
+            return await ReqGetJobFromUrlAsync($"{_baseUrl}/v2/jobs/{jobId}", cancellationToken);
         }
 
-        public override async Task<JobResponse> ReqGetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
+        public override async Task<JobResponse> ReqGetJobFromUrlAsync(
+            string pollingUrl, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest(new Uri(pollingUrl));
             Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
-            var response = await _httpClient.ExecuteGetAsync(request, ct);
-            ct.ThrowIfCancellationRequested();
+            var response = await _httpClient.ExecuteAsync(request, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
             Logger?.LogDebug("HTTP response: {ResponseContent}", response.Content);
             var handledResponse = HandleJobResponse(response);
             return handledResponse;
@@ -151,17 +200,18 @@ namespace Mindee.V2.Http
             var request = new RestRequest(
                 $"v2/products/{productAttributes.Slug}/results/{inferenceId}");
             Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
-            var queueResponse = await _httpClient.ExecuteGetAsync(request, ct);
+            var queueResponse = await _httpClient.ExecuteAsync(request, ct);
             ct.ThrowIfCancellationRequested();
             return HandleProductResponse<TResponse>(queueResponse);
         }
 
-        public override async Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(string resultUrl, CancellationToken ct = default)
+        public override async Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(
+            string resultUrl, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest(new Uri(resultUrl));
             Logger?.LogInformation("HTTP GET to {RequestResource}...", resultUrl);
-            var queueResponse = await _httpClient.ExecuteGetAsync(request, ct);
-            ct.ThrowIfCancellationRequested();
+            var queueResponse = await _httpClient.ExecuteAsync(request, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
             return HandleProductResponse<TResponse>(queueResponse);
         }
 
@@ -189,6 +239,16 @@ namespace Mindee.V2.Http
             {
                 request.AddParameter(entry.Key, entry.Value);
             }
+        }
+
+        private async Task<TAnnotationResponse> ExecuteRagAnnotationRequest<TAnnotationResponse>(
+            RestRequest request, CancellationToken cancellationToken)
+        {
+            var restResponse = await _httpClient.ExecuteAsync(request, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var response = JsonSerializer.Deserialize<TAnnotationResponse>(GetResponseContent(restResponse));
+            return response ?? throw new MindeeException("Couldn't deserialize RagAnnotationResponse.");
         }
 
         private JobResponse HandleJobResponse(RestResponse restResponse)

@@ -10,6 +10,8 @@ using Mindee.V2.ClientOptions;
 using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
+using Mindee.V2.Product.Extraction.RagDocuments;
+using Mindee.V2.Product.Extraction.RagDocuments.Params;
 using Mindee.V2.Search.Model;
 using Mindee.V2.Search.Models;
 
@@ -39,66 +41,111 @@ namespace Mindee.V2.Http
         ///     <see cref="LocalInputSource" />
         ///     <see cref="UrlInputSource" />
         /// </param>
-        /// <param name="ct">Cancellation token.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         public abstract Task<JobResponse> ReqPostEnqueueAsync(
-            InputSource inputSource, BaseProductParameters parameters, CancellationToken ct = default);
+            InputSource inputSource
+            , BaseProductParameters parameters
+            , CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get a job for an enqueued document.
         /// </summary>
         /// <param name="pollingUrl">The job ID as returned by the predict_async route.</param>
-        /// <param name="ct">Cancellation token.</param>
-        public abstract Task<JobResponse> ReqGetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default);
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public abstract Task<JobResponse> ReqGetJobFromUrlAsync(
+            string pollingUrl, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get a job for an enqueued document.
         /// </summary>
         /// <param name="jobId">The job ID as returned by the predict_async route.</param>
-        /// <param name="ct">Cancellation token.</param>
-        public abstract Task<JobResponse> ReqGetJobAsync(string jobId, CancellationToken ct = default);
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public abstract Task<JobResponse> ReqGetJobAsync(
+            string jobId, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get a document inference.
         /// </summary>
         /// <param name="inferenceId">Url to poll.</param>
-        /// <param name="ct">Cancellation token.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         public abstract Task<TResponse> ReqGetResultAsync<TResponse>(
-            string inferenceId, CancellationToken ct = default) where TResponse : BaseResponse, new();
+            string inferenceId, CancellationToken cancellationToken = default)
+            where TResponse : BaseResponse, new();
 
         /// <summary>
         ///     Get a document inference.
         /// </summary>
         /// <param name="resultUrl">Url to poll.</param>
-        /// <param name="ct">Cancellation token.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(
-            string resultUrl, CancellationToken ct = default) where TResponse : BaseResponse, new();
+            string resultUrl, CancellationToken cancellationToken = default)
+            where TResponse : BaseResponse, new();
 
         /// <summary>
         /// Retrieves a list of models with the given criteria.
         /// </summary>
         /// <param name="searchParameters"><see cref="ModelSearchParameters"/></param>
-        /// <param name="ct">Cancellation token.</param>
-        /// <returns></returns>
-        public abstract Task<ModelSearchResponse> SearchModelsAsync(
-            ModelSearchParameters searchParameters, CancellationToken ct = default);
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public abstract Task<ModelSearchResponse> ReqGetSearchModelsAsync(
+            ModelSearchParameters searchParameters, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves a list of RAG documents with the given criteria.
         /// </summary>
         /// <param name="searchParameters"><see cref="RagDocumentSearchParameters"/></param>
-        /// <param name="ct">Cancellation token.</param>
-        /// <returns></returns>
-        public abstract Task<RagDocumentSearchResponse> SearchRagDocumentsAsync(
-            RagDocumentSearchParameters searchParameters, CancellationToken ct = default);
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public abstract Task<RagDocumentSearchResponse> ReqGetSearchRagDocumentsAsync(
+            RagDocumentSearchParameters searchParameters, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Add a document to the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="localInputSource"></param>
+        /// <param name="cancellationToken"></param>
+        public abstract Task<TAnnotationResponse> ReqPostRagDocumentAsync<TAnnotationResponse>(
+            RagDocumentUploadParameters parameters
+            , LocalInputSource localInputSource
+            , CancellationToken cancellationToken = default)
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new();
+
+        /// <summary>
+        /// Get a document's info and annotations from the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="cancellationToken"></param>
+        public abstract Task<TAnnotationResponse> ReqGetRagAnnotationAsync<TAnnotationResponse>(
+            string documentId, CancellationToken cancellationToken = default)
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new();
+
+        /// <summary>
+        /// Update a document's annotations in the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="cancellationToken"></param>
+        public abstract Task<TAnnotationResponse> ReqPatchRagAnnotationAsync<TAnnotationResponse>(
+            BaseAnnotationParameters parameters, CancellationToken cancellationToken = default)
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new();
+
+        /// <summary>
+        /// Deletes a document from the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="cancellationToken"></param>
+        public abstract Task<bool> ReqDeleteExtractionRagDocumentAsync(
+            string documentId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves a list of models available for a given API key.
         /// </summary>
         /// <param name="parameters"><see cref="ModelSearchParameters"/></param>
-        /// <param name="ct">Cancellation token.</param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token.</param>
         public abstract Task<SearchResponse> SearchModelsObsolete(
-            ModelSearchParameters parameters, CancellationToken ct = default);
+            ModelSearchParameters parameters, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get the error from the server return.
@@ -135,7 +182,6 @@ namespace Mindee.V2.Http
         /// </summary>
         /// <param name="responseContent"></param>
         /// <typeparam name="TResponse"></typeparam>
-        /// <returns></returns>
         protected TResponse DeserializeResponse<TResponse>(string? responseContent)
             where TResponse : BaseResponse, new()
         {

@@ -29,7 +29,7 @@ namespace Mindee.V2.ClientOptions
         }
 
         /// <summary>
-        /// Gets the request parameters for the POST enqueue request.
+        /// Gets the request parameters for the search request.
         /// </summary>
         /// <returns></returns>
         public virtual Dictionary<string, string> GetRequestParameters()

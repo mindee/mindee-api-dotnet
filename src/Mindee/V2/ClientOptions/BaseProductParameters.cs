@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Mindee.V2.ClientOptions
 {
     /// <summary>
-    ///     Base parameters for enqueueing a document.
+    ///     Base parameters for sending a document to a product.
     /// </summary>
     public abstract class BaseProductParameters
     {
@@ -40,12 +40,17 @@ namespace Mindee.V2.ClientOptions
         }
 
         /// <summary>
-        /// Gets the request parameters for the POST enqueue request.
+        /// Gets the request parameters for the enqueue request.
         /// </summary>
         /// <returns></returns>
         public virtual Dictionary<string, string> GetRequestParameters()
         {
+            if (string.IsNullOrWhiteSpace(ModelId))
+                throw new System.ArgumentException("ModelId is required in ProductParameters");
+
             var parameters = new Dictionary<string, string>();
+
+            parameters.Add("model_id", ModelId);
 
             if (!string.IsNullOrWhiteSpace(Alias))
                 parameters.Add("alias", Alias);

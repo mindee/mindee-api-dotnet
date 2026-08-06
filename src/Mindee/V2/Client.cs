@@ -14,6 +14,8 @@ using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
+using Mindee.V2.Product.Extraction.RagDocuments;
+using Mindee.V2.Product.Extraction.RagDocuments.Params;
 using Mindee.V2.Search.Model;
 using Mindee.V2.Search.Models;
 using SettingsV2 = Mindee.V2.Http.Settings;
@@ -241,7 +243,7 @@ namespace Mindee.V2
                 inputSource,
                 parameters,
                 ct);
-            return await PollForResultsAsync<TResponse>(enqueueResponse, pollingOptions, ct);
+            return await PollForProductResultsAsync<TResponse>(enqueueResponse, pollingOptions, ct);
         }
 
         /// <summary>
@@ -252,8 +254,136 @@ namespace Mindee.V2
         public async Task<ModelSearchResponse> SearchModelsAsync(
             ModelSearchParameters searchParameters, CancellationToken ct = default)
         {
+            _logger?.LogInformation("Searching for models");
             var parameters = searchParameters ?? new ModelSearchParameters();
-            return await _mindeeApi.SearchModelsAsync(parameters, ct);
+            return await _mindeeApi.ReqGetSearchModelsAsync(parameters, ct);
+        }
+
+        /// <summary>
+        /// Not recommended for general use, prefer <see cref="UploadAndGetRagDocumentPollAsync{TAnnotationResponse}"/>.
+        /// You will need to poll until the document is ready for use.
+        /// Add a document to the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="parameters"><see cref="RagDocumentUploadParameters"/></param>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<TAnnotationResponse> UploadRagDocumentAsync<TAnnotationResponse>(
+            LocalInputSource inputSource, RagDocumentUploadParameters parameters, CancellationToken ct = default)
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+        {
+            _logger?.LogInformation("Adding a document to the RAG database");
+            return await _mindeeApi.ReqPostRagDocumentAsync<TAnnotationResponse>(parameters, inputSource, ct);
+        }
+
+        /// <summary>
+        /// Add a document to the RAG database and return the initial annotation.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="parameters"><see cref="RagDocumentUploadParameters"/></param>
+        /// <param name="inputSource"><see cref="LocalInputSource"/></param>
+        /// <param name="pollingOptions"><see cref="PollingOptions"/></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<TAnnotationResponse> UploadAndGetRagDocumentPollAsync<TAnnotationResponse>(
+            LocalInputSource inputSource
+            , RagDocumentUploadParameters parameters
+            , PollingOptions pollingOptions = null
+            , CancellationToken ct = default)
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+        {
+            pollingOptions ??= new PollingOptions();
+
+            var initialResponse = await UploadRagDocumentAsync<TAnnotationResponse>(
+                inputSource, parameters, ct);
+
+            return await PollForRagDocumentAsync<TAnnotationResponse>(
+                initialResponse, pollingOptions, ct);
+        }
+
+        /// <summary>
+        /// Not recommended for general use, prefer <see cref="GetReadyRagDocumentPollAsync{TAnnotationResponse}"/>.
+        /// You will need to poll until the document is ready for use.
+        /// Get a document's info and annotations from the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<TAnnotationResponse> GetRagDocumentAsync<TAnnotationResponse>(
+            string documentId, CancellationToken ct = default)
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+        {
+            _logger?.LogInformation("Getting RAG document ID: {}", documentId);
+            return await _mindeeApi.ReqGetRagAnnotationAsync<TAnnotationResponse>(documentId, ct);
+        }
+
+        /// <summary>
+        /// Get a document's info and annotations from the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="pollingOptions"/>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<ExtractionRagAnnotationResponse> GetReadyRagDocumentPollAsync<TAnnotationResponse>(
+            string documentId
+            , PollingOptions pollingOptions = null
+            , CancellationToken ct = default)
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+        {
+            var initialResponse = await GetRagDocumentAsync<TAnnotationResponse>(documentId, ct);
+            if (initialResponse.Status != "Processing")
+                return initialResponse;
+
+            pollingOptions ??= new PollingOptions();
+            return await PollForRagDocumentAsync<TAnnotationResponse>(
+                initialResponse, pollingOptions, ct);
+        }
+
+        /// <summary>
+        /// Update a document's annotations in the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<TAnnotationResponse> UpdateRagAnnotationAsync<TAnnotationResponse>(
+            BaseAnnotationParameters parameters, CancellationToken ct = default)
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+        {
+            _logger?.LogInformation("Updating RAG document ID: {}", parameters.DocumentId);
+            return await _mindeeApi.ReqPatchRagAnnotationAsync<TAnnotationResponse>(parameters, ct);
+        }
+
+        /// <summary>
+        /// Update a document's annotations in the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<TAnnotationResponse> UpdateAndGetExtractionRagAnnotationPollAsync<TAnnotationResponse>(
+            BaseAnnotationParameters parameters, CancellationToken ct = default)
+            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+        {
+            _logger?.LogInformation("Updating RAG document ID: {}", parameters.DocumentId);
+            return await _mindeeApi.ReqPatchRagAnnotationAsync<TAnnotationResponse>(parameters, ct);
+        }
+
+        /// <summary>
+        /// Get a document's info and annotations from the RAG database.
+        /// For extraction models only.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteExtractionRagDocumentAsync(
+            string documentId, CancellationToken ct = default)
+        {
+            _logger?.LogInformation("Deleting RAG document ID: {}", documentId);
+            return await _mindeeApi.ReqDeleteExtractionRagDocumentAsync(documentId, ct);
         }
 
         /// <summary>
@@ -264,7 +394,8 @@ namespace Mindee.V2
         public async Task<RagDocumentSearchResponse> SearchRagDocumentsAsync(
             RagDocumentSearchParameters searchParameters, CancellationToken ct = default)
         {
-            return await _mindeeApi.SearchRagDocumentsAsync(searchParameters, ct);
+            _logger?.LogInformation("Searching for RAG documents");
+            return await _mindeeApi.ReqGetSearchRagDocumentsAsync(searchParameters, ct);
         }
 
         /// <summary>
@@ -282,43 +413,79 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        ///     Poll for results until the prediction is retrieved or the max amount of attempts is reached.
+        /// Poll until the document is finished processing or the max number of attempts is reached.
         /// </summary>
-        /// <param name="enqueueResponse">
-        ///     <see cref="JobResponse" />
-        /// </param>
-        /// <param name="pollingOptions">
-        ///     <see cref="PollingOptions" />
-        /// </param>
-        /// <param name="ct">Cancellation token.</param>
-        /// <returns>
-        ///     <see cref="ExtractionResponse" />
-        /// </returns>
+        /// <exception cref="MindeeException">Thrown when maxRetries is reached and the annotation isn't ready.</exception>
+        private async Task<TAnnotationResponse> PollForRagDocumentAsync<TAnnotationResponse>(
+            ExtractionRagAnnotationResponse initialResponse
+            , PollingOptions pollingOptions
+            , CancellationToken cancellationToken = default)
+        where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+        {
+            _logger?.LogInformation("Polling for RAG document ID: {}", initialResponse.Id);
+            var maxRetries = pollingOptions.MaxRetries + 1;
+
+            _logger?.LogDebug(
+                "Waiting {} seconds before attempting to retrieve the result...",
+                pollingOptions.InitialDelaySec);
+            await Task.Delay(pollingOptions.InitialDelayMilliSec, cancellationToken);
+            var documentId = initialResponse.Id;
+
+            var retryCount = 1;
+            while (retryCount < maxRetries)
+            {
+                var retryDelayMilliSec = pollingOptions.GetRetryDelayMilliSec(retryCount);
+                await Task.Delay(retryDelayMilliSec, cancellationToken);
+                _logger?.LogInformation(
+                    "Poll attempt {RetryCount} of {MaxRetries}",
+                    retryCount,
+                    maxRetries);
+
+                var response = await GetRagDocumentAsync<TAnnotationResponse>(documentId, cancellationToken);
+
+                retryCount++;
+                switch (response.Status)
+                {
+                    case "Processing":
+                        continue;
+                    case "Failed":
+                        throw new MindeeException("Job failed without an error payload.");
+                    default:
+                        return response;
+                }
+            }
+            throw new MindeeException($"RAG polling not complete after {retryCount} attempts.");
+        }
+
+        /// <summary>
+        /// Poll until the inference results are retrieved or the max number of attempts is reached.
+        /// </summary>
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
-        private async Task<TResponse> PollForResultsAsync<TResponse>(
+        private async Task<TResponse> PollForProductResultsAsync<TResponse>(
             JobResponse enqueueResponse,
             PollingOptions pollingOptions,
-            CancellationToken ct = default) where TResponse : BaseResponse, new()
+            CancellationToken cancellationToken = default)
+            where TResponse : BaseResponse, new()
         {
+            _logger?.LogInformation("Polling for results on job ID: {}", enqueueResponse.Job.Id);
             var maxRetries = pollingOptions.MaxRetries + 1;
             var pollingUrl = enqueueResponse.Job.PollingUrl;
-            _logger?.LogInformation("Enqueued with job ID: {}", enqueueResponse.Job.Id);
-            _logger?.LogInformation(
-                "Waiting {} seconds before attempting to retrieve the document...",
+            _logger?.LogDebug(
+                "Waiting {} seconds before attempting to retrieve the result...",
                 pollingOptions.InitialDelaySec);
-            await Task.Delay(pollingOptions.InitialDelayMilliSec, ct);
+            await Task.Delay(pollingOptions.InitialDelayMilliSec, cancellationToken);
             var retryCount = 1;
             var response = enqueueResponse; // First init is only for error handling purposes.
             while (retryCount < maxRetries)
             {
                 var retryDelayMilliSec = pollingOptions.GetRetryDelayMilliSec(retryCount);
-                await Task.Delay(retryDelayMilliSec, ct);
+                await Task.Delay(retryDelayMilliSec, cancellationToken);
                 _logger?.LogInformation(
-                    "Attempting to retrieve: {RetryCount} of {MaxRetries}",
+                    "Poll attempt {RetryCount} of {MaxRetries}",
                     retryCount,
                     maxRetries);
 
-                response = await GetJobFromUrlAsync(pollingUrl, ct);
+                response = await GetJobFromUrlAsync(pollingUrl, cancellationToken);
                 if (response.Job.Error != null)
                 {
                     break;
@@ -329,7 +496,7 @@ namespace Mindee.V2
                     case "Processed":
                         {
                             var resultUrl = response.Job.ResultUrl;
-                            return await GetResultFromUrlAsync<TResponse>(resultUrl, ct);
+                            return await GetResultFromUrlAsync<TResponse>(resultUrl, cancellationToken);
                         }
                     case "Failed":
                         throw new MindeeException("Job failed without an error payload.");
@@ -344,7 +511,7 @@ namespace Mindee.V2
                 throw new MindeeHttpExceptionV2(error);
             }
 
-            throw new MindeeException($"Could not complete after {retryCount} attempts.");
+            throw new MindeeException($"Result polling not complete after {retryCount} attempts.");
         }
     }
 }

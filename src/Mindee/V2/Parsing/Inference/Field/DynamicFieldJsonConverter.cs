@@ -20,9 +20,7 @@ namespace Mindee.V2.Parsing.Inference.Field
             // read the response JSON into an object
             var jsonObject = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
 
-            DynamicField field;
-
-            // -------- LIST FEATURE --------
+            // -------- LIST OF FIELDS --------
             if (jsonObject != null &&
                 jsonObject.TryGetPropertyValue("items", out var itemsNode) &&
                 itemsNode is JsonArray itemsArray)
@@ -39,31 +37,28 @@ namespace Mindee.V2.Parsing.Inference.Field
                     listField.Items.Add(item.Deserialize<DynamicField>(options));
                 }
 
-                field = new DynamicField(
+                return new DynamicField(
                     FieldType.ListField, listField: listField);
             }
 
-            // -------- OBJECT WITH NESTED FIELDS --------
-            else if (jsonObject != null &&
+            // -------- OBJECT FIELD --------
+            if (jsonObject != null &&
                      jsonObject.TryGetPropertyValue("fields", out var nestedFieldsNode) &&
                      nestedFieldsNode is JsonObject)
             {
-                field = new DynamicField(FieldType.ObjectField,
+                return new DynamicField(FieldType.ObjectField,
                     objectField: jsonObject.Deserialize<ObjectField>(options));
             }
-            // -------- SIMPLE OBJECT --------
-            else if (jsonObject != null && jsonObject.ContainsKey("value"))
+
+            // -------- SIMPLE FIELD --------
+            if (jsonObject != null && jsonObject.ContainsKey("value"))
             {
-                field = new DynamicField(
+                return new DynamicField(
                     FieldType.SimpleField,
-                    jsonObject.Deserialize<SimpleField>(options));
-            }
-            else
-            {
-                return null;
+                    simpleField: jsonObject.Deserialize<SimpleField>(options));
             }
 
-            return field;
+            return null;
         }
 
         /// <summary>
