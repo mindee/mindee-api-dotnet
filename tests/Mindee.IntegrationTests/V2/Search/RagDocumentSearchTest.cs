@@ -1,4 +1,5 @@
 using Mindee.V2;
+using Mindee.V2.Parsing.Search;
 using Mindee.V2.Search.Model;
 
 namespace Mindee.IntegrationTests.V2.Search
@@ -20,7 +21,7 @@ namespace Mindee.IntegrationTests.V2.Search
         [Fact(Timeout = 180000)]
         public async Task RagDocumentSearch_mustHaveResults()
         {
-            var response = await _client.SearchRagDocumentsAsync(
+            var response = await _client.SearchAsync<RagDocumentSearchResponse>(
                 new RagDocumentSearchParameters(modelId: _findocModelId));
             Assert.NotNull(response);
             Assert.NotNull(response.RagDocuments);

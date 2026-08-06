@@ -84,18 +84,11 @@ namespace Mindee.V2.Http
         /// <summary>
         /// Retrieves a list of models with the given criteria.
         /// </summary>
-        /// <param name="searchParameters"><see cref="ModelSearchParameters"/></param>
+        /// <param name="parameters"><see cref="ModelSearchParameters"/></param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public abstract Task<ModelSearchResponse> ReqGetSearchModelsAsync(
-            ModelSearchParameters searchParameters, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Retrieves a list of RAG documents with the given criteria.
-        /// </summary>
-        /// <param name="searchParameters"><see cref="RagDocumentSearchParameters"/></param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        public abstract Task<RagDocumentSearchResponse> ReqGetSearchRagDocumentsAsync(
-            RagDocumentSearchParameters searchParameters, CancellationToken cancellationToken = default);
+        public abstract Task<TSearchResponse> ReqGetSearchAsync<TSearchResponse>(
+            BaseSearchParameters parameters, CancellationToken cancellationToken = default)
+            where TSearchResponse : BaseSearchResponse, new();
 
         /// <summary>
         /// Add a document to the RAG database.

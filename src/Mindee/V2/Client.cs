@@ -247,19 +247,6 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        /// Returns a list of models matching the given criteria.
-        /// </summary>
-        /// <param name="searchParameters"><see cref="ModelSearchParameters"/></param>
-        /// <param name="ct">Cancellation token.</param>
-        public async Task<ModelSearchResponse> SearchModelsAsync(
-            ModelSearchParameters searchParameters, CancellationToken ct = default)
-        {
-            _logger?.LogInformation("Searching for models");
-            var parameters = searchParameters ?? new ModelSearchParameters();
-            return await _mindeeApi.ReqGetSearchModelsAsync(parameters, ct);
-        }
-
-        /// <summary>
         /// Not recommended for general use, prefer <see cref="UploadAndGetRagDocumentPollAsync{TAnnotationResponse}"/>.
         /// You will need to poll until the document is ready for use.
         /// Add a document to the RAG database.
@@ -391,11 +378,13 @@ namespace Mindee.V2
         /// </summary>
         /// <param name="searchParameters"><see cref="RagDocumentSearchResponse"/></param>
         /// <param name="ct">Cancellation token.</param>
-        public async Task<RagDocumentSearchResponse> SearchRagDocumentsAsync(
-            RagDocumentSearchParameters searchParameters, CancellationToken ct = default)
+        public async Task<TSearchResponse> SearchAsync<TSearchResponse>(
+            BaseSearchParameters searchParameters, CancellationToken ct = default)
+            where TSearchResponse : BaseSearchResponse, new()
         {
-            _logger?.LogInformation("Searching for RAG documents");
-            return await _mindeeApi.ReqGetSearchRagDocumentsAsync(searchParameters, ct);
+            if (searchParameters == null)
+                throw new ArgumentNullException(nameof(searchParameters));
+            return await _mindeeApi.ReqGetSearchAsync<TSearchResponse>(searchParameters, ct);
         }
 
         /// <summary>
@@ -404,7 +393,7 @@ namespace Mindee.V2
         /// <param name="name">Name filter.</param>
         /// <param name="modelType">Model type filter.</param>
         /// <param name="ct">Cancellation token.</param>
-        [Obsolete("Use SearchModelsAsync(ModelSearchParameters parameters)")]
+        [Obsolete("Use SearchAsync(ModelSearchParameters parameters)")]
         public async Task<SearchResponse> SearchModels(
             string name = null, string modelType = null, CancellationToken ct = default)
         {
