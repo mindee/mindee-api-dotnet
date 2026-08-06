@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.V2.Product;
 
 namespace Mindee.V2.Parsing.Search
 {
     /// <summary>
     /// Models search response.
     /// </summary>
+    [ProductAttributes("rag-documents")]
     public class RagDocumentSearchResponse : BaseSearchResponse
     {
         /// <summary>

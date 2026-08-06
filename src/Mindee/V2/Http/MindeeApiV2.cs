@@ -73,13 +73,18 @@ namespace Mindee.V2.Http
             return HandleJobResponse(response);
         }
 
-        public override async Task<ModelSearchResponse> ReqGetSearchModelsAsync(
-            ModelSearchParameters searchParameters, CancellationToken cancellationToken = default)
+        public override async Task<TSearchResponse> ReqGetSearchAsync<TSearchResponse>(
+            BaseSearchParameters parameters, CancellationToken cancellationToken = default)
         {
-            var request = new RestRequest("v2/search/models");
-            Logger?.LogInformation("Model search...");
+            var searchType = typeof(TSearchResponse);
+            var productAttributes = searchType.GetCustomAttribute<ProductAttributes>();
+            if (productAttributes == null)
+                throw new Exception($"ProductAttributes must be set for class: {searchType.Name}");
 
-            foreach (KeyValuePair<string, string> entry in searchParameters.GetRequestParameters())
+            var request = new RestRequest($"v2/search/{productAttributes.Slug}");
+            Logger?.LogInformation("Searching {} ...", productAttributes.Slug);
+
+            foreach (KeyValuePair<string, string> entry in parameters.GetRequestParameters())
             {
                 request.AddParameter(entry.Key, entry.Value);
             }
@@ -87,26 +92,8 @@ namespace Mindee.V2.Http
             var restResponse = await _httpClient.ExecuteAsync(request, cancellationToken);
             cancellationToken.ThrowIfCancellationRequested();
 
-            var response = JsonSerializer.Deserialize<ModelSearchResponse>(GetResponseContent(restResponse));
-            return response ?? throw new MindeeException("Couldn't deserialize ModelSearchResponse.");
-        }
-
-        public override async Task<RagDocumentSearchResponse> ReqGetSearchRagDocumentsAsync(
-            RagDocumentSearchParameters searchParameters, CancellationToken cancellationToken = default)
-        {
-            var request = new RestRequest("v2/search/rag-documents");
-            Logger?.LogInformation("RAG Document search...");
-
-            foreach (KeyValuePair<string, string> entry in searchParameters.GetRequestParameters())
-            {
-                request.AddParameter(entry.Key, entry.Value);
-            }
-
-            var restResponse = await _httpClient.ExecuteAsync(request, cancellationToken);
-            cancellationToken.ThrowIfCancellationRequested();
-
-            var response = JsonSerializer.Deserialize<RagDocumentSearchResponse>(GetResponseContent(restResponse));
-            return response ?? throw new MindeeException("Couldn't deserialize RagDocumentSearchResponse.");
+            var response = JsonSerializer.Deserialize<TSearchResponse>(GetResponseContent(restResponse));
+            return response ?? throw new MindeeException($"Couldn't deserialize {searchType}.");
         }
 
         public override async Task<TAnnotationResponse> ReqPostRagDocumentAsync<TAnnotationResponse>(
