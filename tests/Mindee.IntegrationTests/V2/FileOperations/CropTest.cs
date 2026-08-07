@@ -63,7 +63,7 @@ namespace Mindee.IntegrationTests.V2.FileOperations
             Assert.Equal(2, response.Inference.Result.Crops.Count);
 
             var cropOperation = new Crop(inputSource);
-            var extractedImages = cropOperation.ExtractCrops(response.Inference.Result.Crops);
+            var extractedImages = cropOperation.ExtractMultipleCrops(response.Inference.Result.Crops);
 
             Assert.Equal(2, extractedImages.Count);
             Assert.Equal("default_sample.jpg_page0-0.jpg", extractedImages[0].Filename);
@@ -98,7 +98,7 @@ namespace Mindee.IntegrationTests.V2.FileOperations
             var response = await _client.EnqueueAndGetResultAsync<CropResponse>(
                 inputSource, cropParams);
             var cropOperation = new Crop(inputSource);
-            var extractedImages = cropOperation.ExtractCrops(response.Inference.Result.Crops);
+            var extractedImages = cropOperation.ExtractMultipleCrops(response.Inference.Result.Crops);
 
             Assert.Equal(5, extractedImages.Count);
             Assert.Equal("multipage_sample.pdf_page0-0.jpg", extractedImages[0].Filename);
