@@ -158,7 +158,7 @@ namespace Mindee.Extraction
             int elementId
         ) where TField : IPositionDataField
         {
-            return  ExtractImage(field, pageId, elementId, _filename);
+            return ExtractImage(field, pageId, elementId, _filename);
         }
 
         /// <summary>

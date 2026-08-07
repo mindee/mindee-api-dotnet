@@ -30,8 +30,8 @@ namespace Mindee.IntegrationTests.V2.FileOperations
 
         public void Dispose()
         {
-            var file1 = Path.Combine(_outputDir, "split_001.pdf");
-            var file2 = Path.Combine(_outputDir, "split_002.pdf");
+            var file1 = Path.Combine(_outputDir, "default_sample_pages-001-001.pdf");
+            var file2 = Path.Combine(_outputDir, "default_sample_pages-002-002.pdf");
 
             if (File.Exists(file1)) File.Delete(file1);
             if (File.Exists(file2)) File.Delete(file2);
@@ -60,12 +60,12 @@ namespace Mindee.IntegrationTests.V2.FileOperations
             Assert.Equal(2, response.Inference.Result.Splits.Count);
 
             var splitOperation = new Split(inputSource);
-            var extractedSplits = splitOperation.ExtractSplits(
+            var extractedSplits = splitOperation.ExtractMultipleSplits(
                 response.Inference.Result.Splits.Select(s => s.PageRange).ToList());
 
             Assert.Equal(2, extractedSplits.Count);
-            Assert.Equal("default_sample_001-001.pdf", extractedSplits[0].Filename);
-            Assert.Equal("default_sample_002-002.pdf", extractedSplits[1].Filename);
+            Assert.Equal("default_sample_pages-001-001.pdf", extractedSplits[0].Filename);
+            Assert.Equal("default_sample_pages-002-002.pdf", extractedSplits[1].Filename);
 
             var extractionInput = extractedSplits[0].AsInputSource();
             var findocParams = new ExtractionParameters(_findocModelId);
@@ -77,17 +77,16 @@ namespace Mindee.IntegrationTests.V2.FileOperations
 
             extractedSplits.SaveAllToDisk(_outputDir);
 
-            for (int i = 0; i < extractedSplits.Count; i++)
+            foreach (var split in extractedSplits)
             {
-                var fileName = $"split_{i + 1:D3}.pdf";
-                var filePath = Path.Combine(_outputDir, fileName);
+                var filePath = Path.Combine(_outputDir, split.Filename);
                 var fileInfo = new FileInfo(filePath);
 
                 Assert.True(fileInfo.Exists);
                 Assert.True(fileInfo.Length > 0);
 
                 var localInput = new LocalInputSource(fileInfo);
-                Assert.Equal(extractedSplits[i].PageCount, localInput.GetPageCount());
+                Assert.Equal(split.PageCount, localInput.GetPageCount());
             }
         }
     }

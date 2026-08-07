@@ -60,9 +60,7 @@ namespace Mindee.Image
         public void WriteToFile(string outputPath)
         {
             if (!Directory.Exists(outputPath))
-            {
                 throw new DirectoryNotFoundException($"Directory does not exist: {outputPath}");
-            }
 
             var nameWithoutExtension = Path.GetFileNameWithoutExtension(Filename);
             var finalFilename = $"{nameWithoutExtension}.{_saveFormat.ToLower()}";
