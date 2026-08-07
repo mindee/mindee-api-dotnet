@@ -24,11 +24,8 @@ namespace Mindee.IntegrationTests.V2.FileOperations
             _splitModelId = Environment.GetEnvironmentVariable("MindeeV2__Split__Model__Id");
             _findocModelId = Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id");
 
-            _outputDir = Path.Combine(Directory.GetCurrentDirectory(), "output");
-            if (!Directory.Exists(_outputDir))
-            {
-                Directory.CreateDirectory(_outputDir);
-            }
+            _outputDir = Path.Combine(Directory.GetCurrentDirectory(), "output/v2");
+            Directory.CreateDirectory(_outputDir);
         }
 
         public void Dispose()

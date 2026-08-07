@@ -37,36 +37,22 @@ namespace Mindee.Extraction
         ///     Init from a Local Input Source.
         /// </summary>
         /// <param name="localInput">Locally loaded resource.</param>
-        /// <param name="saveFormat">Format to save the resulting images as.</param>
-        public ImageExtractor(LocalInputSource localInput, string saveFormat = null)
+        public ImageExtractor(LocalInputSource localInput)
         {
             _filename = localInput.Filename;
             _pageImages = [];
             LocalInput = localInput;
-            if (saveFormat == null)
-            {
-                var extension = Path.GetExtension(localInput.Filename)?.Substring(1);
-                if (extension != null && !extension.Equals("pdf", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    SaveFormat = extension;
-                }
-                else
-                {
-                    SaveFormat = "jpg";
-                }
-            }
-            else
-            {
-                SaveFormat = saveFormat;
-            }
 
             if (localInput.IsPdf())
             {
+                SaveFormat = "jpg";
                 var pdfPageImages = PdfToImages(localInput.FileBytes);
                 _pageImages.AddRange(pdfPageImages);
             }
             else
             {
+                var extension = Path.GetExtension(localInput.Filename)?.Substring(1);
+                SaveFormat = extension ?? "jpg";
                 _pageImages.Add(SKBitmap.Decode(localInput.FileBytes));
             }
         }
@@ -80,7 +66,7 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
-        ///     Renders the input Pdf's pages as individual images.
+        ///     Renders the input PDF's pages as individual images.
         /// </summary>
         /// <param name="fileBytes">Input pdf.</param>
         /// <returns>A list of pages, as SKBitmap.</returns>
@@ -126,6 +112,92 @@ namespace Mindee.Extraction
         }
 
         /// <summary>
+        /// Extract multiple images on a given page from a list of fields having position data.
+        /// </summary>
+        /// <typeparam name="TField">Type of field (needs to support positioning data).</typeparam>
+        /// <param name="fields">List of fields to extract.</param>
+        /// <param name="pageId">The page index to extract, begins at 0.</param>
+        /// <returns>A list of extracted images.</returns>
+        public List<ExtractedImage> ExtractImagesFromPage<TField>(
+            List<TField> fields,
+            int pageId
+        ) where TField : IPositionDataField
+        {
+            return ExtractFromPage(fields, pageId, _filename);
+        }
+
+        private List<ExtractedImage> ExtractFromPage<TField>(
+            List<TField> fields,
+            int pageId,
+            string outputName
+        ) where TField : IPositionDataField
+        {
+            var extractedImages = new ExtractedImages();
+            for (int elementId = 0; elementId < fields.Count; elementId++)
+            {
+                var extractedImage = ExtractImage(
+                    fields[elementId], pageId, elementId, outputName);
+
+                if (extractedImage != null)
+                    extractedImages.Add(extractedImage);
+            }
+            return extractedImages;
+        }
+
+        /// <summary>
+        /// Extract a single image from a field having position data.
+        /// </summary>
+        /// <typeparam name="TField">Type of field (needs to support positioning data).</typeparam>
+        /// <param name="field">The field to extract.</param>
+        /// <param name="pageId">The page index to extract, begins at 0.</param>
+        /// <param name="elementId">The index to use for naming the extracted image.</param>
+        /// <returns>The extracted image, or null if the field does not have valid position data.</returns>
+        public ExtractedImage ExtractImage<TField>(
+            TField field,
+            int pageId,
+            int elementId
+        ) where TField : IPositionDataField
+        {
+            return  ExtractImage(field, pageId, elementId, _filename);
+        }
+
+        /// <summary>
+        /// Extract a single image from a field having position data.
+        /// </summary>
+        /// <typeparam name="TField">Type of field (needs to support positioning data).</typeparam>
+        /// <param name="field">The field to extract.</param>
+        /// <param name="pageId">The page index to extract, begins at 0.</param>
+        /// <param name="elementId">The index to use for naming the extracted image.</param>
+        /// <param name="filename">Name of the file.</param>
+        /// <returns>The extracted image, or null if the field does not have valid position data.</returns>
+        public ExtractedImage ExtractImage<TField>(
+            TField field,
+            int pageId,
+            int elementId,
+            string filename
+        ) where TField : IPositionDataField
+        {
+            var splitName = SplitNameStrict(filename);
+            var polygon = field.Polygon;
+            if (polygon == null)
+                return null;
+
+            var fieldFilename = string.Format("{0}_page-{1:000}-item-{2:000}.{3}",
+                splitName[0],
+                pageId + 1,
+                elementId + 1,
+                SaveFormat);
+
+            return new ExtractedImage(
+                ExtractImage(Utils.BboxFromPolygon(polygon), pageId),
+                fieldFilename,
+                SaveFormat,
+                pageId,
+                elementId
+            );
+        }
+
+        /// <summary>
         /// Extracts a single image from a field having position data.
         /// </summary>
         /// <param name="bbox">Bounding box of the field.</param>
@@ -148,27 +220,6 @@ namespace Mindee.Extraction
             canvas.DrawBitmap(image, sourceRect, destRect);
 
             return croppedBitmap;
-        }
-
-        /// <summary>
-        /// Extracts multiple images from a field having position data.
-        /// </summary>
-        /// <param name="pageId">The page index to extract, begins at 0.</param>
-        /// <param name="polygons">The list of polygons representing the position data.</param>
-        /// <returns>A list of extracted images.</returns>
-        public List<ExtractedImage> ExtractMultipleImagesFromSource(int pageId, List<Polygon> polygons)
-        {
-            var filename = this.LocalInput.Filename;
-            var extractedImages = new List<ExtractedImage>();
-            int i = 0;
-            foreach (var polygon in polygons)
-            {
-                var bbox = Utils.BboxFromPolygon(polygon);
-                var fieldFilename = $"{filename}_page{pageId}-{polygons.IndexOf(polygon)}.{SaveFormat}";
-                extractedImages.Add(new ExtractedImage(ExtractImage(bbox, pageId), fieldFilename, SaveFormat, pageId, i));
-                i++;
-            }
-            return extractedImages;
         }
     }
 }
