@@ -30,12 +30,12 @@ namespace Mindee.UnitTests.V1.Image
 
             var extractedPDFSNoStrict = extractor.ExtractInvoices(inference.Prediction.InvoicePageGroups, false);
             Assert.Equal(3, extractedPDFSNoStrict.Count);
-            Assert.Equal("invoice_5p_001-001.pdf", extractedPDFSNoStrict[0].Filename);
-            Assert.Equal(1, extractedPDFSNoStrict[0].GetPageCount());
-            Assert.Equal("invoice_5p_002-004.pdf", extractedPDFSNoStrict[1].Filename);
-            Assert.Equal(3, extractedPDFSNoStrict[1].GetPageCount());
-            Assert.Equal("invoice_5p_005-005.pdf", extractedPDFSNoStrict[2].Filename);
-            Assert.Equal(1, extractedPDFSNoStrict[2].GetPageCount());
+            Assert.Equal("invoice_5p_pages-001-001.pdf", extractedPDFSNoStrict[0].Filename);
+            Assert.Equal(1, extractedPDFSNoStrict[0].PageCount);
+            Assert.Equal("invoice_5p_pages-002-004.pdf", extractedPDFSNoStrict[1].Filename);
+            Assert.Equal(3, extractedPDFSNoStrict[1].PageCount);
+            Assert.Equal("invoice_5p_pages-005-005.pdf", extractedPDFSNoStrict[2].Filename);
+            Assert.Equal(1, extractedPDFSNoStrict[2].PageCount);
         }
 
         [Fact]
@@ -51,10 +51,10 @@ namespace Mindee.UnitTests.V1.Image
 
             var extractedPDFStrict = extractor.ExtractInvoices(inference.Prediction.InvoicePageGroups, true);
             Assert.Equal(2, extractedPDFStrict.Count);
-            Assert.Equal("invoice_5p_001-001.pdf", extractedPDFStrict[0].Filename);
-            Assert.Equal(1, extractedPDFStrict[0].GetPageCount());
-            Assert.Equal("invoice_5p_002-005.pdf", extractedPDFStrict[1].Filename);
-            Assert.Equal(4, extractedPDFStrict[1].GetPageCount());
+            Assert.Equal("invoice_5p_pages-001-001.pdf", extractedPDFStrict[0].Filename);
+            Assert.Equal(1, extractedPDFStrict[0].PageCount);
+            Assert.Equal("invoice_5p_pages-002-005.pdf", extractedPDFStrict[1].Filename);
+            Assert.Equal(4, extractedPDFStrict[1].PageCount);
         }
 
         private async Task<AsyncPredictResponse<InvoiceSplitterV1>> GetPrediction()

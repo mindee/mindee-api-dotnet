@@ -6,7 +6,7 @@ namespace Mindee.V1.Parsing.Standard
     /// <summary>
     ///     List of all detected cropped elements in the image.
     /// </summary>
-    public sealed class PositionField :  IPositionDataField
+    public sealed class PositionField : IPositionDataField
     {
         /// <summary>
         ///     Straight rectangle.

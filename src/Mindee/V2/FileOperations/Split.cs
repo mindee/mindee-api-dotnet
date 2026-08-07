@@ -63,7 +63,7 @@ namespace Mindee.V2.FileOperations
         /// <returns></returns>
         public ExtractedPdf ExtractSingleSplit(SplitRange splitRange)
         {
-            return ExtractSplits([splitRange.PageRange])[0];
+            return ExtractMultipleSplits([splitRange.PageRange])[0];
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Mindee.V2.FileOperations
         /// </summary>
         /// <param name="splits">List of subpage indexes to keep.</param>
         /// <returns></returns>
-        public ExtractedPdfs ExtractSplits(List<List<int>> splits)
+        public ExtractedPdfs ExtractMultipleSplits(List<List<int>> splits)
         {
             var pdfExtractor = new PdfExtractor(this._localInput);
 
