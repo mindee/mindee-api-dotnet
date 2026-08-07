@@ -71,13 +71,13 @@ namespace Mindee.V2.FileOperations
         /// </summary>
         /// <param name="splits">List of subpage indexes to keep.</param>
         /// <returns></returns>
-        public SplitFiles ExtractSplits(List<List<int>> splits)
+        public ExtractedPdfs ExtractSplits(List<List<int>> splits)
         {
             var pdfExtractor = new PdfExtractor(this._localInput);
 
             List<List<int>> expandedPageIndexes = [];
             expandedPageIndexes.AddRange(splits.Select(split => ExpandRange(split[0], split[1])));
-            return new SplitFiles(pdfExtractor.ExtractSubDocuments(expandedPageIndexes));
+            return new ExtractedPdfs(pdfExtractor.ExtractSubDocuments(expandedPageIndexes));
         }
     }
 }

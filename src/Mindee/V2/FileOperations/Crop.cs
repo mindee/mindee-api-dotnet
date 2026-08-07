@@ -44,14 +44,18 @@ namespace Mindee.V2.FileOperations
         /// </summary>
         /// <param name="crops">List of crops.</param>
         /// <returns></returns>
-        public CropFiles ExtractCrops(List<CropItem> crops)
+        public ExtractedImages ExtractMultipleCrops(List<CropItem> crops)
         {
+            ExtractedImages extractedImages = [];
+            if (crops.Count <= 0)
+                return extractedImages;
+
             var imageExtractor = new ImageExtractor(this._localInput);
-            CropFiles extractedImages = [];
             var cropsPerPage = crops.GroupBy(c => c.Location.Page).ToList();
             foreach (var pageCrops in cropsPerPage)
             {
-                extractedImages.AddRange(imageExtractor.ExtractMultipleImagesFromSource(pageCrops.Key, pageCrops.Select(c => c.Location.Polygon).ToList()));
+                extractedImages.AddRange(imageExtractor.ExtractMultipleImagesFromSource(
+                    pageCrops.Key, pageCrops.Select(c => c.Location.Polygon).ToList()));
             }
             return extractedImages;
         }

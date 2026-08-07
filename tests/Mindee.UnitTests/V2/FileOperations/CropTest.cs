@@ -22,7 +22,7 @@ namespace Mindee.UnitTests.V2.FileOperations
             var doc = localResponse.DeserializeResponse<CropResponse>();
 
             var cropOperation = new Crop(inputSample);
-            var extractedCrops = cropOperation.ExtractCrops(doc.Inference.Result.Crops);
+            var extractedCrops = cropOperation.ExtractMultipleCrops(doc.Inference.Result.Crops);
 
             Assert.Single(extractedCrops);
 
@@ -45,7 +45,7 @@ namespace Mindee.UnitTests.V2.FileOperations
             var doc = localResponse.DeserializeResponse<CropResponse>();
 
             var cropOperation = new Crop(inputSample);
-            var extractedCrops = cropOperation.ExtractCrops(doc.Inference.Result.Crops);
+            var extractedCrops = cropOperation.ExtractMultipleCrops(doc.Inference.Result.Crops);
 
             Assert.Equal(2, extractedCrops.Count);
 
