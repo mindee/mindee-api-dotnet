@@ -24,11 +24,8 @@ namespace Mindee.IntegrationTests.V2.FileOperations
             _cropModelId = Environment.GetEnvironmentVariable("MindeeV2__Crop__Model__Id");
             _findocModelId = Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id");
 
-            _outputDir = Path.Combine(Directory.GetCurrentDirectory(), "output");
-            if (!Directory.Exists(_outputDir))
-            {
-                Directory.CreateDirectory(_outputDir);
-            }
+            _outputDir = Path.Combine(Directory.GetCurrentDirectory(), "output/v2");
+            Directory.CreateDirectory(_outputDir);
         }
 
         public void Dispose()
@@ -77,7 +74,7 @@ namespace Mindee.IntegrationTests.V2.FileOperations
 
             CheckFindocReturn(invoice0);
 
-            extractedImages.SaveAllToDisk(_outputDir, 50);
+            extractedImages.SaveAllToDisk(_outputDir);
 
             var file1Info = new FileInfo(Path.Combine(_outputDir, "crop_001.jpg"));
             Assert.InRange(file1Info.Length, 98000, 120000);

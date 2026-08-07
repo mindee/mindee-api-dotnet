@@ -6,7 +6,7 @@ namespace Mindee.V2.Parsing.Inference.Field
     /// <summary>
     ///     Location for fields.
     /// </summary>
-    public class FieldLocation
+    public class FieldLocation : IPositionDataField
     {
         /// <summary>
         ///     Coordinates for the found value.
