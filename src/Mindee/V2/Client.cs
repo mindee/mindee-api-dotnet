@@ -374,9 +374,9 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        /// Returns a list of RAG documents matching the given criteria.
+        /// Searches for resources matching the given criteria.
         /// </summary>
-        /// <param name="searchParameters"><see cref="RagDocumentSearchResponse"/></param>
+        /// <param name="searchParameters">Search parameters</param>
         /// <param name="ct">Cancellation token.</param>
         public async Task<TSearchResponse> SearchAsync<TSearchResponse>(
             BaseSearchParameters searchParameters, CancellationToken ct = default)
