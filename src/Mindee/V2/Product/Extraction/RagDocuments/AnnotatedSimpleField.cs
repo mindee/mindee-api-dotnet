@@ -20,7 +20,7 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
         /// <param name="value"></param>
         /// <param name="selected"></param>
         /// <param name="guidelines"></param>
-        public AnnotatedSimpleField(dynamic value, bool selected, string guidelines) : base(selected, guidelines)
+        public AnnotatedSimpleField(object value, bool selected, string guidelines) : base(selected, guidelines)
         {
             Value = value;
         }

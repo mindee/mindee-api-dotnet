@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Mindee.V2.Product.Extraction.RagDocuments
 {
     /// <summary>
-    /// A SimpleField with additional configuration for annotation.
+    /// A ListField with additional configuration for annotation.
     /// </summary>
     public class AnnotatedListField : AnnotatedBaseField
     {
@@ -14,7 +14,7 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
         private List<AnnotatedSimpleField> _simpleItems;
 
         /// <summary>
-        ///     Detail relevant to the error.
+        ///     List of dynamic fields, prefer SimpleItems or ObjectItems.
         /// </summary>
         [JsonPropertyName("items")]
         public List<AnnotatedDynamicField> Items { get; set; } = [];
@@ -41,13 +41,10 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
                     return _simpleItems;
                 }
 
-                _simpleItems = new List<AnnotatedSimpleField>();
-                foreach (var item in Items)
+                _simpleItems = [];
+                foreach (var item in Items.Where(item => item.SimpleField != null))
                 {
-                    if (item.SimpleField != null)
-                    {
-                        _simpleItems.Add(item.SimpleField);
-                    }
+                    _simpleItems.Add(item.SimpleField);
                 }
 
                 return _simpleItems;

@@ -9,8 +9,6 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
     /// <summary>
     /// Custom deserializer for <see cref="AnnotatedDynamicField" />
     /// </summary>
-    [Serializable]
-    [JsonConverter(typeof(DynamicAnnotationFieldJsonConverter))]
     public class DynamicAnnotationFieldJsonConverter : JsonConverter<AnnotatedDynamicField>
     {
         /// <summary>
@@ -21,9 +19,11 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
             // read the response JSON into an object
             var jsonObject = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
 
+            if (jsonObject == null)
+                return null;
+
             // -------- LIST OF FIELDS --------
-            if (jsonObject != null &&
-                jsonObject.TryGetPropertyValue("items", out var itemsNode) &&
+            if (jsonObject.TryGetPropertyValue("items", out var itemsNode) &&
                 itemsNode is JsonArray itemsArray)
             {
                 string guidelines = jsonObject["guidelines"]?.Deserialize<string>(options);
@@ -38,22 +38,22 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
                 return new AnnotatedDynamicField(
                     FieldType.ListField, listField: listField);
             }
-            if (jsonObject != null &&
-                     jsonObject.TryGetPropertyValue("fields", out var nestedFieldsNode) &&
-                     nestedFieldsNode is JsonObject)
+            if (jsonObject.TryGetPropertyValue("fields", out var nestedFieldsNode) &&
+                nestedFieldsNode is JsonObject)
             {
                 return new AnnotatedDynamicField(
                     FieldType.ObjectField,
                     objectField: jsonObject.Deserialize<AnnotatedObjectField>(options));
             }
             // -------- SIMPLE FIELD --------
-            if (jsonObject != null && jsonObject.ContainsKey("value"))
+            if (jsonObject.ContainsKey("value"))
             {
                 return new AnnotatedDynamicField(
                     FieldType.SimpleField,
                     simpleField: jsonObject.Deserialize<AnnotatedSimpleField>(options));
             }
-            return null;
+
+            throw new JsonException($"Unknown field: {jsonObject.GetPath()}");
         }
 
         /// <summary>

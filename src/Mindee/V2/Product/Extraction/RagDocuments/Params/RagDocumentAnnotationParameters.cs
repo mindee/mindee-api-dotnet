@@ -6,7 +6,7 @@ using Mindee.V2.ClientOptions;
 namespace Mindee.V2.Product.Extraction.RagDocuments.Params
 {
     /// <summary>
-    /// Upload parameters for RAG documents.
+    /// Annotation parameters for RAG documents.
     /// </summary>
     public class RagDocumentAnnotationParameters : BaseAnnotationParameters
     {
