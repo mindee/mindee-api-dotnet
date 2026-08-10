@@ -59,7 +59,7 @@ namespace Mindee.V2.Parsing.Inference.Field
                     simpleField: jsonObject.Deserialize<SimpleField>(options));
             }
 
-            throw new JsonException($"Unknown field: {jsonObject.GetPath()}");
+            throw new JsonException($"Unknown field: {jsonObject.ToJsonString()}");
         }
 
         /// <summary>

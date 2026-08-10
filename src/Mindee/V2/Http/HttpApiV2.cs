@@ -60,7 +60,7 @@ namespace Mindee.V2.Http
         /// </summary>
         /// <param name="jobId">The job ID as returned by the predict_async route.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public abstract Task<JobResponse> ReqGetJobAsync(
+        public abstract Task<JobResponse> ReqGetJobByIdAsync(
             string jobId, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Mindee.V2.Http
         /// </summary>
         /// <param name="inferenceId">Url to poll.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public abstract Task<TResponse> ReqGetResultAsync<TResponse>(
+        public abstract Task<TResponse> ReqGetResultByIdAsync<TResponse>(
             string inferenceId, CancellationToken cancellationToken = default)
             where TResponse : BaseResponse, new();
 

@@ -53,7 +53,7 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
                     simpleField: jsonObject.Deserialize<AnnotatedSimpleField>(options));
             }
 
-            throw new JsonException($"Unknown field: {jsonObject.GetPath()}");
+            throw new JsonException($"Unknown field: {jsonObject.ToJsonString()}");
         }
 
         /// <summary>

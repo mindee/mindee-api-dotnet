@@ -141,12 +141,6 @@ namespace Mindee.V2
         public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
         {
             _logger?.LogInformation("Getting Job at: {}", pollingUrl);
-
-            if (string.IsNullOrWhiteSpace(pollingUrl))
-            {
-                throw new ArgumentNullException(pollingUrl);
-            }
-
             return await _mindeeApi.ReqGetJobFromUrlAsync(pollingUrl, ct);
         }
 
@@ -162,11 +156,6 @@ namespace Mindee.V2
             where TResponse : BaseResponse, new()
         {
             _logger?.LogInformation("Getting result at: {}", resultUrl);
-
-            if (string.IsNullOrWhiteSpace(resultUrl))
-            {
-                throw new MindeeInputException(nameof(resultUrl));
-            }
             return await _mindeeApi.ReqGetResultFromUrlAsync<TResponse>(resultUrl, ct);
         }
 
@@ -188,7 +177,7 @@ namespace Mindee.V2
             {
                 throw new ArgumentNullException(jobId);
             }
-            return await _mindeeApi.ReqGetResultAsync<TResponse>(jobId, ct);
+            return await _mindeeApi.ReqGetResultByIdAsync<TResponse>(jobId, ct);
         }
 
         /// <summary>
@@ -208,7 +197,7 @@ namespace Mindee.V2
             {
                 throw new ArgumentNullException(jobId);
             }
-            return await _mindeeApi.ReqGetJobAsync(jobId, ct);
+            return await _mindeeApi.ReqGetJobByIdAsync(jobId, ct);
         }
 
         /// <summary>
@@ -342,14 +331,23 @@ namespace Mindee.V2
         /// Update a document's annotations in the RAG database.
         /// </summary>
         /// <param name="parameters"></param>
+        /// <param name="pollingOptions"/>
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<TAnnotationResponse> UpdateAndGetRagAnnotationPollAsync<TAnnotationResponse>(
-            BaseAnnotationParameters parameters, CancellationToken ct = default)
+            BaseAnnotationParameters parameters
+            , PollingOptions pollingOptions = null
+            , CancellationToken ct = default)
             where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Updating RAG document ID: {}", parameters.DocumentId);
-            return await _mindeeApi.ReqPatchRagAnnotationAsync<TAnnotationResponse>(parameters, ct);
+            var initialResponse = await _mindeeApi.ReqPatchRagAnnotationAsync<TAnnotationResponse>(parameters, ct);
+            if (initialResponse.Status != "Processing")
+                return initialResponse;
+
+            pollingOptions ??= new PollingOptions();
+            return await PollForRagDocumentAsync<TAnnotationResponse>(
+                initialResponse, pollingOptions, ct);
         }
 
         /// <summary>
