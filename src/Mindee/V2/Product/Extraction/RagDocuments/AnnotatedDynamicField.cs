@@ -12,30 +12,30 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
         /// <summary>
         /// Value as a simple field.
         /// </summary>
-        public AnnotatedSimpleField SimpleField;
+        public AnnotatedSimpleField SimpleField { get; set; }
 
         /// <summary>
         /// Value as an object field.
         /// </summary>
-        public AnnotatedObjectField ObjectField;
+        public AnnotatedObjectField ObjectField { get; set; }
 
         /// <summary>
         /// Value as a list field.
         /// </summary>
-        public AnnotatedListField ListField;
+        public AnnotatedListField ListField { get; set; }
 
         /// <summary>
         /// The type of field.
         /// </summary>
-        public FieldType Type;
+        public FieldType Type { get; }
 
         /// <summary>
         /// Default constructor.
         /// </summary>
+        /// <param name="type"></param>
         /// <param name="simpleField"></param>
         /// <param name="objectField"></param>
         /// <param name="listField"></param>
-        /// <param name="type"></param>
         public AnnotatedDynamicField(
             FieldType type
             , AnnotatedSimpleField simpleField = null
