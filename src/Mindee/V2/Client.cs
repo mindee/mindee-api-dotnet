@@ -16,7 +16,6 @@ using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
 using Mindee.V2.Product.Extraction.RagDocuments;
 using Mindee.V2.Product.Extraction.RagDocuments.Params;
-using Mindee.V2.Search.Model;
 using Mindee.V2.Search.Models;
 using SettingsV2 = Mindee.V2.Http.Settings;
 // ReSharper disable once RedundantUsingDirective
@@ -142,12 +141,6 @@ namespace Mindee.V2
         public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
         {
             _logger?.LogInformation("Getting Job at: {}", pollingUrl);
-
-            if (string.IsNullOrWhiteSpace(pollingUrl))
-            {
-                throw new ArgumentNullException(pollingUrl);
-            }
-
             return await _mindeeApi.ReqGetJobFromUrlAsync(pollingUrl, ct);
         }
 
@@ -163,11 +156,6 @@ namespace Mindee.V2
             where TResponse : BaseResponse, new()
         {
             _logger?.LogInformation("Getting result at: {}", resultUrl);
-
-            if (string.IsNullOrWhiteSpace(resultUrl))
-            {
-                throw new MindeeInputException(nameof(resultUrl));
-            }
             return await _mindeeApi.ReqGetResultFromUrlAsync<TResponse>(resultUrl, ct);
         }
 
@@ -189,7 +177,7 @@ namespace Mindee.V2
             {
                 throw new ArgumentNullException(jobId);
             }
-            return await _mindeeApi.ReqGetResultAsync<TResponse>(jobId, ct);
+            return await _mindeeApi.ReqGetResultByIdAsync<TResponse>(jobId, ct);
         }
 
         /// <summary>
@@ -209,7 +197,7 @@ namespace Mindee.V2
             {
                 throw new ArgumentNullException(jobId);
             }
-            return await _mindeeApi.ReqGetJobAsync(jobId, ct);
+            return await _mindeeApi.ReqGetJobByIdAsync(jobId, ct);
         }
 
         /// <summary>
@@ -250,7 +238,6 @@ namespace Mindee.V2
         /// Not recommended for general use, prefer <see cref="UploadAndGetRagDocumentPollAsync{TAnnotationResponse}"/>.
         /// You will need to poll until the document is ready for use.
         /// Add a document to the RAG database.
-        /// For extraction models only.
         /// </summary>
         /// <param name="parameters"><see cref="RagDocumentUploadParameters"/></param>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
@@ -258,7 +245,7 @@ namespace Mindee.V2
         /// <returns></returns>
         public async Task<TAnnotationResponse> UploadRagDocumentAsync<TAnnotationResponse>(
             LocalInputSource inputSource, RagDocumentUploadParameters parameters, CancellationToken ct = default)
-            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+            where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Adding a document to the RAG database");
             return await _mindeeApi.ReqPostRagDocumentAsync<TAnnotationResponse>(parameters, inputSource, ct);
@@ -266,7 +253,6 @@ namespace Mindee.V2
 
         /// <summary>
         /// Add a document to the RAG database and return the initial annotation.
-        /// For extraction models only.
         /// </summary>
         /// <param name="parameters"><see cref="RagDocumentUploadParameters"/></param>
         /// <param name="inputSource"><see cref="LocalInputSource"/></param>
@@ -278,7 +264,7 @@ namespace Mindee.V2
             , RagDocumentUploadParameters parameters
             , PollingOptions pollingOptions = null
             , CancellationToken ct = default)
-            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+            where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
             pollingOptions ??= new PollingOptions();
 
@@ -293,14 +279,13 @@ namespace Mindee.V2
         /// Not recommended for general use, prefer <see cref="GetReadyRagDocumentPollAsync{TAnnotationResponse}"/>.
         /// You will need to poll until the document is ready for use.
         /// Get a document's info and annotations from the RAG database.
-        /// For extraction models only.
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<TAnnotationResponse> GetRagDocumentAsync<TAnnotationResponse>(
             string documentId, CancellationToken ct = default)
-            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+            where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Getting RAG document ID: {}", documentId);
             return await _mindeeApi.ReqGetRagAnnotationAsync<TAnnotationResponse>(documentId, ct);
@@ -308,17 +293,16 @@ namespace Mindee.V2
 
         /// <summary>
         /// Get a document's info and annotations from the RAG database.
-        /// For extraction models only.
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="pollingOptions"/>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<ExtractionRagAnnotationResponse> GetReadyRagDocumentPollAsync<TAnnotationResponse>(
+        public async Task<TAnnotationResponse> GetReadyRagDocumentPollAsync<TAnnotationResponse>(
             string documentId
             , PollingOptions pollingOptions = null
             , CancellationToken ct = default)
-            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+            where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
             var initialResponse = await GetRagDocumentAsync<TAnnotationResponse>(documentId, ct);
             if (initialResponse.Status != "Processing")
@@ -331,14 +315,13 @@ namespace Mindee.V2
 
         /// <summary>
         /// Update a document's annotations in the RAG database.
-        /// For extraction models only.
         /// </summary>
         /// <param name="parameters"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<TAnnotationResponse> UpdateRagAnnotationAsync<TAnnotationResponse>(
             BaseAnnotationParameters parameters, CancellationToken ct = default)
-            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+            where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Updating RAG document ID: {}", parameters.DocumentId);
             return await _mindeeApi.ReqPatchRagAnnotationAsync<TAnnotationResponse>(parameters, ct);
@@ -346,21 +329,29 @@ namespace Mindee.V2
 
         /// <summary>
         /// Update a document's annotations in the RAG database.
-        /// For extraction models only.
         /// </summary>
         /// <param name="parameters"></param>
+        /// <param name="pollingOptions"/>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<TAnnotationResponse> UpdateAndGetExtractionRagAnnotationPollAsync<TAnnotationResponse>(
-            BaseAnnotationParameters parameters, CancellationToken ct = default)
+        public async Task<TAnnotationResponse> UpdateAndGetRagAnnotationPollAsync<TAnnotationResponse>(
+            BaseAnnotationParameters parameters
+            , PollingOptions pollingOptions = null
+            , CancellationToken ct = default)
             where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Updating RAG document ID: {}", parameters.DocumentId);
-            return await _mindeeApi.ReqPatchRagAnnotationAsync<TAnnotationResponse>(parameters, ct);
+            var initialResponse = await _mindeeApi.ReqPatchRagAnnotationAsync<TAnnotationResponse>(parameters, ct);
+            if (initialResponse.Status != "Processing")
+                return initialResponse;
+
+            pollingOptions ??= new PollingOptions();
+            return await PollForRagDocumentAsync<TAnnotationResponse>(
+                initialResponse, pollingOptions, ct);
         }
 
         /// <summary>
-        /// Get a document's info and annotations from the RAG database.
+        /// Delete a document from the RAG database.
         /// For extraction models only.
         /// </summary>
         /// <param name="documentId"></param>
@@ -374,9 +365,9 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        /// Returns a list of RAG documents matching the given criteria.
+        /// Searches for resources matching the given criteria.
         /// </summary>
-        /// <param name="searchParameters"><see cref="RagDocumentSearchResponse"/></param>
+        /// <param name="searchParameters">Search parameters</param>
         /// <param name="ct">Cancellation token.</param>
         public async Task<TSearchResponse> SearchAsync<TSearchResponse>(
             BaseSearchParameters searchParameters, CancellationToken ct = default)
@@ -406,10 +397,10 @@ namespace Mindee.V2
         /// </summary>
         /// <exception cref="MindeeException">Thrown when maxRetries is reached and the annotation isn't ready.</exception>
         private async Task<TAnnotationResponse> PollForRagDocumentAsync<TAnnotationResponse>(
-            ExtractionRagAnnotationResponse initialResponse
+            BaseRagAnnotationResponse initialResponse
             , PollingOptions pollingOptions
             , CancellationToken cancellationToken = default)
-        where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+        where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Polling for RAG document ID: {}", initialResponse.Id);
             var maxRetries = pollingOptions.MaxRetries + 1;

@@ -161,7 +161,7 @@ namespace Mindee.V2.Http
             return response ?? throw new MindeeException("Couldn't deserialize SearchResponse.");
         }
 
-        public override async Task<JobResponse> ReqGetJobAsync(
+        public override async Task<JobResponse> ReqGetJobByIdAsync(
             string jobId, CancellationToken cancellationToken = default)
         {
             return await ReqGetJobFromUrlAsync($"{_baseUrl}/v2/jobs/{jobId}", cancellationToken);
@@ -170,6 +170,9 @@ namespace Mindee.V2.Http
         public override async Task<JobResponse> ReqGetJobFromUrlAsync(
             string pollingUrl, CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrWhiteSpace(pollingUrl))
+                throw new ArgumentNullException(nameof(pollingUrl));
+
             var request = new RestRequest(new Uri(pollingUrl));
             Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
             var response = await _httpClient.ExecuteAsync(request, cancellationToken);
@@ -179,7 +182,7 @@ namespace Mindee.V2.Http
             return handledResponse;
         }
 
-        public override async Task<TResponse> ReqGetResultAsync<TResponse>(string inferenceId, CancellationToken ct = default)
+        public override async Task<TResponse> ReqGetResultByIdAsync<TResponse>(string inferenceId, CancellationToken ct = default)
         {
             var productAttributes = typeof(TResponse).GetCustomAttribute<ProductAttributes>();
             if (productAttributes == null)
@@ -195,6 +198,9 @@ namespace Mindee.V2.Http
         public override async Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(
             string resultUrl, CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrWhiteSpace(resultUrl))
+                throw new ArgumentNullException(nameof(resultUrl));
+
             var request = new RestRequest(new Uri(resultUrl));
             Logger?.LogInformation("HTTP GET to {RequestResource}...", resultUrl);
             var queueResponse = await _httpClient.ExecuteAsync(request, cancellationToken);

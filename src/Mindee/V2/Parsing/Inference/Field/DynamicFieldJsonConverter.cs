@@ -20,9 +20,11 @@ namespace Mindee.V2.Parsing.Inference.Field
             // read the response JSON into an object
             var jsonObject = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
 
+            if (jsonObject == null)
+                return null;
+
             // -------- LIST OF FIELDS --------
-            if (jsonObject != null &&
-                jsonObject.TryGetPropertyValue("items", out var itemsNode) &&
+            if (jsonObject.TryGetPropertyValue("items", out var itemsNode) &&
                 itemsNode is JsonArray itemsArray)
             {
                 FieldConfidence? confidence = null;
@@ -42,23 +44,22 @@ namespace Mindee.V2.Parsing.Inference.Field
             }
 
             // -------- OBJECT FIELD --------
-            if (jsonObject != null &&
-                     jsonObject.TryGetPropertyValue("fields", out var nestedFieldsNode) &&
-                     nestedFieldsNode is JsonObject)
+            if (jsonObject.TryGetPropertyValue("fields", out var nestedFieldsNode) &&
+                nestedFieldsNode is JsonObject)
             {
                 return new DynamicField(FieldType.ObjectField,
                     objectField: jsonObject.Deserialize<ObjectField>(options));
             }
 
             // -------- SIMPLE FIELD --------
-            if (jsonObject != null && jsonObject.ContainsKey("value"))
+            if (jsonObject.ContainsKey("value"))
             {
                 return new DynamicField(
                     FieldType.SimpleField,
                     simpleField: jsonObject.Deserialize<SimpleField>(options));
             }
 
-            return null;
+            throw new JsonException($"Unknown field: {jsonObject.ToJsonString()}");
         }
 
         /// <summary>

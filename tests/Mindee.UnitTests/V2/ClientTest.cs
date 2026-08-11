@@ -20,11 +20,11 @@ namespace Mindee.UnitTests.V2
                 It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>(), It.IsAny<CancellationToken>())
             ).ReturnsAsync(new JobResponse());
 
-            predictable.Setup(x => x.ReqGetResultAsync<ExtractionResponse>(
+            predictable.Setup(x => x.ReqGetResultByIdAsync<ExtractionResponse>(
                 It.IsAny<string>(), It.IsAny<CancellationToken>())
             ).ReturnsAsync(new ExtractionResponse());
 
-            predictable.Setup(x => x.ReqGetJobAsync(
+            predictable.Setup(x => x.ReqGetJobByIdAsync(
                 It.IsAny<string>(), It.IsAny<CancellationToken>())
             ).ReturnsAsync(new JobResponse());
 
@@ -61,7 +61,7 @@ namespace Mindee.UnitTests.V2
             Assert.NotNull(response);
 
             predictable.Verify(
-                p => p.ReqGetResultAsync<ExtractionResponse>(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+                p => p.ReqGetResultByIdAsync<ExtractionResponse>(It.IsAny<string>(), It.IsAny<CancellationToken>()),
                 Times.AtMostOnce());
         }
 
@@ -92,7 +92,7 @@ namespace Mindee.UnitTests.V2
             Assert.NotNull(response);
 
             predictable.Verify(
-                p => p.ReqGetJobAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+                p => p.ReqGetJobByIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
                 Times.AtMostOnce());
         }
 
@@ -121,7 +121,7 @@ namespace Mindee.UnitTests.V2
         public async Task GetJobAsync_WithCancelledToken_ThrowsOperationCanceledException()
         {
             var predictable = new Mock<HttpApiV2>();
-            predictable.Setup(x => x.ReqGetJobAsync(
+            predictable.Setup(x => x.ReqGetJobByIdAsync(
                 It.IsAny<string>(), It.IsAny<CancellationToken>())
             ).Returns<string, CancellationToken>(
                 (_, ct) => Task.FromCanceled<JobResponse>(ct));
@@ -139,7 +139,7 @@ namespace Mindee.UnitTests.V2
         public async Task GetResultAsync_WithCancelledToken_ThrowsOperationCanceledException()
         {
             var predictable = new Mock<HttpApiV2>();
-            predictable.Setup(x => x.ReqGetResultAsync<ExtractionResponse>(
+            predictable.Setup(x => x.ReqGetResultByIdAsync<ExtractionResponse>(
                 It.IsAny<string>(), It.IsAny<CancellationToken>())
             ).Returns<string, CancellationToken>(
                 (_, ct) => Task.FromCanceled<ExtractionResponse>(ct));

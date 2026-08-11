@@ -1,7 +1,7 @@
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 
-namespace Mindee.UnitTests.V2.Parsing
+namespace Mindee.UnitTests.V2.Search
 {
     [Trait("Category", "V2")]
     [Trait("Category", "Search")]

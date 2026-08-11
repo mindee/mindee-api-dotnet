@@ -9,7 +9,6 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
     /// <summary>
     ///  Custom deserializer for <see cref="AnnotatedSimpleField" />
     /// </summary>
-    [Serializable]
     public class AnnotatedSimpleFieldJsonConverter : JsonConverter<AnnotatedSimpleField>
     {
         /// <summary>
