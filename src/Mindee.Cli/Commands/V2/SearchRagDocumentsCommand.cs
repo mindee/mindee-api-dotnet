@@ -3,9 +3,7 @@ using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Mindee.V2.Parsing.Search;
-using Mindee.V2.Search.Model;
-using Mindee.V2.Search.Models;
-using SettingsV2 = Mindee.V2.Http.Settings;
+using Mindee.V2.Search.RagDocuments;
 using V2Client = Mindee.V2.Client;
 
 namespace Mindee.Cli.Commands.V2

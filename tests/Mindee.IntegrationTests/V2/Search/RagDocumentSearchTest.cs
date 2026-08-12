@@ -1,6 +1,6 @@
 using Mindee.V2;
 using Mindee.V2.Parsing.Search;
-using Mindee.V2.Search.Model;
+using Mindee.V2.Search.RagDocuments;
 
 namespace Mindee.IntegrationTests.V2.Search
 {
