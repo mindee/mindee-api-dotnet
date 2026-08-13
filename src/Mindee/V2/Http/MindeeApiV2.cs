@@ -14,9 +14,7 @@ using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product;
-using Mindee.V2.Product.Extraction.RagDocuments;
 using Mindee.V2.Product.Extraction.RagDocuments.Params;
-using Mindee.V2.Search.Model;
 using Mindee.V2.Search.Models;
 using RestSharp;
 #if NET6_0_OR_GREATER

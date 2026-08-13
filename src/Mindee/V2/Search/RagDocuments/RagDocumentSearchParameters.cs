@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using Mindee.V2.ClientOptions;
 
-namespace Mindee.V2.Search.Model
+namespace Mindee.V2.Search.RagDocuments
 {
     /// <summary>
-    /// Search parameters for models.
+    /// Search parameters for RAG Documents.
     /// </summary>
     public class RagDocumentSearchParameters : BaseSearchParameters
     {
