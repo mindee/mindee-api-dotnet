@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json.Serialization;
+using Mindee.V2.Search.Models;
 
 namespace Mindee.V2.Parsing.Search
 {

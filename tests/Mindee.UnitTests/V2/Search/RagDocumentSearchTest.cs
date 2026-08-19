@@ -1,5 +1,5 @@
 using Mindee.V2.Parsing;
-using Mindee.V2.Parsing.Search;
+using Mindee.V2.Search.RagDocuments;
 
 namespace Mindee.UnitTests.V2.Search
 {

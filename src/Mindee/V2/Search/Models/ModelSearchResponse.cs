@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Mindee.Parsing;
+using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product;
 
-namespace Mindee.V2.Parsing.Search
+namespace Mindee.V2.Search.Models
 {
     /// <summary>
     /// Models search response.
