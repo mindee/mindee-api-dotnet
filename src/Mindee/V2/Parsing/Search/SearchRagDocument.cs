@@ -6,7 +6,7 @@ namespace Mindee.V2.Parsing.Search
     /// <summary>
     /// Individual RAG document information.
     /// </summary>
-    public class RagDocument
+    public class SearchRagDocument
     {
         /// <summary>
         /// Unique identifier of the RAG document.

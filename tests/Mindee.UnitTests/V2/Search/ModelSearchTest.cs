@@ -1,5 +1,5 @@
 using Mindee.V2.Parsing;
-using Mindee.V2.Parsing.Search;
+using Mindee.V2.Search.Models;
 
 namespace Mindee.UnitTests.V2.Search
 {
@@ -12,7 +12,7 @@ namespace Mindee.UnitTests.V2.Search
         {
             var localResponse = new LocalResponse(
                 new FileInfo(Constants.V2RootDir + "search/models.json"));
-            SearchResponse response = localResponse.DeserializeResponse<SearchResponse>();
+            ModelSearchResponse response = localResponse.DeserializeResponse<ModelSearchResponse>();
 
             Assert.NotNull(response);
 

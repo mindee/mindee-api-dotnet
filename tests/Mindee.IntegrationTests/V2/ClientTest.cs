@@ -57,7 +57,9 @@ namespace Mindee.IntegrationTests.V2
                 confidence: confidence);
 
             var response = await _client.EnqueueAndGetResultAsync<ExtractionResponse>(
-                inputSource, inferenceParams);
+                inputSource
+                , inferenceParams
+                , new PollingOptions(maxRetries: 100));
             Assert.NotNull(response);
             Assert.NotNull(response.Inference);
 
@@ -70,7 +72,13 @@ namespace Mindee.IntegrationTests.V2
             Assert.Equal(2, file.PageCount);
 
             AssertActiveOptions(
-                response.Inference.ActiveOptions, rawText, polygon, confidence, false, false, false);
+                response.Inference.ActiveOptions
+                , rawText
+                , polygon
+                , confidence
+                , rag: false
+                , textContext: false
+                , dataSchemaReplace: false);
 
             var result = response.Inference.Result;
             Assert.NotNull(result);

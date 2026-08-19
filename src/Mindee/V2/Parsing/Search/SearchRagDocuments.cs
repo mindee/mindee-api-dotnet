@@ -4,9 +4,9 @@ using System.Text;
 namespace Mindee.V2.Parsing.Search
 {
     /// <summary>
-    /// List of search models.
+    /// List of RAG documents.
     /// </summary>
-    public class RagDocuments : List<RagDocument>
+    public class SearchRagDocuments : List<SearchRagDocument>
     {
         /// <summary>
         /// Default string representation.
@@ -18,7 +18,7 @@ namespace Mindee.V2.Parsing.Search
                 return "\n";
             }
             StringBuilder stringBuilder = new StringBuilder();
-            foreach (RagDocument item in this)
+            foreach (SearchRagDocument item in this)
             {
                 stringBuilder.Append($"* :ID: {item.Id}");
                 stringBuilder.Append('\n');
