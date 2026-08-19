@@ -4,12 +4,21 @@ using Mindee.V1.Parsing.Common;
 using Mindee.V1.Product.BarcodeReader;
 using Mindee.V1.Product.MultiReceiptsDetector;
 
-namespace Mindee.UnitTests.Extraction
+namespace Mindee.UnitTests.V1.Image
 {
     [Trait("Category", "ImageExtractor")]
     [Collection("Docnet")]
     public class ImageExtractorTest
     {
+        private readonly string _outputDir = Path.Combine(
+            Constants.RootDir, "output/v1");
+
+        public ImageExtractorTest()
+        {
+            Directory.CreateDirectory(_outputDir);
+        }
+
+
         [Fact]
         public async Task GivenAnImage_ShouldExtractPositionFields()
         {
@@ -28,7 +37,7 @@ namespace Mindee.UnitTests.Extraction
                 {
                     var extractedImage = subImages[i];
                     Assert.NotNull(extractedImage.Image);
-                    extractedImage.WriteToFile("Resources/output/");
+                    extractedImage.WriteToFile(_outputDir);
 
                     var source = extractedImage.AsInputSource();
                     Assert.Equal(
@@ -61,14 +70,14 @@ namespace Mindee.UnitTests.Extraction
                         $"barcodes_1D_page-001_{i + 1:D3}.jpg",
                         source.Filename
                     );
-                    extractedImage.WriteToFile("Resources/output/");
+                    extractedImage.WriteToFile(_outputDir);
                 }
 
                 var codes2D = extractor.ExtractImagesFromPage(page.Prediction.Codes2D, page.Id, "barcodes_2D.jpg");
                 foreach (var extractedImage in codes2D)
                 {
                     Assert.NotNull(extractedImage.Image);
-                    extractedImage.WriteToFile("Resources/output/");
+                    extractedImage.WriteToFile(_outputDir);
                 }
             }
         }
@@ -92,7 +101,7 @@ namespace Mindee.UnitTests.Extraction
                 {
                     var extractedImage = subImages[i];
                     Assert.NotNull(extractedImage.Image);
-                    extractedImage.WriteToFile("Resources/output/");
+                    extractedImage.WriteToFile(_outputDir);
 
                     var source = extractedImage.AsInputSource();
                     Assert.Equal(
