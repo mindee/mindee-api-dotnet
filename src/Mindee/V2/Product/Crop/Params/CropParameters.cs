@@ -4,7 +4,7 @@ using Mindee.V2.ClientOptions;
 namespace Mindee.V2.Product.Crop.Params
 {
     /// <summary>
-    /// Parameters accepted by the crop utility v2 endpoint.
+    /// Parameters for sending a file to a Crop product.
     /// </summary>
     [ProductAttributes("crop")]
     public class CropParameters : BaseProductParameters

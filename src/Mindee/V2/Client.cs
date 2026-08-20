@@ -126,7 +126,7 @@ namespace Mindee.V2
                 default:
                     throw new MindeeInputException($"Unsupported input source {inputSource.GetType().Name}");
             }
-            return await _mindeeApi.ReqPostEnqueueAsync(inputSource, parameters, ct);
+            return await _mindeeApi.ReqPostProductEnqueueAsync(inputSource, parameters, ct);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Mindee.V2
         public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
         {
             _logger?.LogInformation("Getting Job at: {}", pollingUrl);
-            return await _mindeeApi.ReqGetJobFromUrlAsync(pollingUrl, ct);
+            return await _mindeeApi.ReqGetJobByUrlAsync(pollingUrl, ct);
         }
 
         /// <summary>
@@ -156,12 +156,11 @@ namespace Mindee.V2
             where TResponse : BaseResponse, new()
         {
             _logger?.LogInformation("Getting result at: {}", resultUrl);
-            return await _mindeeApi.ReqGetResultFromUrlAsync<TResponse>(resultUrl, ct);
+            return await _mindeeApi.ReqGetResultByUrlAsync<TResponse>(resultUrl, ct);
         }
 
         /// <summary>
-        ///     Get the status of an inference that was previously enqueued.
-        ///     Can be used for polling.
+        ///     Get the result of an inference that was previously enqueued by its ID.
         /// </summary>
         /// <param name="jobId">The job id.</param>
         /// <param name="ct">Cancellation token.</param>
@@ -365,10 +364,11 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        /// Searches for resources matching the given criteria.
+        /// Search for resources matching the given criteria.
         /// </summary>
         /// <param name="searchParameters">Search parameters</param>
         /// <param name="ct">Cancellation token.</param>
+        /// <returns>A search response containing the matching resources.</returns>
         public async Task<TSearchResponse> SearchAsync<TSearchResponse>(
             BaseSearchParameters searchParameters, CancellationToken ct = default)
             where TSearchResponse : BaseSearchResponse, new()

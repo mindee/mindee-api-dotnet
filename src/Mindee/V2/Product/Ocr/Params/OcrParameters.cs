@@ -4,7 +4,7 @@ using Mindee.V2.ClientOptions;
 namespace Mindee.V2.Product.Ocr.Params
 {
     /// <summary>
-    ///     Parameters accepted by the OCR utility v2 endpoint.
+    ///     Parameters for sending a file to a Raw Text (OCR) product.
     /// </summary>
     [ProductAttributes("ocr")]
     public class OcrParameters : BaseProductParameters

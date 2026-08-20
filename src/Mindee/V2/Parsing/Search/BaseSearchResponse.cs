@@ -6,7 +6,7 @@ using Mindee.Parsing;
 namespace Mindee.V2.Parsing.Search
 {
     /// <summary>
-    /// Models search response.
+    /// Base class for search responses.
     /// </summary>
     public abstract class BaseSearchResponse : BaseResponse
     {

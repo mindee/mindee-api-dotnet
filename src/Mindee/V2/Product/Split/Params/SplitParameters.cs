@@ -4,7 +4,7 @@ using Mindee.V2.ClientOptions;
 namespace Mindee.V2.Product.Split.Params
 {
     /// <summary>
-    /// Parameters accepted by the split utility v2 endpoint.
+    ///     Parameters for sending a file to a Split product.
     /// </summary>
     [ProductAttributes("split")]
     public class SplitParameters : BaseProductParameters

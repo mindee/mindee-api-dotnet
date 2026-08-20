@@ -30,7 +30,7 @@ namespace Mindee.V2.Http
         protected ILogger<HttpApiV2>? Logger;
 
         /// <summary>
-        ///     Do a prediction according parameters for a custom model defined in the Studio.
+        ///     Send a file to the asynchronous processing queue for inference processing.
         /// </summary>
         /// <param name="parameters">
         ///     <see cref="BaseProductParameters" />
@@ -40,21 +40,21 @@ namespace Mindee.V2.Http
         ///     <see cref="UrlInputSource" />
         /// </param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public abstract Task<JobResponse> ReqPostEnqueueAsync(
+        public abstract Task<JobResponse> ReqPostProductEnqueueAsync(
             InputSource inputSource
             , BaseProductParameters parameters
             , CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Get a job for an enqueued document.
+        ///     Get the status of an inference that was previously enqueued.
         /// </summary>
         /// <param name="pollingUrl">The job ID as returned by the predict_async route.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public abstract Task<JobResponse> ReqGetJobFromUrlAsync(
+        public abstract Task<JobResponse> ReqGetJobByUrlAsync(
             string pollingUrl, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Get a job for an enqueued document.
+        ///     Get the status of an inference that was previously enqueued.
         /// </summary>
         /// <param name="jobId">The job ID as returned by the predict_async route.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -62,7 +62,7 @@ namespace Mindee.V2.Http
             string jobId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Get a document inference.
+        ///     Get the result of an inference that was previously enqueued.
         /// </summary>
         /// <param name="inferenceId">Url to poll.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -71,16 +71,16 @@ namespace Mindee.V2.Http
             where TResponse : BaseResponse, new();
 
         /// <summary>
-        ///     Get a document inference.
+        ///     Get the result of an inference that was previously enqueued.
         /// </summary>
         /// <param name="resultUrl">Url to poll.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        public abstract Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(
+        public abstract Task<TResponse> ReqGetResultByUrlAsync<TResponse>(
             string resultUrl, CancellationToken cancellationToken = default)
             where TResponse : BaseResponse, new();
 
         /// <summary>
-        /// Retrieves a list of models with the given criteria.
+        ///     Retrieves a list of models with the given criteria.
         /// </summary>
         /// <param name="parameters"><see cref="ModelSearchParameters"/></param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -89,8 +89,7 @@ namespace Mindee.V2.Http
             where TSearchResponse : BaseSearchResponse, new();
 
         /// <summary>
-        /// Add a document to the RAG database.
-        /// For extraction models only.
+        ///     Add a document to the RAG database.
         /// </summary>
         /// <param name="parameters"></param>
         /// <param name="localInputSource"></param>
@@ -102,8 +101,7 @@ namespace Mindee.V2.Http
             where TAnnotationResponse : BaseRagAnnotationResponse, new();
 
         /// <summary>
-        /// Get a document's info and annotations from the RAG database.
-        /// For extraction models only.
+        ///     Get a document's info and annotations from the RAG database.
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="cancellationToken"></param>
@@ -112,8 +110,7 @@ namespace Mindee.V2.Http
             where TAnnotationResponse : BaseRagAnnotationResponse, new();
 
         /// <summary>
-        /// Update a document's annotations in the RAG database.
-        /// For extraction models only.
+        ///     Update a document's annotations in the RAG database.
         /// </summary>
         /// <param name="parameters"></param>
         /// <param name="cancellationToken"></param>
@@ -122,8 +119,8 @@ namespace Mindee.V2.Http
             where TAnnotationResponse : BaseRagAnnotationResponse, new();
 
         /// <summary>
-        /// Deletes a document from the RAG database.
-        /// For extraction models only.
+        ///     Deletes a document from the RAG database.
+        ///     For extraction models only.
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="cancellationToken"></param>
@@ -131,7 +128,7 @@ namespace Mindee.V2.Http
             string documentId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Retrieves a list of models available for a given API key.
+        ///     Retrieves a list of models available for a given API key.
         /// </summary>
         /// <param name="parameters"><see cref="ModelSearchParameters"/></param>
         /// <param name="cancellationToken">Cancellation token.</param>

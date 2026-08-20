@@ -4,7 +4,7 @@ using Mindee.V2.ClientOptions;
 namespace Mindee.V2.Product.Classification.Params
 {
     /// <summary>
-    ///   Parameters for a classification utility inference.
+    ///   Parameters for sending a file to a Classification product.
     /// </summary>
     [ProductAttributes("classification")]
     public class ClassificationParameters : BaseProductParameters
