@@ -126,7 +126,7 @@ namespace Mindee.V2
                 default:
                     throw new MindeeInputException($"Unsupported input source {inputSource.GetType().Name}");
             }
-            return await _mindeeApi.ReqPostEnqueueAsync(inputSource, parameters, ct);
+            return await _mindeeApi.ReqPostProductEnqueueAsync(inputSource, parameters, ct);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Mindee.V2
         public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
         {
             _logger?.LogInformation("Getting Job at: {}", pollingUrl);
-            return await _mindeeApi.ReqGetJobFromUrlAsync(pollingUrl, ct);
+            return await _mindeeApi.ReqGetJobByUrlAsync(pollingUrl, ct);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Mindee.V2
             where TResponse : BaseResponse, new()
         {
             _logger?.LogInformation("Getting result at: {}", resultUrl);
-            return await _mindeeApi.ReqGetResultFromUrlAsync<TResponse>(resultUrl, ct);
+            return await _mindeeApi.ReqGetResultByUrlAsync<TResponse>(resultUrl, ct);
         }
 
         /// <summary>

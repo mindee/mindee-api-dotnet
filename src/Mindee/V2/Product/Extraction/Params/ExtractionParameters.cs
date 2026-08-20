@@ -7,7 +7,7 @@ using Mindee.V2.Parsing.Inference.Field;
 namespace Mindee.V2.Product.Extraction.Params
 {
     /// <summary>
-    ///     Parameters for an extraction inference.
+    ///     Parameters for sending a file to an Extraction product.
     /// </summary>
     [ProductAttributes("extraction")]
     public class ExtractionParameters : BaseProductParameters

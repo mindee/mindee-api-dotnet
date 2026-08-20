@@ -51,7 +51,7 @@ namespace Mindee.V2.Http
             _httpClient.AddDefaultHeaders(defaultHeaders);
         }
 
-        public override async Task<JobResponse> ReqPostEnqueueAsync(
+        public override async Task<JobResponse> ReqPostProductEnqueueAsync(
             InputSource inputSource
             , BaseProductParameters parameters
             , CancellationToken cancellationToken = default
@@ -162,10 +162,10 @@ namespace Mindee.V2.Http
         public override async Task<JobResponse> ReqGetJobByIdAsync(
             string jobId, CancellationToken cancellationToken = default)
         {
-            return await ReqGetJobFromUrlAsync($"{_baseUrl}/v2/jobs/{jobId}", cancellationToken);
+            return await ReqGetJobByUrlAsync($"{_baseUrl}/v2/jobs/{jobId}", cancellationToken);
         }
 
-        public override async Task<JobResponse> ReqGetJobFromUrlAsync(
+        public override async Task<JobResponse> ReqGetJobByUrlAsync(
             string pollingUrl, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(pollingUrl))
@@ -193,7 +193,7 @@ namespace Mindee.V2.Http
             return HandleProductResponse<TResponse>(queueResponse);
         }
 
-        public override async Task<TResponse> ReqGetResultFromUrlAsync<TResponse>(
+        public override async Task<TResponse> ReqGetResultByUrlAsync<TResponse>(
             string resultUrl, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(resultUrl))

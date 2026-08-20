@@ -29,6 +29,8 @@ namespace Mindee.V2.Search.RagDocuments
             string modelId = null, string filename = null, int? page = null, int? perPage = null)
             : base(page, perPage)
         {
+            if (string.IsNullOrEmpty(modelId))
+                throw new System.ArgumentException("ModelId is required in RagDocumentSearchParameters");
             ModelId = modelId;
             Filename = filename;
         }
@@ -37,14 +39,9 @@ namespace Mindee.V2.Search.RagDocuments
         public override Dictionary<string, string> GetRequestParameters()
         {
             var parameters = base.GetRequestParameters();
-            if (!string.IsNullOrEmpty(ModelId))
-            {
-                parameters.Add("model_id", ModelId);
-            }
-            else
-            {
-                throw new System.ArgumentException("ModelId is required in RagDocumentSearchParameters");
-            }
+
+            parameters.Add("model_id", ModelId);
+
             if (!string.IsNullOrEmpty(Filename))
                 parameters.Add("filename", Filename);
             return parameters;

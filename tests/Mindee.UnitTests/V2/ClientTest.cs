@@ -16,7 +16,7 @@ namespace Mindee.UnitTests.V2
     {
         private Client MakeCustomMindeeClientV2(Mock<HttpApiV2> predictable)
         {
-            predictable.Setup(x => x.ReqPostEnqueueAsync(
+            predictable.Setup(x => x.ReqPostProductEnqueueAsync(
                 It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>(), It.IsAny<CancellationToken>())
             ).ReturnsAsync(new JobResponse());
 
@@ -47,7 +47,7 @@ namespace Mindee.UnitTests.V2
                 inputSource, inferenceParams);
 
             Assert.NotNull(response);
-            predictable.Verify(p => p.ReqPostEnqueueAsync(
+            predictable.Verify(p => p.ReqPostProductEnqueueAsync(
                 It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>(), It.IsAny<CancellationToken>()),
                 Times.AtMostOnce());
         }
@@ -69,7 +69,7 @@ namespace Mindee.UnitTests.V2
         public async Task Document_GetInferenceFromUrl_Async()
         {
             var predictable = new Mock<HttpApiV2>();
-            predictable.Setup(x => x.ReqGetResultFromUrlAsync<ExtractionResponse>(
+            predictable.Setup(x => x.ReqGetResultByUrlAsync<ExtractionResponse>(
                 It.IsAny<string>(), It.IsAny<CancellationToken>())
             ).ReturnsAsync(new ExtractionResponse());
 
@@ -79,7 +79,7 @@ namespace Mindee.UnitTests.V2
             Assert.NotNull(response);
 
             predictable.Verify(
-                p => p.ReqGetResultFromUrlAsync<ExtractionResponse>(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+                p => p.ReqGetResultByUrlAsync<ExtractionResponse>(It.IsAny<string>(), It.IsAny<CancellationToken>()),
                 Times.AtMostOnce());
         }
 
@@ -100,7 +100,7 @@ namespace Mindee.UnitTests.V2
         public async Task Enqueue_WithCancelledToken_ThrowsOperationCanceledException()
         {
             var predictable = new Mock<HttpApiV2>();
-            predictable.Setup(x => x.ReqPostEnqueueAsync(
+            predictable.Setup(x => x.ReqPostProductEnqueueAsync(
                 It.IsAny<InputSource>(), It.IsAny<ExtractionParameters>(), It.IsAny<CancellationToken>())
             ).Returns<InputSource, ExtractionParameters, CancellationToken>(
                 (_, _, ct) => Task.FromCanceled<JobResponse>(ct));
@@ -158,7 +158,7 @@ namespace Mindee.UnitTests.V2
         {
             CancellationToken capturedToken = default;
             var predictable = new Mock<HttpApiV2>();
-            predictable.Setup(x => x.ReqPostEnqueueAsync(
+            predictable.Setup(x => x.ReqPostProductEnqueueAsync(
                 It.IsAny<InputSource>(), It.IsAny<BaseProductParameters>(), It.IsAny<CancellationToken>())
             ).Callback<InputSource, BaseProductParameters, CancellationToken>(
                 (_, _, ct) => capturedToken = ct)

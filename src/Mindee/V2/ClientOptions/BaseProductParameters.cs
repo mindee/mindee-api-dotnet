@@ -3,22 +3,25 @@ using System.Collections.Generic;
 namespace Mindee.V2.ClientOptions
 {
     /// <summary>
-    ///     Base parameters for sending a document to a product.
+    ///     Base parameters for sending a file to a Mindee V2 product.
     /// </summary>
     public abstract class BaseProductParameters
     {
         /// <summary>
-        ///     Optional alias for the file.
-        /// </summary>
-        public string Alias { get; }
-
-        /// <summary>
-        ///     ID of the model.
+        ///     Model ID to use for the inference. Required.
         /// </summary>
         public string ModelId { get; }
 
         /// <summary>
-        ///     IDs of webhooks to propagate the API response to.
+        ///     Optional: a free-form string to tag the request with your own identifier.
+        ///     For example, an internal document ID, reference number, or database key.
+        ///     If set, it will be included in the job and result responses.
+        /// </summary>
+        public string Alias { get; }
+
+        /// <summary>
+        ///     Webhook IDs to call after all processing is finished.
+        ///     If empty, no webhooks will be used.
         /// </summary>
         public List<string> WebhookIds { get; }
 
@@ -34,6 +37,9 @@ namespace Mindee.V2.ClientOptions
             List<string> webhookIds
         )
         {
+            if (string.IsNullOrWhiteSpace(modelId))
+                throw new System.ArgumentException("The model ID is required in product parameters");
+
             ModelId = modelId;
             Alias = alias;
             WebhookIds = webhookIds;
@@ -45,9 +51,6 @@ namespace Mindee.V2.ClientOptions
         /// <returns></returns>
         public virtual Dictionary<string, string> GetRequestParameters()
         {
-            if (string.IsNullOrWhiteSpace(ModelId))
-                throw new System.ArgumentException("ModelId is required in ProductParameters");
-
             var parameters = new Dictionary<string, string>();
 
             parameters.Add("model_id", ModelId);
