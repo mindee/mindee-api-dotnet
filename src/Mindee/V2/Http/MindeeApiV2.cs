@@ -61,7 +61,7 @@ namespace Mindee.V2.Http
             if (productAttributes == null)
                 throw new Exception($"ProductAttributes must be set for class: {parameters.GetType().Name}");
             var request = new RestRequest(
-                $"v2/products/{productAttributes.Slug}/enqueue", Method.Post);
+                $"/v2/products/{productAttributes.Slug}/enqueue", Method.Post);
 
             AddPredictRequestParameters(inputSource, parameters, request);
 
@@ -79,7 +79,7 @@ namespace Mindee.V2.Http
             if (productAttributes == null)
                 throw new Exception($"ProductAttributes must be set for class: {searchType.Name}");
 
-            var request = new RestRequest($"v2/search/{productAttributes.Slug}");
+            var request = new RestRequest($"/v2/search/{productAttributes.Slug}");
             Logger?.LogInformation("Searching {} ...", productAttributes.Slug);
 
             foreach (KeyValuePair<string, string> entry in parameters.GetRequestParameters())
@@ -99,7 +99,7 @@ namespace Mindee.V2.Http
             , LocalInputSource localInputSource
             , CancellationToken cancellationToken = default)
         {
-            var request = new RestRequest("v2/products/extraction/rag-documents", Method.Post);
+            var request = new RestRequest("/v2/products/extraction/rag-documents", Method.Post);
             request.AddFile(
                 "file",
                 localInputSource.FileBytes,
@@ -144,7 +144,7 @@ namespace Mindee.V2.Http
         public override async Task<SearchResponse> SearchModelsObsolete(
             ModelSearchParameters parameters, CancellationToken cancellationToken = default)
         {
-            var request = new RestRequest("v2/search/models");
+            var request = new RestRequest("/v2/search/models");
             Logger?.LogInformation("Model search...");
 
             foreach (KeyValuePair<string, string> entry in parameters.GetRequestParameters())
@@ -186,7 +186,7 @@ namespace Mindee.V2.Http
             if (productAttributes == null)
                 throw new Exception($"ProductAttributes must be set for class: {typeof(TResponse).Name}");
             var request = new RestRequest(
-                $"v2/products/{productAttributes.Slug}/results/{inferenceId}");
+                $"/v2/products/{productAttributes.Slug}/results/{inferenceId}");
             Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
             var queueResponse = await _httpClient.ExecuteAsync(request, ct);
             ct.ThrowIfCancellationRequested();

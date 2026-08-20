@@ -51,11 +51,11 @@ namespace Mindee.V1.Http
             string url;
             if (predictParameter.WorkflowId != null)
             {
-                url = $"v1/workflows/{predictParameter.WorkflowId}/predict_async";
+                url = $"/v1/workflows/{predictParameter.WorkflowId}/predict_async";
             }
             else
             {
-                url = $"v1/products/{endpoint.GetBaseUrl()}/predict_async";
+                url = $"/v1/products/{endpoint.GetBaseUrl()}/predict_async";
             }
 
             var request = new RestRequest(url, Method.Post);
@@ -84,7 +84,7 @@ namespace Mindee.V1.Http
             }
 
             var request = new RestRequest(
-                $"v1/products/{endpoint.GetBaseUrl()}/predict"
+                $"/v1/products/{endpoint.GetBaseUrl()}/predict"
                 , Method.Post);
 
             AddPredictRequestParameters(predictParameter, request);
@@ -107,7 +107,7 @@ namespace Mindee.V1.Http
             }
 
             var queueRequest = new RestRequest(
-                $"v1/products/{endpoint.GetBaseUrl()}/documents/queue/{jobId}");
+                $"/v1/products/{endpoint.GetBaseUrl()}/documents/queue/{jobId}");
 
             _logger?.LogInformation("HTTP GET to {QueueRequestResource} ...", _baseUrl + queueRequest.Resource);
 
@@ -147,7 +147,7 @@ namespace Mindee.V1.Http
             where TModel : class, new()
         {
             var request = new RestRequest(
-                $"v1/workflows/{workflowId}/executions"
+                $"/v1/workflows/{workflowId}/executions"
                 , Method.Post);
 
             AddWorkflowRequestParameters(workflowParameter, request);

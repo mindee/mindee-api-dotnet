@@ -160,8 +160,7 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        ///     Get the status of an inference that was previously enqueued.
-        ///     Can be used for polling.
+        ///     Get the result of an inference that was previously enqueued by its ID.
         /// </summary>
         /// <param name="jobId">The job id.</param>
         /// <param name="ct">Cancellation token.</param>
@@ -365,10 +364,11 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        /// Searches for resources matching the given criteria.
+        /// Search for resources matching the given criteria.
         /// </summary>
         /// <param name="searchParameters">Search parameters</param>
         /// <param name="ct">Cancellation token.</param>
+        /// <returns>A search response containing the matching resources.</returns>
         public async Task<TSearchResponse> SearchAsync<TSearchResponse>(
             BaseSearchParameters searchParameters, CancellationToken ct = default)
             where TSearchResponse : BaseSearchResponse, new()
