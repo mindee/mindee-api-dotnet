@@ -13,7 +13,7 @@ namespace Mindee.V2.Search.Models
     public class ModelSearchResponse : BaseSearchResponse
     {
         /// <summary>
-        /// List of all models matching the search query.
+        /// Paginated list of matching models.
         /// </summary>
         [JsonPropertyName("models")]
         [JsonConverter(typeof(ObjectListJsonConverter<SearchModels, SearchModel>))]

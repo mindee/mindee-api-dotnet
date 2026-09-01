@@ -67,7 +67,7 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
             Assert.Equal("koo koo katchoo!", getAnnotation.Fields["invoice_number"].SimpleField.Guidelines);
             Assert.True(getAnnotation.Fields["invoice_number"].SimpleField.Selected);
 
-            var patchStatusResponse = await _client.UpdateRagAnnotationAsync<ExtractionRagAnnotationResponse>(
+            var patchStatusResponse = await _client.UpdateAndGetRagAnnotationPollAsync<ExtractionRagAnnotationResponse>(
                 new RagDocumentAnnotationParameters(
                     documentId: documentId
                     , status: "Active"));

@@ -7,7 +7,7 @@ using Mindee.V2.Product;
 namespace Mindee.V2.Search.RagDocuments
 {
     /// <summary>
-    /// Models search response.
+    /// RAG Documents search response.
     /// </summary>
     [ProductAttributes("rag-documents")]
     public class RagDocumentSearchResponse : BaseSearchResponse
@@ -22,7 +22,7 @@ namespace Mindee.V2.Search.RagDocuments
         /// <inheritdoc />
         protected override List<string> BodyLines()
         {
-            return ["RAG Documents\n############\n", RagDocuments.ToString()];
+            return ["RAG Documents\n#############\n", RagDocuments.ToString()];
         }
     }
 }
