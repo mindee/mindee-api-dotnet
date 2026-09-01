@@ -14,7 +14,6 @@ using Mindee.V2.Product.Ocr;
 using Mindee.V2.Product.Ocr.Params;
 using Mindee.V2.Product.Split;
 using Mindee.V2.Product.Split.Params;
-using SettingsV2 = Mindee.V2.Http.Settings;
 using V2Client = Mindee.V2.Client;
 
 namespace Mindee.Cli.Commands.V2

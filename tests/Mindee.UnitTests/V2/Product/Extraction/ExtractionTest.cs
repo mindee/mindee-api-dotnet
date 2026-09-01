@@ -305,7 +305,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         {
             var response = GetResponse("extraction/standard_field_types.json");
             var rstOutput = File.ReadAllText(
-                Constants.V2ProductDir + "extraction/standard_field_types.rst");
+                Constants.V2ProductPath + "extraction/standard_field_types.rst");
 
             var inference = response.Inference;
 
@@ -342,7 +342,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
 
             Assert.Equal("This is the raw text of the first page...", rawText.Pages[0].Content);
             Assert.Equal(
-                File.ReadAllText(Constants.V2ProductDir + "extraction/raw_texts.txt"),
+                File.ReadAllText(Constants.V2ProductPath + "extraction/raw_texts.txt"),
                 rawText.ToString());
         }
 
@@ -385,7 +385,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         private static ExtractionResponse GetResponse(string path)
         {
             var localResponse = new LocalResponse(
-                File.ReadAllText(Constants.V2ProductDir + path));
+                File.ReadAllText(Constants.V2ProductPath + path));
             return localResponse.DeserializeResponse<ExtractionResponse>();
         }
 

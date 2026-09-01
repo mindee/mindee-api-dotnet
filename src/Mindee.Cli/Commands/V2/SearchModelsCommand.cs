@@ -8,7 +8,7 @@ using V2Client = Mindee.V2.Client;
 namespace Mindee.Cli.Commands.V2
 {
     /// <summary>
-    /// Lists all models for a given API key.
+    /// CLI command for searching available models.
     /// </summary>
     class SearchModelsCommand : BaseCommand
     {
@@ -30,7 +30,7 @@ namespace Mindee.Cli.Commands.V2
 
             var availableModels = new List<string> { "extraction", "crop", "classification", "ocr", "split" };
             var modelTypeDescription = """
-                                       Filter by exact model type (case sensitive).
+                                       Filter by exact model type.
                                        Available options:
                                        """;
             modelTypeDescription += string.Join("\n - ", availableModels);

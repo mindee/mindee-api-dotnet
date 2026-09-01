@@ -2,12 +2,12 @@ namespace Mindee.UnitTests
 {
     public static class Constants
     {
-        public const string RootDir = "Resources/";
+        public const string ResourcePath = "Resources/";
 
-        public const string V1RootDir = RootDir + "v1/";
-        public const string V1ProductDir = V1RootDir + "products/";
+        public const string V1ResourcePath = ResourcePath + "v1/";
+        public const string V1ProductPath = V1ResourcePath + "products/";
 
-        public const string V2RootDir = RootDir + "v2/";
-        public const string V2ProductDir = V2RootDir + "products/";
+        public const string V2ResourcePath = ResourcePath + "v2/";
+        public const string V2ProductPath = V2ResourcePath + "products/";
     }
 }

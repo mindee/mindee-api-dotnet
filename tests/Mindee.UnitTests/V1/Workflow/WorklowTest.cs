@@ -28,7 +28,7 @@ namespace Mindee.UnitTests.V1.Workflow
         [Fact]
         public async Task GivenAWorkflowMockFileShouldReturnAValidWorkflowObject()
         {
-            var file = new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf");
+            var file = new FileInfo(Constants.ResourcePath + "file_types/pdf/blank_1.pdf");
             var workflowResponse =
                 new WorkflowResponse<GeneratedV1> { Execution = new Execution<GeneratedV1>(), ApiRequest = null };
 
@@ -52,7 +52,7 @@ namespace Mindee.UnitTests.V1.Workflow
         [Fact]
         public async Task SendingADocumentToAnExecutionShouldDeserializeResponseCorrectly()
         {
-            var jsonFile = File.ReadAllText(Constants.V1RootDir + "workflows/success.json");
+            var jsonFile = File.ReadAllText(Constants.V1ResourcePath + "workflows/success.json");
             var mockResponse = JsonSerializer.Deserialize<WorkflowResponse<GeneratedV1>>(jsonFile);
 
             mockedClient.Setup(mindeeClient => mindeeClient.ExecuteWorkflowAsync(
@@ -97,7 +97,7 @@ namespace Mindee.UnitTests.V1.Workflow
         [Fact]
         public async Task SendingADocumentToAnExecutionWithPriorityAndAliasShouldDeserializeResponseCorrectly()
         {
-            var jsonFile = File.ReadAllText(Constants.V1RootDir + "workflows/success_low_priority.json");
+            var jsonFile = File.ReadAllText(Constants.V1ResourcePath + "workflows/success_low_priority.json");
             var mockResponse = JsonSerializer.Deserialize<WorkflowResponse<GeneratedV1>>(jsonFile);
 
             mockedClient.Setup(mindeeClient => mindeeClient.ExecuteWorkflowAsync(
@@ -108,7 +108,7 @@ namespace Mindee.UnitTests.V1.Workflow
                 .ReturnsAsync(mockResponse);
 
             var workflowId = "07ebf237-ff27-4eee-b6a2-425df4a5cca6";
-            var filePath = Constants.V1ProductDir + "financial_document/default_sample.jpg";
+            var filePath = Constants.V1ProductPath + "financial_document/default_sample.jpg";
             var inputSource = new LocalInputSource(filePath);
 
             // Act

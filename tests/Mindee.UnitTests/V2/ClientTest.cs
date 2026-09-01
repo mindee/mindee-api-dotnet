@@ -38,7 +38,7 @@ namespace Mindee.UnitTests.V2
             var mindeeClient = MakeCustomMindeeClientV2(predictable);
 
             var inputSource = new LocalInputSource(
-                new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
+                new FileInfo(Constants.ResourcePath + "file_types/pdf/blank_1.pdf"));
             var inferenceParams = new ExtractionParameters(
                 "dummy-model-id",
                 rawText: false,
@@ -107,7 +107,7 @@ namespace Mindee.UnitTests.V2
 
             var mindeeClient = new Client(predictable.Object);
             var inputSource = new LocalInputSource(
-                new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
+                new FileInfo(Constants.ResourcePath + "file_types/pdf/blank_1.pdf"));
             var inferenceParams = new ExtractionParameters("dummy-model-id");
 
             using var cts = new CancellationTokenSource();
@@ -166,7 +166,7 @@ namespace Mindee.UnitTests.V2
 
             var mindeeClient = new Client(predictable.Object);
             var inputSource = new LocalInputSource(
-                new FileInfo(Constants.RootDir + "file_types/pdf/blank_1.pdf"));
+                new FileInfo(Constants.ResourcePath + "file_types/pdf/blank_1.pdf"));
             var inferenceParams = new ExtractionParameters("dummy-model-id");
 
             using var cts = new CancellationTokenSource();
@@ -179,7 +179,7 @@ namespace Mindee.UnitTests.V2
         public void Inference_LoadsLocally()
         {
             var localResponse = new LocalResponse(
-                new FileInfo(Constants.V2RootDir + "products/extraction/financial_document/complete.json"));
+                new FileInfo(Constants.V2ResourcePath + "products/extraction/financial_document/complete.json"));
             ExtractionResponse locallyLoadedResponse = localResponse.DeserializeResponse<ExtractionResponse>();
             Assert.NotNull(locallyLoadedResponse);
             Assert.Equal("12345678-1234-1234-1234-123456789abc", locallyLoadedResponse.Inference.Model.Id);

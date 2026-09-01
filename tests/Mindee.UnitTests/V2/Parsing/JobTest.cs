@@ -65,7 +65,7 @@ namespace Mindee.UnitTests.V2.Parsing
         private static JobResponse GetJob(string path)
         {
             var localResponse = new LocalResponse(
-                File.ReadAllText(Constants.V2RootDir + path));
+                File.ReadAllText(Constants.V2ResourcePath + path));
             return localResponse.DeserializeJobResponse();
         }
     }

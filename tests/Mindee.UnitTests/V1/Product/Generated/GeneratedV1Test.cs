@@ -173,7 +173,7 @@ namespace Mindee.UnitTests.V1.Product.Generated
 
         private static async Task<AsyncPredictResponse<GeneratedV1>> GetReceiptsItemsClassifierPrediction()
         {
-            var fileName = Constants.V1RootDir + "products/receipts_items_classifier/response_v1/complete.json";
+            var fileName = Constants.V1ResourcePath + "products/receipts_items_classifier/response_v1/complete.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictAsyncPostAsync<GeneratedV1>(
                 UnitTestBase.GetFakePredictParameter()
@@ -182,7 +182,7 @@ namespace Mindee.UnitTests.V1.Product.Generated
 
         private static async Task<AsyncPredictResponse<GeneratedV1>> GetUsMailPrediction()
         {
-            var fileName = Constants.V1RootDir + "products/us_mail/response_v3/complete.json";
+            var fileName = Constants.V1ResourcePath + "products/us_mail/response_v3/complete.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictAsyncPostAsync<GeneratedV1>(
                 UnitTestBase.GetFakePredictParameter()
@@ -191,7 +191,7 @@ namespace Mindee.UnitTests.V1.Product.Generated
 
         private static async Task<AsyncPredictResponse<GeneratedV1>> GetAsyncPrediction(string name)
         {
-            var fileName = Constants.V1RootDir + $"products/generated/response_v1/{name}_international_id_v1.json";
+            var fileName = Constants.V1ResourcePath + $"products/generated/response_v1/{name}_international_id_v1.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictAsyncPostAsync<GeneratedV1>(
                 UnitTestBase.GetFakePredictParameter()
@@ -200,7 +200,7 @@ namespace Mindee.UnitTests.V1.Product.Generated
 
         private static Task<PredictResponse<GeneratedV1>> GetSyncPrediction(string name)
         {
-            var fileName = Constants.V1RootDir + $"products/generated/response_v1/{name}_invoice_v4.json";
+            var fileName = Constants.V1ResourcePath + $"products/generated/response_v1/{name}_invoice_v4.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return mindeeAPi.PredictPostAsync<GeneratedV1>(
                 UnitTestBase.GetFakePredictParameter()

@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.V2.Search
         public void ModelSearchResponse_LoadsLocally()
         {
             var localResponse = new LocalResponse(
-                new FileInfo(Constants.V2RootDir + "search/models.json"));
+                new FileInfo(Constants.V2ResourcePath + "search/models.json"));
             ModelSearchResponse response = localResponse.DeserializeResponse<ModelSearchResponse>();
 
             Assert.NotNull(response);

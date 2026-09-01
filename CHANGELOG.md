@@ -1,5 +1,13 @@
 # Mindee .NET Client Library Changelog
 
+## v4.6.0 - 2026-09-02
+### Changes
+* :sparkles: Add RAG search API
+* :white_check_mark: allow logging of detailed errors
+* :sparkles:  Allow CRUD operations on RAG documents
+* :recycle: harmonize class placement
+
+
 ## v4.5.0 - 2026-07-22
 ### Changes
 * :sparkles: add support for failed webhook responses
