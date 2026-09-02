@@ -13,7 +13,7 @@ namespace Mindee.UnitTests.V2.FileOperations
         private readonly string _finDocDataDir = Path.Combine(
             Constants.V2ResourcePath, "products", "extraction", "financial_document");
         private readonly string _outputDir = Path.Combine(
-            Constants.V2ResourcePath, "output/v2/file_operations/split");
+            Constants.ResourcePath, "output/v2/file_operations/split");
 
         public SplitTest()
         {
