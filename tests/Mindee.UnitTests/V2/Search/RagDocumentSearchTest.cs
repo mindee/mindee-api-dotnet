@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.V2.Search
         public void RagDocumentSearchResponse_LoadsLocally()
         {
             var localResponse = new LocalResponse(
-                new FileInfo(Constants.V2RootDir + "search/rag_documents.json"));
+                new FileInfo(Constants.V2ResourcePath + "search/rag_documents.json"));
             RagDocumentSearchResponse response = localResponse.DeserializeResponse<RagDocumentSearchResponse>();
 
             Assert.NotNull(response);

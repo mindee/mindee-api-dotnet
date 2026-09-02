@@ -9,7 +9,7 @@ namespace Mindee.UnitTests.V2.FileOperations
     [Trait("Category", "FileOperations")]
     public class CropTest
     {
-        private readonly string _cropDataDir = Path.Combine(Constants.V2RootDir, "products", "crop");
+        private readonly string _cropDataDir = Path.Combine(Constants.V2ResourcePath, "products", "crop");
 
         [Fact]
         public void Processes_SinglePage_CropSplit_Correctly()

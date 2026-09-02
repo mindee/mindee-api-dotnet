@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
 
         private Inference<InternationalIdV2Document, InternationalIdV2Document> LoadInference()
         {
-            var json = File.ReadAllText(Constants.V1RootDir + "extras/full_text_ocr/complete.json");
+            var json = File.ReadAllText(Constants.V1ResourcePath + "extras/full_text_ocr/complete.json");
             var prediction = JsonSerializer.Deserialize<AsyncPredictResponse<InternationalIdV2>>(json, JsonOptions);
             if (prediction == null)
             {
@@ -23,7 +23,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
 
         private List<Page<InternationalIdV2Document>> LoadPages()
         {
-            var json = File.ReadAllText(Constants.V1RootDir + "extras/full_text_ocr/complete.json");
+            var json = File.ReadAllText(Constants.V1ResourcePath + "extras/full_text_ocr/complete.json");
             var prediction = JsonSerializer.Deserialize<AsyncPredictResponse<InternationalIdV2>>(json, JsonOptions);
             if (prediction == null)
             {
@@ -36,7 +36,7 @@ namespace Mindee.UnitTests.V1.Parsing.Common
         [Fact]
         public void Should_GetFullTextOcrResult()
         {
-            var expectedText = File.ReadAllLines(Constants.V1RootDir + "extras/full_text_ocr/full_text_ocr.txt");
+            var expectedText = File.ReadAllLines(Constants.V1ResourcePath + "extras/full_text_ocr/full_text_ocr.txt");
             var pages = LoadPages();
             var inference = LoadInference();
 

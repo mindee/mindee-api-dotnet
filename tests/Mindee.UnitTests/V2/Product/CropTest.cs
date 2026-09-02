@@ -147,7 +147,7 @@ namespace Mindee.UnitTests.V2.Product
         {
             var resp = GetInference("crop/crop_single.json");
             var rstReference = File.ReadAllText(
-                Constants.V2ProductDir + "crop/crop_single.rst");
+                Constants.V2ProductPath + "crop/crop_single.rst");
 
             var inf = resp.Inference;
 
@@ -171,7 +171,7 @@ namespace Mindee.UnitTests.V2.Product
         private static CropResponse GetInference(string path)
         {
             var localResponse = new LocalResponse(
-                File.ReadAllText(Constants.V2ProductDir + path));
+                File.ReadAllText(Constants.V2ProductPath + path));
             return localResponse.DeserializeResponse<CropResponse>();
         }
 

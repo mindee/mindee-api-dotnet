@@ -8,7 +8,7 @@ namespace Mindee.UnitTests.V2.Input
     public class LocalResponseTest
     {
         // File which the signature applies to.
-        private const string FilePath = Constants.V2RootDir + "products/extraction/standard_field_types.json";
+        private const string FilePath = Constants.V2ResourcePath + "products/extraction/standard_field_types.json";
 
         private static void AssertLocalResponse(LocalResponse localResponse)
         {

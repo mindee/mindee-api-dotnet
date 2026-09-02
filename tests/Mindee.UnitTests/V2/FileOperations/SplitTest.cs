@@ -9,8 +9,8 @@ namespace Mindee.UnitTests.V2.FileOperations
     [Trait("Category", "FileOperations")]
     public class SplitTest
     {
-        private readonly string _splitDataDir = Path.Combine(Constants.V2RootDir, "products", "split");
-        private readonly string _finDocDataDir = Path.Combine(Constants.V2RootDir, "products", "extraction", "financial_document");
+        private readonly string _splitDataDir = Path.Combine(Constants.V2ResourcePath, "products", "split");
+        private readonly string _finDocDataDir = Path.Combine(Constants.V2ResourcePath, "products", "extraction", "financial_document");
 
         [Fact]
         public void Processes_SinglePage_Split_Correctly()

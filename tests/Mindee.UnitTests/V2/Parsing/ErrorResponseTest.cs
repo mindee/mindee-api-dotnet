@@ -8,11 +8,11 @@ namespace Mindee.UnitTests.V2.Parsing
         public void RstOutput_mustBeValid()
         {
             var localResponse = new LocalResponse(
-                File.ReadAllText(Constants.V2RootDir + "errors/error_422_invalid_fields.json"));
+                File.ReadAllText(Constants.V2ResourcePath + "errors/error_422_invalid_fields.json"));
             var response = localResponse.DeserializeResponse<ErrorResponse>();
 
             var rstOutput = File.ReadAllText(
-                Constants.V2RootDir + "errors/error_422_invalid_fields.rst");
+                Constants.V2ResourcePath + "errors/error_422_invalid_fields.rst");
 
             Assert.NotNull(response);
 

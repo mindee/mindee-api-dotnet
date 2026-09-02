@@ -133,7 +133,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         private static ExtractionRagAnnotationResponse GetResponse(string path)
         {
             var localResponse = new LocalResponse(
-                File.ReadAllText(Constants.V2ProductDir + path));
+                File.ReadAllText(Constants.V2ProductPath + path));
             return localResponse.DeserializeResponse<ExtractionRagAnnotationResponse>();
         }
     }

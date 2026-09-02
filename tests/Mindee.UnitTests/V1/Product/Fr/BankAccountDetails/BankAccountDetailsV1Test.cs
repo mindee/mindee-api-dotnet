@@ -21,13 +21,13 @@ namespace Mindee.UnitTests.V1.Product.Fr.BankAccountDetails
         {
             var response = await GetPrediction("complete");
             var expected =
-                File.ReadAllText(Constants.V1ProductDir + "bank_account_details/response_v1/summary_full.rst");
+                File.ReadAllText(Constants.V1ProductPath + "bank_account_details/response_v1/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
 
         private static async Task<PredictResponse<BankAccountDetailsV1>> GetPrediction(string name)
         {
-            var fileName = Constants.V1RootDir + $"products/bank_account_details/response_v1/{name}.json";
+            var fileName = Constants.V1ResourcePath + $"products/bank_account_details/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<BankAccountDetailsV1>(
                 UnitTestBase.GetFakePredictParameter());

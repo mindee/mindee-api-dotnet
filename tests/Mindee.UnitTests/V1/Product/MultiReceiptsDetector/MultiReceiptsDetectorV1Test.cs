@@ -19,13 +19,13 @@ namespace Mindee.UnitTests.V1.Product.MultiReceiptsDetector
         {
             var response = await GetPrediction("complete");
             var expected =
-                File.ReadAllText(Constants.V1ProductDir + "multi_receipts_detector/response_v1/summary_full.rst");
+                File.ReadAllText(Constants.V1ProductPath + "multi_receipts_detector/response_v1/summary_full.rst");
             Assert.Equal(expected, response.Document.ToString());
         }
 
         private static async Task<PredictResponse<MultiReceiptsDetectorV1>> GetPrediction(string name)
         {
-            var fileName = Constants.V1RootDir + $"products/multi_receipts_detector/response_v1/{name}.json";
+            var fileName = Constants.V1ResourcePath + $"products/multi_receipts_detector/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<MultiReceiptsDetectorV1>(
                 UnitTestBase.GetFakePredictParameter());

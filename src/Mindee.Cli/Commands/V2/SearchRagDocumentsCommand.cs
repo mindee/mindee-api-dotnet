@@ -2,14 +2,13 @@ using System.CommandLine;
 using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Mindee.V2.Parsing.Search;
 using Mindee.V2.Search.RagDocuments;
 using V2Client = Mindee.V2.Client;
 
 namespace Mindee.Cli.Commands.V2
 {
     /// <summary>
-    /// Lists all models for a given API key.
+    /// CLI command for searching available RAG documents for a given model.
     /// </summary>
     class SearchRagDocumentsCommand : BaseCommand
     {
@@ -22,8 +21,11 @@ namespace Mindee.Cli.Commands.V2
         /// </summary>
         public SearchRagDocumentsCommand() : base("search-rag-docs", "Search available RAG documents for a given model.")
         {
-            _modelIdOption =
-                new Option<string>("--model-id", "-m") { Description = "Filter by model ID", Required = true };
+            _modelIdOption = new Option<string>("--model-id", "-m")
+            {
+                Description = "Filter by model ID",
+                Required = true
+            };
             Options.Add(_modelIdOption);
 
             _filenameOption = new Option<string?>("--filename", "-f")
@@ -51,7 +53,7 @@ namespace Mindee.Cli.Commands.V2
 
             this.SetAction(parseResult =>
             {
-                var modelId = _modelIdOption != null ? parseResult.GetValue(_modelIdOption) : null;
+                var modelId = parseResult.GetValue(_modelIdOption);
                 var filename = _filenameOption != null ? parseResult.GetValue(_filenameOption) : null;
                 var raw = _rawOption != null && parseResult.GetValue(_rawOption);
                 var apiKey = parseResult.GetValue(ApiKeyOption);

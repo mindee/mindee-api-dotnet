@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.V2.Parsing
         public void WhenFailed_MustLoad()
         {
             var localResponse = new LocalResponse(
-                File.ReadAllText(Constants.V2RootDir + "errors/webhook_error_500_failed.json"));
+                File.ReadAllText(Constants.V2ResourcePath + "errors/webhook_error_500_failed.json"));
             var response = localResponse.DeserializeResponse<FailedInferenceResponse>();
             Assert.NotNull(response);
             Assert.Equal("12345678-1234-1234-1234-123456789ABC", response.InferenceId);

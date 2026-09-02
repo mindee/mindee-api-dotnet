@@ -80,9 +80,9 @@ namespace Mindee.V2.Http
             where TResponse : BaseResponse, new();
 
         /// <summary>
-        ///     Retrieves a list of models with the given criteria.
+        ///     Retrieves a list of resources with the given criteria.
         /// </summary>
-        /// <param name="parameters"><see cref="ModelSearchParameters"/></param>
+        /// <param name="parameters"><see cref="BaseSearchParameters"/></param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public abstract Task<TSearchResponse> ReqGetSearchAsync<TSearchResponse>(
             BaseSearchParameters parameters, CancellationToken cancellationToken = default)

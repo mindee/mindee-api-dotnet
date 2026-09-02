@@ -17,7 +17,7 @@ namespace Mindee.V2.Parsing.Search
         public PaginationMetadata Pagination { get; set; }
 
         /// <summary>
-        /// String representation.
+        /// String representation of the search response.
         /// </summary>
         /// <returns></returns>
         protected string ToString(StringBuilder stringBuilder)

@@ -80,7 +80,7 @@ namespace Mindee.UnitTests.V2.Product
         private static OcrResponse GetInference(string path)
         {
             var localResponse = new LocalResponse(
-                File.ReadAllText(Constants.V2ProductDir + path));
+                File.ReadAllText(Constants.V2ProductPath + path));
             return localResponse.DeserializeResponse<OcrResponse>();
         }
 
