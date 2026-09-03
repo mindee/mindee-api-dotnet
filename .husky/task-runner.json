@@ -4,9 +4,9 @@
       {
          "name": "dotnet-format-staged",
          "group": "pre-commit",
-         "command": "dotnet",
-         "args": [ "format", "Mindee.sln", "--include", "${staged}", "--verify-no-changes", "--no-restore" ],
-         "include": [ "**/*.cs" ]
+      "command": "dotnet",
+      "args": [ "format", "Mindee.sln", "--include", "${staged}", "--verify-no-changes" ],
+      "include": [ "**/*.cs" ]
       },
       {
          "name": "build",
