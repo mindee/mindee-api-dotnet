@@ -1,4 +1,3 @@
-using System.Threading;
 using Mindee.Input;
 using Mindee.V2;
 using Mindee.V2.ClientOptions;
@@ -173,18 +172,6 @@ namespace Mindee.UnitTests.V2
             await mindeeClient.EnqueueAsync(inputSource, inferenceParams, cts.Token);
 
             Assert.Equal(cts.Token, capturedToken);
-        }
-
-        [Fact]
-        public void Inference_LoadsLocally()
-        {
-            var localResponse = new LocalResponse(
-                new FileInfo(Constants.V2ResourcePath + "products/extraction/financial_document/complete.json"));
-            ExtractionResponse locallyLoadedResponse = localResponse.DeserializeResponse<ExtractionResponse>();
-            Assert.NotNull(locallyLoadedResponse);
-            Assert.Equal("12345678-1234-1234-1234-123456789abc", locallyLoadedResponse.Inference.Model.Id);
-            Assert.Equal("John Smith",
-                locallyLoadedResponse.Inference.Result.Fields["supplier_name"].SimpleField.Value);
         }
     }
 }

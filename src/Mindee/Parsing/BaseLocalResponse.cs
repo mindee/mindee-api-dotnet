@@ -11,28 +11,98 @@ namespace Mindee.Parsing
     public abstract class BaseLocalResponse
     {
         /// <summary>
+        ///     File as UTF-8 bytes.
+        /// </summary>
+        public byte[] FileBytes { get; }
+
+        /// <summary>
         ///     Load from a string.
         /// </summary>
         /// <param name="input">Will be decoded as UTF-8.</param>
-        public BaseLocalResponse(string input)
+        protected BaseLocalResponse(string input)
         {
-            FileBytes = Encoding.UTF8.GetBytes(input.Replace("\r", "").Replace("\n", ""));
+            if (input == null)
+                throw new ArgumentNullException(nameof(input));
+
+            FileBytes = ReadToCleanUtf8Bytes(new StringReader(input));
+        }
+
+        /// <summary>
+        ///    Load from a byte buffer.
+        /// <param name="input">Assumes UTF-8 encoding.</param>
+        /// </summary>
+        protected BaseLocalResponse(byte[] input)
+        {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input));
+
+            using var stream = new MemoryStream(input, writable: false);
+            using var reader = new StreamReader(
+                stream,
+                Encoding.UTF8);
+            FileBytes = ReadToCleanUtf8Bytes(reader);
+        }
+
+        /// <summary>
+        ///    Load from a Stream.
+        /// <param name="input">
+        ///     Assumes UTF-8 encoding.
+        /// </param>
+        /// </summary>
+        protected BaseLocalResponse(Stream input)
+        {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input));
+
+            if (!input.CanRead)
+                throw new ArgumentException("Input stream must be readable.", nameof(input));
+
+            using var reader = new StreamReader(
+                input,
+                Encoding.UTF8,
+                detectEncodingFromByteOrderMarks: true,
+                bufferSize: 1024,
+                leaveOpen: true);
+            FileBytes = ReadToCleanUtf8Bytes(reader);
         }
 
         /// <summary>
         ///     Load from a file.
         /// </summary>
         /// <param name="input">Will be decoded as UTF-8.</param>
-        public BaseLocalResponse(FileInfo input)
+        protected BaseLocalResponse(FileInfo input)
         {
-            FileBytes = Encoding.UTF8.GetBytes(
-                File.ReadAllText(input.FullName).Replace("\r", "").Replace("\n", ""));
+            if (input == null)
+                throw new ArgumentNullException(nameof(input));
+
+            using var reader = new StreamReader(
+                input.FullName,
+                Encoding.UTF8,
+                detectEncodingFromByteOrderMarks: true);
+
+            FileBytes = ReadToCleanUtf8Bytes(reader);
         }
 
         /// <summary>
-        ///     ResultFile as UTF-8 bytes.
+        ///     Read a stream, remove line endings, transform to UTF-8 bytes.
         /// </summary>
-        public byte[] FileBytes { get; }
+        private static byte[] ReadToCleanUtf8Bytes(TextReader reader)
+        {
+            var stringBuilder = new StringBuilder();
+            string line;
+
+            while ((line = reader.ReadLine()) != null)
+            {
+                stringBuilder.Append(line);
+            }
+
+            string cleanJson = stringBuilder.ToString();
+
+            if (string.IsNullOrWhiteSpace(cleanJson))
+                throw new ArgumentException("Input cannot be empty or contain only whitespace.");
+
+            return Encoding.UTF8.GetBytes(cleanJson);
+        }
 
         /// <summary>
         ///     Get the HMAC signature of the payload.
@@ -73,7 +143,6 @@ namespace Mindee.Parsing
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        /// <returns></returns>
         private static bool FixedTimeEquals(byte[] a, byte[] b)
         {
             uint diff = (uint)a.Length ^ (uint)b.Length;
@@ -89,7 +158,6 @@ namespace Mindee.Parsing
         /// <summary>
         ///     Print the file as a UTF-8 string.
         /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             return Encoding.UTF8.GetString(FileBytes);
