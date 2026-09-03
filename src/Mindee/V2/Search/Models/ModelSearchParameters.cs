@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Mindee.V2.ClientOptions;
 
@@ -29,6 +30,11 @@ namespace Mindee.V2.Search.Models
             string name = null, string modelType = null, int? page = null, int? perPage = null)
             : base(page, perPage)
         {
+            if (name == "")
+                throw new ArgumentException("name cannot be an empty string.", nameof(name));
+            if (modelType != null && string.IsNullOrWhiteSpace(modelType))
+                throw new ArgumentException("modelType cannot be whitespace.", nameof(modelType));
+
             Name = name;
             ModelType = modelType;
         }
@@ -37,9 +43,9 @@ namespace Mindee.V2.Search.Models
         public override Dictionary<string, string> GetRequestParameters()
         {
             var parameters = base.GetRequestParameters();
-            if (!string.IsNullOrEmpty(Name))
+            if (Name != null)
                 parameters.Add("name", Name);
-            if (!string.IsNullOrEmpty(ModelType))
+            if (ModelType != null)
                 parameters.Add("model_type", ModelType);
             return parameters;
         }

@@ -140,7 +140,7 @@ namespace Mindee.V2
         /// </returns>
         public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
         {
-            _logger?.LogInformation("Getting Job at: {}", pollingUrl);
+            _logger?.LogInformation("Getting Job at: {JobURL}", pollingUrl);
             return await _mindeeApi.ReqGetJobByUrlAsync(pollingUrl, ct);
         }
 
@@ -155,7 +155,7 @@ namespace Mindee.V2
         public async Task<TResponse> GetResultFromUrlAsync<TResponse>(string resultUrl, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
-            _logger?.LogInformation("Getting result at: {}", resultUrl);
+            _logger?.LogInformation("Getting result at: {ResultUrl}", resultUrl);
             return await _mindeeApi.ReqGetResultByUrlAsync<TResponse>(resultUrl, ct);
         }
 
@@ -170,7 +170,7 @@ namespace Mindee.V2
         public async Task<TResponse> GetResultAsync<TResponse>(string jobId, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
-            _logger?.LogInformation("Getting result with ID: {}", jobId);
+            _logger?.LogInformation("Getting result with ID: {JobID}", jobId);
 
             if (string.IsNullOrWhiteSpace(jobId))
             {
@@ -190,12 +190,7 @@ namespace Mindee.V2
         /// </returns>
         public async Task<JobResponse> GetJobAsync(string jobId, CancellationToken ct = default)
         {
-            _logger?.LogInformation("Getting job ID: {}", jobId);
-
-            if (string.IsNullOrWhiteSpace(jobId))
-            {
-                throw new ArgumentNullException(jobId);
-            }
+            _logger?.LogInformation("Getting job ID: {JobID}", jobId);
             return await _mindeeApi.ReqGetJobByIdAsync(jobId, ct);
         }
 
@@ -286,7 +281,7 @@ namespace Mindee.V2
             string documentId, CancellationToken ct = default)
             where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
-            _logger?.LogInformation("Getting RAG document ID: {}", documentId);
+            _logger?.LogInformation("Getting RAG document ID: {DocumentId}", documentId);
             return await _mindeeApi.ReqGetRagAnnotationAsync<TAnnotationResponse>(documentId, ct);
         }
 
@@ -322,7 +317,7 @@ namespace Mindee.V2
             BaseAnnotationParameters parameters, CancellationToken ct = default)
             where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
-            _logger?.LogInformation("Updating RAG document ID: {}", parameters.DocumentId);
+            _logger?.LogInformation("Updating RAG document ID: {DocumentId}", parameters.DocumentId);
             return await _mindeeApi.ReqPatchRagAnnotationAsync<TAnnotationResponse>(parameters, ct);
         }
 
@@ -339,7 +334,7 @@ namespace Mindee.V2
             , CancellationToken ct = default)
             where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
         {
-            _logger?.LogInformation("Updating RAG document ID: {}", parameters.DocumentId);
+            _logger?.LogInformation("Updating RAG document ID: {DocumentId}", parameters.DocumentId);
             var initialResponse = await _mindeeApi.ReqPatchRagAnnotationAsync<TAnnotationResponse>(parameters, ct);
             if (initialResponse.Status != "Processing")
                 return initialResponse;
@@ -359,7 +354,7 @@ namespace Mindee.V2
         public async Task<bool> DeleteExtractionRagDocumentAsync(
             string documentId, CancellationToken ct = default)
         {
-            _logger?.LogInformation("Deleting RAG document ID: {}", documentId);
+            _logger?.LogInformation("Deleting RAG document ID: {DocumentId}", documentId);
             return await _mindeeApi.ReqDeleteExtractionRagDocumentAsync(documentId, ct);
         }
 
@@ -402,11 +397,11 @@ namespace Mindee.V2
             , CancellationToken cancellationToken = default)
         where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
-            _logger?.LogInformation("Polling for RAG document ID: {}", initialResponse.Id);
+            _logger?.LogInformation("Polling for RAG document ID: {DocumentId}", initialResponse.Id);
             var maxRetries = pollingOptions.MaxRetries + 1;
 
             _logger?.LogDebug(
-                "Waiting {} seconds before attempting to retrieve the result...",
+                "Waiting {InitialDelaySec} seconds before attempting to retrieve the result...",
                 pollingOptions.InitialDelaySec);
             await Task.Delay(pollingOptions.InitialDelayMilliSec, cancellationToken);
             var documentId = initialResponse.Id;
@@ -447,7 +442,7 @@ namespace Mindee.V2
             CancellationToken cancellationToken = default)
             where TResponse : BaseResponse, new()
         {
-            _logger?.LogInformation("Polling for results on job ID: {}", enqueueResponse.Job.Id);
+            _logger?.LogInformation("Polling for results on job ID: {JobID}", enqueueResponse.Job.Id);
             var maxRetries = pollingOptions.MaxRetries + 1;
             var pollingUrl = enqueueResponse.Job.PollingUrl;
             _logger?.LogDebug(

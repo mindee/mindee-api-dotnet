@@ -46,9 +46,6 @@ namespace Mindee.V2.Product.Extraction.RagDocuments.Params
         /// </summary>
         public override Dictionary<string, object> GetRequestParameters()
         {
-            if (string.IsNullOrEmpty(DocumentId))
-                throw new System.ArgumentException("DocumentId is required in RagDocumentsAnnotationParameters");
-
             var parameters = new Dictionary<string, object>();
 
             if (!string.IsNullOrEmpty(Status))
