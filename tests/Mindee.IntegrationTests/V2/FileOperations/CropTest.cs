@@ -24,11 +24,8 @@ namespace Mindee.IntegrationTests.V2.FileOperations
             _cropModelId = Environment.GetEnvironmentVariable("MindeeV2__Crop__Model__Id");
             _findocModelId = Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id");
 
-            _outputDir = Path.Combine(Directory.GetCurrentDirectory(), "output");
-            if (!Directory.Exists(_outputDir))
-            {
-                Directory.CreateDirectory(_outputDir);
-            }
+            _outputDir = Path.Combine(Directory.GetCurrentDirectory(), "output/v2");
+            Directory.CreateDirectory(_outputDir);
         }
 
         public void Dispose()
@@ -63,11 +60,11 @@ namespace Mindee.IntegrationTests.V2.FileOperations
             Assert.Equal(2, response.Inference.Result.Crops.Count);
 
             var cropOperation = new Crop(inputSource);
-            var extractedImages = cropOperation.ExtractCrops(response.Inference.Result.Crops);
+            var extractedImages = cropOperation.ExtractMultipleCrops(response.Inference.Result.Crops);
 
             Assert.Equal(2, extractedImages.Count);
-            Assert.Equal("default_sample.jpg_page0-0.jpg", extractedImages[0].Filename);
-            Assert.Equal("default_sample.jpg_page0-1.jpg", extractedImages[1].Filename);
+            Assert.Equal("default_sample_page-001-item-001.jpg", extractedImages[0].Filename);
+            Assert.Equal("default_sample_page-001-item-002.jpg", extractedImages[1].Filename);
 
             var extractionInput = extractedImages[0].AsInputSource();
             var findocParams = new ExtractionParameters(_findocModelId);
@@ -77,13 +74,13 @@ namespace Mindee.IntegrationTests.V2.FileOperations
 
             CheckFindocReturn(invoice0);
 
-            extractedImages.SaveAllToDisk(_outputDir, 50);
+            extractedImages.SaveAllToDisk(_outputDir);
 
-            var file1Info = new FileInfo(Path.Combine(_outputDir, "crop_001.jpg"));
-            Assert.InRange(file1Info.Length, 98000, 120000);
+            var file1Info = new FileInfo(Path.Combine(_outputDir, "default_sample_page-001-item-001.jpg"));
+            Assert.InRange(file1Info.Length, 1100000, 1300000);
 
-            var file2Info = new FileInfo(Path.Combine(_outputDir, "crop_002.jpg"));
-            Assert.InRange(file2Info.Length, 98000, 120000);
+            var file2Info = new FileInfo(Path.Combine(_outputDir, "default_sample_page-001-item-002.jpg"));
+            Assert.InRange(file2Info.Length, 1200000, 1500000);
         }
 
         [Fact(Timeout = 180000)]
@@ -98,11 +95,11 @@ namespace Mindee.IntegrationTests.V2.FileOperations
             var response = await _client.EnqueueAndGetResultAsync<CropResponse>(
                 inputSource, cropParams);
             var cropOperation = new Crop(inputSource);
-            var extractedImages = cropOperation.ExtractCrops(response.Inference.Result.Crops);
+            var extractedImages = cropOperation.ExtractMultipleCrops(response.Inference.Result.Crops);
 
             Assert.Equal(5, extractedImages.Count);
-            Assert.Equal("multipage_sample.pdf_page0-0.jpg", extractedImages[0].Filename);
-            Assert.Equal("multipage_sample.pdf_page1-0.jpg", extractedImages[3].Filename);
+            Assert.Equal("multipage_sample_page-001-item-001.jpg", extractedImages[0].Filename);
+            Assert.Equal("multipage_sample_page-002-item-001.jpg", extractedImages[3].Filename);
         }
     }
 }
