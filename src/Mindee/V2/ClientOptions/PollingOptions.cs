@@ -9,19 +9,18 @@ namespace Mindee.V2.ClientOptions
     public class PollingOptions : BasePollingOptions
     {
         /// <inheritdoc />
+        /// <param name="initialDelaySec">Initial delay before the first polling attempt.</param>
+        /// <param name="intervalSec">Delay between each polling attempt.</param>
+        /// <param name="maxRetries">Total number of polling attempts.</param>
         public PollingOptions(
             double initialDelaySec = 2.0,
             double intervalSec = 1.5,
-            int maxRetries = 80,
-            double backoffFactor = 1.0,
-            double maxIntervalSec = double.NaN)
+            int maxRetries = 80)
             : base(1.0, 1.0, 2)
         {
             InitialDelaySec = initialDelaySec;
             IntervalSec = intervalSec;
             MaxRetries = maxRetries;
-            BackoffFactor = backoffFactor;
-            MaxIntervalSec = double.IsNaN(maxIntervalSec) ? intervalSec : maxIntervalSec;
             ValidateSettings();
 
             InitialDelayMilliSec = (int)Math.Floor(InitialDelaySec * 1000);
