@@ -30,8 +30,8 @@ namespace Mindee.Parsing
 
         /// <summary>
         ///    Load from a byte buffer.
-        /// <param name="input">Assumes UTF-8 encoding.</param>
         /// </summary>
+        /// <param name="input">Assumes UTF-8 encoding.</param>
         protected BaseLocalResponse(byte[] input)
         {
             if (input == null)
@@ -46,10 +46,10 @@ namespace Mindee.Parsing
 
         /// <summary>
         ///    Load from a Stream.
+        /// </summary>
         /// <param name="input">
         ///     Assumes UTF-8 encoding.
         /// </param>
-        /// </summary>
         protected BaseLocalResponse(Stream input)
         {
             if (input == null)
@@ -123,7 +123,6 @@ namespace Mindee.Parsing
         /// </summary>
         /// <param name="secretKey">Your secret key from the Mindee platform.</param>
         /// <param name="signature">The signature from the "X-Mindee-Hmac-Signature" HTTP header.</param>
-        /// <returns></returns>
         public bool IsValidHmacSignature(string secretKey, string signature)
         {
             if (string.IsNullOrEmpty(signature))

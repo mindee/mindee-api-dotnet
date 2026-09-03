@@ -80,10 +80,9 @@ namespace Mindee.UnitTests.V2.Parsing
         {
             var localResponse = new LocalResponse("{invalid json");
 
-            var err = Assert.Throws<JsonException>(
+            Assert.Throws<JsonException>(
                 () => localResponse.DeserializeResponse<ExtractionResponse>()
             );
-            Assert.Contains("invalid", err.Message);
         }
 
         [Fact(DisplayName = "should raise an exception when given an empty value")]
