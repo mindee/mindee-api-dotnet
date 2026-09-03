@@ -21,3 +21,9 @@ jobs:
 
       - name: Run dotnet format
         run: dotnet format --verify-no-changes
+
+      - name: Restore local tools (dotnet-delice)
+        run: dotnet tool restore
+
+      - name: Check dependency licenses against whitelist
+        run: bash .husky/check-licenses.sh
