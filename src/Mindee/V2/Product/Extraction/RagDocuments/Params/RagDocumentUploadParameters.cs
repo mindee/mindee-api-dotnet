@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Mindee.V2.Product.Extraction.RagDocuments.Params
@@ -18,7 +19,9 @@ namespace Mindee.V2.Product.Extraction.RagDocuments.Params
         /// <param name="modelId"><see cref="ModelId"/></param>
         public RagDocumentUploadParameters(string modelId)
         {
-            ModelId = modelId;
+            if (string.IsNullOrWhiteSpace(modelId))
+                throw new ArgumentException("ModelId cannot be null or whitespace.", nameof(modelId));
+            ModelId = modelId.Trim();
         }
 
         /// <summary>
@@ -28,16 +31,7 @@ namespace Mindee.V2.Product.Extraction.RagDocuments.Params
         public virtual Dictionary<string, string> GetRequestParameters()
         {
             var parameters = new Dictionary<string, string>();
-
-            if (!string.IsNullOrEmpty(ModelId))
-            {
-                parameters.Add("model_id", ModelId);
-            }
-            else
-            {
-                throw new System.ArgumentException("ModelId is required in RagDocumentsParameters");
-            }
-
+            parameters.Add("model_id", ModelId);
             return parameters;
         }
     }

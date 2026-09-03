@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Mindee.V2.ClientOptions
 {
@@ -38,9 +40,13 @@ namespace Mindee.V2.ClientOptions
         )
         {
             if (string.IsNullOrWhiteSpace(modelId))
-                throw new System.ArgumentException("The model ID is required in product parameters");
+                throw new ArgumentException("ModelId cannot be null or whitespace.", nameof(modelId));
+            if (alias == "")
+                throw new ArgumentException("Alias cannot be an empty string.", nameof(alias));
+            if (webhookIds != null && webhookIds.Any(string.IsNullOrWhiteSpace))
+                throw new ArgumentException("WebhookIds cannot contain null, empty, or whitespace values.", nameof(webhookIds));
 
-            ModelId = modelId;
+            ModelId = modelId.Trim();
             Alias = alias;
             WebhookIds = webhookIds;
         }
@@ -48,14 +54,14 @@ namespace Mindee.V2.ClientOptions
         /// <summary>
         /// Gets the request parameters for the enqueue request.
         /// </summary>
-        /// <returns></returns>
         public virtual Dictionary<string, string> GetRequestParameters()
         {
-            var parameters = new Dictionary<string, string>();
+            var parameters = new Dictionary<string, string>
+            {
+                { "model_id", ModelId }
+            };
 
-            parameters.Add("model_id", ModelId);
-
-            if (!string.IsNullOrWhiteSpace(Alias))
+            if (Alias != null)
                 parameters.Add("alias", Alias);
 
             if (WebhookIds is { Count: > 0 })

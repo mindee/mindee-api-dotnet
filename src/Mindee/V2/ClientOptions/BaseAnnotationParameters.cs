@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Mindee.V2.ClientOptions
@@ -18,7 +19,11 @@ namespace Mindee.V2.ClientOptions
         /// <param name="documentId"></param>
         protected BaseAnnotationParameters(string documentId)
         {
-            this.DocumentId = documentId;
+            if (string.IsNullOrWhiteSpace(documentId))
+                throw new ArgumentException("DocumentId cannot be null or whitespace.", nameof(documentId));
+
+            // Note: DocumentId is included in the request URL path, it is not a parameter.
+            DocumentId = documentId.Trim();
         }
 
         /// <summary>

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Mindee.V2.ClientOptions;
 
@@ -29,9 +30,12 @@ namespace Mindee.V2.Search.RagDocuments
             string modelId = null, string filename = null, int? page = null, int? perPage = null)
             : base(page, perPage)
         {
-            if (string.IsNullOrEmpty(modelId))
-                throw new System.ArgumentException("ModelId is required in RagDocumentSearchParameters");
-            ModelId = modelId;
+            if (string.IsNullOrWhiteSpace(modelId))
+                throw new ArgumentException("ModelId cannot be null or whitespace.", nameof(modelId));
+            if (filename == "")
+                throw new ArgumentException("Filename cannot be an empty string.", nameof(filename));
+
+            ModelId = modelId.Trim();
             Filename = filename;
         }
 

@@ -1,11 +1,12 @@
 using System;
+using Mindee.ClientOptions;
 
 namespace Mindee.V2.ClientOptions
 {
     /// <summary>
     /// Polling options for V2 parsing.
     /// </summary>
-    public class PollingOptions : Mindee.ClientOptions.BasePollingOptions
+    public class PollingOptions : BasePollingOptions
     {
         /// <inheritdoc />
         public PollingOptions(

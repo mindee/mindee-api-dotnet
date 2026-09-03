@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Mindee.V2.ClientOptions
@@ -24,6 +25,10 @@ namespace Mindee.V2.ClientOptions
         /// <param name="perPage"><see cref="PerPage"/></param>
         protected BaseSearchParameters(int? page, int? perPage)
         {
+            if (page != null && page <= 0)
+                throw new ArgumentOutOfRangeException(nameof(page), page, "page must be greater than 0");
+            if (perPage != null && perPage <= 0)
+                throw new ArgumentOutOfRangeException(nameof(perPage), perPage, "perPage must be greater than 0");
             Page = page;
             PerPage = perPage;
         }
@@ -36,10 +41,10 @@ namespace Mindee.V2.ClientOptions
         {
             var parameters = new Dictionary<string, string>();
 
-            if (Page != null && Page > 0)
+            if (Page != null)
                 parameters.Add("page", Page.ToString());
 
-            if (PerPage != null && PerPage > 0)
+            if (PerPage != null)
                 parameters.Add("per_page", PerPage.ToString());
 
             return parameters;

@@ -162,6 +162,9 @@ namespace Mindee.V2.Http
         public override async Task<JobResponse> ReqGetJobByIdAsync(
             string jobId, CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrWhiteSpace(jobId))
+                throw new ArgumentException("Job ID cannot be null or empty.", nameof(jobId));
+
             return await ReqGetJobByUrlAsync($"{_baseUrl}/v2/jobs/{jobId}", cancellationToken);
         }
 
@@ -169,7 +172,7 @@ namespace Mindee.V2.Http
             string pollingUrl, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(pollingUrl))
-                throw new ArgumentNullException(nameof(pollingUrl));
+                throw new ArgumentException("Job URL cannot be null or empty.", nameof(pollingUrl));
 
             var request = new RestRequest(new Uri(pollingUrl));
             Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
@@ -197,7 +200,7 @@ namespace Mindee.V2.Http
             string resultUrl, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(resultUrl))
-                throw new ArgumentNullException(nameof(resultUrl));
+                throw new ArgumentException("Result URL cannot be null or whitespace.", nameof(resultUrl));
 
             var request = new RestRequest(new Uri(resultUrl));
             Logger?.LogInformation("HTTP GET to {RequestResource}...", resultUrl);
