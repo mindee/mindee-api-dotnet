@@ -1,5 +1,11 @@
 # Mindee .NET Client Library Changelog
 
+## v4.7.0 - 2026-09-03
+### Changes
+* :broom: remove undocumented polling variables
+* :goal_net: better checks for request parameters
+
+
 ## v4.6.0 - 2026-09-02
 ### Changes
 * :sparkles: Add RAG search API
