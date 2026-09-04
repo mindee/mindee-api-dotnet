@@ -11,6 +11,7 @@ namespace Mindee.UnitTests.V2.Parsing
     {
         private const string Signature = "e51bdf80f1a08ed44ee161100fc30a25cb35b4ede671b0a575dc9064a3f5dbf1";
         private const string DummySecretKey = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";
+        private const string FilePath = "extraction/standard_field_types.json";
 
         private static void AssertLocalResponse(LocalResponse localResponse, string fileContent)
         {
@@ -29,22 +30,33 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.True(JsonNode.DeepEquals(
                 JsonNode.Parse(response.RawResponse),
                 JsonNode.Parse(fileContent)));
+
+            Assert.Equal(fileContent.Replace("\r", "").Replace("\n", ""), localResponse.ToString());
         }
 
         [Fact(DisplayName = "should load a response from a JSON string")]
         public void JsonString_mustLoadValidLocalResponse()
         {
-            string filePath = Path.Combine(Constants.V2ProductPath, "extraction/standard_field_types.json");
+            string filePath = Path.Combine(Constants.V2ProductPath, FilePath);
             string fileContent = File.ReadAllText(filePath);
             var localResponse = new LocalResponse(fileContent);
 
             AssertLocalResponse(localResponse, fileContent);
         }
 
+        [Fact(DisplayName = "should load a response from a buffer")]
+        public void Buffer_mustLoadValidLocalResponse()
+        {
+            string filePath = Path.Combine(Constants.V2ProductPath, FilePath);
+            var localResponse = new LocalResponse(File.ReadAllBytes(filePath));
+
+            AssertLocalResponse(localResponse, File.ReadAllText(filePath));
+        }
+
         [Fact(DisplayName = "should load a response from a JSON file")]
         public void JsonFile_mustLoadValidLocalResponse()
         {
-            string filePath = Path.Combine(Constants.V2ProductPath, "extraction/standard_field_types.json");
+            string filePath = Path.Combine(Constants.V2ProductPath, FilePath);
             var localResponse = new LocalResponse(new FileInfo(filePath));
 
             AssertLocalResponse(localResponse, File.ReadAllText(filePath));
@@ -53,26 +65,16 @@ namespace Mindee.UnitTests.V2.Parsing
         [Fact(DisplayName = "should load a response from a stream")]
         public void Stream_mustLoadValidLocalResponse()
         {
-            string filePath = Path.Combine(Constants.V2ProductPath, "extraction/standard_field_types.json");
+            string filePath = Path.Combine(Constants.V2ProductPath, FilePath);
             using (var stream = File.OpenRead(filePath))
             {
                 var localResponse = new LocalResponse(stream);
                 AssertLocalResponse(localResponse, File.ReadAllText(filePath));
 
-                // make sure the stream is not closed by the LocalResponse constructor
-                stream.Position = 10;
-                var someByte = stream.ReadByte();
-                Assert.NotEqual(-1, someByte);
+                // Explicitly verify the stream is not closed by the LocalResponse constructor
+                stream.Position = 0;
+                Assert.NotEqual(-1, stream.ReadByte());
             }
-        }
-
-        [Fact(DisplayName = "should load a response from a buffer")]
-        public void Buffer_mustLoadValidLocalResponse()
-        {
-            string filePath = Path.Combine(Constants.V2ProductPath, "extraction/standard_field_types.json");
-            var localResponse = new LocalResponse(File.ReadAllBytes(filePath));
-
-            AssertLocalResponse(localResponse, File.ReadAllText(filePath));
         }
 
         [Fact(DisplayName = "should raise an exception when given an invalid JSON string")]
