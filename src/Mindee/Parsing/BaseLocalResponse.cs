@@ -46,6 +46,7 @@ namespace Mindee.Parsing
 
         /// <summary>
         ///    Load from a Stream.
+        ///    This method will not close the provided stream.
         /// </summary>
         /// <param name="input">
         ///     Assumes UTF-8 encoding.
@@ -85,7 +86,8 @@ namespace Mindee.Parsing
         }
 
         /// <summary>
-        ///     Read a stream, remove line endings, transform to UTF-8 bytes.
+        ///     Read, remove line endings, transform to UTF-8 bytes.
+        ///     Does not close the provided Reader.
         /// </summary>
         private static byte[] ReadToCleanUtf8Bytes(TextReader reader)
         {
