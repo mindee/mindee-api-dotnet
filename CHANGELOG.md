@@ -1,5 +1,10 @@
 # Mindee .NET Client Library Changelog
 
+## v4.8.0 - 2026-09-04
+### Changes
+* :sparkles: allow opening a LocalResponse from a stream or buffer
+
+
 ## v4.7.0 - 2026-09-03
 ### Changes
 * :broom: remove undocumented polling variables
