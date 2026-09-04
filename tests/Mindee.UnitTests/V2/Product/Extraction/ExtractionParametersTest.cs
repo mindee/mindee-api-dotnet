@@ -2,18 +2,18 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using Mindee.V2.Product.Extraction.Params;
 
-namespace Mindee.UnitTests.V2.Input
+namespace Mindee.UnitTests.V2.Product.Extraction
 {
-    [Trait("Category", "ExtractionInference Parameter")]
     [Trait("Category", "V2")]
-    public class InferenceParameterTest
+    [Trait("Category", "ExtractionInference Parameter")]
+    public class ExtractionParametersTest
     {
-        private const string ReplacePath = Constants.V2ResourcePath + "products/extraction/data_schema_replace_param.json";
+        private const string ReplacePath = Constants.V2ProductPath + "extraction/data_schema_replace_param.json";
         private readonly Dictionary<string, object> DataSchemaDict;
         private readonly DataSchema DataSchemaInstance;
         private readonly string DataSchemaString;
 
-        public InferenceParameterTest()
+        public ExtractionParametersTest()
         {
             var fileContent = File.ReadAllText(ReplacePath).Trim();
             DataSchemaDict = JsonSerializer.Deserialize<Dictionary<string, object>>(fileContent) ??

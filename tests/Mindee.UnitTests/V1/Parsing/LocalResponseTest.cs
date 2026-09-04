@@ -1,6 +1,6 @@
 using Mindee.V1.Parsing;
 
-namespace Mindee.UnitTests.V1.Input
+namespace Mindee.UnitTests.V1.Parsing
 {
     [Trait("Category", "JSON Response loading")]
     public class LocalResponseTest

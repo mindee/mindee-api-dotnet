@@ -13,7 +13,17 @@ namespace Mindee.V1.Parsing
         }
 
         /// <inheritdoc />
+        public LocalResponse(byte[] input) : base(input)
+        {
+        }
+
+        /// <inheritdoc />
         public LocalResponse(FileInfo input) : base(input)
+        {
+        }
+
+        /// <inheritdoc />
+        public LocalResponse(Stream input) : base(input)
         {
         }
     }

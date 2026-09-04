@@ -1,16 +1,22 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using Mindee.Parsing;
 
 namespace Mindee.V2.Parsing
 {
     /// <summary>
     /// Implementation of BaseLocalResponse for V2.
     /// </summary>
-    public class LocalResponse : Mindee.Parsing.BaseLocalResponse
+    public class LocalResponse : BaseLocalResponse
     {
         /// <inheritdoc />
         public LocalResponse(string input) : base(input)
+        {
+        }
+
+        /// <inheritdoc />
+        public LocalResponse(byte[] input) : base(input)
         {
         }
 
@@ -19,6 +25,10 @@ namespace Mindee.V2.Parsing
         {
         }
 
+        /// <inheritdoc />
+        public LocalResponse(Stream input) : base(input)
+        {
+        }
 
         /// <summary>
         ///     Load a local inference.
@@ -33,7 +43,7 @@ namespace Mindee.V2.Parsing
             if (model == null)
             {
                 throw new InvalidOperationException(
-                    "Could not deserialize the local file into the expected response type.");
+                    "Could not deserialize the JSON into the expected response instance.");
             }
 
             model.RawResponse = ToString();
