@@ -24,7 +24,8 @@ namespace Mindee.Parsing
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
 
-            FileBytes = ReadToCleanUtf8Bytes(new StringReader(input));
+            using var reader = new StringReader(input);
+            FileBytes = ReadToCleanUtf8Bytes(reader);
         }
 
         /// <summary>
