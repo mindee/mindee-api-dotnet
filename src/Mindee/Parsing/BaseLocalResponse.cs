@@ -124,7 +124,7 @@ namespace Mindee.Parsing
         ///     Verify that the payload's signature matches the one received from the server.
         /// </summary>
         /// <param name="secretKey">Your secret key from the Mindee platform.</param>
-        /// <param name="signature">The signature from the "X-Mindee-Hmac-Signature" HTTP header.</param>
+        /// <param name="signature">The signature from the "X-Signature" HTTP header.</param>
         public bool IsValidHmacSignature(string secretKey, string signature)
         {
             if (string.IsNullOrEmpty(signature))
