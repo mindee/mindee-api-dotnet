@@ -18,7 +18,7 @@ namespace Mindee.Parsing
         /// <summary>
         ///     Load from a string.
         /// </summary>
-        /// <param name="input">Will be decoded as UTF-8.</param>
+        /// <param name="input">Assumes UTF-8 encoding.</param>
         protected BaseLocalResponse(string input)
         {
             if (input == null)
@@ -31,7 +31,7 @@ namespace Mindee.Parsing
         /// <summary>
         ///    Load from a byte buffer.
         /// </summary>
-        /// <param name="input">Assumes UTF-8 encoding.</param>
+        /// <param name="input">Will be decoded as UTF-8.</param>
         protected BaseLocalResponse(byte[] input)
         {
             if (input == null)
@@ -48,9 +48,7 @@ namespace Mindee.Parsing
         ///    Load from a Stream.
         ///    This method will not close the provided stream.
         /// </summary>
-        /// <param name="input">
-        ///     Assumes UTF-8 encoding.
-        /// </param>
+        /// <param name="input">Will be decoded as UTF-8.</param>
         protected BaseLocalResponse(Stream input)
         {
             if (input == null)
@@ -127,15 +125,17 @@ namespace Mindee.Parsing
         /// <param name="signature">The signature from the "X-Signature" HTTP header.</param>
         public bool IsValidHmacSignature(string secretKey, string signature)
         {
-            if (string.IsNullOrEmpty(signature))
-            {
+            if (string.IsNullOrWhiteSpace(secretKey) || string.IsNullOrWhiteSpace(signature))
                 return false;
-            }
 
             string expectedSignature = GetHmacSignature(secretKey);
+            if (string.IsNullOrWhiteSpace(expectedSignature))
+                return false;
 
             byte[] expectedBytes = Encoding.UTF8.GetBytes(expectedSignature);
             byte[] actualBytes = Encoding.UTF8.GetBytes(signature.ToLower());
+            if (expectedBytes.Length != actualBytes.Length)
+                return false;
 
             return FixedTimeEquals(expectedBytes, actualBytes);
         }
