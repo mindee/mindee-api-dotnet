@@ -2,9 +2,11 @@ using Mindee.V2.Parsing;
 
 namespace Mindee.UnitTests.V2.Parsing
 {
+    [Trait("Category", "V2")]
+    [Trait("Category", "Error Response")]
     public class ErrorResponseTest
     {
-        [Fact]
+        [Fact(DisplayName = "should load and pretty print an error response")]
         public void RstOutput_mustBeValid()
         {
             var localResponse = new LocalResponse(

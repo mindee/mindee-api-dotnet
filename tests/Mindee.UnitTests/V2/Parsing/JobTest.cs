@@ -3,10 +3,17 @@ using Mindee.V2.Parsing;
 namespace Mindee.UnitTests.V2.Parsing
 {
     [Trait("Category", "V2")]
-    [Trait("Category", "Job")]
+    [Trait("Category", "Job Response")]
     public class JobTest
     {
-        [Fact]
+        private static JobResponse GetJob(string path)
+        {
+            var localResponse = new LocalResponse(
+                File.ReadAllText(Constants.V2ResourcePath + path));
+            return localResponse.DeserializeJobResponse();
+        }
+
+        [Fact(DisplayName = "should load when status is Processing")]
         public void OkProcessing_MustHaveValidProperties()
         {
             var response = GetJob("job/ok_processing.json");
@@ -21,7 +28,7 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.Equal("Processing", response.Job.Status);
         }
 
-        [Fact]
+        [Fact(DisplayName = "should load when status is Processed")]
         public void OkProcessed_WebhooksOk_MustHaveValidProperties()
         {
             var response = GetJob("job/ok_processed_webhooks_ok.json");
@@ -45,7 +52,7 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.Null(webhook.Error);
         }
 
-        [Fact]
+        [Fact(DisplayName = "should load with 422 error")]
         public void Error_422_MustHaveValidProperties()
         {
             var response = GetJob("job/fail_422.json");
@@ -60,13 +67,6 @@ namespace Mindee.UnitTests.V2.Parsing
             Assert.Single(error.Errors);
             Assert.Contains("must be a valid", error.Errors.First().Detail);
             Assert.Equal("Failed", response.Job.Status);
-        }
-
-        private static JobResponse GetJob(string path)
-        {
-            var localResponse = new LocalResponse(
-                File.ReadAllText(Constants.V2ResourcePath + path));
-            return localResponse.DeserializeJobResponse();
         }
     }
 }

@@ -13,11 +13,20 @@ namespace Mindee.UnitTests.V2.Parsing
         private const string DummySecretKey = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";
         private const string FilePath = "extraction/standard_field_types.json";
 
+        /// <summary>
+        /// Asserts that a local response is valid.
+        /// </summary>
         private static void AssertLocalResponse(LocalResponse localResponse, string fileContent)
         {
-            Assert.False(localResponse.IsValidHmacSignature(DummySecretKey, "invalid signature"));
             Assert.Equal(Signature, localResponse.GetHmacSignature(DummySecretKey));
+
+            Assert.False(localResponse.IsValidHmacSignature(DummySecretKey, "invalid signature"));
+            Assert.False(localResponse.IsValidHmacSignature(DummySecretKey, null));
+            Assert.False(localResponse.IsValidHmacSignature(null, Signature));
+            Assert.False(localResponse.IsValidHmacSignature(null, null));
+            Assert.False(localResponse.IsValidHmacSignature(DummySecretKey, ""));
             Assert.True(localResponse.IsValidHmacSignature(DummySecretKey, Signature));
+            Assert.True(localResponse.IsValidHmacSignature(DummySecretKey, Signature.ToUpper()));
 
             var response = localResponse.DeserializeResponse<ExtractionResponse>();
 
@@ -35,7 +44,7 @@ namespace Mindee.UnitTests.V2.Parsing
         }
 
         [Fact(DisplayName = "should load a response from a JSON string")]
-        public void JsonString_mustLoadValidLocalResponse()
+        public void ValidString_mustLoadValidLocalResponse()
         {
             string filePath = Path.Combine(Constants.V2ProductPath, FilePath);
             string fileContent = File.ReadAllText(filePath);
@@ -45,7 +54,7 @@ namespace Mindee.UnitTests.V2.Parsing
         }
 
         [Fact(DisplayName = "should load a response from a buffer")]
-        public void Buffer_mustLoadValidLocalResponse()
+        public void ValidBuffer_mustLoadValidLocalResponse()
         {
             string filePath = Path.Combine(Constants.V2ProductPath, FilePath);
             var localResponse = new LocalResponse(File.ReadAllBytes(filePath));
@@ -54,7 +63,7 @@ namespace Mindee.UnitTests.V2.Parsing
         }
 
         [Fact(DisplayName = "should load a response from a JSON file")]
-        public void JsonFile_mustLoadValidLocalResponse()
+        public void ValidFile_mustLoadValidLocalResponse()
         {
             string filePath = Path.Combine(Constants.V2ProductPath, FilePath);
             var localResponse = new LocalResponse(new FileInfo(filePath));
@@ -63,7 +72,7 @@ namespace Mindee.UnitTests.V2.Parsing
         }
 
         [Fact(DisplayName = "should load a response from a stream")]
-        public void Stream_mustLoadValidLocalResponse()
+        public void ValidStream_mustLoadValidLocalResponse()
         {
             string filePath = Path.Combine(Constants.V2ProductPath, FilePath);
             using (var stream = File.OpenRead(filePath))
@@ -78,7 +87,7 @@ namespace Mindee.UnitTests.V2.Parsing
         }
 
         [Fact(DisplayName = "should raise an exception when given an invalid JSON string")]
-        public void InvalidJsonString_mustRaiseException()
+        public void InvalidString_mustRaiseException()
         {
             var localResponse = new LocalResponse("{invalid json");
 
@@ -88,7 +97,7 @@ namespace Mindee.UnitTests.V2.Parsing
         }
 
         [Fact(DisplayName = "should raise an exception when given an empty value")]
-        public void EmptyString_mustRaiseException()
+        public void EmptyValue_mustRaiseException()
         {
             Assert.Throws<ArgumentException>(
                 () => new LocalResponse("")
@@ -102,7 +111,7 @@ namespace Mindee.UnitTests.V2.Parsing
         }
 
         [Fact(DisplayName = "should raise an exception when given a null value")]
-        public void Null_mustRaiseException()
+        public void NullValue_mustRaiseException()
         {
             Assert.Throws<ArgumentNullException>(
                 () => new LocalResponse((string?)null)
