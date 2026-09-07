@@ -23,14 +23,14 @@ namespace Mindee.Cli.Commands.V2
         {
             _nameOption = new Option<string?>("--name", "-n")
             {
-                Description = "Filter by model name partial match (case insensitive).",
+                Description = "Filter models by partial name match, case-insensitive.",
                 DefaultValueFactory = _ => null
             };
             Options.Add(_nameOption);
 
             var availableModels = new List<string> { "extraction", "crop", "classification", "ocr", "split" };
             var modelTypeDescription = """
-                                       Filter by exact model type.
+                                       Filter by an exact model type.
                                        Available options:
                                        """;
             modelTypeDescription += string.Join("\n - ", availableModels);

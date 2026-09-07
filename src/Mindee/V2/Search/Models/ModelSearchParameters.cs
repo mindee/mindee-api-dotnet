@@ -5,17 +5,20 @@ using Mindee.V2.ClientOptions;
 namespace Mindee.V2.Search.Models
 {
     /// <summary>
-    /// Search parameters for models.
+    /// Search for models within the organization linked to the API key.
+    /// All search filters are optional.
+    /// If no search filters are given, all models belonging to the organization are returned.
+    /// Results are paginated.
     /// </summary>
     public class ModelSearchParameters : BaseSearchParameters
     {
         /// <summary>
-        /// Case-insensitive search term for the model name
+        /// Filter models by partial name match, case-insensitive.
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        /// Case-insensitive search term for the model type
+        /// Filter by an exact model type.
         /// </summary>
         public string ModelType { get; }
 

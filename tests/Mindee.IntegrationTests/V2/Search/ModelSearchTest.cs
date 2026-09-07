@@ -1,5 +1,4 @@
 using Mindee.V2;
-using Mindee.V2.Parsing.Search;
 using Mindee.V2.Search.Models;
 
 namespace Mindee.IntegrationTests.V2.Search
@@ -23,6 +22,12 @@ namespace Mindee.IntegrationTests.V2.Search
             Assert.NotNull(response);
             Assert.NotNull(response.Models);
             Assert.NotEmpty(response.Models);
+            foreach (var model in response.Models)
+            {
+                Assert.NotEmpty(model.Id);
+                Assert.NotEmpty(model.Name);
+                Assert.NotEmpty(model.ModelType);
+            }
             Assert.NotNull(response.Pagination);
             Assert.True(response.Pagination.TotalItems > 1);
             Assert.Equal(1, response.Pagination.Page);
