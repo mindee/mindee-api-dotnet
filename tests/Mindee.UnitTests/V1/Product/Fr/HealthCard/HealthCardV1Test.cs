@@ -3,6 +3,7 @@ using Mindee.V1.Product.Fr.HealthCard;
 
 namespace Mindee.UnitTests.V1.Product.Fr.HealthCard
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "HealthCardV1")]
     public class HealthCardV1Test
     {

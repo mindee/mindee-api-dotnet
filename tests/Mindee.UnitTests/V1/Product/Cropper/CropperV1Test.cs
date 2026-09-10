@@ -3,6 +3,7 @@ using Mindee.V1.Product.Cropper;
 
 namespace Mindee.UnitTests.V1.Product.Cropper
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "CropperV1")]
     public class CropperV1Test
     {

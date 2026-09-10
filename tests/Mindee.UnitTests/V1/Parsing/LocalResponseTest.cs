@@ -2,7 +2,8 @@ using Mindee.V1.Parsing;
 
 namespace Mindee.UnitTests.V1.Parsing
 {
-    [Trait("Category", "JSON Response loading")]
+    [Trait("Category", "V1")]
+    [Trait("Category", "Load Local Response")]
     public class LocalResponseTest
     {
         // Fake secret key.

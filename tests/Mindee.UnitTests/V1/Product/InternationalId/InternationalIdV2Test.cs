@@ -4,6 +4,7 @@ using Mindee.V1.Product.InternationalId;
 
 namespace Mindee.UnitTests.V1.Product.InternationalId
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "InternationalIdV2")]
     public class InternationalIdV2Test
     {

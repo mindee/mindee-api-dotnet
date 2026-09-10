@@ -3,6 +3,7 @@ using Mindee.V1.Product.Fr.CarteGrise;
 
 namespace Mindee.UnitTests.V1.Product.Fr.CarteGrise
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "CarteGriseV1")]
     public class CarteGriseV1Test
     {

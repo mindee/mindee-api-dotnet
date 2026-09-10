@@ -10,7 +10,7 @@ namespace Mindee.V2.Search.Models
     /// If no search filters are given, all models belonging to the organization are returned.
     /// Results are paginated.
     /// </summary>
-    public class ModelSearchParameters : BaseSearchParameters
+    public class ModelSearchParameters : BaseSearchParameters<ModelSearchResponse>
     {
         /// <summary>
         /// Filter models by partial name match, case-insensitive.
@@ -27,8 +27,12 @@ namespace Mindee.V2.Search.Models
         /// </summary>
         /// <param name="name"><see cref="Name"/></param>
         /// <param name="modelType"><see cref="ModelType"/></param>
-        /// <param name="page"><see cref="BaseSearchParameters.Page"/></param>
-        /// <param name="perPage"><see cref="BaseSearchParameters.PerPage"/></param>
+        /// <param name="page">
+        ///     <see cref="BaseSearchParameters{ModelSearchResponse}.Page"/>
+        /// </param>
+        /// <param name="perPage">
+        ///     <see cref="BaseSearchParameters{ModelSearchResponse}.PerPage"/>
+        /// </param>
         public ModelSearchParameters(
             string name = null, string modelType = null, int? page = null, int? perPage = null)
             : base(page, perPage)

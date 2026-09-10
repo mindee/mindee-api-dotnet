@@ -3,6 +3,7 @@ using Mindee.V1.Product.Receipt;
 
 namespace Mindee.UnitTests.V1.Product.Receipt
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "Receipt V4")]
     public class ReceiptV4Test
     {

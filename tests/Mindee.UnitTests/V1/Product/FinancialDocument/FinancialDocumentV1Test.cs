@@ -3,6 +3,7 @@ using Mindee.V1.Product.FinancialDocument;
 
 namespace Mindee.UnitTests.V1.Product.FinancialDocument
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "Financial V1")]
     public class FinancialDocumentV1Test
     {

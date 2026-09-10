@@ -4,6 +4,7 @@ using Mindee.V1.Product.Fr.IdCard;
 
 namespace Mindee.UnitTests.V1.Product.Fr.IdCard
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "IdCardV2")]
     public class IdCardV2Test
     {

@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using Mindee.V2.Parsing.Search;
 
 namespace Mindee.V2.ClientOptions
 {
     /// <summary>
     ///     Base parameters for searches.
     /// </summary>
-    public abstract class BaseSearchParameters
+    public abstract class BaseSearchParameters<TSearchResponse>
+        where TSearchResponse : BaseSearchResponse, new()
     {
         /// <summary>
         /// 1-based page index.
