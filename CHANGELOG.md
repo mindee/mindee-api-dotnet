@@ -1,5 +1,12 @@
 # Mindee .NET Client Library Changelog
 
+## v4.8.1 - 2026-09-10
+### Fixes
+* :memo: fix header documentation
+* :bug: fix parameter verifications in HMAC method
+* :bug: search params must be typed to response
+
+
 ## v4.8.0 - 2026-09-04
 ### Changes
 * :sparkles: allow opening a LocalResponse from a stream or buffer
