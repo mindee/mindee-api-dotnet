@@ -17,7 +17,7 @@ jobs:
           - "net10.0"
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -53,7 +53,7 @@ jobs:
           - "net10.0"
     runs-on: "windows-2022"
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -89,7 +89,7 @@ jobs:
           - "net48"
     runs-on: "windows-2022"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
 

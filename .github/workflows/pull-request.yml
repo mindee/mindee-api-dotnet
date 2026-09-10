@@ -14,15 +14,6 @@ jobs:
       actions: read
       security-events: write
       contents: read
-#  qodana-code-quality:
-#    uses: ./.github/workflows/_qodana_code_quality.yml
-#    permissions:
-#      actions: read
-#      security-events: write
-#      checks: write
-#      contents: write
-#      pull-requests: write
-#    secrets: inherit
   codeql:
     uses: ./.github/workflows/_codeql.yml
     permissions:
