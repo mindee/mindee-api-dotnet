@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Mindee.Extraction;
-using Mindee.Geometry;
 using Mindee.Image;
 using Mindee.Input;
 using Mindee.V2.Product.Crop;
@@ -34,9 +33,8 @@ namespace Mindee.V2.FileOperations
         /// <returns></returns>
         public ExtractedImage ExtractSingleCrop(CropItem crop)
         {
-            var polygons = new List<Polygon> { crop.Location.Polygon };
             var imageExtractor = new ImageExtractor(this._localInput);
-            return imageExtractor.ExtractMultipleImagesFromSource(crop.Location.Page, polygons)[0];
+            return imageExtractor.ExtractImage(crop.Location, crop.Location.Page, 0);
         }
 
         /// <summary>
@@ -44,14 +42,25 @@ namespace Mindee.V2.FileOperations
         /// </summary>
         /// <param name="crops">List of crops.</param>
         /// <returns></returns>
-        public CropFiles ExtractCrops(List<CropItem> crops)
+        public ExtractedImages ExtractMultipleCrops(List<CropItem> crops)
         {
+            ExtractedImages extractedImages = [];
+            if (crops.Count <= 0)
+                return extractedImages;
+
             var imageExtractor = new ImageExtractor(this._localInput);
-            CropFiles extractedImages = [];
-            var cropsPerPage = crops.GroupBy(c => c.Location.Page).ToList();
-            foreach (var pageCrops in cropsPerPage)
+
+            // Group crops by page, preserving insertion order
+            var cropsByPage = crops
+                .GroupBy(c => c.Location.Page)
+                .Select(g => new { Page = g.Key, CropItem = g.ToList() })
+                .ToList();
+
+            foreach (var pageGroup in cropsByPage)
             {
-                extractedImages.AddRange(imageExtractor.ExtractMultipleImagesFromSource(pageCrops.Key, pageCrops.Select(c => c.Location.Polygon).ToList()));
+                var page = pageGroup.Page;
+                var locations = pageGroup.CropItem.Select(c => c.Location).ToList();
+                extractedImages.AddRange(imageExtractor.ExtractImagesFromPage(locations, page));
             }
             return extractedImages;
         }

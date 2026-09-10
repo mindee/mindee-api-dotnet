@@ -38,8 +38,8 @@ namespace Mindee.IntegrationTests.V1
             List<ExtractedPdf> extractedPdfsStrict = extractor.ExtractInvoices(
                 inference.Prediction.InvoicePageGroups, false);
             Assert.Equal(2, extractedPdfsStrict.Count);
-            Assert.Equal("default_sample_001-001.pdf", extractedPdfsStrict[0].Filename);
-            Assert.Equal("default_sample_002-002.pdf", extractedPdfsStrict[1].Filename);
+            Assert.Equal("default_sample_pages-001-001.pdf", extractedPdfsStrict[0].Filename);
+            Assert.Equal("default_sample_pages-002-002.pdf", extractedPdfsStrict[1].Filename);
 
             var invoice0 =
                 await client.ParseAsync<InvoiceV4>(extractedPdfsStrict[0].AsInputSource());

@@ -17,9 +17,8 @@ namespace Mindee.V1.Image
         ///     Init from a Local Input Source.
         /// </summary>
         /// <param name="localInput">Locally loaded resource.</param>
-        /// <param name="saveFormat">Format to save the resulting images as.</param>
-        public ImageExtractor(LocalInputSource localInput, string saveFormat = null)
-            : base(localInput, saveFormat)
+        public ImageExtractor(LocalInputSource localInput)
+            : base(localInput)
         { }
 
         /// <summary>
