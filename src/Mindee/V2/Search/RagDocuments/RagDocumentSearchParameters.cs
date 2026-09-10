@@ -7,7 +7,7 @@ namespace Mindee.V2.Search.RagDocuments
     /// <summary>
     /// Search parameters for RAG Documents.
     /// </summary>
-    public class RagDocumentSearchParameters : BaseSearchParameters
+    public class RagDocumentSearchParameters : BaseSearchParameters<RagDocumentSearchResponse>
     {
         /// <summary>
         /// Model identifier to search in.
@@ -24,8 +24,12 @@ namespace Mindee.V2.Search.RagDocuments
         /// </summary>
         /// <param name="modelId"><see cref="ModelId"/></param>
         /// <param name="filename"><see cref="Filename"/></param>
-        /// <param name="page"><see cref="BaseSearchParameters.Page"/></param>
-        /// <param name="perPage"><see cref="BaseSearchParameters.PerPage"/></param>
+        /// <param name="page">
+        ///     <see cref="BaseSearchParameters{RagDocumentSearchResponse}.Page"/>
+        /// </param>
+        /// <param name="perPage">
+        ///     <see cref="BaseSearchParameters{RagDocumentSearchResponse}.PerPage"/>
+        /// </param>
         public RagDocumentSearchParameters(
             string modelId = null, string filename = null, int? page = null, int? perPage = null)
             : base(page, perPage)

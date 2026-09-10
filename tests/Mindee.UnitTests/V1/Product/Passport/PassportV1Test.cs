@@ -3,6 +3,7 @@ using Mindee.V1.Product.Passport;
 
 namespace Mindee.UnitTests.V1.Product.Passport
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "PassportV1")]
     public class PassportV1Test
     {

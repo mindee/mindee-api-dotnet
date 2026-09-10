@@ -4,6 +4,7 @@ using Mindee.V1.Product.Invoice;
 
 namespace Mindee.UnitTests.V1.Product.Invoice
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "InvoiceV4")]
     public class InvoiceV4Test
     {

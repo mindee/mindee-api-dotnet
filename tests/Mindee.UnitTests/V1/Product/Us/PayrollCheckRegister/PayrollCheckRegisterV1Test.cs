@@ -3,6 +3,7 @@ using Mindee.V1.Product.Us.PayrollCheckRegister;
 
 namespace Mindee.UnitTests.V1.Product.Us.PayrollCheckRegister
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "PayrollCheckRegisterV1")]
     public class PayrollCheckRegisterV1Test
     {

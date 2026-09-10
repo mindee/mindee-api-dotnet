@@ -4,6 +4,7 @@ using Mindee.V1.Product.InvoiceSplitter;
 
 namespace Mindee.UnitTests.V1.Parsing.Common
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "AsyncPredictResponse")]
     public class AsyncPredictResponseTest
     {

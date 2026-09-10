@@ -3,6 +3,7 @@ using Mindee.V1.Parsing.Common;
 
 namespace Mindee.UnitTests.V1.Parsing.Common
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "Error property")]
     public class ErrorTest
     {

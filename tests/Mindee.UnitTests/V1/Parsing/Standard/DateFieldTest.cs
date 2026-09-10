@@ -3,6 +3,7 @@ using Mindee.V1.Parsing.Standard;
 
 namespace Mindee.UnitTests.V1.Parsing.Standard
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "Standard DateField")]
     public class DateFieldTest
     {

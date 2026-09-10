@@ -3,6 +3,7 @@ using Mindee.V1.Product.Us.BankCheck;
 
 namespace Mindee.UnitTests.V1.Product.Us.BankCheck
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "BankCheckV1")]
     public class BankCheckV1Test
     {

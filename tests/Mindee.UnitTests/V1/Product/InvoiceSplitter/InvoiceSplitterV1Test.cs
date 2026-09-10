@@ -3,6 +3,7 @@ using Mindee.V1.Product.InvoiceSplitter;
 
 namespace Mindee.UnitTests.V1.Product.InvoiceSplitter
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "InvoiceSplitterV1")]
     public class InvoiceSplitterV1Test
     {

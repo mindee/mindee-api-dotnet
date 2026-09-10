@@ -3,6 +3,7 @@ using Mindee.V1.Product.Fr.Payslip;
 
 namespace Mindee.UnitTests.V1.Product.Fr.Payslip
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "PayslipV3")]
     public class PayslipV3Test
     {

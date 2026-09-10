@@ -4,6 +4,7 @@ using Mindee.V1.Product.Receipt;
 
 namespace Mindee.UnitTests.V1.Parsing.Common
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "Cropper")]
     public class CropperTest
     {

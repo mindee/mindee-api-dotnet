@@ -3,6 +3,7 @@ using Mindee.V1.Product.BarcodeReader;
 
 namespace Mindee.UnitTests.V1.Product.BarcodeReader
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "BarcodeReaderV1")]
     public class BarcodeReaderV1Test
     {

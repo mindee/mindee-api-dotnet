@@ -3,6 +3,7 @@ using Mindee.V1.Product.Fr.BankAccountDetails;
 
 namespace Mindee.UnitTests.V1.Product.Fr.BankAccountDetails
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "BankAccountDetailsV2")]
     public class BankAccountDetailsV2Test
     {

@@ -365,12 +365,13 @@ namespace Mindee.V2
         /// <param name="ct">Cancellation token.</param>
         /// <returns>A search response containing the matching resources.</returns>
         public async Task<TSearchResponse> SearchAsync<TSearchResponse>(
-            BaseSearchParameters searchParameters, CancellationToken ct = default)
+            BaseSearchParameters<TSearchResponse> searchParameters, CancellationToken ct = default)
             where TSearchResponse : BaseSearchResponse, new()
         {
             if (searchParameters == null)
                 throw new ArgumentNullException(nameof(searchParameters));
-            return await _mindeeApi.ReqGetSearchAsync<TSearchResponse>(searchParameters, ct);
+
+            return await _mindeeApi.ReqGetSearchAsync(searchParameters, ct);
         }
 
         /// <summary>

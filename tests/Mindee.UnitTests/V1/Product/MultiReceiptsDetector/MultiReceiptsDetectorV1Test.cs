@@ -3,6 +3,7 @@ using Mindee.V1.Product.MultiReceiptsDetector;
 
 namespace Mindee.UnitTests.V1.Product.MultiReceiptsDetector
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "MultiReceiptsDetectorV1")]
     public class MultiReceiptsDetectorV1Test
     {

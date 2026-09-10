@@ -4,6 +4,7 @@ using Mindee.V1.Product.Generated;
 
 namespace Mindee.UnitTests.V1.Product.Generated
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "Generated API")]
     public class GeneratedV1Test
     {

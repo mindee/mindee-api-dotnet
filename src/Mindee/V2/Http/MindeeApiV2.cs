@@ -72,7 +72,7 @@ namespace Mindee.V2.Http
         }
 
         public override async Task<TSearchResponse> ReqGetSearchAsync<TSearchResponse>(
-            BaseSearchParameters parameters, CancellationToken cancellationToken = default)
+            BaseSearchParameters<TSearchResponse> parameters, CancellationToken cancellationToken = default)
         {
             var searchType = typeof(TSearchResponse);
             var productAttributes = searchType.GetCustomAttribute<ProductAttributes>();

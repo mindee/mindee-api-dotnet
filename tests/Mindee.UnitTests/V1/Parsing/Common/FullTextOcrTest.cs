@@ -4,6 +4,7 @@ using Mindee.V1.Product.InternationalId;
 
 namespace Mindee.UnitTests.V1.Parsing.Common
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "FullTextOcr")]
     public class FullTextOcrTest
     {

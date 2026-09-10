@@ -27,7 +27,6 @@ namespace Mindee.V2.Product.Extraction.RagDocuments.Params
         /// <summary>
         /// Gets the request parameters for the upload request.
         /// </summary>
-        /// <returns></returns>
         public virtual Dictionary<string, string> GetRequestParameters()
         {
             var parameters = new Dictionary<string, string>();

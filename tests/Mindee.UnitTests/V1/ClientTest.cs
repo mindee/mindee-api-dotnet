@@ -1,4 +1,3 @@
-using System.Threading;
 using Microsoft.Extensions.Logging.Abstractions;
 using Mindee.Input;
 using Mindee.Pdf;

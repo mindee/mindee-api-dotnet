@@ -82,10 +82,10 @@ namespace Mindee.V2.Http
         /// <summary>
         ///     Retrieves a list of resources with the given criteria.
         /// </summary>
-        /// <param name="parameters"><see cref="BaseSearchParameters"/></param>
+        /// <param name="parameters"><see cref="BaseSearchParameters{TSearchResponse}"/></param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public abstract Task<TSearchResponse> ReqGetSearchAsync<TSearchResponse>(
-            BaseSearchParameters parameters, CancellationToken cancellationToken = default)
+            BaseSearchParameters<TSearchResponse> parameters, CancellationToken cancellationToken = default)
             where TSearchResponse : BaseSearchResponse, new();
 
         /// <summary>

@@ -2,6 +2,7 @@ using Mindee.V1.Parsing.Standard;
 
 namespace Mindee.UnitTests.V1.Parsing.Standard
 {
+    [Trait("Category", "V1")]
     [Trait("Category", "Standard DecimalField")]
     public class DecimalFieldTest
     {
