@@ -238,11 +238,13 @@ namespace Mindee.V2
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<TAnnotationResponse> UploadRagDocumentAsync<TAnnotationResponse>(
-            LocalInputSource inputSource, RagDocumentUploadParameters parameters, CancellationToken ct = default)
+            LocalInputSource inputSource
+            , BaseRagDocumentUploadParameters<TAnnotationResponse> parameters
+            , CancellationToken ct = default)
             where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Adding a document to the RAG database");
-            return await _mindeeApi.ReqPostRagDocumentAsync<TAnnotationResponse>(parameters, inputSource, ct);
+            return await _mindeeApi.ReqPostRagDocumentAsync(parameters, inputSource, ct);
         }
 
         /// <summary>
@@ -255,15 +257,14 @@ namespace Mindee.V2
         /// <returns></returns>
         public async Task<TAnnotationResponse> UploadAndGetRagDocumentPollAsync<TAnnotationResponse>(
             LocalInputSource inputSource
-            , RagDocumentUploadParameters parameters
+            , BaseRagDocumentUploadParameters<TAnnotationResponse> parameters
             , PollingOptions pollingOptions = null
             , CancellationToken ct = default)
             where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
             pollingOptions ??= new PollingOptions();
 
-            var initialResponse = await UploadRagDocumentAsync<TAnnotationResponse>(
-                inputSource, parameters, ct);
+            var initialResponse = await UploadRagDocumentAsync(inputSource, parameters, ct);
 
             return await PollForRagDocumentAsync<TAnnotationResponse>(
                 initialResponse, pollingOptions, ct);
@@ -303,8 +304,7 @@ namespace Mindee.V2
                 return initialResponse;
 
             pollingOptions ??= new PollingOptions();
-            return await PollForRagDocumentAsync<TAnnotationResponse>(
-                initialResponse, pollingOptions, ct);
+            return await PollForRagDocumentAsync<TAnnotationResponse>(initialResponse, pollingOptions, ct);
         }
 
         /// <summary>
@@ -314,11 +314,11 @@ namespace Mindee.V2
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<TAnnotationResponse> UpdateRagAnnotationAsync<TAnnotationResponse>(
-            BaseAnnotationParameters parameters, CancellationToken ct = default)
+            BaseAnnotationParameters<TAnnotationResponse> parameters, CancellationToken ct = default)
             where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Updating RAG document ID: {DocumentId}", parameters.DocumentId);
-            return await _mindeeApi.ReqPatchRagAnnotationAsync<TAnnotationResponse>(parameters, ct);
+            return await _mindeeApi.ReqPatchRagAnnotationAsync(parameters, ct);
         }
 
         /// <summary>
@@ -329,13 +329,13 @@ namespace Mindee.V2
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<TAnnotationResponse> UpdateAndGetRagAnnotationPollAsync<TAnnotationResponse>(
-            BaseAnnotationParameters parameters
+            BaseAnnotationParameters<TAnnotationResponse> parameters
             , PollingOptions pollingOptions = null
             , CancellationToken ct = default)
             where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
         {
             _logger?.LogInformation("Updating RAG document ID: {DocumentId}", parameters.DocumentId);
-            var initialResponse = await _mindeeApi.ReqPatchRagAnnotationAsync<TAnnotationResponse>(parameters, ct);
+            var initialResponse = await _mindeeApi.ReqPatchRagAnnotationAsync(parameters, ct);
             if (initialResponse.Status != "Processing")
                 return initialResponse;
 
