@@ -8,7 +8,7 @@ namespace Mindee.V2.Product.Extraction.RagDocuments.Params
     /// <summary>
     /// Annotation parameters for RAG documents.
     /// </summary>
-    public class RagDocumentAnnotationParameters : BaseAnnotationParameters
+    public class RagDocumentAnnotationParameters : BaseAnnotationParameters<ExtractionRagAnnotationResponse>
     {
         /// <summary>
         /// New public status to apply to the document (for example, to deactivate it).
@@ -23,7 +23,9 @@ namespace Mindee.V2.Product.Extraction.RagDocuments.Params
         /// <summary>
         /// Default constructor.
         /// </summary>
-        /// <param name="documentId"><see cref="BaseAnnotationParameters.DocumentId"/></param>
+        /// <param name="documentId">
+        ///     <see cref="BaseAnnotationParameters{TAnnotationResponse}.DocumentId"/>
+        /// </param>
         /// <param name="status"><see cref="Status"/></param>
         /// <param name="annotation"><see cref="Annotation"/></param>
         public RagDocumentAnnotationParameters(

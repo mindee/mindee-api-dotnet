@@ -95,7 +95,7 @@ namespace Mindee.V2.Http
         /// <param name="localInputSource"></param>
         /// <param name="cancellationToken"></param>
         public abstract Task<TAnnotationResponse> ReqPostRagDocumentAsync<TAnnotationResponse>(
-            RagDocumentUploadParameters parameters
+            BaseRagDocumentUploadParameters<TAnnotationResponse> parameters
             , LocalInputSource localInputSource
             , CancellationToken cancellationToken = default)
             where TAnnotationResponse : BaseRagAnnotationResponse, new();
@@ -115,7 +115,7 @@ namespace Mindee.V2.Http
         /// <param name="parameters"></param>
         /// <param name="cancellationToken"></param>
         public abstract Task<TAnnotationResponse> ReqPatchRagAnnotationAsync<TAnnotationResponse>(
-            BaseAnnotationParameters parameters, CancellationToken cancellationToken = default)
+            BaseAnnotationParameters<TAnnotationResponse> parameters, CancellationToken cancellationToken = default)
             where TAnnotationResponse : BaseRagAnnotationResponse, new();
 
         /// <summary>

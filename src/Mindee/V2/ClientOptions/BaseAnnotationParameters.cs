@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using Mindee.V2.Parsing;
 
 namespace Mindee.V2.ClientOptions
 {
     /// <summary>
     /// Base parameters for document annotations.
     /// </summary>
-    public abstract class BaseAnnotationParameters
+    public abstract class BaseAnnotationParameters<TAnnotationResponse>
+        where TAnnotationResponse : BaseRagAnnotationResponse
     {
         /// <summary>
         /// UUID of the annotated document.
