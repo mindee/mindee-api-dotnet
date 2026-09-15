@@ -1,5 +1,10 @@
 # Mindee .NET Client Library Changelog
 
+## v4.8.2 - 2026-09-15
+### Fixes
+* :bug: RAG document params must be typed to response
+
+
 ## v4.8.1 - 2026-09-10
 ### Fixes
 * :memo: fix header documentation
