@@ -59,7 +59,7 @@ namespace Mindee.ClientOptions
         }
 
         /// <summary>
-        /// Validate the polling settings.
+        /// Validates polling options against minimum accepted values.
         /// </summary>
         /// <exception cref="MindeeException"></exception>
         protected void ValidateSettings()
