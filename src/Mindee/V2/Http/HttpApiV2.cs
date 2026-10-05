@@ -122,7 +122,7 @@ namespace Mindee.V2.Http
         ///     Deletes a document from the RAG database.
         ///     For extraction models only.
         /// </summary>
-        /// <param name="documentId"></param>
+        /// <param name="documentId">The ID of the document to delete.</param>
         /// <param name="cancellationToken"></param>
         public abstract Task<bool> ReqDeleteExtractionRagDocumentAsync(
             string documentId, CancellationToken cancellationToken = default);
