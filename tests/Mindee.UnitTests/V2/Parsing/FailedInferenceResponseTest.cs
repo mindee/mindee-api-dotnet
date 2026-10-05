@@ -7,7 +7,7 @@ namespace Mindee.UnitTests.V2.Parsing
     [Trait("Category", "FailedInferenceResponse")]
     public class FailedInferenceResponseTest
     {
-        [Fact]
+        [Fact(DisplayName = "should load from a JSON file")]
         public void WhenFailed_MustLoad()
         {
             var localResponse = new LocalResponse(

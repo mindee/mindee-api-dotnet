@@ -8,7 +8,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
     [Trait("Category", "ExtractionRagDocuments")]
     public class RagDocumentsTest
     {
-        [Fact]
+        [Fact(DisplayName = "should init POST parameters")]
         public void PostParameters_MustInit()
         {
             var parameters = new RagDocumentUploadParameters(modelId: "invalid-model-id");
@@ -16,7 +16,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
             Assert.Equal("invalid-model-id", reqParams["model_id"]);
         }
 
-        [Fact]
+        [Fact(DisplayName = "should init PATCH parameters")]
         public void PatchParameters_MustInit()
         {
             var annotation = new RagAnnotation();
@@ -30,7 +30,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
             Assert.Equal(annotation, reqParams["annotation"]);
         }
 
-        [Fact]
+        [Fact(DisplayName = "should load a POST response from a JSON string")]
         public void RagDocumentsPost_MustHaveValidProperties()
         {
             var response = GetResponse("extraction/rag_documents/post_response.json");
@@ -40,7 +40,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
             Assert.Null(response.Annotation);
         }
 
-        [Fact]
+        [Fact(DisplayName = "should load a GET response from a JSON string")]
         public void RagDocumentsGetDraft_MustHaveValidProperties()
         {
             var response = GetResponse("extraction/rag_documents/get_response_draft.json");

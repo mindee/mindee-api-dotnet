@@ -19,7 +19,7 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
             _extractionModelId = Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id");
         }
 
-        [Fact(Timeout = 180000)]
+        [Fact(Timeout = 180000, DisplayName = "should perform the entire lifecycle of a RAG document")]
         public async Task RagDocument_Lifecycle_MustSucceed()
         {
             var inputSource = new LocalInputSource(
