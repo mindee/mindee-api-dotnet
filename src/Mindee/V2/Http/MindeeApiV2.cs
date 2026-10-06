@@ -14,7 +14,6 @@ using Mindee.V2.Exceptions;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product;
-using Mindee.V2.Product.Extraction.RagDocuments.Params;
 using Mindee.V2.Search.Models;
 using RestSharp;
 #if NET6_0_OR_GREATER
@@ -65,7 +64,7 @@ namespace Mindee.V2.Http
 
             AddPredictRequestParameters(inputSource, parameters, request);
 
-            Logger?.LogInformation("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
+            Logger?.LogDebug("HTTP POST to {RequestResource} ...", _baseUrl + request.Resource);
             var response = await _httpClient.ExecuteAsync(request, cancellationToken);
             cancellationToken.ThrowIfCancellationRequested();
             return HandleJobResponse(response);
@@ -80,7 +79,7 @@ namespace Mindee.V2.Http
                 throw new Exception($"ProductAttributes must be set for class: {searchType.Name}");
 
             var request = new RestRequest($"/v2/search/{productAttributes.Slug}");
-            Logger?.LogInformation("Searching {} ...", productAttributes.Slug);
+            Logger?.LogInformation("Searching {Slug} ...", productAttributes.Slug);
 
             foreach (KeyValuePair<string, string> entry in parameters.GetRequestParameters())
             {
@@ -109,6 +108,8 @@ namespace Mindee.V2.Http
             {
                 request.AddParameter(entry.Key, entry.Value);
             }
+
+            Logger?.LogDebug("HTTP POST to {RequestResource} ...", request.Resource);
             return await ExecuteRagAnnotationRequest<TAnnotationResponse>(request, cancellationToken);
         }
 
@@ -116,6 +117,8 @@ namespace Mindee.V2.Http
             string documentId, CancellationToken cancellationToken = default)
         {
             var request = new RestRequest($"/v2/products/extraction/rag-documents/{documentId}");
+
+            Logger?.LogDebug("HTTP GET to {RequestResource} ...", request.Resource);
             return await ExecuteRagAnnotationRequest<TAnnotationResponse>(request, cancellationToken);
         }
 
@@ -126,6 +129,7 @@ namespace Mindee.V2.Http
                 $"/v2/products/extraction/rag-documents/{parameters.DocumentId}", Method.Patch);
             request.AddJsonBody(parameters.GetRequestParameters());
 
+            Logger?.LogDebug("HTTP PATCH to {RequestResource} ...", request.Resource);
             return await ExecuteRagAnnotationRequest<TAnnotationResponse>(request, cancellationToken);
         }
 
@@ -135,6 +139,7 @@ namespace Mindee.V2.Http
             var request = new RestRequest(
                 $"/v2/products/extraction/rag-documents/{documentId}", Method.Delete);
 
+            Logger?.LogDebug("HTTP DELETE to {RequestResource} ...", request.Resource);
             var restResponse = await _httpClient.ExecuteAsync(request, cancellationToken);
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -175,10 +180,9 @@ namespace Mindee.V2.Http
                 throw new ArgumentException("Job URL cannot be null or empty.", nameof(pollingUrl));
 
             var request = new RestRequest(new Uri(pollingUrl));
-            Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
+            Logger?.LogDebug("HTTP GET to {RequestResource}...", request.Resource);
             var response = await _httpClient.ExecuteAsync(request, cancellationToken);
             cancellationToken.ThrowIfCancellationRequested();
-            Logger?.LogDebug("HTTP response: {ResponseContent}", response.Content);
             var handledResponse = HandleJobResponse(response);
             return handledResponse;
         }
@@ -190,7 +194,7 @@ namespace Mindee.V2.Http
                 throw new Exception($"ProductAttributes must be set for class: {typeof(TResponse).Name}");
             var request = new RestRequest(
                 $"/v2/products/{productAttributes.Slug}/results/{inferenceId}");
-            Logger?.LogInformation("HTTP GET to {RequestResource}...", request.Resource);
+            Logger?.LogDebug("HTTP GET to {RequestResource}...", request.Resource);
             var queueResponse = await _httpClient.ExecuteAsync(request, ct);
             ct.ThrowIfCancellationRequested();
             return HandleProductResponse<TResponse>(queueResponse);
@@ -203,7 +207,7 @@ namespace Mindee.V2.Http
                 throw new ArgumentException("Result URL cannot be null or whitespace.", nameof(resultUrl));
 
             var request = new RestRequest(new Uri(resultUrl));
-            Logger?.LogInformation("HTTP GET to {RequestResource}...", resultUrl);
+            Logger?.LogDebug("HTTP GET to {RequestResource}...", resultUrl);
             var queueResponse = await _httpClient.ExecuteAsync(request, cancellationToken);
             cancellationToken.ThrowIfCancellationRequested();
             return HandleProductResponse<TResponse>(queueResponse);

@@ -37,17 +37,14 @@ namespace Mindee.V2
         /// <param name="loggerFactory">Factory for the logger.</param>
         public Client(string apiKey, ILoggerFactory loggerFactory = null)
         {
-            var loggerFactory1 = loggerFactory ?? LoggerFactory.Create(builder =>
-            {
-                builder.SetMinimumLevel(LogLevel.Debug);
-            });
-            _logger = loggerFactory1.CreateLogger<Client>();
+            var loggerFactoryInstance = loggerFactory ?? NullLoggerFactory.Instance;
+            _logger = loggerFactoryInstance.CreateLogger<Client>();
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = apiKey;
-            }, loggerFactory1);
+            }, loggerFactoryInstance);
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
@@ -254,7 +251,7 @@ namespace Mindee.V2
         /// Add a document to the RAG database and return the initial annotation.
         /// </summary>
         /// <param name="parameters"><see cref="RagDocumentUploadParameters"/></param>
-        /// <param name="inputSource"><see cref="LocalInputSource"/>The file to upload.</param>
+        /// <param name="inputSource"><see cref="LocalInputSource"/> The file to upload.</param>
         /// <param name="pollingOptions"><see cref="PollingOptions"/></param>
         /// <param name="ct"></param>
         public async Task<TAnnotationResponse> UploadAndGetRagDocumentPollAsync<TAnnotationResponse>(
@@ -495,6 +492,7 @@ namespace Mindee.V2
                     }
                 }
 
+                // normally the mindee_api will throw on error, this is a fallback
                 if (jobResponse.Job.Status == "Failed")
                 {
                     if (jobResponse.Job.Error != null)
