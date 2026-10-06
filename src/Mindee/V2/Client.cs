@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -227,7 +228,8 @@ namespace Mindee.V2
                 ct);
             _logger?.LogInformation(
                 "Successfully enqueued document with job ID {JobID}", enqueueResponse.Job.Id);
-            return await PollForProductResultsAsync<TResponse>(enqueueResponse, pollingOptions, ct);
+            return await PollForProductResultsAsync<TResponse>(
+                enqueueResponse, pollingOptions, false, ct);
         }
 
         /// <summary>
@@ -434,62 +436,105 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        /// Poll until the inference results are retrieved or the max number of attempts is reached.
+        /// Checks if all webhooks associated with a job have finished processing.
         /// </summary>
-        /// <exception cref="MindeeException">Thrown when maxRetries is reached and the result isn't ready.</exception>
-        private async Task<TResponse> PollForProductResultsAsync<TResponse>(
-            JobResponse enqueueResponse,
-            PollingOptions pollingOptions,
-            CancellationToken cancellationToken = default)
-            where TResponse : BaseResponse, new()
+        private bool CheckWebhooksDone(JobResponse jobResponse)
         {
-            _logger?.LogInformation("Polling for results on job ID: {JobID}", enqueueResponse.Job.Id);
-            var maxRetries = pollingOptions.MaxRetries + 1;
-            var pollingUrl = enqueueResponse.Job.PollingUrl;
+            var areWebhooksDone = jobResponse.Job.Webhooks == null ||
+                                  jobResponse.Job.Webhooks.All(w => w.Status != "Processing");
+
+            if (areWebhooksDone)
+            {
+                _logger?.LogDebug("All webhooks are completed.");
+                return true;
+            }
+
+            _logger?.LogDebug("Not all webhooks are completed.");
+            return false;
+        }
+
+        /// <summary>
+        /// Polls a job until it is processed or the maximum number of tries is reached.
+        /// </summary>
+        private async Task<JobResponse> PollOnJobAsync(
+            JobResponse initialResponse,
+            PollingOptions pollingOptions,
+            bool waitForWebhooks = false,
+            CancellationToken cancellationToken = default)
+        {
             _logger?.LogDebug(
                 "Waiting {InitialDelaySec} seconds before attempting to retrieve the result...",
                 pollingOptions.InitialDelaySec);
+
             await Task.Delay(pollingOptions.InitialDelayMilliSec, cancellationToken);
-            var retryCount = 1;
-            var response = enqueueResponse; // First init is only for error handling purposes.
-            while (retryCount < maxRetries)
+            var tryCounter = 0;
+            var maxRetries = pollingOptions.MaxRetries;
+            var pollingUrl = initialResponse.Job.PollingUrl;
+
+            while (tryCounter < maxRetries)
             {
-                var retryDelayMilliSec = pollingOptions.GetRetryDelayMilliSec(retryCount);
-                await Task.Delay(retryDelayMilliSec, cancellationToken);
+                cancellationToken.ThrowIfCancellationRequested();
+
                 _logger?.LogDebug(
                     "Poll attempt {RetryCount} of {MaxRetries}",
-                    retryCount,
+                    tryCounter + 1,
                     maxRetries);
 
-                response = await GetJobFromUrlAsync(pollingUrl, cancellationToken);
-                if (response.Job.Error != null)
-                {
-                    break;
-                }
+                var jobResponse = await GetJobFromUrlAsync(pollingUrl, cancellationToken);
 
-                switch (response.Job.Status)
+                if (jobResponse.Job.Status == "Processed")
                 {
-                    case "Processed":
+                    _logger?.LogDebug(
+                        "Job ID {JobID} completed processing at: {CompletedAt}",
+                        jobResponse.Job.Id,
+                        jobResponse.Job.CompletedAt);
+
+                    if (!waitForWebhooks || CheckWebhooksDone(jobResponse))
                     {
-                        _logger?.LogDebug("Job ID {JobID} completed processing at: {CompletedAt}",
-                            response.Job.Id, response.Job.CompletedAt);
-                        var resultUrl = response.Job.ResultUrl;
-                        return await GetResultFromUrlAsync<TResponse>(resultUrl, cancellationToken);
-                        }
-                    case "Failed":
-                        throw new MindeeException("Job failed without an error payload.");
+                        return jobResponse;
+                    }
                 }
 
-                retryCount++;
+                if (jobResponse.Job.Status == "Failed")
+                {
+                    if (jobResponse.Job.Error != null)
+                    {
+                        throw new MindeeHttpExceptionV2(jobResponse.Job.Error);
+                    }
+                    throw new MindeeException($"Parsing failed for job {jobResponse.Job.Id}: No error detail available.");
+                }
+
+                tryCounter++;
+                var retryDelayMilliSec = pollingOptions.GetRetryDelayMilliSec(tryCounter);
+                await Task.Delay(retryDelayMilliSec, cancellationToken);
             }
 
-            var error = response.Job.Error;
-            if (error != null)
+            throw new MindeeException($"Couldn't retrieve the result after {tryCounter} tries.");
+        }
+
+        /// <summary>
+        /// Poll until the inference results are retrieved or the max number of attempts is reached.
+        /// </summary>
+        private async Task<TResponse> PollForProductResultsAsync<TResponse>(
+            JobResponse enqueueResponse,
+            PollingOptions pollingOptions,
+            bool waitForWebhooks = false,
+            CancellationToken cancellationToken = default)
+            where TResponse : BaseResponse, new()
+        {
+            var jobResponse = await PollOnJobAsync(
+                enqueueResponse,
+                pollingOptions,
+                waitForWebhooks,
+                cancellationToken);
+
+            if (string.IsNullOrWhiteSpace(jobResponse.Job.ResultUrl))
             {
-                throw new MindeeHttpExceptionV2(error);
+                throw new MindeeException(
+                    "The result URL is undefined. This is a server error, try again later or contact support.");
             }
 
-            throw new MindeeException($"Couldn't retrieve the result after {retryCount} tries.");
+            return await GetResultFromUrlAsync<TResponse>(jobResponse.Job.ResultUrl, cancellationToken);
         }
     }
 }
