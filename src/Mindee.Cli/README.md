@@ -59,23 +59,7 @@ mindee --api-key <V2_API_KEY> extraction --model-id <MODEL_ID> ./invoice.pdf --o
 
 ## V1 (Legacy)
 
-V1 commands are under the `v1` namespace:
-
-- `barcode-reader`
-- `cropper`
-- `financial-document`
-- `fr-bank-account-details`
-- `fr-carte-grise`
-- `fr-health-card`
-- `fr-carte-nationale-d-identite`
-- `fr-payslip`
-- `international-id`
-- `invoice`
-- `invoice-splitter`
-- `multi-receipts-detector`
-- `passport`
-- `receipt`
-- `us-bank-check`
+V1 commands are under the `v1` namespace.
 
 ### General syntax
 

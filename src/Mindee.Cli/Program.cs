@@ -12,16 +12,6 @@ using PredictBankAccountDetailsCommand = Mindee.Cli.Commands.V1.PredictCommand<
     Mindee.V1.Product.Fr.BankAccountDetails.BankAccountDetailsV2Document,
     Mindee.V1.Product.Fr.BankAccountDetails.BankAccountDetailsV2Document
 >;
-using PredictBankCheckCommand = Mindee.Cli.Commands.V1.PredictCommand<
-    Mindee.V1.Product.Us.BankCheck.BankCheckV1,
-    Mindee.V1.Product.Us.BankCheck.BankCheckV1Page,
-    Mindee.V1.Product.Us.BankCheck.BankCheckV1Document
->;
-using PredictBarcodeReaderCommand = Mindee.Cli.Commands.V1.PredictCommand<
-    Mindee.V1.Product.BarcodeReader.BarcodeReaderV1,
-    Mindee.V1.Product.BarcodeReader.BarcodeReaderV1Document,
-    Mindee.V1.Product.BarcodeReader.BarcodeReaderV1Document
->;
 using PredictCarteGriseCommand = Mindee.Cli.Commands.V1.PredictCommand<
     Mindee.V1.Product.Fr.CarteGrise.CarteGriseV1,
     Mindee.V1.Product.Fr.CarteGrise.CarteGriseV1Document,
@@ -153,11 +143,6 @@ static void BuildV1Commands(Command v1Command, IServiceProvider services, string
     Func<V1Client> mindeeV1ClientFactory = !string.IsNullOrWhiteSpace(apiKey)
         ? () => new V1Client(apiKey)
         : services.GetRequiredService<V1Client>;
-    var barcodeReaderCmd = new PredictBarcodeReaderCommand(new CommandOptions(
-        "barcode-reader", "Barcode Reader",
-        false, false, true, false));
-    barcodeReaderCmd.ConfigureAction(mindeeV1ClientFactory);
-    v1Command.Subcommands.Add(barcodeReaderCmd);
 
     var cropperCmd = new PredictCropperCommand(new CommandOptions(
         "cropper", "Cropper",
@@ -236,12 +221,6 @@ static void BuildV1Commands(Command v1Command, IServiceProvider services, string
         true, false, true, true));
     receiptCmd.ConfigureAction(mindeeV1ClientFactory);
     v1Command.Subcommands.Add(receiptCmd);
-
-    var bankCheckCmd = new PredictBankCheckCommand(new CommandOptions(
-        "us-bank-check", "US Bank Check",
-        false, false, true, false));
-    bankCheckCmd.ConfigureAction(mindeeV1ClientFactory);
-    v1Command.Subcommands.Add(bankCheckCmd);
 }
 
 static void BuildV2Commands(Command v2Command, IServiceProvider services)
