@@ -24,7 +24,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Classification_WhenSingle_MustHaveValidProperties()
         {
-            var response = GetInference("classification/default_sample.json");
+            var response = LoadResponse("classification/default_sample.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -44,7 +44,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Classification_WithExtraction_MustHaveValidProperties()
         {
-            var response = GetInference("classification/default_sample_extraction.json");
+            var response = LoadResponse("classification/default_sample_extraction.json");
             Assert.NotNull(response.Inference);
             Assert.Equal(
                 "invoice",
@@ -68,7 +68,7 @@ namespace Mindee.UnitTests.V2.Product
             );
         }
 
-        private static ClassificationResponse GetInference(string path)
+        private static ClassificationResponse LoadResponse(string path)
         {
             var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2ProductPath + path));

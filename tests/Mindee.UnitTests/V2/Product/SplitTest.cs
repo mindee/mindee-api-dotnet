@@ -23,7 +23,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Split_WhenSingle_MustHaveValidProperties()
         {
-            var response = GetInference("split/split_single.json");
+            var response = LoadResponse("split/split_single.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -47,7 +47,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Split_WhenMultiple_MustHaveValidProperties()
         {
-            var response = GetInference("split/split_multiple.json");
+            var response = LoadResponse("split/split_multiple.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -79,7 +79,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Split_WithExtraction_MustHaveValidProperties()
         {
-            var response = GetInference("split/default_sample_extraction.json");
+            var response = LoadResponse("split/default_sample_extraction.json");
             Assert.NotNull(response.Inference);
 
             var splits = response.Inference.Result.Splits;
@@ -118,7 +118,7 @@ namespace Mindee.UnitTests.V2.Product
             );
         }
 
-        private static SplitResponse GetInference(string path)
+        private static SplitResponse LoadResponse(string path)
         {
             var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2ProductPath + path));

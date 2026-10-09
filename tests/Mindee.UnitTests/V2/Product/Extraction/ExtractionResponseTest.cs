@@ -1,31 +1,18 @@
-using System.Reflection;
 using Mindee.Geometry;
 using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Inference.Field;
-using Mindee.V2.Product;
 using Mindee.V2.Product.Extraction;
-using Mindee.V2.Product.Extraction.Params;
 
 namespace Mindee.UnitTests.V2.Product.Extraction
 {
     [Trait("Category", "V2")]
-    [Trait("Category", "ExtractionInference")]
-    public class ExtractionTest
+    [Trait("Category", "Extraction Response")]
+    public class ExtractionResponseTest
     {
-        [Fact]
-        public void Parameters_MustInit()
-        {
-            var productParams = new ExtractionParameters("invalid-model-id");
-            Assert.Equal("invalid-model-id", productParams.ModelId);
-
-            var productAttributes = productParams.GetType().GetCustomAttribute<ProductAttributes>();
-            Assert.Equal("extraction", productAttributes?.Slug);
-        }
-
         [Fact]
         public void FinancialDocument_WhenEmpty_MustHaveValidProperties()
         {
-            var response = GetResponse("extraction/financial_document/blank.json");
+            var response = LoadResponse("extraction/financial_document/blank.json");
             AssertInferenceResponse(response);
 
             var fields = response.Inference.Result.Fields;
@@ -64,7 +51,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         [Fact]
         public void FinancialDocument_WhenComplete_MustHaveValidProperties()
         {
-            var response = GetResponse("extraction/financial_document/complete.json");
+            var response = LoadResponse("extraction/financial_document/complete.json");
             AssertInferenceResponse(response);
 
             var activeOptions = response.Inference.ActiveOptions;
@@ -100,7 +87,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         [Fact]
         public void DeepNestedFields_mustExposeCorrectTypes()
         {
-            var response = GetResponse("extraction/deep_nested_fields.json");
+            var response = LoadResponse("extraction/deep_nested_fields.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -137,7 +124,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         [Fact]
         public void StandardFieldTypes_mustExposeFileValues()
         {
-            var response = GetResponse("extraction/standard_field_types.json");
+            var response = LoadResponse("extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -159,7 +146,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         [Fact]
         public void StandardFieldTypes_mustExposeSimpleFieldValues()
         {
-            var response = GetResponse("extraction/standard_field_types.json");
+            var response = LoadResponse("extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -200,7 +187,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         [Fact]
         public void StandardFieldTypes_mustExposeSimpleListFieldValues()
         {
-            var response = GetResponse("extraction/standard_field_types.json");
+            var response = LoadResponse("extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -222,7 +209,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         [Fact]
         public void StandardFieldTypes_mustExposeObjectFieldValues()
         {
-            var response = GetResponse("extraction/standard_field_types.json");
+            var response = LoadResponse("extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -247,7 +234,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         [Fact]
         public void StandardFieldTypes_mustExposeObjectListFieldValues()
         {
-            var response = GetResponse("extraction/standard_field_types.json");
+            var response = LoadResponse("extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -281,7 +268,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         [Fact]
         public void StandardFieldTypes_mustHaveLocations()
         {
-            var response = GetResponse("extraction/standard_field_types.json");
+            var response = LoadResponse("extraction/standard_field_types.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -303,7 +290,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         [Fact]
         public void RstOutput_mustBeValid()
         {
-            var response = GetResponse("extraction/standard_field_types.json");
+            var response = LoadResponse("extraction/standard_field_types.json");
             var rstOutput = File.ReadAllText(
                 Constants.V2ProductPath + "extraction/standard_field_types.rst");
 
@@ -320,7 +307,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         [Fact]
         public void RawText_whenActivated_mustExposeProperties()
         {
-            var response = GetResponse("extraction/raw_texts.json");
+            var response = LoadResponse("extraction/raw_texts.json");
             AssertInferenceResponse(response);
 
             var activeOptions = response.Inference.ActiveOptions;
@@ -349,7 +336,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         [Fact]
         public void Rag_whenMatched_mustExposeProperties()
         {
-            var response = GetResponse("extraction/rag_matched.json");
+            var response = LoadResponse("extraction/rag_matched.json");
             AssertInferenceResponse(response);
 
             var activeOptions = response.Inference.ActiveOptions;
@@ -367,7 +354,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         [Fact]
         public void Rag_whenNotMatched_mustExposeProperties()
         {
-            var response = GetResponse("extraction/rag_not_matched.json");
+            var response = LoadResponse("extraction/rag_not_matched.json");
             AssertInferenceResponse(response);
 
             var activeOptions = response.Inference.ActiveOptions;
@@ -382,7 +369,7 @@ namespace Mindee.UnitTests.V2.Product.Extraction
             Assert.Null(rag.RetrievedDocumentId);
         }
 
-        private static ExtractionResponse GetResponse(string path)
+        private static ExtractionResponse LoadResponse(string path)
         {
             var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2ProductPath + path));

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -29,28 +30,23 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
                 string guidelines = jsonObject["guidelines"]?.Deserialize<string>(options);
                 bool selected = jsonObject["selected"]?.Deserialize<bool>(options) ?? false;
 
-                var listField = new AnnotatedListField(selected, guidelines);
+                var items = new List<AnnotatedDynamicField>();
                 foreach (var item in itemsArray)
-                {
-                    listField.Items.Add(item.Deserialize<AnnotatedDynamicField>(options));
-                }
+                    items.Add(item.Deserialize<AnnotatedDynamicField>(options));
 
-                return new AnnotatedDynamicField(
-                    FieldType.ListField, listField: listField);
+                var listField = new AnnotatedListField(items, selected, guidelines);
+
+                return new AnnotatedDynamicField(listField);
             }
             if (jsonObject.TryGetPropertyValue("fields", out var nestedFieldsNode) &&
                 nestedFieldsNode is JsonObject)
             {
-                return new AnnotatedDynamicField(
-                    FieldType.ObjectField,
-                    objectField: jsonObject.Deserialize<AnnotatedObjectField>(options));
+                return new AnnotatedDynamicField(jsonObject.Deserialize<AnnotatedObjectField>(options));
             }
             // -------- SIMPLE FIELD --------
             if (jsonObject.ContainsKey("value"))
             {
-                return new AnnotatedDynamicField(
-                    FieldType.SimpleField,
-                    simpleField: jsonObject.Deserialize<AnnotatedSimpleField>(options));
+                return new AnnotatedDynamicField(jsonObject.Deserialize<AnnotatedSimpleField>(options));
             }
 
             throw new JsonException($"Unknown field: {jsonObject.ToJsonString()}");

@@ -17,15 +17,17 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
         ///     List of dynamic fields, prefer SimpleItems or ObjectItems.
         /// </summary>
         [JsonPropertyName("items")]
-        public List<AnnotatedDynamicField> Items { get; set; } = [];
+        public List<AnnotatedDynamicField> Items { get; set; }
 
         /// <summary>
         /// Default constructor.
         /// </summary>
+        /// <param name="items"><see cref="Items"/></param>
         /// <param name="selected"></param>
         /// <param name="guidelines"></param>
-        public AnnotatedListField(bool selected, string guidelines) : base(selected, guidelines)
+        public AnnotatedListField(List<AnnotatedDynamicField> items, bool selected, string guidelines) : base(selected, guidelines)
         {
+            Items = items;
         }
 
         /// <summary>

@@ -16,9 +16,9 @@ namespace Mindee.V2.ClientOptions
         public string DocumentId { get; }
 
         /// <summary>
-        /// Default constructor.
+        /// Base constructor.
         /// </summary>
-        /// <param name="documentId"></param>
+        /// <param name="documentId"><see cref="DocumentId"/></param>
         protected BaseAnnotationParameters(string documentId)
         {
             if (string.IsNullOrWhiteSpace(documentId))

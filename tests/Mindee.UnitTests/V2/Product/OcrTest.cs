@@ -23,7 +23,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Ocr_WhenSingle_MustHaveValidProperties()
         {
-            var response = GetInference("ocr/ocr_single.json");
+            var response = LoadResponse("ocr/ocr_single.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -54,7 +54,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Ocr_WhenMultiple_MustHaveValidProperties()
         {
-            var response = GetInference("ocr/ocr_multiple.json");
+            var response = LoadResponse("ocr/ocr_multiple.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -77,7 +77,7 @@ namespace Mindee.UnitTests.V2.Product
             }
         }
 
-        private static OcrResponse GetInference(string path)
+        private static OcrResponse LoadResponse(string path)
         {
             var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2ProductPath + path));
