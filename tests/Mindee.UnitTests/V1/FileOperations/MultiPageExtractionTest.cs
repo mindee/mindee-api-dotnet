@@ -1,14 +1,13 @@
 using Mindee.Input;
 using Mindee.V1.Image;
 using Mindee.V1.Parsing.Common;
-using Mindee.V1.Product.BarcodeReader;
 using Mindee.V1.Product.MultiReceiptsDetector;
 
-namespace Mindee.UnitTests.Extraction
+namespace Mindee.UnitTests.V1.FileOperations
 {
     [Trait("Category", "ImageExtractor")]
     [Collection("Docnet")]
-    public class ImageExtractorTest
+    public class MultiPageExtractionTest
     {
         [Fact]
         public async Task GivenAnImage_ShouldExtractPositionFields()
@@ -35,40 +34,6 @@ namespace Mindee.UnitTests.Extraction
                         $"default_sample_page-001_{i + 1:D3}.jpg",
                         source.Filename
                     );
-                }
-            }
-        }
-
-        [Fact]
-        public async Task GivenAnImage_ShouldExtractValueFields()
-        {
-            var image = new LocalInputSource(Constants.V1ProductPath + "barcode_reader/default_sample.jpg");
-            var response = await GetBarcodeReaderPrediction("complete");
-            var inference = response.Document.Inference;
-
-            var extractor = new ImageExtractor(image);
-            Assert.Equal(1, extractor.GetPageCount());
-
-            foreach (var page in inference.Pages)
-            {
-                var codes1D = extractor.ExtractImagesFromPage(page.Prediction.Codes1D, page.Id, "barcodes_1D.jpg");
-                for (var i = 0; i < codes1D.Count; i++)
-                {
-                    var extractedImage = codes1D[i];
-                    Assert.NotNull(extractedImage.Image);
-                    var source = extractedImage.AsInputSource();
-                    Assert.Equal(
-                        $"barcodes_1D_page-001_{i + 1:D3}.jpg",
-                        source.Filename
-                    );
-                    extractedImage.WriteToFile("Resources/output/");
-                }
-
-                var codes2D = extractor.ExtractImagesFromPage(page.Prediction.Codes2D, page.Id, "barcodes_2D.jpg");
-                foreach (var extractedImage in codes2D)
-                {
-                    Assert.NotNull(extractedImage.Image);
-                    extractedImage.WriteToFile("Resources/output/");
                 }
             }
         }
@@ -109,14 +74,6 @@ namespace Mindee.UnitTests.Extraction
             var fileName = Constants.V1ResourcePath + $"products/multi_receipts_detector/response_v1/{name}.json";
             var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
             return await mindeeAPi.PredictPostAsync<MultiReceiptsDetectorV1>(
-                UnitTestBase.GetFakePredictParameter());
-        }
-
-        private static async Task<PredictResponse<BarcodeReaderV1>> GetBarcodeReaderPrediction(string name)
-        {
-            var fileName = Constants.V1ResourcePath + $"products/barcode_reader/response_v1/{name}.json";
-            var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
-            return await mindeeAPi.PredictPostAsync<BarcodeReaderV1>(
                 UnitTestBase.GetFakePredictParameter());
         }
     }

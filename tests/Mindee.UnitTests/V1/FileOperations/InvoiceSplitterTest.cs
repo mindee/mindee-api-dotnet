@@ -3,10 +3,10 @@ using Mindee.V1.Image;
 using Mindee.V1.Parsing.Common;
 using Mindee.V1.Product.InvoiceSplitter;
 
-namespace Mindee.UnitTests.Extraction
+namespace Mindee.UnitTests.V1.FileOperations
 {
     [Collection("Docnet")]
-    public class PdfExtractorTest
+    public class InvoiceSplitterTest
     {
         [Fact]
         public void GivenAnImage_ShouldExtractAPDF()
