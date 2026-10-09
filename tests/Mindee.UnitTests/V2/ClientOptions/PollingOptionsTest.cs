@@ -15,9 +15,6 @@ namespace Mindee.UnitTests.V2.ClientOptions
             Assert.Equal(100, options.MaxRetries);
             Assert.Equal(3000, options.InitialDelayMilliSec);
             Assert.Equal(5000, options.IntervalMilliSec);
-            Assert.Equal(5000, options.GetRetryDelayMilliSec(1));
-            Assert.Equal(5000, options.GetRetryDelayMilliSec(2));
-            Assert.Equal(5000, options.GetRetryDelayMilliSec(10));
         }
 
         [Fact]

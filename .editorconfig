@@ -145,4 +145,3 @@ csharp_style_expression_bodied_local_functions = false:silent
 
 [src/Mindee/Product/**/*.cs]
 generated_code = true
-

@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
+using Mindee.ClientOptions;
 using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
@@ -26,28 +26,23 @@ namespace Mindee.V2
     /// <summary>
     ///     The entry point to use the Mindee V2 API features.
     /// </summary>
-    public sealed class Client
+    public sealed class Client : BaseClient
     {
-        private readonly ILogger _logger;
         private readonly HttpApiV2 _mindeeApi;
 
         /// <summary>
         /// </summary>
         /// <param name="apiKey">The required API key to use the Mindee V2 API.</param>
         /// <param name="loggerFactory">Factory for the logger.</param>
-        public Client(string apiKey, ILoggerFactory loggerFactory = null)
+        public Client(string apiKey, ILoggerFactory loggerFactory = null) : base(loggerFactory)
         {
-            var loggerFactoryInstance = loggerFactory ?? NullLoggerFactory.Instance;
-            _logger = loggerFactoryInstance.CreateLogger<Client>();
-
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = apiKey;
-            }, loggerFactoryInstance);
+            }, LoggerFactory);
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
-
             _mindeeApi = serviceProvider.GetRequiredService<MindeeApiV2>();
         }
 
@@ -57,24 +52,17 @@ namespace Mindee.V2
         ///     <see cref="SettingsV2" />
         /// </param>
         /// <param name="logger"></param>
-        public Client(SettingsV2 settings, ILoggerFactory logger = null)
+        public Client(SettingsV2 settings, ILoggerFactory logger = null) : base(logger)
         {
-            var loggerFactory = logger ?? NullLoggerFactory.Instance;
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddMindeeApiV2(options =>
             {
                 options.ApiKey = settings.ApiKey;
                 options.MindeeBaseUrl = settings.MindeeBaseUrl;
                 options.RequestTimeoutSeconds = settings.RequestTimeoutSeconds;
-            }, loggerFactory);
+            }, LoggerFactory);
+
             var serviceProvider = serviceCollection.BuildServiceProvider();
-
-            if (logger != null)
-            {
-                MindeeLogger.Assign(logger);
-                _logger = MindeeLogger.GetLogger();
-            }
-
             _mindeeApi = serviceProvider.GetRequiredService<MindeeApiV2>();
         }
 
@@ -84,11 +72,9 @@ namespace Mindee.V2
         ///     <see cref="HttpApiV2" />
         /// </param>
         /// <param name="logger"></param>
-        public Client(HttpApiV2 httpApi, ILoggerFactory logger = null)
+        public Client(HttpApiV2 httpApi, ILoggerFactory logger = null) : base(logger)
         {
             _mindeeApi = httpApi;
-            var loggerFactory = logger ?? NullLoggerFactory.Instance;
-            _logger = loggerFactory.CreateLogger<Client>();
         }
 
         /// <summary>
@@ -114,10 +100,10 @@ namespace Mindee.V2
             switch (inputSource)
             {
                 case LocalInputSource:
-                    _logger?.LogInformation("Enqueuing: local source");
+                    Logger?.LogInformation("Enqueuing: local source");
                     break;
                 case UrlInputSource:
-                    _logger?.LogInformation("Enqueuing: URL source");
+                    Logger?.LogInformation("Enqueuing: URL source");
                     break;
                 case null:
                     throw new ArgumentNullException(nameof(inputSource));
@@ -138,7 +124,7 @@ namespace Mindee.V2
         /// </returns>
         public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
         {
-            _logger?.LogInformation("Getting Job at: {JobURL}", pollingUrl);
+            Logger?.LogInformation("Getting Job by URL: {JobURL}", pollingUrl);
             return await _mindeeApi.ReqGetJobByUrlAsync(pollingUrl, ct);
         }
 
@@ -153,7 +139,7 @@ namespace Mindee.V2
         public async Task<TResponse> GetResultFromUrlAsync<TResponse>(string resultUrl, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
-            _logger?.LogInformation("Getting result at: {ResultUrl}", resultUrl);
+            Logger?.LogInformation("Getting result by URL: {ResultUrl}", resultUrl);
             return await _mindeeApi.ReqGetResultByUrlAsync<TResponse>(resultUrl, ct);
         }
 
@@ -168,12 +154,11 @@ namespace Mindee.V2
         public async Task<TResponse> GetResultAsync<TResponse>(string jobId, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
-            _logger?.LogInformation("Getting result with ID: {JobID}", jobId);
+            Logger?.LogInformation("Getting result with ID: {JobID}", jobId);
 
             if (string.IsNullOrWhiteSpace(jobId))
-            {
-                throw new ArgumentNullException(jobId);
-            }
+                throw new ArgumentNullException(nameof(jobId), "jobId must not be null or blank.");
+
             return await _mindeeApi.ReqGetResultByIdAsync<TResponse>(jobId, ct);
         }
 
@@ -188,7 +173,11 @@ namespace Mindee.V2
         /// </returns>
         public async Task<JobResponse> GetJobAsync(string jobId, CancellationToken ct = default)
         {
-            _logger?.LogInformation("Getting job ID: {JobID}", jobId);
+            Logger?.LogInformation("Getting job ID: {JobID}", jobId);
+
+            if (string.IsNullOrWhiteSpace(jobId))
+                throw new ArgumentNullException(jobId, "jobId must not be null or blank.");
+
             return await _mindeeApi.ReqGetJobByIdAsync(jobId, ct);
         }
 
@@ -223,7 +212,7 @@ namespace Mindee.V2
                 inputSource,
                 parameters,
                 ct);
-            _logger?.LogInformation(
+            Logger?.LogInformation(
                 "Successfully enqueued document with job ID {JobID}", enqueueResponse.Job.Id);
             return await PollForProductResultsAsync<TResponse>(
                 enqueueResponse, pollingOptions, false, ct);
@@ -243,7 +232,7 @@ namespace Mindee.V2
             , CancellationToken ct = default)
             where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
-            _logger?.LogInformation("Adding a document to the RAG database");
+            Logger?.LogInformation("Adding a document to the RAG database");
             return await _mindeeApi.ReqPostRagDocumentAsync(parameters, inputSource, ct);
         }
 
@@ -280,7 +269,7 @@ namespace Mindee.V2
             string documentId, CancellationToken ct = default)
             where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
-            _logger?.LogInformation("Getting RAG document ID: {DocumentId}", documentId);
+            Logger?.LogInformation("Getting RAG document ID: {DocumentId}", documentId);
             return await _mindeeApi.ReqGetRagAnnotationAsync<TAnnotationResponse>(documentId, ct);
         }
 
@@ -317,7 +306,7 @@ namespace Mindee.V2
             BaseAnnotationParameters<TAnnotationResponse> parameters, CancellationToken ct = default)
             where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
-            _logger?.LogInformation("Updating RAG document ID: {DocumentId}", parameters.DocumentId);
+            Logger?.LogInformation("Updating RAG document ID: {DocumentId}", parameters.DocumentId);
             return await _mindeeApi.ReqPatchRagAnnotationAsync(parameters, ct);
         }
 
@@ -353,7 +342,7 @@ namespace Mindee.V2
         public async Task<bool> DeleteExtractionRagDocumentAsync(
             string documentId, CancellationToken ct = default)
         {
-            _logger?.LogInformation("Deleting RAG document ID: {DocumentId}", documentId);
+            Logger?.LogInformation("Deleting RAG document ID: {DocumentId}", documentId);
             return await _mindeeApi.ReqDeleteExtractionRagDocumentAsync(documentId, ct);
         }
 
@@ -397,39 +386,42 @@ namespace Mindee.V2
             , CancellationToken cancellationToken = default)
         where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
-            _logger?.LogInformation("Polling for RAG document ID: {DocumentId}", initialResponse.Id);
-            var maxRetries = pollingOptions.MaxRetries + 1;
+            Logger?.LogInformation("Polling for RAG document ID: {DocumentId}", initialResponse.Id);
 
-            _logger?.LogDebug(
+            Logger?.LogDebug(
                 "Waiting {InitialDelaySec} seconds before attempting to retrieve the result...",
                 pollingOptions.InitialDelaySec);
+
             await Task.Delay(pollingOptions.InitialDelayMilliSec, cancellationToken);
+
+            var tryCounter = 0;
+            var maxRetries = pollingOptions.MaxRetries;
             var documentId = initialResponse.Id;
 
-            var retryCount = 1;
-            while (retryCount < maxRetries)
+            while (tryCounter < maxRetries)
             {
-                var retryDelayMilliSec = pollingOptions.GetRetryDelayMilliSec(retryCount);
-                await Task.Delay(retryDelayMilliSec, cancellationToken);
-                _logger?.LogDebug(
+                cancellationToken.ThrowIfCancellationRequested();
+
+                Logger?.LogDebug(
                     "Poll attempt {RetryCount} of {MaxRetries}",
-                    retryCount,
+                    tryCounter + 1,
                     maxRetries);
 
                 var response = await GetRagDocumentAsync<TAnnotationResponse>(documentId, cancellationToken);
 
-                retryCount++;
+                tryCounter++;
                 switch (response.Status)
                 {
                     case "Processing":
-                        continue;
+                        await ThrottlePollingAttemptAsync(tryCounter, maxRetries, pollingOptions, cancellationToken);
+                        break;
                     case "Failed":
                         throw new MindeeException("RAG failed without an error payload.");
                     default:
                         return response;
                 }
             }
-            throw new MindeeException($"RAG polling not complete after {retryCount} attempts.");
+            throw new MindeeException($"RAG polling not complete after {tryCounter} attempts.");
         }
 
         /// <summary>
@@ -442,11 +434,11 @@ namespace Mindee.V2
 
             if (areWebhooksDone)
             {
-                _logger?.LogDebug("All webhooks are completed.");
+                Logger?.LogDebug("All webhooks are completed.");
                 return true;
             }
 
-            _logger?.LogDebug("Not all webhooks are completed.");
+            Logger?.LogDebug("Not all webhooks are completed.");
             return false;
         }
 
@@ -459,7 +451,7 @@ namespace Mindee.V2
             bool waitForWebhooks = false,
             CancellationToken cancellationToken = default)
         {
-            _logger?.LogDebug(
+            Logger?.LogDebug(
                 "Waiting {InitialDelaySec} seconds before attempting to retrieve the result...",
                 pollingOptions.InitialDelaySec);
 
@@ -472,7 +464,7 @@ namespace Mindee.V2
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                _logger?.LogDebug(
+                Logger?.LogDebug(
                     "Poll attempt {RetryCount} of {MaxRetries}",
                     tryCounter + 1,
                     maxRetries);
@@ -481,7 +473,7 @@ namespace Mindee.V2
 
                 if (jobResponse.Job.Status == "Processed")
                 {
-                    _logger?.LogDebug(
+                    Logger?.LogDebug(
                         "Job ID {JobID} completed processing at: {CompletedAt}",
                         jobResponse.Job.Id,
                         jobResponse.Job.CompletedAt);
@@ -492,7 +484,7 @@ namespace Mindee.V2
                     }
                 }
 
-                // normally the mindee_api will throw on error, this is a fallback
+                // normally the API handler will throw an error, this is a fallback
                 if (jobResponse.Job.Status == "Failed")
                 {
                     if (jobResponse.Job.Error != null)
@@ -503,8 +495,7 @@ namespace Mindee.V2
                 }
 
                 tryCounter++;
-                var retryDelayMilliSec = pollingOptions.GetRetryDelayMilliSec(tryCounter);
-                await Task.Delay(retryDelayMilliSec, cancellationToken);
+                await ThrottlePollingAttemptAsync(tryCounter, maxRetries, pollingOptions, cancellationToken);
             }
 
             throw new MindeeException($"Couldn't retrieve the result after {tryCounter} tries.");
