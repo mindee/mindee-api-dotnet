@@ -851,7 +851,7 @@ namespace Mindee.V1
             CancellationToken cancellationToken = default)
             where TInferenceModel : GeneratedV1, new()
         {
-            var maxRetries = pollingOptions.MaxRetries + 1;
+            var maxRetries = pollingOptions.MaxRetries;
             var jobId = enqueueResponse.Job.Id;
             Logger?.LogInformation("Enqueued with job ID: {}", jobId);
             Logger?.LogInformation(
