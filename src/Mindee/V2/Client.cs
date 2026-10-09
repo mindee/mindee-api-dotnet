@@ -157,7 +157,7 @@ namespace Mindee.V2
             Logger?.LogInformation("Getting result with ID: {JobID}", jobId);
 
             if (string.IsNullOrWhiteSpace(jobId))
-                throw new ArgumentNullException(jobId, "jobId must not be null or blank.");
+                throw new ArgumentNullException(nameof(jobId), "jobId must not be null or blank.");
 
             return await _mindeeApi.ReqGetResultByIdAsync<TResponse>(jobId, ct);
         }
