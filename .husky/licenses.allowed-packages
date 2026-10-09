@@ -1,0 +1,6 @@
+# Per-package overrides for cases where delice cannot detect the SPDX license
+# (legacy NuGet license structure). Verified manually to be acceptable.
+# One "PackageName" per line (no version).
+Microsoft.NETFramework.ReferenceAssemblies
+Microsoft.NETFramework.ReferenceAssemblies.net472
+Microsoft.NETFramework.ReferenceAssemblies.net48
