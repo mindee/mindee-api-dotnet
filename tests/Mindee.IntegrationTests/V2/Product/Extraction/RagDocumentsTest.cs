@@ -9,14 +9,14 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
     [Trait("Category", "Integration")]
     public class RagDocumentsTest
     {
-        private readonly string? _extractionModelId;
+        private readonly string? _modelId;
         private readonly Client _client;
 
         public RagDocumentsTest()
         {
             var apiKey = Environment.GetEnvironmentVariable("MindeeV2__ApiKey");
             _client = TestingUtilities.GetOrGenerateMindeeClientV2(apiKey);
-            _extractionModelId = Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id");
+            _modelId = Environment.GetEnvironmentVariable("MindeeV2__Findoc__Model__Id");
         }
 
         [Fact(Timeout = 180000, DisplayName = "should perform the entire lifecycle of a RAG document")]
@@ -24,7 +24,7 @@ namespace Mindee.IntegrationTests.V2.Product.Extraction
         {
             var inputSource = new LocalInputSource(
                 Constants.V2ProductDir + "extraction/financial_document/default_sample.jpg");
-            var parameters = new RagDocumentUploadParameters(modelId: _extractionModelId);
+            var parameters = new RagDocumentUploadParameters(modelId: _modelId);
 
             var postResponse = await _client.UploadAndGetRagDocumentPollAsync<ExtractionRagAnnotationResponse>(
                 inputSource, parameters);

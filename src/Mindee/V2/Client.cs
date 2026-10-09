@@ -171,9 +171,8 @@ namespace Mindee.V2
             _logger?.LogInformation("Getting result with ID: {JobID}", jobId);
 
             if (string.IsNullOrWhiteSpace(jobId))
-            {
-                throw new ArgumentNullException(jobId);
-            }
+                throw new ArgumentNullException(jobId, "jobId must not be null or blank.");
+
             return await _mindeeApi.ReqGetResultByIdAsync<TResponse>(jobId, ct);
         }
 
@@ -189,6 +188,10 @@ namespace Mindee.V2
         public async Task<JobResponse> GetJobAsync(string jobId, CancellationToken ct = default)
         {
             _logger?.LogInformation("Getting job ID: {JobID}", jobId);
+
+            if (string.IsNullOrWhiteSpace(jobId))
+                throw new ArgumentNullException(jobId, "jobId must not be null or blank.");
+
             return await _mindeeApi.ReqGetJobByIdAsync(jobId, ct);
         }
 
@@ -492,7 +495,7 @@ namespace Mindee.V2
                     }
                 }
 
-                // normally the mindee_api will throw on error, this is a fallback
+                // normally the API handler will throw an error, this is a fallback
                 if (jobResponse.Job.Status == "Failed")
                 {
                     if (jobResponse.Job.Error != null)

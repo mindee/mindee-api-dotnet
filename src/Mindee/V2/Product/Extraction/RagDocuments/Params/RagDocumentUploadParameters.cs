@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Mindee.V2.ClientOptions;
 
 namespace Mindee.V2.Product.Extraction.RagDocuments.Params

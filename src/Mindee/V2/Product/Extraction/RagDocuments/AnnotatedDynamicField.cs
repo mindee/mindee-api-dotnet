@@ -30,22 +30,39 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
         public FieldType Type { get; }
 
         /// <summary>
-        /// Default constructor.
+        /// Constructor for a simple field.
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="simpleField"></param>
-        /// <param name="objectField"></param>
-        /// <param name="listField"></param>
-        public AnnotatedDynamicField(
-            FieldType type
-            , AnnotatedSimpleField simpleField = null
-            , AnnotatedObjectField objectField = null
-            , AnnotatedListField listField = null)
+        /// <param name="field"><see cref="AnnotatedSimpleField"/></param>
+        public AnnotatedDynamicField(AnnotatedSimpleField field)
         {
-            SimpleField = simpleField;
-            ObjectField = objectField;
-            ListField = listField;
-            Type = type;
+            SimpleField = field;
+            ObjectField = null;
+            ListField = null;
+            Type = FieldType.SimpleField;
+        }
+
+        /// <summary>
+        /// Constructor for a list field.
+        /// </summary>
+        /// <param name="field"><see cref="AnnotatedSimpleField"/></param>
+        public AnnotatedDynamicField(AnnotatedListField field)
+        {
+            SimpleField = null;
+            ObjectField = null;
+            ListField = field;
+            Type = FieldType.ListField;
+        }
+
+        /// <summary>
+        /// Constructor for an object field.
+        /// </summary>
+        /// <param name="field"><see cref="AnnotatedObjectField"/></param>
+        public AnnotatedDynamicField(AnnotatedObjectField field)
+        {
+            SimpleField = null;
+            ObjectField = field;
+            ListField = null;
+            Type = FieldType.ObjectField;
         }
     }
 }

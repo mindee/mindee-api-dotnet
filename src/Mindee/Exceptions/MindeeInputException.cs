@@ -3,7 +3,7 @@ using System;
 namespace Mindee.Exceptions
 {
     /// <summary>
-    ///     Represent a 400 error, bad requests or malformed, from Mindee API.
+    ///     Represent an invalid or malformed input.
     /// </summary>
     public class MindeeInputException : MindeeException
     {

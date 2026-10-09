@@ -30,7 +30,7 @@ namespace Mindee.V2.Http
         protected ILogger<HttpApiV2>? Logger;
 
         /// <summary>
-        ///     Send a file to the asynchronous processing queue for inference processing.
+        ///     Send a file to the asynchronous processing queue for a product.
         /// </summary>
         /// <param name="parameters">
         ///     <see cref="BaseProductParameters" />
@@ -48,7 +48,7 @@ namespace Mindee.V2.Http
         /// <summary>
         ///     Get the status of an inference that was previously enqueued.
         /// </summary>
-        /// <param name="pollingUrl">The job ID as returned by the predict_async route.</param>
+        /// <param name="pollingUrl">The job ID as returned by the enqueue call.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public abstract Task<JobResponse> ReqGetJobByUrlAsync(
             string pollingUrl, CancellationToken cancellationToken = default);
@@ -56,7 +56,7 @@ namespace Mindee.V2.Http
         /// <summary>
         ///     Get the status of an inference that was previously enqueued.
         /// </summary>
-        /// <param name="jobId">The job ID as returned by the predict_async route.</param>
+        /// <param name="jobId">The job ID as returned by the enqueue call.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         public abstract Task<JobResponse> ReqGetJobByIdAsync(
             string jobId, CancellationToken cancellationToken = default);
@@ -136,12 +136,12 @@ namespace Mindee.V2.Http
             ModelSearchParameters parameters, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Get the error from the server return.
+        ///     Get the error from the server response.
         /// </summary>
         /// <param name="responseContent">HTTP Status of the response</param>
         /// <param name="statusCode">String content of the response</param>
         /// <exception cref="MindeeHttpExceptionV2"></exception>
-        protected ErrorResponse GetErrorFromContent(int statusCode, string? responseContent)
+        protected ErrorResponse GetErrorFromResponse(int statusCode, string? responseContent)
         {
             Logger?.LogInformation("Parsing error response ...");
             try

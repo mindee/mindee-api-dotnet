@@ -73,10 +73,10 @@ namespace Mindee.V2.Http
         public override async Task<TSearchResponse> ReqGetSearchAsync<TSearchResponse>(
             BaseSearchParameters<TSearchResponse> parameters, CancellationToken cancellationToken = default)
         {
-            var searchType = typeof(TSearchResponse);
-            var productAttributes = searchType.GetCustomAttribute<ProductAttributes>();
+            var responseType = typeof(TSearchResponse);
+            var productAttributes = responseType.GetCustomAttribute<ProductAttributes>();
             if (productAttributes == null)
-                throw new Exception($"ProductAttributes must be set for class: {searchType.Name}");
+                throw new Exception($"ProductAttributes must be set for class: {responseType.Name}");
 
             var request = new RestRequest($"/v2/search/{productAttributes.Slug}");
             Logger?.LogInformation("Searching {Slug} ...", productAttributes.Slug);
@@ -90,7 +90,7 @@ namespace Mindee.V2.Http
             cancellationToken.ThrowIfCancellationRequested();
 
             var response = JsonSerializer.Deserialize<TSearchResponse>(GetResponseContent(restResponse));
-            return response ?? throw new MindeeException($"Couldn't deserialize {searchType}.");
+            return response ?? throw new MindeeException($"Couldn't deserialize {responseType}.");
         }
 
         public override async Task<TAnnotationResponse> ReqPostRagDocumentAsync<TAnnotationResponse>(
@@ -98,7 +98,13 @@ namespace Mindee.V2.Http
             , LocalInputSource localInputSource
             , CancellationToken cancellationToken = default)
         {
-            var request = new RestRequest("/v2/products/extraction/rag-documents", Method.Post);
+            var responseType = typeof(TAnnotationResponse);
+            var productAttributes = responseType.GetCustomAttribute<ProductAttributes>();
+            if (productAttributes == null)
+                throw new Exception($"ProductAttributes must be set for class: {responseType.Name}");
+
+            var request = new RestRequest(
+                $"/v2/products/{productAttributes.Slug}/rag-documents", Method.Post);
             request.AddFile(
                 "file",
                 localInputSource.FileBytes,
@@ -116,7 +122,13 @@ namespace Mindee.V2.Http
         public override async Task<TAnnotationResponse> ReqGetRagAnnotationAsync<TAnnotationResponse>(
             string documentId, CancellationToken cancellationToken = default)
         {
-            var request = new RestRequest($"/v2/products/extraction/rag-documents/{documentId}");
+            var responseType = typeof(TAnnotationResponse);
+            var productAttributes = responseType.GetCustomAttribute<ProductAttributes>();
+            if (productAttributes == null)
+                throw new Exception($"ProductAttributes must be set for class: {responseType.Name}");
+
+            var request = new RestRequest(
+                $"/v2/products/{productAttributes.Slug}/rag-documents/{documentId}");
 
             Logger?.LogDebug("HTTP GET to {RequestResource} ...", request.Resource);
             return await ExecuteRagAnnotationRequest<TAnnotationResponse>(request, cancellationToken);
@@ -125,8 +137,13 @@ namespace Mindee.V2.Http
         public override async Task<TAnnotationResponse> ReqPatchRagAnnotationAsync<TAnnotationResponse>(
             BaseAnnotationParameters<TAnnotationResponse> parameters, CancellationToken cancellationToken = default)
         {
+            var responseType = typeof(TAnnotationResponse);
+            var productAttributes = responseType.GetCustomAttribute<ProductAttributes>();
+            if (productAttributes == null)
+                throw new Exception($"ProductAttributes must be set for class: {responseType.Name}");
+
             var request = new RestRequest(
-                $"/v2/products/extraction/rag-documents/{parameters.DocumentId}", Method.Patch);
+                $"/v2/products/{productAttributes.Slug}/rag-documents/{parameters.DocumentId}", Method.Patch);
             request.AddJsonBody(parameters.GetRequestParameters());
 
             Logger?.LogDebug("HTTP PATCH to {RequestResource} ...", request.Resource);
@@ -269,7 +286,7 @@ namespace Mindee.V2.Http
             if (statusCode is <= 199 or >= 400)
             {
                 throw new MindeeHttpExceptionV2(
-                    GetErrorFromContent(statusCode, restResponse.Content));
+                    GetErrorFromResponse(statusCode, restResponse.Content));
             }
 
             if (restResponse.Content == null)

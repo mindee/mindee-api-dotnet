@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using Mindee.V2.Parsing;
 using Mindee.V2.Product.Extraction.RagDocuments;
 using Mindee.V2.Product.Extraction.RagDocuments.Params;
@@ -8,6 +10,14 @@ namespace Mindee.UnitTests.V2.Product.Extraction
     [Trait("Category", "ExtractionRagDocuments")]
     public class RagDocumentsTest
     {
+        private static readonly string _expectedAnnotation;
+
+        static RagDocumentsTest()
+        {
+            string rawJson = File.ReadAllText(Constants.V2ProductPath + "extraction/rag_documents/test_annotation.json");
+            _expectedAnnotation = JsonSerializer.Serialize(JsonSerializer.Deserialize<JsonElement>(rawJson));
+        }
+
         [Fact(DisplayName = "should init POST parameters")]
         public void PostParameters_MustInit()
         {
@@ -19,7 +29,17 @@ namespace Mindee.UnitTests.V2.Product.Extraction
         [Fact(DisplayName = "should init PATCH parameters")]
         public void PatchParameters_MustInit()
         {
-            var annotation = new RagAnnotation();
+            var fields = new AnnotatedFields();
+            fields.Add("simple", new AnnotatedDynamicField(
+                new AnnotatedSimpleField(true, false, null)
+            ));
+            fields.Add("list", new AnnotatedDynamicField(
+                new AnnotatedListField(new List<AnnotatedDynamicField>(), false, null)
+            ));
+            fields.Add("object", new AnnotatedDynamicField(
+                new AnnotatedObjectField(new AnnotatedFields(), false, null)
+            ));
+            var annotation = new RagAnnotation(fields);
             var parameters = new RagDocumentAnnotationParameters(
                 documentId: "invalid-document-id"
                 , status: "Active"
@@ -27,7 +47,13 @@ namespace Mindee.UnitTests.V2.Product.Extraction
             var reqParams = parameters.GetRequestParameters();
             Assert.Equal("invalid-document-id", parameters.DocumentId);
             Assert.Equal("Active", reqParams["status"]);
-            Assert.Equal(annotation, reqParams["annotation"]);
+
+            var actualJsonString = JsonSerializer.Serialize(reqParams["annotation"]);
+
+            // Parse both to JsonNode to compare structure/values while ignoring property order
+            var expectedNode = JsonNode.Parse(_expectedAnnotation);
+            var actualNode = JsonNode.Parse(actualJsonString);
+            Assert.True(JsonNode.DeepEquals(expectedNode, actualNode));
         }
 
         [Fact(DisplayName = "should load a POST response from a JSON string")]

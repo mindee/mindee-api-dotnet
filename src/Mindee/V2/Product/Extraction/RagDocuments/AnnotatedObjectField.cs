@@ -18,7 +18,11 @@ namespace Mindee.V2.Product.Extraction.RagDocuments
         /// </summary>
         /// <param name="selected"></param>
         /// <param name="guidelines"></param>
-        public AnnotatedObjectField(bool selected, string guidelines) : base(selected, guidelines)
-        { }
+        /// <param name="fields"><see cref="Fields"/></param>
+        public AnnotatedObjectField(AnnotatedFields fields, bool selected, string guidelines) :
+            base(selected, guidelines)
+        {
+            this.Fields = fields;
+        }
     }
 }

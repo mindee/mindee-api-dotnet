@@ -16,7 +16,7 @@ namespace Mindee.V2.ClientOptions
         public string ModelId { get; }
 
         /// <summary>
-        /// Default constructor.
+        /// Base constructor.
         /// </summary>
         /// <param name="modelId"><see cref="ModelId"/></param>
         protected BaseRagDocumentUploadParameters(string modelId)

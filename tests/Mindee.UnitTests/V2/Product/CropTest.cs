@@ -24,7 +24,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Crop_WhenSingle_MustHaveValidProperties()
         {
-            var response = GetInference("crop/crop_single.json");
+            var response = LoadResponse("crop/crop_single.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -56,7 +56,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact]
         public void Crop_WhenMultiple_MustHaveValidProperties()
         {
-            var response = GetInference("crop/crop_multiple.json");
+            var response = LoadResponse("crop/crop_multiple.json");
             AssertInferenceResponse(response);
 
             var inference = response.Inference;
@@ -101,7 +101,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact(DisplayName = "extraction properties must be valid")]
         public void Crop_WithExtraction_MustHaveValidProperties()
         {
-            var response = GetInference("crop/default_sample_extraction.json");
+            var response = LoadResponse("crop/default_sample_extraction.json");
             Assert.NotNull(response.Inference);
 
             var crops = response.Inference.Result.Crops;
@@ -145,7 +145,7 @@ namespace Mindee.UnitTests.V2.Product
         [Fact(DisplayName = "crop_single.rst – RST display must be parsed and exposed")]
         public void RstDisplay_MustBeAccessible()
         {
-            var resp = GetInference("crop/crop_single.json");
+            var resp = LoadResponse("crop/crop_single.json");
             var rstReference = File.ReadAllText(
                 Constants.V2ProductPath + "crop/crop_single.rst");
 
@@ -168,7 +168,7 @@ namespace Mindee.UnitTests.V2.Product
             return input.Replace("\r\n", "\n").Replace("\r", "\n");
         }
 
-        private static CropResponse GetInference(string path)
+        private static CropResponse LoadResponse(string path)
         {
             var localResponse = new LocalResponse(
                 File.ReadAllText(Constants.V2ProductPath + path));

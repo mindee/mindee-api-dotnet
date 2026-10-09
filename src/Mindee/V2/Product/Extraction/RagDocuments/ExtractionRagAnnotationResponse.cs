@@ -1,12 +1,14 @@
 using System;
 using System.Text.Json.Serialization;
 using Mindee.V2.Parsing;
+using Mindee.V2.Product;
 
 namespace Mindee.V2.Product.Extraction.RagDocuments
 {
     /// <summary>
     /// Response for a RAG document.
     /// </summary>
+    [ProductAttributes("extraction")]
     public class ExtractionRagAnnotationResponse : BaseRagAnnotationResponse
     {
         /// <summary>
