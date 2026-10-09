@@ -49,7 +49,7 @@ namespace Mindee.V1.Parsing.Standard
             }
             catch (FormatException)
             {
-                logger?.LogWarning("Unable to parse the date: {}", Value);
+                logger?.LogWarning("Unable to parse the date: {DateString}", Value);
             }
         }
 
