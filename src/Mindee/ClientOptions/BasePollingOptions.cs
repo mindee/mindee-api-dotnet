@@ -79,20 +79,5 @@ namespace Mindee.ClientOptions
                 throw new MindeeException($"Cannot set async retry to less than {MinRetries} attempts.");
             }
         }
-
-        /// <summary>
-        ///     Compute delay in milliseconds before the given polling attempt.
-        /// </summary>
-        /// <param name="attemptNumber">1-based polling attempt number.</param>
-        /// <returns>Delay in milliseconds.</returns>
-        public int GetRetryDelayMilliSec(int attemptNumber)
-        {
-            if (attemptNumber <= 1)
-            {
-                return IntervalMilliSec;
-            }
-
-            return (int)Math.Floor(IntervalSec * 1000);
-        }
     }
 }

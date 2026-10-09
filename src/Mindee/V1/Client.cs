@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Mindee.ClientOptions;
 using Mindee.Exceptions;
 using Mindee.Extensions.DependencyInjection;
 using Mindee.Input;
@@ -20,9 +21,8 @@ namespace Mindee.V1
     /// <summary>
     ///     The entry point to use the Mindee API legacy features.
     /// </summary>
-    public sealed class Client
+    public sealed class Client : BaseClient
     {
-        private readonly ILogger _logger;
         private readonly IHttpApi _mindeeApi;
         private readonly IPdfOperation _pdfOperation;
 
@@ -30,7 +30,7 @@ namespace Mindee.V1
         /// </summary>
         /// <param name="apiKey">The required API key to use Mindee.</param>
         /// <param name="logger"></param>
-        public Client(string apiKey, ILoggerFactory logger = null)
+        public Client(string apiKey, ILoggerFactory logger = null) : base(logger)
         {
             var serviceCollection = new ServiceCollection();
             _pdfOperation = new DocNetApi();
@@ -43,8 +43,8 @@ namespace Mindee.V1
 
             if (logger != null)
             {
-                serviceCollection.AddSingleton(logger);
-                _logger = logger.CreateLogger<Client>();
+                // legacy static logging only used in v1
+                MindeeLogger.Assign(logger);
             }
 
             _mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
@@ -56,7 +56,7 @@ namespace Mindee.V1
         ///     <see cref="Settings" />
         /// </param>
         /// <param name="logger"></param>
-        public Client(Settings settings, ILoggerFactory logger = null)
+        public Client(Settings settings, ILoggerFactory logger = null) : base(logger)
         {
             var serviceCollection = new ServiceCollection();
             _pdfOperation = new DocNetApi();
@@ -71,8 +71,8 @@ namespace Mindee.V1
 
             if (logger != null)
             {
+                // legacy static logging only used in v1
                 MindeeLogger.Assign(logger);
-                _logger = MindeeLogger.GetLogger();
             }
 
             _mindeeApi = serviceProvider.GetRequiredService<MindeeApi>();
@@ -87,14 +87,14 @@ namespace Mindee.V1
         ///     <see cref="IHttpApi" />
         /// </param>
         /// <param name="logger"></param>
-        public Client(IPdfOperation pdfOperation, IHttpApi httpApi, ILoggerFactory logger = null)
+        public Client(IPdfOperation pdfOperation, IHttpApi httpApi, ILoggerFactory logger = null) : base(logger)
         {
             _pdfOperation = pdfOperation;
             _mindeeApi = httpApi;
             if (logger != null)
             {
+                // legacy static logging only used in v1
                 MindeeLogger.Assign(logger);
-                _logger = MindeeLogger.GetLogger();
             }
         }
 
@@ -124,7 +124,7 @@ namespace Mindee.V1
             , PageOptions pageOptions = null)
             where TInferenceModel : GeneratedV1, new()
         {
-            _logger?.LogInformation("Synchronous parsing of {} ...", nameof(TInferenceModel));
+            Logger?.LogInformation("Synchronous parsing of {} ...", nameof(TInferenceModel));
 
             if (predictOptions == null)
             {
@@ -175,7 +175,7 @@ namespace Mindee.V1
             , PredictOptions predictOptions = null)
             where TInferenceModel : GeneratedV1, new()
         {
-            _logger?.LogInformation("Synchronous parsing of {} ...", typeof(TInferenceModel).Name);
+            Logger?.LogInformation("Synchronous parsing of {} ...", typeof(TInferenceModel).Name);
 
             if (predictOptions == null)
             {
@@ -224,7 +224,7 @@ namespace Mindee.V1
             , PageOptions pageOptions = null)
             where TInferenceModel : GeneratedV1, new()
         {
-            _logger?.LogInformation("Enqueuing of {} ...", typeof(TInferenceModel).Name);
+            Logger?.LogInformation("Enqueuing of {} ...", typeof(TInferenceModel).Name);
 
             if (predictOptions == null)
             {
@@ -276,7 +276,7 @@ namespace Mindee.V1
             , PredictOptions predictOptions = null)
             where TInferenceModel : GeneratedV1, new()
         {
-            _logger?.LogInformation("Enqueuing of {} ...", typeof(TInferenceModel).Name);
+            Logger?.LogInformation("Enqueuing of {} ...", typeof(TInferenceModel).Name);
 
             if (predictOptions == null)
             {
@@ -316,7 +316,7 @@ namespace Mindee.V1
             , CancellationToken ct = default)
             where TInferenceModel : GeneratedV1, new()
         {
-            _logger?.LogInformation("Parse from queue of {} ...", typeof(TInferenceModel).Name);
+            Logger?.LogInformation("Parse from queue of {} ...", typeof(TInferenceModel).Name);
 
             if (string.IsNullOrWhiteSpace(jobId))
             {
@@ -362,7 +362,7 @@ namespace Mindee.V1
             , CancellationToken ct = default)
             where TInferenceModel : GeneratedV1, new()
         {
-            _logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
+            Logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
 
             if (pollingOptions == null)
             {
@@ -411,7 +411,7 @@ namespace Mindee.V1
             , CancellationToken ct = default)
             where TInferenceModel : GeneratedV1, new()
         {
-            _logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
+            Logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
 
             if (pollingOptions == null)
             {
@@ -452,7 +452,7 @@ namespace Mindee.V1
             , PageOptions pageOptions = null)
             where TInferenceModel : class, new()
         {
-            _logger?.LogInformation("Synchronous parsing of {} ...", typeof(TInferenceModel).Name);
+            Logger?.LogInformation("Synchronous parsing of {} ...", typeof(TInferenceModel).Name);
 
             if (predictOptions == null)
             {
@@ -498,7 +498,7 @@ namespace Mindee.V1
             , PredictOptions predictOptions = null)
             where TInferenceModel : class, new()
         {
-            _logger?.LogInformation("Synchronous parsing of {} ...", typeof(TInferenceModel).Name);
+            Logger?.LogInformation("Synchronous parsing of {} ...", typeof(TInferenceModel).Name);
 
             if (predictOptions == null)
             {
@@ -542,7 +542,7 @@ namespace Mindee.V1
             , PageOptions pageOptions = null)
             where TInferenceModel : class, new()
         {
-            _logger?.LogInformation("Enqueuing of {} ...", typeof(TInferenceModel).Name);
+            Logger?.LogInformation("Enqueuing of {} ...", typeof(TInferenceModel).Name);
 
             if (predictOptions == null)
             {
@@ -588,7 +588,7 @@ namespace Mindee.V1
             , PredictOptions predictOptions = null)
             where TInferenceModel : class, new()
         {
-            _logger?.LogInformation("Enqueuing of {} ...", typeof(TInferenceModel).Name);
+            Logger?.LogInformation("Enqueuing of {} ...", typeof(TInferenceModel).Name);
 
             if (predictOptions == null)
             {
@@ -623,7 +623,7 @@ namespace Mindee.V1
             CancellationToken ct = default)
             where TInferenceModel : class, new()
         {
-            _logger?.LogInformation("Parse from queue of {} ...", typeof(TInferenceModel).Name);
+            Logger?.LogInformation("Parse from queue of {} ...", typeof(TInferenceModel).Name);
 
             if (string.IsNullOrWhiteSpace(jobId))
             {
@@ -665,7 +665,7 @@ namespace Mindee.V1
             , CancellationToken ct = default)
             where TInferenceModel : class, new()
         {
-            _logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
+            Logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
 
             if (pollingOptions == null)
             {
@@ -709,7 +709,7 @@ namespace Mindee.V1
             , CancellationToken ct = default)
             where TInferenceModel : class, new()
         {
-            _logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
+            Logger?.LogInformation("Asynchronous parsing of {} ...", typeof(TInferenceModel).Name);
 
             if (pollingOptions == null)
             {
@@ -745,7 +745,7 @@ namespace Mindee.V1
             WorkflowOptions workflowOptions = null,
             PageOptions pageOptions = null)
         {
-            _logger?.LogInformation("Sending '{Filename}' to workflow '{WorkflowId}'...", inputSource.Filename, workflowId);
+            Logger?.LogInformation("Sending '{Filename}' to workflow '{WorkflowId}'...", inputSource.Filename, workflowId);
 
             if (pageOptions != null && inputSource.IsPdf())
             {
@@ -786,7 +786,7 @@ namespace Mindee.V1
             UrlInputSource inputSource,
             WorkflowOptions workflowOptions = null)
         {
-            _logger?.LogInformation("Asynchronous parsing of {} ...", inputSource.FileUrl);
+            Logger?.LogInformation("Asynchronous parsing of {} ...", inputSource.FileUrl);
 
             if (workflowOptions == null)
             {
@@ -839,7 +839,7 @@ namespace Mindee.V1
         /// <param name="pollingOptions">
         ///     <see cref="AsyncPollingOptions" />
         /// </param>
-        /// <param name="ct">Cancellation token.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>
         ///     <see cref="AsyncPredictResponse{TInferenceModel}" />
         /// </returns>
@@ -848,33 +848,37 @@ namespace Mindee.V1
             AsyncPredictResponse<TInferenceModel> enqueueResponse,
             CustomEndpoint endpoint,
             AsyncPollingOptions pollingOptions,
-            CancellationToken ct = default)
+            CancellationToken cancellationToken = default)
             where TInferenceModel : GeneratedV1, new()
         {
             var maxRetries = pollingOptions.MaxRetries + 1;
             var jobId = enqueueResponse.Job.Id;
-            _logger?.LogInformation("Enqueued with job ID: {}", jobId);
-            _logger?.LogInformation(
+            Logger?.LogInformation("Enqueued with job ID: {}", jobId);
+            Logger?.LogInformation(
                 "Waiting {} seconds before attempting to retrieve the document...",
                 pollingOptions.InitialDelaySec);
-            await Task.Delay(pollingOptions.InitialDelayMilliSec, ct);
-            var retryCount = 1;
+            await Task.Delay(pollingOptions.InitialDelayMilliSec, cancellationToken);
+            var tryCounter = 0;
             AsyncPredictResponse<TInferenceModel> response;
-            while (retryCount < maxRetries)
+            while (tryCounter < maxRetries)
             {
-                var retryDelayMilliSec = pollingOptions.GetRetryDelayMilliSec(retryCount);
-                await Task.Delay(retryDelayMilliSec, ct);
-                _logger?.LogInformation("Attempting to retrieve: {RetryCount} of {MaxRetries}", retryCount, maxRetries);
-                response = await ParseQueuedAsync<TInferenceModel>(endpoint, jobId, ct);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                Logger?.LogInformation(
+                    "Attempting to retrieve: {RetryCount} of {MaxRetries}",
+                    tryCounter + 1,
+                    maxRetries);
+
+                response = await ParseQueuedAsync<TInferenceModel>(endpoint, jobId, cancellationToken);
                 if (response.Document != null)
                 {
                     return response;
                 }
-
-                retryCount++;
+                tryCounter++;
+                await ThrottlePollingAttemptAsync(tryCounter, maxRetries, pollingOptions, cancellationToken);
             }
 
-            throw new MindeeException($"Could not complete after {retryCount} attempts.");
+            throw new MindeeException($"Could not complete after {tryCounter} attempts.");
         }
 
         /// <summary>
@@ -890,7 +894,7 @@ namespace Mindee.V1
         /// <param name="pollingOptions">
         ///     <see cref="AsyncPollingOptions" />
         /// </param>
-        /// <param name="ct">Cancellation token.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>
         ///     <see cref="AsyncPredictResponse{TInferenceModel}" />
         /// </returns>
@@ -898,33 +902,37 @@ namespace Mindee.V1
         private async Task<AsyncPredictResponse<TInferenceModel>> PollForResultsAsync<TInferenceModel>(
             AsyncPredictResponse<TInferenceModel> enqueueResponse,
             AsyncPollingOptions pollingOptions,
-            CancellationToken ct = default)
+            CancellationToken cancellationToken = default)
             where TInferenceModel : class, new()
         {
             var maxRetries = pollingOptions.MaxRetries + 1;
             var jobId = enqueueResponse.Job.Id;
-            _logger?.LogInformation("Enqueued with job ID: {}", jobId);
-            _logger?.LogInformation(
+            Logger?.LogInformation("Enqueued with job ID: {}", jobId);
+            Logger?.LogInformation(
                 "Waiting {} seconds before attempting to retrieve the document...",
                 pollingOptions.InitialDelaySec);
-            await Task.Delay(pollingOptions.InitialDelayMilliSec, ct);
-            var retryCount = 1;
+            await Task.Delay(pollingOptions.InitialDelayMilliSec, cancellationToken);
+            var tryCounter = 1;
             AsyncPredictResponse<TInferenceModel> response;
-            while (retryCount < maxRetries)
+            while (tryCounter < maxRetries)
             {
-                var retryDelayMilliSec = pollingOptions.GetRetryDelayMilliSec(retryCount);
-                await Task.Delay(retryDelayMilliSec, ct);
-                _logger?.LogInformation("Attempting to retrieve: {RetryCount} of {MaxRetries}", retryCount, maxRetries);
-                response = await ParseQueuedAsync<TInferenceModel>(jobId, ct);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                Logger?.LogInformation(
+                    "Attempting to retrieve: {RetryCount} of {MaxRetries}",
+                    tryCounter + 1,
+                    maxRetries);
+
+                response = await ParseQueuedAsync<TInferenceModel>(jobId, cancellationToken);
                 if (response.Document != null)
                 {
                     return response;
                 }
-
-                retryCount++;
+                tryCounter++;
+                await ThrottlePollingAttemptAsync(tryCounter, maxRetries, pollingOptions, cancellationToken);
             }
 
-            throw new MindeeException($"Could not complete after {retryCount} attempts.");
+            throw new MindeeException($"Could not complete after {tryCounter} attempts.");
         }
     }
 }

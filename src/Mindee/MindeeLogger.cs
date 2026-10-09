@@ -3,7 +3,8 @@ using Microsoft.Extensions.Logging;
 namespace Mindee
 {
     /// <summary>
-    ///     Global Mindee logger.
+    ///     Legacy Static Mindee logger, only used in V1.
+    ///     TODO: refactor to delete this class.
     /// </summary>
     public static class MindeeLogger
     {
