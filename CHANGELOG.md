@@ -1,5 +1,14 @@
 # Mindee .NET Client Library Changelog
 
+## v4.9.0 - 2026-10-13
+### Fixes
+* :bug: logging should always be silent by default
+* :bug: fix polling logic
+### Changes
+* :coffin: remove dead v1 products
+* :recycle: various improvements to RAG methods
+
+
 ## v4.8.2 - 2026-09-15
 ### Fixes
 * :bug: RAG document params must be typed to response
