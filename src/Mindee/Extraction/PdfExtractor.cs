@@ -93,11 +93,6 @@ namespace Mindee.Extraction
                     throw new MindeeInputException("Empty indexes not allowed for extraction.");
                 }
 
-                var extension = Path.GetExtension(LocalInput.Filename);
-                var prefix = Path.GetFileNameWithoutExtension(LocalInput.Filename);
-                var fieldFilename =
-                    $"{prefix}_{pageIndexElem[0] + 1:D3}-{pageIndexElem[pageIndexElem.Count - 1] + 1:D3}{extension}";
-
                 var splitQuery = new SplitQuery(
                     PdfBytes(),
                     new PageOptions(pageIndexElem.ConvertAll(item => (short)item).ToArray()));
@@ -105,11 +100,24 @@ namespace Mindee.Extraction
                 {
                     var pdfOperation = new DocNetApi(new NullLogger<DocNetApi>());
                     var mergedPdfBytes = pdfOperation.Split(splitQuery).File;
-                    extractedPdfs.Add(new ExtractedPdf(mergedPdfBytes, fieldFilename));
+                    extractedPdfs.Add(
+                        new ExtractedPdf(mergedPdfBytes, MakeFilename(pageIndexElem), pageIndexElem));
                 }
             }
 
             return extractedPdfs;
+        }
+
+        /// <summary>
+        /// Make a nice filename for the split.
+        /// </summary>
+        /// <param name="pageNumbers">List of page numbers (0-indexed).</param>
+        /// <returns>Formatted filename.</returns>
+        protected string MakeFilename(List<int> pageNumbers)
+        {
+            var extension = Path.GetExtension(LocalInput.Filename);
+            var prefix = Path.GetFileNameWithoutExtension(LocalInput.Filename);
+            return $"{prefix}_pages-{pageNumbers[0] + 1:D3}-{pageNumbers[pageNumbers.Count - 1] + 1:D3}{extension}";
         }
     }
 }

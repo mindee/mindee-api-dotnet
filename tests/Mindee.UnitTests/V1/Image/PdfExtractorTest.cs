@@ -1,0 +1,67 @@
+using Mindee.Input;
+using Mindee.V1.Image;
+using Mindee.V1.Parsing.Common;
+using Mindee.V1.Product.InvoiceSplitter;
+
+namespace Mindee.UnitTests.V1.Image
+{
+    [Collection("Docnet")]
+    public class PdfExtractorTest
+    {
+        [Fact]
+        public void GivenAnImage_ShouldExtractAPDF()
+        {
+            var jpg = Constants.V1ProductPath + "invoices/default_sample.jpg";
+            var localInput = new LocalInputSource(jpg);
+            Assert.False(localInput.IsPdf());
+            var extractor = new PdfExtractor(localInput);
+            Assert.Equal(1, extractor.GetPageCount());
+        }
+
+        [Fact]
+        public async Task GivenAPDF_ShouldExtractInvoicesNoStrict()
+        {
+            var pdf = new LocalInputSource(Constants.V1ProductPath + "invoice_splitter/invoice_5p.pdf");
+            var response = await GetPrediction();
+            Assert.NotNull(response);
+            var inference = response.Document.Inference;
+            var extractor = new PdfExtractor(pdf);
+            Assert.Equal(5, extractor.GetPageCount());
+
+            var extractedPDFSNoStrict = extractor.ExtractInvoices(inference.Prediction.InvoicePageGroups, false);
+            Assert.Equal(3, extractedPDFSNoStrict.Count);
+            Assert.Equal("invoice_5p_pages-001-001.pdf", extractedPDFSNoStrict[0].Filename);
+            Assert.Equal(1, extractedPDFSNoStrict[0].PageCount);
+            Assert.Equal("invoice_5p_pages-002-004.pdf", extractedPDFSNoStrict[1].Filename);
+            Assert.Equal(3, extractedPDFSNoStrict[1].PageCount);
+            Assert.Equal("invoice_5p_pages-005-005.pdf", extractedPDFSNoStrict[2].Filename);
+            Assert.Equal(1, extractedPDFSNoStrict[2].PageCount);
+        }
+
+        [Fact]
+        public async Task GivenAPDF_ShouldExtractInvoicesStrict()
+        {
+            var pdf = new LocalInputSource(Constants.V1ProductPath + "invoice_splitter/invoice_5p.pdf");
+            var response = await GetPrediction();
+            Assert.NotNull(response);
+            var inference = response.Document.Inference;
+
+            var extractor = new PdfExtractor(pdf);
+            Assert.Equal(5, extractor.GetPageCount());
+
+            var extractedPDFStrict = extractor.ExtractInvoices(inference.Prediction.InvoicePageGroups, true);
+            Assert.Equal(2, extractedPDFStrict.Count);
+            Assert.Equal("invoice_5p_pages-001-001.pdf", extractedPDFStrict[0].Filename);
+            Assert.Equal(1, extractedPDFStrict[0].PageCount);
+            Assert.Equal("invoice_5p_pages-002-005.pdf", extractedPDFStrict[1].Filename);
+            Assert.Equal(4, extractedPDFStrict[1].PageCount);
+        }
+
+        private async Task<AsyncPredictResponse<InvoiceSplitterV1>> GetPrediction()
+        {
+            const string fileName = Constants.V1ProductPath + "invoice_splitter/response_v1/complete.json";
+            var mindeeAPi = UnitTestBase.GetMindeeApi(fileName);
+            return await mindeeAPi.DocumentQueueGetAsync<InvoiceSplitterV1>("hello");
+        }
+    }
+}
