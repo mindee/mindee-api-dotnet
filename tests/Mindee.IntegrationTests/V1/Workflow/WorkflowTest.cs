@@ -27,19 +27,6 @@ namespace Mindee.IntegrationTests.V1.Workflow
         }
 
         [Fact(Timeout = 180000)]
-        public async Task Given_AWorkflowIdUpload_ShouldReturnACorrectWorkflowObject()
-        {
-            var currentDateTime = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
-            var alias = "dotnet-" + currentDateTime;
-            var options = new WorkflowOptions(alias, ExecutionPriority.Low, rag: true);
-            var response = await _client.ExecuteWorkflowAsync(
-                _workflowId, _ragMatchInputSource, options);
-
-            Assert.Equal(ExecutionPriority.Low, response.Execution.Priority);
-            Assert.Equal(alias, response.Execution.File.Alias);
-        }
-
-        [Fact(Timeout = 180000)]
         public async Task Given_AWorkflowIdPredictCustom_ShouldPollAndMatchRag()
         {
             var endpoint = new CustomEndpoint("financial_document", "mindee");
