@@ -176,7 +176,7 @@ namespace Mindee.V2
             Logger?.LogInformation("Getting job ID: {JobID}", jobId);
 
             if (string.IsNullOrWhiteSpace(jobId))
-                throw new ArgumentNullException(jobId, "jobId must not be null or blank.");
+                throw new ArgumentNullException(nameof(jobId), "jobId must not be null or blank.");
 
             return await _mindeeApi.ReqGetJobByIdAsync(jobId, ct);
         }
@@ -214,7 +214,7 @@ namespace Mindee.V2
                 ct);
             Logger?.LogInformation(
                 "Successfully enqueued document with job ID {JobID}", enqueueResponse.Job.Id);
-            return await PollForProductResultsAsync<TResponse>(
+            return await PollForProductResultAsync<TResponse>(
                 enqueueResponse, pollingOptions, false, ct);
         }
 
@@ -321,7 +321,7 @@ namespace Mindee.V2
             BaseAnnotationParameters<TAnnotationResponse> parameters
             , PollingOptions pollingOptions = null
             , CancellationToken ct = default)
-            where TAnnotationResponse : ExtractionRagAnnotationResponse, new()
+            where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
             var initialResponse = await UpdateRagAnnotationAsync(parameters, ct);
             if (initialResponse.Status != "Processing")
@@ -504,7 +504,7 @@ namespace Mindee.V2
         /// <summary>
         /// Poll until the inference results are retrieved or the max number of attempts is reached.
         /// </summary>
-        private async Task<TResponse> PollForProductResultsAsync<TResponse>(
+        private async Task<TResponse> PollForProductResultAsync<TResponse>(
             JobResponse enqueueResponse,
             PollingOptions pollingOptions,
             bool waitForWebhooks = false,
