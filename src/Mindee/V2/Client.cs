@@ -127,7 +127,7 @@ namespace Mindee.V2
         public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(pollingUrl))
-                throw new ArgumentNullException(nameof(pollingUrl), "resultUrl must not be null or blank.");
+                throw new ArgumentNullException(nameof(pollingUrl), "pollingUrl must not be null or blank.");
 
             Logger?.LogInformation("Getting Job by URL: {JobURL}", pollingUrl);
             return await _mindeeApi.ReqGetJobByUrlAsync(pollingUrl, ct);
