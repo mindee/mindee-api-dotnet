@@ -15,7 +15,6 @@ using Mindee.V2.Parsing;
 using Mindee.V2.Parsing.Search;
 using Mindee.V2.Product.Extraction;
 using Mindee.V2.Product.Extraction.Params;
-using Mindee.V2.Product.Extraction.RagDocuments;
 using Mindee.V2.Product.Extraction.RagDocuments.Params;
 using Mindee.V2.Search.Models;
 using SettingsV2 = Mindee.V2.Http.Settings;
@@ -31,6 +30,7 @@ namespace Mindee.V2
         private readonly HttpApiV2 _mindeeApi;
 
         /// <summary>
+        ///     Constructor.
         /// </summary>
         /// <param name="apiKey">The required API key to use the Mindee V2 API.</param>
         /// <param name="loggerFactory">Factory for the logger.</param>
@@ -47,6 +47,7 @@ namespace Mindee.V2
         }
 
         /// <summary>
+        ///     Constructor.
         /// </summary>
         /// <param name="settings">
         ///     <see cref="SettingsV2" />
@@ -67,6 +68,7 @@ namespace Mindee.V2
         }
 
         /// <summary>
+        ///     Constructor.
         /// </summary>
         /// <param name="httpApi">
         ///     <see cref="HttpApiV2" />
@@ -78,7 +80,7 @@ namespace Mindee.V2
         }
 
         /// <summary>
-        ///     Send a document to the Mindee API for inference.
+        ///     Send a file to the asynchronous processing queue for inference.
         /// </summary>
         /// <param name="inputSource">
         ///     <see cref="LocalInputSource" />
@@ -100,10 +102,10 @@ namespace Mindee.V2
             switch (inputSource)
             {
                 case LocalInputSource:
-                    Logger?.LogInformation("Enqueuing: local source");
+                    Logger?.LogInformation("Sending file to model: {ModelID}", parameters.ModelId);
                     break;
                 case UrlInputSource:
-                    Logger?.LogInformation("Enqueuing: URL source");
+                    Logger?.LogInformation("Sending URL to model: {ModelID}", parameters.ModelId);
                     break;
                 case null:
                     throw new ArgumentNullException(nameof(inputSource));
@@ -124,12 +126,15 @@ namespace Mindee.V2
         /// </returns>
         public async Task<JobResponse> GetJobFromUrlAsync(string pollingUrl, CancellationToken ct = default)
         {
+            if (string.IsNullOrWhiteSpace(pollingUrl))
+                throw new ArgumentNullException(nameof(pollingUrl), "resultUrl must not be null or blank.");
+
             Logger?.LogInformation("Getting Job by URL: {JobURL}", pollingUrl);
             return await _mindeeApi.ReqGetJobByUrlAsync(pollingUrl, ct);
         }
 
         /// <summary>
-        ///     Get a result directly from a polling URL.
+        ///     Get the result of an inference that was previously enqueued.
         /// </summary>
         /// <param name="resultUrl">The result's URL.</param>
         /// <param name="ct">Cancellation token.</param>
@@ -139,12 +144,16 @@ namespace Mindee.V2
         public async Task<TResponse> GetResultFromUrlAsync<TResponse>(string resultUrl, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
+            if (string.IsNullOrWhiteSpace(resultUrl))
+                throw new ArgumentNullException(nameof(resultUrl), "resultUrl must not be null or blank.");
+
             Logger?.LogInformation("Getting result by URL: {ResultUrl}", resultUrl);
             return await _mindeeApi.ReqGetResultByUrlAsync<TResponse>(resultUrl, ct);
         }
 
         /// <summary>
-        ///     Get the result of an inference that was previously enqueued by its ID.
+        ///     Get the result of an inference that was previously enqueued.
+        ///     Prefer using `GetResultFromUrlAsync` using the result URL returned in the Job instance.
         /// </summary>
         /// <param name="jobId">The job id.</param>
         /// <param name="ct">Cancellation token.</param>
@@ -154,17 +163,16 @@ namespace Mindee.V2
         public async Task<TResponse> GetResultAsync<TResponse>(string jobId, CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
-            Logger?.LogInformation("Getting result with ID: {JobID}", jobId);
-
             if (string.IsNullOrWhiteSpace(jobId))
                 throw new ArgumentNullException(nameof(jobId), "jobId must not be null or blank.");
 
+            Logger?.LogInformation("Getting result with ID: {JobID}", jobId);
             return await _mindeeApi.ReqGetResultByIdAsync<TResponse>(jobId, ct);
         }
 
         /// <summary>
         ///     Get the status of an inference that was previously enqueued.
-        ///     Can be used for polling.
+        ///     Prefer using `GetJobFromUrlAsync` using the polling URL returned by the enqueue method.
         /// </summary>
         /// <param name="jobId">The job id.</param>
         /// <param name="ct">Cancellation token.</param>
@@ -173,16 +181,15 @@ namespace Mindee.V2
         /// </returns>
         public async Task<JobResponse> GetJobAsync(string jobId, CancellationToken ct = default)
         {
-            Logger?.LogInformation("Getting job ID: {JobID}", jobId);
-
             if (string.IsNullOrWhiteSpace(jobId))
                 throw new ArgumentNullException(nameof(jobId), "jobId must not be null or blank.");
 
+            Logger?.LogInformation("Getting job ID: {JobID}", jobId);
             return await _mindeeApi.ReqGetJobByIdAsync(jobId, ct);
         }
 
         /// <summary>
-        ///     Add the document to an async queue, poll, and parse when complete.
+        ///     Send a file to the inference queue and return the results when complete.
         /// </summary>
         /// <param name="inputSource">
         ///     <see cref="LocalInputSource" />
@@ -206,16 +213,18 @@ namespace Mindee.V2
             , CancellationToken ct = default)
             where TResponse : BaseResponse, new()
         {
-            pollingOptions ??= new PollingOptions();
-
             var enqueueResponse = await EnqueueAsync(
                 inputSource,
                 parameters,
                 ct);
+
             Logger?.LogInformation(
                 "Successfully enqueued document with job ID {JobID}", enqueueResponse.Job.Id);
+
             return await PollForProductResultAsync<TResponse>(
-                enqueueResponse, pollingOptions, false, ct);
+                enqueueResponse,
+                pollingOptions ?? new PollingOptions(),
+                false, ct);
         }
 
         /// <summary>
@@ -250,12 +259,10 @@ namespace Mindee.V2
             , CancellationToken ct = default)
             where TAnnotationResponse : BaseRagAnnotationResponse, new()
         {
-            pollingOptions ??= new PollingOptions();
-
             var initialResponse = await UploadRagDocumentAsync(inputSource, parameters, ct);
 
             return await PollForRagDocumentAsync<TAnnotationResponse>(
-                initialResponse, pollingOptions, ct);
+                initialResponse, pollingOptions ?? new PollingOptions(), ct);
         }
 
         /// <summary>
