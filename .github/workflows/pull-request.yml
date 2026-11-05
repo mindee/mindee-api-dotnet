@@ -3,17 +3,20 @@ name: Pull Request
 on:
   pull_request:
 
-permissions: # For warnings only, doesn't do anything.
+permissions:
   contents: read
   pull-requests: read
 
 jobs:
+  workflow-lint:
+    uses: mindee/client-lib-actions/.github/workflows/workflow-lint.yml@main
+  betterleaks:
+    uses: mindee/client-lib-actions/.github/workflows/betterleaks.yml@main
+    needs: workflow-lint
+    secrets: inherit
   static-analysis:
     uses: ./.github/workflows/_static-analysis.yml
-    permissions:
-      actions: read
-      security-events: write
-      contents: read
+    needs: workflow-lint
   codeql:
     uses: ./.github/workflows/_codeql.yml
     permissions:
@@ -22,15 +25,14 @@ jobs:
       contents: read
   test-units:
     uses: ./.github/workflows/_test-units.yml
-    needs:
-      - static-analysis
-    secrets: inherit
-  test-integrations:
-    uses: ./.github/workflows/_test-integrations.yml
-    needs: test-units
+    needs: [ betterleaks, static-analysis ]
     secrets: inherit
   test-smoke:
     uses: ./.github/workflows/_test-smoke.yml
+    needs: test-units
+    secrets: inherit
+  test-integrations:
+    uses: ./.github/workflows/_test-integrations.yml
     needs: test-units
     secrets: inherit
   test-cli:

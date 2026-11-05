@@ -11,6 +11,14 @@ end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
 
+# Config files
+[*.{yml,yaml,toml}]
+indent_size = 2
+
+# JSON files
+[*.json]
+indent_size = 2
+
 # Markdown files
 [*.{md,markdown}]
 trim_trailing_whitespace = false
