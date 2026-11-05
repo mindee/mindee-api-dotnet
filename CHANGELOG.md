@@ -1,11 +1,13 @@
 # Mindee .NET Client Library Changelog
 
-## v4.9.0 - 2026-10-13
+## v4.9.0 - 2026-11-05
 ### Fixes
 * :bug: logging should always be silent by default
 * :bug: fix polling logic
+* :bug: minor type fixes
 ### Changes
 * :coffin: remove dead v1 products
+* :coffin: remove obsolete workflow methods
 * :recycle: various improvements to RAG methods
 
 

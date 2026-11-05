@@ -15,6 +15,3 @@ jobs:
   publish_code:
     uses: ./.github/workflows/_publish-code.yml
     secrets: inherit
-  publish_cli_code:
-    uses: ./.github/workflows/_publish-cli-code.yml
-    secrets: inherit
