@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.V2.Product
     [Trait("Category", "OcrInference")]
     public class OcrTest
     {
-        [Fact]
+        [Fact(DisplayName = "should init with values")]
         public void Parameters_MustInit()
         {
             var productParams = new OcrParameters("invalid-model-id");

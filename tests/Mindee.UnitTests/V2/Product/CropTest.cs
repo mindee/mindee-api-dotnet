@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.V2.Product
     [Trait("Category", "CropInference")]
     public class CropTest
     {
-        [Fact]
+        [Fact(DisplayName = "should init with values")]
         public void Parameters_MustInit()
         {
             var productParams = new CropParameters("invalid-model-id");

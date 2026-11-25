@@ -11,7 +11,7 @@ namespace Mindee.UnitTests.V2.Product
     [Trait("Category", "ClassificationInference")]
     public class ClassificationTest
     {
-        [Fact]
+        [Fact(DisplayName = "should init with values")]
         public void Parameters_MustInit()
         {
             var productParams = new ClassificationParameters("invalid-model-id");
