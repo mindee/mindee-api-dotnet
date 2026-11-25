@@ -10,7 +10,7 @@ namespace Mindee.UnitTests.V2.Product
     [Trait("Category", "SplitInference")]
     public class SplitTest
     {
-        [Fact]
+        [Fact(DisplayName = "should init with values")]
         public void Parameters_MustInit()
         {
             var productParams = new SplitParameters("invalid-model-id");
